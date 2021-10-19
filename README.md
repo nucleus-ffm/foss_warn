@@ -1,2 +1,6 @@
 # Foss Warn
 An open source application to get emergency alerts from https://warnung.bund.de/meldungen
+
+
+## Haftungsausschluss 
+Diese App wurde in der Hoffnung erstellt, dass sie nützlich ist, kommt aber OHNE JEGLICHE GEWÄHRLEISTUNG. Ich kann zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert und alle Warnungen jederzeit anzeigt. Die verwendeten Schnittstellen könnten sich jederzeit verändern, wodurch die App vorerst nicht mehr funktioniert. Verlassen Sie sich deshalb zu KEINEM ZEITPUNKT auf diese App. Auch werden die Warnungen immer mit einer gewissen Verzögerung im Hintergrund empfangen. Diese App benutzt keinen Push-Services, sondern lädt in einem gewissen Zeitabstand die neusten Meldungen und benachrichtigt dann, wenn nötig. Durch Android technisch bedingt, kann die App minimal alle 15 Minuten die neusten Warnmeldungen im Hintergrund herunterladen. Je häufiger die App im Hintergrund Daten lädt, desto mehr Akku verbraucht sie allerdings auch. Entscheiden Sie, selbst was Sie für sich brauchen. Es könnte sein, dass es notwendig ist, die Akkuoptimierung für FOSS Warn zu deaktivieren. Wenn Ihnen auffällt, dass die App im Hintergrund beendet wurde, bitte ich Sie, mir das mitzuteilen.
