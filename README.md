@@ -1,5 +1,5 @@
 # Foss Warn
-An inofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK.
+An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK.
 
 ## Current state of development
 The app is currently in a BETA status. A group of nice people is currently putting the app through its paces. I will upload the source code as soon as I have selected a license for it.
