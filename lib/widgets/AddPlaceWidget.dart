@@ -31,60 +31,62 @@ class _AddPlaceWidgetState extends State<AddPlaceWidget> {
 
     return AlertDialog(
       title: Text('Ort/Kreis hinzufügen'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            autofocus: true,
-            decoration: new InputDecoration(
-              labelText: 'Ortsname oder Kreisname',
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              autofocus: true,
+              decoration: new InputDecoration(
+                labelText: 'Ortsname oder Kreisname',
+              ),
+              onChanged: (text) {
+                newPlaceName = text;
+                text = text.toLowerCase();
+                setState(() {
+                  allPlacesToShow = allPlaces.where((Place) {
+                    var search = Place.toLowerCase();
+                    return search.contains(text);
+                  }).toList();
+                });
+              },
             ),
-            onChanged: (text) {
-              newPlaceName = text;
-              text = text.toLowerCase();
-              setState(() {
-                allPlacesToShow = allPlaces.where((Place) {
-                  var search = Place.toLowerCase();
-                  return search.contains(text);
-                }).toList();
-              });
-            },
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            "Die folgende Liste könnte Fehlerhaft sein, wodurch es zu keiner Warnung kommt. Wenn Fehler auffallen, bitte Bescheid geben.",
-            style: TextStyle(fontSize: 10),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Container(
-            height: 150,
-            width: 300,
-            child: ListView(
-              children: allPlacesToShow
-                  .map(
-                    (place) => ListTile(
-                      title: Text(place),
-                      onTap: () {
-                        setState(() {
-                          final updater =
-                              Provider.of<Update>(context, listen: false);
-                          updater.updateList(place);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    ),
-                  )
-                  .toList(),
+            SizedBox(
+              height: 10,
             ),
-          ),
-          /*SizedBox(
-            height: 10,
-          ),*/
-        ],
+            Text(
+              "Die folgende Liste könnte Fehlerhaft sein, wodurch es zu keiner Warnung kommt. Wenn Fehler auffallen, bitte Bescheid geben.",
+              style: TextStyle(fontSize: 10),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              height: 150,
+              width: 300,
+              child: ListView(
+                children: allPlacesToShow
+                    .map(
+                      (place) => ListTile(
+                        title: Text(place),
+                        onTap: () {
+                          setState(() {
+                            final updater =
+                                Provider.of<Update>(context, listen: false);
+                            updater.updateList(place);
+                            Navigator.of(context).pop();
+                          });
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            /*SizedBox(
+              height: 10,
+            ),*/
+          ],
+        ),
       ),
       actions: <Widget>[
         TextButton(
