@@ -7,6 +7,12 @@ The app is currently in a BETA status. A group of nice people is currently putti
 ## TODO: 
  - [ ] select a license
 
+## FAQ
+<details>
+<summary>How to change the notification sound?</summary>
+Press and hold the app icon in the app drawer and tap "App Details" -> "Notifications" -> "Benachrichtigungen" -> "Expand" -> "Sound". 
+</details>
+
 ## Similar inoffical projects for other platforms
 * [**FediNINA (Fediverse)**](https://meta.prepedia.org/wiki/FediNINA) Project to bring NINA warnings into the Fediverse.
 * [**MINA (Matrix)**](https://github.com/djmaze/nina-matrix-bot) MINA is a matrix bot that can be used to subscribe to alerts from the NINA API.
