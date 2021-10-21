@@ -14,7 +14,7 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text("0.1.11 (beta)", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
-              Text("* Fehler behoben wodurch bei einer neuen Installtion keine Benachrichtigungen angezeigt wurden.\n * kleine Layoutanpassungen für kleine Bildschirme."),
+              Text("* Fehler behoben wodurch bei einer neuen Installation keine Benachrichtigungen angezeigt wurden.\n * kleine Layoutoptimierung für kleine Bildschirme."),
               Text("\n"),
               Text("0.1.10 (beta)", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
               Text("* Änderungensdialog hinzugefügt\n* Statusanzeige um Fehler beim Auslesen erweitert \n* doppelte Orte aus der Liste entfernt\n * Falsche Zeitangabe korrigiert \n* Breche alle Benachrichtigungen ab, wenn eine Warnung gelesen wurde (noch nicht optimal)"),
