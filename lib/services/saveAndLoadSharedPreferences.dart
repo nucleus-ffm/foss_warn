@@ -59,6 +59,7 @@ loadSettings() async {
 }
 
 saveNotificationSettingsImportanceList() async {
+  print("Save saveNotificationSettingsImportanceList");
   notificationSettingsImportance.clear();
   if (notificationWithExtreme) {
     notificationSettingsImportance.add("Extreme");
@@ -101,6 +102,9 @@ loadNotificationSettingsImportanceList() async {
     }
   } else {
     print("notificationSettingsImportance Key does not exsis");
+    saveNotificationSettingsImportanceList(); //save init List
+    loadNotificationSettingsImportanceList(); // try again
+    print("notificationSettingsImportance should yet exsis");
   }
 }
 
