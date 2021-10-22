@@ -6,7 +6,7 @@ class ChangeLogDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Änderungen'),
+      title: Text('Änderungsprotokoll'),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
@@ -17,7 +17,7 @@ class ChangeLogDialog extends StatelessWidget {
               Text("* Fehler behoben wodurch bei einer neuen Installation keine Benachrichtigungen angezeigt wurden.\n * kleine Layoutoptimierung für kleine Bildschirme."),
               Text("\n"),
               Text("0.1.10 (beta)", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
-              Text("* Änderungensdialog hinzugefügt\n* Statusanzeige um Fehler beim Auslesen erweitert \n* doppelte Orte aus der Liste entfernt\n * Falsche Zeitangabe korrigiert \n* Breche alle Benachrichtigungen ab, wenn eine Warnung gelesen wurde (noch nicht optimal)"),
+              Text("* Änderungsprotokoll hinzugefügt\n* Statusanzeige um Fehler beim Auslesen erweitert \n* doppelte Orte aus der Liste entfernt\n * Falsche Zeitangabe korrigiert \n* Breche alle Benachrichtigungen ab, wenn eine Warnung gelesen wurde (noch nicht optimal)"),
               Text("\n"),
               Text("0.1.9 (beta)", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
               Text("* unnötige Schalter entfernt\n* Fehler korrigiert der das parsen abgebrochen hat"),
