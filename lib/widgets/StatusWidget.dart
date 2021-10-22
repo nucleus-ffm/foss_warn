@@ -109,7 +109,7 @@ class StatusWidget extends StatelessWidget {
                 SizedBox(
                   width: 140,
                   child: Text(
-                    " = Server nicht erreichtbar",
+                    " = Server nicht erreichbar",
                     style: TextStyle(fontSize: 12),
                   ),
                 )
@@ -125,7 +125,7 @@ class StatusWidget extends StatelessWidget {
                 SizedBox(
                   width: 140,
                   child: Text(
-                    " = Fehler beim auslesen",
+                    " = Fehler beim Auslesen",
                     style: TextStyle(fontSize: 12),
                   ),
                 )
