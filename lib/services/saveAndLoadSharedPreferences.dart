@@ -1,4 +1,5 @@
 import 'package:foss_warn/SettingsView.dart';
+import 'package:foss_warn/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../MyPlacesView.dart';
@@ -42,6 +43,8 @@ loadReadWarningsList() async {
 saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("notificationGeneral", notificationGeneral.toString());
+  preferences.setString("startScreen", startScreen.toString());
+  print("Settings saved");
 }
 
 loadSettings() async {
@@ -55,6 +58,11 @@ loadSettings() async {
     }
   } else {
     notificationGeneral = true;
+  }
+  if (preferences.containsKey("startScreen")) {
+    String temp = preferences.getString("startScreen")!;
+    startScreen = int.parse(temp);
+    print("Start Screen is: $startScreen");
   }
 }
 
