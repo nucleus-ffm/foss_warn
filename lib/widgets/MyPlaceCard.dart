@@ -17,26 +17,31 @@ class MyPlaceCard extends StatelessWidget {
   const MyPlaceCard({Key? key, required this.myPlace}) : super(key: key);
 
   String checkForWarnings() {
-    print("check for warnings");
+    print("[MyPlaceCard] check for warnings");
     int countMessages = 0;
-    print(warnMessageList.length);
+    //print(warnMessageList.length);
     myPlace.warnings.clear();
     for (WarnMessage warnMessage in warnMessageList) {
       for (Area myArea in warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
           //print(name);
           if (myGeocode.geocodeName == myPlace.name) {
-            countMessages++;
-            myPlace.warnings.add(warnMessage);
+            if (myPlace.warnings.contains(warnMessage)) {
+              print("[MyPlaceCard] Warn Messsage already in List");
+              //warn messeage already in list from geocodename
+            } else {
+              countMessages++;
+              myPlace.warnings.add(warnMessage);
+            }
           }
         }
-        if(myArea.areaDesc.contains(myPlace.name)) {
-          print("Area Decs contrains myPlace name:" + myPlace.name);
-          if(myPlace.warnings.contains(warnMessage)) {
-            print("Warn Messsage already in List");
+        if (myArea.areaDesc.contains(myPlace.name)) {
+          print("[MyPlaceCard] Area Decs contains myPlace name: " + myPlace.name);
+          if (myPlace.warnings.contains(warnMessage)) {
+            print("[MyPlaceCard] Warn Messsage already in List");
             //warn messeage already in list from geocodename
           } else {
-            print("add warning für: " + myPlace.name);
+            print("[MyPlaceCard] add warning für: " + myPlace.name);
             countMessages++;
             myPlace.warnings.add(warnMessage);
           }
@@ -68,25 +73,38 @@ class MyPlaceCard extends StatelessWidget {
           temp = false;
         }
       }
-      print("Alle Meldungen gelesen?: " + temp.toString());
+      //print("Alle Meldungen gelesen?: " + temp.toString());
       return temp;
     }
 
-    print("Es liegen für " + myPlace.name + " " + myPlace.countWarnings.toString() + " vor");
-    for(WarnMessage myWarning in myPlace.warnings) {
+    /*print("Es liegen für " +
+        myPlace.name +
+        " " +
+        myPlace.countWarnings.toString() +
+        " vor");
+    for (WarnMessage myWarning in myPlace.warnings) {
       print("Warnung:" + myWarning.headline);
-    }
+    }*/
 
     return Card(
       child: InkWell(
         onLongPress: () {
-          print("Lösche");
+          print("DeletePlaceDialog opened");
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return DeletePlaceDialog(myPlace: myPlace);
             },
           );
+        },
+        onTap: () {
+          if (myPlace.countWarnings != 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyPlaceDetailScreen(myPlace: myPlace)),
+            );
+          }
         },
         child: Padding(
           padding: EdgeInsets.all(12),
