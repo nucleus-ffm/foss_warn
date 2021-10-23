@@ -23,7 +23,7 @@ class _MyPlacesState extends State<MyPlaces> {
     // TODO: implement initState
     super.initState();
     //load();
-    if(myPlaceList.isEmpty) {
+    if (myPlaceList.isEmpty) {
       loading = true;
     }
   }
@@ -39,6 +39,12 @@ class _MyPlacesState extends State<MyPlaces> {
     updater.updateReadStatusInList();*/
   }
 
+  Future<void> reloadData() async {
+    setState(() {
+      loading = true;
+    });
+    await Future.delayed(Duration(seconds: 2));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +64,15 @@ class _MyPlacesState extends State<MyPlaces> {
     }
 
     return Consumer<Update>(
-      builder: (context, counter, child) => Stack(
-        fit: StackFit.expand,
-        children: [
-          //check if myPlaceList is empty, if not show list else show text
-          myPlaceList.isNotEmpty
-              ? SingleChildScrollView(
+      builder: (context, counter, child) => RefreshIndicator(
+        onRefresh: reloadData,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            //check if myPlaceList is empty, if not show list else show text
+            myPlaceList.isNotEmpty
+                ? SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
                   child: Padding(
                       padding: const EdgeInsets.only(bottom: 65),
                       child: Column(
@@ -72,43 +81,44 @@ class _MyPlacesState extends State<MyPlaces> {
                             .toList(),
                       )),
                 )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Es sind noch keine Orte hinterlegt...",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Drücke auf das Plus um eigene Orte hinzuzufügen."),
-                  ],
-                ),
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Es sind noch keine Orte hinterlegt...",
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("Drücke auf das Plus um eigene Orte hinzuzufügen."),
+                    ],
+                  ),
 
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return StatefulBuilder(
-                      builder: (context, setState) {
-                        return AddPlaceWidget();
-                      },
-                    );
-                  },
-                );
-              },
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(
+                        builder: (context, setState) {
+                          return AddPlaceWidget();
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-          //Positioned(child: Text("Hallo Welt"))
-        ],
+            //Positioned(child: Text("Hallo Welt"))
+          ],
+        ),
       ),
     );
   }
