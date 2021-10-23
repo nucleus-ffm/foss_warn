@@ -102,6 +102,18 @@ class NotificationService {
 
   static cancelOneNotification(id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
+    /* cancel summery notification if it is the last one */
+    List<ActiveNotification>? activeNotifications =
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.getActiveNotifications();
+    if(activeNotifications!.length == 1 ) {
+      if(activeNotifications[0].id == 0) {
+        // summery notification has id 0
+        cancelOneNotification(0);
+      }
+    }
   }
 
   static cancelAllNotification() async {
