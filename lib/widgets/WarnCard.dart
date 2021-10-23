@@ -105,11 +105,11 @@ class WarnCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> geocodeNameList = [];
-    print("Warnug schon gesehen? " +
+    /*print("Warnug schon gesehen? " +
         myPlaceList
             .any((place) => place.alreadyReadWarnings
                 .any((warning) => warning.headline == warnMessage.headline))
-            .toString());
+            .toString());*/
     updatePrevView() {
       final updater = Provider.of<Update>(context, listen: false);
       updater.updateReadStatusInList();
