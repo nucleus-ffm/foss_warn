@@ -5,6 +5,7 @@ import '../class/class_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../services/updateProvider.dart';
 import '../services/notification_service.dart';
+import 'generateNotificationID.dart';
 import '../MyPlacesView.dart';
 import 'saveAndLoadSharedPreferences.dart';
 import 'listHandler.dart';
@@ -60,8 +61,18 @@ markOneWarningAsReadFromDetailView(WarnMessage myWarning) {
   } else {
     readWarnings.add(myWarning.identifier);
     saveReadWarningsList();
-    NotificationService.cancelAllNotification();
+    //NotificationService.cancelAllNotification();
+    int notificationID = generateNotificationID(myWarning.identifier);
+    print("cancel Notification with id: $notificationID");
+    NotificationService.cancelOneNotification(notificationID);
+    //NotificationService.cancelOneNotification(0); //cancel grouped Notification
   }
+}
+
+markOneNotificationAsRead(String placeName) {
+  print("cancel Notification for: $placeName");
+  int notificationID = generateNotificationID(placeName);
+  NotificationService.cancelOneNotification(notificationID);
 }
 
 markOneWarningAsUnread(WarnMessage myWarning,  BuildContext context) {
