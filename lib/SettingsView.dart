@@ -9,14 +9,14 @@ import 'services/listHandler.dart';
 import 'class/class_Place.dart';
 import 'aboutView.dart';
 
-
 bool notificationWithExtreme = true;
 bool notificationWithSevere = true;
 bool notificationWithModerate = true;
 bool notificationWithMinor = false;
 bool notificationGeneral = true;
 double frequencyOfAPICall = 15;
-
+String dropdownValue = '';
+int startScreen = 0;
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -26,8 +26,15 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+
   @override
   Widget build(BuildContext context) {
+    if(startScreen == 0) {
+      dropdownValue = 'Alle Meldungen';
+    } else {
+      dropdownValue = "Meine Orte";
+    }
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 1),
@@ -39,9 +46,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          AboutView()),
+                  MaterialPageRoute(builder: (context) => AboutView()),
                 );
               },
             ),
@@ -60,13 +65,13 @@ class _SettingsState extends State<Settings> {
                       myPlace.warnings.any((warning) =>
                           notificationSettingsImportance
                               .contains(warning.severity))) {
-                    if(myPlace.warnings.every((warning) => readWarnings.contains(warning.identifier))) {
+                    if (myPlace.warnings.every((warning) =>
+                        readWarnings.contains(warning.identifier))) {
                       //all warnings read
                     } else {
                       thereIsNoWarning = false;
                     }
-                  } else {
-                  }
+                  } else {}
                 }
                 if (thereIsNoWarning) {
                   final snackBar = SnackBar(
@@ -303,7 +308,9 @@ class _SettingsState extends State<Settings> {
                                   Workmanager().registerPeriodicTask(
                                       "1", "call APIs",
                                       frequency: Duration(
-                                          minutes: frequencyOfAPICall.toInt()), initialDelay: Duration(minutes: frequencyOfAPICall.toInt()));
+                                          minutes: frequencyOfAPICall.toInt()),
+                                      initialDelay: Duration(
+                                          minutes: frequencyOfAPICall.toInt()));
                                 },
                               ),
                             ),
@@ -316,13 +323,60 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Sonstige Einstellungen:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Startansicht beim Öffnen:"),
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                        if(dropdownValue== "Alle Meldungen") {
+                          startScreen = 0;
+                        } else if(dropdownValue == "Meine Orte") {
+                          startScreen = 1;
+                        }
+                        saveSettings();
+                      });
+                    },
+                    items: <String>['Alle Meldungen', 'Meine Orte']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(
               height: 15,
             ),
             Text(
               "Quellen der Warnmeldungen:",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 1,),
+            SizedBox(
+              height: 1,
+            ),
             //Text("(können nicht deaktiviert werden)", style: TextStyle(fontSize: 12),),
             SizedBox(
               height: 5,
