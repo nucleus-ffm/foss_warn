@@ -183,17 +183,19 @@ class WarnCard extends StatelessWidget {
                         SizedBox(
                           width: 10,
                         ),
-                        SizedBox(
-                          width: 100,
-                          child: Text(
-                            geocodeNameList.length > 1
-                                ? geocodeNameList.first +
-                                    " und " +
-                                    (geocodeNameList.length - 1)
-                                        .toString() +
-                                    " andere"
-                                : geocodeNameList.first,
-                            style: TextStyle(fontSize: 12),
+                        Expanded(
+                          child: SizedBox(
+                            width: 100,
+                            child: Text(
+                              geocodeNameList.length > 1
+                                  ? geocodeNameList.first +
+                                      " und " +
+                                      (geocodeNameList.length - 1)
+                                          .toString() +
+                                      " andere"
+                                  : geocodeNameList.first,
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ),
                         )
                       ],
