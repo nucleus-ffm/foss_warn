@@ -35,7 +35,8 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
         ),
         new TextButton(
           onPressed: () {
-            //add new Place to List and save List
+            //remove place from list and update view
+            print("place deleted");
             final updater =
             Provider.of<Update>(context, listen: false);
             updater.deletePlace(widget.myPlace);
