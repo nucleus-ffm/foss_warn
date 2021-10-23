@@ -1,10 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
-import '../main.dart';
-import '../class/class_Place.dart';
-import '../class/class_WarnMessage.dart';
 import 'package:flutter/material.dart';
-import '../MyPlacesView.dart';
 
 class NotificationService {
   static final flutterLocalNotificationsPlugin =
@@ -15,7 +11,7 @@ class NotificationService {
     return NotificationDetails(
         android: AndroidNotificationDetails(
           'foss_warn', 'Benachrichtigungen', 'Foss Warn Benachrichtigungen',
-          groupKey: "Foss.Warn",
+          groupKey: "FossWarn",
           importance: Importance.max,
           priority: Priority.max,
 
@@ -35,7 +31,6 @@ class NotificationService {
     String? body,
     String? payload,
   }) async {
-
     flutterLocalNotificationsPlugin.show(
       id,
       title,
@@ -43,41 +38,29 @@ class NotificationService {
       await _notificationsDetails(),
       payload: payload,
     );
+    showGroupNotification();
+  }
 
-    //group Notifications
-    List<ActiveNotification>? activeNotifications =
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.getActiveNotifications();
+  static void showGroupNotification() async {
+    NotificationDetails notificationDetails = NotificationDetails(
+        android: AndroidNotificationDetails(
+          'foss_warn', 'Benachrichtigungen', 'Foss Warn Benachrichtigungen',
+          groupKey: "FossWarn",
+          setAsGroupSummary: true,
+          importance: Importance.max,
+          priority: Priority.max,
+          playSound: false,
 
-    if (activeNotifications!.length > 0) {
-
-      List<String> lines = activeNotifications
-          .map((notification) => notification.title.toString())
-          .toList();
-      InboxStyleInformation inboxStyleInformation = InboxStyleInformation(lines,
-          contentTitle: "${activeNotifications.length+1} Warnungen",
-          summaryText: "${activeNotifications.length+1} Warnungen");
-      AndroidNotificationDetails groupNotificationDetails =
-      AndroidNotificationDetails(
-        'foss_warn', 'Benachrichtigungen', 'Foss Warn Benachrichtigungen',
-
-        importance: Importance.max,
-        priority: Priority.max,
-        styleInformation: inboxStyleInformation,
-        setAsGroupSummary: true,
-        groupKey: "Foss.Warn",
-        color: Colors.red, // makes the icon red,
-        ledColor: Colors.blue,
-        ledOffMs: 100,
-        ledOnMs: 100,
-      );
-      NotificationDetails groupNotificationDetailsPlatformSpecifics =
-          NotificationDetails(android: groupNotificationDetails);
-      await flutterLocalNotificationsPlugin.show(0, "", "", groupNotificationDetailsPlatformSpecifics);
-
-    }
+          //enable multiline notification
+          styleInformation: BigTextStyleInformation(''),
+          color: Colors.red, // makes the icon red,
+          ledColor: Colors.red,
+          ledOffMs: 100,
+          ledOnMs: 100,
+        ),
+        iOS: IOSNotificationDetails());
+    await flutterLocalNotificationsPlugin.show(0, "Warnungen",
+        "Es gibt für mehrere Orte Warnungen", notificationDetails);
   }
 
   Future<void> init() async {
@@ -120,6 +103,7 @@ class NotificationService {
   static cancelOneNotification(id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
+
   static cancelAllNotification() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
