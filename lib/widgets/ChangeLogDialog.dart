@@ -13,6 +13,10 @@ class ChangeLogDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text("0.1.12 (beta)", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+              Text("* Tippfehler verbessert \n* Möglichkeit zum Einstellen des Startbildschirms ergänzt \n* gleiche Benachrichtigungen werden jetzt nur einmal angezeigt \n* Benachrichtigungen werden jetzt richtig gruppiert  \n* Ort können jetzt auch mit dem Tippen auf den Ortsnamen geöffnet werden."),
+              Text("* Fehler mit doppelt angezeigten Warnungen bei 'meinen Orten' behoben \n * Pull to refresh bei 'Meine Orte' ergänzt \n* Benachrichtigungen werden jetzt abgebrochen, wenn die Warnung gelesen wurde - bei mehreren Warnungen für einen Ort durch die letzte Warnung in der Liste."),
+              Text("\n"),
               Text("0.1.11 (beta)", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
               Text("* Fehler behoben wodurch bei einer neuen Installation keine Benachrichtigungen angezeigt wurden.\n * kleine Layoutoptimierung für kleine Bildschirme."),
               Text("\n"),
