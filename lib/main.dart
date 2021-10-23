@@ -47,8 +47,8 @@ void main() async {
           false // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
       );
   loadReadWarningsList(); // load the list with ids of read warnings
-  loadFrequencyOfAPICall(); //load in settings defined frequency
-  loadSettings(); // load settings / load the saved value of 'notificationGeneral'
+  await loadFrequencyOfAPICall(); //load in settings defined frequency
+  await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
   if (notificationGeneral) {
     // setup the background task
     print("Background notification enabled");
@@ -109,7 +109,7 @@ class ScaffoldView extends StatefulWidget {
 }
 
 class _ScaffoldViewState extends State<ScaffoldView> {
-  int _selectedIndex = 0; // selected view
+  int _selectedIndex = startScreen; // selected start view
   // the navigation bar
   void _onItemTapped(int index) {
     // change view
@@ -222,7 +222,6 @@ class _HomeViewState extends State<HomeView> {
       loading = true;
       firstStart = false;
     }
-
   }
 
 
