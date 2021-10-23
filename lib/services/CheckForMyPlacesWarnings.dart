@@ -9,6 +9,7 @@ import '../class/class_Geocode.dart';
 import '../class/class_Area.dart';
 
 import '../services/notification_service.dart';
+import 'generateNotificationID.dart';
 import 'GetData.dart';
 import '../SettingsView.dart';
 import 'listHandler.dart';
@@ -59,12 +60,18 @@ Future<bool> checkForWarnings() async {
         for (Geocode myGeocode in myArea.geocodeList) {
           //print(name);
           if (myGeocode.geocodeName == myPlace.name) {
-            countMessages++;
-            myPlace.warnings.add(warnMessage);
+            if(myPlace.warnings.contains(warnMessage)) {
+              print("Warn Messsage already in List");
+              //warn messeage already in list from geocodename
+            } else {
+              print("Add Warning for: " + myPlace.name);
+              countMessages++;
+              myPlace.warnings.add(warnMessage);
+            }
           }
         }
         if(myArea.areaDesc.contains(myPlace.name)) {
-          print("Area Decs contrains myPlace name:" + myPlace.name);
+          print("Area Decs contains myPlace name: " + myPlace.name);
           if(myPlace.warnings.contains(warnMessage)) {
             print("Warn Messsage already in List");
             //warn messeage already in list from geocodename
@@ -95,7 +102,7 @@ Future<bool> checkForWarnings() async {
         print("keine neue Meldungen");
       } else {
         if (myPlace.warnings.length > 1) {
-          //if just one Warning
+          // if more then one warning
           String generateBody() {
             int counter = 1;
             String returnBody = "";
@@ -109,14 +116,18 @@ Future<bool> checkForWarnings() async {
           }
 
           sendNotification(
-              Random().nextInt(100),
+              // generate from the last warning in the List the notification id
+              // because the warning identifier is no int, we have to generate a hash code
+              generateNotificationID(myPlace.warnings.last.identifier),
               "Es gibt ${myPlace.warnings.length.toString()} Warnungen für ${myPlace.name}",
               generateBody(),
               myPlace.name);
         } else {
-          // if more then one warning
+          //if there is just one Warning
           sendNotification(
-              Random().nextInt(100),
+            // generate from the warning in the List the notification id
+            // because the warning identifier is no int, we have to generate a hash code
+              generateNotificationID(myPlace.warnings.first.identifier),
               "Es gibt ${myPlace.warnings.length.toString()} Warnung für ${myPlace.name}",
               "Warnung: ${myPlace.warnings.first.headline}",
               myPlace.name);
