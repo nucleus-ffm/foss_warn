@@ -263,74 +263,68 @@ Future getData() async {
       dwdStatus = true;
 
       data = jsonDecode(utf8.decode(response.bodyBytes));
-      if (data.length == 0) {
-        //there are no DWD warnings -> 0 Messages
-        print("No DWD warnings");
-        dwdMessages = 0;
-      } else {
-        //count messages
-        dwdMessages = data.length; //TODO: check if this works
 
-        try {
-          dwdParseStatus = true;
-          for (var i = 0; i <= data.length - 1; i++) {
-            List<Geocode> generateGeoCodeList(int i, int s) {
-              List<Geocode> tempGeocodeList = [];
-              for (var j = 0;
-                  j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
-                  j++) {
-                Geocode tempGeocode =
-                    Geocode(geocodeName: "", geocodeNumber: ""); //init
-                tempGeocode.geocodeName =
-                    data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-                tempGeocode.geocodeNumber =
-                    data[i]["info"][0]["area"][s]["geocode"][j]["value"];
-                tempGeocodeList.add(tempGeocode);
-              }
-              return tempGeocodeList;
+      //count messages
+      dwdMessages = data.length; //TODO: check if this works
+
+      try {
+        dwdParseStatus = true;
+        for (var i = 0; i <= data.length - 1; i++) {
+          List<Geocode> generateGeoCodeList(int i, int s) {
+            List<Geocode> tempGeocodeList = [];
+            for (var j = 0;
+                j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+                j++) {
+              Geocode tempGeocode =
+                  Geocode(geocodeName: "", geocodeNumber: ""); //init
+              tempGeocode.geocodeName =
+                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
+              tempGeocode.geocodeNumber =
+                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              tempGeocodeList.add(tempGeocode);
             }
-
-            List<Area> generateAreaList(int i) {
-              List<Area> tempAreaList = [];
-              //loop through list of areas
-              for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
-                Area tempArea =
-                    Area(areaDesc: "", geocodeList: []); //init clear
-                tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
-                tempArea.geocodeList = generateGeoCodeList(i, s);
-                tempAreaList.add(tempArea);
-              }
-              return tempAreaList;
-            }
-
-            WarnMessage tempWarnMessage = WarnMessage(
-              identifier: data[i]["identifier"] ?? "?",
-              sender: data[i]["sender"] ?? "?",
-              sent: data[i]["sent"] ?? "?",
-              status: data[i]["status"] ?? "?",
-              messageTyp: data[i]["msgType"] ?? "?",
-              scope: data[i]["scope"] ?? "",
-              category: data[i]["info"][0]["category"][0] ?? "?",
-              event: data[i]["info"][0]["event"] ?? "?",
-              urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: data[i]["info"][0]["severity"] ?? "?",
-              certainty: data[i]["info"][0]["certainty"] ?? "?",
-              headline: data[i]["info"][0]["headline"] ?? "?",
-              description: data[i]["info"][0]["description"] ?? "?",
-              instruction: data[i]["info"][0]["instruction"] ?? "?",
-              contact: data[i]["info"][0]["contact"] ?? "?",
-              web: data[i]["info"][0]["web"] ?? "?",
-              areaList: generateAreaList(i),
-              //area: data[i]["info"][0]["area"][0]["areaDesc"],
-              //geocodeName: generateGeoCodeNameList(i),
-              //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-            );
-            tempWarnMessageList.add(tempWarnMessage);
+            return tempGeocodeList;
           }
-        } catch (e) {
-          print("Error while parsing DWD Data: " + e.toString());
-          dwdParseStatus = false;
+
+          List<Area> generateAreaList(int i) {
+            List<Area> tempAreaList = [];
+            //loop through list of areas
+            for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
+              Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
+              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.geocodeList = generateGeoCodeList(i, s);
+              tempAreaList.add(tempArea);
+            }
+            return tempAreaList;
+          }
+
+          WarnMessage tempWarnMessage = WarnMessage(
+            identifier: data[i]["identifier"] ?? "?",
+            sender: data[i]["sender"] ?? "?",
+            sent: data[i]["sent"] ?? "?",
+            status: data[i]["status"] ?? "?",
+            messageTyp: data[i]["msgType"] ?? "?",
+            scope: data[i]["scope"] ?? "",
+            category: data[i]["info"][0]["category"][0] ?? "?",
+            event: data[i]["info"][0]["event"] ?? "?",
+            urgency: data[i]["info"][0]["urgency"] ?? "?",
+            severity: data[i]["info"][0]["severity"] ?? "?",
+            certainty: data[i]["info"][0]["certainty"] ?? "?",
+            headline: data[i]["info"][0]["headline"] ?? "?",
+            description: data[i]["info"][0]["description"] ?? "?",
+            instruction: data[i]["info"][0]["instruction"] ?? "?",
+            contact: data[i]["info"][0]["contact"] ?? "?",
+            web: data[i]["info"][0]["web"] ?? "?",
+            areaList: generateAreaList(i),
+            //area: data[i]["info"][0]["area"][0]["areaDesc"],
+            //geocodeName: generateGeoCodeNameList(i),
+            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
+          );
+          tempWarnMessageList.add(tempWarnMessage);
         }
+      } catch (e) {
+        print("Error while parsing DWD Data: " + e.toString());
+        dwdParseStatus = false;
       }
     } else {
       //something went wrong
