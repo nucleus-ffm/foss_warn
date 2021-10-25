@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:foss_warn/SettingsView.dart';
 import 'class/class_WarnMessage.dart';
 import 'class/class_Area.dart';
 import 'class/class_Geocode.dart';
 import 'services/markWarningsAsRead.dart';
 import 'services/urlLauncher.dart';
+
+import 'package:share_plus/share_plus.dart';
 
 class DetailScreen extends StatefulWidget {
   final WarnMessage warnMessage;
@@ -101,7 +105,7 @@ class _DetailScreenState extends State<DetailScreen> {
       } else if (text == "Extrem") {
         return "Extrem";
       } else if (text == "Severe") {
-        return "Ernst";
+        return "Schwer";
       } else {
         return text;
       }
@@ -133,7 +137,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
     List<String> generateAreaDescList() {
       List<String> tempList = [];
-      for (Area myArea in widget.warnMessage.areaList ) {
+      for (Area myArea in widget.warnMessage.areaList) {
         tempList.add(myArea.areaDesc);
       }
       return tempList;
@@ -141,7 +145,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
     List<String> generateGeocodeNameList() {
       List<String> tempList = [];
-      for (Area myArea in widget.warnMessage.areaList ) {
+      for (Area myArea in widget.warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
           tempList.add(myGeocode.geocodeName);
         }
@@ -149,11 +153,37 @@ class _DetailScreenState extends State<DetailScreen> {
       return tempList;
     }
 
+    void shareWarning(BuildContext context, String shareText) async {
+      final box = context.findRenderObject() as RenderBox?;
+      await Share.share(shareText,
+          subject: "Test",
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Mehr Infos zu: "),
-        brightness: Brightness.dark,
         backgroundColor: Colors.green[700],
+        actions: [
+          IconButton(
+            tooltip: "Meldung teilen",
+              onPressed: () {
+                final String shareText = widget.warnMessage.headline +
+                    "\n\nMeldung vom: " +
+                    formatSentDate(widget.warnMessage.sent) +
+                    "\n\nBetroffene Region(en): " + generateAreaDescList().toString().substring(
+                    1, generateAreaDescList().toString().length - 1) +
+                    "\n\nBeschreibung:\n" +
+                    replaceHTMLTags(widget.warnMessage.description) +
+                    " \n\nHandlungsempfehlung:\n" +
+                    replaceHTMLTags(widget.warnMessage.instruction) +
+                    "\n\nQuelle der Meldung:\n " +
+                    widget.warnMessage.publisher +
+                    "\n\n-- mit stolz geteilt aus aus FOSS Warn --";
+                shareWarning(context, shareText);
+              },
+              icon: Icon(Icons.share))
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -164,6 +194,13 @@ class _DetailScreenState extends State<DetailScreen> {
               Text(
                 widget.warnMessage.headline,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Meldung vom: " + formatSentDate(widget.warnMessage.sent),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 10,
@@ -189,8 +226,11 @@ class _DetailScreenState extends State<DetailScreen> {
                   children: [
                     Container(
                       padding: EdgeInsets.all(5),
-                      color: Colors.orangeAccent,
-                      child: Text("Sender: " + widget.warnMessage.sender),
+                      color: Colors.deepPurple,
+                      child: Text(
+                        "Art: " + widget.warnMessage.event,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     SizedBox(
                       width: 5,
@@ -211,7 +251,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       padding: EdgeInsets.all(5),
                       color: Colors.orange[800],
                       child: Text(
-                        "Schwere: " +
+                        "Warnstufe: " +
                             translateMessageSeverity(
                                 widget.warnMessage.severity),
                         style: TextStyle(color: Colors.white),
@@ -223,100 +263,97 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 10,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      color: Colors.blueAccent,
-                      child: Text(
-                        "Gesendet: " + formatSentDate(widget.warnMessage.sent),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      color: Colors.greenAccent,
-                      child: Text("Status: " +
-                          translateMessageStatus(widget.warnMessage.status)),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      color: Colors.green,
-                      child: Text(
-                        "Dringlichkeit: " +
-                            translateMessageUrgency(widget.warnMessage.urgency),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      color: Colors.blueGrey,
-                      child: Text(
-                        "Lage: " +
-                            translateMessageCertainty(
-                                widget.warnMessage.certainty),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      color: Colors.amber,
-                      child: Text("Bereich: " + widget.warnMessage.scope),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    /*Container(
-                      padding: EdgeInsets.all(5),
-                      color: Colors.lightBlue[200],
-                      child: Text("ID: " +widget.warnMessage.identifier),
-                    ),
-                    SizedBox(width: 5,),*/
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      color: Colors.deepPurple,
-                      child: Text(
-                        "Art: " + widget.warnMessage.event,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
+              showExtendedMetaData
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                color: Colors.green,
+                                child: Text(
+                                  "Dringlichkeit: " +
+                                      translateMessageUrgency(
+                                          widget.warnMessage.urgency),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                color: Colors.blueGrey,
+                                child: Text(
+                                  "Lage: " +
+                                      translateMessageCertainty(
+                                          widget.warnMessage.certainty),
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                color: Colors.amber,
+                                child: Text(
+                                    "Bereich: " + widget.warnMessage.scope),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                color: Colors.lightBlue[200],
+                                child: Text(
+                                    "ID: " + widget.warnMessage.identifier),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                color: Colors.orangeAccent,
+                                child: Text(
+                                    "Sender: " + widget.warnMessage.sender),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                color: Colors.greenAccent,
+                                child: Text("Status: " +
+                                    translateMessageStatus(
+                                        widget.warnMessage.status)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    )
+                  : SizedBox(),
               Row(
                 children: [
                   Icon(Icons.map),
@@ -332,7 +369,9 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 2,
               ),
-              SelectableText(generateAreaDescList().toString().substring(1, generateAreaDescList().toString().length-1 ),
+              SelectableText(
+                  generateAreaDescList().toString().substring(
+                      1, generateAreaDescList().toString().length - 1),
                   style: TextStyle(
                     fontSize: 15,
                   )),
@@ -376,22 +415,44 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 5,
               ),
-              widget.warnMessage.instruction != "" ? Row(
-                children: [
-                  Icon(Icons.shield),
-                  SizedBox(
-                    width: 5,
-                  ),
-                   Text(
-                    "Handlungsempfehlung:",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ],
-              ): SizedBox(),
+              widget.warnMessage.instruction != ""
+                  ? Row(
+                      children: [
+                        Icon(Icons.shield),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "Handlungsempfehlung:",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
+                    )
+                  : SizedBox(),
               SizedBox(
                 height: 2,
               ),
-            widget.warnMessage.instruction != "" ? SelectableText(replaceHTMLTags(widget.warnMessage.instruction)): SizedBox(),
+              widget.warnMessage.instruction != ""
+                  ? SelectableText(
+                      replaceHTMLTags(widget.warnMessage.instruction))
+                  : SizedBox(),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.source),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Quelle der Meldung:",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
+                ],
+              ),
+              Text(widget.warnMessage.publisher),
               SizedBox(
                 height: 10,
               ),
@@ -438,7 +499,8 @@ class _DetailScreenState extends State<DetailScreen> {
                           fit: FlexFit.loose,
                           child: TextButton(
                             onPressed: () {
-                              _launched = makePhoneCall(widget.warnMessage.contact);
+                              _launched =
+                                  makePhoneCall(widget.warnMessage.contact);
                             },
                             child: Text(
                               replaceHTMLTags(widget.warnMessage.contact),
@@ -459,7 +521,8 @@ class _DetailScreenState extends State<DetailScreen> {
                           fit: FlexFit.loose,
                           child: TextButton(
                             onPressed: () {
-                              _launched = launchUrlInBrowser(widget.warnMessage.web);
+                              _launched =
+                                  launchUrlInBrowser(widget.warnMessage.web);
                             },
                             child: Text(
                               replaceHTMLTags(widget.warnMessage.web),
@@ -469,6 +532,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       ],
                     )
                   : SizedBox(),
+
             ],
           ),
         ),
