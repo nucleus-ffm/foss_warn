@@ -2,6 +2,7 @@ import 'class_Area.dart';
 
 class WarnMessage {
   String identifier;
+  String publisher;
   String sender;
   String sent;
   String status;
@@ -24,6 +25,7 @@ class WarnMessage {
 
   WarnMessage(
       {required this.identifier,
+      required this.publisher,
       required this.sender,
       required this.sent,
       required this.status,
