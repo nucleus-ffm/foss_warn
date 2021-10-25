@@ -44,6 +44,7 @@ saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("notificationGeneral", notificationGeneral.toString());
   preferences.setString("startScreen", startScreen.toString());
+  preferences.setString("showExtendedMetaData", showExtendedMetaData.toString());
   print("Settings saved");
 }
 
@@ -63,6 +64,16 @@ loadSettings() async {
     String temp = preferences.getString("startScreen")!;
     startScreen = int.parse(temp);
     print("Start Screen is: $startScreen");
+  }
+  if (preferences.containsKey("showExtendedMetaData")) {
+    String temp = preferences.getString("showExtendedMetaData")!;
+    if (temp == "true") {
+      showExtendedMetaData = true;
+    } else {
+      showExtendedMetaData = false;
+    }
+  } else {
+    showExtendedMetaData = false;
   }
 }
 
