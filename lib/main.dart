@@ -11,6 +11,7 @@ import 'widgets/StatusWidget.dart';
 
 import 'MyPlacesView.dart';
 import 'SettingsView.dart';
+import 'AllWarningsView.dart';
 
 import 'services/notification_service.dart';
 import 'services/CheckForMyPlacesWarnings.dart';
@@ -92,7 +93,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Foss Warn',
+      title: 'FOSS Warn',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -119,7 +120,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
   }
   // list of views for the navigation bar
   static const List<Widget> _pages = <Widget>[
-    HomeView(),
+    AllWarningsView(),
     MyPlaces(),
     Settings(),
   ];
@@ -145,7 +146,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Foss Warn"),
+          title: Text("FOSS Warn"),
           systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           backgroundColor: Colors.green[700],
           actions: [
@@ -204,68 +205,3 @@ class _ScaffoldViewState extends State<ScaffoldView> {
   }
 }
 
-class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
-
-  @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  var data;
-  bool loading = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if (firstStart) {
-      loading = true;
-      firstStart = false;
-    }
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    Future<void> reloadData() async {
-      setState(() {
-        loading = true;
-      });
-      await Future.delayed(Duration(seconds: 2));
-    }
-
-    void loadData() async {
-      data = await getData();
-      loadNotificationSettingsImportanceList();
-      setState(() {
-        loading = false;
-      });
-    }
-
-    if (loading == true) {
-      loadData();
-    }
-    while (loading) {
-      return Center(
-        child: SizedBox(
-          height: 70,
-          width: 70,
-          child: CircularProgressIndicator(
-            strokeWidth: 4,
-          ),
-        ),
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: reloadData,
-      child: SingleChildScrollView(
-        child: Column(
-          children: warnMessageList
-              .map((warnMessage) => WarnCard(warnMessage: warnMessage))
-              .toList(),
-        ),
-      ),
-    );
-  }
-}
