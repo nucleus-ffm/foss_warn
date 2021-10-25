@@ -172,7 +172,7 @@ Diese App ist ein Freizeit-Projekt von mir und wurde in der Hoffnung erstellt, d
                 ),
                 SizedBox(height: 2),
                 Text(
-                  "0.1.12 (beta)",
+                  "0.1.13 (beta)",
                   style: TextStyle(color: Colors.grey[900]),
                 ),
               ],
