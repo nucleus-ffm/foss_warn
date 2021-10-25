@@ -14,6 +14,7 @@ bool notificationWithSevere = true;
 bool notificationWithModerate = true;
 bool notificationWithMinor = false;
 bool notificationGeneral = true;
+bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
 double frequencyOfAPICall = 15;
 String dropdownValue = '';
 int startScreen = 0;
@@ -363,6 +364,22 @@ class _SettingsState extends State<Settings> {
                       );
                     }).toList(),
                   ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text("Zeige erweiterte Metadaten bei Meldungen.")),
+                  Switch(
+                      value: showExtendedMetaData,
+                      onChanged: (value) {
+                        setState(() {
+                          showExtendedMetaData = value;
+                        });
+                        saveSettings();
+                      })
                 ],
               ),
             ),
