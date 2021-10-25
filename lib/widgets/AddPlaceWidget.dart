@@ -68,6 +68,7 @@ class _AddPlaceWidgetState extends State<AddPlaceWidget> {
                 children: allPlacesToShow
                     .map(
                       (place) => ListTile(
+                       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
                         title: Text(place),
                         onTap: () {
                           setState(() {
