@@ -128,121 +128,131 @@ class WarnCard extends StatelessWidget {
 
     return Consumer<Update>(
       builder: (context, counter, child) => Card(
-        child: Padding(
-          padding: EdgeInsets.all(12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              readWarnings.contains(warnMessage.identifier)
-                  ? IconButton(
-                      onPressed: () {
-                        markOneWarningAsUnread(warnMessage, context);
-                      },
-                      icon: Icon(
-                        Icons.mark_chat_read,
-                        color: Colors.green,
-                      ))
-                  : IconButton(
-                      onPressed: () {
-                        markOneWarningAsRead(warnMessage, context);
-                      },
-                      icon: Icon(
-                        Icons.warning_amber_outlined,
-                        color: Colors.red,
-                      )),
-              SizedBox(
-                width: 5,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          child: Text(
-                            translateCategory(warnMessage.category),
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          color: Colors.amber,
-                          padding: EdgeInsets.all(5),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          child: Text(
-                            translateMessageTyp(warnMessage.messageTyp),
-                            style: TextStyle(fontSize: 12, color: Colors.white),
-                          ),
-                          color: chooseMessageTypColor(warnMessage.messageTyp),
-                          padding: EdgeInsets.all(5),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            width: 100,
-                            child: Text(
-                              geocodeNameList.length > 1
-                                  ? geocodeNameList.first +
-                                      " und " +
-                                      (geocodeNameList.length - 1)
-                                          .toString() +
-                                      " andere"
-                                  : geocodeNameList.first,
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      warnMessage.headline,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      DetailScreen(warnMessage: warnMessage)),
+            ).then((value) => updatePrevView());
+          },
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                readWarnings.contains(warnMessage.identifier)
+                    ? IconButton(
+                        onPressed: () {
+                          markOneWarningAsUnread(warnMessage, context);
+                        },
+                        icon: Icon(
+                          Icons.mark_chat_read,
+                          color: Colors.green,
+                        ))
+                    : IconButton(
+                        onPressed: () {
+                          markOneWarningAsRead(warnMessage, context);
+                        },
+                        icon: Icon(
+                          Icons.warning_amber_outlined,
+                          color: Colors.red,
+                        )),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Text(
-                            formatSentDate(warnMessage.sent),
-                            style: TextStyle(fontSize: 12),
+                          Container(
+                            child: Text(
+                              translateCategory(warnMessage.category),
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                            color: Colors.amber,
+                            padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
                             width: 10,
                           ),
-                          Text(
-                            warnMessage.sender,
-                            style: TextStyle(fontSize: 12),
+                          Container(
+                            child: Text(
+                              translateMessageTyp(warnMessage.messageTyp),
+                              style: TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                            color: chooseMessageTypColor(warnMessage.messageTyp),
+                            padding: EdgeInsets.all(5),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: 100,
+                              child: Text(
+                                geocodeNameList.length > 1
+                                    ? geocodeNameList.first +
+                                        " und " +
+                                        (geocodeNameList.length - 1)
+                                            .toString() +
+                                        " andere"
+                                    : geocodeNameList.first,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
                           )
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        warnMessage.headline,
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Text(
+                              formatSentDate(warnMessage.sent),
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              warnMessage.sender,
+                              style: TextStyle(fontSize: 12),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              DetailScreen(warnMessage: warnMessage)),
-                    ).then((value) => updatePrevView());
-                  },
-                  icon: Icon(Icons.read_more))
-            ],
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DetailScreen(warnMessage: warnMessage)),
+                      ).then((value) => updatePrevView());
+                    },
+                    icon: Icon(Icons.read_more))
+              ],
+            ),
           ),
         ),
       ),
