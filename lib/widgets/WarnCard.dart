@@ -1,12 +1,12 @@
 // widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/markWarningsAsRead.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../WarningDetailView.dart';
 import '../MyPlacesView.dart';
-import 'package:provider/provider.dart';
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 
@@ -229,10 +229,10 @@ class WarnCard extends StatelessWidget {
                               style: TextStyle(fontSize: 12),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 20,
                             ),
                             Text(
-                              warnMessage.sender,
+                              warnMessage.source,
                               style: TextStyle(fontSize: 12),
                             )
                           ],
