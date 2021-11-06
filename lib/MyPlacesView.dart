@@ -20,7 +20,6 @@ class _MyPlacesState extends State<MyPlaces> {
   bool loading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //load();
     if (myPlaceList.isEmpty) {
@@ -93,7 +92,7 @@ class _MyPlacesState extends State<MyPlaces> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text("Drücke auf das Plus um eigene Orte hinzuzufügen."),
+                      Text("Drücken Sie auf das Plus, um eigene Orte hinzuzufügen."),
                     ],
                   ),
 
