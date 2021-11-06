@@ -355,6 +355,10 @@ Future getData() async {
     }
   } catch (e) {
     print("Error: " + e.toString());
+    dwdStatus = false;
+    mowasStatus = false;
+    biwappStatus = false;
+    katwarnStatus = false;
     if (showStatusNotification) {
       sendStatusUpdateNotification(false);
     }
