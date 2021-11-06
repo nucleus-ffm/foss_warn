@@ -45,6 +45,13 @@ saveSettings() async {
   preferences.setString("notificationGeneral", notificationGeneral.toString());
   preferences.setString("startScreen", startScreen.toString());
   preferences.setString("showExtendedMetaData", showExtendedMetaData.toString());
+  preferences.setString("warningFontSize", warningFontSize.toString());
+  preferences.setString("showWelcomeScreen", showWelcomeScreen.toString());
+  preferences.setString("sortWarningsBy", sortWarningsBy.toString());
+  preferences.setString("showStatusNotification", showStatusNotification.toString());
+  preferences.setString("updateAvailable", updateAvailable.toString());
+  preferences.setString("githubVersionNumber", githubVersionNumber.toString());
+  preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
   print("Settings saved");
 }
 
@@ -74,6 +81,62 @@ loadSettings() async {
     }
   } else {
     showExtendedMetaData = false;
+  }
+  if(preferences.containsKey("warningFontSize")) {
+    String temp = preferences.getString("warningFontSize")!;
+    warningFontSize = double.parse(temp);
+    print("warningFontSize: $warningFontSize");
+  } else {
+    saveSettings();
+    loadSettings();
+  }
+  if (preferences.containsKey("showWelcomeScreen")) {
+    String temp = preferences.getString("showWelcomeScreen")!;
+    if (temp == "true") {
+      showWelcomeScreen = true;
+    } else {
+      showWelcomeScreen = false;
+    }
+  } else {
+    showWelcomeScreen = true;
+  }
+  if(preferences.containsKey("sortWarningsBy")) {
+    String temp = preferences.getString("sortWarningsBy")!;
+    sortWarningsBy = temp;
+    //print("warningFontSize: $warningFontSize");
+  } else {
+    saveSettings();
+    loadSettings();
+  }
+  if (preferences.containsKey("showStatusNotification")) {
+    String temp = preferences.getString("showStatusNotification")!;
+    if (temp == "true") {
+      showStatusNotification = true;
+    } else {
+      showStatusNotification = false;
+    }
+  } else {
+    showStatusNotification = true;
+  }
+  if (preferences.containsKey("updateAvailable")) {
+    String temp = preferences.getString("updateAvailable")!;
+    if (temp == "true") {
+      updateAvailable = true;
+    } else {
+      updateAvailable = false;
+    }
+  } else {
+    updateAvailable = false;
+  }
+  if(preferences.containsKey("githubVersionNumber")) {
+    String temp = preferences.getString("githubVersionNumber")!;
+    githubVersionNumber = temp;
+    //print("warningFontSize: $warningFontSize");
+  }
+  if (preferences.containsKey("frequencyOfAPICall")) {
+    frequencyOfAPICall =
+        double.parse(preferences.getString("frequencyOfAPICall")!);
+    //true;
   }
 }
 
@@ -125,18 +188,4 @@ loadNotificationSettingsImportanceList() async {
     loadNotificationSettingsImportanceList(); // try again
     print("notificationSettingsImportance should yet exsis");
   }
-}
-
-loadFrequencyOfAPICall() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  if (preferences.containsKey("frequencyOfAPICall")) {
-    frequencyOfAPICall =
-        double.parse(preferences.getString("frequencyOfAPICall")!);
-    //true;
-  } // else false
-}
-
-saveFrequencyOfAPICall() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
 }
