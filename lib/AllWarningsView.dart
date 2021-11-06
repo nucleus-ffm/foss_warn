@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/SettingsView.dart';
 import 'package:foss_warn/services/markWarningsAsRead.dart';
+import 'package:provider/provider.dart';
 import 'main.dart';
 import 'services/GetData.dart';
 import 'services/listHandler.dart';
 import 'widgets/WarnCard.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
+import 'services/sortWarnings.dart';
+import 'services/updateProvider.dart';
+import 'WelcomeView.dart';
 
 class AllWarningsView extends StatefulWidget {
   const AllWarningsView({Key? key}) : super(key: key);
@@ -37,6 +42,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
 
     void loadData() async {
       data = await getData();
+      sortWarnings();
       loadNotificationSettingsImportanceList();
       setState(() {
         loading = false;
@@ -59,14 +65,46 @@ class _AllWarningsViewState extends State<AllWarningsView> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: reloadData,
-      child: SingleChildScrollView(
-        child: Column(
-          children: warnMessageList
-              .map((warnMessage) => WarnCard(warnMessage: warnMessage))
-              .toList(),
-        ),
+    return Consumer<Update>(
+      builder: (context, counter, child) => RefreshIndicator(
+        onRefresh: reloadData,
+        child: warnMessageList.isNotEmpty
+            ? SingleChildScrollView(
+                child: Column(
+                  children: warnMessageList
+                      .map((warnMessage) => WarnCard(warnMessage: warnMessage))
+                      .toList(),
+                ),
+              )
+            : Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Hier gibt es noch nichts zu sehen... ", style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("\n"),
+                      Text(
+                          "Entweder gibt es gerade keine Meldungen, \n oder Sie haben keine Internetverbindung?"),
+                      SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            loading = true;
+                          });
+                        },
+                        child: Text(
+                          "Neuladen",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style:
+                            TextButton.styleFrom(backgroundColor: Colors.blue),
+                      )
+                    ],
+                  ),
+                ),
+              ),
       ),
     );
   }
