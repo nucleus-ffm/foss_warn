@@ -18,19 +18,37 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("FOSS Warn versendet keine Informationen über seine Nutzung, sondern baut nur in regelmäßigen Abständen eine Verbindung zu https://warnung.bund.de auf und lädt von dort die neusten Warnungen. Standardmäßig baut FOSS Warn alle 15 Minuten im Hintergrund eine Verbindung auf und lädt die neusten Warnungen. Die Hintergrundaktualisierung kann in den Einstellungen deaktiviert werden."
+              Text("FOSS Warn versendet keine Informationen über seine Nutzung,"
+                  " sondern baut nur in regelmäßigen Abständen eine Verbindung "
+                  "zu https://warnung.bund.de auf und lädt von dort die neusten Warnungen."
                   "\n\n"
-                  "Für den Aufruf überträgt FOSS Warn nur die technisch notwendigen Daten. Auf die Serverseitige Verarbeitung habe ich keinen Einfluss und kann nur auf die Datenschutzerklärung von warnung.bund.de verweisen. "),
+                  "Zusätzlich kann FOSS Warn prüfen, ob ein Update verfügbar ist. "
+                  "Dafür lädt FOSS Warn Daten von Github und vergleicht lokal die Versionsnummern."
+                  "\n\n"
+                  "Für den Aufruf überträgt FOSS Warn nur die technisch notwendigen Daten."
+                  " Auf die Serverseitige Verarbeitung hat FOSS Warn keinen Einfluss "
+                  ""
+              ),
               SizedBox(height: 10,),
               Row(
                 children: [
                   Icon(Icons.open_in_browser),
-
                   Flexible(
                     fit: FlexFit.loose,
                     child: TextButton(onPressed: () {
                       Future<void>? _launched = launchUrlInBrowser('https://warnung.bund.de/datenschutz');
                     }, child: Text("Zur Datenschutzerklärung von Warnung.bund.de")),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.open_in_browser),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: TextButton(onPressed: () {
+                      Future<void>? _launched = launchUrlInBrowser('https://docs.github.com/en/github/site-policy/github-privacy-statement');
+                    }, child: Text("Zur Datenschutzerklärung von Github.com")),
                   ),
                 ],
               )
@@ -44,7 +62,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            'schließen',
+            'verstanden',
             style: TextStyle(color: Colors.green),
           ),
         ),
