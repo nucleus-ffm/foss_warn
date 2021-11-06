@@ -1,23 +1,41 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:foss_warn/services/checkForUpdates.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:app_settings/app_settings.dart';
+
+import 'aboutView.dart';
+import 'WelcomeView.dart';
 
 import 'services/CheckForMyPlacesWarnings.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
 import 'services/listHandler.dart';
+import 'services/urlLauncher.dart';
+
 import 'class/class_Place.dart';
-import 'aboutView.dart';
+
+import 'widgets/FontSizeDialog.dart';
+import 'widgets/SortByDialog.dart';
+import 'services/notification_service.dart';
 
 bool notificationWithExtreme = true;
 bool notificationWithSevere = true;
 bool notificationWithModerate = true;
 bool notificationWithMinor = false;
 bool notificationGeneral = true;
+bool showStatusNotification = true;
 bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
 double frequencyOfAPICall = 15;
 String dropdownValue = '';
 int startScreen = 0;
+double warningFontSize = 14;
+bool showWelcomeScreen = true;
+String sortWarningsBy = "source";
+
+String versionNumber = "0.2.0";
+String githubVersionNumber = versionNumber;
+bool updateAvailable = false;
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -27,23 +45,30 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
 
   @override
   Widget build(BuildContext context) {
-    if(startScreen == 0) {
+    if (startScreen == 0) {
       dropdownValue = 'Alle Meldungen';
     } else {
       dropdownValue = "Meine Orte";
     }
 
     return SingleChildScrollView(
+      //padding: const EdgeInsets.fromLTRB(20, 20, 20, 1),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 1),
+        padding: const EdgeInsets.only(top: 0, bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ListTile(
-              title: Text("Über diese App"),
+              contentPadding: EdgeInsets.fromLTRB(25, 25, 20, 25),
+              leading: CircleAvatar(
+                backgroundImage: AssetImage('assets/app_icon.png'),
+                radius: 30,
+              ),
+              title: Text("Über FOSS Warn"),
               onTap: () {
                 Navigator.push(
                   context,
@@ -56,6 +81,15 @@ class _SettingsState extends State<Settings> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Text("Einstellungen öffnen"),
+              onTap: () {
+                print("starte Hintergrunddienst neu");
+                AppSettings.openNotificationSettings();
+              },
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
               title: Text("Jetzt Benachrichtigung testen"),
               onTap: () {
                 checkForWarnings();
@@ -90,6 +124,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Text("Hintergrunddienst neustarten"),
               onTap: () {
                 print("starte Hintergrunddienst neu");
@@ -116,6 +151,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Text("Lösche die Liste der gelesenen Warnungen"),
               onTap: () {
                 print("delete readWarningsList");
@@ -135,6 +171,29 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text("Status-Benachrichtigung anzeigen"),
+                  ),
+                  Switch(
+                      value: showStatusNotification,
+                      onChanged: (value) {
+                        setState(() {
+                          showStatusNotification = value;
+                          saveSettings();
+                        });
+                        if (showStatusNotification == false) {
+                          NotificationService.cancelOneNotification(1);
+                        }
+                      })
+                ],
+              ),
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -178,6 +237,7 @@ class _SettingsState extends State<Settings> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -202,6 +262,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -226,6 +287,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -250,6 +312,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -274,6 +337,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -304,7 +368,7 @@ class _SettingsState extends State<Settings> {
                                   });
                                 },
                                 onChangeEnd: (value) {
-                                  saveFrequencyOfAPICall();
+                                  saveSettings();
                                   Workmanager().cancelAll();
                                   Workmanager().registerPeriodicTask(
                                       "1", "call APIs",
@@ -327,10 +391,11 @@ class _SettingsState extends State<Settings> {
               height: 10,
             ),
             Text(
-              "Sonstige Einstellungen:",
+              "Darstellung:",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -348,9 +413,9 @@ class _SettingsState extends State<Settings> {
                     onChanged: (String? newValue) {
                       setState(() {
                         dropdownValue = newValue!;
-                        if(dropdownValue== "Alle Meldungen") {
+                        if (dropdownValue == "Alle Meldungen") {
                           startScreen = 0;
-                        } else if(dropdownValue == "Meine Orte") {
+                        } else if (dropdownValue == "Meine Orte") {
                           startScreen = 1;
                         }
                         saveSettings();
@@ -368,10 +433,12 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: Text("Zeige erweiterte Metadaten bei Meldungen.")),
+                  Expanded(
+                      child: Text("Zeige erweiterte Metadaten bei Meldungen.")),
                   Switch(
                       value: showExtendedMetaData,
                       onChanged: (value) {
@@ -382,6 +449,115 @@ class _SettingsState extends State<Settings> {
                       })
                 ],
               ),
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text("Schriftgröße der Meldungen")),
+                ],
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return FontSizeDialog();
+                  },
+                );
+              },
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text("Sortierung der Meldungen")),
+                ],
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SortByDialog();
+                  },
+                );
+              },
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text("Zeige das Intro nochmal")),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WelcomeView(),
+                  ),
+                );
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Updates:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(child: Text("Prüfe auf Updates")),
+                  updateAvailable && versionNumber != githubVersionNumber?
+                  TextButton(
+                      onPressed: () {
+                        launchUrlInBrowser('https://github.com/nucleus-ffm/foss_warn/releases/latest');
+                      },
+                      child: Text("Update verfügbar", style: TextStyle(color: Colors.white),),
+                  style: TextButton.styleFrom(backgroundColor: Colors.blue),
+                  ): SizedBox(),
+                ],
+              ),
+              onTap: () async {
+                String result = await checkForUpdates();
+                print("Rückgabewert: $result");
+                if(result != "latest version installed" && result !="something else" && result != "Error - server not reachable") {
+                  setState(() {
+                    updateAvailable = true;
+                    saveSettings();
+                  });
+                } else {
+                  setState(() {
+                    updateAvailable = false;
+                    saveSettings();
+                  });
+                  if(result == "Error - server not reachable") {
+                    final snackBar = SnackBar(
+                      content: const Text(
+                        'Server nicht erreichbar',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.green[100],
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }else {
+                    final snackBar = SnackBar(
+                      content: const Text(
+                        'neuste Version installiert',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.green[100],
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                }
+              },
             ),
 
             SizedBox(
@@ -399,6 +575,7 @@ class _SettingsState extends State<Settings> {
               height: 5,
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -423,6 +600,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -447,6 +625,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -471,6 +650,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
+              contentPadding: settingsTileListPadding,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -493,54 +673,6 @@ class _SettingsState extends State<Settings> {
                   //Switch(value: true, onChanged: null, activeColor: Colors.green,),
                 ],
               ),
-            ),
-            /*ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("DWD API - Warnungen Küste"),
-                  Switch(value: false, onChanged: (value) {})
-                ],
-              ),
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("DWD API - Warnungen Küste"),
-                  Switch(value: false, onChanged: (value) {})
-                ],
-              ),
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("DWD API - Warnungen Meer"),
-                  Switch(value: false, onChanged: (value) {})
-                ],
-              ),
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("DWD API - Warnungen Larwinen"),
-                  Switch(value: false, onChanged: (value) {})
-                ],
-              ),
-            ),
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("DWD API - Warnungen Sturmflut"),
-                  Switch(value: false, onChanged: (value) {})
-                ],
-              ),
-            ),*/
-            SizedBox(
-              height: 20,
             ),
           ],
         ),
