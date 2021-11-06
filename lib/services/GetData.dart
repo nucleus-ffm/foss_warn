@@ -5,6 +5,8 @@ import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import 'listHandler.dart';
 import 'markWarningsAsRead.dart';
+import '../SettingsView.dart';
+import 'sendStatusNotification.dart';
 
 import 'package:http/http.dart';
 
@@ -63,6 +65,7 @@ Future getData() async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
+            source: "MOWAS",
             identifier: data[i]["identifier"] ?? "?",
             sender: data[i]["sender"] ?? "?",
             sent: data[i]["sent"] ?? "?",
@@ -75,8 +78,8 @@ Future getData() async {
             severity: data[i]["info"][0]["severity"] ?? "?",
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "?",
-            instruction: data[i]["info"][0]["instruction"] ?? "?",
+            description: data[i]["info"][0]["description"] ?? "",
+            instruction: data[i]["info"][0]["instruction"] ?? "",
             publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
             contact: data[i]["info"][0]["contact"] ?? "",
             web: data[i]["info"][0]["web"] ?? "",
@@ -142,6 +145,7 @@ Future getData() async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
+            source: "KATWARN",
             identifier: data[i]["identifier"] ?? "?",
             sender: data[i]["sender"] ?? "?",
             sent: data[i]["sent"] ?? "?",
@@ -154,7 +158,7 @@ Future getData() async {
             severity: data[i]["info"][0]["severity"] ?? "?",
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "?",
+            description: data[i]["info"][0]["description"] ?? "",
             instruction: data[i]["info"][0]["instruction"] ?? "",
             publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
             contact: data[i]["info"][0]["contact"] ?? "",
@@ -191,7 +195,9 @@ Future getData() async {
       try {
         biwappParseStatus = true;
         // parse Json and create WarnMessage class instances from it
-        for (var i = 0; i <= data.length - 1; i++) {
+        for (var i = 0; i < data.length; i++) {
+          print("[get biwapp data] i= $i länge= ${data.length}");
+
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
             for (var j = 0;
@@ -221,6 +227,7 @@ Future getData() async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
+            source: "BIWAPP",
             identifier: data[i]["identifier"] ?? "?",
             sender: data[i]["sender"] ?? "?",
             sent: data[i]["sent"] ?? "?",
@@ -233,9 +240,9 @@ Future getData() async {
             severity: data[i]["info"][0]["severity"] ?? "?",
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "?",
+            description: data[i]["info"][0]["description"] ?? "",
             instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
+            publisher: data[i]["info"][0]["parameter"][0]["value"] ?? "?", // different to others ["parameter"][0]
             contact: data[i]["info"][0]["contact"] ?? "",
             web: data[i]["info"][0]["web"] ?? "",
             areaList: generateAreaList(i),
@@ -302,6 +309,7 @@ Future getData() async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
+            source: "DWD",
             identifier: data[i]["identifier"] ?? "?",
             sender: data[i]["sender"] ?? "?",
             sent: data[i]["sent"] ?? "?",
@@ -314,9 +322,9 @@ Future getData() async {
             severity: data[i]["info"][0]["severity"] ?? "?",
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "?",
-            instruction: data[i]["info"][0]["instruction"] ?? "?",
-            publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
+            description: data[i]["info"][0]["description"] ?? "",
+            instruction: data[i]["info"][0]["instruction"] ?? "",
+            publisher: data[i]["info"][0]["senderName"] ?? "?",
             contact: data[i]["info"][0]["contact"] ?? "?",
             web: data[i]["info"][0]["web"] ?? "?",
             areaList: generateAreaList(i),
@@ -339,8 +347,14 @@ Future getData() async {
     warnMessageList.clear(); //clear List
     warnMessageList = tempWarnMessageList; // transfer temp List in real list
     //print("New WarnList ist here");
+    if (showStatusNotification) {
+      sendStatusUpdateNotification(true);
+    }
   } catch (e) {
     print("Error: " + e.toString());
+    if (showStatusNotification) {
+      sendStatusUpdateNotification(false);
+    }
   }
   return "";
 }
