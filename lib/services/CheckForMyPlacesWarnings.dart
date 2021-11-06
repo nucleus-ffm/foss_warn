@@ -1,8 +1,3 @@
-import 'dart:math';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import '../MyPlacesView.dart';
-import '../main.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Place.dart';
 import '../class/class_Geocode.dart';
@@ -11,7 +6,6 @@ import '../class/class_Area.dart';
 import '../services/notification_service.dart';
 import 'generateNotificationID.dart';
 import 'GetData.dart';
-import '../SettingsView.dart';
 import 'listHandler.dart';
 
 import 'saveAndLoadSharedPreferences.dart';
@@ -60,7 +54,7 @@ Future<bool> checkForWarnings() async {
         for (Geocode myGeocode in myArea.geocodeList) {
           //print(name);
           if (myGeocode.geocodeName == myPlace.name) {
-            if(myPlace.warnings.contains(warnMessage)) {
+            if (myPlace.warnings.contains(warnMessage)) {
               print("Warn Messsage already in List");
               //warn messeage already in list from geocodename
             } else {
@@ -70,9 +64,9 @@ Future<bool> checkForWarnings() async {
             }
           }
         }
-        if(myArea.areaDesc.contains(myPlace.name)) {
+        if (myArea.areaDesc.contains(myPlace.name)) {
           print("Area Decs contains myPlace name: " + myPlace.name);
-          if(myPlace.warnings.contains(warnMessage)) {
+          if (myPlace.warnings.contains(warnMessage)) {
             print("Warn Messsage already in List");
             //warn messeage already in list from geocodename
           } else {
@@ -81,7 +75,6 @@ Future<bool> checkForWarnings() async {
             myPlace.warnings.add(warnMessage);
           }
         }
-
       }
       myPlace.countWarnings = countMessages;
     }
@@ -125,8 +118,8 @@ Future<bool> checkForWarnings() async {
         } else {
           //if there is just one Warning
           sendNotification(
-            // generate from the warning in the List the notification id
-            // because the warning identifier is no int, we have to generate a hash code
+              // generate from the warning in the List the notification id
+              // because the warning identifier is no int, we have to generate a hash code
               generateNotificationID(myPlace.warnings.first.identifier),
               "Es gibt ${myPlace.warnings.length.toString()} Warnung für ${myPlace.name}",
               "Warnung: ${myPlace.warnings.first.headline}",
