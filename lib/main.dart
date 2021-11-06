@@ -12,6 +12,7 @@ import 'widgets/StatusWidget.dart';
 import 'MyPlacesView.dart';
 import 'SettingsView.dart';
 import 'AllWarningsView.dart';
+import 'WelcomeView.dart';
 
 import 'services/notification_service.dart';
 import 'services/CheckForMyPlacesWarnings.dart';
@@ -20,6 +21,12 @@ import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
 import 'services/listHandler.dart';
 import 'services/markWarningsAsRead.dart';
+import 'services/sortWarnings.dart';
+
+import 'widgets/SortByDialog.dart';
+
+//final navigatorKey = GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Background services
 void callbackDispatcher() {
@@ -48,7 +55,6 @@ void main() async {
           false // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
       );
   loadReadWarningsList(); // load the list with ids of read warnings
-  await loadFrequencyOfAPICall(); //load in settings defined frequency
   await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
   if (notificationGeneral) {
     // setup the background task
@@ -65,12 +71,14 @@ void main() async {
     ChangeNotifierProvider(
       // ChangeNotifier to rebuild the widget, if data from outside changed
       create: (context) => Update(),
+
       child: Consumer<Update>(
-          builder: (context, counter, child) => MyApp()), // theme: appThemeData
+          builder: (context, counter, child) => MyApp()),
+       // theme: appThemeData
     ),
   );
 }
-// global vars
+// global varsStatusWidget
 // status = true if API call and parsing was successful
 bool mowasStatus = false;
 bool mowasParseStatus = false;
@@ -89,6 +97,7 @@ int dwdMessages = 0;
 bool firstStart = true;
 
 class MyApp extends StatelessWidget {
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -97,7 +106,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ScaffoldView(),
+      //theme: ThemeData.dark(),
+      navigatorKey: navigatorKey,
+      home: showWelcomeScreen? WelcomeView(): ScaffoldView(),
     );
   }
 }
@@ -129,7 +140,8 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     // TODO: implement initState
     super.initState();
     loadMyPlacesList(); //load MyPlaceList
-    listenNotifications(); // listen to notification stream
+    listenNotifications();
+    // listen to notification stream
   }
   void listenNotifications() {
     NotificationService.onNotification.stream.listen((onClickedNotification));
@@ -150,6 +162,21 @@ class _ScaffoldViewState extends State<ScaffoldView> {
           systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           backgroundColor: Colors.green[700],
           actions: [
+            IconButton(
+              icon: Icon(Icons.sort),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SortByDialog();
+                  },
+                );
+                sortWarnings();
+                final updater =
+                Provider.of<Update>(context, listen: false);
+                updater.updateReadStatusInList();
+              },
+            ),
             IconButton(
               onPressed: () {
                 markAllWarningsAsReadFromMain(context);
