@@ -7,6 +7,7 @@ import 'listHandler.dart';
 import 'markWarningsAsRead.dart';
 import '../SettingsView.dart';
 import 'sendStatusNotification.dart';
+import 'saveAndLoadSharedPreferences.dart';
 
 import 'package:http/http.dart';
 
@@ -18,6 +19,8 @@ Future getData() async {
     List<WarnMessage> tempWarnMessageList = [];
     tempWarnMessageList.clear();
     //print("create new Warn Message List");
+
+    await loadSettings(); //load setting for status notification
 
     // Get from MOWAS
     print("get from Mowas");
