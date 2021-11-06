@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'class/class_Place.dart';
 import 'widgets/WarnCard.dart';
 import 'services/markWarningsAsRead.dart';
+import 'SettingsView.dart';
 
 class MyPlaceDetailScreen extends StatelessWidget {
   final Place myPlace;
@@ -10,11 +11,21 @@ class MyPlaceDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void sortWarnings() {
+      if(sortWarningsBy == "severity") {
+        myPlace.warnings.sort((a, b) => b.severity.compareTo(a.severity));
+      } else if(sortWarningsBy == "date") {
+        myPlace.warnings.sort((a, b) => b.sent.compareTo(a.sent));
+      } else if(sortWarningsBy =="source") {
+        myPlace.warnings.sort((a, b) => b.publisher.compareTo(a.publisher));
+      }
+    }
+    sortWarnings();
     return Scaffold(
       appBar: AppBar(
         title: Text("${myPlace.name}"),
         backgroundColor: Colors.green[700],
-        brightness: Brightness.dark, //@TODO: fix
+        //brightness: Brightness.dark, //@TODO: fix
         actions: [
           //TextButton(onPressed: () {}, child: Text("Alle gelesen"))
           IconButton(
