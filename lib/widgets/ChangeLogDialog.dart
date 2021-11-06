@@ -14,6 +14,22 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.2.0 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Eine stille Status-Benachrichtigung informiert jetzt über die letzte und nächste Aktualisierung\n" +
+                  "* Beim ersten Start erscheint jetzt ein Willkommensdialog\n" +
+                  "* Quellenangabe bei DWD Meldungen gefixt \n" +
+                  "* In der Warnübersicht wird jetzt das Quellesystem der Meldung angezeigt\n"
+                      "* Die Warnmeldungen können jetzt sortiert werden \n"
+                      "* Fehlerbehebung und kleine Verbesserungen \n"
+                      "* Einstellungen leicht umgestaltet \n"
+                      "* Die Schriftgröße der Meldungen kann jetzt angepasst werden \n"
+                      "* Es gibt jetzt einen Updatechecker \n"
+                      "* In Meldungen eingebettete Bilder können jetzt im Browser geöffnet werden \n"
+                      "* Links in den Warn-Texten sind jetzt klickbar"),
+              Text("\n"),
+              Text(
                 "0.1.13 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
