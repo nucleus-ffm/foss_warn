@@ -10,7 +10,7 @@ class NotificationService {
   static Future _notificationsDetails() async {
     return NotificationDetails(
         android: AndroidNotificationDetails(
-          'foss_warn', 'Benachrichtigungen', 'Foss Warn Benachrichtigungen',
+          'foss_warn_notifications', 'Benachrichtigungen', 'FOSS Warn Benachrichtigungen bei Warnmeldungen für hinterlegte Orte',
           groupKey: "FossWarn",
           importance: Importance.max,
           priority: Priority.max,
@@ -21,6 +21,23 @@ class NotificationService {
           ledColor: Colors.red,
           ledOffMs: 100,
           ledOnMs: 100,
+        ),
+        iOS: IOSNotificationDetails());
+  }
+
+  static Future _statusNotificationsDetails() async {
+    return NotificationDetails(
+        android: AndroidNotificationDetails(
+          'foss_warn_status', 'Statusanzeige', 'Status der Hintergrund Updates',
+          groupKey: "FossWarnStatus",
+          importance: Importance.low,
+          priority: Priority.low,
+          playSound: false,
+          
+          //@TODO: show an other icon for status notification
+          //enable multiline notification
+          styleInformation: BigTextStyleInformation(''),
+          color: Colors.green, // makes the icon red,
         ),
         iOS: IOSNotificationDetails());
   }
@@ -39,6 +56,21 @@ class NotificationService {
       payload: payload,
     );
     showGroupNotification();
+  }
+
+  static Future showStatusNotification({
+    required int id,
+    String? title,
+    String? body,
+    String? payload,
+  }) async {
+    flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      await _statusNotificationsDetails(),
+      payload: payload,
+    );
   }
 
   static void showGroupNotification() async {
@@ -104,12 +136,16 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.cancel(id);
     /* cancel summery notification if it is the last one */
     List<ActiveNotification>? activeNotifications =
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.getActiveNotifications();
-    if(activeNotifications!.length == 1 ) {
-      if(activeNotifications[0].id == 0) {
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.getActiveNotifications();
+    final List<PendingNotificationRequest> pendingNotificationRequests =
+    await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    //@TODO: fix
+
+    if (activeNotifications!.length == 2 && activeNotifications.any((element) => element.channelId == "foss_warn_status" )) {
+      if (activeNotifications[0].id == 0) {
         // summery notification has id 0
         cancelOneNotification(0);
       }
