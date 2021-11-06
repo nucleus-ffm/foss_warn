@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foss_warn/widgets/DisclaimerDialog.dart';
 import 'services/urlLauncher.dart';
 import 'widgets/missingImprintDialog.dart';
 import 'widgets/privacyDialog.dart';
 import 'widgets/ChangeLogDialog.dart';
+import 'SettingsView.dart';
 
 class AboutView extends StatelessWidget {
 
@@ -36,9 +38,8 @@ class AboutView extends StatelessWidget {
                   width: 300,
                   child: Text(
                     """
-Diese App ist ein Freizeit-Projekt von mir und wurde in der Hoffnung erstellt, dass sie nützlich ist. Dabei kann ich jedoch zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert. Die benutzten Schnittstellen könnten sich jederzeit verändern, wodurch bis zu einem Update der App, keine Warnmeldungen mehr angezeigt werden. Verlassen Sie sich zu KEINEM Zeitpunkt auf die App. Auch kann ich nicht garantieren, dass alle vorhandenen Meldungen in der App auftauchen. 
-          
-Über Hinweise zur Verbesserung oder Fehlern würde ich mich freuen. Auch wenn Sie diese App einfach super finden, würde ich mich freuen, davon zu hören.""",
+Diese App ist ein Freizeit-Projekt und wurde in der Hoffnung erstellt,
+dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich mich freuen. Auch wenn Sie diese App einfach super finden, würde ich mich freuen, davon zu hören.""",
                     style: TextStyle(color: Colors.grey[600]),
                   ),
                 )
@@ -161,6 +162,32 @@ Diese App ist ein Freizeit-Projekt von mir und wurde in der Hoffnung erstellt, d
             },
           ),
           ListTile(
+            leading: Icon(Icons.article),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Haftungsausschluss",
+                  style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  "was FOSS Warn nicht leisten kann",
+                  style: TextStyle(color: Colors.grey[900]),
+                ),
+              ],
+            ),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return DisclaimerDialog();
+                },
+              );
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.star),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +199,7 @@ Diese App ist ein Freizeit-Projekt von mir und wurde in der Hoffnung erstellt, d
                 ),
                 SizedBox(height: 2),
                 Text(
-                  "0.1.13 (beta)",
+                  "$versionNumber (beta)",
                   style: TextStyle(color: Colors.grey[900]),
                 ),
               ],
