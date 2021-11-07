@@ -22,3 +22,6 @@ Press and hold the app icon in the app drawer and tap "App Details" -> "Notifica
 
 ## Haftungsausschluss 
 Diese App wurde in der Hoffnung erstellt, dass sie nützlich ist, kommt aber OHNE JEGLICHE GEWÄHRLEISTUNG. Der Entwickler kann zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert und alle Warnungen jederzeit anzeigt. Die verwendeten Schnittstellen könnten sich jederzeit verändern, wodurch die App vorerst nicht mehr funktioniert. Verlassen Sie sich deshalb zu KEINEM ZEITPUNKT auf diese App. Auch werden die Warnungen immer mit einer gewissen Verzögerung im Hintergrund empfangen. Diese App benutzt keinen Push-Services, sondern lädt in einem gewissen Zeitabstand die neusten Meldungen und benachrichtigt dann, wenn nötig. Durch Android technisch bedingt, kann die App minimal alle 15 Minuten die neusten Warnmeldungen im Hintergrund herunterladen. Je häufiger die App im Hintergrund Daten lädt, desto mehr Akku verbraucht sie allerdings auch. Entscheiden Sie selbst, was Sie für sich brauchen. Es könnte sein, dass Sie die Akkuoptimierung für FOSS Warn deaktivieren müssen, damit diese richtig funktioniert.
+
+[![Github All Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg)]()
+[![Github latest Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg)]()
