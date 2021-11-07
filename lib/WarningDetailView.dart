@@ -583,7 +583,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 TextSpan(
                     children:
                         generateDescriptionBody(widget.warnMessage.description),
-                    style: TextStyle(color: Colors.black)),
+                    style: TextStyle(color: Colors.black, fontSize: warningFontSize)),
               ),
               SizedBox(
                 height: 5,
@@ -632,7 +632,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       TextSpan(
                           children: generateDescriptionBody(
                               widget.warnMessage.instruction),
-                          style: TextStyle(color: Colors.black)),
+                          style: TextStyle(color: Colors.black, fontSize: warningFontSize)),
                     )
                   : SizedBox(),
               SizedBox(
