@@ -1,23 +1,24 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:foss_warn/class/class_BackgroundTask.dart';
 import 'package:foss_warn/services/checkForUpdates.dart';
+import 'package:foss_warn/services/updateProvider.dart';
+import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:app_settings/app_settings.dart';
 
 import 'aboutView.dart';
 import 'WelcomeView.dart';
 
-import 'services/CheckForMyPlacesWarnings.dart';
-import 'services/saveAndLoadSharedPreferences.dart';
-import 'services/listHandler.dart';
-import 'services/urlLauncher.dart';
+import '../services/checkForMyPlacesWarnings.dart';
+import '../services/saveAndLoadSharedPreferences.dart';
+import '../services/listHandler.dart';
+import '../services/urlLauncher.dart';
 
-import 'class/class_Place.dart';
+import '../class/class_Place.dart';
 
-import 'widgets/FontSizeDialog.dart';
-import 'widgets/SortByDialog.dart';
-import 'services/notification_service.dart';
+import '../widgets/dialogs/FontSizeDialog.dart';
+import '../widgets/dialogs/SortByDialog.dart';
+import '../class/class_NotificationService.dart';
 
 bool notificationWithExtreme = true;
 bool notificationWithSevere = true;
@@ -26,6 +27,7 @@ bool notificationWithMinor = false;
 bool notificationGeneral = true;
 bool showStatusNotification = true;
 bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
+bool useDarkMode = false;
 double frequencyOfAPICall = 15;
 String dropdownValue = '';
 int startScreen = 0;
@@ -33,7 +35,7 @@ double warningFontSize = 14;
 bool showWelcomeScreen = true;
 String sortWarningsBy = "source";
 
-String versionNumber = "0.2.1";
+String versionNumber = "0.2.2";
 String githubVersionNumber = versionNumber;
 bool updateAvailable = false;
 
@@ -83,6 +85,8 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Einstellungen öffnen"),
+              subtitle:
+                  Text("Öffnet die Android-Benachrichtigungs-Einstellungen"),
               onTap: () {
                 print("starte Hintergrunddienst neu");
                 AppSettings.openNotificationSettings();
@@ -91,8 +95,10 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Jetzt Benachrichtigung testen"),
+              subtitle:
+                  Text("Führt einmalig manuell den Hintergrunddienst aus"),
               onTap: () {
-                checkForWarnings();
+                checkForMyPlacesWarnings();
                 bool thereIsNoWarning = true;
                 for (Place myPlace in myPlaceList) {
                   //check if there are warning and if it they are important enough
@@ -126,12 +132,17 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Hintergrunddienst neustarten"),
+              subtitle: Text(
+                  "Startet den Hintergrunddienst neu. Kann helfen Probleme zu beheben"),
               onTap: () {
                 print("starte Hintergrunddienst neu");
                 try {
                   //delete all background tasks and create new one
                   Workmanager().cancelAll();
                   Workmanager().registerPeriodicTask("1", "call APIs",
+                      /*constraints: Constraints(
+                        networkType: NetworkType.connected,
+                      ),*/
                       frequency: Duration(minutes: frequencyOfAPICall.toInt()));
                 } catch (e) {
                   print("Something went wrong while restart background task: " +
@@ -153,6 +164,8 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Lösche die Liste der gelesenen Warnungen"),
+              subtitle: Text(
+                  "leer manuell die gespeicherte Liste über die bereits gelesenen Warnungen."),
               onTap: () {
                 print("delete readWarningsList");
                 readWarnings.clear();
@@ -209,14 +222,10 @@ class _SettingsState extends State<Settings> {
                           saveSettings();
                         });
                         if (notificationGeneral) {
-                          Workmanager().cancelAll();
-                          Workmanager().registerPeriodicTask(
-                            "1",
-                            "call APIs",
-                            frequency: Duration(minutes: 15),
-                          );
+                          BackgroundTaskManager().cancelBackgroundTask();
+                          BackgroundTaskManager().registerBackgroundTask();
                         } else {
-                          Workmanager().cancelAll();
+                          BackgroundTaskManager().cancelBackgroundTask();
                           setState(() {
                             notificationWithExtreme = false;
                             notificationWithSevere = false;
@@ -249,9 +258,8 @@ class _SettingsState extends State<Settings> {
                           setState(() {
                             notificationWithExtreme = value;
                             saveNotificationSettingsImportanceList();
-                            Workmanager().cancelAll();
-                            Workmanager().registerPeriodicTask("1", "call APIs",
-                                frequency: Duration(minutes: 15));
+                            BackgroundTaskManager().cancelBackgroundTask();
+                            BackgroundTaskManager().registerBackgroundTask();
                           });
                         } else {
                           print("Background notification is disabled");
@@ -274,9 +282,8 @@ class _SettingsState extends State<Settings> {
                           setState(() {
                             notificationWithSevere = value;
                             saveNotificationSettingsImportanceList();
-                            Workmanager().cancelAll();
-                            Workmanager().registerPeriodicTask("1", "call APIs",
-                                frequency: Duration(minutes: 15));
+                            BackgroundTaskManager().cancelBackgroundTask();
+                            BackgroundTaskManager().registerBackgroundTask();
                           });
                         } else {
                           print("Background notification is disabled");
@@ -299,9 +306,8 @@ class _SettingsState extends State<Settings> {
                           setState(() {
                             notificationWithModerate = value;
                             saveNotificationSettingsImportanceList();
-                            Workmanager().cancelAll();
-                            Workmanager().registerPeriodicTask("1", "call APIs",
-                                frequency: Duration(minutes: 15));
+                            BackgroundTaskManager().cancelBackgroundTask();
+                            BackgroundTaskManager().registerBackgroundTask();
                           });
                         } else {
                           print("Background notification is disabled");
@@ -324,9 +330,8 @@ class _SettingsState extends State<Settings> {
                           setState(() {
                             notificationWithMinor = value;
                             saveNotificationSettingsImportanceList();
-                            Workmanager().cancelAll();
-                            Workmanager().registerPeriodicTask("1", "call APIs",
-                                frequency: Duration(minutes: 15));
+                            BackgroundTaskManager().cancelBackgroundTask();
+                            BackgroundTaskManager().registerBackgroundTask();
                             ;
                           });
                         } else {
@@ -346,7 +351,7 @@ class _SettingsState extends State<Settings> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Frequenz der Hintergrunddatenabfrage:"),
+                        Text("Minimalfrequenz der Hintergrunddatenabfrage:"),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -369,13 +374,10 @@ class _SettingsState extends State<Settings> {
                                 },
                                 onChangeEnd: (value) {
                                   saveSettings();
-                                  Workmanager().cancelAll();
-                                  Workmanager().registerPeriodicTask(
-                                      "1", "call APIs",
-                                      frequency: Duration(
-                                          minutes: frequencyOfAPICall.toInt()),
-                                      initialDelay: Duration(
-                                          minutes: frequencyOfAPICall.toInt()));
+                                  BackgroundTaskManager()
+                                      .cancelBackgroundTask();
+                                  BackgroundTaskManager()
+                                      .registerBackgroundTaskWithDelay();
                                 },
                               ),
                             ),
@@ -455,9 +457,26 @@ class _SettingsState extends State<Settings> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: Text("Schriftgröße der Meldungen")),
+                  Expanded(child: Text("Nutze dunkles Farbschema")),
+                  Switch(
+                      value: useDarkMode,
+                      onChanged: (value) {
+                        setState(() {
+                          useDarkMode = value;
+                        });
+                        saveSettings();
+                        final updater =
+                            Provider.of<Update>(context, listen: false);
+                        updater.updateView();
+                      })
                 ],
               ),
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Text("Schriftgröße der Meldungen"),
+              subtitle:
+                  Text("Passe die Schriftgröße der Warnungen an"),
               onTap: () {
                 showDialog(
                   context: context,
@@ -469,12 +488,9 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: Text("Sortierung der Meldungen")),
-                ],
-              ),
+              title: Text("Sortierung der Meldungen"),
+              subtitle:
+                  Text("Passe die Anzeigereihenfolge der Meldungen an."),
               onTap: () {
                 showDialog(
                   context: context,
@@ -486,12 +502,8 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: Text("Zeige das Intro nochmal")),
-                ],
-              ),
+              title: Text("Zeige das Intro nochmal"),
+              subtitle: Text("Zeigt den Einfühgrungsdialog noch einmal."),
               onTap: () {
                 Navigator.push(
                   context,
@@ -514,20 +526,28 @@ class _SettingsState extends State<Settings> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(child: Text("Prüfe auf Updates")),
-                  updateAvailable && versionNumber != githubVersionNumber?
-                  TextButton(
-                      onPressed: () {
-                        launchUrlInBrowser('https://github.com/nucleus-ffm/foss_warn/releases/latest');
-                      },
-                      child: Text("Update verfügbar", style: TextStyle(color: Colors.white),),
-                  style: TextButton.styleFrom(backgroundColor: Colors.blue),
-                  ): SizedBox(),
+                  updateAvailable && versionNumber != githubVersionNumber
+                      ? TextButton(
+                          onPressed: () {
+                            launchUrlInBrowser(
+                                'https://github.com/nucleus-ffm/foss_warn/releases/latest');
+                          },
+                          child: Text(
+                            "Update verfügbar",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue),
+                        )
+                      : SizedBox(),
                 ],
               ),
               onTap: () async {
                 String result = await checkForUpdates();
                 print("Rückgabewert: $result");
-                if(result != "latest version installed" && result !="something else" && result != "Error - server not reachable") {
+                if (result != "latest version installed" &&
+                    result != "something else" &&
+                    result != "Error - server not reachable") {
                   setState(() {
                     updateAvailable = true;
                     saveSettings();
@@ -537,16 +557,16 @@ class _SettingsState extends State<Settings> {
                     updateAvailable = false;
                     saveSettings();
                   });
-                  if(result == "Error - server not reachable") {
+                  if (result == "Error - server not reachable") {
                     final snackBar = SnackBar(
                       content: const Text(
                         'Server nicht erreichbar',
                         style: TextStyle(color: Colors.black),
                       ),
-                      backgroundColor: Colors.green[100],
+                      backgroundColor: Colors.red[100],
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }else {
+                  } else {
                     final snackBar = SnackBar(
                       content: const Text(
                         'neuste Version installiert',
@@ -613,7 +633,7 @@ class _SettingsState extends State<Settings> {
                           height: 2,
                         ),
                         Text(
-                          "regionales Warn- und Informationssystem vieler Kommunen - warnt u.a. vor: Bombenfund, Chemieunfall, Feuer, Hochwasser, Erdrutsch / Lawine, Großschadenslage, Unwetter, Verkehrsunfall, Unterrichtsausfall und Seuchenfall.  ",
+                          "regionales Warn- und Informationssystem vieler Kommunen - warnt z.B. vor: Bombenfund, Chemieunfall, Feuer, Hochwasser, Erdrutsch / Lawine, Großschadenslage, Unwetter, Verkehrsunfall, Unterrichtsausfall und Seuchenfall.  ",
                           style: TextStyle(
                               fontSize: 12, fontStyle: FontStyle.italic),
                         )
@@ -638,7 +658,7 @@ class _SettingsState extends State<Settings> {
                           height: 2,
                         ),
                         Text(
-                          "Entwickelt von der Fraunhofer-Gesellschaft - Warnugen z.B. bei Großbrand, Bombenfund, Umweltkatastrophe",
+                          "Entwickelt von der Fraunhofer-Gesellschaft - warnt z.B. bei: Großbrand, Bombenfund und Umweltkatastrophe",
                           style: TextStyle(
                               fontSize: 12, fontStyle: FontStyle.italic),
                         ),
@@ -663,7 +683,7 @@ class _SettingsState extends State<Settings> {
                           height: 2,
                         ),
                         Text(
-                          "Bundesbehörde - warnt z.B. vor Unwettern",
+                          "Bundesbehörde - warnt vor Unwettern",
                           style: TextStyle(
                               fontSize: 12, fontStyle: FontStyle.italic),
                         ),
