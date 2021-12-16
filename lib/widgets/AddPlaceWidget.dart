@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../MyPlacesView.dart';
-import '../class/class_Place.dart';
 import '../services/updateProvider.dart';
 import 'package:provider/provider.dart';
 import '../services/allPlacesList.dart';
@@ -112,7 +110,7 @@ class _AddPlaceWidgetState extends State<AddPlaceWidget> {
           ),
         )*/
       ],
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
     );
   }
 }
