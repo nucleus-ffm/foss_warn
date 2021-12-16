@@ -4,8 +4,8 @@ import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import 'listHandler.dart';
-import 'markWarningsAsRead.dart';
-import '../SettingsView.dart';
+//import 'markWarningsAsRead.dart';
+import '../views/SettingsView.dart';
 import 'sendStatusNotification.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
