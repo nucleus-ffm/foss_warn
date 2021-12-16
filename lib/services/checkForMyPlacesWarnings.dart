@@ -3,22 +3,22 @@ import '../class/class_Place.dart';
 import '../class/class_Geocode.dart';
 import '../class/class_Area.dart';
 
-import '../services/notification_service.dart';
+import '../class/class_NotificationService.dart';
 import 'generateNotificationID.dart';
-import 'GetData.dart';
+import 'getData.dart';
 import 'listHandler.dart';
 
 import 'saveAndLoadSharedPreferences.dart';
 
-Future<bool> checkForWarnings() async {
+Future<bool> checkForMyPlacesWarnings() async {
   bool returnValue = true;
   print("check for warnings");
   int countMessages = 0;
   print("warnMessageList: " + warnMessageList.length.toString());
-  if (warnMessageList.isEmpty) {
+  /*if (warnMessageList.isEmpty) {
     print("Warninglist is empty");
-    await getData();
-  }
+  }*/
+  await getData();
   if (notificationSettingsImportance.isEmpty) {
     print("notificationSettingsImportanceList is empty");
     await loadNotificationSettingsImportanceList();
