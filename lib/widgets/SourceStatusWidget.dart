@@ -199,7 +199,6 @@ class StatusWidget extends StatelessWidget {
           child: Text('schließen'),
         )
       ],
-      backgroundColor: Colors.white,
     );
   }
 }
