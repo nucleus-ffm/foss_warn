@@ -1,106 +1,18 @@
 // widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
+import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
 import 'package:provider/provider.dart';
 import '../services/markWarningsAsRead.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
-import '../WarningDetailView.dart';
-import '../MyPlacesView.dart';
+import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 
-class WarnCard extends StatelessWidget {
+class WarningWidget extends StatelessWidget {
   final WarnMessage warnMessage;
-  const WarnCard({Key? key, required this.warnMessage}) : super(key: key);
-
-  String formatSentDate(String dateAndTime) {
-    String returnDate = "";
-    int space = dateAndTime.indexOf("T");
-    String date = dateAndTime.substring(0, space);
-
-    int year = int.parse(date.substring(0, 4));
-    int month = int.parse(date.substring(5, 7));
-    int day = int.parse(date.substring(8, 10));
-
-    String time = dateAndTime.substring(space + 1, space + 9);
-    String timeLag =
-        dateAndTime.substring(dateAndTime.length - 5, dateAndTime.length);
-    String timeLagHours = timeLag.substring(1, 2);
-
-    int seconds = int.parse(time.substring(time.length - 2, time.length));
-    int minutes = int.parse(time.substring(time.length - 5, time.length - 3));
-    int hours = int.parse(time.substring(0, 2));
-
-    String secondsAsString = "";
-    String minutesAsString = "";
-    String hoursAsString = "";
-
-    if (seconds.toString().length == 1) {
-      secondsAsString = "0" + seconds.toString();
-    } else {
-      secondsAsString = seconds.toString();
-    }
-    if (minutes.toString().length == 1) {
-      minutesAsString = "0" + minutes.toString();
-    } else {
-      minutesAsString = minutes.toString();
-    }
-    if (hours.toString().length == 1) {
-      hoursAsString = "0" + hours.toString();
-    } else {
-      hoursAsString = hours.toString();
-    }
-
-    String correctDate =
-        day.toString() + "." + month.toString() + "." + year.toString();
-    String correctFormatTime =
-        hoursAsString + ":" + minutesAsString + ":" + secondsAsString + " Uhr";
-
-    return correctDate + " - " + correctFormatTime;
-  }
-
-  String translateCategory(String text) {
-    if (text == "Health") {
-      return "Gesundheit";
-    } else if (text == "Infra") {
-      return "Infrastruktur";
-    } else if (text == "Fire") {
-      return "Feuer";
-    } else if (text == "CBRNE") {
-      return "CBRNE";
-    } else if (text == "Other") {
-      return "Sonstiges";
-    } else if (text == "Safety") {
-      return "Sicherheit";
-    } else {
-      return text;
-    }
-  }
-
-  String translateMessageTyp(String text) {
-    if (text == "Update") {
-      return "Update";
-    } else if (text == "Cancel") {
-      return "Entwarnung";
-    } else if (text == "Alert") {
-      return "Achtung";
-    } else {
-      return text;
-    }
-  }
-
-  Color chooseMessageTypColor(String text) {
-    if (text == "Update") {
-      return Colors.blueAccent;
-    } else if (text == "Cancel") {
-      return Colors.green;
-    } else if (text == "Alert") {
-      return Colors.red;
-    } else {
-      return Colors.orangeAccent;
-    }
-  }
+  const WarningWidget({Key? key, required this.warnMessage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -171,11 +83,9 @@ class WarnCard extends StatelessWidget {
                           Container(
                             child: Text(
                               translateCategory(warnMessage.category),
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
+                              style: Theme.of(context).textTheme.headline3,
                             ),
-                            color: Colors.amber,
+                            color: Colors.indigo,
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
