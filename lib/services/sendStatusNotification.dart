@@ -1,5 +1,5 @@
-import '../SettingsView.dart';
-import 'notification_service.dart';
+import '../views/SettingsView.dart';
+import '../class/class_NotificationService.dart';
 
 sendStatusUpdateNotification(bool success) async {
   DateTime now = DateTime.now();
