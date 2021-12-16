@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/urlLauncher.dart';
+import '../../services/urlLauncher.dart';
 
 class PrivacyDialog extends StatefulWidget {
   const PrivacyDialog({Key? key}) : super(key: key);
@@ -70,7 +70,6 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
           ),
         ),
       ],
-      backgroundColor: Colors.white,
     );
   }
 }
