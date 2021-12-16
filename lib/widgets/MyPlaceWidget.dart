@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/MyPlaceDetailView.dart';
-import 'package:foss_warn/MyPlacesView.dart';
+import 'package:foss_warn/views/MyPlaceDetailView.dart';
+
 import '../class/class_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Geocode.dart';
 import '../class/class_Area.dart';
-import '../main.dart';
-import 'package:provider/provider.dart';
-import '../services/updateProvider.dart';
-import 'DeletePlaceDialog.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
+import 'dialogs/DeletePlaceDialog.dart';
 import '../services/listHandler.dart';
 
-class MyPlaceCard extends StatelessWidget {
+class MyPlaceWidget extends StatelessWidget {
   final Place myPlace;
-  const MyPlaceCard({Key? key, required this.myPlace}) : super(key: key);
+  const MyPlaceWidget({Key? key, required this.myPlace}) : super(key: key);
 
   String checkForWarnings() {
     print("[MyPlaceCard] check for warnings");
