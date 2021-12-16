@@ -1,4 +1,4 @@
-import 'package:foss_warn/SettingsView.dart';
+import 'package:foss_warn/views/SettingsView.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
