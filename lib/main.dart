@@ -1,67 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/widgets/WarnCard.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:flutter/services.dart';
 
-import 'class/class_WarnMessage.dart';
 
-import 'widgets/StatusWidget.dart';
+import 'widgets/SourceStatusWidget.dart';
 
-import 'MyPlacesView.dart';
-import 'SettingsView.dart';
-import 'AllWarningsView.dart';
-import 'WelcomeView.dart';
+import 'views/MyPlacesView.dart';
+import 'views/SettingsView.dart';
+import 'views/AllWarningsView.dart';
+import 'views/WelcomeView.dart';
 
-import 'services/notification_service.dart';
-import 'services/CheckForMyPlacesWarnings.dart';
-import 'services/GetData.dart';
+import 'class/class_NotificationService.dart';
+import 'class/class_BackgroundTask.dart';
+
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
-import 'services/listHandler.dart';
 import 'services/markWarningsAsRead.dart';
 import 'services/sortWarnings.dart';
 
-import 'widgets/SortByDialog.dart';
+import 'widgets/dialogs/SortByDialog.dart';
 
 //final navigatorKey = GlobalKey<NavigatorState>();
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-// Background services
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    bool response = false;
-    print("Native called background task: " + task);
-    switch (task) {
-      case "call APIs":
-        // load warnings in Background and notify if necessary
-        response = await checkForWarnings();
-        print("Call APIs executed");
-        break;
-    }
-    //simpleTask will be emitted here.
-    return Future.value(response);
-  });
-}
 
 void main() async {
   // some initialisation
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
-  Workmanager().initialize(
-      callbackDispatcher, // The top level function, aka callbackDispatcher
-      isInDebugMode:
-          false // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-      );
+
+  // workmanager stuff
+  BackgroundTaskManager().initialize();
   loadReadWarningsList(); // load the list with ids of read warnings
   await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
+
   if (notificationGeneral) {
     // setup the background task
     print("Background notification enabled");
-    Workmanager().cancelAll(); //cancel old tasks
-    Workmanager().registerPeriodicTask("1", "call APIs",
-        frequency: Duration(minutes: frequencyOfAPICall.toInt())); //register new task
+    BackgroundTaskManager().cancelBackgroundTask();
+    BackgroundTaskManager().registerBackgroundTask();
+
   } else {
     // the user do not want the background task
     print("Background notification disabled");
@@ -72,12 +49,12 @@ void main() async {
       // ChangeNotifier to rebuild the widget, if data from outside changed
       create: (context) => Update(),
 
-      child: Consumer<Update>(
-          builder: (context, counter, child) => MyApp()),
-       // theme: appThemeData
+      child: Consumer<Update>(builder: (context, counter, child) => MyApp()),
+      // theme: appThemeData
     ),
   );
 }
+
 // global varsStatusWidget
 // status = true if API call and parsing was successful
 bool mowasStatus = false;
@@ -97,18 +74,37 @@ int dwdMessages = 0;
 bool firstStart = true;
 
 class MyApp extends StatelessWidget {
-  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FOSS Warn',
-      theme: ThemeData(
+      theme: useDarkMode? ThemeData(
         primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        textTheme: const TextTheme(
+            headline1: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+            headline2: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
+          headline3: TextStyle(fontSize: 14.0, color: Colors.white)
+        ),
+      ) :  ThemeData(
+        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        textTheme: const TextTheme(
+            headline1: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+            headline2: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
+            headline3: TextStyle(fontSize: 14.0, color: Colors.white),
+        ),
       ),
       //theme: ThemeData.dark(),
       navigatorKey: navigatorKey,
-      home: showWelcomeScreen? WelcomeView(): ScaffoldView(),
+      home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
     );
   }
 }
@@ -129,6 +125,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
       _selectedIndex = index;
     });
   }
+
   // list of views for the navigation bar
   static const List<Widget> _pages = <Widget>[
     AllWarningsView(),
@@ -143,6 +140,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     listenNotifications();
     // listen to notification stream
   }
+
   void listenNotifications() {
     NotificationService.onNotification.stream.listen((onClickedNotification));
   }
@@ -159,7 +157,8 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     return Scaffold(
         appBar: AppBar(
           title: Text("FOSS Warn"),
-          systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           backgroundColor: Colors.green[700],
           actions: [
             IconButton(
@@ -172,8 +171,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
                   },
                 );
                 sortWarnings();
-                final updater =
-                Provider.of<Update>(context, listen: false);
+                final updater = Provider.of<Update>(context, listen: false);
                 updater.updateReadStatusInList();
               },
             ),
@@ -196,15 +194,15 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               tooltip: "Markiere alle Warnungen als gelesen",
             ),
             IconButton(
-                icon: Icon(Icons.info_outline),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return StatusWidget();
-                    },
-                  );
-                },
+              icon: Icon(Icons.info_outline),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return StatusWidget();
+                  },
+                );
+              },
             )
           ],
         ),
@@ -231,4 +229,3 @@ class _ScaffoldViewState extends State<ScaffoldView> {
         body: _pages.elementAt(_selectedIndex));
   }
 }
-
