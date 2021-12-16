@@ -2,15 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foss_warn/widgets/DisclaimerDialog.dart';
-import 'services/urlLauncher.dart';
-import 'widgets/missingImprintDialog.dart';
-import 'widgets/privacyDialog.dart';
-import 'widgets/ChangeLogDialog.dart';
+import 'package:foss_warn/widgets/dialogs/DisclaimerDialog.dart';
+import '../services/urlLauncher.dart';
+import '../widgets/dialogs/missingImprintDialog.dart';
+import '../widgets/dialogs/privacyDialog.dart';
+import '../widgets/dialogs/ChangeLogDialog.dart';
 import 'SettingsView.dart';
 
 class AboutView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     Future<void>? _launched;
@@ -18,7 +17,8 @@ class AboutView extends StatelessWidget {
       appBar: AppBar(
         title: Text("Über diese App"),
         backgroundColor: Colors.green[700],
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: ListView(
         children: [
@@ -30,8 +30,7 @@ class AboutView extends StatelessWidget {
               children: [
                 Text(
                   "FOSS Warn",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 SizedBox(
@@ -40,7 +39,7 @@ class AboutView extends StatelessWidget {
                     """
 Diese App ist ein Freizeit-Projekt und wurde in der Hoffnung erstellt,
 dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich mich freuen. Auch wenn Sie diese App einfach super finden, würde ich mich freuen, davon zu hören.""",
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 )
               ],
@@ -53,13 +52,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Alle Meldungen von offizieller Seite:",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headline2,
                 ),
                 SizedBox(height: 2),
                 Text(
                   "https://warnung.bund.de/meldungen",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -74,13 +72,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Autor:",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "Nucleus",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -95,13 +92,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Kontakt:",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "foss-warn@posteo.de",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -116,13 +112,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Impressum?",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "Müsste hier ein Impressum stehen?",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -142,13 +137,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Datenschutz",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "alles was die App macht und nicht macht",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -168,13 +162,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Haftungsausschluss",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "was FOSS Warn nicht leisten kann",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -194,13 +187,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Version:",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "$versionNumber (beta)",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -220,13 +212,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Lizenz:",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "@todo",
-                  style: TextStyle(color: Colors.grey[600]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -238,13 +229,12 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "andere Lizenzen:",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
                   "FOSS Warn verwendet nützliche andere Software",
-                  style: TextStyle(color: Colors.grey[900]),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -256,24 +246,31 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
             },
           ),
           ListTile(
-            leading: Icon(Icons.code_rounded, ),
+            leading: Icon(
+              Icons.code_rounded,
+            ),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Quellcode",
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
-                Text("Bald erhältlich auf floppy, bis dahin auf GitHub", style: TextStyle(color: Colors.grey[900]),),
+                Text(
+                  "Bald erhältlich auf floppy, bis dahin auf GitHub",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
               ],
             ),
             onTap: () {
-              _launched = launchUrlInBrowser('https://github.com/nucleus-ffm/foss_warn');
+              _launched = launchUrlInBrowser(
+                  'https://github.com/nucleus-ffm/foss_warn');
             },
           ),
-          SizedBox(height: 10,)
+          SizedBox(
+            height: 10,
+          )
         ],
       ),
     );
