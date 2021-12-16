@@ -1,8 +1,6 @@
-import 'package:foss_warn/SettingsView.dart';
-import 'package:foss_warn/main.dart';
+import 'package:foss_warn/views/SettingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../MyPlacesView.dart';
 import '../class/class_Place.dart';
 import 'listHandler.dart';
 
@@ -52,6 +50,7 @@ saveSettings() async {
   preferences.setString("updateAvailable", updateAvailable.toString());
   preferences.setString("githubVersionNumber", githubVersionNumber.toString());
   preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
+  preferences.setString("useDarkMode", useDarkMode.toString());
   print("Settings saved");
 }
 
@@ -137,6 +136,16 @@ loadSettings() async {
     frequencyOfAPICall =
         double.parse(preferences.getString("frequencyOfAPICall")!);
     //true;
+  }
+  if (preferences.containsKey("useDarkMode")) {
+    String temp = preferences.getString("useDarkMode")!;
+    if (temp == "true") {
+      useDarkMode = true;
+    } else {
+      useDarkMode = false;
+    }
+  } else {
+    useDarkMode = false;
   }
 }
 
