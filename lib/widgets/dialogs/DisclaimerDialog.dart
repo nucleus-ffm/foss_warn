@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import '../MyPlacesView.dart';
-import '../class/class_Place.dart';
-import '../services/updateProvider.dart';
-import 'package:provider/provider.dart';
 
 class DisclaimerDialog extends StatefulWidget {
   const DisclaimerDialog({Key? key}) : super(key: key);
@@ -48,7 +44,6 @@ class _DisclaimerDialogState extends State<DisclaimerDialog> {
           child: Text('verstanden', style: TextStyle(color: Colors.green),),
         ),
       ],
-      backgroundColor: Colors.white,
     );
   }
 }
