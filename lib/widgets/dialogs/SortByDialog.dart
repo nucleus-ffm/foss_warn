@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/urlLauncher.dart';
-import '../SettingsView.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
+import '../../views/SettingsView.dart';
+import '../../services/saveAndLoadSharedPreferences.dart';
 
 class SortByDialog extends StatefulWidget {
   const SortByDialog({Key? key}) : super(key: key);
@@ -32,20 +31,20 @@ class _SortByDialogState extends State<SortByDialog> {
                   onChanged: (value) {
                     setState(() {
                       sortWarningsBy = "date";
-                      Navigator.of(context).pop();
                       saveSettings();
+                      Navigator.of(context).pop();
                     });
                   },
                 ),
                 onTap: () {
                   setState(() {
                     sortWarningsBy = "date";
-                    Navigator.of(context).pop();
                     saveSettings();
+                    Navigator.of(context).pop();
                   });
                 },
               ),
-              /*ListTile(
+              ListTile(
                 title: Text(
                   "Nach Warnstufen (höchste zuerst)",
                   //style: TextStyle(fontSize: 14),
@@ -56,19 +55,19 @@ class _SortByDialogState extends State<SortByDialog> {
                   onChanged: (value) {
                     setState(() {
                       sortWarningsBy = "severity";
-                      Navigator.of(context).pop();
                       saveSettings();
+                      Navigator.of(context).pop();
                     });
                   },
                 ),
                 onTap: () {
                   setState(() {
                     sortWarningsBy = "severity";
-                    Navigator.of(context).pop();
                     saveSettings();
+                    Navigator.of(context).pop();
                   });
                 },
-              ),*/
+              ),
               ListTile(
                 title: Text(
                   "Nach Quellen",
@@ -80,16 +79,16 @@ class _SortByDialogState extends State<SortByDialog> {
                   onChanged: (value) {
                     setState(() {
                       sortWarningsBy = "source";
-                      Navigator.of(context).pop();
                       saveSettings();
+                      Navigator.of(context).pop();
                     });
                   },
                 ),
                 onTap: () {
                   setState(() {
                     sortWarningsBy = "source";
-                    Navigator.of(context).pop();
                     saveSettings();
+                    Navigator.of(context).pop();
                   });
                 },
               ),
@@ -108,7 +107,6 @@ class _SortByDialogState extends State<SortByDialog> {
           ),
         ),
       ],
-      backgroundColor: Colors.white,
     );
   }
 }
