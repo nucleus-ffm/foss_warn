@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'services/welcomeScreenItems.dart';
+import '../services/welcomeScreenItems.dart';
 import 'package:app_settings/app_settings.dart';
-import 'main.dart';
+import '../main.dart';
 import 'SettingsView.dart';
-import 'services/saveAndLoadSharedPreferences.dart';
-import 'widgets/DisclaimerDialog.dart';
-import 'widgets/privacyDialog.dart';
+import '../services/saveAndLoadSharedPreferences.dart';
+import '../widgets/dialogs/DisclaimerDialog.dart';
+import '../widgets/dialogs/privacyDialog.dart';
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({Key? key}) : super(key: key);
@@ -53,7 +53,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                             style: TextStyle(
                                 fontSize: 34.0,
                                 fontWeight: FontWeight.w300,
-                                color: Color(0XFF3F3D56),
+                                //color: theme, //Color(0XFF3F3D56)
                                 height: 2.0)),
                         Text(
                           item['description'],
