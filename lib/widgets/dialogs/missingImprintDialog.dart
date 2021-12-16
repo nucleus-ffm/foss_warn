@@ -35,7 +35,6 @@ class _MissingImprintDialogState extends State<MissingImprintDialog> {
           ),
         ),
       ],
-      backgroundColor: Colors.white,
     );
   }
 }
