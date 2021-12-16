@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../MyPlacesView.dart';
 import '../class/class_Place.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import 'listHandler.dart';
 
@@ -24,6 +22,11 @@ class Update with ChangeNotifier {
     myPlaceList.remove(place);
     saveMyPlacesList();
     print("Ort wurde entfernt");
+    notifyListeners();
+  }
+
+  void updateView() {
+    print("müsste jetzt neubauen");
     notifyListeners();
   }
 }
