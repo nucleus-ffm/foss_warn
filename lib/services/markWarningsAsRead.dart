@@ -4,12 +4,10 @@ import 'package:provider/provider.dart';
 import '../class/class_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../services/updateProvider.dart';
-import '../services/notification_service.dart';
+import '../class/class_NotificationService.dart';
 import 'generateNotificationID.dart';
-import '../MyPlacesView.dart';
 import 'saveAndLoadSharedPreferences.dart';
 import 'listHandler.dart';
-
 
 markAllWarningsAsRead(Place myPlace, BuildContext context) {
   //myPlace.alreadyReadWarnings.clear();
@@ -20,13 +18,12 @@ markAllWarningsAsRead(Place myPlace, BuildContext context) {
     } else {
       readWarnings.add(myWarning.identifier);
       saveReadWarningsList();
-      final updater =
-      Provider.of<Update>(context, listen: false);
+      final updater = Provider.of<Update>(context, listen: false);
       updater.updateReadStatusInList();
-
     }
   }
 }
+
 markAllWarningsAsReadFromMain(BuildContext context) {
   //myPlace.alreadyReadWarnings.clear();
   //myPlace.alreadyReadWarnings = myPlace.warnings;
@@ -36,25 +33,23 @@ markAllWarningsAsReadFromMain(BuildContext context) {
     } else {
       readWarnings.add(myWarning.identifier);
       saveReadWarningsList();
-      final updater =
-      Provider.of<Update>(context, listen: false);
+      final updater = Provider.of<Update>(context, listen: false);
       updater.updateReadStatusInList();
     }
   }
 }
 
-markOneWarningAsRead(WarnMessage myWarning,  BuildContext context) {
+markOneWarningAsRead(WarnMessage myWarning, BuildContext context) {
   if (readWarnings.contains(myWarning.identifier)) {
     print("Warnung bereits in der Liste");
   } else {
     readWarnings.add(myWarning.identifier);
     saveReadWarningsList();
-    final updater =
-    Provider.of<Update>(context, listen: false);
+    final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
-
   }
 }
+
 markOneWarningAsReadFromDetailView(WarnMessage myWarning) {
   if (readWarnings.contains(myWarning.identifier)) {
     print("Warnung bereits in der Liste");
@@ -75,18 +70,18 @@ markOneNotificationAsRead(String placeName) {
   NotificationService.cancelOneNotification(notificationID);
 }
 
-markOneWarningAsUnread(WarnMessage myWarning,  BuildContext context) {
+markOneWarningAsUnread(WarnMessage myWarning, BuildContext context) {
   if (readWarnings.contains(myWarning.identifier)) {
     readWarnings.remove(myWarning.identifier);
     saveReadWarningsList();
-    final updater =
-    Provider.of<Update>(context, listen: false);
+    final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
-  } else { //warnung nicht als gelesen markiert
+  } else {
+    //warnung nicht als gelesen markiert
   }
 }
 
-clearReadWarningsList()  {
+clearReadWarningsList() {
   for (String id in readWarnings) {
     if (warnMessageList.any((myWarning) => myWarning.identifier == id)) {
       //Warn Message still in List
@@ -97,5 +92,4 @@ clearReadWarningsList()  {
       readWarnings.remove(id);
     }
   }
-
 }
