@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/MyPlaceCard.dart';
-import 'widgets/AddPlaceWidget.dart';
+import '../widgets/MyPlaceWidget.dart';
+import '../widgets/AddPlaceWidget.dart';
 
-import 'services/updateProvider.dart';
-import 'services/listHandler.dart';
-import 'services/saveAndLoadSharedPreferences.dart';
-import 'services/GetData.dart';
+import '../services/updateProvider.dart';
+import '../services/listHandler.dart';
+import '../services/saveAndLoadSharedPreferences.dart';
+import '../services/getData.dart';
+import '../widgets/ConnectionErrorWidget.dart';
 
 class MyPlaces extends StatefulWidget {
   const MyPlaces({Key? key}) : super(key: key);
@@ -42,7 +43,7 @@ class _MyPlacesState extends State<MyPlaces> {
     setState(() {
       loading = true;
     });
-    await Future.delayed(Duration(seconds: 2));
+    //await Future.delayed(Duration(seconds: 2));
   }
 
   @override
@@ -75,9 +76,14 @@ class _MyPlacesState extends State<MyPlaces> {
                   child: Padding(
                       padding: const EdgeInsets.only(bottom: 65),
                       child: Column(
-                        children: myPlaceList
-                            .map((place) => MyPlaceCard(myPlace: place))
+                        children: [
+                          Container(
+                            child: ConnectionError(),
+                          ),
+                        ...myPlaceList
+                            .map((place) => MyPlaceWidget(myPlace: place))
                             .toList(),
+                            ]
                       )),
                 )
                 : Column(
