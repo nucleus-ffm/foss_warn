@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/urlLauncher.dart';
-import '../SettingsView.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
+import '../../views/SettingsView.dart';
+import '../../services/saveAndLoadSharedPreferences.dart';
 
 class FontSizeDialog extends StatefulWidget {
   const FontSizeDialog({Key? key}) : super(key: key);
@@ -132,7 +131,6 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
           ),
         ),
       ],
-      backgroundColor: Colors.white,
     );
   }
 }
