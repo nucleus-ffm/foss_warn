@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../MyPlacesView.dart';
-import '../class/class_Place.dart';
-import '../services/updateProvider.dart';
+import '../../class/class_Place.dart';
+import '../../services/updateProvider.dart';
 import 'package:provider/provider.dart';
 
 class DeletePlaceDialog extends StatefulWidget {
@@ -45,7 +44,6 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
           child: Text('Löschen', style: TextStyle(color: Colors.green),),
         )
       ],
-      backgroundColor: Colors.white,
     );
   }
 }
