@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/widgets/ConnectionErrorWidget.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
@@ -39,6 +40,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     }
 
     void loadData() async {
+      checkForMyPlacesWarnings();
       data = await getData();
       sortWarnings();
       loadNotificationSettingsImportanceList();

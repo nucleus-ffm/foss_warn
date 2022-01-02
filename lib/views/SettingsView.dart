@@ -35,7 +35,7 @@ double warningFontSize = 14;
 bool showWelcomeScreen = true;
 String sortWarningsBy = "source";
 
-String versionNumber = "0.2.2";
+String versionNumber = "0.2.3";
 String githubVersionNumber = versionNumber;
 bool updateAvailable = false;
 
