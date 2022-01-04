@@ -31,7 +31,7 @@ class NotificationService {
           'foss_warn_status', 'Statusanzeige', 'Status der Hintergrund Updates',
           groupKey: "FossWarnStatus",
           importance: Importance.low,
-          priority: Priority.low,
+          priority: Priority.min,
           playSound: false,
           
           //@TODO: show an other icon for status notification
