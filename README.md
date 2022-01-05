@@ -1,4 +1,9 @@
-# FOSS Warn
+<div align="center">
+  <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/assets/app_icon.png" height=120 width=120/>
+  <h1>FOSS Warn</h1>
+
+</div>
+
 An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK.
 
 ## Current state of development
@@ -7,10 +12,19 @@ The app is currently in a BETA status. A group of nice people is currently putti
 ## TODO: 
  - [ ] do some code cleanup
 
+## Known problems:
+- the background service is sometimes stopped by the system. To start it again, just open FOSS Warn once. 
+- the layout could be improved for small devices
+- not every warning shown on https://warnung.bund.de/meldungen is available through the APIs used. (more research needed)
+
 ## FAQ
 <details>
 <summary>How to change the notification sound?</summary>
-Press and hold the app icon in the app drawer and tap "App Details" -> "Notifications" -> "Benachrichtigungen" -> "Expand" -> "Sound". 
+Go to the app settings and press „Einstellungen öffnen” -> "Benachrichtigungen" -> "Expand" -> "Sound". 
+</details>
+<details>
+<summary>How do I receive notifications?</summary>
+FOSS Warn does not use push services. But a background service pulls the latest warnings at a certain frequency and when there is a warning for you, you get a notification. This mechanism only works when the background service is running. When it is stopped, you will not receive any notification. With the status notification you can always see when the last update took place.
 </details>
 
 ## Similar inoffical projects for other platforms
@@ -22,5 +36,6 @@ Press and hold the app icon in the app drawer and tap "App Details" -> "Notifica
 ## Haftungsausschluss 
 Diese App wurde in der Hoffnung erstellt, dass sie nützlich ist, kommt aber OHNE JEGLICHE GEWÄHRLEISTUNG. Der Entwickler kann zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert und alle Warnungen jederzeit anzeigt. Die verwendeten Schnittstellen könnten sich jederzeit verändern, wodurch die App vorerst nicht mehr funktioniert. Verlassen Sie sich deshalb zu KEINEM ZEITPUNKT auf diese App. Auch werden die Warnungen immer mit einer gewissen Verzögerung im Hintergrund empfangen. Diese App benutzt keinen Push-Services, sondern lädt in einem gewissen Zeitabstand die neusten Meldungen und benachrichtigt dann, wenn nötig. Durch Android technisch bedingt, kann die App minimal alle 15 Minuten die neusten Warnmeldungen im Hintergrund herunterladen. Je häufiger die App im Hintergrund Daten lädt, desto mehr Akku verbraucht sie allerdings auch. Entscheiden Sie selbst, was Sie für sich brauchen. Es könnte sein, dass Sie die Akkuoptimierung für FOSS Warn deaktivieren müssen, damit diese richtig funktioniert.
 
-[![Github All Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg)]()
-[![Github latest Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg)]()
+
+
+![GitHub](https://img.shields.io/github/license/CodingTarik/2048Python) [![Github All Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg)]() [![Github latest Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg)]()
