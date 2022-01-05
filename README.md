@@ -5,7 +5,6 @@ An unofficial open source application written in Flutter to get emergency alerts
 The app is currently in a BETA status. A group of nice people is currently putting the app through its paces. 
 
 ## TODO: 
- - [ ] select a license
  - [ ] do some code cleanup
 
 ## FAQ
