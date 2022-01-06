@@ -4,7 +4,7 @@
 
 </div>
 
-<a href="https://f-droid.org/packages/de.nucleus.foss_warn" > <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/docs/IzzyOnDroid.png" height="60"/></a> 
+<a href="https://apt.izzysoft.de/fdroid/index/apk/de.nucleus.foss_warn" > <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/docs/IzzyOnDroid.png" height="60"/></a> 
 
 An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK.
 
