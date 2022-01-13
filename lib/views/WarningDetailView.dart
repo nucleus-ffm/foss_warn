@@ -304,7 +304,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 height: 10,
               ),
               Text(
-                "Meldung vom: " + formatSentDate(widget.warnMessage.sent),
+                "Meldung vom " + formatSentDate(widget.warnMessage.sent),
                 style: TextStyle(
                     fontSize: warningFontSize, fontWeight: FontWeight.bold),
               ),
@@ -479,7 +479,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Row(
                 children: [
@@ -536,7 +536,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     )
                   : SizedBox(),
               SizedBox(
-                height: 5,
+                height: 20,
               ),
               Row(
                 children: [
@@ -591,7 +591,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     )
                   : SizedBox(),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Row(children: [
                 Icon(Icons.description),
@@ -654,17 +654,24 @@ class _DetailScreenState extends State<DetailScreen> {
               ),*/
 
               widget.warnMessage.instruction != ""
-                  ? Row(
+                  ? Column(
                       children: [
-                        Icon(Icons.shield_rounded),
                         SizedBox(
-                          width: 5,
+                          height: 20,
                         ),
-                        Text(
-                          "Handlungsempfehlung:",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: warningFontSize + 5),
+                        Row(
+                          children: [
+                            Icon(Icons.shield_rounded),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Handlungsempfehlung:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: warningFontSize + 5),
+                            ),
+                          ],
                         ),
                       ],
                     )
@@ -681,7 +688,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     )
                   : SizedBox(),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Row(
                 children: [
@@ -702,7 +709,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 style: TextStyle(fontSize: warningFontSize),
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               widget.warnMessage.contact != ""
                   ? Row(
@@ -754,7 +761,10 @@ class _DetailScreenState extends State<DetailScreen> {
                             },
                             child: Text(
                               replaceHTMLTags(widget.warnMessage.contact),
-                              style: TextStyle(fontSize: warningFontSize),
+                              style: TextStyle(
+                                  fontSize: warningFontSize,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
                             ),
                           ),
                         )
@@ -777,7 +787,10 @@ class _DetailScreenState extends State<DetailScreen> {
                             },
                             child: Text(
                               replaceHTMLTags(widget.warnMessage.web),
-                              style: TextStyle(fontSize: warningFontSize),
+                              style: TextStyle(
+                                  fontSize: warningFontSize,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
                             ),
                           ),
                         )
