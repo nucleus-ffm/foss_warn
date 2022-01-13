@@ -42,8 +42,8 @@ class _AddPlaceWidgetState extends State<AddPlaceWidget> {
                 newPlaceName = text;
                 text = text.toLowerCase();
                 setState(() {
-                  allPlacesToShow = allPlaces.where((Place) {
-                    var search = Place.toLowerCase();
+                  allPlacesToShow = allPlaces.where((place) {
+                    var search = place.toLowerCase();
                     return search.contains(text);
                   }).toList();
                 });
