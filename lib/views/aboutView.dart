@@ -35,10 +35,12 @@ class AboutView extends StatelessWidget {
                 SizedBox(height: 2),
                 SizedBox(
                   width: 300,
-                  child: Text(
-                    """
-Diese App ist ein Freizeit-Projekt und wurde in der Hoffnung erstellt,
-dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich mich freuen. Auch wenn Sie diese App einfach super finden, würde ich mich freuen, davon zu hören.""",
+                  child: Text("Diese App ist ein Freizeit-Projekt und wurde in"
+                      "der Hoffnung erstellt, "
+                      "dass sie nützlich ist. Hinweise zur Verbesserung "
+                      "oder Fehlern sind gern gesehen. "
+                      "Wenn Sie diese App als nützlich und gut ansehen, "
+                      "würde ich mich freuen, davon zu hören.",
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 )
@@ -52,7 +54,7 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
               children: [
                 Text(
                   "Alle Meldungen von offizieller Seite:",
-                  style: Theme.of(context).textTheme.headline2,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 2),
                 Text(
@@ -216,7 +218,7 @@ dass sie nützlich ist. Über Hinweise zur Verbesserung oder Fehlern würde ich 
                 ),
                 SizedBox(height: 2),
                 Text(
-                  "@todo",
+                  "GPL v3.0",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
