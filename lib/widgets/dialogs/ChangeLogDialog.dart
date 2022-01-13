@@ -14,6 +14,15 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.2.4 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Lizenzinformationen ergänzt \n"
+                  "* LHP als Quellen hinzugefügt \n"
+                  "* Fehler bei der Liste der Orte korrigiert \n"
+                  "* falsche Farben im Darkmode korrigiert \n"
+                  "* Legende für die Kategorien ergänzt (noch unvollständig) \n"),
+              Text(
                 "0.2.3 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
@@ -106,7 +115,8 @@ class ChangeLogDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('schließen'),
+          child: Text('schließen',
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         )
       ],
     );
