@@ -9,6 +9,7 @@ import '../class/class_Geocode.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
+import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {
   final WarnMessage warnMessage;
@@ -81,9 +82,19 @@ class WarningWidget extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            child: Text(
-                              translateCategory(warnMessage.category),
-                              style: Theme.of(context).textTheme.headline3,
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CategoryExplanation();
+                                  },
+                                );
+                              },
+                              child: Text(
+                                translateCategory(warnMessage.category),
+                                style: Theme.of(context).textTheme.headline3,
+                              ),
                             ),
                             color: Colors.indigo,
                             padding: EdgeInsets.all(5),
