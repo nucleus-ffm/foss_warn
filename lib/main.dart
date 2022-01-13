@@ -65,11 +65,14 @@ bool biwappStatus = false;
 bool biwappParseStatus = false;
 bool dwdStatus = false;
 bool dwdParseStatus = false;
+bool lhpStatus = false;
+bool lhpParseStatus = false;
 //count number von warnings
 int mowasMessages = 0;
 int katwarnMessages = 0;
 int biwappMessages = 0;
 int dwdMessages = 0;
+int lhpMessages = 0;
 
 bool firstStart = true;
 
