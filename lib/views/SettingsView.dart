@@ -35,7 +35,7 @@ double warningFontSize = 14;
 bool showWelcomeScreen = true;
 String sortWarningsBy = "source";
 
-String versionNumber = "0.2.3";
+String versionNumber = "0.2.4";
 String githubVersionNumber = versionNumber;
 bool updateAvailable = false;
 
@@ -264,7 +264,6 @@ class _SettingsState extends State<Settings> {
                         } else {
                           print("Background notification is disabled");
                         }
-                        ;
                       })
                 ],
               ),
@@ -288,7 +287,6 @@ class _SettingsState extends State<Settings> {
                         } else {
                           print("Background notification is disabled");
                         }
-                        ;
                       })
                 ],
               ),
@@ -312,7 +310,6 @@ class _SettingsState extends State<Settings> {
                         } else {
                           print("Background notification is disabled");
                         }
-                        ;
                       })
                 ],
               ),
@@ -332,7 +329,6 @@ class _SettingsState extends State<Settings> {
                             saveNotificationSettingsImportanceList();
                             BackgroundTaskManager().cancelBackgroundTask();
                             BackgroundTaskManager().registerBackgroundTask();
-                            ;
                           });
                         } else {
                           print("Background notification is disabled");
@@ -365,6 +361,8 @@ class _SettingsState extends State<Settings> {
                             Expanded(
                               child: Slider(
                                 value: frequencyOfAPICall,
+                                activeColor: Theme.of(context).colorScheme.secondary,
+
                                 min: 15,
                                 max: 300,
                                 onChanged: (value) {
@@ -407,10 +405,11 @@ class _SettingsState extends State<Settings> {
                     icon: const Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
+                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+
                     underline: Container(
                       height: 2,
-                      color: Colors.deepPurpleAccent,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     onChanged: (String? newValue) {
                       setState(() {
@@ -475,8 +474,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Schriftgröße der Meldungen"),
-              subtitle:
-                  Text("Passe die Schriftgröße der Warnungen an"),
+              subtitle: Text("Passe die Schriftgröße der Warnungen an"),
               onTap: () {
                 showDialog(
                   context: context,
@@ -489,8 +487,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Sortierung der Meldungen"),
-              subtitle:
-                  Text("Passe die Anzeigereihenfolge der Meldungen an."),
+              subtitle: Text("Passe die Anzeigereihenfolge der Meldungen an."),
               onTap: () {
                 showDialog(
                   context: context,
@@ -684,6 +681,32 @@ class _SettingsState extends State<Settings> {
                         ),
                         Text(
                           "Bundesbehörde - warnt vor Unwettern",
+                          style: TextStyle(
+                              fontSize: 12, fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //Switch(value: true, onChanged: null, activeColor: Colors.green,),
+                ],
+              ),
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("LHP (Länderübergreifendes Hochwasser Portal)"),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Eine gemeinsame Initiative der deutschen Bundesländer "
+                              "- warnt vor Hochwasserwasser",
                           style: TextStyle(
                               fontSize: 12, fontStyle: FontStyle.italic),
                         ),
