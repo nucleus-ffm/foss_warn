@@ -10,7 +10,6 @@ class FontSizeDialog extends StatefulWidget {
 }
 
 class _FontSizeDialogState extends State<FontSizeDialog> {
-  List fontSizeList = [8, 9, 10, 11, 12, 13, 14, 15, 16];
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
