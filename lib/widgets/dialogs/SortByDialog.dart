@@ -101,10 +101,7 @@ class _SortByDialogState extends State<SortByDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(
-            'schließen',
-            style: TextStyle(color: Colors.green),
-          ),
+          child: Text('schließen', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],
     );
