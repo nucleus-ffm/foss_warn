@@ -347,6 +347,88 @@ Future getData() async {
       dwdStatus = false;
     }
 
+    // GET from HWZ
+    print("get from DWD");
+    var urlLHPwarnings = Uri.parse(
+        'https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
+    response = await get(urlLHPwarnings);
+    //print("Response status: " + response.statusCode.toString());
+    if (response.statusCode == 200) {
+      //updates status
+      lhpStatus = true;
+
+      data = jsonDecode(utf8.decode(response.bodyBytes));
+
+      //count messages
+      lhpMessages = data.length; //TODO: check if this works
+
+      try {
+        lhpParseStatus = true;
+        for (var i = 0; i <= data.length - 1; i++) {
+          List<Geocode> generateGeoCodeList(int i, int s) {
+            List<Geocode> tempGeocodeList = [];
+            for (var j = 0;
+            j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+            j++) {
+              Geocode tempGeocode =
+              Geocode(geocodeName: "", geocodeNumber: ""); //init
+              tempGeocode.geocodeName =
+              data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
+              tempGeocode.geocodeNumber =
+              data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              tempGeocodeList.add(tempGeocode);
+            }
+            return tempGeocodeList;
+          }
+
+          List<Area> generateAreaList(int i) {
+            List<Area> tempAreaList = [];
+            //loop through list of areas
+            for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
+              Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
+              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.geocodeList = generateGeoCodeList(i, s);
+              tempAreaList.add(tempArea);
+            }
+            return tempAreaList;
+          }
+
+          WarnMessage tempWarnMessage = WarnMessage(
+            source: "LHP",
+            identifier: data[i]["identifier"] ?? "?",
+            sender: data[i]["sender"] ?? "?",
+            sent: data[i]["sent"] ?? "?",
+            status: data[i]["status"] ?? "?",
+            messageTyp: data[i]["msgType"] ?? "?",
+            scope: data[i]["scope"] ?? "",
+            category: data[i]["info"][0]["category"][0] ?? "?",
+            event: data[i]["info"][0]["event"] ?? "?",
+            urgency: data[i]["info"][0]["urgency"] ?? "?",
+            severity: data[i]["info"][0]["severity"] ?? "?",
+            certainty: data[i]["info"][0]["certainty"] ?? "?",
+            headline: data[i]["info"][0]["headline"] ?? "?",
+            description: data[i]["info"][0]["description"] ?? "",
+            instruction: data[i]["info"][0]["instruction"] ?? "",
+            publisher: data[i]["info"][0]["senderName"] ?? "?",
+            contact: data[i]["info"][0]["contact"] ?? "?",
+            web: data[i]["info"][0]["web"] ?? "?",
+            areaList: generateAreaList(i),
+            //area: data[i]["info"][0]["area"][0]["areaDesc"],
+            //geocodeName: generateGeoCodeNameList(i),
+            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
+          );
+          tempWarnMessageList.add(tempWarnMessage);
+        }
+      } catch (e) {
+        print("Error while parsing LHP Data: " + e.toString());
+        lhpParseStatus = false;
+      }
+    } else {
+      //something went wrong
+      print("can not get LHP data");
+      lhpStatus = false;
+    }
+
     warnMessageList.clear(); //clear List
     warnMessageList = tempWarnMessageList; // transfer temp List in real list
     //print("New WarnList ist here");
@@ -359,6 +441,7 @@ Future getData() async {
     mowasStatus = false;
     biwappStatus = false;
     katwarnStatus = false;
+    lhpStatus = false;
     if (showStatusNotification) {
       sendStatusUpdateNotification(false);
     }
