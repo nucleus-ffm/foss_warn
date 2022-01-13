@@ -98,6 +98,25 @@ class StatusWidget extends StatelessWidget {
                         : Icon(Icons.error, color: Colors.red)),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 130, child: Text("LHP: ")),
+                SizedBox(
+                    width: 30,
+                    child: lhpStatus
+                        ? lhpParseStatus
+                        ? Icon(
+                      Icons.check_box,
+                      color: Colors.green,
+                    )
+                        : Icon(
+                      Icons.speaker_notes_off_outlined,
+                      color: Colors.red,
+                    )
+                        : Icon(Icons.error, color: Colors.red)),
+              ],
+            ),
             SizedBox(
               height: 10,
             ),
@@ -188,6 +207,13 @@ class StatusWidget extends StatelessWidget {
                 SizedBox(width: 30, child: Text(dwdMessages.toString())),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 130, child: Text("LHP:")),
+                SizedBox(width: 30, child: Text(lhpMessages.toString())),
+              ],
+            ),
           ],
         ),
       ),
@@ -196,7 +222,7 @@ class StatusWidget extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('schließen'),
+          child: Text('schließen', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         )
       ],
     );
