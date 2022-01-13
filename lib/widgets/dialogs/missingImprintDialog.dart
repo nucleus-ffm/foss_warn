@@ -17,9 +17,13 @@ class _MissingImprintDialogState extends State<MissingImprintDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Recherchen meinerseits konnten nicht klar beantworten, ob Software unter das TMG fällt und somit Impressumspflichtig wäre oder nicht. Die allermeisten Apps in F-Dorid besitzen KEIN Impressum - bei Desktop Anwendungen noch weniger. Wenn Sie sich auskennen und mir auf die Frage eine klare Antwort geben können, würde ich mich freuen, wenn Sie mit mir in Kontakt treten."),
-              SizedBox(height: 10,),
-              Text("Diese App ist ein nicht-kommerzielles Open-Source Projekt ohne journalistische Inhalte. "),
+              Text(
+                  "Recherchen meinerseits konnten nicht klar beantworten, ob Software unter das TMG fällt und somit Impressumspflichtig wäre oder nicht. Die allermeisten Apps in F-Dorid besitzen KEIN Impressum - bei Desktop Anwendungen noch weniger. Wenn Sie sich auskennen und mir auf die Frage eine klare Antwort geben können, würde ich mich freuen, wenn Sie mit mir in Kontakt treten."),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                  "Diese App ist ein nicht-kommerzielles Open-Source Projekt ohne journalistische Inhalte. "),
             ],
           ),
         ),
@@ -29,10 +33,8 @@ class _MissingImprintDialogState extends State<MissingImprintDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(
-            'schließen',
-            style: TextStyle(color: Colors.green),
-          ),
+          child: Text('schließen',
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],
     );
