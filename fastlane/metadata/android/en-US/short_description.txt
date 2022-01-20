@@ -1,1 +1,1 @@
-FOSS Warn is an unofficial open source application to get emergency alerts from warnung.bund.de
+Get emergency alerts from warnung.bund.de
