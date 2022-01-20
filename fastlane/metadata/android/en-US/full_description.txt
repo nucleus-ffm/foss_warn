@@ -1,0 +1,7 @@
+(The app is currently in a BETA status.)
+
+FOSS Warn is an unofficial open source application to get emergency alerts from warnung.bund.de. You can store locations in the app for which you would like to receive notifications.
+
+Important: FOSS Warn is unofficial and has nothing to do with the official APP Nina from BBK.
+
+*Notice: FOSS Warn is currently only available in German.*
