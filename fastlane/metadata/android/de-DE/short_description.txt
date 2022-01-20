@@ -1,1 +1,1 @@
-FOSS Warn ist eine inoffizielle Open-Source App um Warnmeldungen von warnung.bund.de zu erhalten.
+Erhalte Notfallbenachrichtigungen von warnung.bund.de
