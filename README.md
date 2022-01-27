@@ -40,7 +40,7 @@ FOSS Warn does not use push services. But a background service pulls the latest 
 </details>
 <details>
 <summary>Do you have a custom F-Droid repo?</summary>
-Yes. You can add my custom repo to F-Droid and install the latest Github release with your F-Droid client. All info [here](https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo)
+Yes. You can add my custom repo to F-Droid and install the latest Github release with your F-Droid client. All info <a href="https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo">here </a>.
 </details>
 
 ## Similar inoffical projects for other platforms
