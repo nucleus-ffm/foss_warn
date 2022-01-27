@@ -38,13 +38,16 @@ Go to the app settings and press „Einstellungen öffnen” -> "Benachrichtigun
 <summary>How do I receive notifications?</summary>
 FOSS Warn does not use push services. But a background service pulls the latest warnings at a certain frequency and when there is a warning for you, you get a notification. This mechanism only works when the background service is running. When it is stopped, you will not receive any notification. With the status notification you can always see when the last update took place.
 </details>
+<details>
+<summary>Do you have a custom F-Droid repo?</summary>
+Yes. You can add my custom repo to F-Droid and install the latest Github release with your F-Droid client. All info [here](https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo)
+</details>
 
 ## Similar inoffical projects for other platforms
 * [**FediNINA (Fediverse)**](https://meta.prepedia.org/wiki/FediNINA) Project to bring NINA warnings into the Fediverse.
 * [**MINA (Matrix)**](https://github.com/djmaze/nina-matrix-bot) MINA is a matrix bot that can be used to subscribe to alerts from the NINA API.
 * [**Apocalypse (Sailfish OS)**](https://github.com/black-sheep-dev/harbour-apocalypse) Apocalypse is an application for showing of messages from NINA API.
 * [**NINA XMPP bot**](https://github.com/jplitza/nina_xmpp) XMPP bot that sends messages from the German NINA official warning app.
-
 
 ## Screenshots
 [<img src="fastlane/metadata/android/de-DE/images/phoneScreenshots/shot_1.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_1.png)
