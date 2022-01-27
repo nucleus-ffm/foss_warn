@@ -51,7 +51,7 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                       text: 'Wetter: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(text: 'Informationen bei Meteorologisch Ereignissen wie '
-                      'z.B. Sturmbönen, Hochwasser  \n\n'),
+                      'z.B. Sturmbönen und Hochwasser  \n\n'),
 
                   TextSpan(
                       text: 'Sicherheit: ',
@@ -62,7 +62,7 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                       text: 'Sonstiges: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(text: 'Informationen bei anderen Meldungen'
-                      ' bspw. Geflügelpest \n\n'),
+                      ' bspw. zur Geflügelpest \n\n'),
                 ],
               ),
             ),
