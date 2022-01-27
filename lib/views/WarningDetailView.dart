@@ -201,6 +201,7 @@ class _DetailScreenState extends State<DetailScreen> {
     }
 
     markOneWarningAsReadFromDetailView(widget.warnMessage);
+    clearReadWarningsList();
 
     String translateMessageTyp(String text) {
       if (text == "Update") {
