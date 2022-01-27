@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_BackgroundTask.dart';
 import 'package:foss_warn/services/checkForUpdates.dart';
 import 'package:foss_warn/services/updateProvider.dart';
+import 'package:foss_warn/views/DevSettingsView.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
 import 'package:app_settings/app_settings.dart';
 
 import 'aboutView.dart';
 import 'WelcomeView.dart';
 
-import '../services/checkForMyPlacesWarnings.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
-import '../services/listHandler.dart';
 import '../services/urlLauncher.dart';
-
-import '../class/class_Place.dart';
 
 import '../widgets/dialogs/FontSizeDialog.dart';
 import '../widgets/dialogs/SortByDialog.dart';
@@ -35,9 +31,10 @@ double warningFontSize = 14;
 bool showWelcomeScreen = true;
 String sortWarningsBy = "source";
 
-String versionNumber = "0.2.4";
+String versionNumber = "0.2.5";
 String githubVersionNumber = versionNumber;
 bool updateAvailable = false;
+bool gitHubRelease = false;
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -92,97 +89,7 @@ class _SettingsState extends State<Settings> {
                 AppSettings.openNotificationSettings();
               },
             ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Text("Jetzt Benachrichtigung testen"),
-              subtitle:
-                  Text("Führt einmalig manuell den Hintergrunddienst aus"),
-              onTap: () {
-                checkForMyPlacesWarnings();
-                bool thereIsNoWarning = true;
-                for (Place myPlace in myPlaceList) {
-                  //check if there are warning and if it they are important enough
-                  if (myPlace.warnings.length > 0 &&
-                      myPlace.warnings.any((warning) =>
-                          notificationSettingsImportance
-                              .contains(warning.severity))) {
-                    if (myPlace.warnings.every((warning) =>
-                        readWarnings.contains(warning.identifier))) {
-                      //all warnings read
-                    } else {
-                      thereIsNoWarning = false;
-                    }
-                  } else {}
-                }
-                if (thereIsNoWarning) {
-                  final snackBar = SnackBar(
-                    content: const Text(
-                      'Es liegen keine neuen Warnungen für Ihre Orte vor',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
 
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-              },
-            ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Text("Hintergrunddienst neustarten"),
-              subtitle: Text(
-                  "Startet den Hintergrunddienst neu. Kann helfen Probleme zu beheben"),
-              onTap: () {
-                print("starte Hintergrunddienst neu");
-                try {
-                  //delete all background tasks and create new one
-                  Workmanager().cancelAll();
-                  Workmanager().registerPeriodicTask("1", "call APIs",
-                      /*constraints: Constraints(
-                        networkType: NetworkType.connected,
-                      ),*/
-                      frequency: Duration(minutes: frequencyOfAPICall.toInt()));
-                } catch (e) {
-                  print("Something went wrong while restart background task: " +
-                      e.toString());
-                }
-                final snackBar = SnackBar(
-                  content: const Text(
-                    'Hintergrunddienst neugestartet',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  backgroundColor: Colors.green[100],
-                );
-
-                // Find the ScaffoldMessenger in the widget tree
-                // and use it to show a SnackBar.
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-            ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Text("Lösche die Liste der gelesenen Warnungen"),
-              subtitle: Text(
-                  "leer manuell die gespeicherte Liste über die bereits gelesenen Warnungen."),
-              onTap: () {
-                print("delete readWarningsList");
-                readWarnings.clear();
-                saveReadWarningsList();
-                final snackBar = SnackBar(
-                  content: const Text(
-                    'Liste gelöscht',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  backgroundColor: Colors.green[100],
-                );
-
-                // Find the ScaffoldMessenger in the widget tree
-                // and use it to show a SnackBar.
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-            ),
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Row(
@@ -361,8 +268,8 @@ class _SettingsState extends State<Settings> {
                             Expanded(
                               child: Slider(
                                 value: frequencyOfAPICall,
-                                activeColor: Theme.of(context).colorScheme.secondary,
-
+                                activeColor:
+                                    Theme.of(context).colorScheme.secondary,
                                 min: 15,
                                 max: 300,
                                 onChanged: (value) {
@@ -405,8 +312,8 @@ class _SettingsState extends State<Settings> {
                     icon: const Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
-                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
                     underline: Container(
                       height: 2,
                       color: Theme.of(context).colorScheme.secondary,
@@ -513,67 +420,85 @@ class _SettingsState extends State<Settings> {
             SizedBox(
               height: 10,
             ),
+            gitHubRelease
+                ? Text(
+                    "Updates:",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  )
+                : SizedBox(),
+            gitHubRelease
+                ? ListTile(
+                    contentPadding: settingsTileListPadding,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(child: Text("Prüfe auf Updates")),
+                        updateAvailable && versionNumber != githubVersionNumber
+                            ? TextButton(
+                                onPressed: () {
+                                  launchUrlInBrowser(
+                                      'https://github.com/nucleus-ffm/foss_warn/releases/latest');
+                                },
+                                child: Text(
+                                  "Update verfügbar",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: TextButton.styleFrom(
+                                    backgroundColor: Colors.blue),
+                              )
+                            : SizedBox(),
+                      ],
+                    ),
+                    onTap: () async {
+                      String result = await checkForUpdates();
+                      print("Rückgabewert: $result");
+                      if (result != "latest version installed" &&
+                          result != "something else" &&
+                          result != "Error - server not reachable") {
+                        setState(() {
+                          updateAvailable = true;
+                          saveSettings();
+                        });
+                      } else {
+                        setState(() {
+                          updateAvailable = false;
+                          saveSettings();
+                        });
+                        if (result == "Error - server not reachable") {
+                          final snackBar = SnackBar(
+                            content: const Text(
+                              'Server nicht erreichbar',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            backgroundColor: Colors.red[100],
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else {
+                          final snackBar = SnackBar(
+                            content: const Text(
+                              'neuste Version installiert',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            backgroundColor: Colors.green[100],
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
+                    },
+                  )
+                : SizedBox(),
             Text(
-              "Updates:",
+              "Erweiterte Einstellungen:",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: Text("Prüfe auf Updates")),
-                  updateAvailable && versionNumber != githubVersionNumber
-                      ? TextButton(
-                          onPressed: () {
-                            launchUrlInBrowser(
-                                'https://github.com/nucleus-ffm/foss_warn/releases/latest');
-                          },
-                          child: Text(
-                            "Update verfügbar",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                        )
-                      : SizedBox(),
-                ],
-              ),
-              onTap: () async {
-                String result = await checkForUpdates();
-                print("Rückgabewert: $result");
-                if (result != "latest version installed" &&
-                    result != "something else" &&
-                    result != "Error - server not reachable") {
-                  setState(() {
-                    updateAvailable = true;
-                    saveSettings();
-                  });
-                } else {
-                  setState(() {
-                    updateAvailable = false;
-                    saveSettings();
-                  });
-                  if (result == "Error - server not reachable") {
-                    final snackBar = SnackBar(
-                      content: const Text(
-                        'Server nicht erreichbar',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      backgroundColor: Colors.red[100],
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else {
-                    final snackBar = SnackBar(
-                      content: const Text(
-                        'neuste Version installiert',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      backgroundColor: Colors.green[100],
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                }
+              title: Text("Öffne erweiterte Einstellungen"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DevSettings()),
+                );
               },
             ),
 
@@ -706,7 +631,7 @@ class _SettingsState extends State<Settings> {
                         ),
                         Text(
                           "Eine gemeinsame Initiative der deutschen Bundesländer "
-                              "- warnt vor Hochwasserwasser",
+                          "- warnt vor Hochwasserwasser",
                           style: TextStyle(
                               fontSize: 12, fontStyle: FontStyle.italic),
                         ),
