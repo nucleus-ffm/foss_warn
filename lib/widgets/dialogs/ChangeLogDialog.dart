@@ -14,6 +14,13 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.2.5 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* F-Droid Vorbereitungen\n"
+                  "* Legende erweitert \n"
+                  "* kleine Fehlerbehebungen \n"),
+              Text(
                 "0.2.4 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
