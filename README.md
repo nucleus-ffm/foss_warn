@@ -10,7 +10,9 @@ Get emergency alerts from warnung.bund.de
 
 </p>
 <p align="center">
-![GitHub](https://img.shields.io/github/license/CodingTarik/2048Python) [![Github All Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg)]() [![Github latest Releases](https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg)]()
+<a href="https://github.com/nucleus-ffm/foss_warn/blob/main/LICENSE" alt="Glicense"><img src="https://img.shields.io/github/license/nucleus-ffm/foss_warn"></a>
+<a href="https://github.com/nucleus-ffm/foss_warn/releases" alt="Github All Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg"></a>
+<a href="https://github.com/nucleus-ffm/foss_warn/releases/latest" alt="Github latest Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg"></a>
 </p>
 <hr>
 
