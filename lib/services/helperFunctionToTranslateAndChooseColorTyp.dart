@@ -60,6 +60,10 @@ String translateCategory(String text) {
     return "Sonstiges";
   } else if (text == "Safety") {
     return "Sicherheit";
+  } else if (text == "Met") {
+    return "Wetter";
+  } else if (text == "Env") {
+    return "Umwelt";
   } else {
     return text;
   }
