@@ -81,7 +81,9 @@ markOneWarningAsUnread(WarnMessage myWarning, BuildContext context) {
   }
 }
 
+/// remove old read warning to clear the saved list
 clearReadWarningsList() {
+  List<String> removeList =  [];
   for (String id in readWarnings) {
     if (warnMessageList.any((myWarning) => myWarning.identifier == id)) {
       //Warn Message still in List
@@ -89,7 +91,10 @@ clearReadWarningsList() {
     } else {
       //remove from readWarningList
       print("remove: " + id);
-      readWarnings.remove(id);
+      removeList.add(id);
     }
+  }
+  for (String id in removeList) {
+    readWarnings.remove(id);
   }
 }
