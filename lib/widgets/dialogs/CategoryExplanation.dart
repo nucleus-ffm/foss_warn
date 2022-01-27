@@ -22,12 +22,9 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                 style: DefaultTextStyle.of(context).style,
                 children: const <TextSpan>[
                   TextSpan(
-                    text: "Mehr Informationen werden folgen... \n \n"
-                  ),
-                  TextSpan(
                       text: 'Gesundheit: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: ' Informationen bei bspw. Pandemien \n\n'),
+                  TextSpan(text: 'Informationen bei bspw. Pandemien \n\n'),
                   TextSpan(
                       text: 'Feuer: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
@@ -35,7 +32,7 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                   TextSpan(
                       text: 'Infrastruktur: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei ?  \n\n'),
+                  TextSpan(text: 'Informationen bei bspw. einem Ausfall der Notrufleitung  \n\n'),
                   TextSpan(
                       text: 'CBRNE: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
@@ -44,10 +41,28 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                           'Informationen bei Ereignissen mit chemischen,'
                               ' biologischen, radiologischen, nuklearen'
                           'und explosionsgefährdeten Stoffen \n\n'),
+
+                  TextSpan(
+                      text: 'Umwelt: ',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: 'Informationen bei Naturereignissen wie z.B. Sturmfluten \n\n'),
+
+                  TextSpan(
+                      text: 'Wetter: ',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: 'Informationen bei Meteorologisch Ereignissen wie '
+                      'z.B. Sturmbönen, Hochwasser  \n\n'),
+
                   TextSpan(
                       text: 'Sicherheit: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei ? \n\n'),
+                  TextSpan(text: 'Informationen bei polizeilichen Meldungen \n\n'),
+
+                  TextSpan(
+                      text: 'Sonstiges: ',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: 'Informationen bei anderen Meldungen'
+                      ' bspw. Geflügelpest \n\n'),
                 ],
               ),
             ),
