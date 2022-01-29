@@ -30,15 +30,24 @@ class _DetailScreenState extends State<DetailScreen> {
     replacedText = replacedText.replaceAll("br>", "\n");
     replacedText = replacedText.replaceAll("&nbsp;", " ");
 
-    // remove <img> Tag
-    /*int startPosition = text.indexOf("<img");
-    int endPosition = text.indexOf(">");
-    if (startPosition != -1) {
-      replacedText =
-          replacedText.replaceRange(startPosition, endPosition + 1, "");
-    }*/
-
     return replacedText;
+  }
+
+  String generateURL(String url) {
+    String correctURL = "";
+    if (url.startsWith('http')) {
+      correctURL = url;
+    } else if (url.startsWith("<a")) {
+      int beginURL = url.indexOf("\"")+1;
+      int endURL = url.indexOf("\"", beginURL + 1);
+      correctURL = url.substring(beginURL, endURL);
+    } else {
+      int firstPoint = url.indexOf('.');
+      String domain = url.substring(firstPoint + 1, url.length);
+      correctURL = 'https://' + domain;
+    }
+    print("correct URL: " + correctURL);
+    return correctURL;
   }
 
   /// returns the given text as List of TextSpans with clickable links and
@@ -310,7 +319,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     fontSize: warningFontSize, fontWeight: FontWeight.bold),
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               Row(
                 children: [
@@ -787,7 +796,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   launchUrlInBrowser(widget.warnMessage.web);
                             },
                             child: Text(
-                              replaceHTMLTags(widget.warnMessage.web),
+                              generateURL(widget.warnMessage.web),
                               style: TextStyle(
                                   fontSize: warningFontSize,
                                   color:
