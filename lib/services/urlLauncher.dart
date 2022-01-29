@@ -3,11 +3,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 Future<void> launchUrlInBrowser(String url) async {
   String correctURL = "";
-  if(url.startsWith('http')) {
+  if (url.startsWith('http')) {
     correctURL = url;
+  } else if (url.startsWith("<a")) {
+    int beginURL = url.indexOf("\"")+1;
+    int endURL = url.indexOf("\"", beginURL + 1);
+
+    correctURL = url.substring(beginURL, endURL);
   } else {
     int firstPoint = url.indexOf('.');
-    String domain = url.substring(firstPoint+1, url.length);
+    String domain = url.substring(firstPoint + 1, url.length);
     correctURL = 'https://' + domain;
   }
   print("open: " + correctURL);
@@ -22,7 +27,6 @@ Future<void> launchUrlInBrowser(String url) async {
     throw 'Could not launch $correctURL';
   }
 }
-
 
 Future<void> makePhoneCall(String url) async {
   String correctURL = "";
