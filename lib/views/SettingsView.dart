@@ -29,12 +29,13 @@ String dropdownValue = '';
 int startScreen = 0;
 double warningFontSize = 14;
 bool showWelcomeScreen = true;
-String sortWarningsBy = "source";
-
-String versionNumber = "0.2.5";
-String githubVersionNumber = versionNumber;
+String sortWarningsBy = "severity";
 bool updateAvailable = false;
-bool gitHubRelease = false;
+
+String versionNumber = "0.2.6"; // shown in the about view
+String githubVersionNumber = versionNumber; // used in the update check
+bool gitHubRelease =
+    false; // if true, there the check for update Button is shown
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -85,65 +86,56 @@ class _SettingsState extends State<Settings> {
               subtitle:
                   Text("Öffnet die Android-Benachrichtigungs-Einstellungen"),
               onTap: () {
-                print("starte Hintergrunddienst neu");
                 AppSettings.openNotificationSettings();
               },
             ),
 
             ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text("Status-Benachrichtigung anzeigen"),
-                  ),
-                  Switch(
-                      value: showStatusNotification,
-                      onChanged: (value) {
-                        setState(() {
-                          showStatusNotification = value;
-                          saveSettings();
-                        });
-                        if (showStatusNotification == false) {
-                          NotificationService.cancelOneNotification(1);
-                        }
-                      })
-                ],
-              ),
+                contentPadding: settingsTileListPadding,
+                title: Text("Status-Benachrichtigung anzeigen"),
+                subtitle: Text(
+                    "Zeigt eine Benachrichtung mit der Uhrzeit der letzten Aktualisieurng"),
+                trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                    value: showStatusNotification,
+                    onChanged: (value) {
+                      setState(() {
+                        showStatusNotification = value;
+                        saveSettings();
+                      });
+                      if (showStatusNotification == false) {
+                        NotificationService.cancelOneNotification(1);
+                      }
+                    }
+                    )
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                        "Hintergrundbenachrichtigungen für hinterlegte Orte"),
-                  ),
-                  Switch(
-                      value: notificationGeneral,
-                      onChanged: (value) {
-                        setState(() {
-                          notificationGeneral = value;
-                          saveSettings();
-                        });
-                        if (notificationGeneral) {
-                          BackgroundTaskManager().cancelBackgroundTask();
-                          BackgroundTaskManager().registerBackgroundTask();
-                        } else {
-                          BackgroundTaskManager().cancelBackgroundTask();
-                          setState(() {
-                            notificationWithExtreme = false;
-                            notificationWithSevere = false;
-                            notificationWithModerate = false;
-                            notificationWithMinor = false;
-                          });
-                          print("background notification disabled");
-                        }
-                      })
-                ],
-              ),
+              title: Text("Hintergrundbenachrichtigungen für hinterlegte Orte"),
+              subtitle: Text("Wenn eingeschaltet prüft FOSS Warn"
+                  " im Hintergrund ob es Warnungen für hinterlegte Orte gibt."),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: notificationGeneral,
+                  onChanged: (value) {
+                    setState(() {
+                      notificationGeneral = value;
+                      saveSettings();
+                    });
+                    if (notificationGeneral) {
+                      BackgroundTaskManager().cancelBackgroundTask();
+                      BackgroundTaskManager().registerBackgroundTask();
+                    } else {
+                      BackgroundTaskManager().cancelBackgroundTask();
+                      setState(() {
+                        notificationWithExtreme = false;
+                        notificationWithSevere = false;
+                        notificationWithModerate = false;
+                        notificationWithMinor = false;
+                      });
+                      print("background notification disabled");
+                    }
+                  }),
             ),
             SizedBox(
               height: 10,
@@ -154,95 +146,79 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("extremen Meldungen"), //severe
-                  Switch(
-                      value: notificationWithExtreme,
-                      onChanged: (value) {
-                        if (notificationGeneral) {
-                          setState(() {
-                            notificationWithExtreme = value;
-                            saveNotificationSettingsImportanceList();
-                            BackgroundTaskManager().cancelBackgroundTask();
-                            BackgroundTaskManager().registerBackgroundTask();
-                          });
-                        } else {
-                          print("Background notification is disabled");
-                        }
-                      })
-                ],
-              ),
+              title: Text("extremen Meldungen"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: notificationWithExtreme,
+                  onChanged: (value) {
+                    if (notificationGeneral) {
+                      setState(() {
+                        notificationWithExtreme = value;
+                        saveNotificationSettingsImportanceList();
+                        BackgroundTaskManager().cancelBackgroundTask();
+                        BackgroundTaskManager().registerBackgroundTask();
+                      });
+                    } else {
+                      print("Background notification is disabled");
+                    }
+                  }),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("schweren Meldungen"), //severe
-                  Switch(
-                      value: notificationWithSevere,
-                      onChanged: (value) {
-                        if (notificationGeneral) {
-                          setState(() {
-                            notificationWithSevere = value;
-                            saveNotificationSettingsImportanceList();
-                            BackgroundTaskManager().cancelBackgroundTask();
-                            BackgroundTaskManager().registerBackgroundTask();
-                          });
-                        } else {
-                          print("Background notification is disabled");
-                        }
-                      })
-                ],
-              ),
+              title: Text("schweren Meldungen"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: notificationWithSevere,
+                  onChanged: (value) {
+                    if (notificationGeneral) {
+                      setState(() {
+                        notificationWithSevere = value;
+                        saveNotificationSettingsImportanceList();
+                        BackgroundTaskManager().cancelBackgroundTask();
+                        BackgroundTaskManager().registerBackgroundTask();
+                      });
+                    } else {
+                      print("Background notification is disabled");
+                    }
+                  }),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("moderaten Meldungen"),
-                  Switch(
-                      value: notificationWithModerate,
-                      onChanged: (value) {
-                        if (notificationGeneral) {
-                          setState(() {
-                            notificationWithModerate = value;
-                            saveNotificationSettingsImportanceList();
-                            BackgroundTaskManager().cancelBackgroundTask();
-                            BackgroundTaskManager().registerBackgroundTask();
-                          });
-                        } else {
-                          print("Background notification is disabled");
-                        }
-                      })
-                ],
-              ),
+              title: Text("moderaten Meldungen"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: notificationWithModerate,
+                  onChanged: (value) {
+                    if (notificationGeneral) {
+                      setState(() {
+                        notificationWithModerate = value;
+                        saveNotificationSettingsImportanceList();
+                        BackgroundTaskManager().cancelBackgroundTask();
+                        BackgroundTaskManager().registerBackgroundTask();
+                      });
+                    } else {
+                      print("Background notification is disabled");
+                    }
+                  }),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("geringfügigen Meldungen"),
-                  Switch(
-                      value: notificationWithMinor,
-                      onChanged: (value) {
-                        if (notificationGeneral) {
-                          setState(() {
-                            notificationWithMinor = value;
-                            saveNotificationSettingsImportanceList();
-                            BackgroundTaskManager().cancelBackgroundTask();
-                            BackgroundTaskManager().registerBackgroundTask();
-                          });
-                        } else {
-                          print("Background notification is disabled");
-                        }
-                      })
-                ],
-              ),
+              title: Text("geringfügigen Meldungen"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: notificationWithMinor,
+                  onChanged: (value) {
+                    if (notificationGeneral) {
+                      setState(() {
+                        notificationWithMinor = value;
+                        saveNotificationSettingsImportanceList();
+                        BackgroundTaskManager().cancelBackgroundTask();
+                        BackgroundTaskManager().registerBackgroundTask();
+                      });
+                    } else {
+                      print("Background notification is disabled");
+                    }
+                  }),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
@@ -303,80 +279,64 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Startansicht beim Öffnen:"),
-                  DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: const Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    onChanged: (String? newValue) {
+              title: Text("Startansicht beim Öffnen:"),
+              trailing: DropdownButton<String>(
+                value: dropdownValue,
+                icon: const Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                underline: Container(
+                  height: 2,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                    if (dropdownValue == "Alle Meldungen") {
+                      startScreen = 0;
+                    } else if (dropdownValue == "Meine Orte") {
+                      startScreen = 1;
+                    }
+                    saveSettings();
+                  });
+                },
+                items: <String>['Alle Meldungen', 'Meine Orte']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+            ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("Zeige erweiterte Metadaten bei Meldungen"),
+                trailing: Switch(
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                    value: showExtendedMetaData,
+                    onChanged: (value) {
                       setState(() {
-                        dropdownValue = newValue!;
-                        if (dropdownValue == "Alle Meldungen") {
-                          startScreen = 0;
-                        } else if (dropdownValue == "Meine Orte") {
-                          startScreen = 1;
-                        }
-                        saveSettings();
+                        showExtendedMetaData = value;
                       });
-                    },
-                    items: <String>['Alle Meldungen', 'Meine Orte']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
+                      saveSettings();
+                    })),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: Text("Zeige erweiterte Metadaten bei Meldungen.")),
-                  Switch(
-                      value: showExtendedMetaData,
-                      onChanged: (value) {
-                        setState(() {
-                          showExtendedMetaData = value;
-                        });
-                        saveSettings();
-                      })
-                ],
-              ),
-            ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: Text("Nutze dunkles Farbschema")),
-                  Switch(
-                      value: useDarkMode,
-                      onChanged: (value) {
-                        setState(() {
-                          useDarkMode = value;
-                        });
-                        saveSettings();
-                        final updater =
-                            Provider.of<Update>(context, listen: false);
-                        updater.updateView();
-                      })
-                ],
-              ),
+              title: Text("Nutze dunkles Farbschema"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: useDarkMode,
+                  onChanged: (value) {
+                    setState(() {
+                      useDarkMode = value;
+                    });
+                    saveSettings();
+                    final updater = Provider.of<Update>(context, listen: false);
+                    updater.updateView();
+                  }),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
@@ -394,7 +354,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Sortierung der Meldungen"),
-              subtitle: Text("Passe die Anzeigereihenfolge der Meldungen an."),
+              subtitle: Text("Passe die Anzeigereihenfolge der Meldungen an"),
               onTap: () {
                 showDialog(
                   context: context,
@@ -407,7 +367,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Zeige das Intro nochmal"),
-              subtitle: Text("Zeigt den Einfühgrungsdialog noch einmal."),
+              subtitle: Text("Zeigt den Einfühgrungsdialog noch einmal"),
               onTap: () {
                 Navigator.push(
                   context,
