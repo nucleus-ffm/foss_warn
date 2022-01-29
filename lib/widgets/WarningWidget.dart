@@ -1,6 +1,7 @@
 // widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
 import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
+import 'package:foss_warn/widgets/dialogs/MessageTypExplanation.dart';
 import 'package:provider/provider.dart';
 import '../services/markWarningsAsRead.dart';
 import '../class/class_WarnMessage.dart';
@@ -37,6 +38,7 @@ class WarningWidget extends StatelessWidget {
       }
       return tempList;
     }
+
     geocodeNameList = generateGeocodeList();
 
     return Consumer<Update>(
@@ -46,8 +48,7 @@ class WarningWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      DetailScreen(warnMessage: warnMessage)),
+                  builder: (context) => DetailScreen(warnMessage: warnMessage)),
             ).then((value) => updatePrevView());
           },
           child: Padding(
@@ -103,11 +104,23 @@ class WarningWidget extends StatelessWidget {
                             width: 10,
                           ),
                           Container(
-                            child: Text(
-                              translateMessageTyp(warnMessage.messageTyp),
-                              style: TextStyle(fontSize: 12, color: Colors.white),
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return MessageTypExplanation();
+                                  },
+                                );
+                              },
+                              child: Text(
+                                translateMessageTyp(warnMessage.messageTyp),
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.white),
+                              ),
                             ),
-                            color: chooseMessageTypColor(warnMessage.messageTyp),
+                            color:
+                                chooseMessageTypColor(warnMessage.messageTyp),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
@@ -135,8 +148,8 @@ class WarningWidget extends StatelessWidget {
                       ),
                       Text(
                         warnMessage.headline,
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 5,
