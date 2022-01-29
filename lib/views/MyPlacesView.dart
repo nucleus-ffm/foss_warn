@@ -57,6 +57,7 @@ class _MyPlacesState extends State<MyPlaces> {
           height: 70,
           width: 70,
           child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.secondary,
             strokeWidth: 4,
           ),
         ),
@@ -65,6 +66,7 @@ class _MyPlacesState extends State<MyPlaces> {
 
     return Consumer<Update>(
       builder: (context, counter, child) => RefreshIndicator(
+        color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
         child: Stack(
           fit: StackFit.expand,
