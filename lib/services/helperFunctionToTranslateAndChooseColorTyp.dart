@@ -64,6 +64,8 @@ String translateCategory(String text) {
     return "Wetter";
   } else if (text == "Env") {
     return "Umwelt";
+  } else if (text == "Geo") {
+    return "Umwelt";
   } else {
     return text;
   }
