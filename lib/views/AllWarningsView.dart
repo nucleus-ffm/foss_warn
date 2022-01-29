@@ -59,6 +59,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
           height: 70,
           width: 70,
           child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.secondary,
             strokeWidth: 4,
           ),
         ),
@@ -67,6 +68,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
 
     return Consumer<Update>(
       builder: (context, counter, child) => RefreshIndicator(
+        color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
         child: warnMessageList.isNotEmpty
             ? SingleChildScrollView(
@@ -119,7 +121,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               style: TextButton.styleFrom(
-                                  backgroundColor: Colors.blue),
+                                  backgroundColor: Theme.of(context).colorScheme.secondary),
                             )
                           ],
                         ),
