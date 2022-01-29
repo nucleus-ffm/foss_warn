@@ -86,6 +86,10 @@ class MyApp extends StatelessWidget {
       theme: useDarkMode? ThemeData(
         primarySwatch: Colors.blue,
         brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSwatch(
+            accentColor: Colors.green[700],
+            brightness: Brightness.dark,
+        ),
         textTheme: const TextTheme(
             headline1: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             headline2: TextStyle(
@@ -97,6 +101,10 @@ class MyApp extends StatelessWidget {
       ) :  ThemeData(
         primarySwatch: Colors.blue,
         brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: Colors.green[700],
+          brightness: Brightness.light,
+        ),
         textTheme: const TextTheme(
             headline1: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
             headline2: TextStyle(
@@ -163,7 +171,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
           title: Text("FOSS Warn"),
           systemOverlayStyle:
               SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-          backgroundColor: Colors.green[700],
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [
             IconButton(
               icon: Icon(Icons.sort),
@@ -226,7 +234,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
         ),
