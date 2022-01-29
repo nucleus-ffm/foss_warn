@@ -14,6 +14,14 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.2.6 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Legende verbessert\n"
+                  "* Neue Legende für Warntyp hinzugefügt \n"
+                  "* Konsequentere Nutzung des Farbschemas \n"
+                  "* Kleine Verbesserungen \n"),
+              Text(
                 "0.2.5 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
