@@ -34,9 +34,23 @@ class _AddPlaceWidgetState extends State<AddPlaceWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
+              cursorColor: Theme.of(context).colorScheme.secondary,
+
               autofocus: true,
               decoration: new InputDecoration(
                 labelText: 'Ortsname oder Kreisname',
+                labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                ),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                ),
               ),
               onChanged: (text) {
                 newPlaceName = text;
@@ -53,7 +67,8 @@ class _AddPlaceWidgetState extends State<AddPlaceWidget> {
               height: 10,
             ),
             Text(
-              "Die folgende Liste könnte Fehlerhaft sein, wodurch es zu keiner Warnung kommt. Wenn Fehler auffallen, bitte Bescheid geben.",
+              "Die folgende Liste könnte Fehlerhaft sein, wodurch es zu keiner"
+                  " Warnung kommt. Wenn Fehler auffallen, bitte Bescheid geben.",
               style: TextStyle(fontSize: 10),
             ),
             SizedBox(
