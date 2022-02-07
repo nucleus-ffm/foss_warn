@@ -8,6 +8,7 @@ import 'generateNotificationID.dart';
 import 'getData.dart';
 import 'listHandler.dart';
 
+import 'markWarningsAsNotified.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
 Future<bool> checkForMyPlacesWarnings() async {
@@ -32,13 +33,19 @@ Future<bool> checkForMyPlacesWarnings() async {
     print("readWarningsList is empty - load list");
     await loadReadWarningsList();
   }
+  if (alreadyNotifiedWarnings.isEmpty) {
+    print("loadAlreadyNotifiedWarningsList is empty - load list");
+    await loadAlreadyNotifiedWarningsList();
+  }
 
-  sendNotification(int id, String title, String body, String payload) async {
+  sendNotification(
+      int id, String title, String body, String payload, String channel) async {
     await NotificationService.showNotification(
       id: id,
       title: title,
       body: body,
       payload: payload,
+      channel: channel,
     );
   }
 
@@ -90,46 +97,30 @@ Future<bool> checkForMyPlacesWarnings() async {
             notificationSettingsImportance.contains(warning.severity))) {
       print("Warnung vorhanden");
       //check if there are new Warnings
-      if (myPlace.warnings
-          .every((warning) => readWarnings.contains(warning.identifier))) {
-        print("keine neue Meldungen");
-      } else {
-        if (myPlace.warnings.length > 1) {
-          // if more then one warning
-          String generateBody() {
-            int counter = 1;
-            String returnBody = "";
-            for (WarnMessage warnMessage in myPlace.warnings) {
-              returnBody +=
-                  counter.toString() + ": " + warnMessage.headline + "\n";
-              counter++;
-            }
-            return returnBody;
-            //<br>1. Warnung: </br> ${myPlace.warnings.first.headline} ...
-          }
 
-          sendNotification(
-              // generate from the last warning in the List the notification id
-              // because the warning identifier is no int, we have to generate a hash code
-              generateNotificationID(myPlace.warnings.last.identifier),
-              "Es gibt ${myPlace.warnings.length.toString()} Warnungen für ${myPlace.name}",
-              generateBody(),
-              myPlace.name);
-        } else {
-          //if there is just one Warning
+      for (WarnMessage myWarnMessage in myPlace.warnings) {
+        if (!readWarnings.contains(myWarnMessage.identifier) &&
+            !alreadyNotifiedWarnings.contains(myWarnMessage.identifier)) {
+          // Alert is not already read or shown as notification
+          print("markOneWarningAsNotified ");
+          markOneWarningAsNotified(myWarnMessage);
+          clearWarningAsNotifiedList();
+
           sendNotification(
               // generate from the warning in the List the notification id
               // because the warning identifier is no int, we have to generate a hash code
-              generateNotificationID(myPlace.warnings.first.identifier),
-              "Es gibt ${myPlace.warnings.length.toString()} Warnung für ${myPlace.name}",
-              "Warnung: ${myPlace.warnings.first.headline}",
-              myPlace.name);
+              generateNotificationID(myWarnMessage.identifier),
+              "Neue Warnung für ${myPlace.name}",
+              "${myWarnMessage.headline}",
+              myPlace.name,
+              myWarnMessage.severity);
+
         }
       }
-      //return true - there are wanrings
+      //return true - there are warnings. the return value isn't use yet?
       returnValue = true;
     } else {
-      //return false - there are no warning
+      //return false - there are no warning.  the return value isn't use yet?
       returnValue = false;
     }
   }
