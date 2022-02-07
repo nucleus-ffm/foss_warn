@@ -1,3 +1,5 @@
+import 'package:foss_warn/class/class_ForegroundService.dart';
+
 import '../views/SettingsView.dart';
 import '../class/class_NotificationService.dart';
 
@@ -52,16 +54,19 @@ sendStatusUpdateNotification(bool success) async {
 
   String nextUpdateTimeFormattedDate =
       formattedHourNext + ":" + formattedMinuteNext;
+
   if(success) {
-    await NotificationService.showStatusNotification(
+
+    ForegroundService().updateForegroundServices(nowFormattedDate);
+    /*await NotificationService.showStatusNotification(
       id: 1,
       title: "FOSS Warn ist aktiv",
       body:
       "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr",
       payload: "statusanzeige",
-    );
+    ); */
   }else {
-    await NotificationService.showStatusNotification(
+    /*await NotificationService.showStatusNotification(
       id: 1,
       title: "FOSS Warn - Aktualisierung fehlgeschlagen",
       body:
@@ -69,6 +74,6 @@ sendStatusUpdateNotification(bool success) async {
           "Server nicht erreichbar. Vermutlich haben Sie keine Internetverbindung. "
           "FOSS Warn wird es um $nextUpdateTimeFormattedDate Uhr erneut versuchen.",
       payload: "statusanzeige",
-    );
+    );*/
   }
 }
