@@ -7,13 +7,14 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
   static final onNotification = BehaviorSubject<String?>();
 
-  static Future _notificationsDetails() async {
+  static Future _notificationsDetails(String channel) async {
     return NotificationDetails(
         android: AndroidNotificationDetails(
-          'foss_warn_notifications', 'Benachrichtigungen', 'FOSS Warn Benachrichtigungen bei Warnmeldungen für hinterlegte Orte',
+          'foss_warn_notifications', channel, 'FOSS Warn Benachrichtigungen bei Warnmeldungen für hinterlegte Orte',
           groupKey: "FossWarn",
           importance: Importance.max,
           priority: Priority.max,
+
 
           //enable multiline notification
           styleInformation: BigTextStyleInformation(''),
@@ -47,12 +48,13 @@ class NotificationService {
     String? title,
     String? body,
     String? payload,
+    String channel = "Benachrichtigung",
   }) async {
     flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
-      await _notificationsDetails(),
+      await _notificationsDetails(channel),
       payload: payload,
     );
     showGroupNotification();
@@ -63,7 +65,7 @@ class NotificationService {
     String? title,
     String? body,
     String? payload,
-  }) async {
+      }) async {
     flutterLocalNotificationsPlugin.show(
       id,
       title,
