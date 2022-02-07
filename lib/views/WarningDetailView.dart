@@ -212,18 +212,6 @@ class _DetailScreenState extends State<DetailScreen> {
     markOneWarningAsReadFromDetailView(widget.warnMessage);
     clearReadWarningsList();
 
-    String translateMessageTyp(String text) {
-      if (text == "Update") {
-        return "Update";
-      } else if (text == "Cancel") {
-        return "Entwarnung";
-      } else if (text == "Alert") {
-        return "Achtung";
-      } else {
-        return text;
-      }
-    }
-
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];
       int counter = 0;
@@ -318,6 +306,30 @@ class _DetailScreenState extends State<DetailScreen> {
                 style: TextStyle(
                     fontSize: warningFontSize, fontWeight: FontWeight.bold),
               ),
+              widget.warnMessage.effective != "" ? Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 1),
+                child: Text(
+                  "Effektiv ab " + formatSentDate(widget.warnMessage.effective),
+                  style: TextStyle(
+                      fontSize: warningFontSize, fontWeight: FontWeight.bold),
+                ),
+              ): SizedBox(),
+              widget.warnMessage.onset != ""? Padding(
+                padding: const EdgeInsets.only(top: 1, bottom: 1),
+                child: Text(
+                  "Gültig ab " + formatSentDate(widget.warnMessage.onset),
+                  style: TextStyle(
+                      fontSize: warningFontSize, fontWeight: FontWeight.bold),
+                ),
+              ): SizedBox(),
+              widget.warnMessage.expires != "" ? Padding(
+                padding: const EdgeInsets.only(top: 1, bottom: 1),
+                child: Text(
+                  "Gültig bis " + formatSentDate(widget.warnMessage.expires),
+                  style: TextStyle(
+                      fontSize: warningFontSize, fontWeight: FontWeight.bold),
+                ),
+              ) : SizedBox(),
               SizedBox(
                 height: 20,
               ),
