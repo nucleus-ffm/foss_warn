@@ -31,10 +31,24 @@ saveReadWarningsList() async {
   preferences.setStringList("readWarningsList", readWarnings);
 }
 
+
+
 loadReadWarningsList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.containsKey("readWarningsList")) {
     readWarnings = preferences.getStringList("readWarningsList")!;
+  }
+}
+
+saveAlreadyNotifiedWarningsList() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setStringList("AlreadyNotifiedWarningsList", alreadyNotifiedWarnings);
+}
+
+loadAlreadyNotifiedWarningsList() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  if (preferences.containsKey("AlreadyNotifiedWarningsList")) {
+    alreadyNotifiedWarnings = preferences.getStringList("AlreadyNotifiedWarningsList")!;
   }
 }
 
