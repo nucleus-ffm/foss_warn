@@ -14,6 +14,13 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.2.7 (beta) pre-release",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Benachrichtigungen werden jetzt nicht mehr wiederholt"
+                  "* FOSS Warn hat nun einen Vordergrundservice"
+                  "* kleine Verbesserungen"),
+              Text(
                 "0.2.6 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
