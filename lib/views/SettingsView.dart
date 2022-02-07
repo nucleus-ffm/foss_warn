@@ -14,7 +14,7 @@ import '../services/urlLauncher.dart';
 
 import '../widgets/dialogs/FontSizeDialog.dart';
 import '../widgets/dialogs/SortByDialog.dart';
-import '../class/class_NotificationService.dart';
+// import '../class/class_NotificationService.dart';
 
 bool notificationWithExtreme = true;
 bool notificationWithSevere = true;
@@ -32,7 +32,7 @@ bool showWelcomeScreen = true;
 String sortWarningsBy = "severity";
 bool updateAvailable = false;
 
-String versionNumber = "0.2.6"; // shown in the about view
+String versionNumber = "0.2.7"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
@@ -90,7 +90,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
 
-            ListTile(
+            /*ListTile(
                 contentPadding: settingsTileListPadding,
                 title: Text("Status-Benachrichtigung anzeigen"),
                 subtitle: Text(
@@ -108,7 +108,7 @@ class _SettingsState extends State<Settings> {
                       }
                     }
                     )
-            ),
+            ), */
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Hintergrundbenachrichtigungen für hinterlegte Orte"),
