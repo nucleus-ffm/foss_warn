@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
@@ -10,11 +11,12 @@ class NotificationService {
   static Future _notificationsDetails(String channel) async {
     return NotificationDetails(
         android: AndroidNotificationDetails(
-          'foss_warn_notifications', channel, 'FOSS Warn Benachrichtigungen bei Warnmeldungen für hinterlegte Orte',
+          'foss_warn_notifications_' + channel,
+          "Warnstufe: " + translateMessageSeverity(channel),
+          'FOSS Warn notifications',
           groupKey: "FossWarn",
           importance: Importance.max,
           priority: Priority.max,
-
 
           //enable multiline notification
           styleInformation: BigTextStyleInformation(''),
@@ -34,7 +36,7 @@ class NotificationService {
           importance: Importance.low,
           priority: Priority.min,
           playSound: false,
-          
+
           //@TODO: show an other icon for status notification
           //enable multiline notification
           styleInformation: BigTextStyleInformation(''),
@@ -65,7 +67,7 @@ class NotificationService {
     String? title,
     String? body,
     String? payload,
-      }) async {
+  }) async {
     flutterLocalNotificationsPlugin.show(
       id,
       title,
@@ -115,7 +117,48 @@ class NotificationService {
             iOS: initializationSettingsIOS,
             macOS: null);
 
-    //when App is closed
+    // init the different notifications channels
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(AndroidNotificationChannel(
+          'foss_warn_notifications_Minor', // id
+          'Warnstufe: Gering', // title
+          'FOSS Warn notification', // description
+          importance: Importance.max,
+        ));
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(AndroidNotificationChannel(
+          'foss_warn_notifications_Moderate', // id
+          'Warnstufe: Mittel', // title
+          'FOSS Warn notification', // description
+          importance: Importance.max,
+        ));
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(AndroidNotificationChannel(
+          'foss_warn_notifications_Severe', // id
+          'Warnstufe: Schwer', // title
+          'FOSS Warn notification', // description
+          importance: Importance.max,
+        ));
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(AndroidNotificationChannel(
+          'foss_warn_notifications_Extrem', // id
+          'Warnstufe: Extrem', // title
+          'FOSS Warn notification', // description
+          importance: Importance.max,
+        ));
+
+    // when App is closed
     final details =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (details != null && details.didNotificationLaunchApp) {
@@ -143,10 +186,12 @@ class NotificationService {
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.getActiveNotifications();
     final List<PendingNotificationRequest> pendingNotificationRequests =
-    await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
     //@TODO: fix
 
-    if (activeNotifications!.length == 2 && activeNotifications.any((element) => element.channelId == "foss_warn_status" )) {
+    if (activeNotifications!.length == 2 &&
+        activeNotifications
+            .any((element) => element.channelId == "foss_warn_status")) {
       if (activeNotifications[0].id == 0) {
         // summery notification has id 0
         cancelOneNotification(0);
