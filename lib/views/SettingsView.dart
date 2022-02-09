@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_BackgroundTask.dart';
+import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/services/checkForUpdates.dart';
 import 'package:foss_warn/services/updateProvider.dart';
 import 'package:foss_warn/views/DevSettingsView.dart';
@@ -14,7 +15,6 @@ import '../services/urlLauncher.dart';
 
 import '../widgets/dialogs/FontSizeDialog.dart';
 import '../widgets/dialogs/SortByDialog.dart';
-// import '../class/class_NotificationService.dart';
 
 bool notificationWithExtreme = true;
 bool notificationWithSevere = true;
@@ -90,7 +90,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
 
-            /*ListTile(
+            ListTile(
                 contentPadding: settingsTileListPadding,
                 title: Text("Status-Benachrichtigung anzeigen"),
                 subtitle: Text(
@@ -108,7 +108,7 @@ class _SettingsState extends State<Settings> {
                       }
                     }
                     )
-            ), */
+            ),
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Hintergrundbenachrichtigungen für hinterlegte Orte"),
