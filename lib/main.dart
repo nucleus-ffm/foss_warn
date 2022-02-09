@@ -1,12 +1,11 @@
-import 'dart:async';
-import 'dart:isolate';
+// import 'dart:async';
+// import 'dart:isolate';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+// import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 //import 'package:connectivity_plus/connectivity_plus.dart';
-
 
 
 import 'widgets/SourceStatusWidget.dart';
@@ -18,7 +17,7 @@ import 'views/WelcomeView.dart';
 
 import 'class/class_NotificationService.dart';
 import 'class/class_BackgroundTask.dart';
-import 'class/class_ForegroundService.dart';
+// import 'class/class_ForegroundService.dart';
 
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
@@ -30,6 +29,7 @@ import 'widgets/dialogs/SortByDialog.dart';
 //final navigatorKey = GlobalKey<NavigatorState>();
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+/*
 // The callback function should always be a top-level function.
 void startCallback() {
   // The setTaskHandler function must be called to handle the task in the background.
@@ -61,7 +61,7 @@ class FirstTaskHandler extends TaskHandler {
     // Called when the notification button on the Android platform is pressed.
     print('onButtonPressed >> $id');
   }
-}
+} */
 
 void main() async {
   // some initialisation
@@ -74,8 +74,8 @@ void main() async {
   await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
 
   // ForegroundService stuff
-  ForegroundService().initForegroundService();
-  ForegroundService().startForegroundServices();
+  // ForegroundService().initForegroundService();
+  // ForegroundService().startForegroundServices();
 
   if (notificationGeneral) {
     // setup the background task
@@ -160,7 +160,7 @@ class MyApp extends StatelessWidget {
       ),
       //theme: ThemeData.dark(),
       navigatorKey: navigatorKey,
-      home: WithForegroundTask(child: showWelcomeScreen ? WelcomeView() : ScaffoldView()),
+      home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
     );
   }
 }
@@ -205,12 +205,12 @@ class _ScaffoldViewState extends State<ScaffoldView> {
   }
 
   // cancel networt connection subscription
-  @override
+  /*@override
   dispose() {
     super.dispose();
 
     //_connectivitySubscription.cancel();
-  }
+  }*/
 
 
   void listenNotifications() {
