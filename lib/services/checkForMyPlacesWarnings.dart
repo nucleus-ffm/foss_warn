@@ -16,10 +16,10 @@ Future<bool> checkForMyPlacesWarnings() async {
   print("check for warnings");
   int countMessages = 0;
   print("warnMessageList: " + warnMessageList.length.toString());
-  /*if (warnMessageList.isEmpty) {
+  if (warnMessageList.isEmpty) {
     print("Warninglist is empty");
-  }*/
-  await getData();
+    await getData();
+  }
   if (notificationSettingsImportance.isEmpty) {
     print("notificationSettingsImportanceList is empty");
     await loadNotificationSettingsImportanceList();
