@@ -40,8 +40,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     }
 
     void loadData() async {
-      checkForMyPlacesWarnings();
       data = await getData();
+      checkForMyPlacesWarnings();
       sortWarnings();
       loadNotificationSettingsImportanceList();
       setState(() {
