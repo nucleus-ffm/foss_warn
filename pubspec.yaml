@@ -34,8 +34,8 @@ dependencies:
   share_plus: ^3.0.4
   app_settings: ^4.1.1
   # android_alarm_manager_plus: ^2.0.4
-  connectivity_plus: ^2.2.0
-  flutter_foreground_task: ^3.5.5
+  # connectivity_plus: ^2.2.0
+  # flutter_foreground_task: ^3.5.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
