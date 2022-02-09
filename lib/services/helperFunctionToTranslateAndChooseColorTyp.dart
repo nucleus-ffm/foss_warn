@@ -110,7 +110,7 @@ Color chooseSeverityColor(String text) {
 
 String translateMessageSeverity(String text) {
   if (text == "Minor") {
-    return "gering";
+    return "Gering";
   } else if (text == "Moderate") {
     return "Mittel";
   } else if (text == "Extrem") {
