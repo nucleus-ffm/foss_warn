@@ -80,6 +80,9 @@ Future getData() async {
             urgency: data[i]["info"][0]["urgency"] ?? "?",
             severity: data[i]["info"][0]["severity"] ?? "?",
             certainty: data[i]["info"][0]["certainty"] ?? "?",
+            effective: data[i]["info"][0]["effective"] ?? "",
+            onset: data[i]["info"][0]["onset"] ?? "",
+            expires: data[i]["info"][0]["expires"] ?? "",
             headline: data[i]["info"][0]["headline"] ?? "?",
             description: data[i]["info"][0]["description"] ?? "",
             instruction: data[i]["info"][0]["instruction"] ?? "",
@@ -160,6 +163,9 @@ Future getData() async {
             urgency: data[i]["info"][0]["urgency"] ?? "?",
             severity: data[i]["info"][0]["severity"] ?? "?",
             certainty: data[i]["info"][0]["certainty"] ?? "?",
+            effective: data[i]["info"][0]["effective"] ?? "",
+            onset: data[i]["info"][0]["onset"] ?? "",
+            expires: data[i]["info"][0]["expires"] ?? "",
             headline: data[i]["info"][0]["headline"] ?? "?",
             description: data[i]["info"][0]["description"] ?? "",
             instruction: data[i]["info"][0]["instruction"] ?? "",
@@ -242,6 +248,8 @@ Future getData() async {
             urgency: data[i]["info"][0]["urgency"] ?? "?",
             severity: data[i]["info"][0]["severity"] ?? "?",
             certainty: data[i]["info"][0]["certainty"] ?? "?",
+            effective: data[i]["info"][0]["effective"] ?? "",
+            onset: data[i]["info"][0]["onset"] ?? "",
             expires: data[i]["info"][0]["expires"] ?? "",
             headline: data[i]["info"][0]["headline"] ?? "?",
             description: data[i]["info"][0]["description"] ?? "",
@@ -352,7 +360,7 @@ Future getData() async {
     }
 
     // GET from HWZ
-    print("get from DWD");
+    print("get from LHP");
     var urlLHPwarnings = Uri.parse(
         'https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
     response = await get(urlLHPwarnings);
