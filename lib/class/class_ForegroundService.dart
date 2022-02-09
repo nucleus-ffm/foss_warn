@@ -1,9 +1,8 @@
-import 'dart:isolate';
+// import 'dart:isolate';
+// import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+// import '../main.dart';
 
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-
-import '../main.dart';
-
+/*
 class ForegroundService {
 
   Future<void> initForegroundService() async {
@@ -14,7 +13,7 @@ class ForegroundService {
         channelName: 'FOSS Warn service notification',
         channelDescription: 'This notification is shown as long as FOSS Warn is running',
         channelImportance: NotificationChannelImportance.LOW,
-        priority: NotificationPriority.LOW,
+        priority: NotificationPriority.MIN,
         iconData: const NotificationIconData(
           resType: ResourceType.mipmap,
           resPrefix: ResourcePrefix.ic,
@@ -44,16 +43,21 @@ class ForegroundService {
     // You can save data using the saveData function.
     //await FlutterForegroundTask.saveData(key: 'customData', value: 'hello');
 
-    ReceivePort? receivePort;
-    if (await FlutterForegroundTask.isRunningService) {
-      receivePort = await FlutterForegroundTask.restartService();
-    } else {
-      receivePort = await FlutterForegroundTask.startService(
-        notificationTitle: 'FOSS Warn ist aktiv',
-        notificationText: 'letztes Updates: ',
-        callback: startCallback,
-      );
+    try {
+      ReceivePort? receivePort;
+      if (await FlutterForegroundTask.isRunningService) {
+        receivePort = await FlutterForegroundTask.restartService();
+      } else {
+        receivePort = await FlutterForegroundTask.startService(
+          notificationTitle: 'FOSS Warn ist aktiv',
+          notificationText: 'letztes Updates: ',
+          //callback: startCallback,
+        );
+      }
+    } catch (e) {
+      print("Error while start foreground service " + e.toString());
     }
+
 
     /*if (receivePort != null) {
       _receivePort = receivePort;
@@ -70,18 +74,23 @@ class ForegroundService {
 
   Future<bool> updateForegroundServices(String updateTime) async {
     // You can save data using the saveData function.
-    //await FlutterForegroundTask.saveData(key: 'customData', value: 'hello');
+    await FlutterForegroundTask.saveData(key: 'customData', value: 'hello');
 
-    ReceivePort? receivePort;
-    if (await FlutterForegroundTask.isRunningService) {
-      await FlutterForegroundTask.updateService(
-        notificationTitle: 'FOSS Warn ist aktiv',
-        notificationText: 'letztes Updates: ' + updateTime + " Uhr",
-        callback: startCallback,
-      );
-    } else {
-      startForegroundServices();
+    try {
+      ReceivePort? receivePort;
+      if (await FlutterForegroundTask.isRunningService) {
+        await FlutterForegroundTask.updateService(
+          notificationTitle: 'FOSS Warn ist aktiv',
+          notificationText: 'letztes Updates: ' + updateTime + " Uhr",
+          //callback: startCallback,
+        );
+      } else {
+        startForegroundServices();
+      }
+    } catch (e) {
+      print("Error while updating foreground service: " + e.toString());
     }
+
 
     /*if (receivePort != null) {
         _receivePort = receivePort;
@@ -95,4 +104,10 @@ class ForegroundService {
       } */
     return false;
   }
+
+    Future<bool> stopForegroundTask() async {
+      return await FlutterForegroundTask.stopService();
+    }
+
 }
+*/
