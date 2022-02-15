@@ -13,7 +13,7 @@ class NotificationService {
         android: AndroidNotificationDetails(
           'foss_warn_notifications_' + channel,
           "Warnstufe: " + translateMessageSeverity(channel),
-          'FOSS Warn notifications',
+          channelDescription: 'FOSS Warn notifications',
           groupKey: "FossWarn",
           importance: Importance.max,
           priority: Priority.max,
@@ -31,7 +31,8 @@ class NotificationService {
   static Future _statusNotificationsDetails() async {
     return NotificationDetails(
         android: AndroidNotificationDetails(
-          'foss_warn_status', 'Statusanzeige', 'Status der Hintergrund Updates',
+          'foss_warn_status', 'Statusanzeige',
+          channelDescription: 'Status der Hintergrund Updates',
           groupKey: "FossWarnStatus",
           importance: Importance.low,
           priority: Priority.min,
@@ -80,7 +81,8 @@ class NotificationService {
   static void showGroupNotification() async {
     NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
-          'foss_warn', 'Benachrichtigungen', 'Foss Warn Benachrichtigungen',
+          'foss_warn', 'Benachrichtigungen',
+          channelDescription: 'Foss Warn Benachrichtigungen',
           groupKey: "FossWarn",
           setAsGroupSummary: true,
           importance: Importance.max,
@@ -124,7 +126,7 @@ class NotificationService {
         ?.createNotificationChannel(AndroidNotificationChannel(
           'foss_warn_notifications_Minor', // id
           'Warnstufe: Gering', // title
-          'FOSS Warn notification', // description
+          description: 'FOSS Warn notification', // description
           importance: Importance.max,
         ));
 
@@ -134,7 +136,7 @@ class NotificationService {
         ?.createNotificationChannel(AndroidNotificationChannel(
           'foss_warn_notifications_Moderate', // id
           'Warnstufe: Mittel', // title
-          'FOSS Warn notification', // description
+          description: 'FOSS Warn notification', // description
           importance: Importance.max,
         ));
 
@@ -144,7 +146,7 @@ class NotificationService {
         ?.createNotificationChannel(AndroidNotificationChannel(
           'foss_warn_notifications_Severe', // id
           'Warnstufe: Schwer', // title
-          'FOSS Warn notification', // description
+          description: 'FOSS Warn notification', // description
           importance: Importance.max,
         ));
 
@@ -154,7 +156,7 @@ class NotificationService {
         ?.createNotificationChannel(AndroidNotificationChannel(
           'foss_warn_notifications_Extrem', // id
           'Warnstufe: Extrem', // title
-          'FOSS Warn notification', // description
+          description: 'FOSS Warn notification', // description
           importance: Importance.max,
         ));
 
