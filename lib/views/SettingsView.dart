@@ -32,7 +32,7 @@ bool showWelcomeScreen = true;
 String sortWarningsBy = "severity";
 bool updateAvailable = false;
 
-String versionNumber = "0.2.7"; // shown in the about view
+String versionNumber = "0.2.8"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
