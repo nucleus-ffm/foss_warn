@@ -7,7 +7,12 @@
 
 <p align="center">
 Get emergency alerts from warnung.bund.de <br>
-<a href="https://apt.izzysoft.de/fdroid/index/apk/de.nucleus.foss_warn" > <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/docs/IzzyOnDroid.png" height="60"/></a>
+<a href="https://apt.izzysoft.de/fdroid/index/apk/de.nucleus.foss_warn" > <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/docs/IzzyOnDroid.png" height="80"/></a> <a href="https://f-droid.org/packages/de.nucleus.foss_warn">
+    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="80">
+</a>
+
 
 </p>
 <p align="center">
@@ -19,10 +24,10 @@ Get emergency alerts from warnung.bund.de <br>
 An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK.
 
 ## Current state of development
-The app is currently in a BETA status. A group of nice people is currently putting the app through its paces. 
+The app is currently in a BETA status. It works quite well, but be aware of the known problems.
 
 ## TODO: 
- - [ ] do some code cleanup
+ - see [project board](https://github.com/nucleus-ffm/foss_warn/projects)
 
 ## Known problems:
 - the background service is sometimes stopped by the system. To start it again, just open FOSS Warn once. 
@@ -32,7 +37,7 @@ The app is currently in a BETA status. A group of nice people is currently putti
 ## FAQ
 <details>
 <summary>How to change the notification sound?</summary>
-Go to the app settings and press „Einstellungen öffnen” -> "Benachrichtigungen" -> "Expand" -> "Sound". 
+Go to the app settings and press „Einstellungen öffnen” -> "Warnstufe: {Warnstufe}" -> "Expand" -> "Sound". 
 </details>
 <details>
 <summary>How do I receive notifications?</summary>
