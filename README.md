@@ -7,7 +7,7 @@
 
 <p align="center">
 Get emergency alerts from warnung.bund.de <br>
-<a href="https://apt.izzysoft.de/fdroid/index/apk/de.nucleus.foss_warn" > <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/docs/IzzyOnDroid.png" height="80"/></a> <a href="https://f-droid.org/packages/de.nucleus.foss_warn">
+<a href="https://f-droid.org/packages/de.nucleus.foss_warn">
     <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
     height="80">
