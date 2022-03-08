@@ -31,8 +31,9 @@ double warningFontSize = 14;
 bool showWelcomeScreen = true;
 String sortWarningsBy = "severity";
 bool updateAvailable = false;
+bool showAllWarnings = false;
 
-String versionNumber = "0.2.8"; // shown in the about view
+String versionNumber = "0.2.9"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
@@ -332,6 +333,25 @@ class _SettingsState extends State<Settings> {
                   onChanged: (value) {
                     setState(() {
                       useDarkMode = value;
+                    });
+                    saveSettings();
+                    final updater = Provider.of<Update>(context, listen: false);
+                    updater.updateView();
+                  }),
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Text("Zeige alle Meldungen an"),
+              subtitle: Text(
+                  "Wenn aktiviert werden in der Ansicht 'Alle Meldungen' nicht nur die Meldungen für Deine Orte"
+                      " angezeigt, sondern alle verfügbaren Meldugnen aus"
+                      " ganz Deutschland"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: showAllWarnings,
+                  onChanged: (value) {
+                    setState(() {
+                      showAllWarnings = value;
                     });
                     saveSettings();
                     final updater = Provider.of<Update>(context, listen: false);

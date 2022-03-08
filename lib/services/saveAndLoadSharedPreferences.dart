@@ -65,11 +65,13 @@ saveSettings() async {
   preferences.setString("githubVersionNumber", githubVersionNumber.toString());
   preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
   preferences.setString("useDarkMode", useDarkMode.toString());
+  preferences.setString("showAllWarnings", showAllWarnings.toString());
   print("Settings saved");
 }
 
 loadSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
+
   if (preferences.containsKey("notificationGeneral")) {
     String temp = preferences.getString("notificationGeneral")!;
     if (temp == "true") {
@@ -160,6 +162,16 @@ loadSettings() async {
     }
   } else {
     useDarkMode = false;
+  }
+  if (preferences.containsKey("showAllWarnings")) {
+    String temp = preferences.getString("showAllWarnings")!;
+    if (temp == "true") {
+      showAllWarnings = true;
+    } else {
+      showAllWarnings = false;
+    }
+  } else {
+    showAllWarnings = false;
   }
 }
 
