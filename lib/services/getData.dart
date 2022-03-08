@@ -20,7 +20,7 @@ Future getData() async {
     tempWarnMessageList.clear();
     //print("create new Warn Message List");
 
-    await loadSettings(); //load setting for status notification
+    await loadSettings();
 
     // Get from MOWAS
     print("get from Mowas");
@@ -451,7 +451,7 @@ Future getData() async {
       sendStatusUpdateNotification(true);
     }
   } catch (e) {
-    print("Error: " + e.toString());
+    print("Error while trying to fetch data: " + e.toString());
     dwdStatus = false;
     mowasStatus = false;
     biwappStatus = false;
