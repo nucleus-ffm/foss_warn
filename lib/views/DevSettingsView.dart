@@ -117,6 +117,30 @@ class _DevSettingsState extends State<DevSettings> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
               ),
+
+              ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("Lösche Benachrichtigungsliste"),
+                subtitle: Text(
+                    "löscht die Liste über die bereits benachrichtigen Meldungen"),
+                onTap: () {
+                  print("delete alreadyNotifiedWarnings");
+                  alreadyNotifiedWarnings.clear();
+                  saveAlreadyNotifiedWarningsList();
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'Liste gelöscht',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
+
             ],
 
           ))
