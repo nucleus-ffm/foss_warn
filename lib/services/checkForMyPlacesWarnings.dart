@@ -17,7 +17,7 @@ Future<bool> checkForMyPlacesWarnings() async {
   int countMessages = 0;
   print("warnMessageList: " + warnMessageList.length.toString());
   if (warnMessageList.isEmpty) {
-    print("Warninglist is empty");
+    print("Warninglist is empty"); // list ist emty, get data first
     await getData();
   }
   if (notificationSettingsImportance.isEmpty) {
