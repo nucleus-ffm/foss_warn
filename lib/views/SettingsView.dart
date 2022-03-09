@@ -344,8 +344,8 @@ class _SettingsState extends State<Settings> {
               title: Text("Zeige alle Meldungen an"),
               subtitle: Text(
                   "Wenn aktiviert werden in der Ansicht 'Alle Meldungen' nicht nur die Meldungen für Deine Orte"
-                      " angezeigt, sondern alle verfügbaren Meldugnen aus"
-                      " ganz Deutschland"),
+                      " angezeigt, sondern alle verfügbaren Meldungen aus"
+                      " ganz Deutschland."),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: showAllWarnings,

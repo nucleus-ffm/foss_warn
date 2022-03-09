@@ -131,7 +131,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("Alles ruhig hier.",
+                                    Text("Alles ruhig hier",
                                         style: TextStyle(
                                             fontSize: 25, fontWeight: FontWeight.bold)),
                                     Icon(
@@ -139,9 +139,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                       size: 200,
                                       color: Colors.green,
                                     ),
-                                    Text("\n"),
                                     Text(
-                                        "Es liegen keine Warnungn vor Deine Orte vor.\n "),
+                                        "Es liegen keine Warnungen vor Deine Orte vor.\n "),
                                     Text("Meldung für andere Orte werden ausgeblendet"),
                                     SizedBox(height: 10),
                                     TextButton(
