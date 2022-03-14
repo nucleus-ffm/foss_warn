@@ -36,7 +36,7 @@ class _DevSettingsState extends State<DevSettings> {
                 subtitle:
                 Text("Führt einmalig manuell den Hintergrunddienst aus"),
                 onTap: () {
-                  checkForMyPlacesWarnings();
+                  checkForMyPlacesWarnings(false);
                   bool thereIsNoWarning = true;
                   for (Place myPlace in myPlaceList) {
                     //check if there are warning and if it they are important enough
