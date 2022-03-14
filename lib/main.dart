@@ -111,6 +111,14 @@ bool dwdStatus = false;
 bool dwdParseStatus = false;
 bool lhpStatus = false;
 bool lhpParseStatus = false;
+
+// ETags to check if something change serverside to saved data
+String mowasEtag = "";
+String biwappEtag = "";
+String katwarnEtag = "";
+String dwdEtag = "";
+String lhpEtag = "";
+
 //count number von warnings
 int mowasMessages = 0;
 int katwarnMessages = 0;

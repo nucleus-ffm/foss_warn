@@ -11,7 +11,7 @@ import 'saveAndLoadSharedPreferences.dart';
 
 import 'package:http/http.dart';
 
-Future getData() async {
+Future getData(bool useEtag) async {
   try {
     Response response; //response var for get request
     var data; //var for response data
@@ -21,18 +21,30 @@ Future getData() async {
     //print("create new Warn Message List");
 
     await loadSettings();
+    await loadEtags();
 
     // Get from MOWAS
     print("get from Mowas");
     var urlMowas =
         Uri.parse('https://warnung.bund.de/bbk.mowas/gefahrendurchsagen.json');
-    response = await get(urlMowas);
+
+    if (useEtag) {
+      response = await get(urlMowas, headers: {'If-None-Match': mowasEtag});
+    } else {
+      response = await get(urlMowas);
+    }
+
     //print("Response status: " + response.statusCode.toString());
     //check response code 200 -> success
     if (response.statusCode == 200) {
       data = jsonDecode(utf8.decode(response.bodyBytes));
       //update status and count messages
       mowasStatus = true;
+      if (response.headers["etag"] != null) {
+        mowasEtag = (response.headers["etag"])!;
+      } else {
+        print("Error with Etag: " + response.headers.toString());
+      }
       mowasMessages = data.length;
 
       try {
@@ -100,9 +112,14 @@ Future getData() async {
         print("Error while paring mowas data: " + e.toString());
         mowasParseStatus = false;
       }
+    } else if (response.statusCode == 304) {
+      // nothing changed
+      print("no change for mowas");
+      mowasStatus = true;
+      mowasParseStatus = true;
     } else {
       //something went wrong
-      print("can not get mowas data");
+      print("can not get mowas data" + response.statusCode.toString());
       mowasStatus = false;
     }
 
@@ -110,10 +127,21 @@ Future getData() async {
     print("get from Katwarn");
     var urlKatwarn =
         Uri.parse('https://warnung.bund.de/bbk.katwarn/warnmeldungen.json');
+    if (useEtag) {
+      response = await get(urlKatwarn, headers: {'If-None-Match': katwarnEtag});
+    } else {
+      response = await get(urlKatwarn);
+    }
     response = await get(urlKatwarn);
     //print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       data = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.headers["etag"] != null) {
+        katwarnEtag = (response.headers["etag"])!;
+      } else {
+        print("Error with Etag: " + response.headers.toString());
+      }
+
       //update status und count messages
       katwarnStatus = true;
       katwarnMessages = data.length;
@@ -183,6 +211,11 @@ Future getData() async {
         print("Errror wile parsing katwarn Data: " + e.toString());
         katwarnParseStatus = false;
       }
+    } else if (response.statusCode == 304) {
+      // nothing changed
+      print("no change for katwarn");
+      katwarnStatus = true;
+      katwarnParseStatus = true;
     } else {
       //something went wrong
       print("can not get Katwarn data");
@@ -197,6 +230,12 @@ Future getData() async {
     //print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       data = jsonDecode(utf8.decode(response.bodyBytes));
+      // store etag
+      if (response.headers["etag"] != null) {
+        biwappEtag = (response.headers["etag"])!;
+      } else {
+        print("Error with Etag: " + response.headers.toString());
+      }
       //check status and count messages
       biwappStatus = true;
       biwappMessages = data.length;
@@ -205,7 +244,7 @@ Future getData() async {
         biwappParseStatus = true;
         // parse Json and create WarnMessage class instances from it
         for (var i = 0; i < data.length; i++) {
-          print("[get biwapp data] i= $i länge= ${data.length}");
+          //print("[get biwapp data] i= $i länge= ${data.length}");
 
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
@@ -254,7 +293,8 @@ Future getData() async {
             headline: data[i]["info"][0]["headline"] ?? "?",
             description: data[i]["info"][0]["description"] ?? "",
             instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][0]["value"] ?? "?", // different to others ["parameter"][0]
+            publisher: data[i]["info"][0]["parameter"][0]["value"] ??
+                "?", // different to others ["parameter"][0]
             contact: data[i]["info"][0]["contact"] ?? "",
             web: data[i]["info"][0]["web"] ?? "",
             areaList: generateAreaList(i),
@@ -268,8 +308,13 @@ Future getData() async {
         print("Error while parsing biwapp data: " + e.toString());
         biwappParseStatus = false;
       }
+    } else if (response.statusCode == 304) {
+      // nothing changed
+      biwappStatus = true;
+      biwappParseStatus = true;
     } else {
       //something went wrong
+      print("no change for biwapp");
       print("can not get biwwapp data");
       biwappStatus = false;
     }
@@ -278,13 +323,25 @@ Future getData() async {
     print("get from DWD");
     var urlDWDwarnings = Uri.parse(
         'https://warnung.bund.de/bbk.dwd/unwetter.json'); //https://s3.eu-central-1.amazonaws.com/app-prod-static.warnwetter.de/v16/gemeinde_warnings.json
-    response = await get(urlDWDwarnings);
+
+    if (useEtag) {
+      response = await get(urlDWDwarnings, headers: {'If-None-Match': dwdEtag});
+    } else {
+      response = await get(urlDWDwarnings);
+    }
+
     //print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       //updates status
       dwdStatus = true;
 
       data = jsonDecode(utf8.decode(response.bodyBytes));
+      //store etag
+      if (response.headers["etag"] != null) {
+        dwdEtag = (response.headers["etag"])!;
+      } else {
+        print("Error with Etag: " + response.headers.toString());
+      }
 
       //count messages
       dwdMessages = data.length; //TODO: check if this works
@@ -353,6 +410,11 @@ Future getData() async {
         print("Error while parsing DWD Data: " + e.toString());
         dwdParseStatus = false;
       }
+    } else if (response.statusCode == 304) {
+      // nothing changed
+      print("no change for dwd");
+      dwdStatus = true;
+      dwdParseStatus = true;
     } else {
       //something went wrong
       print("can not get DWD data");
@@ -361,15 +423,24 @@ Future getData() async {
 
     // GET from HWZ
     print("get from LHP");
-    var urlLHPwarnings = Uri.parse(
-        'https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
-    response = await get(urlLHPwarnings);
+    var urlLHPwarnings =
+        Uri.parse('https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
+    if (useEtag) {
+      response = await get(urlLHPwarnings, headers: {'If-None-Match': lhpEtag});
+    } else {
+      response = await get(urlLHPwarnings);
+    }
     //print("Response status: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       //updates status
       lhpStatus = true;
 
       data = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.headers["etag"] != null) {
+        lhpEtag = (response.headers["etag"])!;
+      } else {
+        print("Error with Etag: " + response.headers.toString());
+      }
 
       //count messages
       lhpMessages = data.length; //TODO: check if this works
@@ -380,14 +451,14 @@ Future getData() async {
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
             for (var j = 0;
-            j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
-            j++) {
+                j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+                j++) {
               Geocode tempGeocode =
-              Geocode(geocodeName: "", geocodeNumber: ""); //init
+                  Geocode(geocodeName: "", geocodeNumber: ""); //init
               tempGeocode.geocodeName =
-              data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
+                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
               tempGeocode.geocodeNumber =
-              data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -438,6 +509,11 @@ Future getData() async {
         print("Error while parsing LHP Data: " + e.toString());
         lhpParseStatus = false;
       }
+    } else if (response.statusCode == 304) {
+      // nothing changed
+      print("no change for lhp");
+      lhpStatus = true;
+      lhpParseStatus = true;
     } else {
       //something went wrong
       print("can not get LHP data");
@@ -461,5 +537,6 @@ Future getData() async {
       sendStatusUpdateNotification(false);
     }
   }
+  saveEtags();
   return "";
 }

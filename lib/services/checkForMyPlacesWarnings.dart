@@ -11,14 +11,14 @@ import 'listHandler.dart';
 import 'markWarningsAsNotified.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
-Future<bool> checkForMyPlacesWarnings() async {
+Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
   bool returnValue = true;
   print("check for warnings");
   int countMessages = 0;
   print("warnMessageList: " + warnMessageList.length.toString());
   if (warnMessageList.isEmpty) {
     print("Warninglist is empty"); // list ist emty, get data first
-    await getData();
+    await getData(useEtag);
   }
   if (notificationSettingsImportance.isEmpty) {
     print("notificationSettingsImportanceList is empty");

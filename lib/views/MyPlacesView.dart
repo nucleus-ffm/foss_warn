@@ -30,7 +30,7 @@ class _MyPlacesState extends State<MyPlaces> {
 
   load() async {
     await loadMyPlacesList();
-    await getData();
+    await getData(false);
     setState(() {
       loading = false;
     });

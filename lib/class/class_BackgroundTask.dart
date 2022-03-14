@@ -11,7 +11,7 @@ void callbackDispatcher() {
     switch (task) {
       case "call APIs":
       // load warnings in Background and notify if necessary
-        response = await checkForMyPlacesWarnings();
+        response = await checkForMyPlacesWarnings(true);
         print("Call APIs executed");
         break;
     }

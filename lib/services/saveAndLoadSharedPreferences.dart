@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../class/class_Place.dart';
 import 'listHandler.dart';
+import '../main.dart';
 
 //My Places
 saveMyPlacesList() async {
@@ -67,6 +68,40 @@ saveSettings() async {
   preferences.setString("useDarkMode", useDarkMode.toString());
   preferences.setString("showAllWarnings", showAllWarnings.toString());
   print("Settings saved");
+}
+
+saveEtags() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("mowasEtag", mowasEtag);
+  preferences.setString("biwappEtag", biwappEtag);
+  preferences.setString("katwarnEtag", katwarnEtag);
+  preferences.setString("dwdEtag", dwdEtag);
+  preferences.setString("lhpEtag", lhpEtag);
+  print("etags saved");
+}
+
+loadEtags() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  if (preferences.containsKey("mowasEtag")) {
+    String temp = preferences.getString("mowasEtag")!;
+    mowasEtag = temp;
+  }
+  if (preferences.containsKey("biwappEtag")) {
+    String temp = preferences.getString("biwappEtag")!;
+    biwappEtag = temp;
+  }
+  if (preferences.containsKey("katwarnEtag")) {
+    String temp = preferences.getString("katwarnEtag")!;
+    katwarnEtag = temp;
+  }
+  if (preferences.containsKey("dwdEtag")) {
+    String temp = preferences.getString("dwdEtag")!;
+    dwdEtag = temp;
+  }
+  if (preferences.containsKey("lhpEtag")) {
+    String temp = preferences.getString("lhpEtag")!;
+    lhpEtag = temp;
+  }
 }
 
 loadSettings() async {
