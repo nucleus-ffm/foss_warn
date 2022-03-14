@@ -12,7 +12,7 @@ sendStatusUpdateNotification(bool success) async {
   String formattedHourNext = "";
   String formattedMinuteNow = "";
   String formattedHourNow = "";
-  if (now.minute + frequencyOfAPICall > 60) {
+  if (now.minute + frequencyOfAPICall >= 60) {
     print(
         "Min + next " + (now.minute + frequencyOfAPICall.toInt()).toString());
     hourToAdd = (now.minute + frequencyOfAPICall.toInt()) ~/ 60;
