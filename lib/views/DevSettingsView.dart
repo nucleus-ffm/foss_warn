@@ -6,6 +6,8 @@ import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 
+import '../class/class_alarmManager.dart';
+
 
 class DevSettings extends StatefulWidget {
   const DevSettings({Key? key}) : super(key: key);
@@ -76,8 +78,37 @@ class _DevSettingsState extends State<DevSettings> {
                   print("starte Hintergrunddienst neu");
                   try {
                     //delete all background tasks and create new one
+                    AlarmManager().cancelBackgroundTask();
+                    AlarmManager().registerBackgroundTask();
+                  } catch (e) {
+                    print("Something went wrong while restart background task: " +
+                        e.toString());
+                  }
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'Hintergrunddienst neugestartet',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
+              ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("Hintergrunddienst testen"),
+                subtitle: Text(
+                    "testet den Hintergrunddienst"),
+                onTap: () {
+                  print("starte Hintergrunddienst neu");
+                  try {
+                    //delete all background tasks and create new one
                     BackgroundTaskManager().cancelBackgroundTask();
                     BackgroundTaskManager().registerBackgroundTask();
+                    BackgroundTaskManager().cancelBackgroundTask();
                   } catch (e) {
                     print("Something went wrong while restart background task: " +
                         e.toString());

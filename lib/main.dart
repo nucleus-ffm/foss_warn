@@ -2,6 +2,7 @@
 // import 'dart:isolate';
 
 import 'package:flutter/material.dart';
+import 'package:foss_warn/class/class_alarmManager.dart';
 // import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,7 @@ import 'views/WelcomeView.dart';
 
 import 'class/class_NotificationService.dart';
 import 'class/class_BackgroundTask.dart';
-// import 'class/class_ForegroundService.dart';
+import 'class/class_ForegroundService.dart';
 
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
@@ -68,20 +69,24 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
 
-  // workmanager stuff
-  BackgroundTaskManager().initialize();
+
   loadReadWarningsList(); // load the list with ids of read warnings
   await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
 
-  // ForegroundService stuff
-  // ForegroundService().initForegroundService();
-  // ForegroundService().startForegroundServices();
-
   if (notificationGeneral) {
+    // ForegroundService stuff
+    ForegroundService().initForegroundService();
+
     // setup the background task
     print("Background notification enabled");
+    // workmanager stuff
+    // BackgroundTaskManager().initialize();
     BackgroundTaskManager().cancelBackgroundTask();
-    BackgroundTaskManager().registerBackgroundTaskWithDelay();
+    // BackgroundTaskManager().registerBackgroundTaskWithDelay();
+
+    // AlarmManager().cancelBackgroundTask(); // just for debug
+    AlarmManager().initialize();
+    AlarmManager().registerBackgroundTask();
 
   } else {
     // the user do not want the background task

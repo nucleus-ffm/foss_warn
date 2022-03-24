@@ -16,8 +16,8 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
   print("check for warnings");
   int countMessages = 0;
   print("warnMessageList: " + warnMessageList.length.toString());
-  if (warnMessageList.isEmpty) {
-    print("Warninglist is empty"); // list ist emty, get data first
+  if (warnMessageList.isEmpty || useEtag) {
+    print("Warninglist is empty or we ware in Background mode"); // list ist emty, get data first
     await getData(useEtag);
   }
   if (notificationSettingsImportance.isEmpty) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/class/class_BackgroundTask.dart';
+//import 'package:foss_warn/class/class_BackgroundTask.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
+import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/checkForUpdates.dart';
 import 'package:foss_warn/services/updateProvider.dart';
 import 'package:foss_warn/views/DevSettingsView.dart';
@@ -24,7 +25,7 @@ bool notificationGeneral = true;
 bool showStatusNotification = true;
 bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
 bool useDarkMode = false;
-double frequencyOfAPICall = 15;
+double frequencyOfAPICall = 1;
 String dropdownValue = '';
 int startScreen = 0;
 double warningFontSize = 14;
@@ -33,7 +34,7 @@ String sortWarningsBy = "severity";
 bool updateAvailable = false;
 bool showAllWarnings = false;
 
-String versionNumber = "0.2.9.1"; // shown in the about view
+String versionNumber = "0.2.9.2"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
@@ -124,10 +125,14 @@ class _SettingsState extends State<Settings> {
                       saveSettings();
                     });
                     if (notificationGeneral) {
-                      BackgroundTaskManager().cancelBackgroundTask();
-                      BackgroundTaskManager().registerBackgroundTask();
+                      /*BackgroundTaskManager()
+                                      .cancelBackgroundTask();
+                                  BackgroundTaskManager()
+                                      .registerBackgroundTaskWithDelay(); */
+                      AlarmManager().cancelBackgroundTask();
+                      AlarmManager().registerBackgroundTask();
                     } else {
-                      BackgroundTaskManager().cancelBackgroundTask();
+                      AlarmManager().cancelBackgroundTask();
                       setState(() {
                         notificationWithExtreme = false;
                         notificationWithSevere = false;
@@ -156,8 +161,12 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         notificationWithExtreme = value;
                         saveNotificationSettingsImportanceList();
-                        BackgroundTaskManager().cancelBackgroundTask();
-                        BackgroundTaskManager().registerBackgroundTask();
+                        /*BackgroundTaskManager()
+                                      .cancelBackgroundTask();
+                                  BackgroundTaskManager()
+                                      .registerBackgroundTaskWithDelay(); */
+                        AlarmManager().cancelBackgroundTask();
+                        AlarmManager().registerBackgroundTask();
                       });
                     } else {
                       print("Background notification is disabled");
@@ -175,8 +184,12 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         notificationWithSevere = value;
                         saveNotificationSettingsImportanceList();
-                        BackgroundTaskManager().cancelBackgroundTask();
-                        BackgroundTaskManager().registerBackgroundTask();
+                        /*BackgroundTaskManager()
+                                      .cancelBackgroundTask();
+                                  BackgroundTaskManager()
+                                      .registerBackgroundTaskWithDelay(); */
+                        AlarmManager().cancelBackgroundTask();
+                        AlarmManager().registerBackgroundTask();
                       });
                     } else {
                       print("Background notification is disabled");
@@ -194,8 +207,12 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         notificationWithModerate = value;
                         saveNotificationSettingsImportanceList();
-                        BackgroundTaskManager().cancelBackgroundTask();
-                        BackgroundTaskManager().registerBackgroundTask();
+                        /*BackgroundTaskManager()
+                                      .cancelBackgroundTask();
+                                  BackgroundTaskManager()
+                                      .registerBackgroundTaskWithDelay(); */
+                        AlarmManager().cancelBackgroundTask();
+                        AlarmManager().registerBackgroundTask();
                       });
                     } else {
                       print("Background notification is disabled");
@@ -213,8 +230,12 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         notificationWithMinor = value;
                         saveNotificationSettingsImportanceList();
-                        BackgroundTaskManager().cancelBackgroundTask();
-                        BackgroundTaskManager().registerBackgroundTask();
+                        /*BackgroundTaskManager()
+                                      .cancelBackgroundTask();
+                                  BackgroundTaskManager()
+                                      .registerBackgroundTaskWithDelay(); */
+                        AlarmManager().cancelBackgroundTask();
+                        AlarmManager().registerBackgroundTask();
                       });
                     } else {
                       print("Background notification is disabled");
@@ -247,8 +268,8 @@ class _SettingsState extends State<Settings> {
                                 value: frequencyOfAPICall,
                                 activeColor:
                                     Theme.of(context).colorScheme.secondary,
-                                min: 15,
-                                max: 300,
+                                min: 1,
+                                max: 800,
                                 onChanged: (value) {
                                   setState(() {
                                     frequencyOfAPICall = value.roundToDouble();
@@ -256,10 +277,12 @@ class _SettingsState extends State<Settings> {
                                 },
                                 onChangeEnd: (value) {
                                   saveSettings();
-                                  BackgroundTaskManager()
+                                  /*BackgroundTaskManager()
                                       .cancelBackgroundTask();
                                   BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay();
+                                      .registerBackgroundTaskWithDelay(); */
+                                  AlarmManager().cancelBackgroundTask();
+                                  AlarmManager().registerBackgroundTask();
                                 },
                               ),
                             ),

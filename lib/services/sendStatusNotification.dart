@@ -56,7 +56,7 @@ sendStatusUpdateNotification(bool success) async {
       formattedHourNext + ":" + formattedMinuteNext;
 
   if(success) {
-
+    print("updating status notification...");
     // ForegroundService().updateForegroundServices(nowFormattedDate);
     await NotificationService.showStatusNotification(
       id: 1,
