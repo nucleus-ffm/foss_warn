@@ -19,9 +19,12 @@ class ForegroundService {
           context: navigatorKey.currentContext!,
           builder: (context) {
             return AlertDialog(
-                title: Text('Permissions needed'),
+                title: Text('Erlaubnis erforderlich'),
                 content: Text(
-                    'Shortly the OS will ask you for permission to execute this app in the background. This is required in order to receive chat messages when the app is not in the foreground.'),
+                    'Ihr System wird gleich fragen, ob FOSS Warn'
+                        ' im Hintergrund ausgeführt werden darf.'
+                        ' Diese Berechtigung wird benötigt, um '
+                        'im Hintergrund Warnmeldungen zu empfangen.'),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context, 'OK'),
@@ -37,7 +40,7 @@ class ForegroundService {
       enableWifiLock: true,
       notificationText: "FOSS Warn läuft im Hintergrund",
       notificationImportance: AndroidNotificationImportance.Default,
-      notificationIcon: AndroidResource(name: 'ic_notification_icon', defType: 'drawable'), // Default is ic_launcher from folder mipmap
+      notificationIcon: AndroidResource(name: 'res_notification_icon', defType: 'drawable'), // Default is ic_launcher from folder mipmap
     );
 
     hasPermissions = await FlutterBackground.initialize(androidConfig: androidConfig);
