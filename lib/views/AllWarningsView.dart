@@ -140,8 +140,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                       color: Colors.green,
                                     ),
                                     Text(
-                                        "Es liegen keine Warnungen vor Deine Orte vor.\n "),
-                                    Text("Meldungen für andere Orte werden Ausgeblendet."),
+                                        "Es liegen keine Warnungen für Deine Orte vor.\n "),
+                                    Text("Meldungen für andere Orte werden ausgeblendet."),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
