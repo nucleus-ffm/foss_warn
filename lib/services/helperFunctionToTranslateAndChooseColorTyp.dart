@@ -113,7 +113,7 @@ String translateMessageSeverity(String text) {
     return "Gering";
   } else if (text == "Moderate") {
     return "Mittel";
-  } else if (text == "Extrem") {
+  } else if (text == "Extreme") {
     return "Extrem";
   } else if (text == "Severe") {
     return "Schwer";
