@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 //import 'package:connectivity_plus/connectivity_plus.dart';
 
-
 import 'widgets/SourceStatusWidget.dart';
 
 import 'views/MyPlacesView.dart';
@@ -69,7 +68,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
 
-
   loadReadWarningsList(); // load the list with ids of read warnings
   await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
 
@@ -87,7 +85,6 @@ void main() async {
     // AlarmManager().cancelBackgroundTask(); // just for debug
     AlarmManager().initialize();
     AlarmManager().registerBackgroundTask();
-
   } else {
     // the user do not want the background task
     print("Background notification disabled");
@@ -140,37 +137,48 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FOSS Warn',
-      theme: useDarkMode? ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSwatch(
-            accentColor: Colors.green[700],
-            brightness: Brightness.dark,
-        ),
-        textTheme: const TextTheme(
-            headline1: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-            headline2: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-            //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-          headline3: TextStyle(fontSize: 14.0, color: Colors.white)
-        ),
-      ) :  ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: Colors.green[700],
-          brightness: Brightness.light,
-        ),
-        textTheme: const TextTheme(
-            headline1: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
-            headline2: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-            //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-            headline3: TextStyle(fontSize: 14.0, color: Colors.white),
-        ),
-      ),
+      theme: useDarkMode
+          ? ThemeData(
+              primarySwatch: Colors.blue,
+              brightness: Brightness.dark,
+              colorScheme: ColorScheme.fromSwatch(
+                accentColor: Colors.green[700],
+                brightness: Brightness.dark,
+              ),
+              textTheme: const TextTheme(
+                  headline1: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  headline2: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                  bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
+                  headline3: TextStyle(fontSize: 14.0, color: Colors.white)),
+            )
+          : ThemeData(
+              primarySwatch: Colors.blue,
+              brightness: Brightness.light,
+              colorScheme: ColorScheme.fromSwatch(
+                accentColor: Colors.green[700],
+                brightness: Brightness.light,
+              ),
+              textTheme: const TextTheme(
+                headline1: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                headline2: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+                bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
+                headline3: TextStyle(fontSize: 14.0, color: Colors.white),
+              ),
+            ),
       //theme: ThemeData.dark(),
       navigatorKey: navigatorKey,
       home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
@@ -225,7 +233,6 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     //_connectivitySubscription.cancel();
   }*/
 
-
   void listenNotifications() {
     NotificationService.onNotification.stream.listen((onClickedNotification));
   }
@@ -246,6 +253,18 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [
+              IconButton(
+                icon: Icon(Icons.info_outline),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return StatusWidget();
+                    },
+                  );
+                },
+
+            ),
             IconButton(
               icon: Icon(Icons.sort),
               onPressed: () {
@@ -278,17 +297,6 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               icon: Icon(Icons.mark_chat_read),
               tooltip: "Markiere alle Warnungen als gelesen",
             ),
-            IconButton(
-              icon: Icon(Icons.info_outline),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return StatusWidget();
-                  },
-                );
-              },
-            )
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
