@@ -25,7 +25,7 @@ bool notificationGeneral = true;
 bool showStatusNotification = true;
 bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
 bool useDarkMode = false;
-double frequencyOfAPICall = 1;
+double frequencyOfAPICall = 15;
 String dropdownValue = '';
 int startScreen = 0;
 double warningFontSize = 14;
@@ -34,7 +34,7 @@ String sortWarningsBy = "severity";
 bool updateAvailable = false;
 bool showAllWarnings = false;
 
-String versionNumber = "0.2.9.2"; // shown in the about view
+String versionNumber = "0.2.10"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
@@ -252,7 +252,7 @@ class _SettingsState extends State<Settings> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Minimalfrequenz der Hintergrunddatenabfrage:"),
+                        Text("Frequenz der Hintergrunddatenabfrage:"),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
