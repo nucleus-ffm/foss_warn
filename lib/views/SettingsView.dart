@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:app_settings/app_settings.dart';
 
 import 'aboutView.dart';
+import 'NotificationSettingsView.dart';
 import 'WelcomeView.dart';
 
 import '../services/saveAndLoadSharedPreferences.dart';
@@ -23,6 +24,8 @@ bool notificationWithModerate = true;
 bool notificationWithMinor = false;
 bool notificationGeneral = true;
 bool showStatusNotification = true;
+Map<String, bool> notificationEventsSettings  = new Map();
+
 bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
 bool useDarkMode = false;
 double frequencyOfAPICall = 15;
@@ -34,7 +37,7 @@ String sortWarningsBy = "severity";
 bool updateAvailable = false;
 bool showAllWarnings = false;
 
-String versionNumber = "0.2.10"; // shown in the about view
+String versionNumber = "0.3.0"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
@@ -91,6 +94,19 @@ class _SettingsState extends State<Settings> {
                 AppSettings.openNotificationSettings();
               },
             ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Text("Benachrichtigungseinstellungen"),
+              subtitle:
+              Text("Öffnet die Einstellungen für was eine Benachrichtigung"
+                  " gesendet werden soll"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationSettingsView()),
+                );
+              },
+            ),
 
             ListTile(
                 contentPadding: settingsTileListPadding,
@@ -145,102 +161,6 @@ class _SettingsState extends State<Settings> {
             ),
             SizedBox(
               height: 10,
-            ),
-            Text(
-              "Benachrichtigen bei:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Text("extremen Meldungen"),
-              trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                  value: notificationWithExtreme,
-                  onChanged: (value) {
-                    if (notificationGeneral) {
-                      setState(() {
-                        notificationWithExtreme = value;
-                        saveNotificationSettingsImportanceList();
-                        /*BackgroundTaskManager()
-                                      .cancelBackgroundTask();
-                                  BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay(); */
-                        AlarmManager().cancelBackgroundTask();
-                        AlarmManager().registerBackgroundTask();
-                      });
-                    } else {
-                      print("Background notification is disabled");
-                    }
-                  }),
-            ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Text("schweren Meldungen"),
-              trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                  value: notificationWithSevere,
-                  onChanged: (value) {
-                    if (notificationGeneral) {
-                      setState(() {
-                        notificationWithSevere = value;
-                        saveNotificationSettingsImportanceList();
-                        /*BackgroundTaskManager()
-                                      .cancelBackgroundTask();
-                                  BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay(); */
-                        AlarmManager().cancelBackgroundTask();
-                        AlarmManager().registerBackgroundTask();
-                      });
-                    } else {
-                      print("Background notification is disabled");
-                    }
-                  }),
-            ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Text("moderaten Meldungen"),
-              trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                  value: notificationWithModerate,
-                  onChanged: (value) {
-                    if (notificationGeneral) {
-                      setState(() {
-                        notificationWithModerate = value;
-                        saveNotificationSettingsImportanceList();
-                        /*BackgroundTaskManager()
-                                      .cancelBackgroundTask();
-                                  BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay(); */
-                        AlarmManager().cancelBackgroundTask();
-                        AlarmManager().registerBackgroundTask();
-                      });
-                    } else {
-                      print("Background notification is disabled");
-                    }
-                  }),
-            ),
-            ListTile(
-              contentPadding: settingsTileListPadding,
-              title: Text("geringfügigen Meldungen"),
-              trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                  value: notificationWithMinor,
-                  onChanged: (value) {
-                    if (notificationGeneral) {
-                      setState(() {
-                        notificationWithMinor = value;
-                        saveNotificationSettingsImportanceList();
-                        /*BackgroundTaskManager()
-                                      .cancelBackgroundTask();
-                                  BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay(); */
-                        AlarmManager().cancelBackgroundTask();
-                        AlarmManager().registerBackgroundTask();
-                      });
-                    } else {
-                      print("Background notification is disabled");
-                    }
-                  }),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
