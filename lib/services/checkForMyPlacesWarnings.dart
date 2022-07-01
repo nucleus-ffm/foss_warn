@@ -1,3 +1,5 @@
+import 'package:foss_warn/views/SettingsView.dart';
+
 import '../class/class_WarnMessage.dart';
 import '../class/class_Place.dart';
 import '../class/class_Geocode.dart';
@@ -11,6 +13,8 @@ import 'listHandler.dart';
 import 'markWarningsAsNotified.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
+/// check all warnings if one of them is of a myPlace and if yes send a notification
+/// returns true if there are/is a warning - false if not
 Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
   bool returnValue = true;
   print("check for warnings");
@@ -38,7 +42,7 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
     await loadAlreadyNotifiedWarningsList();
   }
 
-  sendNotification(
+  void sendNotification(
       int id, String title, String body, String payload, String channel) async {
     await NotificationService.showNotification(
       id: id,
@@ -100,12 +104,14 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
 
       for (WarnMessage myWarnMessage in myPlace.warnings) {
         if (!readWarnings.contains(myWarnMessage.identifier) &&
-            !alreadyNotifiedWarnings.contains(myWarnMessage.identifier)) {
+            !alreadyNotifiedWarnings.contains(myWarnMessage.identifier) &&
+            checkIfEventShouldBeNotified(myWarnMessage.event)
+        ) {
           // Alert is not already read or shown as notification
           print("markOneWarningAsNotified ");
           markOneWarningAsNotified(myWarnMessage);
           clearWarningAsNotifiedList();
-
+        
           sendNotification(
               // generate from the warning in the List the notification id
               // because the warning identifier is no int, we have to generate a hash code
@@ -114,7 +120,6 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
               "${myWarnMessage.headline}",
               myPlace.name,
               myWarnMessage.severity);
-
         }
       }
       //return true - there are warnings. the return value isn't use yet?
@@ -125,4 +130,13 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
     }
   }
   return returnValue;
+}
+
+bool checkIfEventShouldBeNotified(String event) {
+  if(notificationEventsSettings[event] != null) {
+    print(event + " " + notificationEventsSettings[event]!.toString());
+    return notificationEventsSettings[event]!;
+  } else {
+    return true;
+  }
 }
