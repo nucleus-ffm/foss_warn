@@ -1,4 +1,4 @@
-import 'package:workmanager/workmanager.dart';
+/*import 'package:workmanager/workmanager.dart';
 
 import 'package:foss_warn/views/SettingsView.dart';
 import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
@@ -58,4 +58,4 @@ class BackgroundTaskManager {
         initialDelay: Duration(minutes: frequencyOfAPICall.toInt()));
   }
 
-}
+}*/
