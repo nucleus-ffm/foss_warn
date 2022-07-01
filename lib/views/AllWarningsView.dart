@@ -130,6 +130,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                 padding: const EdgeInsets.all(12.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text("Alles ruhig hier",
                                         style: TextStyle(
@@ -141,7 +142,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                     ),
                                     Text(
                                         "Es liegen keine Warnungen für Deine Orte vor.\n "),
-                                    Text("Meldungen für andere Orte werden ausgeblendet."),
+                                    Text("Meldungen für andere Orte werden ausgeblendet." ,
+                                      textAlign: TextAlign.center,),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
