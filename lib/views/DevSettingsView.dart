@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foss_warn/class/class_BackgroundTask.dart';
+// import 'package:foss_warn/class/class_BackgroundTask.dart';
 import 'package:foss_warn/class/class_Place.dart';
 import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/services/listHandler.dart';
@@ -106,9 +106,8 @@ class _DevSettingsState extends State<DevSettings> {
                   print("starte Hintergrunddienst neu");
                   try {
                     //delete all background tasks and create new one
-                    BackgroundTaskManager().cancelBackgroundTask();
-                    BackgroundTaskManager().registerBackgroundTask();
-                    BackgroundTaskManager().cancelBackgroundTask();
+                    // BackgroundTaskManager().cancelBackgroundTask();
+                    // BackgroundTaskManager().registerBackgroundTask();
                   } catch (e) {
                     print("Something went wrong while restart background task: " +
                         e.toString());
