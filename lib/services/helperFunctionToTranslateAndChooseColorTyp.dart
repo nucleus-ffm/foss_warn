@@ -107,8 +107,10 @@ Color chooseSeverityColor(String text) {
     return Colors.grey;
   }
 }
-
+/// translate the message Severity and return the german name
 String translateMessageSeverity(String text) {
+  // remove potential whitespace
+  text = text.trim();
   if (text == "Minor") {
     return "Gering";
   } else if (text == "Moderate") {
