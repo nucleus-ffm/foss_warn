@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:foss_warn/views/SettingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,6 +69,7 @@ saveSettings() async {
   preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
   preferences.setString("useDarkMode", useDarkMode.toString());
   preferences.setString("showAllWarnings", showAllWarnings.toString());
+  preferences.setString("notificationEventsSettings", jsonEncode(notificationEventsSettings));
   print("Settings saved");
 }
 
@@ -132,7 +135,7 @@ loadSettings() async {
   } else {
     showExtendedMetaData = false;
   }
-  if(preferences.containsKey("warningFontSize")) {
+  if (preferences.containsKey("warningFontSize")) {
     String temp = preferences.getString("warningFontSize")!;
     warningFontSize = double.parse(temp);
     print("warningFontSize: $warningFontSize");
@@ -150,7 +153,7 @@ loadSettings() async {
   } else {
     showWelcomeScreen = true;
   }
-  if(preferences.containsKey("sortWarningsBy")) {
+  if (preferences.containsKey("sortWarningsBy")) {
     String temp = preferences.getString("sortWarningsBy")!;
     sortWarningsBy = temp;
     //print("warningFontSize: $warningFontSize");
@@ -178,7 +181,7 @@ loadSettings() async {
   } else {
     updateAvailable = false;
   }
-  if(preferences.containsKey("githubVersionNumber")) {
+  if (preferences.containsKey("githubVersionNumber")) {
     String temp = preferences.getString("githubVersionNumber")!;
     githubVersionNumber = temp;
     //print("warningFontSize: $warningFontSize");
@@ -207,6 +210,10 @@ loadSettings() async {
     }
   } else {
     showAllWarnings = false;
+  }
+  if (preferences.containsKey("notificationEventsSettings")) {
+    String temp = preferences.getString("notificationEventsSettings")!;
+    notificationEventsSettings = Map<String, bool>.from(jsonDecode(temp));
   }
 }
 
