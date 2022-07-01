@@ -100,7 +100,8 @@ class _MyPlacesState extends State<MyPlaces> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text("Drücken Sie auf das Plus, um eigene Orte hinzuzufügen."),
+                      Text("Drücken Sie auf das Plus, um eigene Orte hinzuzufügen.",
+                        textAlign: TextAlign.center,),
                     ],
                   ),
 
