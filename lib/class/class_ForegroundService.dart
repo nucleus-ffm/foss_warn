@@ -1,17 +1,15 @@
 // import 'dart:isolate';
 // import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 // import '../main.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_background/flutter_background.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_background/flutter_background.dart';
+// import '../main.dart';
 
-import '../main.dart';
-
-
+/*
 class ForegroundService {
 
   Future<void> initForegroundService() async {
     print("init Foreground Service");
-
 
     var hasPermissions = await FlutterBackground.hasPermissions;
     if (!hasPermissions) {
@@ -74,7 +72,7 @@ class ForegroundService {
     await FlutterBackground.disableBackgroundExecution();
   }
 
-  /*
+
   Future<bool> updateForegroundServices(String updateTime) async {
     // You can save data using the saveData function.
     await FlutterForegroundTask.saveData(key: 'customData', value: 'hello');
@@ -111,5 +109,5 @@ class ForegroundService {
     Future<bool> stopForegroundTask() async {
       return await FlutterForegroundTask.stopService();
     }
-  */
 }
+ */

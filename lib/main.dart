@@ -16,8 +16,8 @@ import 'views/AllWarningsView.dart';
 import 'views/WelcomeView.dart';
 
 import 'class/class_NotificationService.dart';
-import 'class/class_BackgroundTask.dart';
-import 'class/class_ForegroundService.dart';
+// import 'class/class_BackgroundTask.dart';
+// import 'class/class_ForegroundService.dart';
 
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
@@ -72,14 +72,14 @@ void main() async {
   await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
 
   if (notificationGeneral) {
-    // ForegroundService stuff
-    ForegroundService().initForegroundService();
+    // ForegroundService stuff (not needed for now
+    //ForegroundService().initForegroundService();
 
     // setup the background task
     print("Background notification enabled");
     // workmanager stuff
     // BackgroundTaskManager().initialize();
-    BackgroundTaskManager().cancelBackgroundTask();
+    // BackgroundTaskManager().cancelBackgroundTask();
     // BackgroundTaskManager().registerBackgroundTaskWithDelay();
 
     // AlarmManager().cancelBackgroundTask(); // just for debug
