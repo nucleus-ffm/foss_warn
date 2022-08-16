@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/services/apiHandler.dart';
 import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/views/SettingsView.dart';
 import 'package:foss_warn/widgets/ConnectionErrorWidget.dart';
@@ -44,11 +45,19 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     }
 
     void loadData() async {
-      data = await getData(false);
+      print("[allWarningsView] Load Data");
+      if (showAllWarnings) {
+        // call (old) api with all warnings
+        data = await getData(false);
+      } else {
+        // call (new) api just for my places
+        data = await callAPI();
+      }
       checkForMyPlacesWarnings(false);
       sortWarnings();
       loadNotificationSettingsImportanceList();
       setState(() {
+        print("loading finished");
         loading = false;
       });
     }
@@ -76,8 +85,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         for (Area myArea in warnMessage.areaList) {
           for (Geocode myGeocode in myArea.geocodeList) {
             //print(name);
-            if (myPlaceList
-                .any((element) => element.name == myGeocode.geocodeName)) {
+            if (myPlaceList.any(
+                (element) => element.name == myGeocode.geocodeName || true)) {
               if (warningsForMyPlaces.contains(warnMessage)) {
                 // print("Warn Messsage already in List");
                 // warn messeage already in list from geocodename
@@ -98,18 +107,22 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         child: warnMessageList.isNotEmpty
             ? showAllWarnings // if warnings that are not in MyPlaces shown
                 ? SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
                     child: Column(children: [
-                    Container(
-                      child: ConnectionError(),
-                    ),
-                    ...warnMessageList
-                        .map((warnMessage) =>
-                            WarningWidget(warnMessage: warnMessage))
-                        .toList(),
-                  ]))
-                : loadOnlyWarningsForMyPlaces().isNotEmpty // check if there are warnings for myPlaces
+                      Container(
+                        child: ConnectionError(),
+                      ),
+                      ...warnMessageList
+                          .map((warnMessage) =>
+                              WarningWidget(warnMessage: warnMessage))
+                          .toList(),
+                    ]))
+                : loadOnlyWarningsForMyPlaces()
+                        .isNotEmpty // check if there are warnings for myPlaces
                     ? SingleChildScrollView(
-                        child: Column(children: [
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child:
+                            Column(mainAxisSize: MainAxisSize.max, children: [
                           Container(
                             child: ConnectionError(),
                           ),
@@ -119,7 +132,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                               .toList(),
                         ]),
                       )
-                    : Column( // else show a screen with
+                    : Column(
+                        // else show a screen with
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,7 +148,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                   children: [
                                     Text("Alles ruhig hier",
                                         style: TextStyle(
-                                            fontSize: 25, fontWeight: FontWeight.bold)),
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold)),
                                     Icon(
                                       Icons.check_circle_rounded,
                                       size: 200,
@@ -142,8 +157,10 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                     ),
                                     Text(
                                         "Es liegen keine Warnungen für Deine Orte vor.\n "),
-                                    Text("Meldungen für andere Orte werden ausgeblendet." ,
-                                      textAlign: TextAlign.center,),
+                                    Text(
+                                      "Meldungen für andere Orte werden ausgeblendet.",
+                                      textAlign: TextAlign.center,
+                                    ),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
@@ -156,8 +173,9 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       style: TextButton.styleFrom(
-                                          backgroundColor:
-                                          Theme.of(context).colorScheme.secondary),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
                                     )
                                   ],
                                 ),
@@ -178,39 +196,63 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Hier gibt es noch nichts zu sehen... ",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold)),
-                            Text("\n"),
-                            Text(
-                                "Entweder gibt es gerade keine Meldungen, \n oder Sie haben keine Internetverbindung?"),
-                            SizedBox(height: 10),
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  loading = true;
-                                });
-                              },
-                              child: Text(
-                                "Neuladen",
-                                style: TextStyle(color: Colors.white),
+                  myPlaceList.isNotEmpty
+                      ? Expanded(
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Hier gibt es noch nichts zu sehen... ",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                  Text("\n"),
+                                  Text(
+                                      "Entweder gibt es gerade keine Meldungen, \n oder Sie haben keine Internetverbindung?"),
+                                  SizedBox(height: 10),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        loading = true;
+                                      });
+                                    },
+                                    child: Text(
+                                      "Neuladen",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
+                                  )
+                                ],
                               ),
-                              style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.secondary),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Hier gibt es noch nichts zu sehen... ",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold)),
+                                  Text("\n"),
+                                  Text(
+                                      "Bitte wählen Sie mindestens einen Ort aus,"
+                                      " für den Sie Warnungen erhalten möchten."
+                                      " Oder aktivieren Sie die Anzeige aller Warnungen"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
                 ],
               ),
       ),
