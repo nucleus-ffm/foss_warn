@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
+import 'package:foss_warn/services/geocodeHandler.dart';
+import 'package:foss_warn/services/listHandler.dart';
 // import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -217,6 +219,10 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     super.initState();
     loadMyPlacesList(); //load MyPlaceList
     listenNotifications();
+    if(geocodeMap.isEmpty) {
+      print("call geocode handler");
+      geocodeHandler();
+    }
     // listen to notification stream
 
     /*_connectivitySubscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
@@ -253,6 +259,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [
+            showAllWarnings?
               IconButton(
                 icon: Icon(Icons.info_outline),
                 onPressed: () {
@@ -264,7 +271,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
                   );
                 },
 
-            ),
+            ): SizedBox(),
             IconButton(
               icon: Icon(Icons.sort),
               onPressed: () {
