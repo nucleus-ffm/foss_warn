@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+
+import 'package:foss_warn/services/apiHandler.dart';
+
 import 'package:provider/provider.dart';
 
 import '../widgets/MyPlaceWidget.dart';
-import '../widgets/AddPlaceWidget.dart';
+
 
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
-import '../services/getData.dart';
+// import '../services/getData.dart';
 import '../widgets/ConnectionErrorWidget.dart';
+import 'addMyPlaceView.dart';
 
 class MyPlaces extends StatefulWidget {
   const MyPlaces({Key? key}) : super(key: key);
@@ -30,7 +34,8 @@ class _MyPlacesState extends State<MyPlaces> {
 
   load() async {
     await loadMyPlacesList();
-    await getData(false);
+    // await getData(false);
+    await callAPI();
     setState(() {
       loading = false;
     });
@@ -111,7 +116,12 @@ class _MyPlacesState extends State<MyPlaces> {
               child: FloatingActionButton(
                 child: Icon(Icons.add),
                 onPressed: () {
-                  showDialog(
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddMyPlaceView()),
+                  );
+
+                  /*showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return StatefulBuilder(
@@ -120,7 +130,7 @@ class _MyPlacesState extends State<MyPlaces> {
                         },
                       );
                     },
-                  );
+                  ); */
                 },
               ),
             ),
