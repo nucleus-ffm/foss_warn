@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 String formatSentDate(String dateAndTime) {
   String returnDate = "";
+  // if from alert swiss @todo: fix later
+  if(dateAndTime.contains(",")) {
+    return dateAndTime;
+  }
   int space = dateAndTime.indexOf("T");
   String date = dateAndTime.substring(0, space);
 
@@ -48,21 +52,22 @@ String formatSentDate(String dateAndTime) {
 }
 
 String translateCategory(String text) {
-  if (text == "Health") {
+  if (text == "Health" || text == "Contaminated drinking water") {
     return "Gesundheit";
   } else if (text == "Infra") {
     return "Infrastruktur";
-  } else if (text == "Fire") {
+  } else if (text == "Fire" || text == "Forest fire" ||
+      text == "Safety precautions Forest fires") {
     return "Feuer";
   } else if (text == "CBRNE") {
     return "CBRNE";
-  } else if (text == "Other") {
+  } else if (text == "Other" || text == "Other incident") {
     return "Sonstiges";
   } else if (text == "Safety") {
     return "Sicherheit";
   } else if (text == "Met") {
     return "Wetter";
-  } else if (text == "Env") {
+  } else if (text == "Env" || text == "Drought") {
     return "Umwelt";
   } else if (text == "Geo") {
     return "Umwelt";
@@ -110,14 +115,14 @@ Color chooseSeverityColor(String text) {
 /// translate the message Severity and return the german name
 String translateMessageSeverity(String text) {
   // remove potential whitespace
-  text = text.trim();
-  if (text == "Minor") {
+  text = text.trim().toLowerCase();
+  if (text == "minor") {
     return "Gering";
-  } else if (text == "Moderate") {
+  } else if (text == "moderate") {
     return "Mittel";
-  } else if (text == "Extreme") {
+  } else if (text == "extreme") {
     return "Extrem";
-  } else if (text == "Severe") {
+  } else if (text == "severe") {
     return "Schwer";
   } else {
     return text;
