@@ -114,6 +114,14 @@ WarnMessage? createWarning(var data, String provider, String placeName, String g
     );
     return tempAreaList;
   }
+  String findPublisher(var parameter) {
+    for(int i=0; i<parameter.length; i++) {
+      if(parameter[i]["valueName"] == "sender_langname") {
+        return parameter[i]["value"];
+      }
+    }
+    return "not found";
+  }
 
   try {
     WarnMessage tempWarnMessage = WarnMessage(
@@ -135,7 +143,7 @@ WarnMessage? createWarning(var data, String provider, String placeName, String g
       headline: data["info"][0]["headline"] ?? "?",
       description: data["info"][0]["description"] ?? "",
       instruction: data["info"][0]["instruction"] ?? "",
-      publisher: data["info"][0]["parameter"][1]["value"] ?? "?", //@todo find right value
+      publisher: findPublisher(data["info"][0]["parameter"]),
       contact: data["info"][0]["contact"] ?? "",
       web: data["info"][0]["web"] ?? "",
       areaList: generateAreaList(1),
