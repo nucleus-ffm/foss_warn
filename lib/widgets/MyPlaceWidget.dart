@@ -121,12 +121,20 @@ class MyPlaceWidget extends StatelessWidget {
                     width: 20,
                   ),
                   Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        myPlace.name,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: FittedBox(
+                          child: Text(
+                          myPlace.name,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            ),
+                        ),
                       ),
                       SizedBox(height: 3),
                       Text(checkForWarnings()),
@@ -134,6 +142,8 @@ class MyPlaceWidget extends StatelessWidget {
                   ),
                 ],
               ),
+              Expanded(
+                child:
               myPlace.countWarnings ==
                       0 //check the number of warnings and display check or warning
                   ? TextButton(
@@ -183,6 +193,7 @@ class MyPlaceWidget extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
+              ),
             ],
           ),
         ),
