@@ -7,6 +7,8 @@ import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 
 import '../class/class_alarmManager.dart';
+import '../services/alertSwiss.dart';
+import '../services/geocodeHandler.dart';
 
 
 class DevSettings extends StatefulWidget {
@@ -171,7 +173,94 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
 
+              ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("call swiss Alert API"),
+                subtitle: Text(
+                    "führt einmal die Methode aus und fügt die Meldungen hinzu"),
+                onTap: () {
+                  print("call swiss API");
+                  callAlertSwissAPI();
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'called',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
+
+              ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("load cached warnings"),
+                subtitle: Text(
+                    "läd die zwischengespeicherten Meldungen"),
+                onTap: () {
+                  print("load cached warnings");
+                  loadCachedWarnings();
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'called',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
+              ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("test geocode"),
+                subtitle: Text(
+                    "Lädt die geocodes für die Liste"),
+                onTap: () {
+                  print("call geocodeHandler");
+                  geocodeHandler();
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'called',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
+              ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("lösche Warnungen"),
+                subtitle: Text(
+                    "Leer die Liste mit den Warnungen"),
+                onTap: () {
+                  print("lösche Warnungen");
+                  warnMessageList.clear();
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'called',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
             ],
+
+
 
           ))
       ),
