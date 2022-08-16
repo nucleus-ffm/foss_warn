@@ -3,7 +3,7 @@
 import '../views/SettingsView.dart';
 import '../class/class_NotificationService.dart';
 
-sendStatusUpdateNotification(bool success) async {
+sendStatusUpdateNotification(bool success, [String? error]) async {
   DateTime now = DateTime.now();
   int hour = now.hour;
   int hourToAdd = 0;
@@ -71,8 +71,7 @@ sendStatusUpdateNotification(bool success) async {
       title: "FOSS Warn - Aktualisierung fehlgeschlagen",
       body:
       "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr \n"
-          "Server nicht erreichbar. Vermutlich haben Sie keine Internetverbindung. "
-          "FOSS Warn wird es um $nextUpdateTimeFormattedDate Uhr erneut versuchen.",
+          "Error: $error",
       payload: "statusanzeige",
     );
   }
