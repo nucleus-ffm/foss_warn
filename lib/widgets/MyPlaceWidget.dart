@@ -21,7 +21,12 @@ class MyPlaceWidget extends StatelessWidget {
       for (Area myArea in warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
           //print(name);
-          if (myGeocode.geocodeName == myPlace.name) {
+          if (myGeocode.geocodeName == myPlace.name ||
+              ((myGeocode.geocodeNumber.length > 5 &&
+                      myPlace.geocode.length > 5)
+                  ? myGeocode.geocodeNumber.substring(0, 5) ==
+                      myPlace.geocode.substring(0, 5)
+                  : false)) {
             if (myPlace.warnings.contains(warnMessage)) {
               print("[MyPlaceCard] Warn Messsage already in List");
               //warn messeage already in list from geocodename
@@ -32,7 +37,8 @@ class MyPlaceWidget extends StatelessWidget {
           }
         }
         if (myArea.areaDesc.contains(myPlace.name)) {
-          print("[MyPlaceCard] Area Decs contains myPlace name: " + myPlace.name);
+          print(
+              "[MyPlaceCard] Area Decs contains myPlace name: " + myPlace.name);
           if (myPlace.warnings.contains(warnMessage)) {
             print("[MyPlaceCard] Warn Messsage already in List");
             //warn messeage already in list from geocodename
