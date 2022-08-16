@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
+import 'package:foss_warn/services/legacyHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 // import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
@@ -218,6 +219,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     // TODO: implement initState
     super.initState();
     loadMyPlacesList(); //load MyPlaceList
+    legacyHandler();
     listenNotifications();
     if(geocodeMap.isEmpty) {
       print("call geocode handler");
