@@ -14,7 +14,7 @@ class StatusWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Quellen Status:",
+                "Quellenstatus:",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(
