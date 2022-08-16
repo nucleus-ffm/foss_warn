@@ -136,7 +136,9 @@ class WarningWidget extends StatelessWidget {
                                         (geocodeNameList.length - 1)
                                             .toString() +
                                         " andere"
-                                    : geocodeNameList.first,
+                                    : geocodeNameList.isNotEmpty
+                                        ? geocodeNameList.first
+                                        : "unbekannt",
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
