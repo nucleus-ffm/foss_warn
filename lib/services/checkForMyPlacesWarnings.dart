@@ -1,3 +1,4 @@
+import 'package:foss_warn/services/apiHandler.dart';
 import 'package:foss_warn/views/SettingsView.dart';
 
 import '../class/class_WarnMessage.dart';
@@ -14,15 +15,18 @@ import 'markWarningsAsNotified.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
 /// check all warnings if one of them is of a myPlace and if yes send a notification
-/// returns true if there are/is a warning - false if not
+/// @returns true if there are/is a warning - false if not
+/// @parameter useEtag: if the etags should be used while calling the API
 Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
   bool returnValue = true;
   print("check for warnings");
   int countMessages = 0;
   print("warnMessageList: " + warnMessageList.length.toString());
   if (warnMessageList.isEmpty || useEtag) {
-    print("Warninglist is empty or we ware in Background mode"); // list ist emty, get data first
-    await getData(useEtag);
+    print(
+        "Warninglist is empty or we ware in Background mode"); // list ist emty, get data first
+    // await getData(useEtag);
+    await  callAPI();
   }
   if (notificationSettingsImportance.isEmpty) {
     print("notificationSettingsImportanceList is empty");
@@ -63,8 +67,15 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
       //print(warnMessage.headline);
       for (Area myArea in warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
-          //print(name);
-          if (myGeocode.geocodeName == myPlace.name) {
+          if(myGeocode.geocodeNumber.length < 5 || myPlace.geocode.length < 5 ) {
+            // the geocode is not long enoug -> in case of alert swiss
+            break;
+          }
+          if (myGeocode.geocodeName == myPlace.name ||
+              // we have to cut the geocode because the warning are only on kreisebene
+              // we have to check if the geocode ist lager then 5 because of alertSwiss
+              myGeocode.geocodeNumber.substring(0, 5) ==
+                      myPlace.geocode.substring(0, 5)) {
             if (myPlace.warnings.contains(warnMessage)) {
               print("Warn Messsage already in List");
               //warn messeage already in list from geocodename
@@ -105,13 +116,12 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
       for (WarnMessage myWarnMessage in myPlace.warnings) {
         if (!readWarnings.contains(myWarnMessage.identifier) &&
             !alreadyNotifiedWarnings.contains(myWarnMessage.identifier) &&
-            checkIfEventShouldBeNotified(myWarnMessage.event)
-        ) {
+            checkIfEventShouldBeNotified(myWarnMessage.event)) {
           // Alert is not already read or shown as notification
           print("markOneWarningAsNotified ");
           markOneWarningAsNotified(myWarnMessage);
           clearWarningAsNotifiedList();
-        
+
           sendNotification(
               // generate from the warning in the List the notification id
               // because the warning identifier is no int, we have to generate a hash code
@@ -125,6 +135,8 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
       //return true - there are warnings. the return value isn't use yet?
       returnValue = true;
     } else {
+      print("there is no warning or the warning is not in "
+          "the notificationSettingsImportance list");
       //return false - there are no warning.  the return value isn't use yet?
       returnValue = false;
     }
@@ -133,7 +145,7 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
 }
 
 bool checkIfEventShouldBeNotified(String event) {
-  if(notificationEventsSettings[event] != null) {
+  if (notificationEventsSettings[event] != null) {
     print(event + " " + notificationEventsSettings[event]!.toString());
     return notificationEventsSettings[event]!;
   } else {

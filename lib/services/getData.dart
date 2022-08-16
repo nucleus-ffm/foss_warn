@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:foss_warn/services/alertSwiss.dart';
+
 import '../main.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
@@ -11,6 +13,7 @@ import 'saveAndLoadSharedPreferences.dart';
 
 import 'package:http/http.dart';
 
+/// fetch data from (old) API
 Future getData(bool useEtag) async {
   try {
     Response response; //response var for get request
@@ -90,7 +93,7 @@ Future getData(bool useEtag) async {
             category: data[i]["info"][0]["category"][0] ?? "?",
             event: data[i]["info"][0]["event"] ?? "?",
             urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"] ?? "?",
+            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             effective: data[i]["info"][0]["effective"] ?? "",
             onset: data[i]["info"][0]["onset"] ?? "",
@@ -189,7 +192,7 @@ Future getData(bool useEtag) async {
             category: data[i]["info"][0]["category"][0] ?? "?",
             event: data[i]["info"][0]["event"] ?? "?",
             urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"] ?? "?",
+            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             effective: data[i]["info"][0]["effective"] ?? "",
             onset: data[i]["info"][0]["onset"] ?? "",
@@ -285,7 +288,7 @@ Future getData(bool useEtag) async {
             category: data[i]["info"][0]["category"][0] ?? "?",
             event: data[i]["info"][0]["event"] ?? "?",
             urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"] ?? "?",
+            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             effective: data[i]["info"][0]["effective"] ?? "",
             onset: data[i]["info"][0]["onset"] ?? "",
@@ -388,7 +391,7 @@ Future getData(bool useEtag) async {
             category: data[i]["info"][0]["category"][0] ?? "?",
             event: data[i]["info"][0]["event"] ?? "?",
             urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"] ?? "?",
+            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
             effective: data[i]["info"][0]["effective"] ?? "",
             onset: data[i]["info"][0]["onset"] ?? "",
             expires: data[i]["info"][0]["expires"] ?? "",
@@ -487,7 +490,7 @@ Future getData(bool useEtag) async {
             category: data[i]["info"][0]["category"][0] ?? "?",
             event: data[i]["info"][0]["event"] ?? "?",
             urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"] ?? "?",
+            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
             certainty: data[i]["info"][0]["certainty"] ?? "?",
             effective: data[i]["info"][0]["effective"] ?? "",
             onset: data[i]["info"][0]["onset"] ?? "",
@@ -522,12 +525,22 @@ Future getData(bool useEtag) async {
 
     warnMessageList.clear(); //clear List
     warnMessageList = tempWarnMessageList; // transfer temp List in real list
+
+    if(activateAlertSwiss) {
+      await callAlertSwissAPI();
+    }
+
+    // cacheWarnings for offline use not ready yet
+    // cacheWarnings();
+
     //print("New WarnList ist here");
     if (showStatusNotification) {
       sendStatusUpdateNotification(true);
     }
   } catch (e) {
     print("Error while trying to fetch data: " + e.toString());
+    // print("load cache");
+    // loadCachedWarnings();
     dwdStatus = false;
     mowasStatus = false;
     biwappStatus = false;
