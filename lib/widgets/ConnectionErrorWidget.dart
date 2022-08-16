@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
+import '../views/SettingsView.dart';
 
 class ConnectionError extends StatelessWidget {
   const ConnectionError({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class ConnectionError extends StatelessWidget {
   Widget build(BuildContext context) {
     if(mowasStatus && biwappStatus && dwdStatus && katwarnStatus ) {
       return SizedBox();
-    } else {
+    } else if(showAllWarnings) {
       return Container(
         padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
         //margin: EdgeInsets.only(bottom: 10),
@@ -22,6 +23,8 @@ class ConnectionError extends StatelessWidget {
           ],
         ),
       );
+    } else {
+      return SizedBox();
     }
   }
 }
