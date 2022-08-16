@@ -9,20 +9,43 @@ import '../main.dart';
 
 //My Places
 saveMyPlacesList() async {
-  List<String> myPlaceListAsString = myPlaceList.map((i) => i.name).toList();
+  //List<String> myPlaceListAsString = myPlaceList.map((i) => i.name).toList();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setStringList('myPlaceListAsString', myPlaceListAsString);
+  // preferences.setStringList('myPlaceListAsString', myPlaceListAsString);
+  preferences.setString("MyPlacesListAsJson", jsonEncode(myPlaceList));
 }
 
 loadMyPlacesList() async {
-  List<String> myPlaceListAsString = myPlaceList.map((i) => i.name).toList();
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  /*List<String> myPlaceListAsString = [];
   if (preferences.containsKey("myPlaceListAsString")) {
     myPlaceListAsString = preferences.getStringList('myPlaceListAsString')!;
     myPlaceList.clear();
     for (String i in myPlaceListAsString) {
       myPlaceList.add(Place(name: i));
     }
+  } */
+  if (preferences.containsKey("MyPlacesListAsJson")) {
+    var data  = jsonDecode(preferences.getString("MyPlacesListAsJson")!);
+    myPlaceList.clear();
+    for(int i = 0; i < data.length; i++) {
+      myPlaceList.add(Place(name: data[i]["name"], geocode: data[i]["geocode"]));
+    }
+  }
+
+}
+
+saveGeocodes(var jsonFile) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("geocodes", jsonEncode(jsonFile));
+}
+
+Future<String?> loadGeocode()  async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  if (preferences.containsKey("geocodes")) {
+    return jsonDecode(preferences.getString("geocodes")!);
+  } else {
+    return null;
   }
 }
 
@@ -70,6 +93,7 @@ saveSettings() async {
   preferences.setString("useDarkMode", useDarkMode.toString());
   preferences.setString("showAllWarnings", showAllWarnings.toString());
   preferences.setString("notificationEventsSettings", jsonEncode(notificationEventsSettings));
+  preferences.setBool("activateAlertSwiss", activateAlertSwiss);
   print("Settings saved");
 }
 
@@ -215,22 +239,25 @@ loadSettings() async {
     String temp = preferences.getString("notificationEventsSettings")!;
     notificationEventsSettings = Map<String, bool>.from(jsonDecode(temp));
   }
+  if (preferences.containsKey("activateAlertSwiss")) {
+    activateAlertSwiss = preferences.getBool("activateAlertSwiss")!;
+  }
 }
 
 saveNotificationSettingsImportanceList() async {
   print("Save saveNotificationSettingsImportanceList");
   notificationSettingsImportance.clear();
   if (notificationWithExtreme) {
-    notificationSettingsImportance.add("Extreme");
+    notificationSettingsImportance.add("extreme");
   }
   if (notificationWithSevere) {
-    notificationSettingsImportance.add("Severe");
+    notificationSettingsImportance.add("severe");
   }
   if (notificationWithModerate) {
-    notificationSettingsImportance.add("Moderate");
+    notificationSettingsImportance.add("moderate");
   }
   if (notificationWithMinor) {
-    notificationSettingsImportance.add("Minor");
+    notificationSettingsImportance.add("minor");
   }
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setStringList(
@@ -251,11 +278,11 @@ loadNotificationSettingsImportanceList() async {
     notificationWithModerate = false;
     notificationWithMinor = false;
     for (String i in notificationSettingsImportance) {
-      if (i == "Severe") {
+      if (i == "severe") {
         notificationWithSevere = true;
-      } else if (i == "Moderate") {
+      } else if (i == "moderate") {
         notificationWithModerate = true;
-      } else if (i == "Minor") {
+      } else if (i == "minor") {
         notificationWithMinor = true;
       }
     }
@@ -266,3 +293,21 @@ loadNotificationSettingsImportanceList() async {
     print("notificationSettingsImportance should yet exsis");
   }
 }
+
+cacheWarnings() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("cachedWarnings", jsonEncode(warnMessageList));
+  print("warnings saved");
+}
+
+loadCachedWarnings() async {
+  SharedPreferences preferences =  await SharedPreferences.getInstance();
+  if (preferences.containsKey("cachedWarnings")) {
+    String temp = preferences.getString("cachedWarnings")!;
+    warnMessageList = jsonDecode(temp);
+    print(warnMessageList);
+  } else {
+    print("there are no saved warnings");
+  }
+}
+
