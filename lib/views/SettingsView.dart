@@ -37,10 +37,12 @@ String sortWarningsBy = "severity";
 bool updateAvailable = false;
 bool showAllWarnings = false;
 
-String versionNumber = "0.3.0"; // shown in the about view
+String versionNumber = "0.4.0 - Test 2"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
+
+bool activateAlertSwiss = false;
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -562,6 +564,38 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   //Switch(value: true, onChanged: null, activeColor: Colors.green,),
+                ],
+              ),
+            ),
+            ListTile(
+              contentPadding: settingsTileListPadding,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Alert Swiss (Alpha)"),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Warnmeldungen für die Schweiz",
+                          style: TextStyle(
+                              fontSize: 12, fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Switch(value: activateAlertSwiss, onChanged:
+                      (value) {
+                    setState(() {
+                      activateAlertSwiss = value;
+                    });
+                    saveSettings();
+                  },
+                    activeColor: Colors.green,),
                 ],
               ),
             ),
