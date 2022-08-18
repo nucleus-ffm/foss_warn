@@ -8,7 +8,6 @@ import '../class/class_Area.dart';
 
 import '../class/class_NotificationService.dart';
 import 'generateNotificationID.dart';
-import 'getData.dart';
 import 'listHandler.dart';
 
 import 'markWarningsAsNotified.dart';
@@ -55,6 +54,20 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag) async {
       payload: payload,
       channel: channel,
     );
+  }
+
+  // infor user if he hasn't add any places yet
+  if(myPlaceList.isEmpty) {
+    sendNotification(
+      // generate from the warning in the List the notification id
+      // because the warning identifier is no int, we have to generate a hash code
+        3,
+        "Sie haben noch keine Orte hinterlegt",
+        "Bitte kontrolieren Sie Orte. \n\n"
+            "Mit dem Update auf Version 0.4.0 müssen Sie Ihre Orte neu hinzufügen."
+            " Grund dafür ist eine grundlegend veränderte Liste der Orte. ",
+        "keine Orte hinterlegt",
+        "Hinweise");
   }
 
   for (Place myPlace in myPlaceList) {
