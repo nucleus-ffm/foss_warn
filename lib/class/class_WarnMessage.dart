@@ -1,4 +1,5 @@
 import 'class_Area.dart';
+import '../services/createAreaListFromjson.dart';
 
 class WarnMessage {
   String identifier;
@@ -48,10 +49,59 @@ class WarnMessage {
     required this.description,
     required this.instruction,
     required this.areaList,
+    required this.contact,
+    this.web = "",
     //required this.area,
     //required this.geocodeName,
     //required this.geocodeNumber,
-    required this.contact,
-    required this.web,
   });
+
+  WarnMessage.fromJson(Map<String, dynamic> json)
+      : identifier = json['identifier'],
+        publisher = json['publisher'],
+        source = json['source'],
+        sender = json['sender'],
+        sent = json['sent'],
+        status = json['status'],
+        messageTyp = json['messageTyp'],
+        scope = json['scope'],
+        category = json['category'],
+        event = json['event'],
+        urgency = json['urgency'],
+        severity = json['severity'],
+        certainty = json['certainty'],
+        effective =  json['effective'],
+        onset = json['onset'],
+        expires = json['expires'],
+        headline = json['headline'],
+        description = json['description'],
+        instruction = json['instruction'],
+        areaList = areaListFromJson(json['areaList']),
+        contact = json['contact'],
+        web = json['web'] ?? "";
+
+
+  Map<String, dynamic> toJson() => {
+    'identifier': identifier,
+    'publisher':publisher,
+    'source':source,
+    'sender':sender,
+    'sent':sent,
+    'status':status,
+    'messageTyp':messageTyp,
+    'scope':scope,
+    'category':category,
+    'event':category,
+    'urgency':urgency,
+    'severity':severity,
+    'certainty':certainty,
+    'effective':effective,
+    'onset':onset,
+    'expires':expires,
+    'headline':headline,
+    'description':description,
+    'instruction':instruction,
+    'areaList':areaList,
+    'contact':contact,
+  };
 }
