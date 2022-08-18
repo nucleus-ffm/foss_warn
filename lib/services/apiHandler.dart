@@ -34,7 +34,7 @@ Future callAPI()  async {
         error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
             " aber AlertSwiss nicht als Quelle aktiviert \n";
       }
-      break;
+      continue;
     }
     try {
       Response response; //response var for get request
@@ -65,7 +65,11 @@ Future callAPI()  async {
             WarnMessage? temp = createWarning(warningDetails, provider,
                 p.name, p.geocode, tempWarnMessageList);
             if(temp != null) {
-              tempWarnMessageList.add(temp);
+              /*if(tempWarnMessageList.any((element) => element.identifier == temp.identifier)) {
+                print("warnings already added");
+              } else {*/
+                tempWarnMessageList.add(temp);
+              // } //@todo: fix displaying warnings twice
             }
           } else {
             print("[callAPI] Error: tried calling: " + baseUrl + "/warnings/" + id +".json");
