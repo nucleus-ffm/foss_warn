@@ -13,7 +13,7 @@ Future<void> geocodeHandler() async {
   Response response; //response var for get request
   var data; //var for response data
   try {
-    String? savedData = await loadGeocode();
+    dynamic? savedData = await loadGeocode();
     if(savedData != null) {
       // we don't need to laod the data from web
       print("[geocodeHandler] data already stored");
@@ -23,6 +23,7 @@ Future<void> geocodeHandler() async {
       if (response.statusCode == 200) {
         print("[geocodehanlder] got data ");
         data = jsonDecode(utf8.decode(response.bodyBytes));
+        saveGeocodes(utf8.decode(response.bodyBytes));
       }
     }
     if(data != null) {
