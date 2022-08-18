@@ -75,6 +75,14 @@ WarnMessage? createWarning(var data) {
     return tempAreaList;
   }
 
+  String addLicense(var pub) {
+    if(pub != null) {
+      return pub += "\nQuelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)";
+    } else {
+      return "Quelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)";
+    }
+  }
+
   try {
     WarnMessage tempWarnMessage = WarnMessage(
       source: "Alert Swiss",
@@ -95,7 +103,7 @@ WarnMessage? createWarning(var data) {
       headline: data["title"] ?? "?",
       description: data["description"] ?? "",
       instruction: generateInstruction(data["instruction"] ?? []),
-      publisher: data["publisherName"] + "\nQuelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)" ?? "?",
+      publisher: addLicense(data["publisherName"]),
       contact: data["contact"] ?? "",
       web: data["link"] ?? "",
       areaList: generateAreaList(data["areas"]),
