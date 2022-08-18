@@ -8,9 +8,8 @@ class ConnectionError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(mowasStatus && biwappStatus && dwdStatus && katwarnStatus ) {
-      return SizedBox();
-    } else if(showAllWarnings) {
+
+    if(showAllWarnings && mowasStatus && biwappStatus && dwdStatus && katwarnStatus) {
       return Container(
         padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
         //margin: EdgeInsets.only(bottom: 10),
@@ -23,7 +22,22 @@ class ConnectionError extends StatelessWidget {
           ],
         ),
       );
-    } else {
+    } else if(areWarningsFromCache) {
+      return Container(
+        padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
+        //margin: EdgeInsets.only(bottom: 10),
+        color: Colors.orange,
+        child: Row (
+          children: [
+            Icon(Icons.info, color: Colors.white,),
+            SizedBox(width: 10,),
+            Text("Kein Internet - Warnugen könnten veraltet sein", style: Theme.of(context).textTheme.headline3,
+            overflow:  TextOverflow.ellipsis,
+            )
+          ],
+        ),
+      );
+  } else {
       return SizedBox();
     }
   }
