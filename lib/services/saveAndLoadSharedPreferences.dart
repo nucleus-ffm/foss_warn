@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:foss_warn/class/class_WarnMessage.dart';
 import 'package:foss_warn/views/SettingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,19 +36,26 @@ loadMyPlacesList() async {
 
 }
 
-saveGeocodes(var jsonFile) async {
+saveGeocodes(String jsonFile) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("geocodes", jsonEncode(jsonFile));
+  print("save geocodes");
+  preferences.setString("geocodes", jsonFile);
 }
 
-Future<String?> loadGeocode()  async {
+Future<dynamic?> loadGeocode()  async {
+  print("load geocodes from storage");
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  // preferences.remove("geocodes");
   if (preferences.containsKey("geocodes")) {
-    return jsonDecode(preferences.getString("geocodes")!);
+    print("we have some geocodes");
+    var result = preferences.getString("geocodes")!;
+    return jsonDecode(result);
   } else {
+    print("geocodes are not saved");
     return null;
   }
 }
+
 
 
 //Settings
@@ -278,13 +286,18 @@ loadNotificationSettingsImportanceList() async {
     notificationWithModerate = false;
     notificationWithMinor = false;
     for (String i in notificationSettingsImportance) {
-      if (i == "severe") {
+      if (i.toLowerCase() == "severe") {
         notificationWithSevere = true;
-      } else if (i == "moderate") {
+      } else if (i.toLowerCase() == "moderate") {
         notificationWithModerate = true;
-      } else if (i == "minor") {
+      } else if (i.toLowerCase() == "minor") {
         notificationWithMinor = true;
       }
+    }
+    // fix legacy
+    if(notificationSettingsImportance.contains(["Severe", "Moderate", "Minor"])) {
+      saveNotificationSettingsImportanceList();
+      loadNotificationSettingsImportanceList();
     }
   } else {
     print("notificationSettingsImportance Key does not exsis");
@@ -297,15 +310,20 @@ loadNotificationSettingsImportanceList() async {
 cacheWarnings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("cachedWarnings", jsonEncode(warnMessageList));
-  print("warnings saved");
+  print("warnings cached");
+  areWarningsFromCache = false;
 }
 
 loadCachedWarnings() async {
   SharedPreferences preferences =  await SharedPreferences.getInstance();
   if (preferences.containsKey("cachedWarnings")) {
-    String temp = preferences.getString("cachedWarnings")!;
-    warnMessageList = jsonDecode(temp);
-    print(warnMessageList);
+    var data = jsonDecode(preferences.getString("cachedWarnings")!)!;
+    print(data);
+    for(int i = 0; i < data.length; i++) {
+      print(data[i]);
+      warnMessageList.add(WarnMessage.fromJson(data[i]));
+    }
+    areWarningsFromCache = true;
   } else {
     print("there are no saved warnings");
   }
