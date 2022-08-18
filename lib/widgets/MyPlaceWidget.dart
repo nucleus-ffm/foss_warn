@@ -136,13 +136,12 @@ class MyPlaceWidget extends StatelessWidget {
                             ),
                         ),
                       ),
-                      SizedBox(height: 3),
                       Text(checkForWarnings()),
                     ],
                   ),
                 ],
               ),
-              Expanded(
+              Flexible(
                 child:
               myPlace.countWarnings ==
                       0 //check the number of warnings and display check or warning
