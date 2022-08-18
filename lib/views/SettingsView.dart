@@ -36,6 +36,7 @@ bool showWelcomeScreen = true;
 String sortWarningsBy = "severity";
 bool updateAvailable = false;
 bool showAllWarnings = false;
+bool areWarningsFromCache = false; // true if the displayed warnings are loaded from cache
 
 String versionNumber = "0.4.0 - Test 2"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
