@@ -99,6 +99,13 @@ Future callAPI()  async {
     await callAlertSwissAPI();
   }
 
+  if(warnMessageList.isNotEmpty) {
+    cacheWarnings();
+  } else {
+    loadCachedWarnings();
+  }
+
+
   print("finished calling API");
   return "";
 }
