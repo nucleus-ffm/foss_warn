@@ -8,12 +8,12 @@ import 'listHandler.dart';
 class Update with ChangeNotifier {
 
   // delete preset
-  void updateList(newPlaceName) {
+  Future<void> updateList(newPlaceName)  async {
 
     myPlaceList.add(Place(name: newPlaceName,
         geocode: geocodeMap[newPlaceName] ?? alertSwissPlacesMap[newPlaceName]!));
     saveMyPlacesList();
-    callAPI();
+    await callAPI();
     print("müsste jetzt neubauen");
     notifyListeners();
   }
