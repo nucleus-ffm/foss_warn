@@ -169,6 +169,14 @@ class NotificationService {
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification); //onSelectNotification
+
+    /*print("[android notification channels]");
+    List<AndroidNotificationChannel>? temp = (await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.getNotificationChannels());
+    for(AndroidNotificationChannel p in temp! ) {
+      print("id: " + p.id + " name: " + p.name);
+    } */
   }
 
   Future onSelectNotification(String? payload) async {
