@@ -115,29 +115,33 @@ class MyPlaceWidget extends StatelessWidget {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+                  children: [
                   Icon(Icons.location_city),
                   SizedBox(
                     width: 20,
+                    //width: (MediaQuery.of(context).size.width)-150,
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: FittedBox(
+                  SizedBox(
+                    height: 60,
+                    //width: 200,
+                    width: (MediaQuery.of(context).size.width)*0.6,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
                           child: Text(
                           myPlace.name,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                             softWrap: false,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.fade,
                             ),
                         ),
-                      ),
-                      Text(checkForWarnings()),
-                    ],
+                        Flexible(child: Text(checkForWarnings())),
+                      ],
+                    ),
                   ),
                 ],
               ),
