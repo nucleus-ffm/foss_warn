@@ -21,7 +21,7 @@ Get emergency alerts from warnung.bund.de <br>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases/latest" alt="Github latest Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg"></a>
 </p>
 <hr>
-An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK.
+An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK. New with version 0.4.0 you can also receive emergency alerts from AlertSwiss (Alpha).
 
 ## Current state of development
 The app is currently in a BETA status. It works quite well, but be aware of the known problems.
@@ -30,9 +30,7 @@ The app is currently in a BETA status. It works quite well, but be aware of the 
  - see [project board](https://github.com/nucleus-ffm/foss_warn/projects)
 
 ## Known problems:
-- the background service is sometimes stopped by the system. To start it again, just open FOSS Warn once. 
 - the layout could be improved for small devices
-- not every warning shown on https://warnung.bund.de/meldungen is available through the APIs used. (more research needed)
 
 ## FAQ
 <details>
@@ -46,6 +44,10 @@ FOSS Warn does not use push services. But a background service pulls the latest 
 <details>
 <summary>Do you have a custom F-Droid repo?</summary>
 Yes. You can add my custom repo to F-Droid and install the latest Github release with your F-Droid client. All info <a href="https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo">here </a>.
+</details>
+<details>
+<summary>Is FOSS Warn currently german only?</summary>
+Unfortunately, yes, but at some point in the future I will work on supporting multiple languages. (Or maybe you'd like to work on that?) In the meantime, <a href="https://github.com/nucleus-ffm/foss_warn/wiki/Translation-of-the-UI-into-English">here's</a> a simple translation list where you can easily check the translation of a button in FOSS Warn. 
 </details>
 
 ## Contribute
