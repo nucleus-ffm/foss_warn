@@ -21,7 +21,7 @@ class AlarmManager {
     final int isolateId = Isolate.current.hashCode;
     print("[$now] Call APIs! isolate=${isolateId} function='$callback'");
 
-    await checkForMyPlacesWarnings(true);
+    await checkForMyPlacesWarnings(true, true);
     print("Call APIs executed");
   }
 
