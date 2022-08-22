@@ -8,6 +8,7 @@ import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../class/class_WarnMessage.dart';
 import '../main.dart';
+import '../services/allPlacesList.dart';
 import '../services/getData.dart';
 import '../services/listHandler.dart';
 import '../widgets/WarningWidget.dart';
@@ -50,10 +51,10 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         // call (old) api with all warnings
         data = await getData(false);
       } else {
-        // call (new) api just for my places
+        // call (new) api just for my places/ alert swiss
         data = await callAPI();
       }
-      checkForMyPlacesWarnings(false);
+      checkForMyPlacesWarnings(false, true);
       sortWarnings();
       loadNotificationSettingsImportanceList();
       setState(() {
@@ -79,14 +80,20 @@ class _AllWarningsViewState extends State<AllWarningsView> {
       );
     }
 
+    /// check all warnings are return only a list with the warnings for
+    /// one of my places
     List<WarnMessage> loadOnlyWarningsForMyPlaces() {
+      print("loadOnlyWarningsForMyPlaces");
       List<WarnMessage> warningsForMyPlaces = [];
       for (WarnMessage warnMessage in warnMessageList) {
         for (Area myArea in warnMessage.areaList) {
           for (Geocode myGeocode in myArea.geocodeList) {
-            //print(name);
-            if (myPlaceList.any(
-                (element) => element.name == myGeocode.geocodeName || true)) {
+            if (myPlaceList
+                    .any((element) => element.name == myGeocode.geocodeName) ||
+                // check for alertSwiss
+                myPlaceList.any((element) =>
+                    alertSwissPlacesMap[element.name] ==
+                    myGeocode.geocodeName)) {
               if (warningsForMyPlaces.contains(warnMessage)) {
                 // print("Warn Messsage already in List");
                 // warn messeage already in list from geocodename
