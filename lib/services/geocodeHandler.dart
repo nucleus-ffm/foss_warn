@@ -30,8 +30,12 @@ Future<void> geocodeHandler() async {
       allAvailablePlacesNames.clear();
 
       for (int j = 0; j < data["daten"].length; j++) {
-        geocodeMap.putIfAbsent(data["daten"][j][1], () => data["daten"][j][0]);
-        allAvailablePlacesNames.add(data["daten"][j][1]);
+        // we can not reaive any warning for OT => Ortsteile
+        if(!data["daten"][j][1].toString().contains("OT")) {
+          geocodeMap.putIfAbsent(
+              data["daten"][j][1], () => data["daten"][j][0]);
+          allAvailablePlacesNames.add(data["daten"][j][1]);
+        }
       }
 
       // add alert swiss places to list
