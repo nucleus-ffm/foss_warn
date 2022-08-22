@@ -40,7 +40,7 @@ class _DevSettingsState extends State<DevSettings> {
                 subtitle:
                 Text("Führt einmalig manuell den Hintergrunddienst aus"),
                 onTap: () {
-                  checkForMyPlacesWarnings(false);
+                  checkForMyPlacesWarnings(false, true);
                   bool thereIsNoWarning = true;
                   for (Place myPlace in myPlaceList) {
                     //check if there are warning and if it they are important enough
@@ -99,34 +99,7 @@ class _DevSettingsState extends State<DevSettings> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
               ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text("Hintergrunddienst testen"),
-                subtitle: Text(
-                    "testet den Hintergrunddienst"),
-                onTap: () {
-                  print("starte Hintergrunddienst neu");
-                  try {
-                    //delete all background tasks and create new one
-                    // BackgroundTaskManager().cancelBackgroundTask();
-                    // BackgroundTaskManager().registerBackgroundTask();
-                  } catch (e) {
-                    print("Something went wrong while restart background task: " +
-                        e.toString());
-                  }
-                  final snackBar = SnackBar(
-                    content: const Text(
-                      'Hintergrunddienst neugestartet',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
 
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-              ),
               ListTile(
                 contentPadding: settingsTileListPadding,
                 title: Text("Lösche die Liste der gelesenen Warnungen"),
