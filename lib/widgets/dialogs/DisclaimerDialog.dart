@@ -28,9 +28,7 @@ class _DisclaimerDialogState extends State<DisclaimerDialog> {
           "auf diese App. Auch werden die Warnungen immer mit einer gewissen"
           " VERZÖGERUNG im Hintergrund empfangen. Diese App benutzt keinen "
           "Push-Services, sondern lädt in einem gewissen Zeitabstand die "
-          "neusten Meldungen und benachrichtigt dann, wenn nötig. Durch "
-          "Android technisch bedingt, kann die App minimal alle 15 Minuten"
-            " die neusten Warnmeldungen im Hintergrund herunterladen. \n\n"
+          "neusten Meldungen und benachrichtigt dann, wenn nötig. \n\n"
             "Mit der Benutzung von FOSS Warn stimmen Sie dem zu."),
             ],
           ),
