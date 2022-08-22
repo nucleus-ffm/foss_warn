@@ -132,13 +132,13 @@ class WarningWidget extends StatelessWidget {
                               child: Text(
                                 geocodeNameList.length > 1
                                     ? geocodeNameList.first +
-                                        " und " +
-                                        (geocodeNameList.length - 1)
-                                            .toString() +
-                                        " andere"
+                                    " und " +
+                                    (geocodeNameList.length - 1)
+                                        .toString() +
+                                    " andere"
                                     : geocodeNameList.isNotEmpty
-                                        ? geocodeNameList.first
-                                        : "unbekannt",
+                                    ? geocodeNameList.first
+                                    : "unbekannt",
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
