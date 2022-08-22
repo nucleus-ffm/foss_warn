@@ -1,5 +1,5 @@
 (FOSS Warn befindet sich noch in einer Beta-Version.)
 
-FOSS Warn ist eine inoffizielle App um Warnmeldungen von warnung.bund.de zu erhalten. Zusätzlich können Sie in der App Orte hinterlegen, für die Sie im Fall einer Warnung eine Benachrichtigung erhalten möchten.
+FOSS Warn ist eine inoffizielle App um Warnmeldungen von warnung.bund.de (Deutschland) oder alert.swiss (Schweiz) zu erhalten. Zusätzlich können Sie in der App Orte hinterlegen, für die Sie im Fall einer Warnung eine Benachrichtigung erhalten möchten.
 
 Wichtig: FOSS Warn ist inoffiziell und hat nichts mit der offiziellen App *Nina* vom BBK zu tun. 
