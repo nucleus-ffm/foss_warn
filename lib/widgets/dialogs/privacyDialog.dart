@@ -20,7 +20,9 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
             children: [
               Text("FOSS Warn versendet keine Informationen über seine Nutzung,"
                   " sondern baut nur in regelmäßigen Abständen eine Verbindung "
-                  "zu https://warnung.bund.de auf und lädt von dort die neusten Warnungen."
+                  "zu warnung.bund.de auf und lädt von dort die neusten Warnungen. \n\n"
+                  "Für die Liste der Ortschaften lädt FOSS Warn einmalig beim ersten Start"
+                  " eine Liste von xrepository.de (betrieben von der KoSIT) herunter."
                   "\n\n"
                   "Zusätzlich kann FOSS Warn (nur die Github-Version) prüfen,"
                   " ob ein Update verfügbar ist. "
@@ -42,6 +44,17 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                     child: TextButton(onPressed: () {
                       Future<void>? _launched = launchUrlInBrowser('https://warnung.bund.de/datenschutz');
                     }, child: Text("Zur Datenschutzerklärung von Warnung.bund.de")),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.open_in_browser),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: TextButton(onPressed: () {
+                      Future<void>? _launched = launchUrlInBrowser('https://www.xrepository.de/cms/datenschutz.html');
+                    }, child: Text("Zur Datenschutzerklärung von xrepository.de")),
                   ),
                 ],
               ),
