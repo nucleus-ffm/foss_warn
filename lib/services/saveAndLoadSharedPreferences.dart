@@ -318,9 +318,9 @@ loadCachedWarnings() async {
   SharedPreferences preferences =  await SharedPreferences.getInstance();
   if (preferences.containsKey("cachedWarnings")) {
     var data = jsonDecode(preferences.getString("cachedWarnings")!)!;
-    print(data);
+    // print(data);
     for(int i = 0; i < data.length; i++) {
-      print(data[i]);
+      // print(data[i]);
       warnMessageList.add(WarnMessage.fromJson(data[i]));
     }
     areWarningsFromCache = true;
