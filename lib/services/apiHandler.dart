@@ -80,6 +80,8 @@ Future callAPI()  async {
         // i think it is for all (katwarn confirmed)
       } else {
         print("could not reach: ");
+        successfullyFetched = false;
+        error += "We have a problem to reach the warnings for: " + p.name + " \n";
       }
 
     } catch (e) {
