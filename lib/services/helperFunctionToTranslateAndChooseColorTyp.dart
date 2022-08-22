@@ -52,7 +52,7 @@ String formatSentDate(String dateAndTime) {
 }
 
 String translateCategory(String text) {
-  if (text == "Health" || text == "Contaminated drinking water") {
+  if (text == "Health" || text == "Contaminated drinking water"|| text == "Pollution de l’eau potable" ) {
     return "Gesundheit";
   } else if (text == "Infra") {
     return "Infrastruktur";
