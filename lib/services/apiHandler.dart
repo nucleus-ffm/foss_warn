@@ -107,10 +107,9 @@ Future callAPI()  async {
 
   if(warnMessageList.isNotEmpty) {
     cacheWarnings();
-  } else {
+  } else if(!successfullyFetched) {
     loadCachedWarnings();
   }
-
 
   print("finished calling API");
   return "";
