@@ -111,7 +111,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
       builder: (context, counter, child) => RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
-        child: warnMessageList.isNotEmpty
+        child:myPlaceList.isNotEmpty
             ? showAllWarnings // if warnings that are not in MyPlaces shown
                 ? SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
@@ -164,10 +164,6 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                     ),
                                     Text(
                                         "Es liegen keine Warnungen für Deine Orte vor.\n "),
-                                    Text(
-                                      "Meldungen für andere Orte werden ausgeblendet.",
-                                      textAlign: TextAlign.center,
-                                    ),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
@@ -203,43 +199,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                       ),
                     ],
                   ),
-                  myPlaceList.isNotEmpty
-                      ? Expanded(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("Hier gibt es noch nichts zu sehen... ",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                  Text("\n"),
-                                  Text(
-                                      "Entweder gibt es gerade keine Meldungen, \n oder Sie haben keine Internetverbindung?"),
-                                  SizedBox(height: 10),
-                                  TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                    },
-                                    child: Text(
-                                      "Neuladen",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      : Expanded(
+                      Expanded(
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
