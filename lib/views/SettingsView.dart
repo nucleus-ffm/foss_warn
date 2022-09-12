@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 //import 'package:foss_warn/class/class_BackgroundTask.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
@@ -24,7 +25,7 @@ bool notificationWithModerate = true;
 bool notificationWithMinor = false;
 bool notificationGeneral = true;
 bool showStatusNotification = true;
-Map<String, bool> notificationEventsSettings  = new Map();
+Map<String, bool> notificationEventsSettings = new Map();
 
 bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
 bool useDarkMode = false;
@@ -36,7 +37,8 @@ bool showWelcomeScreen = true;
 String sortWarningsBy = "severity";
 bool updateAvailable = false;
 bool showAllWarnings = false;
-bool areWarningsFromCache = false; // true if the displayed warnings are loaded from cache
+bool areWarningsFromCache =
+    false; // true if the displayed warnings are loaded from cache
 
 String versionNumber = "0.4.2"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
@@ -54,6 +56,15 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+  final TextEditingController frequenzTextController =
+      new TextEditingController();
+  final double maxValueFrequencyOfAPICall = 999;
+
+  @override
+  void initState() {
+    frequenzTextController.text = frequencyOfAPICall.toInt().toString();
+    return super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,12 +112,13 @@ class _SettingsState extends State<Settings> {
               contentPadding: settingsTileListPadding,
               title: Text("Benachrichtigungseinstellungen"),
               subtitle:
-              Text("Öffnet die Einstellungen für was eine Benachrichtigung"
-                  " gesendet werden soll"),
+                  Text("Öffnet die Einstellungen für was eine Benachrichtigung"
+                      " gesendet werden soll"),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NotificationSettingsView()),
+                  MaterialPageRoute(
+                      builder: (context) => NotificationSettingsView()),
                 );
               },
             ),
@@ -117,7 +129,7 @@ class _SettingsState extends State<Settings> {
                 subtitle: Text(
                     "Zeigt eine Benachrichtung mit der Uhrzeit der letzten Aktualisieurng"),
                 trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: showStatusNotification,
                     onChanged: (value) {
                       setState(() {
@@ -127,9 +139,7 @@ class _SettingsState extends State<Settings> {
                       if (showStatusNotification == false) {
                         NotificationService.cancelOneNotification(1);
                       }
-                    }
-                    )
-            ),
+                    })),
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Hintergrundbenachrichtigungen für hinterlegte Orte"),
@@ -182,20 +192,41 @@ class _SettingsState extends State<Settings> {
                           children: [
                             SizedBox(
                               width: 70,
-                              child: Text(
-                                  frequencyOfAPICall.toInt().toString() +
-                                      " min"),
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                controller: frequenzTextController,
+                                onChanged: (value) {
+                                  if (value != "") {
+                                    if (double.parse(value) <= maxValueFrequencyOfAPICall) {
+                                      setState(() {
+                                        frequencyOfAPICall =
+                                            double.parse(value);
+                                      });
+                                    } else {
+                                      frequenzTextController.text =
+                                          frequencyOfAPICall.round().toString();
+                                    }
+                                  }
+                                },
+                                decoration: InputDecoration(),
+                              ),
                             ),
+                            Text("min"),
                             Expanded(
                               child: Slider(
                                 value: frequencyOfAPICall,
                                 activeColor:
                                     Theme.of(context).colorScheme.secondary,
                                 min: 1,
-                                max: 800,
+                                max: maxValueFrequencyOfAPICall,
                                 onChanged: (value) {
                                   setState(() {
                                     frequencyOfAPICall = value.roundToDouble();
+                                    frequenzTextController.text =
+                                        frequencyOfAPICall.toInt().toString();
                                   });
                                 },
                                 onChangeEnd: (value) {
@@ -290,8 +321,8 @@ class _SettingsState extends State<Settings> {
               title: Text("Zeige alle Meldungen an"),
               subtitle: Text(
                   "Wenn aktiviert werden in der Ansicht 'Alle Meldungen' nicht nur die Meldungen für Deine Orte"
-                      " angezeigt, sondern alle verfügbaren Meldungen aus"
-                      " ganz Deutschland."),
+                  " angezeigt, sondern alle verfügbaren Meldungen aus"
+                  " ganz Deutschland."),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: showAllWarnings,
@@ -589,14 +620,16 @@ class _SettingsState extends State<Settings> {
                       ],
                     ),
                   ),
-                  Switch(value: activateAlertSwiss, onChanged:
-                      (value) {
-                    setState(() {
-                      activateAlertSwiss = value;
-                    });
-                    saveSettings();
-                  },
-                    activeColor: Colors.green,),
+                  Switch(
+                    value: activateAlertSwiss,
+                    onChanged: (value) {
+                      setState(() {
+                        activateAlertSwiss = value;
+                      });
+                      saveSettings();
+                    },
+                    activeColor: Colors.green,
+                  ),
                 ],
               ),
             ),
