@@ -132,7 +132,7 @@ WarnMessage? createWarning(var data, String provider, String placeName, String g
         return parameter[i]["value"];
       }
     }
-    return "not found";
+    return "Deutscher Wetterdienst";
   }
 
   try {
