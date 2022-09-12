@@ -18,6 +18,7 @@ class ChangeLogDialog extends StatelessWidget {
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               Text("* falsch angezeigten Verbindungsfehler behoben \n"
+                  "* die Datenabfragefrequenz kann man jetzt auch über eine Texteingabe einstellen \n"
               ),
               Text(
                 "0.4.1 (beta)",
