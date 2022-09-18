@@ -111,20 +111,25 @@ class _AllWarningsViewState extends State<AllWarningsView> {
       builder: (context, counter, child) => RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
-        child:myPlaceList.isNotEmpty
+        child: myPlaceList.isNotEmpty // check if there is a place saved
             ? showAllWarnings // if warnings that are not in MyPlaces shown
                 ? SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(children: [
+                      allWarnMessageList.isEmpty ?
+                          Container(
+                            child: Text("Es sind keine Warnungen in der Liste"),
+                          ): SizedBox(),
                       Container(
                         child: ConnectionError(),
                       ),
-                      ...warnMessageList
+                      ...allWarnMessageList
                           .map((warnMessage) =>
                               WarningWidget(warnMessage: warnMessage))
                           .toList(),
                     ]))
-                : loadOnlyWarningsForMyPlaces()
+                // else load only the warnings for my place
+                : loadOnlyWarningsForMyPlaces() //
                         .isNotEmpty // check if there are warnings for myPlaces
                     ? SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),

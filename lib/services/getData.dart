@@ -523,8 +523,8 @@ Future getData(bool useEtag) async {
       lhpStatus = false;
     }
 
-    warnMessageList.clear(); //clear List
-    warnMessageList = tempWarnMessageList; // transfer temp List in real list
+    allWarnMessageList.clear(); //clear List
+    allWarnMessageList = tempWarnMessageList; // transfer temp List in real list
 
     if(activateAlertSwiss) {
       await callAlertSwissAPI();
