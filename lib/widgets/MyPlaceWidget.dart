@@ -13,7 +13,7 @@ class MyPlaceWidget extends StatelessWidget {
   const MyPlaceWidget({Key? key, required this.myPlace}) : super(key: key);
 
   String checkForWarnings() {
-    print("[MyPlaceCard] check for warnings");
+    print("[MyPlaceWidget] check for warnings");
     int countMessages = 0;
     //print(warnMessageList.length);
     myPlace.warnings.clear();
