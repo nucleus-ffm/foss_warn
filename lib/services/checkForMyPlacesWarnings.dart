@@ -13,10 +13,8 @@ import 'listHandler.dart';
 import 'markWarningsAsNotified.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
-/// check all warnings if one of them is of a myPlace and if yes send a notification
-///
-/// [true] if there are/is a warning - false if not
-///
+/// check all warnings if one of them is of a myPlace and if yes send a notification <br>
+/// [true] if there are/is a warning - false if not <br>
 /// [useEtag]: if the etags should be used while calling the API
 Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
   bool returnValue = true;
