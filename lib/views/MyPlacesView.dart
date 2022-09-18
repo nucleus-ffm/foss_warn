@@ -26,15 +26,14 @@ class _MyPlacesState extends State<MyPlaces> {
   @override
   void initState() {
     super.initState();
-    //load();
     if (myPlaceList.isEmpty) {
       loading = true;
     }
   }
 
+  /// load data and call the API function
   load() async {
     await loadMyPlacesList();
-    // await getData(false);
     await callAPI();
     setState(() {
       loading = false;
@@ -120,17 +119,6 @@ class _MyPlacesState extends State<MyPlaces> {
                     context,
                     MaterialPageRoute(builder: (context) => AddMyPlaceView()),
                   );
-
-                  /*showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return StatefulBuilder(
-                        builder: (context, setState) {
-                          return AddPlaceWidget();
-                        },
-                      );
-                    },
-                  ); */
                 },
               ),
             ),
