@@ -31,40 +31,6 @@ import 'widgets/dialogs/SortByDialog.dart';
 //final navigatorKey = GlobalKey<NavigatorState>();
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-/*
-// The callback function should always be a top-level function.
-void startCallback() {
-  // The setTaskHandler function must be called to handle the task in the background.
-  FlutterForegroundTask.setTaskHandler(FirstTaskHandler());
-}
-
-class FirstTaskHandler extends TaskHandler {
-  @override
-  Future<void> onStart(DateTime timestamp, SendPort? sendPort) async {
-    // You can use the getData function to get the data you saved.
-    final customData = await FlutterForegroundTask.getData<String>(key: 'customData');
-    print('customData: $customData');
-  }
-
-  @override
-  Future<void> onEvent(DateTime timestamp, SendPort? sendPort) async {
-    // Send data to the main isolate.
-    sendPort?.send(timestamp);
-  }
-
-  @override
-  Future<void> onDestroy(DateTime timestamp) async {
-    // You can use the clearAllData function to clear all the stored data.
-    await FlutterForegroundTask.clearAllData();
-  }
-
-  @override
-  void onButtonPressed(String id) {
-    // Called when the notification button on the Android platform is pressed.
-    print('onButtonPressed >> $id');
-  }
-} */
-
 void main() async {
   // some initialisation
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,16 +40,8 @@ void main() async {
   await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
 
   if (notificationGeneral) {
-    // ForegroundService stuff (not needed for now
-    //ForegroundService().initForegroundService();
-
     // setup the background task
     print("Background notification enabled");
-    // workmanager stuff
-    // BackgroundTaskManager().initialize();
-    // BackgroundTaskManager().cancelBackgroundTask();
-    // BackgroundTaskManager().registerBackgroundTaskWithDelay();
-
     // AlarmManager().cancelBackgroundTask(); // just for debug
     AlarmManager().initialize();
     AlarmManager().registerBackgroundTask();
