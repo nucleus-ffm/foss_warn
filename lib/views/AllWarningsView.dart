@@ -15,6 +15,7 @@ import '../widgets/WarningWidget.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/sortWarnings.dart';
 import '../services/updateProvider.dart';
+import '../widgets/noWarningsInList.dart';
 
 class AllWarningsView extends StatefulWidget {
   const AllWarningsView({Key? key}) : super(key: key);
@@ -116,13 +117,12 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                 ? SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(children: [
-                      allWarnMessageList.isEmpty ?
-                          Container(
-                            child: Text("Es sind keine Warnungen in der Liste"),
-                          ): SizedBox(),
                       Container(
                         child: ConnectionError(),
                       ),
+                      allWarnMessageList.isEmpty?
+                        NoWarningsInList():
+                      SizedBox(),
                       ...allWarnMessageList
                           .map((warnMessage) =>
                               WarningWidget(warnMessage: warnMessage))
