@@ -8,7 +8,7 @@ List welcomeScreenItems = [
   {
     "header": "Wichtig",
     "description":
-        "Bitte lesen Sie vor der Nuztung den Haftungsausschluss durch. "
+        "Bitte lesen Sie vor der Nutzung den Haftungsausschluss durch. "
             "Mit der Benutzung der App stimmen Sie diesem zu.",
     "image": "assets/paragraph.png",
     "action": "disclaimer",
