@@ -200,7 +200,8 @@ class _SettingsState extends State<Settings> {
                                 controller: frequenzTextController,
                                 onChanged: (value) {
                                   if (value != "") {
-                                    if (double.parse(value) <= maxValueFrequencyOfAPICall) {
+                                    if (double.parse(value) > 0 &&
+                                        double.parse(value) <= maxValueFrequencyOfAPICall) {
                                       setState(() {
                                         frequencyOfAPICall =
                                             double.parse(value);
@@ -231,10 +232,6 @@ class _SettingsState extends State<Settings> {
                                 },
                                 onChangeEnd: (value) {
                                   saveSettings();
-                                  /*BackgroundTaskManager()
-                                      .cancelBackgroundTask();
-                                  BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay(); */
                                   AlarmManager().cancelBackgroundTask();
                                   AlarmManager().registerBackgroundTask();
                                 },
@@ -364,7 +361,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Zeige das Intro nochmal"),
-              subtitle: Text("Zeigt den Einfühgrungsdialog noch einmal"),
+              subtitle: Text("Zeigt den Einführungsdialog noch einmal"),
               onTap: () {
                 Navigator.push(
                   context,
