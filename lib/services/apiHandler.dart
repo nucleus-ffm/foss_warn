@@ -109,6 +109,10 @@ Future callAPI()  async {
     cacheWarnings();
   } else if(!successfullyFetched) {
     loadCachedWarnings();
+  } else {
+    // there are no warnings and no stored
+    // warning, so we we have nothing to display
+    areWarningsFromCache = false;
   }
 
   print("finished calling API");
