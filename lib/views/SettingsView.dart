@@ -28,7 +28,7 @@ bool showStatusNotification = true;
 Map<String, bool> notificationEventsSettings = new Map();
 
 bool showExtendedMetaData = false; //if ture show more tag in WarningDetailView
-bool useDarkMode = false;
+ThemeMode selectedTheme = ThemeMode.system;
 double frequencyOfAPICall = 15;
 String dropdownValue = '';
 int startScreen = 0;
@@ -59,6 +59,7 @@ class _SettingsState extends State<Settings> {
   final TextEditingController frequenzTextController =
       new TextEditingController();
   final double maxValueFrequencyOfAPICall = 999;
+  final Map<ThemeMode, String> themeLabels = {ThemeMode.system: "Automatisch", ThemeMode.dark: "Dunkel",ThemeMode.light: "Hell"};
 
   @override
   void initState() {
@@ -300,19 +301,38 @@ class _SettingsState extends State<Settings> {
                     })),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Text("Nutze dunkles Farbschema"),
-              trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                  value: useDarkMode,
-                  onChanged: (value) {
-                    setState(() {
-                      useDarkMode = value;
-                    });
-                    saveSettings();
-                    final updater = Provider.of<Update>(context, listen: false);
-                    updater.updateView();
-                  }),
+              title: Text("Design:"),
+              trailing: DropdownButton<ThemeMode>(
+                value: selectedTheme,
+                icon: const Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style:
+                TextStyle(color: Theme.of(context).colorScheme.secondary),
+                underline: Container(
+                  height: 2,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                onChanged: (ThemeMode? newValue) {
+                  setState(() {
+                    selectedTheme = newValue!;
+                  });
+                  saveSettings();
+
+                  // Reload the full app for theme changes to reflect
+                  final updater = Provider.of<Update>(context, listen: false);
+                  updater.updateView();
+                },
+                items: [ThemeMode.system, ThemeMode.dark, ThemeMode.light].map<DropdownMenuItem<ThemeMode>>((value) {
+                  return DropdownMenuItem<ThemeMode>(
+                    value: value,
+                    child: Text(themeLabels[value]!),
+                  );
+                }).toList(),
+              ),
             ),
+
+
             ListTile(
               contentPadding: settingsTileListPadding,
               title: Text("Zeige alle Meldungen an"),

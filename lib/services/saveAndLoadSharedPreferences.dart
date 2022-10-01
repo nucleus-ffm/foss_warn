@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
 import 'package:foss_warn/views/SettingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,7 +99,7 @@ saveSettings() async {
   preferences.setString("updateAvailable", updateAvailable.toString());
   preferences.setString("githubVersionNumber", githubVersionNumber.toString());
   preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
-  preferences.setString("useDarkMode", useDarkMode.toString());
+  preferences.setString("selectedTheme", selectedTheme.toString());
   preferences.setString("showAllWarnings", showAllWarnings.toString());
   preferences.setString("notificationEventsSettings", jsonEncode(notificationEventsSettings));
   preferences.setBool("activateAlertSwiss", activateAlertSwiss);
@@ -223,15 +224,22 @@ loadSettings() async {
         double.parse(preferences.getString("frequencyOfAPICall")!);
     //true;
   }
-  if (preferences.containsKey("useDarkMode")) {
+  if (preferences.containsKey("selectedTheme")) {
     String temp = preferences.getString("useDarkMode")!;
-    if (temp == "true") {
-      useDarkMode = true;
-    } else {
-      useDarkMode = false;
+    switch(temp) {
+      case 'ThemeMode.system':
+        selectedTheme = ThemeMode.system;
+        break;
+      case 'ThemeMode.dark':
+        selectedTheme = ThemeMode.dark;
+        break;
+      case 'ThemeMode.light':
+        selectedTheme = ThemeMode.system;
+        break;
     }
   } else {
-    useDarkMode = false;
+    // Default value
+    selectedTheme = ThemeMode.system;
   }
   if (preferences.containsKey("showAllWarnings")) {
     String temp = preferences.getString("showAllWarnings")!;
