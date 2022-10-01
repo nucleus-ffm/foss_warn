@@ -97,28 +97,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FOSS Warn',
-      theme: useDarkMode
-          ? ThemeData(
-              primarySwatch: Colors.blue,
-              brightness: Brightness.dark,
-              colorScheme: ColorScheme.fromSwatch(
-                accentColor: Colors.green[700],
-                brightness: Brightness.dark,
-              ),
-              textTheme: const TextTheme(
-                  headline1: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  headline2: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                  bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-                  headline3: TextStyle(fontSize: 14.0, color: Colors.white)),
-            )
-          : ThemeData(
+      theme: ThemeData(
               primarySwatch: Colors.blue,
               brightness: Brightness.light,
               colorScheme: ColorScheme.fromSwatch(
@@ -139,7 +118,27 @@ class MyApp extends StatelessWidget {
                 headline3: TextStyle(fontSize: 14.0, color: Colors.white),
               ),
             ),
-      //theme: ThemeData.dark(),
+      darkTheme: ThemeData(
+        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: Colors.green[700],
+          brightness: Brightness.dark,
+        ),
+        textTheme: const TextTheme(
+            headline1: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+            headline2: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+            //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
+            headline3: TextStyle(fontSize: 14.0, color: Colors.white)),
+      ),
+      themeMode: selectedTheme,
       navigatorKey: navigatorKey,
       home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
     );
