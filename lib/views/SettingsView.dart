@@ -40,7 +40,7 @@ bool showAllWarnings = false;
 bool areWarningsFromCache =
     false; // true if the displayed warnings are loaded from cache
 
-String versionNumber = "0.4.2"; // shown in the about view
+String versionNumber = "0.4.3"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
