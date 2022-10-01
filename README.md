@@ -51,9 +51,10 @@ Unfortunately, yes, but at some point in the future I will work on supporting mu
 </details>
 
 ## Contribute
-FOSS Warn is currently a "one-man show". So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon
+FOSS Warn is currently (mostly) a "one-man show". So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon
 
-### special thanks to: 
+## Contributors
+special thanks to:
 - [Mats](https://github.com/MatsG23) who fixed [#36](https://github.com/nucleus-ffm/foss_warn/issues/36)
 
 ## Contact
