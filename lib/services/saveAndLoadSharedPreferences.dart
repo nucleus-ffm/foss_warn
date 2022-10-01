@@ -225,7 +225,7 @@ loadSettings() async {
     //true;
   }
   if (preferences.containsKey("selectedTheme")) {
-    String temp = preferences.getString("useDarkMode")!;
+    String temp = preferences.getString("selectedTheme")!;
     switch(temp) {
       case 'ThemeMode.system':
         selectedTheme = ThemeMode.system;
@@ -234,7 +234,7 @@ loadSettings() async {
         selectedTheme = ThemeMode.dark;
         break;
       case 'ThemeMode.light':
-        selectedTheme = ThemeMode.system;
+        selectedTheme = ThemeMode.light;
         break;
     }
   } else {
