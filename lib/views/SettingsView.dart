@@ -316,8 +316,12 @@ class _SettingsState extends State<Settings> {
                 onChanged: (ThemeMode? newValue) {
                   setState(() {
                     selectedTheme = newValue!;
-                    saveSettings();
                   });
+                  saveSettings();
+
+                  // Reload the full app for theme changes to reflect
+                  final updater = Provider.of<Update>(context, listen: false);
+                  updater.updateView();
                 },
                 items: [ThemeMode.system, ThemeMode.dark, ThemeMode.light].map<DropdownMenuItem<ThemeMode>>((value) {
                   return DropdownMenuItem<ThemeMode>(
