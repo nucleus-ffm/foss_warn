@@ -248,6 +248,26 @@ class AboutView extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.group),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Mitwirkende:",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  "Menschen, die zu FOSS Warn beigetragen haben",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ),
+            onTap: () {
+              launchUrlInBrowser('https://github.com/nucleus-ffm/foss_warn/blob/main/README.md#contributors');
+            },
+          ),
+          ListTile(
             leading: Icon(
               Icons.code_rounded,
             ),
