@@ -64,7 +64,7 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
       // because the warning identifier is no int, we have to generate a hash code
         3,
         "Sie haben noch keine Orte hinterlegt",
-        "Bitte kontrolieren Sie Orte. \n\n"
+        "Bitte kontrolieren Sie Ihre Orte. \n\n"
             "Mit dem Update auf Version 0.4.0 müssen Sie Ihre Orte neu hinzufügen."
             " Grund dafür ist eine grundlegend veränderte Liste der Orte. ",
         "keine Orte hinterlegt",
