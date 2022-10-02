@@ -25,7 +25,7 @@ class NotificationService {
           ledOffMs: 100,
           ledOnMs: 100,
         ),
-        iOS: IOSNotificationDetails());
+        iOS: DarwinNotificationDetails());
   }
 
   static Future _statusNotificationsDetails() async {
@@ -43,7 +43,7 @@ class NotificationService {
           styleInformation: BigTextStyleInformation(''),
           color: Colors.green, // makes the icon red,
         ),
-        iOS: IOSNotificationDetails());
+        iOS: DarwinNotificationDetails());
   }
 
   static Future showNotification({
@@ -96,7 +96,7 @@ class NotificationService {
           ledOffMs: 100,
           ledOnMs: 100,
         ),
-        iOS: IOSNotificationDetails());
+        iOS: DarwinNotificationDetails());
     await flutterLocalNotificationsPlugin.show(0, "Warnungen",
         "Es gibt für mehrere Orte Warnungen", notificationDetails);
   }
@@ -105,8 +105,8 @@ class NotificationService {
     final AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('res_notification_icon');
 
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
+    final DarwinInitializationSettings initializationSettingsIOS =
+    DarwinInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
       requestAlertPermission: false,
@@ -118,6 +118,10 @@ class NotificationService {
             android: initializationSettingsAndroid,
             iOS: initializationSettingsIOS,
             macOS: null);
+
+    // Request notifications permission (Android 13+)
+    await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
 
     // init the different notifications channels
     await flutterLocalNotificationsPlugin
@@ -163,12 +167,12 @@ class NotificationService {
     // when App is closed
     final details =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-    if (details != null && details.didNotificationLaunchApp) {
-      onNotification.add(details.payload);
+    if (details != null && details.notificationResponse != null && details.didNotificationLaunchApp) {
+      onNotification.add(details.notificationResponse!.payload);
     }
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification); //onSelectNotification
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse); //onSelectNotification
 
     /*print("[android notification channels]");
     List<AndroidNotificationChannel>? temp = (await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
@@ -179,10 +183,10 @@ class NotificationService {
     } */
   }
 
-  Future onSelectNotification(String? payload) async {
+  Future onDidReceiveNotificationResponse(NotificationResponse? notificationResponse) async {
     print("Notification clicked");
-    print(payload);
-    onNotification.add(payload);
+    print(notificationResponse?.payload);
+    onNotification.add(notificationResponse?.payload);
     dynamic i = 1;
     return i;
   }
