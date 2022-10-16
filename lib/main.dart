@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
+import 'package:foss_warn/views/aboutView.dart';
 // import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -98,26 +99,22 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'FOSS Warn',
       theme: ThemeData(
-              primarySwatch: Colors.blue,
-              brightness: Brightness.light,
-              colorScheme: ColorScheme.fromSwatch(
-                accentColor: Colors.green[700],
-                brightness: Brightness.light,
-              ),
-              textTheme: const TextTheme(
-                headline1: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-                headline2: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-                bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-                headline3: TextStyle(fontSize: 14.0, color: Colors.white),
-              ),
-            ),
+        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: Colors.green[700],
+          brightness: Brightness.light,
+        ),
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+          headline2: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
+          headline3: TextStyle(fontSize: 14.0, color: Colors.white),
+        ),
+      ),
       darkTheme: ThemeData(
         primarySwatch: Colors.blue,
         brightness: Brightness.dark,
@@ -127,13 +124,9 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
             headline1: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             headline2: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
             //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
             bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
             headline3: TextStyle(fontSize: 14.0, color: Colors.white)),
@@ -168,7 +161,6 @@ class _ScaffoldViewState extends State<ScaffoldView> {
   static const List<Widget> _pages = <Widget>[
     AllWarningsView(),
     MyPlaces(),
-    Settings(),
   ];
   @override
   void initState() {
@@ -176,7 +168,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     super.initState();
     loadMyPlacesList(); //load MyPlaceList
     listenNotifications();
-    if(geocodeMap.isEmpty) {
+    if (geocodeMap.isEmpty) {
       print("call geocode handler");
       geocodeHandler();
     }
@@ -216,19 +208,19 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [
-            showAllWarnings?
-              IconButton(
-                icon: Icon(Icons.info_outline),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return StatusWidget();
+            showAllWarnings
+                ? IconButton(
+                    icon: Icon(Icons.info_outline),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatusWidget();
+                        },
+                      );
                     },
-                  );
-                },
-
-            ): SizedBox(),
+                  )
+                : SizedBox(),
             IconButton(
               icon: Icon(Icons.sort),
               onPressed: () {
@@ -261,6 +253,28 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               icon: Icon(Icons.mark_chat_read),
               tooltip: "Markiere alle Warnungen als gelesen",
             ),
+            PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                onSelected: (result) {
+                  switch(result) {
+                    case 0:
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Settings()),
+                      );
+                      break;
+                    case 1:
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AboutView()),
+                      );
+                      break;
+                  }
+                },
+                itemBuilder: (context) => <PopupMenuEntry>[
+                      const PopupMenuItem(child: Text("Einstellungen"), value: 0),
+                      const PopupMenuItem(child: Text("Über"), value: 1)
+                    ])
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -272,10 +286,6 @@ class _ScaffoldViewState extends State<ScaffoldView> {
             BottomNavigationBarItem(
               icon: Icon(Icons.place),
               label: 'Meine Orte',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Einstellungen',
             ),
           ],
           currentIndex: _selectedIndex,
