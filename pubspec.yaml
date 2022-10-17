@@ -24,14 +24,14 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.3
-  flutter_local_notifications: ^11.0.1
+  flutter_local_notifications: ^12.0.2
   shared_preferences: ^2.0.13
   shared_preferences_android: ^2.0.11
   provider: ^6.0.3
   # workmanager: ^0.4.1
   rxdart: ^0.27.2
   url_launcher: ^6.0.12
-  share_plus: ^4.0.4
+  share_plus: ^5.0.0
   app_settings: ^4.1.6
   flutter_background: ^1.1.0
   android_alarm_manager_plus: ^2.0.5
