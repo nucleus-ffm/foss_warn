@@ -66,11 +66,6 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
               SizedBox(
                 height: 10,
               ),
-              Text(
-                "Die folgende Liste könnte Fehlerhaft sein, wodurch es zu keiner"
-                    " Warnung kommt. Wenn Fehler auffallen, bitte Bescheid geben.",
-                style: TextStyle(fontSize: 10),
-              ),
               SizedBox(
                 height: 5,
               ),
