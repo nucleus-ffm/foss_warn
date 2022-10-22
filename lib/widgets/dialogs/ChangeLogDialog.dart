@@ -14,6 +14,15 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.4.4 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Fehlerbehebungen \n"
+                  "* Die Einstellungen und die Über-Seite sind jetzt über"
+                  " die drei Punkte zu erreichen"
+                  " und nicht mehr über die Navigationsleiste \n"
+              ),
+              Text(
                 "0.4.3 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
