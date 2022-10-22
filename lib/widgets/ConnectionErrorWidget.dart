@@ -9,7 +9,7 @@ class ConnectionError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    if(showAllWarnings && (!mowasStatus || !biwappStatus || !dwdStatus || !katwarnStatus)) {
+    if(showAllWarnings && dataFetchStatusOldAPI == 2) {
       return Container(
         padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
         //margin: EdgeInsets.only(bottom: 10),

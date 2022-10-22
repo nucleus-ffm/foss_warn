@@ -74,6 +74,7 @@ bool dwdStatus = false;
 bool dwdParseStatus = false;
 bool lhpStatus = false;
 bool lhpParseStatus = false;
+int dataFetchStatusOldAPI = 0; // 0= no info, 1 = successful, 2 = error
 
 // ETags to check if something change serverside to saved data
 String mowasEtag = "";

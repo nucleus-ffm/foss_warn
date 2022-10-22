@@ -525,6 +525,7 @@ Future getData(bool useEtag) async {
 
     allWarnMessageList.clear(); //clear List
     allWarnMessageList = tempWarnMessageList; // transfer temp List in real list
+    dataFetchStatusOldAPI = 1; // successful
 
     if(activateAlertSwiss) {
       await callAlertSwissAPI();
@@ -545,6 +546,7 @@ Future getData(bool useEtag) async {
     mowasStatus = false;
     biwappStatus = false;
     katwarnStatus = false;
+    dataFetchStatusOldAPI = 2; // error
     lhpStatus = false;
     if (showStatusNotification) {
       sendStatusUpdateNotification(false);
