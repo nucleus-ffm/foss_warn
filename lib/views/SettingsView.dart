@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 //import 'package:foss_warn/class/class_BackgroundTask.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
-import 'package:foss_warn/services/checkForUpdates.dart';
 import 'package:foss_warn/services/updateProvider.dart';
 import 'package:foss_warn/views/DevSettingsView.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,6 @@ import 'NotificationSettingsView.dart';
 import 'WelcomeView.dart';
 
 import '../services/saveAndLoadSharedPreferences.dart';
-import '../services/urlLauncher.dart';
 
 import '../widgets/dialogs/FontSizeDialog.dart';
 import '../widgets/dialogs/SortByDialog.dart';
@@ -38,7 +36,7 @@ bool updateAvailable = false;
 bool showAllWarnings = false;
 bool areWarningsFromCache = false;
 
-String versionNumber = "0.4.3"; // shown in the about view
+String versionNumber = "0.4.4"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
@@ -77,394 +75,318 @@ class _SettingsState extends State<Settings> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Einstellungen"),
-          backgroundColor: Colors.green[700],
-          systemOverlayStyle:
-              SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-        ),
-        body: SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 10, bottom: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Benachrichtigungen",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                ListTile(
-                  title: Text("Android-Benachrichtigungseinstellungen öffnen"),
-                  onTap: () => AppSettings.openNotificationSettings(),
-                ),
-                ListTile(
-                  title: Text("App-Benachrichtigungseinstellungen öffnen"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NotificationSettingsView()),
-                    );
-                  },
-                ),
-                ListTile(
-                    title: Text("Status-Benachrichtigung anzeigen"),
-                    subtitle: Text(
-                        "Zeigt eine Benachrichtung mit der Uhrzeit der letzten Aktualisierung"),
-                    trailing: Switch(
-                        activeColor: Theme.of(context).colorScheme.secondary,
-                        value: showStatusNotification,
-                        onChanged: (value) {
-                          setState(() {
-                            showStatusNotification = value;
-                          });
-                          saveSettings();
-                          if (showStatusNotification == false) {
-                            NotificationService.cancelOneNotification(1);
-                          }
-                        })),
-                ListTile(
-                  title: Text("Hintergrundabfrage für deine Orte"),
-                  trailing: Switch(
-                      activeColor: Theme.of(context).colorScheme.secondary,
-                      value: notificationGeneral,
-                      onChanged: (value) {
-                        setState(() {
-                          notificationGeneral = value;
-                        });
-                        saveSettings();
-                        if (notificationGeneral) {
-                          /*BackgroundTaskManager()
+      appBar: AppBar(
+        title: Text("Einstellungen"),
+        backgroundColor: Colors.green[700],
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: 10, bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Benachrichtigungen",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              title: Text("Android-Benachrichtigungseinstellungen öffnen"),
+              onTap: () => AppSettings.openNotificationSettings(),
+            ),
+            ListTile(
+              title: Text("App-Benachrichtigungseinstellungen öffnen"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationSettingsView()),
+                );
+              },
+            ),
+            ListTile(
+                title: Text("Status-Benachrichtigung anzeigen"),
+                subtitle: Text(
+                    "Zeigt eine Benachrichtung mit der Uhrzeit der letzten Aktualisierung"),
+                trailing: Switch(
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                    value: showStatusNotification,
+                    onChanged: (value) {
+                      setState(() {
+                        showStatusNotification = value;
+                      });
+                      saveSettings();
+                      if (showStatusNotification == false) {
+                        NotificationService.cancelOneNotification(1);
+                      }
+                    })),
+            ListTile(
+              title: Text("Hintergrundabfrage für deine Orte"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: notificationGeneral,
+                  onChanged: (value) {
+                    setState(() {
+                      notificationGeneral = value;
+                    });
+                    saveSettings();
+                    if (notificationGeneral) {
+                      /*BackgroundTaskManager()
                                       .cancelBackgroundTask();
                                   BackgroundTaskManager()
                                       .registerBackgroundTaskWithDelay(); */
-                          AlarmManager().cancelBackgroundTask();
-                          AlarmManager().registerBackgroundTask();
-                        } else {
-                          AlarmManager().cancelBackgroundTask();
-                          setState(() {
-                            notificationWithExtreme = false;
-                            notificationWithSevere = false;
-                            notificationWithModerate = false;
-                            notificationWithMinor = false;
-                          });
-                          print("background notification disabled");
-                        }
-                      }),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ListTile(
-                  title: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      AlarmManager().cancelBackgroundTask();
+                      AlarmManager().registerBackgroundTask();
+                    } else {
+                      AlarmManager().cancelBackgroundTask();
+                      setState(() {
+                        notificationWithExtreme = false;
+                        notificationWithSevere = false;
+                        notificationWithModerate = false;
+                        notificationWithMinor = false;
+                      });
+                      print("background notification disabled");
+                    }
+                  }),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ListTile(
+              title: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Frequenz der Hintergrundabfrage"),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Frequenz der Hintergrundabfrage"),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 70,
-                                  child: TextField(
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    controller: frequenzTextController,
-                                    onChanged: (value) {
-                                      if (value != "") {
-                                        if (double.parse(value) > 0 &&
-                                            double.parse(value) <=
-                                                maxValueFrequencyOfAPICall) {
-                                          setState(() {
-                                            frequencyOfAPICall =
-                                                double.parse(value);
-                                          });
-                                        } else {
-                                          frequenzTextController.text =
-                                              frequencyOfAPICall
-                                                  .round()
-                                                  .toString();
-                                        }
-                                      }
-                                    },
-                                    decoration: InputDecoration(),
-                                  ),
-                                ),
-                                Text("min"),
-                                Expanded(
-                                  child: Slider(
-                                    value: frequencyOfAPICall,
-                                    activeColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                    min: 1,
-                                    max: maxValueFrequencyOfAPICall,
-                                    onChanged: (value) {
+                            SizedBox(
+                              width: 70,
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                controller: frequenzTextController,
+                                onChanged: (value) {
+                                  if (value != "") {
+                                    if (double.parse(value) > 0 &&
+                                        double.parse(value) <=
+                                            maxValueFrequencyOfAPICall) {
                                       setState(() {
                                         frequencyOfAPICall =
-                                            value.roundToDouble();
-                                        frequenzTextController.text =
-                                            frequencyOfAPICall
-                                                .toInt()
-                                                .toString();
+                                            double.parse(value);
                                       });
-                                    },
-                                    onChangeEnd: (value) {
-                                      saveSettings();
-                                      AlarmManager().cancelBackgroundTask();
-                                      AlarmManager().registerBackgroundTask();
-                                    },
-                                  ),
-                                ),
-                              ],
+                                    } else {
+                                      frequenzTextController.text =
+                                          frequencyOfAPICall.round().toString();
+                                    }
+                                  }
+                                },
+                                decoration: InputDecoration(),
+                              ),
+                            ),
+                            Text("min"),
+                            Expanded(
+                              child: Slider(
+                                value: frequencyOfAPICall,
+                                activeColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                min: 1,
+                                max: maxValueFrequencyOfAPICall,
+                                onChanged: (value) {
+                                  setState(() {
+                                    frequencyOfAPICall = value.roundToDouble();
+                                    frequenzTextController.text =
+                                        frequencyOfAPICall.toInt().toString();
+                                  });
+                                },
+                                onChangeEnd: (value) {
+                                  saveSettings();
+                                  AlarmManager().cancelBackgroundTask();
+                                  AlarmManager().registerBackgroundTask();
+                                },
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Darstellung:",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                ListTile(
-                  title: Text("Startansicht"),
-                  trailing: DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: const Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.secondary,
+                      ],
                     ),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                        if (dropdownValue == "Alle Meldungen") {
-                          startScreen = 0;
-                        } else if (dropdownValue == "Meine Orte") {
-                          startScreen = 1;
-                        }
-                      });
-                      saveSettings();
-                    },
-                    items: <String>['Alle Meldungen', 'Meine Orte']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
                   ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Darstellung:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              title: Text("Startansicht"),
+              trailing: DropdownButton<String>(
+                value: dropdownValue,
+                icon: const Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                underline: Container(
+                  height: 2,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
-                ListTile(
-                    title: Text("Erweiterte Metadaten von Meldungen anzeigen"),
-                    trailing: Switch(
-                        activeColor: Theme.of(context).colorScheme.secondary,
-                        value: showExtendedMetaData,
-                        onChanged: (value) {
-                          setState(() {
-                            showExtendedMetaData = value;
-                          });
-                          saveSettings();
-                        })),
-                ListTile(
-                  title: Text("Farbschema"),
-                  trailing: DropdownButton<ThemeMode>(
-                    value: selectedTheme,
-                    icon: const Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
-                    underline: Container(
-                      height: 2,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    onChanged: (ThemeMode? newValue) {
-                      setState(() {
-                        selectedTheme = newValue!;
-                      });
-                      saveSettings();
-
-                      // Reload the full app for theme changes to reflect
-                      final updater =
-                          Provider.of<Update>(context, listen: false);
-                      updater.updateView();
-                    },
-                    items: [ThemeMode.system, ThemeMode.dark, ThemeMode.light]
-                        .map<DropdownMenuItem<ThemeMode>>((value) {
-                      return DropdownMenuItem<ThemeMode>(
-                        value: value,
-                        child: Text(themeLabels[value]!),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                ListTile(
-                  title: Text("Alle verfügbaren Meldungen anzeigen"),
-                  subtitle:
-                      Text("Zeigt alle Meldungen der Warnmeldungsbehörden an"),
-                  trailing: Switch(
-                      activeColor: Theme.of(context).colorScheme.secondary,
-                      value: showAllWarnings,
-                      onChanged: (value) {
-                        setState(() {
-                          showAllWarnings = value;
-                        });
-                        saveSettings();
-                        final updater =
-                            Provider.of<Update>(context, listen: false);
-                        updater.updateView();
-                      }),
-                ),
-                ListTile(
-                  title: Text("Schriftgröße der Meldungen"),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return FontSizeDialog();
-                      },
-                    );
-                  },
-                ),
-                ListTile(
-                  title: Text("Sortierung der Meldungen"),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SortByDialog();
-                      },
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                gitHubRelease
-                    ? Text(
-                        "Updates:",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      )
-                    : SizedBox(),
-                gitHubRelease
-                    ? ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(child: Text("Prüfe auf Updates")),
-                            updateAvailable &&
-                                    versionNumber != githubVersionNumber
-                                ? TextButton(
-                                    onPressed: () {
-                                      launchUrlInBrowser(
-                                          'https://github.com/nucleus-ffm/foss_warn/releases/latest');
-                                    },
-                                    child: Text(
-                                      "Update verfügbar",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Colors.blue),
-                                  )
-                                : SizedBox(),
-                          ],
-                        ),
-                        onTap: () async {
-                          String result = await checkForUpdates();
-                          print("Rückgabewert: $result");
-                          if (result != "latest version installed" &&
-                              result != "something else" &&
-                              result != "Error - server not reachable") {
-                            setState(() {
-                              updateAvailable = true;
-                            });
-                            saveSettings();
-                          } else {
-                            setState(() {
-                              updateAvailable = false;
-                            });
-                            saveSettings();
-                            if (result == "Error - server not reachable") {
-                              final snackBar = SnackBar(
-                                content: const Text(
-                                  'Server nicht erreichbar',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                backgroundColor: Colors.red[100],
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            } else {
-                              final snackBar = SnackBar(
-                                content: const Text(
-                                  'neuste Version installiert',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                backgroundColor: Colors.green[100],
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            }
-                          }
-                        },
-                      )
-                    : SizedBox(),
-                Text(
-                  "Erweiterte Einstellungen:",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                ListTile(
-                  title:
-                      Text("AlphaSwiss aktivieren (experimentell)"),
-                  subtitle: Text("Warnmeldungsbehörde für die Schweiz"),
-                  trailing: Switch(
-                    value: activateAlertSwiss,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                    if (dropdownValue == "Alle Meldungen") {
+                      startScreen = 0;
+                    } else if (dropdownValue == "Meine Orte") {
+                      startScreen = 1;
+                    }
+                  });
+                  saveSettings();
+                },
+                items: <String>['Alle Meldungen', 'Meine Orte']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+            ListTile(
+                title: Text("Erweiterte Metadaten von Meldungen anzeigen"),
+                trailing: Switch(
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                    value: showExtendedMetaData,
                     onChanged: (value) {
                       setState(() {
-                        activateAlertSwiss = value;
+                        showExtendedMetaData = value;
                       });
                       saveSettings();
-                    },
-                    activeColor: Colors.green,
+                    })),
+            ListTile(
+              title: Text("Farbschema"),
+              trailing: DropdownButton<ThemeMode>(
+                value: selectedTheme,
+                icon: const Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                underline: Container(
+                  height: 2,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                onChanged: (ThemeMode? newValue) {
+                  setState(() {
+                    selectedTheme = newValue!;
+                  });
+                  saveSettings();
+
+                  // Reload the full app for theme changes to reflect
+                  final updater = Provider.of<Update>(context, listen: false);
+                  updater.updateView();
+                },
+                items: [ThemeMode.system, ThemeMode.dark, ThemeMode.light]
+                    .map<DropdownMenuItem<ThemeMode>>((value) {
+                  return DropdownMenuItem<ThemeMode>(
+                    value: value,
+                    child: Text(themeLabels[value]!),
+                  );
+                }).toList(),
+              ),
+            ),
+            ListTile(
+              title: Text("Alle verfügbaren Meldungen anzeigen"),
+              subtitle:
+                  Text("Zeigt alle Meldungen der Warnmeldungsbehörden an"),
+              trailing: Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: showAllWarnings,
+                  onChanged: (value) {
+                    setState(() {
+                      showAllWarnings = value;
+                    });
+                    saveSettings();
+                    final updater = Provider.of<Update>(context, listen: false);
+                    updater.updateView();
+                  }),
+            ),
+            ListTile(
+              title: Text("Schriftgröße der Meldungen"),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return FontSizeDialog();
+                  },
+                );
+              },
+            ),
+            ListTile(
+              title: Text("Sortierung der Meldungen"),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SortByDialog();
+                  },
+                );
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Erweiterte Einstellungen:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ListTile(
+              title: Text("AlphaSwiss aktivieren (experimentell)"),
+              subtitle: Text("Warnmeldungsbehörde für die Schweiz"),
+              trailing: Switch(
+                value: activateAlertSwiss,
+                onChanged: (value) {
+                  setState(() {
+                    activateAlertSwiss = value;
+                  });
+                  saveSettings();
+                },
+                activeColor: Colors.green,
+              ),
+            ),
+            ListTile(
+              title: Text("Einführung erneut starten"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WelcomeView(),
                   ),
-                ),
-                ListTile(
-                  title: Text("Einführung erneut starten"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WelcomeView(),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  title: Text("App-Entwicklereinstellungen öffnen"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DevSettings()),
-                    );
-                  },
-                ),
-              ],
-            )));
+                );
+              },
+            ),
+            ListTile(
+              title: Text("App-Entwicklereinstellungen öffnen"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DevSettings()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
