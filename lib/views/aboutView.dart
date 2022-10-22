@@ -21,17 +21,35 @@ class AboutView extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.only(top: 10, bottom: 20),
         children: [
-          ListTile(
-            title: Text(
-              "FOSS Warn",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Image(
+                height: 120,
+                width: 120,
+                image: AssetImage('assets/app_icon.png'),
+              )),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10, top: 10),
+            child: Center(
+              child: Text(
+                "FOSS Warn",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-            subtitle: Text("Diese App ist ein Freizeit-Projekt und wurde in "
-                "der Hoffnung erstellt, "
-                "dass sie nützlich ist. Hinweise zur Verbesserung "
-                "oder Fehlern sind gern gesehen. "
-                "Wenn Sie diese App als nützlich und gut ansehen, "
-                "würde ich mich freuen, davon zu hören."),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Center(
+              child: Text("Diese App ist ein Freizeit-Projekt und wurde in "
+                  "der Hoffnung erstellt, "
+                  "dass sie nützlich ist. Hinweise zur Verbesserung "
+                  "oder Fehlern sind gern gesehen. "
+                  "Wenn Sie diese App als nützlich und gut ansehen, "
+                  "würde ich mich freuen, davon zu hören.",
+              textAlign: TextAlign.center,),
+            ),
           ),
           Divider(),
           ListTile(
