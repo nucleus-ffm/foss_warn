@@ -351,7 +351,7 @@ class _SettingsState extends State<Settings> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
-              title: Text("AlphaSwiss aktivieren (experimentell)"),
+              title: Text("AlertSwiss aktivieren (experimentell)"),
               subtitle: Text("Warnmeldungsbehörde für die Schweiz"),
               trailing: Switch(
                 value: activateAlertSwiss,
