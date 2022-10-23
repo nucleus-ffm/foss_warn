@@ -31,7 +31,7 @@ dependencies:
   # workmanager: ^0.4.1
   rxdart: ^0.27.2
   url_launcher: ^6.0.12
-  share_plus: ^5.0.0
+  share_plus: ^6.0.1
   app_settings: ^4.1.6
   flutter_background: ^1.1.0
   android_alarm_manager_plus: ^2.0.5
