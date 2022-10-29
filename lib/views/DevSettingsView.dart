@@ -25,7 +25,7 @@ class _DevSettingsState extends State<DevSettings> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Erweiterte Einstellungen"),
-        backgroundColor: Colors.green[700],
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
         SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
