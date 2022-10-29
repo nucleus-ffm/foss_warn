@@ -165,7 +165,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                     Icon(
                                       Icons.check_circle_rounded,
                                       size: 200,
-                                      color: Colors.green,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                     Text(
                                         "Es liegen keine Warnungen für Deine Orte vor.\n "),
