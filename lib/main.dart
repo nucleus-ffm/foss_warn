@@ -29,6 +29,8 @@ import 'services/sortWarnings.dart';
 
 import 'widgets/dialogs/SortByDialog.dart';
 
+import 'themes/themes.dart';
+
 //final navigatorKey = GlobalKey<NavigatorState>();
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -99,39 +101,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FOSS Warn',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: Colors.green[700],
-          brightness: Brightness.light,
-        ),
-        textTheme: const TextTheme(
-          headline1: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
-          headline2: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-          //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-          headline3: TextStyle(fontSize: 14.0, color: Colors.white),
-        ),
-      ),
-      darkTheme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: Colors.green[700],
-          brightness: Brightness.dark,
-        ),
-        textTheme: const TextTheme(
-            headline1: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-            headline2: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-            //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-            headline3: TextStyle(fontSize: 14.0, color: Colors.white)),
-      ),
+      theme: greenTheme,
+      darkTheme: darkTheme,
       themeMode: selectedTheme,
       navigatorKey: navigatorKey,
       home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
@@ -147,8 +118,6 @@ class ScaffoldView extends StatefulWidget {
 }
 
 class _ScaffoldViewState extends State<ScaffoldView> {
-  //late StreamSubscription<ConnectivityResult> _connectivitySubscription;
-
   int _selectedIndex = startScreen; // selected start view
   // the navigation bar
   void _onItemTapped(int index) {
@@ -173,21 +142,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
       print("call geocode handler");
       geocodeHandler();
     }
-    // listen to notification stream
-
-    /*_connectivitySubscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      // Got a new connectivity status!
-      print("Connection changed");
-    });*/
   }
-
-  // cancel networt connection subscription
-  /*@override
-  dispose() {
-    super.dispose();
-
-    //_connectivitySubscription.cancel();
-  }*/
 
   void listenNotifications() {
     NotificationService.onNotification.stream.listen((onClickedNotification));
