@@ -189,6 +189,11 @@ class _SettingsState extends State<Settings> {
                                     }
                                   }
                                 },
+                                onEditingComplete: () {
+                                  saveSettings();
+                                  AlarmManager().cancelBackgroundTask();
+                                  AlarmManager().registerBackgroundTask();
+                                },
                                 decoration: InputDecoration(),
                               ),
                             ),
