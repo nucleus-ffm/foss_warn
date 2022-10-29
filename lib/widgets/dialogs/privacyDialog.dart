@@ -24,26 +24,27 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   "Für die Liste der Ortschaften lädt FOSS Warn einmalig beim ersten Start"
                   " eine Liste von xrepository.de (betrieben von der KoSIT) herunter."
                   "\n\n"
-                  "Zusätzlich kann FOSS Warn (nur die Github-Version) prüfen,"
-                  " ob ein Update verfügbar ist. "
-                  "Dafür lädt FOSS Warn Daten von Github und vergleicht lokal die Versionsnummern. "
-                   "FOSS Warn prüft dabei nicht unaufgefordert im "
-                  "Hintergrund auf Updates, sondern nur, wenn der Updatecheck "
-                  "in den Einstellungen aufgerufen wird. "
+                  "Um nur die relevanten Warnungen zu laden, verwendet FOSS Warn "
+                  "eine API bei der der ausgewählte Ort als Geocode mitgesendet wird. "
+                  "Für den Betreiber der API ist also sichtbar, welche Orte"
+                  " (auf Kreisebene) Sie hinterlegt haben."
                   "\n\n"
                   "Für den Aufruf überträgt FOSS Warn nur die technisch notwendigen Daten."
-                  " Auf die Serverseitige Verarbeitung hat FOSS Warn keinen Einfluss "
-                  ""
+                  " Auf die serverseitige Verarbeitung hat FOSS Warn keinen Einfluss."
+                  ""),
+              SizedBox(
+                height: 10,
               ),
-              SizedBox(height: 10,),
               Row(
                 children: [
                   Icon(Icons.open_in_browser),
                   Flexible(
                     fit: FlexFit.loose,
-                    child: TextButton(onPressed: () {
-                      Future<void>? _launched = launchUrlInBrowser('https://warnung.bund.de/datenschutz');
-                    }, child: Text("Zur Datenschutzerklärung von Warnung.bund.de")),
+                    child: TextButton(
+                        onPressed: () => launchUrlInBrowser(
+                            'https://warnung.bund.de/datenschutz'),
+                        child: Text(
+                            "Zur Datenschutzerklärung von Warnung.bund.de")),
                   ),
                 ],
               ),
@@ -52,9 +53,11 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   Icon(Icons.open_in_browser),
                   Flexible(
                     fit: FlexFit.loose,
-                    child: TextButton(onPressed: () {
-                      Future<void>? _launched = launchUrlInBrowser('https://www.xrepository.de/cms/datenschutz.html');
-                    }, child: Text("Zur Datenschutzerklärung von xrepository.de")),
+                    child: TextButton(
+                        onPressed: () => launchUrlInBrowser(
+                            'https://www.xrepository.de/cms/datenschutz.html'),
+                        child: Text(
+                            "Zur Datenschutzerklärung von xrepository.de")),
                   ),
                 ],
               ),
@@ -63,9 +66,10 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   Icon(Icons.open_in_browser),
                   Flexible(
                     fit: FlexFit.loose,
-                    child: TextButton(onPressed: () {
-                      Future<void>? _launched = launchUrlInBrowser('https://docs.github.com/en/github/site-policy/github-privacy-statement');
-                    }, child: Text("Zur Datenschutzerklärung von Github.com")),
+                    child: TextButton(
+                        onPressed: () => launchUrlInBrowser(
+                            'https://docs.github.com/en/github/site-policy/github-privacy-statement'),
+                        child: Text("Zur Datenschutzerklärung von Github.com")),
                   ),
                 ],
               )
