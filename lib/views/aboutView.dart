@@ -14,7 +14,7 @@ class AboutView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Über diese App"),
-        backgroundColor: Colors.green[700],
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
