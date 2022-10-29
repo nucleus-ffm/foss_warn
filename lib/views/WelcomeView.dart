@@ -76,6 +76,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                                         onPressed: () {
                                           AppSettings
                                               .openBatteryOptimizationSettings();
+
                                         },
                                         child: Text(
                                           "Akkuoptimerung ausschalten",
