@@ -8,6 +8,7 @@ import 'package:foss_warn/views/DevSettingsView.dart';
 import 'package:provider/provider.dart';
 import 'package:app_settings/app_settings.dart';
 
+import '../services/apiHandler.dart';
 import 'NotificationSettingsView.dart';
 import 'WelcomeView.dart';
 
@@ -77,18 +78,24 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Einstellungen"),
-        backgroundColor: Colors.green[700],
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 10, bottom: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Benachrichtigungen",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                "Benachrichtigungen",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
             ),
             ListTile(
               title: Text("Android-Benachrichtigungseinstellungen öffnen"),
@@ -193,6 +200,7 @@ class _SettingsState extends State<Settings> {
                                   saveSettings();
                                   AlarmManager().cancelBackgroundTask();
                                   AlarmManager().registerBackgroundTask();
+                                  callAPI(); // call api and update notification
                                 },
                                 decoration: InputDecoration(),
                               ),
@@ -216,6 +224,7 @@ class _SettingsState extends State<Settings> {
                                   saveSettings();
                                   AlarmManager().cancelBackgroundTask();
                                   AlarmManager().registerBackgroundTask();
+                                  callAPI(); // call api and update notification
                                 },
                               ),
                             ),
@@ -230,9 +239,15 @@ class _SettingsState extends State<Settings> {
             SizedBox(
               height: 10,
             ),
-            Text(
-              "Darstellung:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                "Darstellung:",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
             ),
             ListTile(
               title: Text("Startansicht"),
@@ -351,9 +366,15 @@ class _SettingsState extends State<Settings> {
             SizedBox(
               height: 10,
             ),
-            Text(
-              "Erweiterte Einstellungen:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                "Erweiterte Einstellungen:",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
             ),
             ListTile(
               title: Text("AlertSwiss aktivieren (experimentell)"),
