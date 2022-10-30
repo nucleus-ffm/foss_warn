@@ -18,14 +18,13 @@ import 'saveAndLoadSharedPreferences.dart';
 /// [useEtag]: if the etags should be used while calling the API
 Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
   bool returnValue = true;
-  print("check for warnings");
   int countMessages = 0;
+  print("check for warnings");
   print("warnMessageList: " + warnMessageList.length.toString());
   // load warnings if the list is empty / or we war in background
   if (warnMessageList.isEmpty || loadManuel) {
-    print(
-        "Warninglist is empty or we ware in Background mode"); // list ist emty, get data first
-    // await getData(useEtag);
+    // list ist empty, get data first
+    print("Warninglist is empty or we ware in Background mode");
     await  callAPI();
   }
   if (notificationSettingsImportance.isEmpty) {
@@ -46,27 +45,12 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
     await loadAlreadyNotifiedWarningsList();
   }
 
-  void sendNotification(
-      int id, String title, String body, String payload, String channel) async {
-    await NotificationService.showNotification(
-      id: id,
-      title: title,
-      body: body,
-      payload: payload,
-      channel: channel,
-    );
-  }
-
-  // infor user if he hasn't add any places yet
+  // inform user if he hasn't add any places yet
   if(myPlaceList.isEmpty) {
-    sendNotification(
-      // generate from the warning in the List the notification id
-      // because the warning identifier is no int, we have to generate a hash code
+    await NotificationService.showNotification(
         3,
         "Sie haben noch keine Orte hinterlegt",
-        "Bitte kontrolieren Sie Ihre Orte. \n\n"
-            "Mit dem Update auf Version 0.4.0 müssen Sie Ihre Orte neu hinzufügen."
-            " Grund dafür ist eine grundlegend veränderte Liste der Orte. ",
+        "Bitte kontrolieren Sie Ihre Orte.",
         "keine Orte hinterlegt",
         "Hinweise");
   }
@@ -136,7 +120,7 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
           markOneWarningAsNotified(myWarnMessage);
           clearWarningAsNotifiedList();
 
-          sendNotification(
+          await NotificationService.showNotification(
               // generate from the warning in the List the notification id
               // because the warning identifier is no int, we have to generate a hash code
               generateNotificationID(myWarnMessage.identifier),
