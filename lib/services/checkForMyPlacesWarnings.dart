@@ -25,7 +25,7 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
   if (warnMessageList.isEmpty || loadManuel) {
     // list ist empty, get data first
     print("Warninglist is empty or we ware in Background mode");
-    await  callAPI();
+    await callAPI();
   }
   if (notificationSettingsImportance.isEmpty) {
     print("notificationSettingsImportanceList is empty");
@@ -46,13 +46,13 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
   }
 
   // inform user if he hasn't add any places yet
-  if(myPlaceList.isEmpty) {
+  if (myPlaceList.isEmpty) {
     await NotificationService.showNotification(
-        3,
-        "Sie haben noch keine Orte hinterlegt",
-        "Bitte kontrolieren Sie Ihre Orte.",
-        "keine Orte hinterlegt",
-        "Hinweise");
+        id: 3,
+        title: "Sie haben noch keine Orte hinterlegt",
+        body: "Bitte kontrolieren Sie Ihre Orte.",
+        payload: "keine Orte hinterlegt",
+        channel: "Hinweise");
   }
 
   for (Place myPlace in myPlaceList) {
@@ -65,7 +65,8 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
       //print(warnMessage.headline);
       for (Area myArea in warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
-          if(myGeocode.geocodeNumber.length < 5 || myPlace.geocode.length < 5 ) {
+          if (myGeocode.geocodeNumber.length < 5 ||
+              myPlace.geocode.length < 5) {
             // the geocode is not long enoug -> in case of alert swiss
             break;
           }
@@ -73,7 +74,7 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
               // we have to cut the geocode because the warning are only on kreisebene
               // we have to check if the geocode ist lager then 5 because of alertSwiss
               myGeocode.geocodeNumber.substring(0, 5) ==
-                      myPlace.geocode.substring(0, 5)) {
+                  myPlace.geocode.substring(0, 5)) {
             if (myPlace.warnings.contains(warnMessage)) {
               print("Warn Messsage already in List");
               //warn messeage already in list from geocodename
@@ -123,11 +124,11 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManuel) async {
           await NotificationService.showNotification(
               // generate from the warning in the List the notification id
               // because the warning identifier is no int, we have to generate a hash code
-              generateNotificationID(myWarnMessage.identifier),
-              "Neue Warnung für ${myPlace.name}",
-              "${myWarnMessage.headline}",
-              myPlace.name,
-              myWarnMessage.severity);
+              id: generateNotificationID(myWarnMessage.identifier),
+              title: "Neue Warnung für ${myPlace.name}",
+              body: "${myWarnMessage.headline}",
+              payload: myPlace.name,
+              channel: myWarnMessage.severity);
         }
       }
       //return true - there are warnings. the return value isn't use yet?

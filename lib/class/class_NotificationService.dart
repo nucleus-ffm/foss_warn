@@ -46,13 +46,14 @@ class NotificationService {
         iOS: DarwinNotificationDetails());
   }
 
-  static Future showNotification(
-    int id,
+  // show a notification // with named parameters
+  static Future showNotification({
+    required int id,
     String? title,
     String? body,
     String? payload,
-    String channel,
-  ) async {
+    required String channel,
+  }) async {
     flutterLocalNotificationsPlugin.show(
       id,
       title,
@@ -63,12 +64,12 @@ class NotificationService {
     showGroupNotification();
   }
 
-  static Future showStatusNotification(
-    int id,
+  static Future showStatusNotification({
+    required int id,
     String? title,
     String? body,
     String? payload,
-  ) async {
+  })  async {
     flutterLocalNotificationsPlugin.show(
       id,
       title,
