@@ -37,7 +37,7 @@ bool updateAvailable = false;
 bool showAllWarnings = false;
 bool areWarningsFromCache = false;
 
-String versionNumber = "0.4.4"; // shown in the about view
+String versionNumber = "0.4.5"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
@@ -69,6 +69,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    const double indentOfCategoriesTitles = 15;
     if (startScreen == 0) {
       dropdownValue = 'Alle Meldungen';
     } else {
@@ -88,7 +89,7 @@ class _SettingsState extends State<Settings> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: indentOfCategoriesTitles, top: indentOfCategoriesTitles),
               child: Text(
                 "Benachrichtigungen",
                 style: TextStyle(
@@ -155,9 +156,6 @@ class _SettingsState extends State<Settings> {
                       print("background notification disabled");
                     }
                   }),
-            ),
-            SizedBox(
-              height: 10,
             ),
             ListTile(
               title: Row(
@@ -236,11 +234,13 @@ class _SettingsState extends State<Settings> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10,
+            Divider(
+              height: 50,
+              indent: 15.0,
+              endIndent: 15.0,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
                 "Darstellung:",
                 style: TextStyle(
@@ -363,11 +363,13 @@ class _SettingsState extends State<Settings> {
                 );
               },
             ),
-            SizedBox(
-              height: 10,
+            Divider(
+              height: 50,
+              indent: 15.0,
+              endIndent: 15.0,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
                 "Erweiterte Einstellungen:",
                 style: TextStyle(
