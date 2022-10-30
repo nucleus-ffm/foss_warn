@@ -14,7 +14,4 @@ class Area {
     'areaDesc': areaDesc,
     'geocodeList': geocodeList,
   };
-
-
-
 }
