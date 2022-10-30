@@ -61,18 +61,6 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Icon(Icons.open_in_browser),
-                  Flexible(
-                    fit: FlexFit.loose,
-                    child: TextButton(
-                        onPressed: () => launchUrlInBrowser(
-                            'https://docs.github.com/en/github/site-policy/github-privacy-statement'),
-                        child: Text("Zur Datenschutzerklärung von Github.com")),
-                  ),
-                ],
-              )
             ],
           ),
         ),
