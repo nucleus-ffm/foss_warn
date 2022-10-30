@@ -13,8 +13,7 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
   String formattedMinuteNow = "";
   String formattedHourNow = "";
   if (now.minute + frequencyOfAPICall >= 60) {
-    print(
-        "Min + next " + (now.minute + frequencyOfAPICall.toInt()).toString());
+    print("Min + next " + (now.minute + frequencyOfAPICall.toInt()).toString());
     hourToAdd = (now.minute + frequencyOfAPICall.toInt()) ~/ 60;
     print("add hour: " + hourToAdd.toString());
     minute = (now.minute + frequencyOfAPICall.toInt()) % 60;
@@ -55,22 +54,21 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
   String nextUpdateTimeFormattedDate =
       formattedHourNext + ":" + formattedMinuteNext;
 
-  if(success) {
+  if (success) {
     print("updating status notification...");
-    // ForegroundService().updateForegroundServices(nowFormattedDate);
     await NotificationService.showStatusNotification(
       id: 1,
       title: "FOSS Warn ist aktiv",
       body:
-      "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr",
+          "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr",
       payload: "statusanzeige",
     );
-  }else {
+  } else {
     await NotificationService.showStatusNotification(
       id: 1,
       title: "FOSS Warn - Aktualisierung fehlgeschlagen",
       body:
-      "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr \n"
+          "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr \n"
           "Error: $error",
       payload: "statusanzeige",
     );
