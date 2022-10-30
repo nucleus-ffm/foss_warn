@@ -46,13 +46,13 @@ class NotificationService {
         iOS: DarwinNotificationDetails());
   }
 
-  static Future showNotification({
-    required int id,
+  static Future showNotification(
+    int id,
     String? title,
     String? body,
     String? payload,
-    String channel = "Benachrichtigung",
-  }) async {
+    String channel,
+  ) async {
     flutterLocalNotificationsPlugin.show(
       id,
       title,
@@ -63,12 +63,12 @@ class NotificationService {
     showGroupNotification();
   }
 
-  static Future showStatusNotification({
-    required int id,
+  static Future showStatusNotification(
+    int id,
     String? title,
     String? body,
     String? payload,
-  }) async {
+  ) async {
     flutterLocalNotificationsPlugin.show(
       id,
       title,
@@ -106,7 +106,7 @@ class NotificationService {
         AndroidInitializationSettings('res_notification_icon');
 
     final DarwinInitializationSettings initializationSettingsIOS =
-    DarwinInitializationSettings(
+        DarwinInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
       requestAlertPermission: false,
@@ -120,8 +120,10 @@ class NotificationService {
             macOS: null);
 
     // Request notifications permission (Android 13+)
-    await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
 
     // init the different notifications channels
     await flutterLocalNotificationsPlugin
@@ -167,12 +169,15 @@ class NotificationService {
     // when App is closed
     final details =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-    if (details != null && details.notificationResponse != null && details.didNotificationLaunchApp) {
+    if (details != null &&
+        details.notificationResponse != null &&
+        details.didNotificationLaunchApp) {
       onNotification.add(details.notificationResponse!.payload);
     }
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse); //onSelectNotification
+        onDidReceiveNotificationResponse:
+            onDidReceiveNotificationResponse); //onSelectNotification
 
     /*print("[android notification channels]");
     List<AndroidNotificationChannel>? temp = (await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
@@ -183,7 +188,8 @@ class NotificationService {
     } */
   }
 
-  Future onDidReceiveNotificationResponse(NotificationResponse? notificationResponse) async {
+  Future onDidReceiveNotificationResponse(
+      NotificationResponse? notificationResponse) async {
     print("Notification clicked");
     print(notificationResponse?.payload);
     onNotification.add(notificationResponse?.payload);
@@ -191,17 +197,16 @@ class NotificationService {
     return i;
   }
 
+  /// cancel one notification with the given id
   static cancelOneNotification(id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
-    /* cancel summery notification if it is the last one */
+
+    // cancel summery notification if it is the last one
     List<ActiveNotification>? activeNotifications =
         await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.getActiveNotifications();
-    final List<PendingNotificationRequest> pendingNotificationRequests =
-        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    //@TODO: fix
 
     if (activeNotifications!.length == 2 &&
         activeNotifications
@@ -213,6 +218,7 @@ class NotificationService {
     }
   }
 
+  /// cancel all notifications
   static cancelAllNotification() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
