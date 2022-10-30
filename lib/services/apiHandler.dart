@@ -18,11 +18,12 @@ import 'package:http/http.dart';
 Future callAPI()  async {
   bool successfullyFetched = true;
   String error = "";
+  List<WarnMessage> tempWarnMessageList = [];
+  tempWarnMessageList.clear();
   print("call API");
   String baseUrl = "https://warnung.bund.de/api31";
   // String geocode = "071110000000"; // just for testing
-  List<WarnMessage> tempWarnMessageList = [];
-  tempWarnMessageList.clear();
+
   await loadSettings();
 
   for(Place p in myPlaceList) {
@@ -76,7 +77,7 @@ Future callAPI()  async {
           }
         }
 
-        //@todo: is this api for all warning sources? or is it just Mowas?
+        // @todo: is this api for all warning sources? or is it just Mowas?
         // i think it is for all (katwarn confirmed)
       } else {
         print("could not reach: ");
@@ -119,6 +120,7 @@ Future callAPI()  async {
   return "";
 }
 
+/// generate WarnMessage object
 WarnMessage? createWarning(var data, String provider, String placeName, String geocode, List<WarnMessage> tempWarnMessageList) {
   /// generate empty list as placeholder
   List<Area> generateAreaList(int i) {
