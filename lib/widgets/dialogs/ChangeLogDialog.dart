@@ -20,6 +20,7 @@ class ChangeLogDialog extends StatelessWidget {
               Text("* Fehlerbehebungen \n"
                   "* Die Einstellungen sehen jetzt etwas anders aus \n "
                   "* Datenschutzerklärung aktualisiert \n"
+                  "* Optimierungen \n"
               ),
               Text(
                 "0.4.4 (beta)",
