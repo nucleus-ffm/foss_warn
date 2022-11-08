@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../services/welcomeScreenItems.dart';
-import 'package:app_settings/app_settings.dart';
 import '../main.dart';
 import 'SettingsView.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
@@ -134,9 +134,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-              onPressed: () {
-                AppSettings.openBatteryOptimizationSettings();
-              },
+              onPressed: () => showIgnoreBatteryOptimizationDialog(),
               child: Text(
                 "Akkuoptimerung ausschalten",
                 style: TextStyle(color: Colors.white),
@@ -181,6 +179,16 @@ class _WelcomeViewState extends State<WelcomeView> {
         );
       default:
         return SizedBox(height: 50);
+    }
+  }
+
+  Future<void> showIgnoreBatteryOptimizationDialog() async {
+    const platform = const MethodChannel('flutter.native/helper');
+
+    try {
+      await platform.invokeMethod("showIgnoreBatteryOptimizationDialog");
+    } on PlatformException catch (e) {
+      print(e);
     }
   }
 
