@@ -27,7 +27,7 @@ An unofficial open source application written in Flutter to get emergency alerts
 The app is currently in a BETA status. It works quite well, but be aware of the known problems.
 
 ## TODO: 
- - see [project board](https://github.com/nucleus-ffm/foss_warn/projects)
+ - see [project board](https://github.com/nucleus-ffm/foss_warn/projects?type=classic)
 
 ## Known problems:
 - the layout could be improved for small devices
