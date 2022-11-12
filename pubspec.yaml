@@ -28,7 +28,7 @@ dependencies:
   shared_preferences: ^2.0.15
   shared_preferences_android: ^2.0.14
   provider: ^6.0.4
-  rxdart: ^0.27.5
+  rxdart: ^0.27.6
   url_launcher: ^6.1.6
   share_plus: ^6.2.0
   app_settings: ^4.1.8
