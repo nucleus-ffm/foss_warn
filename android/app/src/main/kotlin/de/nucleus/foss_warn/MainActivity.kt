@@ -5,7 +5,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugins.GeneratedPluginRegistrant
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-
+import androidx.annotation.NonNull
 import android.net.Uri
 import android.content.Intent
 import android.os.Build
@@ -19,17 +19,16 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         GeneratedPluginRegistrant.registerWith(flutterEngine)
-
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
                 call, result ->
             when (call.method) {
-                "showIgnoreBatteryOptimizationDialog" -> showIgnoreBatteryOptimizationDialog(result)
+                "showIgnoreBatteryOptimizationDialog" -> showIgnoreBatteryOptimizationDialog()
                 else -> result.notImplemented()
             }
         }
     }
 
-    private fun showIgnoreBatteryOptimizationDialog(result: MethodChannel.Result) {
+    private fun showIgnoreBatteryOptimizationDialog() {
         val pm: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         val packageName: String = getApplicationContext().getPackageName()
 

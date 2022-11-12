@@ -17,6 +17,7 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> {
   double currentPage = 0.0;
   final _pageViewController = new PageController();
+  final platform = const MethodChannel('flutter.native/helper');
 
   @override
   Widget build(BuildContext context) {
@@ -150,16 +151,14 @@ class _WelcomeViewState extends State<WelcomeView> {
               onPressed: () {
                 showDialog(
                   context: navigatorKey.currentContext!,
-                  builder: (BuildContext context) =>
-                      DisclaimerDialog(),
+                  builder: (BuildContext context) => DisclaimerDialog(),
                 );
               },
               child: Text(
                 "Haftungsausschluss",
                 style: TextStyle(color: Colors.white),
               ),
-              style:
-              TextButton.styleFrom(backgroundColor: Colors.blue),
+              style: TextButton.styleFrom(backgroundColor: Colors.blue),
             ),
             TextButton(
               onPressed: () {
@@ -172,8 +171,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                 "Datenschutz",
                 style: TextStyle(color: Colors.white),
               ),
-              style:
-              TextButton.styleFrom(backgroundColor: Colors.blue),
+              style: TextButton.styleFrom(backgroundColor: Colors.blue),
             ),
           ],
         );
@@ -183,8 +181,6 @@ class _WelcomeViewState extends State<WelcomeView> {
   }
 
   Future<void> showIgnoreBatteryOptimizationDialog() async {
-    const platform = const MethodChannel('flutter.native/helper');
-
     try {
       await platform.invokeMethod("showIgnoreBatteryOptimizationDialog");
     } on PlatformException catch (e) {
