@@ -14,27 +14,29 @@ import android.os.PowerManager
 import android.provider.Settings
 
 class MainActivity: FlutterActivity() {
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+    private val CHANNEL = "flutter.native/helper"
+
+    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
         GeneratedPluginRegistrant.registerWith(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "flutter.native/helper").setMethodCallHandler {
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
                 call, result ->
-            when {
-                call.method.equals("showIgnoreBatteryOptimizationDialog") -> {
-                    val pm: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-                    val packageName: String = getApplicationContext().getPackageName()
-
-                    if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                        val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                        intent.setData(Uri.parse("package:$packageName"))
-                        startActivity(intent)
-                    }
-                }
+            when (call.method) {
+                "showIgnoreBatteryOptimizationDialog" -> showIgnoreBatteryOptimizationDialog(result)
+                else -> result.notImplemented()
             }
         }
     }
 
     private fun showIgnoreBatteryOptimizationDialog(result: MethodChannel.Result) {
+        val pm: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        val packageName: String = getApplicationContext().getPackageName()
 
+        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+            intent.setData(Uri.parse("package:$packageName"))
+            startActivity(intent)
+        }
     }
 }
