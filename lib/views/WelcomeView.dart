@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../services/welcomeScreenItems.dart';
-import 'package:app_settings/app_settings.dart';
 import '../main.dart';
 import 'SettingsView.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
@@ -17,6 +17,7 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> {
   double currentPage = 0.0;
   final _pageViewController = new PageController();
+  final platform = const MethodChannel('flutter.native/helper');
 
   @override
   Widget build(BuildContext context) {
@@ -134,9 +135,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-              onPressed: () {
-                AppSettings.openBatteryOptimizationSettings();
-              },
+              onPressed: () => showIgnoreBatteryOptimizationDialog(),
               child: Text(
                 "Akkuoptimerung ausschalten",
                 style: TextStyle(color: Colors.white),
@@ -152,16 +151,14 @@ class _WelcomeViewState extends State<WelcomeView> {
               onPressed: () {
                 showDialog(
                   context: navigatorKey.currentContext!,
-                  builder: (BuildContext context) =>
-                      DisclaimerDialog(),
+                  builder: (BuildContext context) => DisclaimerDialog(),
                 );
               },
               child: Text(
                 "Haftungsausschluss",
                 style: TextStyle(color: Colors.white),
               ),
-              style:
-              TextButton.styleFrom(backgroundColor: Colors.blue),
+              style: TextButton.styleFrom(backgroundColor: Colors.blue),
             ),
             TextButton(
               onPressed: () {
@@ -174,13 +171,20 @@ class _WelcomeViewState extends State<WelcomeView> {
                 "Datenschutz",
                 style: TextStyle(color: Colors.white),
               ),
-              style:
-              TextButton.styleFrom(backgroundColor: Colors.blue),
+              style: TextButton.styleFrom(backgroundColor: Colors.blue),
             ),
           ],
         );
       default:
         return SizedBox(height: 50);
+    }
+  }
+
+  Future<void> showIgnoreBatteryOptimizationDialog() async {
+    try {
+      await platform.invokeMethod("showIgnoreBatteryOptimizationDialog");
+    } on PlatformException catch (e) {
+      print(e);
     }
   }
 
