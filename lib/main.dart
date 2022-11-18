@@ -19,8 +19,6 @@ import 'views/AllWarningsView.dart';
 import 'views/WelcomeView.dart';
 
 import 'class/class_NotificationService.dart';
-// import 'class/class_BackgroundTask.dart';
-// import 'class/class_ForegroundService.dart';
 
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
