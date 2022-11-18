@@ -4,6 +4,7 @@ import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:http/http.dart';
 
 import 'allPlacesList.dart';
+import 'extractStateNameFromGeocode.dart';
 
 Future<void> geocodeHandler() async {
   print("[geocodehandler]");
@@ -14,7 +15,7 @@ Future<void> geocodeHandler() async {
   var data; //var for response data
   try {
     dynamic? savedData = await loadGeocode();
-    if(savedData != null) {
+    if (savedData != null) {
       // we don't need to laod the data from web
       print("[geocodeHandler] data already stored");
       data = savedData;
@@ -26,15 +27,21 @@ Future<void> geocodeHandler() async {
         saveGeocodes(utf8.decode(response.bodyBytes));
       }
     }
-    if(data != null) {
+    if (data != null) {
       allAvailablePlacesNames.clear();
 
       for (int j = 0; j < data["daten"].length; j++) {
-        // we can not reaive any warning for OT => Ortsteile
-        if(!data["daten"][j][1].toString().contains("OT")) {
+        // we can not receive any warning for OT => Ortsteile
+        if (!data["daten"][j][1].toString().contains("OT")) {
+          // add to map only used in background
           geocodeMap.putIfAbsent(
-              data["daten"][j][1], () => data["daten"][j][0]);
-          allAvailablePlacesNames.add(data["daten"][j][1]);
+              // [1] is the name [0] is the ARS
+              addStateToName(data["daten"][j][1], data["daten"][j][0]),
+              () => data["daten"][j][0]);
+          // add to list, used to display the Places List
+          allAvailablePlacesNames.add(
+              addStateToName(data["daten"][j][1], data["daten"][j][0])
+          );
         }
       }
 
@@ -109,4 +116,9 @@ void createAlertSwissPlacesMap() {
     "Jura"
   ]);
   allAvailablePlacesNames.addAll(alertSwissPlacesList);
+}
+
+// add the state from the geocode in "(xy)" to the given name
+String addStateToName(String name, String geocode) {
+  return name += " " + extractStateNameFromGeocode(geocode);
 }
