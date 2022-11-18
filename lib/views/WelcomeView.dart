@@ -188,6 +188,15 @@ class _WelcomeViewState extends State<WelcomeView> {
     }
   }
 
+  Future<bool> isBatteryOptimizationEnabled() async {
+    try {
+      return await platform.invokeMethod("isBatteryOptimizationEnabled");
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
   Widget buildStepsIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
