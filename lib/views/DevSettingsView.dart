@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:foss_warn/class/class_BackgroundTask.dart';
 import 'package:foss_warn/class/class_Place.dart';
 import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/services/listHandler.dart';
