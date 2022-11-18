@@ -22,6 +22,7 @@ class MainActivity: FlutterActivity() {
                 call, result ->
             when (call.method) {
                 "showIgnoreBatteryOptimizationDialog" -> showIgnoreBatteryOptimizationDialog()
+                "isBatteryOptimizationEnabled" -> isBatteryOptimizationEnabled()
                 else -> result.notImplemented()
             }
         }
@@ -36,5 +37,10 @@ class MainActivity: FlutterActivity() {
             intent.setData(Uri.parse("package:$packageName"))
             startActivity(intent)
         }
+    }
+
+    private fun isBatteryOptimizationEnabled():Boolean {
+        val pm: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        return !pm.isIgnoringBatteryOptimizations(packageName)
     }
 }
