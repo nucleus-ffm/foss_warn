@@ -15,7 +15,7 @@ import 'saveAndLoadSharedPreferences.dart';
 import 'package:http/http.dart';
 
 /// call the nina api and load for myPlaces the warnings
-Future callAPI()  async {
+Future callAPI() async {
   bool successfullyFetched = true;
   String error = "";
   List<WarnMessage> tempWarnMessageList = [];
@@ -26,11 +26,11 @@ Future callAPI()  async {
 
   await loadSettings();
 
-  for(Place p in myPlaceList) {
+  for (Place p in myPlaceList) {
     // if the place is for swiss skip this place
     print(p.name);
-    if(alertSwissPlacesList.contains(p.name)) {
-      if(!activateAlertSwiss) {
+    if (alertSwissPlacesList.contains(p.name)) {
+      if (!activateAlertSwiss) {
         successfullyFetched = false;
         error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
             " aber AlertSwiss nicht als Quelle aktiviert \n";
@@ -47,33 +47,40 @@ Future callAPI()  async {
       await loadSettings();
       await loadEtags();
 
-      print("call: " + baseUrl + "/dashboard/" + geocode +".json");
+      print("call: " + baseUrl + "/dashboard/" + geocode + ".json");
       // get overview if warnings exits for myplaces
-      response = await get(Uri.parse(baseUrl + "/dashboard/" + geocode +".json"));
+      response =
+          await get(Uri.parse(baseUrl + "/dashboard/" + geocode + ".json"));
 
-      // check if request was sucsessfully
+      // check if request was successfully
       if (response.statusCode == 200) {
         data = jsonDecode(utf8.decode(response.bodyBytes));
 
-        for(int i = 0; i < data.length; i++) {
+        for (int i = 0; i < data.length; i++) {
           String id = data[i]["payload"]["id"];
           String provider = data[i]["payload"]["data"]["provider"];
           print("provider: " + provider);
-          var responseDetails = await get(Uri.parse(baseUrl + "/warnings/" + id +".json"));
+          var responseDetails =
+              await get(Uri.parse(baseUrl + "/warnings/" + id + ".json"));
           // check if request was successfully
           if (responseDetails.statusCode == 200) {
-            var warningDetails = jsonDecode(utf8.decode(responseDetails.bodyBytes));
-            WarnMessage? temp = createWarning(warningDetails, provider,
-                p.name, p.geocode, tempWarnMessageList);
-            if(temp != null) {
+            var warningDetails =
+                jsonDecode(utf8.decode(responseDetails.bodyBytes));
+            WarnMessage? temp = createWarning(warningDetails, provider, p.name,
+                p.geocode, tempWarnMessageList);
+            if (temp != null) {
               /*if(tempWarnMessageList.any((element) => element.identifier == temp.identifier)) {
                 print("warnings already added");
               } else {*/
-                tempWarnMessageList.add(temp);
+              tempWarnMessageList.add(temp);
               // } //@todo: fix displaying warnings twice
             }
           } else {
-            print("[callAPI] Error: tried calling: " + baseUrl + "/warnings/" + id +".json");
+            print("[callAPI] Error: tried calling: " +
+                baseUrl +
+                "/warnings/" +
+                id +
+                ".json");
           }
         }
 
@@ -82,9 +89,9 @@ Future callAPI()  async {
       } else {
         print("could not reach: ");
         successfullyFetched = false;
-        error += "We have a problem to reach the warnings for: " + p.name + " \n";
+        error +=
+            "We have a problem to reach the warnings for: " + p.name + " \n";
       }
-
     } catch (e) {
       print("Something went wrong: " + e.toString());
       successfullyFetched = false;
@@ -92,7 +99,7 @@ Future callAPI()  async {
     }
   }
   if (showStatusNotification) {
-    if(error != "") {
+    if (error != "") {
       sendStatusUpdateNotification(successfullyFetched, error);
     } else {
       sendStatusUpdateNotification(successfullyFetched);
@@ -102,13 +109,13 @@ Future callAPI()  async {
   warnMessageList.clear(); //clear List
   warnMessageList = tempWarnMessageList; // transfer temp List in real list
 
-  if(activateAlertSwiss) {
+  if (activateAlertSwiss) {
     await callAlertSwissAPI();
   }
 
-  if(warnMessageList.isNotEmpty) {
+  if (warnMessageList.isNotEmpty) {
     cacheWarnings();
-  } else if(!successfullyFetched) {
+  } else if (!successfullyFetched) {
     loadCachedWarnings();
   } else {
     // there are no warnings and no stored
@@ -121,20 +128,22 @@ Future callAPI()  async {
 }
 
 /// generate WarnMessage object
-WarnMessage? createWarning(var data, String provider, String placeName, String geocode, List<WarnMessage> tempWarnMessageList) {
+WarnMessage? createWarning(var data, String provider, String placeName,
+    String geocode, List<WarnMessage> tempWarnMessageList) {
   /// generate empty list as placeholder
   List<Area> generateAreaList(int i) {
     List<Area> tempAreaList = [];
-    tempAreaList.add(Area(areaDesc: placeName, geocodeList: [Geocode(
-        geocodeName: placeName,
-        geocodeNumber: geocode),]
-      ),
+    tempAreaList.add(
+      Area(areaDesc: placeName, geocodeList: [
+        Geocode(geocodeName: placeName, geocodeNumber: geocode),
+      ]),
     );
     return tempAreaList;
   }
+
   String findPublisher(var parameter) {
-    for(int i=0; i<parameter.length; i++) {
-      if(parameter[i]["valueName"] == "sender_langname") {
+    for (int i = 0; i < parameter.length; i++) {
+      if (parameter[i]["valueName"] == "sender_langname") {
         return parameter[i]["value"];
       }
     }
@@ -142,35 +151,10 @@ WarnMessage? createWarning(var data, String provider, String placeName, String g
   }
 
   try {
-    WarnMessage tempWarnMessage = WarnMessage(
-      source: provider,
-      identifier: data["identifier"] ?? "?",
-      sender: data["sender"] ?? "?",
-      sent: data["sent"] ?? "?",
-      status: data["status"] ?? "?",
-      messageTyp: data["msgType"] ?? "?",
-      scope: data["scope"] ?? "?",
-      category: data["info"][0]["category"][0] ?? "?",
-      event: data["info"][0]["event"] ?? "?",
-      urgency: data["info"][0]["urgency"] ?? "?",
-      severity: data["info"][0]["severity"].toString().toLowerCase(),
-      certainty: data["info"][0]["certainty"] ?? "?",
-      effective: data["info"][0]["effective"] ?? "",
-      onset: data["info"][0]["onset"] ?? "",
-      expires: data["info"][0]["expires"] ?? "",
-      headline: data["info"][0]["headline"] ?? "?",
-      description: data["info"][0]["description"] ?? "",
-      instruction: data["info"][0]["instruction"] ?? "",
-      publisher: findPublisher(data["info"][0]["parameter"]),
-      contact: data["info"][0]["contact"] ?? "",
-      web: data["info"][0]["web"] ?? "",
-      areaList: generateAreaList(1),
-    );
-    return tempWarnMessage;
+    return WarnMessage.fromJsonTemp(data, provider,
+        findPublisher(data["info"][0]["parameter"]), generateAreaList(1));
   } catch (e) {
-    print("something went wrong while parsing warning: " +
-        data["identifier"] + " -> " + e.toString());
+    print("Error parsing warning: ${data["identifier"]} -> ${e.toString()}");
   }
   return null;
 }
-

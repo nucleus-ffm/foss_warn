@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:foss_warn/class/class_Place.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:http/http.dart';
@@ -15,7 +16,7 @@ Future<void> geocodeHandler() async {
   print("[geocodehandler]");
 
   try {
-    final data = await getGeocodes();
+    final data = await getPlaces();
 
     if (data == null) {
       print("could not reach geocode source");
@@ -24,18 +25,20 @@ Future<void> geocodeHandler() async {
 
     allAvailablePlacesNames.clear();
 
-    for (int j = 0; j < data["daten"].length; j++) {
-      // we can not receive any warning for OT => Ortsteile
-      if (!data["daten"][j][1].toString().contains("OT")) {
-        // add to map only used in background
-        geocodeMap.putIfAbsent(
-            // [1] is the name [0] is the ARS
-            addStateToName(data["daten"][j][1], data["daten"][j][0]),
-            () => data["daten"][j][0]);
-        // add to list, used to display the Places List
-        allAvailablePlacesNames
-            .add(addStateToName(data["daten"][j][1], data["daten"][j][0]));
-      }
+    for (int i = 0; i < data["daten"].length; i++) {
+      final place =
+          Place(name: data["daten"][i][1], geocode: data["daten"][i][0]);
+
+      // we can not receive any warning for OT (Ortsteile)
+      if (place.name.contains("OT")) continue;
+
+      final placeNameWithState =
+          "${place.name} ${extractStateNameFromGeocode(place.geocode)}";
+
+      // add to map only used in background
+      geocodeMap.putIfAbsent(placeNameWithState, () => place.geocode);
+      // add to list, used to display the Places List
+      allAvailablePlacesNames.add(placeNameWithState);
     }
 
     // add alert swiss places to list
@@ -47,8 +50,9 @@ Future<void> geocodeHandler() async {
   }
 }
 
-/// fetch geocodes from sharedPrefs (cache) or server
-Future<dynamic> getGeocodes() async {
+/// Fetch places from sharedPrefs (cache) or server.
+/// Returns a JSON with a list of Place(s) in field "daten".
+Future<dynamic> getPlaces() async {
   dynamic savedData = await loadGeocode();
 
   if (savedData != null) {
@@ -124,9 +128,4 @@ void createAlertSwissPlacesMap() {
     "Jura"
   ]);
   allAvailablePlacesNames.addAll(alertSwissPlacesList);
-}
-
-// add the state from the geocode in "(xy)" to the given name
-String addStateToName(String name, String geocode) {
-  return name += " " + extractStateNameFromGeocode(geocode);
 }
