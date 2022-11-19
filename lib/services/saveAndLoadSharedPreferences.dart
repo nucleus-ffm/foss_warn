@@ -43,7 +43,7 @@ saveGeocodes(String jsonFile) async {
   preferences.setString("geocodes", jsonFile);
 }
 
-Future<dynamic?> loadGeocode()  async {
+Future<dynamic> loadGeocode()  async {
   print("load geocodes from storage");
   SharedPreferences preferences = await SharedPreferences.getInstance();
   // preferences.remove("geocodes");

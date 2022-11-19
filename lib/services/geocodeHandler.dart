@@ -6,54 +6,62 @@ import 'package:http/http.dart';
 import 'allPlacesList.dart';
 import 'extractStateNameFromGeocode.dart';
 
+const String url =
+    "https://www.xrepository.de/api/xrepository/urn:de:bund:destatis"
+    ":bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/"
+    "Regionalschl_ssel_2021-07-31.json";
+
 Future<void> geocodeHandler() async {
   print("[geocodehandler]");
-  var url = "https://www.xrepository.de/api/xrepository/urn:de:bund:destatis"
-      ":bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/"
-      "Regionalschl_ssel_2021-07-31.json";
-  Response response; //response var for get request
-  var data; //var for response data
+
   try {
-    dynamic? savedData = await loadGeocode();
-    if (savedData != null) {
-      // we don't need to laod the data from web
-      print("[geocodeHandler] data already stored");
-      data = savedData;
-    } else {
-      response = await get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        print("[geocodehanlder] got data ");
-        data = jsonDecode(utf8.decode(response.bodyBytes));
-        saveGeocodes(utf8.decode(response.bodyBytes));
-      }
-    }
-    if (data != null) {
-      allAvailablePlacesNames.clear();
+    final data = await getGeocodes();
 
-      for (int j = 0; j < data["daten"].length; j++) {
-        // we can not receive any warning for OT => Ortsteile
-        if (!data["daten"][j][1].toString().contains("OT")) {
-          // add to map only used in background
-          geocodeMap.putIfAbsent(
-              // [1] is the name [0] is the ARS
-              addStateToName(data["daten"][j][1], data["daten"][j][0]),
-              () => data["daten"][j][0]);
-          // add to list, used to display the Places List
-          allAvailablePlacesNames.add(
-              addStateToName(data["daten"][j][1], data["daten"][j][0])
-          );
-        }
-      }
-
-      // add alert swiss places to list
-      createAlertSwissPlacesMap();
-
-      print("[geocodehanlder] finish");
-    } else {
+    if (data == null) {
       print("could not reach geocode source");
+      return;
     }
+
+    allAvailablePlacesNames.clear();
+
+    for (int j = 0; j < data["daten"].length; j++) {
+      // we can not receive any warning for OT => Ortsteile
+      if (!data["daten"][j][1].toString().contains("OT")) {
+        // add to map only used in background
+        geocodeMap.putIfAbsent(
+            // [1] is the name [0] is the ARS
+            addStateToName(data["daten"][j][1], data["daten"][j][0]),
+            () => data["daten"][j][0]);
+        // add to list, used to display the Places List
+        allAvailablePlacesNames
+            .add(addStateToName(data["daten"][j][1], data["daten"][j][0]));
+      }
+    }
+
+    // add alert swiss places to list
+    createAlertSwissPlacesMap();
+
+    print("[geocodehandler] finish");
   } catch (e) {
     print("[geocodehandler] something went wrong: " + e.toString());
+  }
+}
+
+/// fetch geocodes from sharedPrefs (cache) or server
+Future<dynamic> getGeocodes() async {
+  dynamic savedData = await loadGeocode();
+
+  if (savedData != null) {
+    print("[geocodeHandler] data already stored");
+    return savedData;
+  } else {
+    final Response response = await get(Uri.parse(url));
+    if (response.statusCode != 200) return;
+
+    print("[geocodehandler] got data ");
+    final data = utf8.decode(response.bodyBytes);
+    saveGeocodes(data);
+    return jsonDecode(data);
   }
 }
 
