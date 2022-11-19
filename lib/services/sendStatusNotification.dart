@@ -1,5 +1,3 @@
-//import 'package:foss_warn/class/class_ForegroundService.dart';
-
 import '../views/SettingsView.dart';
 import '../class/class_NotificationService.dart';
 

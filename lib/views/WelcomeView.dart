@@ -14,19 +14,43 @@ class WelcomeView extends StatefulWidget {
   _WelcomeViewState createState() => _WelcomeViewState();
 }
 
-class _WelcomeViewState extends State<WelcomeView> {
-  double currentPage = 0.0;
+class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
+  double _currentPage = 0.0;
   final _pageViewController = new PageController();
-  final platform = const MethodChannel('flutter.native/helper');
+  final _platform = const MethodChannel('flutter.native/helper');
+  late Future<bool> _batteryOptimizationFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    setState(() {
+      _batteryOptimizationFuture = this._isBatteryOptimizationEnabled();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        _batteryOptimizationFuture = this._isBatteryOptimizationEnabled();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     _pageViewController.addListener(() {
       setState(() {
-        currentPage = _pageViewController.page!;
+        _currentPage = _pageViewController.page!;
       });
     });
-    final isLastSlide = currentPage == welcomeScreenItems.length - 1;
+    final isLastSlide = _currentPage == welcomeScreenItems.length - 1;
 
     return Scaffold(
       body: Container(
@@ -37,7 +61,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               controller: _pageViewController,
               itemCount: welcomeScreenItems.length,
               itemBuilder: (BuildContext context, int index) =>
-                  buildSlide(index),
+                  _buildSlide(index),
             ),
             Align(
                 alignment: Alignment.bottomCenter,
@@ -66,7 +90,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                           ),
                           style: TextButton.styleFrom(
                               backgroundColor: Colors.blue))
-                      : buildStepsIndicator(),
+                      : _buildStepsIndicator(),
                 ))
           ],
         ),
@@ -74,7 +98,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     );
   }
 
-  Widget buildSlide(int index) {
+  Widget _buildSlide(int index) {
     WelcomeScreenItem item = welcomeScreenItems[index];
 
     return Container(
@@ -118,7 +142,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                       SizedBox(
                         height: 10,
                       ),
-                      buildActionButtons(item.action)
+                      _buildActionButtons(item.action)
                     ],
                   ),
                 ),
@@ -128,20 +152,41 @@ class _WelcomeViewState extends State<WelcomeView> {
         ));
   }
 
-  Widget buildActionButtons(String? action) {
+  Widget _buildActionButtons(String? action) {
     switch (action) {
       case "batteryOptimization":
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: () => showIgnoreBatteryOptimizationDialog(),
-              child: Text(
-                "Akkuoptimerung ausschalten",
-                style: TextStyle(color: Colors.white),
-              ),
-              style: TextButton.styleFrom(backgroundColor: Colors.blue),
-            )
+            FutureBuilder<bool>(
+                future: _batteryOptimizationFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      final bool batteryOptimizationEnabled = snapshot.data!;
+                      return TextButton(
+                        onPressed: batteryOptimizationEnabled
+                            ? () => _showIgnoreBatteryOptimizationDialog()
+                            : null,
+                        child: Text(
+                          batteryOptimizationEnabled
+                              ? "Akkuoptimerung ausschalten"
+                              : "Akkuoptimierung ausgeschaltet",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: TextButton.styleFrom(
+                            backgroundColor: batteryOptimizationEnabled
+                                ? Colors.blue
+                                : Colors.grey),
+                      );
+                    } else {
+                      print(
+                          "Error getting battery optimization status: ${snapshot.error}");
+                      return Text("Error", style: TextStyle(color: Colors.red));
+                    }
+                  } else
+                    return CircularProgressIndicator();
+                })
           ],
         );
       case "disclaimer":
@@ -180,15 +225,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     }
   }
 
-  Future<void> showIgnoreBatteryOptimizationDialog() async {
-    try {
-      await platform.invokeMethod("showIgnoreBatteryOptimizationDialog");
-    } on PlatformException catch (e) {
-      print(e);
-    }
-  }
-
-  Widget buildStepsIndicator() {
+  Widget _buildStepsIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
@@ -198,11 +235,30 @@ class _WelcomeViewState extends State<WelcomeView> {
                 height: 10.0,
                 width: 10.0,
                 decoration: BoxDecoration(
-                    color: currentPage.round() == index
+                    color: _currentPage.round() == index
                         ? Color(0XFF256075)
                         : Color(0XFF256075).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(10.0)),
               )),
     );
+  }
+
+  Future<void> _showIgnoreBatteryOptimizationDialog() async {
+    try {
+      await _platform.invokeMethod("showIgnoreBatteryOptimizationDialog");
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    // reloading the battery optimization status happens in _WelcomeViewState#didChangeAppLifecycleState
+  }
+
+  Future<bool> _isBatteryOptimizationEnabled() async {
+    try {
+      return await _platform.invokeMethod("isBatteryOptimizationEnabled");
+    } on PlatformException catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

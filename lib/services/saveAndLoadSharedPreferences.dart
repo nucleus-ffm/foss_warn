@@ -43,7 +43,7 @@ saveGeocodes(String jsonFile) async {
   preferences.setString("geocodes", jsonFile);
 }
 
-Future<dynamic?> loadGeocode()  async {
+Future<dynamic> loadGeocode()  async {
   print("load geocodes from storage");
   SharedPreferences preferences = await SharedPreferences.getInstance();
   // preferences.remove("geocodes");
@@ -284,9 +284,9 @@ saveNotificationSettingsImportanceList() async {
 
 loadNotificationSettingsImportanceList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //check if notificationSettingsImportance already exsis
+  //check if notificationSettingsImportance already exists
   if (preferences.containsKey("notificationSettingsImportance")) {
-    print("notificationSettingsImportance exsis - load now");
+    print("notificationSettingsImportance exist - load now");
     notificationSettingsImportance.clear();
     notificationSettingsImportance =
     preferences.getStringList('notificationSettingsImportance')!;
@@ -294,12 +294,16 @@ loadNotificationSettingsImportanceList() async {
     notificationWithModerate = false;
     notificationWithMinor = false;
     for (String i in notificationSettingsImportance) {
-      if (i.toLowerCase() == "severe") {
-        notificationWithSevere = true;
-      } else if (i.toLowerCase() == "moderate") {
-        notificationWithModerate = true;
-      } else if (i.toLowerCase() == "minor") {
-        notificationWithMinor = true;
+      switch(i.toLowerCase()) {
+        case "severe":
+          notificationWithSevere = true;
+          continue;
+        case "moderate":
+          notificationWithModerate = true;
+          continue;
+        case "minor":
+          notificationWithMinor = true;
+          continue;
       }
     }
     // fix legacy
@@ -308,10 +312,10 @@ loadNotificationSettingsImportanceList() async {
       loadNotificationSettingsImportanceList();
     }
   } else {
-    print("notificationSettingsImportance Key does not exsis");
+    print("notificationSettingsImportance Key does not exist");
     saveNotificationSettingsImportanceList(); //save init List
     loadNotificationSettingsImportanceList(); // try again
-    print("notificationSettingsImportance should yet exsis");
+    print("notificationSettingsImportance should yet exist");
   }
 }
 

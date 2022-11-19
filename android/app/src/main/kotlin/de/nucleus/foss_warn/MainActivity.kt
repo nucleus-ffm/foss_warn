@@ -21,7 +21,14 @@ class MainActivity: FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
                 call, result ->
             when (call.method) {
-                "showIgnoreBatteryOptimizationDialog" -> showIgnoreBatteryOptimizationDialog()
+                "showIgnoreBatteryOptimizationDialog" -> {
+                    showIgnoreBatteryOptimizationDialog()
+                    result.success(null)
+                }
+                "isBatteryOptimizationEnabled" -> {
+                    val batteryOptimizationEnabled = isBatteryOptimizationEnabled()
+                    result.success(batteryOptimizationEnabled)
+                }
                 else -> result.notImplemented()
             }
         }
@@ -36,5 +43,12 @@ class MainActivity: FlutterActivity() {
             intent.setData(Uri.parse("package:$packageName"))
             startActivity(intent)
         }
+    }
+
+    private fun isBatteryOptimizationEnabled(): Boolean {
+        val pm: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        val packageName: String = getApplicationContext().getPackageName()
+
+        return !pm.isIgnoringBatteryOptimizations(packageName)
     }
 }
