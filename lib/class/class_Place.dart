@@ -15,4 +15,9 @@ class Place {
         geocode: json['geocode'] as String
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'geocode': geocode,
+  };
 }
