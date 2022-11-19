@@ -38,6 +38,7 @@ String extractStateNameFromGeocode(String geocode) {
       return "(LSA)"; //Sachsen-Anhalt
     case "16":
       return "(TH)"; //Thüringen
+    default:
+      return "error";
   }
-  return "error";
 }
