@@ -51,7 +51,7 @@ Future<void> geocodeHandler() async {
 }
 
 /// Fetch places from sharedPrefs (cache) or server.
-/// Returns a JSON with a list of Place(s) in field "daten".
+/// Returns a JSON with an unparsed (!) list of Place(s) in field "daten".
 Future<dynamic> getPlaces() async {
   dynamic savedData = await loadGeocode();
 
