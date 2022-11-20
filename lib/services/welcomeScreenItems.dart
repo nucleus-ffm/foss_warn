@@ -26,7 +26,7 @@ List<WelcomeScreenItem> welcomeScreenItems = List.unmodifiable([
   const WelcomeScreenItem(
       title: "Akkuoptimierung",
       description:
-          "Damit FOSS Warn Ihnen Hintergrundbenachrichtigungen senden kann, muss die Akkuoptimierung für FOSS Warn deaktiviert werden.",
+          "Damit FOSS Warn Ihnen zuverlässig Hintergrundbenachrichtigungen senden kann, sollte die Akkuoptimierung für FOSS Warn deaktiviert werden.",
       imagePath: "assets/battery.png",
       action: "batteryOptimization"),
   const WelcomeScreenItem(

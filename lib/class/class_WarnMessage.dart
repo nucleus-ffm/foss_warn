@@ -82,30 +82,33 @@ class WarnMessage {
         web: json['web'] ?? "");
   }
 
+  /// is used to create a new WarnMessage object with data from the API call.
+  /// Note that the json structure is different from the structure we use to
+  /// cache the warnings.
   factory WarnMessage.fromJsonTemp(Map<String, dynamic> json, String provider,
       String publisher, List<Area> areaList) {
     return WarnMessage(
         source: provider,
-        identifier: json['identifier'] ?? "?",
-        sender: json['sender'] ?? "?",
-        sent: json['sent'] ?? "?",
-        status: json['status'] ?? "?",
-        messageTyp: json['messageTyp'] ?? "?",
-        scope: json['scope'] ?? "?",
-        category: json['category'] ?? "?",
-        event: json['event'] ?? "?",
-        urgency: json['urgency'] ?? "?",
-        severity: json['severity'].toString().toLowerCase(),
-        certainty: json['certainty'] ?? "?",
-        effective: json['effective'] ?? "",
-        onset: json['onset'] ?? "",
-        expires: json['expires'] ?? "",
-        headline: json['headline'] ?? "?",
-        description: json['description'] ?? "",
-        instruction: json['instruction'] ?? "",
-        publisher: json['publisher'],
-        contact: json['contact'] ?? "",
-        web: json['web'] ?? "",
+        identifier: json["identifier"] ?? "?",
+        sender: json["sender"] ?? "?",
+        sent: json["sent"] ?? "?",
+        status: json["status"] ?? "?",
+        messageTyp: json["msgType"] ?? "?",
+        scope: json["scope"] ?? "?",
+        category: json["info"][0]["category"][0] ?? "?",
+        event: json["info"][0]["event"] ?? "?",
+        urgency: json["info"][0]["urgency"] ?? "?",
+        severity: json["info"][0]["severity"].toString().toLowerCase(),
+        certainty: json["info"][0]["certainty"] ?? "?",
+        effective: json["info"][0]["effective"] ?? "",
+        onset: json["info"][0]["onset"] ?? "",
+        expires: json["info"][0]["expires"] ?? "",
+        headline: json["info"][0]["headline"] ?? "?",
+        description: json["info"][0]["description"] ?? "",
+        instruction: json["info"][0]["instruction"] ?? "",
+        publisher: publisher,
+        contact: json["info"][0]["contact"] ?? "",
+        web: json["info"][0]["web"] ?? "",
         areaList: areaList);
   }
 

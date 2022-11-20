@@ -140,7 +140,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 30,
                       ),
                       _buildActionButtons(item.action)
                     ],
@@ -164,21 +164,33 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
                       final bool batteryOptimizationEnabled = snapshot.data!;
-                      return TextButton(
-                        onPressed: batteryOptimizationEnabled
-                            ? () => _showIgnoreBatteryOptimizationDialog()
-                            : null,
-                        child: Text(
-                          batteryOptimizationEnabled
-                              ? "Akkuoptimerung ausschalten"
-                              : "Akkuoptimierung ausgeschaltet",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        style: TextButton.styleFrom(
-                            backgroundColor: batteryOptimizationEnabled
-                                ? Colors.blue
-                                : Colors.grey),
-                      );
+                      return batteryOptimizationEnabled
+                          ? TextButton(
+                              onPressed: () =>
+                                  _showIgnoreBatteryOptimizationDialog(),
+                              child: Text(
+                                "Akkuoptimerung ausschalten",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.blue),
+                            )
+                          : Column(
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  size: 56,
+                                  color: Colors.green,
+                                ),
+                                Text("Akkuoptimierung deaktiviert",
+                                style:  TextStyle(
+                                    color: Colors.grey,
+                                    letterSpacing: 1.2,
+                                    fontSize: 16.0,
+                                    height: 1.3),
+                                )
+                              ],
+                            );
                     } else {
                       print(
                           "Error getting battery optimization status: ${snapshot.error}");
