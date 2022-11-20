@@ -14,6 +14,14 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.4.6 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Im Einführungsdialog kann man jetzt direkt die Akkuoptimierung ausschalten \n"
+                  "* Die Orte in der Liste haben jetzt ihr Bundesland in Klammern"
+                  " dahinter stehen \n "
+                  "* kleine Anpassungen \n"),
+                Text(
                 "0.4.5 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
