@@ -36,7 +36,7 @@ bool updateAvailable = false;
 bool showAllWarnings = false;
 bool areWarningsFromCache = false;
 
-String versionNumber = "0.4.5"; // shown in the about view
+String versionNumber = "0.4.6"; // shown in the about view
 String githubVersionNumber = versionNumber; // used in the update check
 bool gitHubRelease =
     false; // if true, there the check for update Button is shown
