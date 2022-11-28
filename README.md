@@ -13,6 +13,12 @@ Get emergency alerts from warnung.bund.de <br>
     height="80">
 </a>
 
+<a href="https://github.com/nucleus-ffm/foss_warn/releases">
+    <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/improve-readme/docs/get-it-on-github.png"
+    alt="Get it on Github"
+    height="80">
+</a>
+
 
 </p>
 <p align="center">
