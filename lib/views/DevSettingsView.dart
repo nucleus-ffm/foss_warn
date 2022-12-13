@@ -8,6 +8,7 @@ import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import '../class/class_alarmManager.dart';
 import '../services/alertSwiss.dart';
 import '../services/geocodeHandler.dart';
+import '../widgets/dialogs/systemInformationDialog.dart';
 
 
 class DevSettings extends StatefulWidget {
@@ -220,6 +221,35 @@ class _DevSettingsState extends State<DevSettings> {
                   final snackBar = SnackBar(
                     content: const Text(
                       'called',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
+              ListTile(
+                contentPadding: settingsTileListPadding,
+                title: Text("Systeminformationen für Fehlerbehebung sammeln"),
+                subtitle: Text(
+                    "Stellt Informationen zum System zusammen, "
+                        "die zwecks Fehlerbehandlung an den Entwickler "
+                        "geschickt werden können. Es wird nichts verwendet."),
+                onTap: () {
+                  print("Systeminformationen sammeln");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SystemInformationDialog();
+                    },
+                  );
+
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      'collect systeminfo',
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
