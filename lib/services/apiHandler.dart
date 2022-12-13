@@ -90,7 +90,8 @@ Future callAPI() async {
         print("could not reach: ");
         successfullyFetched = false;
         error +=
-            "We have a problem to reach the warnings for: " + p.name + " \n";
+            "We have a problem to reach the warnings for: " + p.name + ""
+                " (Statuscode: " + response.statusCode.toString() + "\n";
       }
     } catch (e) {
       print("Something went wrong: " + e.toString());
