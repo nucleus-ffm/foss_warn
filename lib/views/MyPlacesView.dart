@@ -21,15 +21,31 @@ class MyPlaces extends StatefulWidget {
   _MyPlacesState createState() => _MyPlacesState();
 }
 
-class _MyPlacesState extends State<MyPlaces> {
+class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
   bool loading = false;
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     if (myPlaceList.isEmpty) {
       loading = true;
     }
   }
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // check if app is opend from background and if yes update
+    if(state == AppLifecycleState.resumed) {
+      print("App is resumed...");
+      load();
+    }
+  }
+
 
   /// load data and call the API function
   load() async {
@@ -38,9 +54,6 @@ class _MyPlacesState extends State<MyPlaces> {
     setState(() {
       loading = false;
     });
-    /*final updater =
-    Provider.of<Update>(context, listen: false);
-    updater.updateReadStatusInList();*/
   }
 
   Future<void> reloadData() async {
@@ -108,7 +121,6 @@ class _MyPlacesState extends State<MyPlaces> {
                         textAlign: TextAlign.center,),
                     ],
                   ),
-
             Positioned(
               bottom: 10,
               right: 10,
