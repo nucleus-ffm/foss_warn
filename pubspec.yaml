@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   http: ^0.13.5
   flutter_local_notifications: ^12.0.3+1
   shared_preferences: ^2.0.15
@@ -19,6 +21,8 @@ dependencies:
   share_plus: ^6.3.0
   app_settings: ^4.1.8
   android_alarm_manager_plus: ^2.1.0
+  intl: ^0.17.0 # for localizations
+
 
   # flutter_launcher_icons: ^0.9.2
 
@@ -32,6 +36,7 @@ flutter_icons:
   ios: true
 
 flutter:
+  generate: true # for localizations
   uses-material-design: true
   assets:
    # welcome screen

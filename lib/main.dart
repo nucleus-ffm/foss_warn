@@ -6,10 +6,12 @@ import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/aboutView.dart';
-// import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-//import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
+
 
 import 'widgets/SourceStatusWidget.dart';
 
@@ -26,7 +28,7 @@ import 'services/markWarningsAsRead.dart';
 import 'services/sortWarnings.dart';
 
 import 'widgets/dialogs/SortByDialog.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'themes/themes.dart';
 
 //final navigatorKey = GlobalKey<NavigatorState>();
@@ -103,6 +105,9 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: selectedTheme,
       navigatorKey: navigatorKey,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: Locale('en', ''),
       home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
     );
   }
@@ -226,20 +231,20 @@ class _ScaffoldViewState extends State<ScaffoldView> {
                   }
                 },
                 itemBuilder: (context) => <PopupMenuEntry>[
-                      const PopupMenuItem(child: Text("Einstellungen"), value: 0),
+                      PopupMenuItem(child: Text("Einstellungen"), value: 0),
                       const PopupMenuItem(child: Text("Über"), value: 1)
                     ])
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.add_alert),
-              label: 'Alle Meldungen',
+              label: "Alle warnungen" // AppLocalizations.of(context)!.navBarAllWarnings,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.place),
-              label: 'Meine Orte',
+              label: "Meine Orte"//AppLocalizations.of(context)!.navBarMyPlaces,
             ),
           ],
           currentIndex: _selectedIndex,
