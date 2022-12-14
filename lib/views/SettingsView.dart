@@ -130,7 +130,7 @@ class _SettingsState extends State<Settings> {
                       }
                     })),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_background_servies),
+              title: Text(AppLocalizations.of(context)!.settings_background_service),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: notificationGeneral,
@@ -382,7 +382,7 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)!.settings_alertSwiss),
-              subtitle: Text((AppLocalizations.of(context)!.settings_alertSwiss_subtiltle)),
+              subtitle: Text((AppLocalizations.of(context)!.settings_alertSwiss_subtitle)),
               trailing: Switch(
                 value: activateAlertSwiss,
                 onChanged: (value) {
