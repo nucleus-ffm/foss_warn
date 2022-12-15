@@ -3,16 +3,24 @@
     "main_nav_bar_my_places": "Meine Orte",
     "main_dot_menu_settings": "",
     "main_dot_menu_about": "",
+    "main_app_bar_tooltip_mark_all_warnings_as_read": "",
+    "main_app_bar_tooltip_show_menu": "",
     "main_dialog_understand": "",
     "main_dialog_save": "",
     "main_dialog_close": "",
-    "main_no_places_chosen": "",
-    "main_no_places_chosen_text": "",
-    "main_nothing_to_show": "",
-    "main_nothing_to_show_text": "",
-    "main_everything_ok": "",
-    "main_everything_ok_text": "",
-    "main_reload": "",
+
+    "my_places_no_warning_found": "",
+    "my_place_warning_found": "",
+    "my_place_no_place_added": "",
+    "my_place_no_place_added_text": "",
+
+    "all_warnings_no_places_chosen": "",
+    "all_warnings_no_places_chosen_text": "",
+    "all_warnings_nothing_to_show": "",
+    "all_warnings_nothing_to_show_text": "",
+    "all_warnings_everything_ok": "",
+    "all_warnings_everything_ok_text": "",
+    "all_warnings_reload": "",
 
     "settings": "Einstellungen",
     "settings_notification": "Benachrichtigungen",
@@ -54,7 +62,7 @@
    "add_new_place": "",
 
    "about_headline": "",
-   "about_summery": "",
+   "about_summery": "Diese App ist ein Freizeit-Projekt und wurde in der Hoffnung erstellt, dass sie nützlich ist. Hinweise zur Verbesserung oder Fehlern sind gern gesehen Wenn Sie diese App als nützlich und gut ansehen, würde ich mich freuen, davon zu hören.",
    "about_source": "",
    "about_source_subtitle": "",
    "about_official_source": "",
@@ -99,6 +107,13 @@
    "source_alertswiss_title": "",
    "source_alertswiss_description": "",
 
+   "status_headline": "",
+   "status_source_status": "",
+   "status_server_not_reachable": "",
+   "status_error_while_parsing": "",
+   "status_everything_ok": "",
+   "status_count_of_message": "",
+
    "notification_settings_headline": "",
    "notification_settings_notify_by": "",
    "notification_settings_notify_by_extreme": "",
@@ -134,5 +149,7 @@
    "welcome_view_warning_steps_text": "",
    "welcome_view_lets_go_headline": "",
    "welcome_view_lets_go_text": "",
-   "welcome_view_end_button": ""
+   "welcome_view_end_button": "",
+
+   "connection_error_no_internet": ""
 }
