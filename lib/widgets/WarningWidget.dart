@@ -1,5 +1,6 @@
 // widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
 import 'package:foss_warn/widgets/dialogs/MessageTypExplanation.dart';
 import 'package:provider/provider.dart';
@@ -19,11 +20,6 @@ class WarningWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> geocodeNameList = [];
-    /*print("Warnug schon gesehen? " +
-        myPlaceList
-            .any((place) => place.alreadyReadWarnings
-                .any((warning) => warning.headline == warnMessage.headline))
-            .toString());*/
     updatePrevView() {
       final updater = Provider.of<Update>(context, listen: false);
       updater.updateReadStatusInList();
