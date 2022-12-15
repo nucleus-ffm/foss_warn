@@ -28,7 +28,6 @@ import 'services/markWarningsAsRead.dart';
 import 'services/sortWarnings.dart';
 
 import 'widgets/dialogs/SortByDialog.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'themes/themes.dart';
 
 //final navigatorKey = GlobalKey<NavigatorState>();
@@ -198,8 +197,8 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               onPressed: () {
                 markAllWarningsAsReadFromMain(context);
                 final snackBar = SnackBar(
-                  content: const Text(
-                    'Alle Warnungen als gelesen markiert',
+                  content: Text(
+                    AppLocalizations.of(context).main_app_bar_tooltip_mark_all_warnings_as_read,
                     style: TextStyle(color: Colors.black),
                   ),
                   backgroundColor: Colors.green[100],
@@ -210,7 +209,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: Icon(Icons.mark_chat_read),
-              tooltip: "Markiere alle Warnungen als gelesen",
+              tooltip: AppLocalizations.of(context).main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
@@ -231,8 +230,8 @@ class _ScaffoldViewState extends State<ScaffoldView> {
                   }
                 },
                 itemBuilder: (context) => <PopupMenuEntry>[
-                      PopupMenuItem(child: Text("Einstellungen"), value: 0),
-                      const PopupMenuItem(child: Text("Über"), value: 1)
+                      PopupMenuItem(child: Text( AppLocalizations.of(context).main_dot_menu_settings), value: 0),
+                      PopupMenuItem(child: Text(AppLocalizations.of(context).main_dot_menu_about), value: 1)
                     ])
           ],
         ),
@@ -240,11 +239,11 @@ class _ScaffoldViewState extends State<ScaffoldView> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.add_alert),
-              label: "Alle warnungen" // AppLocalizations.of(context)!.navBarAllWarnings,
+              label: AppLocalizations.of(context).main_nav_bar_all_warnings,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.place),
-              label: "Meine Orte"//AppLocalizations.of(context)!.navBarMyPlaces,
+              label: AppLocalizations.of(context).main_nav_bar_my_places,
             ),
           ],
           currentIndex: _selectedIndex,
