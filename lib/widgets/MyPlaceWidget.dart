@@ -79,15 +79,6 @@ class MyPlaceWidget extends StatelessWidget {
       return temp;
     }
 
-    /*print("Es liegen für " +
-        myPlace.name +
-        " " +
-        myPlace.countWarnings.toString() +
-        " vor");
-    for (WarnMessage myWarning in myPlace.warnings) {
-      print("Warnung:" + myWarning.headline);
-    }*/
-
     return Card(
       child: InkWell(
         onLongPress: () {
