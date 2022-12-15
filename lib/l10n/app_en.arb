@@ -93,6 +93,15 @@
     "imprint_headline" : "",
     "imprint_main_text" : "",
 
+    "disclaimer_headline": "",
+    "disclaimer_text": "",
+
+    "font_size_headline": "",
+    "font_size_big": "",
+    "font_size_normal": "",
+    "font_size_small": "",
+    "font_size_very_big": "",
+
     "source_headline": "",
     "source_mowas_title": "",
     "source_mowas_description": "",

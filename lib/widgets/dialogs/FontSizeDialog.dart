@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../views/SettingsView.dart';
 import '../../services/saveAndLoadSharedPreferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FontSizeDialog extends StatefulWidget {
   const FontSizeDialog({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Wähle eine Schriftgröße'),
+      title: Text(AppLocalizations.of(context).font_size_headline),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
@@ -21,7 +22,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
             children: [
               ListTile(
                 title: Text(
-                  "klein",
+                  AppLocalizations.of(context).font_size_small,
                   style: TextStyle(fontSize: 12),
                 ),
                 leading: Radio(
@@ -45,7 +46,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ),
               ListTile(
                 title: Text(
-                  "Normal",
+                  AppLocalizations.of(context).font_size_normal,
                   style: TextStyle(fontSize: 14),
                 ),
                 leading: Radio(
@@ -69,7 +70,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ),
               ListTile(
                 title: Text(
-                  "Groß",
+                  AppLocalizations.of(context).font_size_big,
                   style: TextStyle(fontSize: 16),
                 ),
                 leading: Radio(
@@ -93,7 +94,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ),
               ListTile(
                 title: Text(
-                  "Extragroß",
+                  AppLocalizations.of(context).font_size_very_big,
                   style: TextStyle(fontSize: 18),
                 ),
                 leading: Radio(
@@ -125,7 +126,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            'schließen',
+            AppLocalizations.of(context).main_dialog_close,
             style: TextStyle(color: Colors.green),
           ),
         ),
