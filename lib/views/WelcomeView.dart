@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/welcomeScreenItems.dart';
 import '../main.dart';
 import 'SettingsView.dart';
@@ -50,7 +51,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
         _currentPage = _pageViewController.page!;
       });
     });
-    final isLastSlide = _currentPage == welcomeScreenItems.length - 1;
+    final isLastSlide = _currentPage == getWelcomeScreenItems(context).length - 1;
 
     return Scaffold(
       body: Container(
@@ -59,7 +60,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
             PageView.builder(
               scrollDirection: Axis.horizontal,
               controller: _pageViewController,
-              itemCount: welcomeScreenItems.length,
+              itemCount: getWelcomeScreenItems(context).length,
               itemBuilder: (BuildContext context, int index) =>
                   _buildSlide(index),
             ),
@@ -85,7 +86,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                             );
                           },
                           child: Text(
-                            "Einrichtung beenden",
+                            AppLocalizations.of(context).welcome_view_end_button,
                             style: TextStyle(color: Colors.white),
                           ),
                           style: TextButton.styleFrom(
@@ -99,7 +100,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
   }
 
   Widget _buildSlide(int index) {
-    WelcomeScreenItem item = welcomeScreenItems[index];
+    WelcomeScreenItem item = getWelcomeScreenItems(context)[index];
 
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 18.0),
@@ -169,7 +170,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                               onPressed: () =>
                                   _showIgnoreBatteryOptimizationDialog(),
                               child: Text(
-                                "Akkuoptimerung ausschalten",
+                                AppLocalizations.of(context).welcome_view_battery_optimisation_action,
                                 style: TextStyle(color: Colors.white),
                               ),
                               style: TextButton.styleFrom(
@@ -182,7 +183,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                                   size: 56,
                                   color: Colors.green,
                                 ),
-                                Text("Akkuoptimierung deaktiviert",
+                                Text(AppLocalizations.of(context).welcome_view_battery_optimisation_action_success,
                                 style:  TextStyle(
                                     color: Colors.grey,
                                     letterSpacing: 1.2,
@@ -212,7 +213,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 );
               },
               child: Text(
-                "Haftungsausschluss",
+                AppLocalizations.of(context).about_disclaimer,
                 style: TextStyle(color: Colors.white),
               ),
               style: TextButton.styleFrom(backgroundColor: Colors.blue),
@@ -225,7 +226,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 );
               },
               child: Text(
-                "Datenschutz",
+                AppLocalizations.of(context).about_privacy,
                 style: TextStyle(color: Colors.white),
               ),
               style: TextButton.styleFrom(backgroundColor: Colors.blue),
@@ -241,7 +242,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-          welcomeScreenItems.length,
+          getWelcomeScreenItems(context).length,
           (index) => Container(
                 margin: EdgeInsets.symmetric(horizontal: 3.0),
                 height: 10.0,

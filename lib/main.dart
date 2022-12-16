@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: Locale('en', ''),
+      //locale: Locale('fr', ''),
       home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
     );
   }

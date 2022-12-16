@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../services/urlLauncher.dart';
 
 class PrivacyDialog extends StatefulWidget {
@@ -12,26 +13,13 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Datenschutz'),
+      title: Text(AppLocalizations.of(context).privacy_headline),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("FOSS Warn versendet keine Informationen über seine Nutzung,"
-                  " sondern baut nur in regelmäßigen Abständen eine Verbindung "
-                  "zu warnung.bund.de auf und lädt von dort die neusten Warnungen. \n\n"
-                  "Für die Liste der Ortschaften lädt FOSS Warn einmalig beim ersten Start"
-                  " eine Liste von xrepository.de (betrieben von der KoSIT) herunter."
-                  "\n\n"
-                  "Um nur die relevanten Warnungen zu laden, verwendet FOSS Warn "
-                  "eine API bei der der ausgewählte Ort als Geocode mitgesendet wird. "
-                  "Für den Betreiber der API ist also sichtbar, welche Orte"
-                  " (auf Kreisebene) Sie hinterlegt haben."
-                  "\n\n"
-                  "Für den Aufruf überträgt FOSS Warn nur die technisch notwendigen Daten."
-                  " Auf die serverseitige Verarbeitung hat FOSS Warn keinen Einfluss."
-                  ""),
+              Text(AppLocalizations.of(context).privacy_main_text),
               SizedBox(
                 height: 10,
               ),
@@ -44,7 +32,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                         onPressed: () => launchUrlInBrowser(
                             'https://warnung.bund.de/datenschutz'),
                         child: Text(
-                            "Zur Datenschutzerklärung von Warnung.bund.de")),
+                            AppLocalizations.of(context).privacy_link_to_privacy +" Warnung.bund.de")),
                   ),
                 ],
               ),
@@ -57,7 +45,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                         onPressed: () => launchUrlInBrowser(
                             'https://www.xrepository.de/cms/datenschutz.html'),
                         child: Text(
-                            "Zur Datenschutzerklärung von xrepository.de")),
+                            AppLocalizations.of(context).privacy_link_to_privacy + " xrepository.de")),
                   ),
                 ],
               ),
@@ -71,7 +59,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            'verstanden',
+            AppLocalizations.of(context).main_dialog_understand,
             style: TextStyle(color: Colors.green),
           ),
         ),
