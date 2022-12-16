@@ -277,13 +277,19 @@
   "@welcome_view_end_button": {},
   "connection_error_no_internet": "No server connection",
   "@connection_error_no_internet": {},
-
-  "font_size_headline": "",
-  "font_size_big": "",
-  "font_size_normal": "",
-  "font_size_small": "",
-  "font_size_very_big": "",
-  "disclaimer_headline": "",
-   "disclaimer_text": ""
+  "font_size_headline": "Font size",
+  "@font_size_headline": {},
+  "font_size_big": "Big",
+  "@font_size_big": {},
+  "font_size_normal": "Normal",
+  "@font_size_normal": {},
+  "font_size_small": "Small",
+  "@font_size_small": {},
+  "font_size_very_big": "extra large",
+  "@font_size_very_big": {},
+  "disclaimer_headline": "Disclaimer",
+  "@disclaimer_headline": {},
+  "disclaimer_text": "This app was created in the hope that it will be useful, comes\nbut comes WITHOUT ANY WARRANTY. The developer cannot at any time \nguarantee at any time that the app will function without error or that it will\ndisplay all warnings at all times. The interfaces used\nmay change at any time, which may cause the app to stop working for the\nno longer works. Also, the developer does not assume any warranty \nfor the topicality, correctness and completeness of the displayed messages. \nmessages. Therefore, do NOT rely on this app at ANY TIME. \non this app. Also, the warnings are always received with a certain\nDELAY received in the background. This app does not use \npush services, but loads the latest messages at a certain interval and \nlatest messages and then notifies when necessary. \\n\nBy using FOSS Warn, you agree that.",
+  "@disclaimer_text": {}
 
 }
