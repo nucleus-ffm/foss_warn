@@ -290,6 +290,10 @@
   "disclaimer_headline": "Disclaimer",
   "@disclaimer_headline": {},
   "disclaimer_text": "This app was created in the hope that it will be useful, comes\nbut comes WITHOUT ANY WARRANTY. The developer cannot at any time \nguarantee at any time that the app will function without error or that it will\ndisplay all warnings at all times. The interfaces used\nmay change at any time, which may cause the app to stop working for the\nno longer works. Also, the developer does not assume any warranty \nfor the topicality, correctness and completeness of the displayed messages. \nmessages. Therefore, do NOT rely on this app at ANY TIME. \non this app. Also, the warnings are always received with a certain\nDELAY received in the background. This app does not use \npush services, but loads the latest messages at a certain interval and \nlatest messages and then notifies when necessary. \\n\nBy using FOSS Warn, you agree that.",
-  "@disclaimer_text": {}
+  "@disclaimer_text": {},
+  "sorting_headline": "",
+  "sorting_by_date": "",
+  "sorting_by_warning_level": "",
+  "sorting_by_source": ""
 
 }
