@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/views/MyPlaceDetailView.dart';
 
 import '../class/class_Place.dart';
@@ -12,7 +13,7 @@ class MyPlaceWidget extends StatelessWidget {
   final Place myPlace;
   const MyPlaceWidget({Key? key, required this.myPlace}) : super(key: key);
 
-  String checkForWarnings() {
+  String checkForWarnings(BuildContext context) {
     print("[MyPlaceWidget] check for warnings");
     int countMessages = 0;
     //print(warnMessageList.length);
@@ -60,7 +61,7 @@ class MyPlaceWidget extends StatelessWidget {
         return "Es gibt ${countMessages.toString()} Warnung";
       }
     } else {
-      return "Keine Warnungen gefunden";
+      return AppLocalizations.of(context).my_place_warning_found;
     }
   }
 
@@ -130,7 +131,7 @@ class MyPlaceWidget extends StatelessWidget {
                             overflow: TextOverflow.fade,
                             ),
                         ),
-                        Flexible(child: Text(checkForWarnings())),
+                        Flexible(child: Text(checkForWarnings(context))),
                       ],
                     ),
                   ),
