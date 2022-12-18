@@ -68,7 +68,7 @@ class _SettingsState extends State<Settings> {
     if (startScreen == 0) {
       dropdownValue = AppLocalizations.of(context)!.settings_start_view_all_warnings;
     } else {
-      dropdownValue = AppLocalizations.of(context)!.settings_start_view_only_my_places;;
+      dropdownValue = AppLocalizations.of(context)!.settings_start_view_only_my_places;
     }
 
     final Map<ThemeMode, String> themeLabels = {

@@ -1,13 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
-import 'package:foss_warn/views/SettingsView.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../services/markWarningsAsRead.dart';
 import '../services/urlLauncher.dart';
-import 'SettingsView.dart';
+import '../services/helperFunctionToTranslateAndChooseColorTyp.dart';
+import '../views/SettingsView.dart';
 
 import 'package:share_plus/share_plus.dart';
 
