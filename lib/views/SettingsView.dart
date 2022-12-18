@@ -66,20 +66,20 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     const double indentOfCategoriesTitles = 15;
     if (startScreen == 0) {
-      dropdownValue = AppLocalizations.of(context)!.settings_start_view_all_warnings;
+      dropdownValue = AppLocalizations.of(context).settings_start_view_all_warnings;
     } else {
-      dropdownValue = AppLocalizations.of(context)!.settings_start_view_only_my_places;
+      dropdownValue = AppLocalizations.of(context).settings_start_view_only_my_places;
     }
 
     final Map<ThemeMode, String> themeLabels = {
-      ThemeMode.system: AppLocalizations.of(context)!.settings_color_schema_auto,
-      ThemeMode.dark: AppLocalizations.of(context)!.settings_color_schema_dark,
-      ThemeMode.light: AppLocalizations.of(context)!.settings_color_schema_light
+      ThemeMode.system: AppLocalizations.of(context).settings_color_schema_auto,
+      ThemeMode.dark: AppLocalizations.of(context).settings_color_schema_dark,
+      ThemeMode.light: AppLocalizations.of(context).settings_color_schema_light
     };
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settings),
+        title: Text(AppLocalizations.of(context).settings),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
@@ -92,7 +92,7 @@ class _SettingsState extends State<Settings> {
             Padding(
               padding: EdgeInsets.only(left: indentOfCategoriesTitles, top: indentOfCategoriesTitles),
               child: Text(
-                AppLocalizations.of(context)!.settings_notification,
+                AppLocalizations.of(context).settings_notification,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -100,11 +100,11 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_android_notification_settings),
+              title: Text(AppLocalizations.of(context).settings_android_notification_settings),
               onTap: () => AppSettings.openNotificationSettings(),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_app_notification_settings),
+              title: Text(AppLocalizations.of(context).settings_app_notification_settings),
               onTap: () {
                 Navigator.push(
                   context,
@@ -114,9 +114,9 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-                title: Text(AppLocalizations.of(context)!.settings_show_status_notification_title),
+                title: Text(AppLocalizations.of(context).settings_show_status_notification_title),
                 subtitle: Text(
-                    AppLocalizations.of(context)!.settings_show_status_notification_subtitle),
+                    AppLocalizations.of(context).settings_show_status_notification_subtitle),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: showStatusNotification,
@@ -130,7 +130,7 @@ class _SettingsState extends State<Settings> {
                       }
                     })),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_background_service),
+              title: Text(AppLocalizations.of(context).settings_background_service),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: notificationGeneral,
@@ -167,7 +167,7 @@ class _SettingsState extends State<Settings> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(AppLocalizations.of(context)!.settings_frequent_of_background_update),
+                        Text(AppLocalizations.of(context).settings_frequent_of_background_update),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,7 +243,7 @@ class _SettingsState extends State<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                AppLocalizations.of(context)!.settings_display,
+                AppLocalizations.of(context).settings_display,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -251,7 +251,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_start_view),
+              title: Text(AppLocalizations.of(context).settings_start_view),
               trailing: DropdownButton<String>(
                 value: dropdownValue,
                 icon: const Icon(Icons.arrow_downward),
@@ -266,16 +266,16 @@ class _SettingsState extends State<Settings> {
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
-                    if (dropdownValue == AppLocalizations.of(context)!.settings_start_view_all_warnings) {
+                    if (dropdownValue == AppLocalizations.of(context).settings_start_view_all_warnings) {
                       startScreen = 0;
-                    } else if (dropdownValue == AppLocalizations.of(context)!.settings_start_view_only_my_places) {
+                    } else if (dropdownValue == AppLocalizations.of(context).settings_start_view_only_my_places) {
                       startScreen = 1;
                     }
                   });
                   saveSettings();
                 },
-                items: <String>[AppLocalizations.of(context)!.settings_start_view_all_warnings,
-                  AppLocalizations.of(context)!.settings_start_view_only_my_places]
+                items: <String>[AppLocalizations.of(context).settings_start_view_all_warnings,
+                  AppLocalizations.of(context).settings_start_view_only_my_places]
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -285,7 +285,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-                title: Text(AppLocalizations.of(context)!.settings_show_extended_metadata),
+                title: Text(AppLocalizations.of(context).settings_show_extended_metadata),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: showExtendedMetaData,
@@ -296,7 +296,7 @@ class _SettingsState extends State<Settings> {
                       saveSettings();
                     })),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_color_schema),
+              title: Text(AppLocalizations.of(context).settings_color_schema),
               trailing: DropdownButton<ThemeMode>(
                 value: selectedTheme,
                 icon: const Icon(Icons.arrow_downward),
@@ -328,9 +328,9 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_display_all_warnings_title),
+              title: Text(AppLocalizations.of(context).settings_display_all_warnings_title),
               subtitle:
-                  Text(AppLocalizations.of(context)!.settings_display_all_warnings_subtitle),
+                  Text(AppLocalizations.of(context).settings_display_all_warnings_subtitle),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: showAllWarnings,
@@ -344,7 +344,7 @@ class _SettingsState extends State<Settings> {
                   }),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_font_size),
+              title: Text(AppLocalizations.of(context).settings_font_size),
               onTap: () {
                 showDialog(
                   context: context,
@@ -355,7 +355,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_sorting),
+              title: Text(AppLocalizations.of(context).settings_sorting),
               onTap: () {
                 showDialog(
                   context: context,
@@ -373,7 +373,7 @@ class _SettingsState extends State<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                AppLocalizations.of(context)!.settings_extended_settings,
+                AppLocalizations.of(context).settings_extended_settings,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -381,8 +381,8 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_alertSwiss),
-              subtitle: Text((AppLocalizations.of(context)!.settings_alertSwiss_subtitle)),
+              title: Text(AppLocalizations.of(context).settings_alertSwiss),
+              subtitle: Text((AppLocalizations.of(context).settings_alertSwiss_subtitle)),
               trailing: Switch(
                 value: activateAlertSwiss,
                 onChanged: (value) {
@@ -395,7 +395,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text((AppLocalizations.of(context)!.settings_show_welcome_dialog)),
+              title: Text((AppLocalizations.of(context).settings_show_welcome_dialog)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -406,7 +406,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-              title: Text((AppLocalizations.of(context)!.settings_dev_settings)),
+              title: Text((AppLocalizations.of(context).settings_dev_settings)),
               onTap: () {
                 Navigator.push(
                   context,
