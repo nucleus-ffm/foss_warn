@@ -71,9 +71,12 @@ android {
         }
 
         release {
-            // to create your own release version for testing,
-            // change .release to .debug or create your own signing key
-            signingConfig signingConfigs.release
+            // optionally, create your own testing "release" key
+            if(new File("/key.properties").exists()) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
             minifyEnabled true
             shrinkResources true
         }

@@ -5,7 +5,7 @@ import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../services/markWarningsAsRead.dart';
 import '../services/urlLauncher.dart';
-import '../services/helperFunctionToTranslateAndChooseColorTyp.dart';
+import '../services/helperFunctionToTranslateAndChooseColorType.dart';
 import '../views/SettingsView.dart';
 
 import 'package:share_plus/share_plus.dart';
@@ -370,11 +370,11 @@ class _DetailScreenState extends State<DetailScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color:
-                          chooseMessageTypColor(widget.warnMessage.messageTyp),
+                          chooseMessageTypeColor(widget.warnMessage.messageType),
                     ),
                     child: Text(
                       "Typ: " +
-                          translateMessageTyp(widget.warnMessage.messageTyp),
+                          translateMessageType(widget.warnMessage.messageType),
                       style: TextStyle(
                           color: Colors.white, fontSize: warningFontSize),
                     ),

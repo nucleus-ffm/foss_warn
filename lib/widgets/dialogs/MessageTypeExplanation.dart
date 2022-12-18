@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MessageTypExplanation extends StatefulWidget {
-  const MessageTypExplanation({Key? key}) : super(key: key);
+class MessageTypeExplanation extends StatefulWidget {
+  const MessageTypeExplanation({Key? key}) : super(key: key);
 
   @override
-  _MessageTypExplanationState createState() => _MessageTypExplanationState();
+  _MessageTypeExplanationState createState() => _MessageTypeExplanationState();
 }
 
-class _MessageTypExplanationState extends State<MessageTypExplanation> {
+class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

@@ -76,7 +76,7 @@ String translateCategory(String text) {
   }
 }
 
-String translateMessageTyp(String text) {
+String translateMessageType(String text) {
   if (text == "Update") {
     return "Update";
   } else if (text == "Cancel") {
@@ -88,7 +88,7 @@ String translateMessageTyp(String text) {
   }
 }
 
-Color chooseMessageTypColor(String text) {
+Color chooseMessageTypeColor(String text) {
   if (text == "Update") {
     return Colors.blueAccent;
   } else if (text == "Cancel") {

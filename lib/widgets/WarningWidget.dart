@@ -1,8 +1,8 @@
 // widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
-import 'package:foss_warn/widgets/dialogs/MessageTypExplanation.dart';
+import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
+import 'package:foss_warn/widgets/dialogs/MessageTypeExplanation.dart';
 import 'package:provider/provider.dart';
 import '../services/markWarningsAsRead.dart';
 import '../class/class_WarnMessage.dart';
@@ -105,18 +105,18 @@ class WarningWidget extends StatelessWidget {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return MessageTypExplanation();
+                                    return MessageTypeExplanation();
                                   },
                                 );
                               },
                               child: Text(
-                                translateMessageTyp(warnMessage.messageTyp),
+                                translateMessageType(warnMessage.messageType),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
                             ),
                             color:
-                                chooseMessageTypColor(warnMessage.messageTyp),
+                                chooseMessageTypeColor(warnMessage.messageType),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
