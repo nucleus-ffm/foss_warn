@@ -1,6 +1,3 @@
-// import 'dart:async';
-// import 'dart:isolate';
-
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
@@ -9,9 +6,6 @@ import 'package:foss_warn/views/aboutView.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-
-
 
 import 'widgets/SourceStatusWidget.dart';
 
@@ -30,7 +24,6 @@ import 'services/sortWarnings.dart';
 import 'widgets/dialogs/SortByDialog.dart';
 import 'themes/themes.dart';
 
-//final navigatorKey = GlobalKey<NavigatorState>();
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
