@@ -14,15 +14,17 @@ class Update with ChangeNotifier {
         geocode: geocodeMap[newPlaceName] ?? alertSwissPlacesMap[newPlaceName]!));
     saveMyPlacesList();
     await callAPI();
-    print("müsste jetzt neubauen");
+    print("we have to rebuild the view");
     notifyListeners();
   }
 
   void updateReadStatusInList() {
-    print("müsste jetzt neubauen");
+    print("we have to rebuild the view");
     notifyListeners();
   }
 
+  /// remove the given place from the List,
+  /// save the updated list and update the view
   void deletePlace(place) {
     myPlaceList.remove(place);
     saveMyPlacesList();
@@ -31,7 +33,7 @@ class Update with ChangeNotifier {
   }
 
   void updateView() {
-    print("müsste jetzt neubauen");
+    print("we have to rebuild the view");
     notifyListeners();
   }
 }
