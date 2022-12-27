@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MessageTypeExplanation extends StatefulWidget {
   const MessageTypeExplanation({Key? key}) : super(key: key);
@@ -11,7 +12,8 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Legende '),
+      title:
+          Text(AppLocalizations.of(context).explanation_warning_level_headline),
       content: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,20 +22,30 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
             RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: const <TextSpan>[
+                children: <TextSpan>[
                   TextSpan(
-                      text: 'Achtung: ',
+                      text: AppLocalizations.of(context)
+                          .explanation_warning_level_attention,
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Neue Meldung zu einer akuten und aktuellen Bedrohung.\n\n'),
                   TextSpan(
-                      text: 'Update: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Aktualisierung einer vorangegangenen Meldung.\n\n'),
+                      text: AppLocalizations.of(context)
+                          .explanation_warning_level_attention_text),
+                  TextSpan(text: '\n\n'),
                   TextSpan(
-                      text: 'Entwarnung: ',
+                      text: AppLocalizations.of(context)
+                          .explanation_warning_level_update,
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Entwarnung für eine vorherige Meldung.'
-                      ' Meistens ist die Warnung jetzt aufgehoben.'),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .explanation_warning_level_update_text),
+                  TextSpan(text: '\n\n'),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .explanation_warning_level_all_clear,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .explanation_warning_level_all_clear_text),
                 ],
               ),
             ),
@@ -45,7 +57,7 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('schließen',
+          child: Text(AppLocalizations.of(context).main_dialog_close,
               style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],
