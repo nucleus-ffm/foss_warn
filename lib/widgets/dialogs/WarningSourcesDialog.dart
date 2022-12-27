@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WarningSourcesDialog extends StatefulWidget {
   const WarningSourcesDialog({Key? key}) : super(key: key);
@@ -11,44 +12,44 @@ class _WarningSourcesDialog extends State<WarningSourcesDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Quellen der Meldungen'),
+      title: Text(AppLocalizations.of(context).source_headline),
       content: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.5,
         child: ListView(
           children: [
             ListTile(
-              title: Text("Mowas (Modulares Warnsystem)"),
+              title: Text(AppLocalizations.of(context).source_mowas_title),
               subtitle: Text(
-                "Bundesamt für Bevölkerungsschutz und Katastrophenhilfe - warnt vor Katastrophen",
+                AppLocalizations.of(context).source_mowas_description,
               ),
             ),
             ListTile(
-              title: Text("Biwapp (Bürger Info- & Warn-App)"),
+              title: Text(AppLocalizations.of(context).source_biwapp_title),
               subtitle: Text(
-                "regionales Warn- und Informationssystem vieler Kommunen - warnt z.B. vor: Bombenfund, Chemieunfall, Feuer, Hochwasser, Erdrutsch / Lawine, Großschadenslage, Unwetter, Verkehrsunfall, Unterrichtsausfall und Seuchenfall.",
+                AppLocalizations.of(context).source_biwapp_description,
               ),
             ),
             ListTile(
-              title: Text("Katwarn"),
+              title: Text(AppLocalizations.of(context).source_katwarn_title),
               subtitle: Text(
-                "Entwickelt von der Fraunhofer-Gesellschaft - warnt z.B. bei: Großbrand, Bombenfund und Umweltkatastrophe",
+                AppLocalizations.of(context).source_katwarn_description,
               ),
             ),
             ListTile(
-              title: Text("DWD (Deutscher Wetterdienst)"),
-              subtitle: Text("Bundesbehörde - warnt vor Unwettern"),
-            ),
-            ListTile(
-              title: Text("LHP (Länderübergreifendes Hochwasser Portal)"),
+              title: Text(AppLocalizations.of(context).source_dwd_title),
               subtitle:
-                  Text("Eine gemeinsame Initiative der deutschen Bundesländer "
-                      "- warnt vor Hochwasserwasser"),
+                  Text(AppLocalizations.of(context).source_dwd_description),
             ),
             ListTile(
-              title: Text("Alert Swiss (experimentell)"),
+              title: Text(AppLocalizations.of(context).source_lhp_title),
+              subtitle:
+                  Text(AppLocalizations.of(context).source_lhp_description),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context).source_alertswiss_title),
               subtitle: Text(
-                "Warnmeldungen für die Schweiz",
+                AppLocalizations.of(context).source_alertswiss_description,
               ),
             ),
           ],
@@ -57,7 +58,8 @@ class _WarningSourcesDialog extends State<WarningSourcesDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('Schließen', style: TextStyle(color: Colors.green)),
+          child: Text(AppLocalizations.of(context).main_dialog_close,
+              style: TextStyle(color: Colors.green)),
         ),
       ],
     );
