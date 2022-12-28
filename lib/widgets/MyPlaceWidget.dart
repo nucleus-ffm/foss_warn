@@ -54,11 +54,14 @@ class MyPlaceWidget extends StatelessWidget {
 
     if (countMessages > 0) {
       myPlace.countWarnings = countMessages;
-
       if (countMessages > 1) {
-        return "Es gibt ${countMessages.toString()} Warnungen";
+        return AppLocalizations.of(context).my_place_there_are +
+            countMessages.toString() +
+            AppLocalizations.of(context).my_place_warnings_more_then_one;
       } else {
-        return "Es gibt ${countMessages.toString()} Warnung";
+        return AppLocalizations.of(context).my_place_there_are +
+            countMessages.toString() +
+            AppLocalizations.of(context).my_place_warnings_only_one;
       }
     } else {
       return AppLocalizations.of(context).my_place_warning_found;
@@ -70,7 +73,7 @@ class MyPlaceWidget extends StatelessWidget {
       bool temp = true;
       for (WarnMessage myWarning in myPlace.warnings) {
         if (readWarnings.contains(myWarning.identifier)) {
-          //warnung gelesen
+          // warnung gelesen
         } else {
           // warnung nicht gelesen
           temp = false;
