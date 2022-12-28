@@ -128,13 +128,18 @@ class WarningWidget extends StatelessWidget {
                               child: Text(
                                 geocodeNameList.length > 1
                                     ? geocodeNameList.first +
-                                    " und " +
-                                    (geocodeNameList.length - 1)
-                                        .toString() +
-                                    " andere"
+                                        " " +
+                                        AppLocalizations.of(context)
+                                            .warning_widget_and +
+                                        (geocodeNameList.length - 1)
+                                            .toString() +
+                                        " " +
+                                        AppLocalizations.of(context)
+                                            .warning_widget_other
                                     : geocodeNameList.isNotEmpty
-                                    ? geocodeNameList.first
-                                    : "unbekannt",
+                                        ? geocodeNameList.first
+                                        : AppLocalizations.of(context)
+                                            .warning_widget_unknown,
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
