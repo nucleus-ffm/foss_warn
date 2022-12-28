@@ -9,7 +9,6 @@ class Update with ChangeNotifier {
 
   // delete preset
   Future<void> updateList(newPlaceName)  async {
-
     myPlaceList.add(Place(name: newPlaceName,
         geocode: geocodeMap[newPlaceName] ?? alertSwissPlacesMap[newPlaceName]!));
     saveMyPlacesList();
@@ -28,10 +27,11 @@ class Update with ChangeNotifier {
   void deletePlace(place) {
     myPlaceList.remove(place);
     saveMyPlacesList();
-    print("Ort wurde entfernt");
+    print("place removed");
     notifyListeners();
   }
 
+  /// notifies the listeners to rebuild the view
   void updateView() {
     print("we have to rebuild the view");
     notifyListeners();
