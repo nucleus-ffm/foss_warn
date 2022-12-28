@@ -333,6 +333,16 @@
   "explanation_warning_level_update": "",
   "explanation_warning_level_update_text": "",
   "explanation_warning_level_all_clear": "",
-  "explanation_warning_level_all_clear_text": ""
+  "explanation_warning_level_all_clear_text": "",
+
+ "my_place_there_are": "",
+ "my_place_warnings_more_then_one": "",
+ "my_place_warnings_only_one": "",
+
+ "warning_widget_and": "and",
+ "warning_widget_other": "other",
+ "warning_widget_unknown": "unknown"
+
+
 
 }
