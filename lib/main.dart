@@ -129,7 +129,6 @@ class _ScaffoldViewState extends State<ScaffoldView> {
   ];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadMyPlacesList(); //load MyPlaceList
     listenNotifications();
