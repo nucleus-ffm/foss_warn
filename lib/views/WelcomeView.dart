@@ -81,7 +81,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    ScaffoldView(),
+                                    HomeView(),
                               ),
                             );
                           },

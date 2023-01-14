@@ -141,35 +141,35 @@ class StatusWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Mowas:")),
-                  SizedBox(width: 30, child: Text(mowasMessages.toString())),
+                  SizedBox(width: 30, child: Text(mowasWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Katwarn: ")),
-                  SizedBox(width: 30, child: Text(katwarnMessages.toString())),
+                  SizedBox(width: 30, child: Text(katwarnWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Biwapp:")),
-                  SizedBox(width: 30, child: Text(biwappMessages.toString())),
+                  SizedBox(width: 30, child: Text(biwappWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("DWD:")),
-                  SizedBox(width: 30, child: Text(dwdMessages.toString())),
+                  SizedBox(width: 30, child: Text(dwdWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("LHP:")),
-                  SizedBox(width: 30, child: Text(lhpMessages.toString())),
+                  SizedBox(width: 30, child: Text(lhpWarningsCount.toString())),
                 ],
               ),
             ],

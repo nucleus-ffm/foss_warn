@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/enums/DataFetchStatus.dart';
 import '../main.dart';
 import '../views/SettingsView.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,7 +10,7 @@ class ConnectionError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    if(showAllWarnings && dataFetchStatusOldAPI == 2) {
+    if(showAllWarnings && dataFetchStatusOldAPI == DataFetchStatus.error) {
       return Container(
         padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
         //margin: EdgeInsets.only(bottom: 10),

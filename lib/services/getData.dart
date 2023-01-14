@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:foss_warn/enums/DataFetchStatus.dart';
 import 'package:foss_warn/services/alertSwiss.dart';
 
 import '../main.dart';
@@ -6,7 +7,6 @@ import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import 'listHandler.dart';
-//import 'markWarningsAsRead.dart';
 import '../views/SettingsView.dart';
 import 'sendStatusNotification.dart';
 import 'saveAndLoadSharedPreferences.dart';
@@ -32,7 +32,7 @@ Future getData(bool useEtag) async {
         Uri.parse('https://warnung.bund.de/bbk.mowas/gefahrendurchsagen.json');
 
     if (useEtag) {
-      response = await get(urlMowas, headers: {'If-None-Match': mowasEtag});
+      response = await get(urlMowas, headers: {'If-None-Match': mowasETag});
     } else {
       response = await get(urlMowas);
     }
@@ -44,11 +44,11 @@ Future getData(bool useEtag) async {
       //update status and count messages
       mowasStatus = true;
       if (response.headers["etag"] != null) {
-        mowasEtag = (response.headers["etag"])!;
+        mowasETag = (response.headers["etag"])!;
       } else {
         print("Error with Etag: " + response.headers.toString());
       }
-      mowasMessages = data.length;
+      mowasWarningsCount = data.length;
 
       try {
         mowasParseStatus = true;
@@ -131,7 +131,7 @@ Future getData(bool useEtag) async {
     var urlKatwarn =
         Uri.parse('https://warnung.bund.de/bbk.katwarn/warnmeldungen.json');
     if (useEtag) {
-      response = await get(urlKatwarn, headers: {'If-None-Match': katwarnEtag});
+      response = await get(urlKatwarn, headers: {'If-None-Match': katwarnETag});
     } else {
       response = await get(urlKatwarn);
     }
@@ -140,14 +140,14 @@ Future getData(bool useEtag) async {
     if (response.statusCode == 200) {
       data = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.headers["etag"] != null) {
-        katwarnEtag = (response.headers["etag"])!;
+        katwarnETag = (response.headers["etag"])!;
       } else {
         print("Error with Etag: " + response.headers.toString());
       }
 
       //update status und count messages
       katwarnStatus = true;
-      katwarnMessages = data.length;
+      katwarnWarningsCount = data.length;
 
       try {
         katwarnParseStatus = true;
@@ -235,13 +235,13 @@ Future getData(bool useEtag) async {
       data = jsonDecode(utf8.decode(response.bodyBytes));
       // store etag
       if (response.headers["etag"] != null) {
-        biwappEtag = (response.headers["etag"])!;
+        biwappETag = (response.headers["etag"])!;
       } else {
         print("Error with Etag: " + response.headers.toString());
       }
       //check status and count messages
       biwappStatus = true;
-      biwappMessages = data.length;
+      biwappWarningsCount = data.length;
 
       try {
         biwappParseStatus = true;
@@ -328,7 +328,7 @@ Future getData(bool useEtag) async {
         'https://warnung.bund.de/bbk.dwd/unwetter.json'); //https://s3.eu-central-1.amazonaws.com/app-prod-static.warnwetter.de/v16/gemeinde_warnings.json
 
     if (useEtag) {
-      response = await get(urlDWDwarnings, headers: {'If-None-Match': dwdEtag});
+      response = await get(urlDWDwarnings, headers: {'If-None-Match': dwdETag});
     } else {
       response = await get(urlDWDwarnings);
     }
@@ -341,13 +341,12 @@ Future getData(bool useEtag) async {
       data = jsonDecode(utf8.decode(response.bodyBytes));
       //store etag
       if (response.headers["etag"] != null) {
-        dwdEtag = (response.headers["etag"])!;
+        dwdETag = (response.headers["etag"])!;
       } else {
         print("Error with Etag: " + response.headers.toString());
       }
 
-      // count messages
-      dwdMessages = data.length;
+      dwdWarningsCount = data.length;
 
       try {
         dwdParseStatus = true;
@@ -429,7 +428,7 @@ Future getData(bool useEtag) async {
     var urlLHPwarnings =
         Uri.parse('https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
     if (useEtag) {
-      response = await get(urlLHPwarnings, headers: {'If-None-Match': lhpEtag});
+      response = await get(urlLHPwarnings, headers: {'If-None-Match': lhpETag});
     } else {
       response = await get(urlLHPwarnings);
     }
@@ -440,13 +439,13 @@ Future getData(bool useEtag) async {
 
       data = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.headers["etag"] != null) {
-        lhpEtag = (response.headers["etag"])!;
+        lhpETag = (response.headers["etag"])!;
       } else {
         print("Error with Etag: " + response.headers.toString());
       }
 
       //count messages
-      lhpMessages = data.length; //TODO: check if this works
+      lhpWarningsCount = data.length; //TODO: check if this works
 
       try {
         lhpParseStatus = true;
@@ -525,7 +524,7 @@ Future getData(bool useEtag) async {
 
     allWarnMessageList.clear(); //clear List
     allWarnMessageList = tempWarnMessageList; // transfer temp List in real list
-    dataFetchStatusOldAPI = 1; // successful
+    dataFetchStatusOldAPI = DataFetchStatus.success;
 
     if(activateAlertSwiss) {
       await callAlertSwissAPI();
@@ -546,7 +545,7 @@ Future getData(bool useEtag) async {
     mowasStatus = false;
     biwappStatus = false;
     katwarnStatus = false;
-    dataFetchStatusOldAPI = 2; // error
+    dataFetchStatusOldAPI = DataFetchStatus.error;
     lhpStatus = false;
     if (showStatusNotification) {
       sendStatusUpdateNotification(false);

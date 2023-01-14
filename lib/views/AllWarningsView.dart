@@ -31,9 +31,9 @@ class _AllWarningsViewState extends State<AllWarningsView> {
   @override
   void initState() {
     super.initState();
-    if (firstStart) {
+    if (isFirstStart) {
       loading = true;
-      firstStart = false;
+      isFirstStart = false;
     }
   }
 
