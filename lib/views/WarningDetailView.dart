@@ -23,7 +23,7 @@ class _DetailScreenState extends State<DetailScreen> {
   bool showMoreRegions = false;
   bool showMorePlaces = false;
 
-  // @todo think about moving code to beter place
+  // @todo think about moving code to better place
   String replaceHTMLTags(String text) {
     String replacedText = text;
     replacedText = replacedText.replaceAll("<br/>", "\n");
@@ -271,16 +271,16 @@ class _DetailScreenState extends State<DetailScreen> {
               tooltip: AppLocalizations.of(context).warning_share,
               onPressed: () {
                 final String shareText = widget.warnMessage.headline +
-                    "\n\n " +
+                    "\n\n" +
                     AppLocalizations.of(context).warning_from +
-                    ":" +
+                    ": " +
                     formatSentDate(widget.warnMessage.sent) +
                     "\n\n" +
                     AppLocalizations.of(context).warning_region +
                     ": " +
                     generateAreaDescList(-1).toString().substring(
                         1, generateAreaDescList(-1).toString().length - 1) +
-                    "\n\n " +
+                    "\n\n" +
                     AppLocalizations.of(context).warning_description +
                     ":\n" +
                     replaceHTMLTags(widget.warnMessage.description) +
@@ -290,11 +290,11 @@ class _DetailScreenState extends State<DetailScreen> {
                     replaceHTMLTags(widget.warnMessage.instruction) +
                     "\n\n" +
                     AppLocalizations.of(context).warning_source +
-                    ":\n " +
+                    ":\n" +
                     widget.warnMessage.publisher +
-                    "\n\n--" +
+                    "\n\n-- " +
                     AppLocalizations.of(context).warning_shared_by_foss_warn +
-                    "--";
+                    " --";
                 final String shareSubject = widget.warnMessage.headline;
                 shareWarning(context, shareText, shareSubject);
               },
@@ -315,7 +315,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 height: 10,
               ),
               Text(
-                AppLocalizations.of(context).warning_from +
+                AppLocalizations.of(context).warning_from + ": " +
                     formatSentDate(widget.warnMessage.sent),
                 style: TextStyle(
                     fontSize: warningFontSize, fontWeight: FontWeight.bold),
@@ -407,7 +407,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Text(
                       AppLocalizations.of(context).warning_type +
                           ": " +
-                          translateMessageType(widget.warnMessage.messageType),
+                          translateMessageType(widget.warnMessage.messageType, context),
                       style: TextStyle(
                           color: Colors.white, fontSize: warningFontSize),
                     ),
@@ -718,6 +718,7 @@ class _DetailScreenState extends State<DetailScreen> {
               /*Column(
                 children: generateAssets(widget.warnMessage.description),
               ),*/
+
 
               widget.warnMessage.instruction != ""
                   ? Column(
