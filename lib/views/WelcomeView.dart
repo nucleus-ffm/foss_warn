@@ -17,7 +17,7 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
   double _currentPage = 0.0;
   final _pageViewController = new PageController();
-  final _platform = const MethodChannel('flutter.native/helper');
+  final _platform = const MethodChannel("flutter.native/helper");
   late Future<bool> _batteryOptimizationFuture;
 
   @override

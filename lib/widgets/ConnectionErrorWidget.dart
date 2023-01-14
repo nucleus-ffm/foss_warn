@@ -34,7 +34,7 @@ class ConnectionError extends StatelessWidget {
             Flexible(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Text("Keine Serververbindung - Warnugen könnten veraltet sein", style: Theme.of(context).textTheme.headline3,
+                child: Text("Keine Serververbindung - Warnungen könnten veraltet sein", style: Theme.of(context).textTheme.headline3,
                 overflow:  TextOverflow.ellipsis,
                 ),
               ),

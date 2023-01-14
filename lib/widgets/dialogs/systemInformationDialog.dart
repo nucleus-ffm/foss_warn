@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../services/collectSysteminfo.dart';
+import '../../services/collectSystemInfo.dart';
 
 class SystemInformationDialog extends StatefulWidget {
   const SystemInformationDialog({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
             final String data = snapshot.data!;
             print(data);
             return AlertDialog(
-              title: Text('Systeminformationen'),
+              title: Text("Systeminformationen"),
               content: Container(
                 child: SingleChildScrollView(
                   child: Column(
@@ -37,7 +37,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
                     Clipboard.setData(ClipboardData(text: data));
                     final snackBar = SnackBar(
                       content: const Text(
-                        'kopiert',
+                        "Kopiert",
                         style: TextStyle(color: Colors.black),
                       ),
                       backgroundColor: Colors.green[100],
@@ -45,7 +45,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
-                  child: Text('kopieren', style: TextStyle(color: Theme
+                  child: Text("Kopieren", style: TextStyle(color: Theme
                       .of(context)
                       .colorScheme
                       .secondary)),
@@ -54,7 +54,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('schließen', style: TextStyle(color: Theme
+                  child: Text("Schließen", style: TextStyle(color: Theme
                       .of(context)
                       .colorScheme
                       .secondary)),

@@ -10,7 +10,6 @@ import '../widgets/MyPlaceWidget.dart';
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
-// import '../services/getData.dart';
 import '../widgets/ConnectionErrorWidget.dart';
 import 'addMyPlaceView.dart';
 
@@ -23,6 +22,7 @@ class MyPlaces extends StatefulWidget {
 
 class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
   bool loading = false;
+
   @override
   void initState() {
     super.initState();
@@ -31,21 +31,22 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
       loading = true;
     }
   }
+
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    // check if app is opend from background and if yes update
+    // reload data when app is resumed
     if(state == AppLifecycleState.resumed) {
       print("App is resumed...");
       load();
     }
   }
-
 
   /// load data and call the API function
   load() async {
