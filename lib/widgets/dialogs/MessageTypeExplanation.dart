@@ -25,7 +25,7 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
                 children: <TextSpan>[
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_warning_level_attention,
+                          .explanation_warning_level_attention + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
@@ -33,7 +33,7 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
                   TextSpan(text: '\n\n'),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_warning_level_update,
+                          .explanation_warning_level_update + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
@@ -41,7 +41,7 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
                   TextSpan(text: '\n\n'),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_warning_level_all_clear,
+                          .explanation_warning_level_all_clear + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
