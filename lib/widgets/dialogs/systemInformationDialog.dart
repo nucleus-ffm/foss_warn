@@ -63,7 +63,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
             );
           } else {
             print(
-                "Error getting systeminformationedata ${snapshot.error}");
+                "Error getting system information: ${snapshot.error}");
             return Text("Error", style: TextStyle(color: Colors.red));
           }
         } else
