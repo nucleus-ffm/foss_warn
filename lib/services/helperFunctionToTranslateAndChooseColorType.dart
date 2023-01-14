@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 String formatSentDate(String dateAndTime) {
-  String returnDate = "";
   // if from alert swiss @todo: fix later
   if(dateAndTime.contains(",")) {
     return dateAndTime;
@@ -15,9 +15,6 @@ String formatSentDate(String dateAndTime) {
   int day = int.parse(date.substring(8, 10));
 
   String time = dateAndTime.substring(space + 1, space + 9);
-  String timeLag =
-  dateAndTime.substring(dateAndTime.length - 5, dateAndTime.length);
-  String timeLagHours = timeLag.substring(1, 2);
 
   int seconds = int.parse(time.substring(time.length - 2, time.length));
   int minutes = int.parse(time.substring(time.length - 5, time.length - 3));
@@ -51,38 +48,36 @@ String formatSentDate(String dateAndTime) {
   return correctDate + " - " + correctFormatTime;
 }
 
-String translateCategory(String text) {
+String translateCategory(String text, BuildContext context) {
   if (text == "Health" || text == "Contaminated drinking water"|| text == "Pollution de l’eau potable" ) {
-    return "Gesundheit";
+    return AppLocalizations.of(context).explanation_health;
   } else if (text == "Infra") {
-    return "Infrastruktur";
+    return  AppLocalizations.of(context).explanation_infrastructure;
   } else if (text == "Fire" || text == "Forest fire" ||
       text == "Safety precautions Forest fires") {
-    return "Feuer";
+    return  AppLocalizations.of(context).explanation_fire;
   } else if (text == "CBRNE") {
-    return "CBRNE";
+    return  AppLocalizations.of(context).explanation_CBRNE;
   } else if (text == "Other" || text == "Other incident") {
-    return "Sonstiges";
+    return  AppLocalizations.of(context).explanation_other;
   } else if (text == "Safety") {
-    return "Sicherheit";
+    return  AppLocalizations.of(context).explanation_safety;
   } else if (text == "Met") {
-    return "Wetter";
-  } else if (text == "Env" || text == "Drought") {
-    return "Umwelt";
-  } else if (text == "Geo") {
-    return "Umwelt";
+    return  AppLocalizations.of(context).explanation_weather;
+  } else if (text == "Env" || text == "Drought" || text == "Geo") {
+    return  AppLocalizations.of(context).explanation_environment;
   } else {
     return text;
   }
 }
 
-String translateMessageType(String text) {
+String translateMessageType(String text, BuildContext context) {
   if (text == "Update") {
-    return "Update";
+    return AppLocalizations.of(context).explanation_warning_level_update;
   } else if (text == "Cancel") {
-    return "Entwarnung";
+    return AppLocalizations.of(context).explanation_warning_level_all_clear;
   } else if (text == "Alert") {
-    return "Achtung";
+    return AppLocalizations.of(context).explanation_warning_level_attention;
   } else {
     return text;
   }
@@ -113,6 +108,7 @@ Color chooseSeverityColor(String text) {
   }
 }
 /// translate the message Severity and return the german name
+/// @todo: Add translation
 String translateMessageSeverity(String text) {
   // remove potential whitespace
   text = text.trim().toLowerCase();
