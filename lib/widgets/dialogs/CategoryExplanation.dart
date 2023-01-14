@@ -23,28 +23,28 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                 style: DefaultTextStyle.of(context).style,
                 children: <TextSpan>[
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_health,
+                      text: AppLocalizations.of(context).explanation_health + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
                           AppLocalizations.of(context).explanation_health_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_fire,
+                      text: AppLocalizations.of(context).explanation_fire + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context).explanation_fire_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_infrastructure,
+                          .explanation_infrastructure + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
                           .explanation_infrastructure_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_CBRNE,
+                      text: AppLocalizations.of(context).explanation_CBRNE + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
@@ -52,33 +52,32 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                   TextSpan(text: '\n \n'),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_environment,
+                          AppLocalizations.of(context).explanation_environment + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
                           .explanation_environment_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_weather,
+                      text: AppLocalizations.of(context).explanation_weather + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
                           .explanation_weather_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_safety,
+                      text: AppLocalizations.of(context).explanation_safety + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
                           AppLocalizations.of(context).explanation_safety_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_other,
+                      text: AppLocalizations.of(context).explanation_other + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
                           AppLocalizations.of(context).explanation_other_text),
-                  TextSpan(text: '\n \n'),
                 ],
               ),
             ),
