@@ -75,7 +75,7 @@ android {
                 project.logger.quiet("Using ${keystorePropertiesFile.path} to sign the app in release mode.")
                 signingConfig signingConfigs.release
             } else {
-                project.logger.quiet("Using a debug key to signing the app in release mode.")
+                project.logger.quiet("Using a debug key to sign the app in release mode.")
                 signingConfig signingConfigs.debug
             }
             minifyEnabled true
