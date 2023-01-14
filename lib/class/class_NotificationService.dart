@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
+import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +11,11 @@ class NotificationService {
   static Future _notificationsDetails(String channel) async {
     return NotificationDetails(
         android: AndroidNotificationDetails(
-          'foss_warn_notifications_' + channel,
+          'foss_warn_notifications_' + channel.trim().toLowerCase(),
           "Warnstufe: " + translateMessageSeverity(channel),
-          channelDescription: 'FOSS Warn notifications',
-          groupKey: "FossWarn",
+          channelDescription: 'FOSS Warn notifications for '+  channel.trim().toLowerCase(),
+          groupKey: "FossWarn_warnings",
+          category: AndroidNotificationCategory("Warnings"),
           importance: Importance.max,
           priority: Priority.max,
 
@@ -31,12 +32,15 @@ class NotificationService {
   static Future _statusNotificationsDetails() async {
     return NotificationDetails(
         android: AndroidNotificationDetails(
-          'foss_warn_status', 'Statusanzeige',
+          'foss_warn_status',
+          'Statusanzeige',
           channelDescription: 'Status der Hintergrund Updates',
-          groupKey: "FossWarnStatus",
+          groupKey: "FossWarnService",
+          category: AndroidNotificationCategory("service"),
           importance: Importance.low,
           priority: Priority.min,
           playSound: false,
+          channelShowBadge: false,
 
           //@TODO: show an other icon for status notification
           //enable multiline notification
@@ -127,45 +131,29 @@ class NotificationService {
         ?.requestPermission();
 
     // init the different notifications channels
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(AndroidNotificationChannel(
-          'foss_warn_notifications_Minor', // id
-          'Warnstufe: Gering', // title
-          description: 'FOSS Warn notification', // description
-          importance: Importance.max,
-        ));
+    try{
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(AndroidNotificationChannel("foss_warn_notifications_minor", "Warnstufe: Gering"));
 
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(AndroidNotificationChannel(
-          'foss_warn_notifications_Moderate', // id
-          'Warnstufe: Mittel', // title
-          description: 'FOSS Warn notification', // description
-          importance: Importance.max,
-        ));
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(AndroidNotificationChannel("foss_warn_notifications_moderate", "Warnstufe: Mittel"));
 
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(AndroidNotificationChannel(
-          'foss_warn_notifications_Severe', // id
-          'Warnstufe: Schwer', // title
-          description: 'FOSS Warn notification', // description
-          importance: Importance.max,
-        ));
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(AndroidNotificationChannel("foss_warn_notifications_severe", "Warnstufe: Schwer"));
 
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(AndroidNotificationChannel(
-          'foss_warn_notifications_Extrem', // id
-          'Warnstufe: Extrem', // title
-          description: 'FOSS Warn notification', // description
-          importance: Importance.max,
-        ));
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(AndroidNotificationChannel("foss_warn_notifications_extreme", "Warnstufe: Extrem"));
+    } catch(e) {
+      print("Error while creating notification channels: " + e.toString());
+    }
 
     // when App is closed
     final details =
@@ -180,13 +168,35 @@ class NotificationService {
         onDidReceiveNotificationResponse:
             onDidReceiveNotificationResponse); //onSelectNotification
 
-    /*print("[android notification channels]");
+    cleanUpNotificationChannels();
+  }
+
+  Future<void> cleanUpNotificationChannels() async {
+    List<String> channelIds = [];
+    channelIds.add("foss_warn_notifications_minor");
+    channelIds.add("foss_warn_notifications_severe");
+    channelIds.add("foss_warn_notifications_moderate");
+    channelIds.add("foss_warn_notifications_extreme");
+    channelIds.add("foss_warn_status");
+    channelIds.add("foss_warn_other");
+
+    print("[android notification channels]");
     List<AndroidNotificationChannel>? temp = (await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>()
         ?.getNotificationChannels());
     for(AndroidNotificationChannel p in temp! ) {
       print("id: " + p.id + " name: " + p.name);
-    } */
+      if(channelIds.contains(p.id)) {
+        print("Channel is correct and not deleted:" + p.id + " " + p.name);
+      }
+      else {
+        // remove old channel
+        await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+            ?.deleteNotificationChannel(p.id);
+        print("delete notification channel: " + p.id + " " + p.name);
+      }
+    }
   }
 
   Future onDidReceiveNotificationResponse(

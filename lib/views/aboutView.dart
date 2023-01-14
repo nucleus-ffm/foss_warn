@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/widgets/dialogs/DisclaimerDialog.dart';
 import 'package:foss_warn/widgets/dialogs/WarningSourcesDialog.dart';
 import '../services/urlLauncher.dart';
@@ -13,7 +14,7 @@ class AboutView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Über diese App"),
+        title: Text(AppLocalizations.of(context).about_headline),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
@@ -42,12 +43,7 @@ class AboutView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
             child: Center(
-              child: Text("Diese App ist ein Freizeit-Projekt und wurde in "
-                  "der Hoffnung erstellt, "
-                  "dass sie nützlich ist. Hinweise zur Verbesserung "
-                  "oder Fehlern sind gern gesehen. "
-                  "Wenn Sie diese App als nützlich und gut ansehen, "
-                  "würde ich mich freuen, davon zu hören.",
+              child: Text(AppLocalizations.of(context).about_summery,
               textAlign: TextAlign.center,),
             ),
           ),
@@ -55,10 +51,10 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.source_outlined),
             title: Text(
-              "Quellen",
+              AppLocalizations.of(context).about_source,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text("Verwendete Quellen für das Abrufen der Meldungen",
+            subtitle: Text(AppLocalizations.of(context).about_source_subtitle,
                 style: Theme.of(context).textTheme.bodyText1),
             onTap: () {
               showDialog(
@@ -70,7 +66,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.open_in_browser_outlined),
             title: Text(
-              "Offizielle Meldungsseite",
+              (AppLocalizations.of(context).about_official_source),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text("https://warnung.bund.de/meldungen",
@@ -81,7 +77,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.perm_identity_outlined),
             title: Text(
-              "Autor",
+              (AppLocalizations.of(context).about_author),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -93,7 +89,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.mail_outline),
             title: Text(
-              "Kontakt",
+              (AppLocalizations.of(context).about_contact),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -105,11 +101,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.account_balance_outlined),
             title: Text(
-              "Impressum?",
+              (AppLocalizations.of(context).about_imprint),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "Müsste hier ein Impressum stehen?",
+              AppLocalizations.of(context).about_imprint_subtitle,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             onTap: () {
@@ -122,11 +118,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.privacy_tip_outlined),
             title: Text(
-              "Datenschutz",
+              AppLocalizations.of(context).about_privacy,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "Alles, was die App macht und nicht macht",
+              AppLocalizations.of(context).about_privacy_subtitle,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             onTap: () {
@@ -139,11 +135,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.article_outlined),
             title: Text(
-              "Haftungsausschluss",
+              AppLocalizations.of(context).about_disclaimer,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "Was FOSS Warn nicht leisten kann",
+              AppLocalizations.of(context).about_disclaimer_subtitle,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             onTap: () {
@@ -156,7 +152,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.star_outline),
             title: Text(
-              "Version",
+              AppLocalizations.of(context).about_version,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -173,7 +169,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.info_outline),
             title: Text(
-              "Lizenz",
+              AppLocalizations.of(context).about_licence,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -184,11 +180,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.business_center_outlined),
             title: Text(
-              "Andere Lizenzen",
+              AppLocalizations.of(context).about_other_license,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "FOSS Warn verwendet nützliche andere Software",
+              AppLocalizations.of(context).about_other_license_subtitle,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             onTap: () {
@@ -201,11 +197,11 @@ class AboutView extends StatelessWidget {
           ListTile(
               leading: Icon(Icons.group_outlined),
               title: Text(
-                "Mitwirkende",
+                AppLocalizations.of(context).about_contributors,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
-                "Menschen, die zu FOSS Warn beigetragen haben",
+                AppLocalizations.of(context).about_contact_subtitle,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               onTap: () => launchUrlInBrowser(
@@ -213,11 +209,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.code_outlined),
             title: Text(
-              "Quellcode",
+              AppLocalizations.of(context).about_sourcecode,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "Bald erhältlich auf floppy, bis dahin auf GitHub",
+              AppLocalizations.of(context).about_sourcecode_subtitle,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             onTap: () =>

@@ -90,7 +90,7 @@ WarnMessage? createWarning(var data) {
       sender: data["sender"] ?? "?",
       sent: data["sent"] ?? "?",
       status: "?", // missing for alert swiss
-      messageTyp: "Alert", // missing
+      messageType: "Alert", // missing
       scope: "?", // missing
       category: data["event"] ?? "?", // missing
       event: data["event"] ?? "?",

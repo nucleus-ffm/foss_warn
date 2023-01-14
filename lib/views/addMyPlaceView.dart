@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Ort hinzufügen"),
+        title: Text(AppLocalizations.of(context).add_new_place),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
@@ -33,7 +34,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
               cursorColor: Theme.of(context).colorScheme.secondary,
               autofocus: true,
               decoration: new InputDecoration(
-                labelText: 'Ortsname oder Kreisname',
+                labelText: AppLocalizations.of(context).add_new_place_place_name,
                 labelStyle:
                     TextStyle(color: Theme.of(context).colorScheme.secondary),
                 enabledBorder: UnderlineInputBorder(

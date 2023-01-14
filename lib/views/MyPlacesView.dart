@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:foss_warn/services/apiHandler.dart';
 
@@ -96,15 +97,15 @@ class _MyPlacesState extends State<MyPlaces> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        "Es sind noch keine Orte hinterlegt...",
+                      Text(AppLocalizations.of(context).my_place_no_place_added
+                        ,
                         style:
                             TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Text("Drücken Sie auf das Plus, um eigene Orte hinzuzufügen.",
+                      Text(AppLocalizations.of(context).my_place_no_place_added_text,
                         textAlign: TextAlign.center,),
                     ],
                   ),

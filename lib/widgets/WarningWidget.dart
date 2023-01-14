@@ -1,7 +1,8 @@
 // widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
-import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorTyp.dart';
-import 'package:foss_warn/widgets/dialogs/MessageTypExplanation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
+import 'package:foss_warn/widgets/dialogs/MessageTypeExplanation.dart';
 import 'package:provider/provider.dart';
 import '../services/markWarningsAsRead.dart';
 import '../class/class_WarnMessage.dart';
@@ -19,11 +20,6 @@ class WarningWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> geocodeNameList = [];
-    /*print("Warnug schon gesehen? " +
-        myPlaceList
-            .any((place) => place.alreadyReadWarnings
-                .any((warning) => warning.headline == warnMessage.headline))
-            .toString());*/
     updatePrevView() {
       final updater = Provider.of<Update>(context, listen: false);
       updater.updateReadStatusInList();
@@ -93,7 +89,7 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateCategory(warnMessage.category),
+                                translateCategory(warnMessage.category, context),
                                 style: Theme.of(context).textTheme.headline3,
                               ),
                             ),
@@ -109,18 +105,18 @@ class WarningWidget extends StatelessWidget {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return MessageTypExplanation();
+                                    return MessageTypeExplanation();
                                   },
                                 );
                               },
                               child: Text(
-                                translateMessageTyp(warnMessage.messageTyp),
+                                translateMessageType(warnMessage.messageType, context),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
                             ),
                             color:
-                                chooseMessageTypColor(warnMessage.messageTyp),
+                                chooseMessageTypeColor(warnMessage.messageType),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
@@ -132,13 +128,19 @@ class WarningWidget extends StatelessWidget {
                               child: Text(
                                 geocodeNameList.length > 1
                                     ? geocodeNameList.first +
-                                    " und " +
-                                    (geocodeNameList.length - 1)
-                                        .toString() +
-                                    " andere"
+                                        " " +
+                                        AppLocalizations.of(context)
+                                            .warning_widget_and +
+                                    " " +
+                                        (geocodeNameList.length - 1)
+                                            .toString() +
+                                        " " +
+                                        AppLocalizations.of(context)
+                                            .warning_widget_other
                                     : geocodeNameList.isNotEmpty
-                                    ? geocodeNameList.first
-                                    : "unbekannt",
+                                        ? geocodeNameList.first
+                                        : AppLocalizations.of(context)
+                                            .warning_widget_unknown,
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),

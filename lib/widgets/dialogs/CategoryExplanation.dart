@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CategoryExplanation extends StatefulWidget {
   const CategoryExplanation({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Legende '),
+      title: Text(AppLocalizations.of(context).explanation_headline),
       content: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,50 +21,63 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
             RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: const <TextSpan>[
+                children: <TextSpan>[
                   TextSpan(
-                      text: 'Gesundheit: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei'
-                      ' gesundheitsgefährdenden Ereignissen wie z.B.'
-                      ' Pandemien oder Wasserverunreinigungen\n\n'),
-                  TextSpan(
-                      text: 'Feuer: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei Bränden \n \n'),
-                  TextSpan(
-                      text: 'Infrastruktur: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei infrastrukturellen '
-                      'Ereignissen wie z.B. einem Ausfall der Notrufleitung  \n\n'),
-                  TextSpan(
-                      text: 'CBRNE: ',
+                      text: AppLocalizations.of(context).explanation_health + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: 'Informationen bei Ereignissen mit chemischen,'
-                              ' biologischen, radiologischen, nuklearen'
-                              ' und explosionsgefährdeten Stoffen \n\n'),
+                      text:
+                          AppLocalizations.of(context).explanation_health_text),
+                  TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: 'Umwelt: ',
+                      text: AppLocalizations.of(context).explanation_fire + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei Naturereignissen wie z.B. Sturmfluten \n\n'),
-
                   TextSpan(
-                      text: 'Wetter: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei Meteorologisch Ereignissen wie '
-                      'z.B. Sturmböen und Hochwasser  \n\n'),
-
+                      text: AppLocalizations.of(context).explanation_fire_text),
+                  TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: 'Sicherheit: ',
+                      text: AppLocalizations.of(context)
+                          .explanation_infrastructure + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei polizeilichen Meldungen \n\n'),
-
                   TextSpan(
-                      text: 'Sonstiges: ',
+                      text: AppLocalizations.of(context)
+                          .explanation_infrastructure_text),
+                  TextSpan(text: '\n \n'),
+                  TextSpan(
+                      text: AppLocalizations.of(context).explanation_CBRNE + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: 'Informationen bei anderen Meldungen'
-                      ' wie z.B. zur Geflügelpest \n\n'),
+                  TextSpan(
+                      text:
+                          AppLocalizations.of(context).explanation_CBRNE_text),
+                  TextSpan(text: '\n \n'),
+                  TextSpan(
+                      text:
+                          AppLocalizations.of(context).explanation_environment + ": ",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .explanation_environment_text),
+                  TextSpan(text: '\n \n'),
+                  TextSpan(
+                      text: AppLocalizations.of(context).explanation_weather + ": ",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: AppLocalizations.of(context)
+                          .explanation_weather_text),
+                  TextSpan(text: '\n \n'),
+                  TextSpan(
+                      text: AppLocalizations.of(context).explanation_safety + ": ",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text:
+                          AppLocalizations.of(context).explanation_safety_text),
+                  TextSpan(text: '\n \n'),
+                  TextSpan(
+                      text: AppLocalizations.of(context).explanation_other + ": ",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text:
+                          AppLocalizations.of(context).explanation_other_text),
                 ],
               ),
             ),
@@ -75,7 +89,7 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('schließen',
+          child: Text(AppLocalizations.of(context).main_dialog_close,
               style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],

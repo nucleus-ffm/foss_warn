@@ -9,29 +9,31 @@ class Update with ChangeNotifier {
 
   // delete preset
   Future<void> updateList(newPlaceName)  async {
-
     myPlaceList.add(Place(name: newPlaceName,
         geocode: geocodeMap[newPlaceName] ?? alertSwissPlacesMap[newPlaceName]!));
     saveMyPlacesList();
     await callAPI();
-    print("müsste jetzt neubauen");
+    print("we have to rebuild the view");
     notifyListeners();
   }
 
   void updateReadStatusInList() {
-    print("müsste jetzt neubauen");
+    print("we have to rebuild the view");
     notifyListeners();
   }
 
+  /// remove the given place from the List,
+  /// save the updated list and update the view
   void deletePlace(place) {
     myPlaceList.remove(place);
     saveMyPlacesList();
-    print("Ort wurde entfernt");
+    print("place removed");
     notifyListeners();
   }
 
+  /// notifies the listeners to rebuild the view
   void updateView() {
-    print("müsste jetzt neubauen");
+    print("we have to rebuild the view");
     notifyListeners();
   }
 }

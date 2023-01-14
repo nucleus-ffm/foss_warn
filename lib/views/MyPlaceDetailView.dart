@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/sortWarnings.dart';
 import '../class/class_Place.dart';
 import '../widgets/WarningWidget.dart';
@@ -16,16 +17,15 @@ class MyPlaceDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("${myPlace.name}"),
-        backgroundColor: Colors.green[700],
-        //brightness: Brightness.dark, //@TODO: fix
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
-          //TextButton(onPressed: () {}, child: Text("Alle gelesen"))
           IconButton(
             onPressed: () {
               markAllWarningsAsRead(myPlace, context);
               final snackBar = SnackBar(
-                content: const Text(
-                  'Alle Warnungen als gelesen markiert',
+                content: Text(
+                  AppLocalizations.of(context)
+                      .main_app_bar_tooltip_mark_all_warnings_as_read,
                   style: TextStyle(color: Colors.black),
                 ),
                 backgroundColor: Colors.green[100],
@@ -36,7 +36,8 @@ class MyPlaceDetailScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
             icon: Icon(Icons.mark_chat_read),
-            tooltip: "Markiere alle Warnungen als gelesen",
+            tooltip: AppLocalizations.of(context)
+                .main_app_bar_tooltip_mark_all_warnings_as_read,
           )
         ],
       ),

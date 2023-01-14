@@ -8,7 +8,7 @@ class WarnMessage {
   String sender;
   String sent;
   String status;
-  String messageTyp;
+  String messageType;
   String scope;
   String category;
   String event;
@@ -35,7 +35,7 @@ class WarnMessage {
     required this.sender,
     required this.sent,
     required this.status,
-    required this.messageTyp,
+    required this.messageType,
     required this.scope,
     required this.category,
     required this.event,
@@ -64,7 +64,7 @@ class WarnMessage {
         sender: json['sender'],
         sent: json['sent'],
         status: json['status'],
-        messageTyp: json['messageTyp'],
+        messageType: json['messageType'],
         scope: json['scope'],
         category: json['category'],
         event: json['event'],
@@ -93,7 +93,7 @@ class WarnMessage {
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
         status: json["status"] ?? "?",
-        messageTyp: json["msgType"] ?? "?",
+        messageType: json["msgType"] ?? "?",
         scope: json["scope"] ?? "?",
         category: json["info"][0]["category"][0] ?? "?",
         event: json["info"][0]["event"] ?? "?",
@@ -119,7 +119,7 @@ class WarnMessage {
         'sender': sender,
         'sent': sent,
         'status': status,
-        'messageTyp': messageTyp,
+        'messageType': messageType,
         'scope': scope,
         'category': category,
         'event': category,

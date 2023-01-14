@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NoWarningsInList extends StatelessWidget {
   const NoWarningsInList({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class NoWarningsInList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Hier gibt es nichts zu sehen",
+                  Text(AppLocalizations.of(context).all_warnings_nothing_to_show,
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold)),
@@ -30,9 +31,8 @@ class NoWarningsInList extends StatelessWidget {
                     color: Colors.green,
                   ),
                   Text(
-                      "FOSS Warn hat gerade nichts zum Anzeigen.\n "),
+                      AppLocalizations.of(context).all_warnings_nothing_to_show_text),
                   SizedBox(height: 10),
-
                 ],
               ),
             ),
