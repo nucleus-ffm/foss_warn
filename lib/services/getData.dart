@@ -346,8 +346,8 @@ Future getData(bool useEtag) async {
         print("Error with Etag: " + response.headers.toString());
       }
 
-      //count messages
-      dwdMessages = data.length; //TODO: check if this works
+      // count messages
+      dwdMessages = data.length;
 
       try {
         dwdParseStatus = true;
