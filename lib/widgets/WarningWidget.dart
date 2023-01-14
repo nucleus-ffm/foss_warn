@@ -89,7 +89,7 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateCategory(warnMessage.category),
+                                translateCategory(warnMessage.category, context),
                                 style: Theme.of(context).textTheme.headline3,
                               ),
                             ),
@@ -110,7 +110,7 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateMessageType(warnMessage.messageType),
+                                translateMessageType(warnMessage.messageType, context),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
@@ -131,6 +131,7 @@ class WarningWidget extends StatelessWidget {
                                         " " +
                                         AppLocalizations.of(context)
                                             .warning_widget_and +
+                                    " " +
                                         (geocodeNameList.length - 1)
                                             .toString() +
                                         " " +
