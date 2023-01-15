@@ -201,7 +201,7 @@ class AboutView extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
-                AppLocalizations.of(context).about_contact_subtitle,
+                AppLocalizations.of(context).about_contributors_subtitle,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               onTap: () => launchUrlInBrowser(
