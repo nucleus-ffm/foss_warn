@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/views/MyPlaceDetailView.dart';
 
 import '../class/class_Place.dart';
@@ -12,7 +13,7 @@ class MyPlaceWidget extends StatelessWidget {
   final Place myPlace;
   const MyPlaceWidget({Key? key, required this.myPlace}) : super(key: key);
 
-  String checkForWarnings() {
+  String checkForWarnings(BuildContext context) {
     print("[MyPlaceWidget] check for warnings");
     int countMessages = 0;
     //print(warnMessageList.length);
@@ -53,14 +54,17 @@ class MyPlaceWidget extends StatelessWidget {
 
     if (countMessages > 0) {
       myPlace.countWarnings = countMessages;
-
       if (countMessages > 1) {
-        return "Es gibt ${countMessages.toString()} Warnungen";
+        return AppLocalizations.of(context).my_place_there_are + " " +
+            countMessages.toString() + " " +
+            AppLocalizations.of(context).my_place_warnings_more_then_one;
       } else {
-        return "Es gibt ${countMessages.toString()} Warnung";
+        return AppLocalizations.of(context).my_place_there_are +
+            countMessages.toString() +
+            AppLocalizations.of(context).my_place_warnings_only_one;
       }
     } else {
-      return "Keine Warnungen gefunden";
+      return AppLocalizations.of(context).my_places_no_warning_found;
     }
   }
 
@@ -69,7 +73,7 @@ class MyPlaceWidget extends StatelessWidget {
       bool temp = true;
       for (WarnMessage myWarning in myPlace.warnings) {
         if (readWarnings.contains(myWarning.identifier)) {
-          //warnung gelesen
+          // warnung gelesen
         } else {
           // warnung nicht gelesen
           temp = false;
@@ -78,15 +82,6 @@ class MyPlaceWidget extends StatelessWidget {
       //print("Alle Meldungen gelesen?: " + temp.toString());
       return temp;
     }
-
-    /*print("Es liegen für " +
-        myPlace.name +
-        " " +
-        myPlace.countWarnings.toString() +
-        " vor");
-    for (WarnMessage myWarning in myPlace.warnings) {
-      print("Warnung:" + myWarning.headline);
-    }*/
 
     return Card(
       child: InkWell(
@@ -139,7 +134,7 @@ class MyPlaceWidget extends StatelessWidget {
                             overflow: TextOverflow.fade,
                             ),
                         ),
-                        Flexible(child: Text(checkForWarnings())),
+                        Flexible(child: Text(checkForWarnings(context))),
                       ],
                     ),
                   ),

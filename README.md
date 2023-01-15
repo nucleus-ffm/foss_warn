@@ -13,9 +13,18 @@ Get emergency alerts from warnung.bund.de <br>
     height="80">
 </a>
 
+<a href="https://github.com/nucleus-ffm/foss_warn/releases">
+    <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/docs/get-it-on-github.png"
+    alt="Get it on Github"
+    height="80">
+</a>
+
 
 </p>
 <p align="center">
+<a href="https://translate.codeberg.org/engage/foss-warn/">
+<img src="https://translate.codeberg.org/widgets/foss-warn/-/foss-warn-app/svg-badge.svg" alt="Übersetzungsstatus" />
+</a>
 <a href="https://github.com/nucleus-ffm/foss_warn/blob/main/LICENSE" alt="Glicense"><img src="https://img.shields.io/github/license/nucleus-ffm/foss_warn"></a>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases" alt="Github All Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg"></a>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases/latest" alt="Github latest Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg"></a>
@@ -43,11 +52,11 @@ FOSS Warn does not use push services. But a background service pulls the latest 
 </details>
 <details>
 <summary>Do you have a custom F-Droid repo?</summary>
-Yes. You can add my custom repo to F-Droid and install the latest Github release with your F-Droid client. All info <a href="https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo">here </a>.
+Yes, but you should prefer to download via F-Droid. Because of the extra work, the version in my repo is not the latest. You can add my custom repo to F-Droid and install the latest Github release with your F-Droid client. All info <a href="https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo">here </a>.
 </details>
 <details>
 <summary>Is FOSS Warn currently german only?</summary>
-Unfortunately, yes, but at some point in the future I will work on supporting multiple languages. (Or maybe you'd like to work on that?) In the meantime, <a href="https://github.com/nucleus-ffm/foss_warn/wiki/Translation-of-the-UI-into-English">here's</a> a simple translation list where you can easily check the translation of a button in FOSS Warn. 
+Unfortunately, yes, but we are working on it. 
 </details>
 
 ## Contribute
@@ -55,7 +64,7 @@ FOSS Warn is currently (mostly) a "one-man show". So if you want to help make FO
 
 ## Contributors
 special thanks to:
-- [Mats](https://github.com/MatsG23) who fixed [#36](https://github.com/nucleus-ffm/foss_warn/issues/36)
+- [Mats](https://github.com/MatsG23) who fixed [#36](https://github.com/nucleus-ffm/foss_warn/issues/36) and other stuff. You can see his work [here](https://github.com/nucleus-ffm/foss_warn/commits?author=MatsG23)
 
 ## Contact
 You can email me at `foss-warn {ät} posteo {point} de`. You can also follow the project on Mastodon [@foss_warn@social.tchncs.de](https://social.tchncs.de/@foss_warn)

@@ -1,18 +1,13 @@
-// import 'dart:async';
-// import 'dart:isolate';
-
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/aboutView.dart';
-// import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-//import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'widgets/SourceStatusWidget.dart';
-
+import 'enums/DataFetchStatus.dart';
 import 'views/MyPlacesView.dart';
 import 'views/SettingsView.dart';
 import 'views/AllWarningsView.dart';
@@ -25,44 +20,38 @@ import 'services/saveAndLoadSharedPreferences.dart';
 import 'services/markWarningsAsRead.dart';
 import 'services/sortWarnings.dart';
 
+import 'widgets/SourceStatusWidget.dart';
 import 'widgets/dialogs/SortByDialog.dart';
-
 import 'themes/themes.dart';
 
-//final navigatorKey = GlobalKey<NavigatorState>();
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  // some initialisation
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().init();
+  // TODO: run Legacy handler, use improved shared preferences types and names
 
-  loadReadWarningsList(); // load the list with ids of read warnings
-  await loadSettings(); // load settings / load the saved value of 'notificationGeneral'
+  loadReadWarningsList();
+  await loadSettings();
 
   if (notificationGeneral) {
-    // setup the background task
     print("Background notification enabled");
     // AlarmManager().cancelBackgroundTask(); // just for debug
     AlarmManager().initialize();
     AlarmManager().registerBackgroundTask();
   } else {
-    // the user do not want the background task
-    print("Background notification disabled");
+    print("Background notification disabled due to user setting");
   }
 
   runApp(
+    // rebuild widget on external data changes
     ChangeNotifierProvider(
-      // ChangeNotifier to rebuild the widget, if data from outside changed
       create: (context) => Update(),
-
-      child: Consumer<Update>(builder: (context, counter, child) => MyApp()),
-      // theme: appThemeData
+      child: Consumer<Update>(builder: (context, counter, child) => FOSSWarn()),
     ),
   );
 }
 
-// global varsStatusWidget
 // status = true if API call and parsing was successful
 bool mowasStatus = false;
 bool mowasParseStatus = false;
@@ -74,49 +63,55 @@ bool dwdStatus = false;
 bool dwdParseStatus = false;
 bool lhpStatus = false;
 bool lhpParseStatus = false;
-int dataFetchStatusOldAPI = 0; // 0= no info, 1 = successful, 2 = error
+DataFetchStatus dataFetchStatusOldAPI = DataFetchStatus.no_info;
 
-// ETags to check if something change serverside to saved data
-String mowasEtag = "";
-String biwappEtag = "";
-String katwarnEtag = "";
-String dwdEtag = "";
-String lhpEtag = "";
+// ETags to check for changes in server data since data was fetched
+String mowasETag = "";
+String biwappETag = "";
+String katwarnETag = "";
+String dwdETag = "";
+String lhpETag = "";
 
-//count number von warnings
-int mowasMessages = 0;
-int katwarnMessages = 0;
-int biwappMessages = 0;
-int dwdMessages = 0;
-int lhpMessages = 0;
+int mowasWarningsCount = 0;
+int katwarnWarningsCount = 0;
+int biwappWarningsCount = 0;
+int dwdWarningsCount = 0;
+int lhpWarningsCount = 0;
 
-bool firstStart = true;
+bool isFirstStart = true;
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class FOSSWarn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'FOSS Warn',
       theme: greenTheme,
       darkTheme: darkTheme,
       themeMode: selectedTheme,
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
-      home: showWelcomeScreen ? WelcomeView() : ScaffoldView(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: showWelcomeScreen ? WelcomeView() : HomeView(),
     );
   }
 }
 
-class ScaffoldView extends StatefulWidget {
-  const ScaffoldView({Key? key}) : super(key: key);
+class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
 
   @override
-  _ScaffoldViewState createState() => _ScaffoldViewState();
+  _HomeViewState createState() => _HomeViewState();
 }
 
-class _ScaffoldViewState extends State<ScaffoldView> {
+class _HomeViewState extends State<HomeView> {
   int _selectedIndex = startScreen; // selected start view
+  // list of views for the navigation bar
+  final List<Widget> _pages = <Widget>[
+    AllWarningsView(),
+    MyPlaces(),
+  ];
+
   // the navigation bar
   void _onItemTapped(int index) {
     // change view
@@ -125,16 +120,10 @@ class _ScaffoldViewState extends State<ScaffoldView> {
     });
   }
 
-  // list of views for the navigation bar
-  static const List<Widget> _pages = <Widget>[
-    AllWarningsView(),
-    MyPlaces(),
-  ];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    loadMyPlacesList(); //load MyPlaceList
+    loadMyPlacesList();
     listenNotifications();
     if (geocodeMap.isEmpty) {
       print("call geocode handler");
@@ -143,7 +132,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
   }
 
   void listenNotifications() {
-    NotificationService.onNotification.stream.listen((onClickedNotification));
+    NotificationService.onNotification.stream.listen(onClickedNotification);
   }
 
   void onClickedNotification(String? payload) {
@@ -193,8 +182,8 @@ class _ScaffoldViewState extends State<ScaffoldView> {
               onPressed: () {
                 markAllWarningsAsReadFromMain(context);
                 final snackBar = SnackBar(
-                  content: const Text(
-                    'Alle Warnungen als gelesen markiert',
+                  content: Text(
+                    AppLocalizations.of(context).main_app_bar_tooltip_mark_all_warnings_as_read,
                     style: TextStyle(color: Colors.black),
                   ),
                   backgroundColor: Colors.green[100],
@@ -205,7 +194,7 @@ class _ScaffoldViewState extends State<ScaffoldView> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: Icon(Icons.mark_chat_read),
-              tooltip: "Markiere alle Warnungen als gelesen",
+              tooltip: AppLocalizations.of(context).main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
@@ -226,20 +215,20 @@ class _ScaffoldViewState extends State<ScaffoldView> {
                   }
                 },
                 itemBuilder: (context) => <PopupMenuEntry>[
-                      const PopupMenuItem(child: Text("Einstellungen"), value: 0),
-                      const PopupMenuItem(child: Text("Über"), value: 1)
+                      PopupMenuItem(child: Text( AppLocalizations.of(context).main_dot_menu_settings), value: 0),
+                      PopupMenuItem(child: Text(AppLocalizations.of(context).main_dot_menu_about), value: 1)
                     ])
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.add_alert),
-              label: 'Alle Meldungen',
+              label: AppLocalizations.of(context).main_nav_bar_all_warnings,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.place),
-              label: 'Meine Orte',
+              label: AppLocalizations.of(context).main_nav_bar_my_places,
             ),
           ],
           currentIndex: _selectedIndex,

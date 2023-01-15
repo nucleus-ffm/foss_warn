@@ -51,7 +51,7 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManually) async {
         title: "Sie haben noch keine Orte hinterlegt",
         body: "Bitte kontrolieren Sie Ihre Orte.",
         payload: "keine Orte hinterlegt",
-        channel: "Hinweise");
+        channel: "other");
   }
 
   for (Place myPlace in myPlaceList) {
@@ -127,7 +127,8 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManually) async {
               title: "Neue Warnung für ${myPlace.name}",
               body: "${myWarnMessage.headline}",
               payload: myPlace.name,
-              channel: myWarnMessage.severity);
+              channel: myWarnMessage.severity
+          );
         }
       }
       //return true - there are warnings. the return value isn't use yet?

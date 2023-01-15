@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class WelcomeScreenItem {
   const WelcomeScreenItem(
       {required this.title,
@@ -11,37 +14,37 @@ class WelcomeScreenItem {
   final String? action;
 }
 
-List<WelcomeScreenItem> welcomeScreenItems = List.unmodifiable([
-  const WelcomeScreenItem(
-      title: "FOSS Warn",
+List<WelcomeScreenItem> getWelcomeScreenItems(BuildContext context)  {
+  return
+ List.unmodifiable([
+  WelcomeScreenItem(
+      title: AppLocalizations.of(context).welcome_view_foss_warn_headline,
       description:
-          "Schön, dass Sie FOSS Warn verwenden möchten. Wischen Sie, um mit der Einführung zu beginnen.",
+      AppLocalizations.of(context).welcome_view_foss_warn_text,
       imagePath: "assets/app_icon.png"),
-  const WelcomeScreenItem(
-      title: "Wichtig",
+  WelcomeScreenItem(
+      title: AppLocalizations.of(context).welcome_view_important_headline,
       description:
-          "Bitte lesen Sie vor der Nutzung den Haftungsausschluss durch. Mit der Benutzung der App stimmen Sie diesem zu.",
+      AppLocalizations.of(context).welcome_view_important_text,
       imagePath: "assets/paragraph.png",
       action: "disclaimer"),
-  const WelcomeScreenItem(
-      title: "Akkuoptimierung",
-      description:
-          "Damit FOSS Warn Ihnen zuverlässig Hintergrundbenachrichtigungen senden kann, sollte die Akkuoptimierung für FOSS Warn deaktiviert werden.",
+  WelcomeScreenItem(
+      title: AppLocalizations.of(context).welcome_view_battery_optimisation_headline,
+      description: AppLocalizations.of(context).welcome_view_battery_optimisation_text,
       imagePath: "assets/battery.png",
       action: "batteryOptimization"),
-  const WelcomeScreenItem(
-      title: "Meine Orte",
-      description:
-          "In der App haben Sie die Möglichkeit, Orte zu hinterlegen, für die Sie Benachrichtigungen erhalten möchten. Der Abgleich, ob Warnungen für diesen Ort vorliegen, findet lokal statt. Sollte Ihr Ort nicht aufgeführt sein, können Sie es mit Ihrem Kreis oder dem nächsten größeren Ort versuchen. Wenn Sie lange auf einen hinterlegten Ort tippen, können Sie diesen wieder löschen.",
+  WelcomeScreenItem(
+      title: AppLocalizations.of(context).welcome_view_my_places_headline,
+      description: AppLocalizations.of(context).welcome_view_my_places_text,
       imagePath: "assets/location.png"),
-  const WelcomeScreenItem(
-      title: "Warnstufen",
-      description:
-          "Alle Warnungen haben eine vom Herausgeber bestimmte Warn- bzw. Wichtigkeitsstufe. In den Einstellungen können Sie einstellen, für welche der vier Stufen Sie Benachrichtigungen erhalten möchten. Standardmäßig werden Sie bei Meldungen von 'geringer' Wichtigkeit nicht benachrichtigt. In der App selbst werden immer alle Meldungen angezeigt.",
+  WelcomeScreenItem(
+      title: AppLocalizations.of(context).welcome_view_warning_steps_headline,
+      description: AppLocalizations.of(context).welcome_view_warning_steps_text,
       imagePath: "assets/steps.png"),
-  const WelcomeScreenItem(
-      title: "Los geht's!",
+  WelcomeScreenItem(
+      title: AppLocalizations.of(context).welcome_view_lets_go_headline,
       description:
-          "Wenn Sie diese App nützlich finden, lassen Sie es mich gerne wissen ☺️",
+      AppLocalizations.of(context).welcome_view_lets_go_text,
       imagePath: "assets/check.png")
-]);
+  ]);
+}

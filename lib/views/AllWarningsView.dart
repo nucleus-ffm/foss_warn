@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/apiHandler.dart';
 import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/views/SettingsView.dart';
@@ -29,11 +30,10 @@ class _AllWarningsViewState extends State<AllWarningsView> {
   bool loading = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    if (firstStart) {
+    if (isFirstStart) {
       loading = true;
-      firstStart = false;
+      isFirstStart = false;
     }
   }
 
@@ -158,7 +158,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("Alles ruhig hier",
+                                    Text(AppLocalizations.of(context).all_warnings_everything_ok,
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold)),
@@ -168,7 +168,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                       color: Theme.of(context).colorScheme.secondary,
                                     ),
                                     Text(
-                                        "Es liegen keine Warnungen für Deine Orte vor.\n "),
+                                        AppLocalizations.of(context).all_warnings_everything_ok_text),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
@@ -177,7 +177,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                         });
                                       },
                                       child: Text(
-                                        "Neuladen",
+                                        AppLocalizations.of(context).all_warnings_reload,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       style: TextButton.styleFrom(
@@ -211,15 +211,13 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text("Hier gibt es noch nichts zu sehen... ",
+                                  Text(AppLocalizations.of(context).all_warnings_no_places_chosen,
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold)),
                                   Text("\n"),
                                   Text(
-                                      "Bitte wählen Sie mindestens einen Ort aus,"
-                                      " für den Sie Warnungen erhalten möchten."
-                                      " Oder aktivieren Sie die Anzeige aller Warnungen"),
+                                      AppLocalizations.of(context).all_warnings_no_places_chosen_text),
                                 ],
                               ),
                             ),

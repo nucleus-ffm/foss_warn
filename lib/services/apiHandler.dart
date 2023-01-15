@@ -83,9 +83,6 @@ Future callAPI() async {
                 ".json");
           }
         }
-
-        // @todo: is this api for all warning sources? or is it just Mowas?
-        // i think it is for all (katwarn confirmed)
       } else {
         print("could not reach: ");
         successfullyFetched = false;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../class/class_alarmManager.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
@@ -18,7 +19,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Benachrichtigungseinstellungen"),
+        title: Text(AppLocalizations.of(context).notification_settings_headline),
         backgroundColor: Colors.green[700],
       ),
       body: SingleChildScrollView(
@@ -30,12 +31,12 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
           children: [
             SizedBox(height: 10),
             Text(
-              "Benachrichtigen bei:",
+                AppLocalizations.of(context).notification_settings_notify_by,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Text("extremen Meldungen"),
+              title: Text(AppLocalizations.of(context).notification_settings_notify_by_extreme),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: notificationWithExtreme,
@@ -58,7 +59,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Text("schweren Meldungen"),
+              title: Text(AppLocalizations.of(context).notification_settings_notify_by_severe),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: notificationWithSevere,
@@ -81,7 +82,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Text("moderaten Meldungen"),
+              title: Text(AppLocalizations.of(context).notification_settings_notify_by_moderate),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: notificationWithModerate,
@@ -104,7 +105,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Text("geringfügigen Meldungen"),
+              title: Text(AppLocalizations.of(context).notification_settings_notify_by_minor),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: notificationWithMinor,
@@ -132,7 +133,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
               contentPadding: settingsTileListPadding,
-              title: Text("starkes Gewitter"),
+              title: Text(AppLocalizations.of(context).notification_settings_thunderstorm),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                     value: notificationEventsSettings["STARKES GEWITTER"]
@@ -150,7 +151,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
                 contentPadding: settingsTileListPadding,
-                title: Text("starkes Wetter"),
+                title: Text(AppLocalizations.of(context).notification_settings_strong_weather),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: notificationEventsSettings["STARKES WETTER"]
@@ -167,7 +168,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
                 contentPadding: settingsTileListPadding,
-                title: Text("Alles andere"),
+                title: Text(AppLocalizations.of(context).notification_settings_everything_else),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: true,
@@ -181,7 +182,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
                 contentPadding: settingsTileListPadding,
-                title: Text("Alles"),
+                title: Text(AppLocalizations.of(context).notification_settings_everything),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: true,
@@ -194,7 +195,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
                 contentPadding: settingsTileListPadding,
-                title: Text("Alles"),
+                title: Text(AppLocalizations.of(context).notification_settings_everything),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: true,
@@ -207,7 +208,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
                 contentPadding: settingsTileListPadding,
-                title: Text("Alles"),
+                title: Text(AppLocalizations.of(context).notification_settings_everything),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: true,
@@ -221,7 +222,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
             ),
             ListTile(
                 contentPadding: settingsTileListPadding,
-                title: Text("Alles"),
+                title: Text(AppLocalizations.of(context).notification_settings_everything),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: true,
