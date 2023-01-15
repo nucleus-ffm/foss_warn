@@ -19,6 +19,7 @@ class DevSettings extends StatefulWidget {
 
 class _DevSettingsState extends State<DevSettings> {
   final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,18 +43,18 @@ class _DevSettingsState extends State<DevSettings> {
                       checkForMyPlacesWarnings(false, true);
                       bool thereIsNoWarning = true;
                       for (Place myPlace in myPlaceList) {
-                        //check if there are warning and if it they are important enough
+                        //check if there are warnings and if they are important enough
                         if (myPlace.warnings.length > 0 &&
                             myPlace.warnings.any((warning) =>
                                 notificationSettingsImportance
                                     .contains(warning.severity))) {
                           if (myPlace.warnings.every((warning) =>
                               readWarnings.contains(warning.identifier))) {
-                            //all warnings read
+                            // all warnings read
                           } else {
                             thereIsNoWarning = false;
                           }
-                        } else {}
+                        }
                       }
                       if (thereIsNoWarning) {
                         final snackBar = SnackBar(
@@ -74,17 +75,15 @@ class _DevSettingsState extends State<DevSettings> {
                     contentPadding: settingsTileListPadding,
                     title: Text("Hintergrunddienst neustarten"),
                     subtitle: Text(
-                        "Startet den Hintergrunddienst neu. Kann helfen Probleme zu beheben"),
+                        "Startet den Hintergrunddienst neu. Kann helfen, Probleme zu beheben"),
                     onTap: () {
-                      print("starte Hintergrunddienst neu");
+                      print("Starte Hintergrunddienst neu");
                       try {
                         //delete all background tasks and create new one
                         AlarmManager().cancelBackgroundTask();
                         AlarmManager().registerBackgroundTask();
                       } catch (e) {
-                        print(
-                            "Something went wrong while restart background task: " +
-                                e.toString());
+                        print("Something went wrong while restarting the background task: ${e}");
                       }
                       final snackBar = SnackBar(
                         content: const Text(
@@ -103,7 +102,7 @@ class _DevSettingsState extends State<DevSettings> {
                     contentPadding: settingsTileListPadding,
                     title: Text("Lösche die Liste der gelesenen Warnungen"),
                     subtitle: Text(
-                        "leer manuell die gespeicherte Liste über die bereits gelesenen Warnungen."),
+                        "Manuell die gespeicherte Liste der bereits gelesenen Warnungen leeren."),
                     onTap: () {
                       print("delete readWarningsList");
                       readWarnings.clear();
@@ -125,7 +124,7 @@ class _DevSettingsState extends State<DevSettings> {
                     contentPadding: settingsTileListPadding,
                     title: Text("Lösche Benachrichtigungsliste"),
                     subtitle: Text(
-                        "löscht die Liste über die bereits benachrichtigen Meldungen"),
+                        "Löscht die Liste über die bereits benachrichtigen Meldungen"),
                     onTap: () {
                       print("delete alreadyNotifiedWarnings");
                       alreadyNotifiedWarnings.clear();
@@ -147,7 +146,7 @@ class _DevSettingsState extends State<DevSettings> {
                     contentPadding: settingsTileListPadding,
                     title: Text("call swiss Alert API"),
                     subtitle: Text(
-                        "führt einmal die Methode aus und fügt die Meldungen hinzu"),
+                        "Führt einmal die Methode aus und fügt die Meldungen hinzu"),
                     onTap: () {
                       print("call swiss API");
                       callAlertSwissAPI();
@@ -167,7 +166,7 @@ class _DevSettingsState extends State<DevSettings> {
                   ListTile(
                     contentPadding: settingsTileListPadding,
                     title: Text("load cached warnings"),
-                    subtitle: Text("läd die zwischengespeicherten Meldungen"),
+                    subtitle: Text("Lädt die zwischengespeicherten Meldungen"),
                     onTap: () {
                       print("load cached warnings");
                       loadCachedWarnings();
@@ -187,7 +186,7 @@ class _DevSettingsState extends State<DevSettings> {
                   ListTile(
                     contentPadding: settingsTileListPadding,
                     title: Text("test geocode"),
-                    subtitle: Text("Lädt die geocodes für die Liste"),
+                    subtitle: Text("Lädt die Geocodes für die Liste"),
                     onTap: () {
                       print("call geocodeHandler");
                       geocodeHandler();
@@ -206,8 +205,8 @@ class _DevSettingsState extends State<DevSettings> {
                   ),
                   ListTile(
                     contentPadding: settingsTileListPadding,
-                    title: Text("lösche Warnungen"),
-                    subtitle: Text("Leer die Liste mit den Warnungen"),
+                    title: Text("Lösche Warnungen"),
+                    subtitle: Text("Leere die Liste mit den Warnungen"),
                     onTap: () {
                       print("lösche Warnungen");
                       warnMessageList.clear();
@@ -229,7 +228,7 @@ class _DevSettingsState extends State<DevSettings> {
                     title:
                         Text("Systeminformationen zur Fehlerbehebung sammeln"),
                     subtitle: Text(
-                        "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es wird nichts verwendet."),
+                        "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet."),
                     onTap: () {
                       print("Systeminformationen sammeln");
                       showDialog(
