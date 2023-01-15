@@ -14,7 +14,7 @@ class NotificationService {
           'foss_warn_notifications_' + channel.trim().toLowerCase(),
           "Warnstufe: " + translateMessageSeverity(channel),
           channelDescription: 'FOSS Warn notifications for '+  channel.trim().toLowerCase(),
-          groupKey: "FossWarn_warnings",
+          groupKey: "FossWarnWarnings",
           category: AndroidNotificationCategory("Warnings"),
           importance: Importance.max,
           priority: Priority.max,
@@ -87,8 +87,8 @@ class NotificationService {
     NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
           'foss_warn', 'Benachrichtigungen',
-          channelDescription: 'Foss Warn Benachrichtigungen',
-          groupKey: "FossWarn",
+          channelDescription: 'FOSS Warn Benachrichtigungen',
+          groupKey: "FossWarnWarnings",
           setAsGroupSummary: true,
           importance: Importance.max,
           priority: Priority.max,
