@@ -14,6 +14,13 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.5.0 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Die App ist jetzt übersetzt in Fr, En, Uk, De (Danke an die Helfer/innen)\n"
+                  "* kleine Fehlerbehebungen und Verbesserungen \n"
+              ),
+              Text(
                 "0.4.6 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
