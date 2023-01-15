@@ -59,8 +59,8 @@ class MyPlaceWidget extends StatelessWidget {
             countMessages.toString() + " " +
             AppLocalizations.of(context).my_place_warnings_more_then_one;
       } else {
-        return AppLocalizations.of(context).my_place_there_are +
-            countMessages.toString() +
+        return AppLocalizations.of(context).my_place_there_are + " " +
+            countMessages.toString() +  " " +
             AppLocalizations.of(context).my_place_warnings_only_one;
       }
     } else {
