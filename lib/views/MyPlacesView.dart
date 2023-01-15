@@ -11,7 +11,6 @@ import '../widgets/MyPlaceWidget.dart';
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
-// import '../services/getData.dart';
 import '../widgets/ConnectionErrorWidget.dart';
 import 'addMyPlaceView.dart';
 
@@ -22,13 +21,31 @@ class MyPlaces extends StatefulWidget {
   _MyPlacesState createState() => _MyPlacesState();
 }
 
-class _MyPlacesState extends State<MyPlaces> {
+class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
   bool loading = false;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     if (myPlaceList.isEmpty) {
       loading = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // reload data when app is resumed
+    if(state == AppLifecycleState.resumed) {
+      print("App is resumed...");
+      load();
     }
   }
 
@@ -39,9 +56,6 @@ class _MyPlacesState extends State<MyPlaces> {
     setState(() {
       loading = false;
     });
-    /*final updater =
-    Provider.of<Update>(context, listen: false);
-    updater.updateReadStatusInList();*/
   }
 
   Future<void> reloadData() async {
@@ -109,7 +123,6 @@ class _MyPlacesState extends State<MyPlaces> {
                         textAlign: TextAlign.center,),
                     ],
                   ),
-
             Positioned(
               bottom: 10,
               right: 10,

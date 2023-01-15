@@ -19,20 +19,26 @@ class ConnectionError extends StatelessWidget {
           children: [
             Icon(Icons.info, color: Colors.white,),
             SizedBox(width: 10,),
-            Text(AppLocalizations.of(context).connection_error_no_internet, style: Theme.of(context).textTheme.headline3,)
+           Text(AppLocalizations.of(context).connection_error_no_internet, style: Theme.of(context).textTheme.headline3,)
           ],
         ),
       );
     } else if(areWarningsFromCache) {
       return Container(
-        padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
+        padding: EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+        //margin: EdgeInsets.only(bottom: 10),
         color: Colors.orange,
         child: Row (
           children: [
             Icon(Icons.info, color: Colors.white,),
             SizedBox(width: 10,),
-            Text(AppLocalizations.of(context).connection_error_no_internet, style: Theme.of(context).textTheme.headline3,
-            overflow:  TextOverflow.ellipsis,
+            Flexible(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(AppLocalizations.of(context).connection_error_no_internet, style: Theme.of(context).textTheme.headline3,
+                overflow:  TextOverflow.ellipsis,
+                ),
+              ),
             )
           ],
         ),
