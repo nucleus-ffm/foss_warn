@@ -31,7 +31,7 @@ class _DevSettingsState extends State<DevSettings> {
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: SingleChildScrollView(
-        child: Paddingsteady state heat equation (
+        child: Padding (
           padding: const EdgeInsets.only(top: 0, bottom: 20),
           child: Column(
             children: [
