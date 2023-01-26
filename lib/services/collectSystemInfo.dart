@@ -5,7 +5,7 @@ Future<String> collectSystemInfo() async {
 
   String result  = "Systeminformationen \n\n";
 
-  result+= "Akkuoptimierung: ${_isBatteryOptimizationEnabled()} \n";
+  result+= "Akkuoptimierung: ${await _isBatteryOptimizationEnabled()} \n";
 
   return result;
 }
