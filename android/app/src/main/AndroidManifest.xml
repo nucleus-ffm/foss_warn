@@ -1,10 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.nucleus.foss_warn">
+    package="de.nucleus.foss_warn"
+    >
+
    <application
         android:label="FOSS Warn"
         android:icon="@mipmap/app_icon"
         android:resource="@drawable/res_notification_icon"
-       android:name="${applicationName}"
+        android:name="${applicationName}"
+        android:extractNativeLibs="true"
        >
        <activity
             android:name=".MainActivity"
@@ -14,7 +17,8 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"
-            android:turnScreenOn="true">
+            android:turnScreenOn="true"
+           >
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
