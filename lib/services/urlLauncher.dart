@@ -16,7 +16,7 @@ Future<void> launchUrlInBrowser(String url) async {
   }
   print("open: " + correctURL.toString());
   if (await canLaunchUrl(correctURL)) {
-    await launchUrl(correctURL);
+    await launchUrl(correctURL, mode: LaunchMode.externalApplication);
   } else {
     throw 'Could not launch $correctURL';
   }
