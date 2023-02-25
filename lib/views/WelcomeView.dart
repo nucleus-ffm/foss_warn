@@ -20,6 +20,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
   final _pageViewController = new PageController();
   final _platform = const MethodChannel("flutter.native/helper");
   late Future<bool> _batteryOptimizationFuture;
+  List<WelcomeScreenItem>? _welcomeScreenItems;
 
   @override
   void initState() {
@@ -51,7 +52,11 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
         _currentPage = _pageViewController.page!;
       });
     });
-    final isLastSlide = _currentPage == getWelcomeScreenItems(context).length - 1;
+
+    if(_welcomeScreenItems == null) {
+      _welcomeScreenItems = getWelcomeScreenItems(context);
+    }
+    final isLastSlide = _currentPage == _welcomeScreenItems!.length - 1;
 
     return Scaffold(
       body: Container(
@@ -60,7 +65,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
             PageView.builder(
               scrollDirection: Axis.horizontal,
               controller: _pageViewController,
-              itemCount: getWelcomeScreenItems(context).length,
+              itemCount: _welcomeScreenItems!.length,
               itemBuilder: (BuildContext context, int index) =>
                   _buildSlide(index),
             ),
@@ -100,7 +105,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
   }
 
   Widget _buildSlide(int index) {
-    WelcomeScreenItem item = getWelcomeScreenItems(context)[index];
+    WelcomeScreenItem item = _welcomeScreenItems![index];
 
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 18.0),
@@ -242,7 +247,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-          getWelcomeScreenItems(context).length,
+          _welcomeScreenItems!.length,
           (index) => Container(
                 margin: EdgeInsets.symmetric(horizontal: 3.0),
                 height: 10.0,
