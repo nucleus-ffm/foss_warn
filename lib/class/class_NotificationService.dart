@@ -41,6 +41,7 @@ class NotificationService {
           priority: Priority.min,
           playSound: false,
           channelShowBadge: false,
+          ongoing: true, // to prevent canceling
 
           //@TODO: show an other icon for status notification
           //enable multiline notification

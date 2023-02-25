@@ -14,6 +14,13 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.5.1 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Links werden jetzt im externen Browser geöffnet\n"
+                  "* Die Status-Benachrichtigung ist jetzt permanent \n"
+              ),
+              Text(
                 "0.5.0 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
