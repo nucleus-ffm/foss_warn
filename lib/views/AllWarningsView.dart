@@ -5,11 +5,9 @@ import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/views/SettingsView.dart';
 import 'package:foss_warn/widgets/ConnectionErrorWidget.dart';
 import 'package:provider/provider.dart';
-import '../class/class_Area.dart';
-import '../class/class_Geocode.dart';
+import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../main.dart';
-import '../services/allPlacesList.dart';
 import '../services/getData.dart';
 import '../services/listHandler.dart';
 import '../widgets/WarningWidget.dart';
@@ -86,24 +84,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     List<WarnMessage> loadOnlyWarningsForMyPlaces() {
       print("loadOnlyWarningsForMyPlaces");
       List<WarnMessage> warningsForMyPlaces = [];
-      for (WarnMessage warnMessage in warnMessageList) {
-        for (Area myArea in warnMessage.areaList) {
-          for (Geocode myGeocode in myArea.geocodeList) {
-            if (myPlaceList
-                    .any((element) => element.name == myGeocode.geocodeName) ||
-                // check for alertSwiss
-                myPlaceList.any((element) =>
-                    alertSwissPlacesMap[element.name] ==
-                    myGeocode.geocodeName)) {
-              if (warningsForMyPlaces.contains(warnMessage)) {
-                // print("Warn Messsage already in List");
-                // warn messeage already in list from geocodename
-              } else {
-                warningsForMyPlaces.add(warnMessage);
-              }
-            }
-          }
-        }
+      for(Place p in myPlaceList){
+        warningsForMyPlaces.addAll(p.warnings);
       }
       return warningsForMyPlaces;
     }
