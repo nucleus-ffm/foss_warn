@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/sortWarnings.dart';
-import '../class/class_Place.dart';
+import '../class/abstract_Place.dart';
 import '../widgets/WarningWidget.dart';
-import '../services/markWarningsAsRead.dart';
 
 class MyPlaceDetailScreen extends StatelessWidget {
   final Place myPlace;
@@ -21,7 +20,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              markAllWarningsAsRead(myPlace, context);
+              myPlace.markAllWarningsAsRead(context);
               final snackBar = SnackBar(
                 content: Text(
                   AppLocalizations.of(context)
