@@ -1,51 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
+/// format the given date and time
+/// except dataAndTime in format: 2022-12-14T12:32:16+01:00
+/// or in format: Fri, 03.02.2023, 14:58
+/// return as 14.12.2022 - 12:32:16 Uhr
 String formatSentDate(String dateAndTime) {
-  // if from alert swiss @todo: fix later
-  if(dateAndTime.contains(",")) {
+  String day,
+      month,
+      year = "";
+  String seconds,
+      minutes,
+      hours = "";
+
+  try {
+    // check if alert swiss or NINA
+    if (dateAndTime.contains(",")) {
+      // format Alert Swiss
+      int comma = dateAndTime.indexOf(",");
+      int commaEnd = dateAndTime.indexOf(",", comma + 3);
+      String date = dateAndTime.substring(comma + 2, commaEnd);
+      day = date.substring(0, 2);
+      month = date.substring(3, 5);
+      year = date.substring(6, 10);
+
+      String time = dateAndTime.substring(commaEnd + 2);
+      hours = time.substring(0, 2);
+      minutes = time.substring(3, 5);
+      seconds = "00";
+    } else {
+      // format NINA
+      int space = dateAndTime.indexOf("T");
+      String date = dateAndTime.substring(0, space);
+
+      year = date.substring(0, 4);
+      month = date.substring(5, 7);
+      day = date.substring(8, 10);
+
+      String time = dateAndTime.substring(space + 1, space + 9);
+
+      seconds = time.substring(time.length - 2, time.length);
+      minutes = time.substring(time.length - 5, time.length - 3);
+      hours = time.substring(0, 2);
+    }
+    // return formatted date and time
+    String correctDate =
+        day.toString() + "." + month.toString() + "." + year.toString();
+    String correctFormatTime =
+        hours+ ":" + minutes + ":" + seconds + " Uhr";
+
+    return correctDate + " - " + correctFormatTime;
+  }
+  catch (e) {
+    print("Error while formatting date: $e");
+    // can not format date and time - return unformatted string
     return dateAndTime;
   }
-  int space = dateAndTime.indexOf("T");
-  String date = dateAndTime.substring(0, space);
-
-  int year = int.parse(date.substring(0, 4));
-  int month = int.parse(date.substring(5, 7));
-  int day = int.parse(date.substring(8, 10));
-
-  String time = dateAndTime.substring(space + 1, space + 9);
-
-  int seconds = int.parse(time.substring(time.length - 2, time.length));
-  int minutes = int.parse(time.substring(time.length - 5, time.length - 3));
-  int hours = int.parse(time.substring(0, 2));
-
-  String secondsAsString = "";
-  String minutesAsString = "";
-  String hoursAsString = "";
-
-  if (seconds.toString().length == 1) {
-    secondsAsString = "0" + seconds.toString();
-  } else {
-    secondsAsString = seconds.toString();
-  }
-  if (minutes.toString().length == 1) {
-    minutesAsString = "0" + minutes.toString();
-  } else {
-    minutesAsString = minutes.toString();
-  }
-  if (hours.toString().length == 1) {
-    hoursAsString = "0" + hours.toString();
-  } else {
-    hoursAsString = hours.toString();
-  }
-
-  String correctDate =
-      day.toString() + "." + month.toString() + "." + year.toString();
-  String correctFormatTime =
-      hoursAsString + ":" + minutesAsString + ":" + secondsAsString + " Uhr";
-
-  return correctDate + " - " + correctFormatTime;
 }
 
 String translateCategory(String text, BuildContext context) {
