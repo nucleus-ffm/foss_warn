@@ -6,25 +6,29 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
   int hour = now.hour;
   int hourToAdd = 0;
   int minute = now.minute;
-  String formattedMinuteNext = "";
-  String formattedHourNext = "";
-  String formattedMinuteNow = "";
-  String formattedHourNow = "";
+  String formattedMinuteNext,
+      formattedHourNext,
+      formattedMinuteNow,
+      formattedHourNow = "";
+
   if (now.minute + frequencyOfAPICall >= 60) {
-    print("Min + next " + (now.minute + frequencyOfAPICall.toInt()).toString());
     hourToAdd = (now.minute + frequencyOfAPICall.toInt()) ~/ 60;
-    print("add hour: " + hourToAdd.toString());
     minute = (now.minute + frequencyOfAPICall.toInt()) % 60;
-    print("minutes: " + minute.toString());
     hour += hourToAdd;
+
+    print("minutes: " + minute.toString());
+    print("add hour: " + hourToAdd.toString());
+    print("Min + next " + (now.minute + frequencyOfAPICall.toInt()).toString());
+
     if (hour >= 24) {
       hour -= 24;
     }
+
   } else {
     minute += frequencyOfAPICall.toInt();
   }
 
-  // format time to that it is hh:mm
+  // format time to hh:mm
   if (now.minute.toString().length == 1) {
     formattedMinuteNow = "0" + now.minute.toString();
   } else {
