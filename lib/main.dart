@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'class/abstract_Place.dart';
 import 'enums/DataFetchStatus.dart';
 import 'views/MyPlacesView.dart';
 import 'views/SettingsView.dart';
@@ -17,7 +18,6 @@ import 'class/class_NotificationService.dart';
 
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
-import 'services/markWarningsAsRead.dart';
 import 'services/sortWarnings.dart';
 
 import 'widgets/SourceStatusWidget.dart';
@@ -31,7 +31,6 @@ void main() async {
   await NotificationService().init();
   // TODO: run Legacy handler, use improved shared preferences types and names
 
-  loadReadWarningsList();
   await loadSettings();
 
   if (notificationGeneral) {
@@ -180,7 +179,9 @@ class _HomeViewState extends State<HomeView> {
             ),
             IconButton(
               onPressed: () {
-                markAllWarningsAsReadFromMain(context);
+                for(Place p in myPlaceList) {
+                  p.markAllWarningsAsRead(context);
+                }
                 final snackBar = SnackBar(
                   content: Text(
                     AppLocalizations.of(context).main_app_bar_tooltip_mark_all_warnings_as_read,
