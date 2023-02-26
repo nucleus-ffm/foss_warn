@@ -6,7 +6,7 @@ import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../services/markWarningsAsRead.dart';
 import '../services/urlLauncher.dart';
-import '../services/translateAndColorize.dart';
+import '../services/helperFunctionToTranslateAndChooseColorType.dart';
 import '../views/SettingsView.dart';
 
 import 'package:share_plus/share_plus.dart';

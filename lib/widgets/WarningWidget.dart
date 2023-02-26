@@ -1,7 +1,7 @@
 // widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/translateAndColorize.dart';
+import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
 import 'package:foss_warn/widgets/dialogs/MessageTypeExplanation.dart';
 import 'package:provider/provider.dart';
 import '../services/markWarningsAsRead.dart';
