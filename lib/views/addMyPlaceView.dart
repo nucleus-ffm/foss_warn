@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:provider/provider.dart';
+import '../class/abstract_Place.dart';
 import '../services/updateProvider.dart';
 
 class AddMyPlaceView extends StatefulWidget {
@@ -15,7 +16,7 @@ class AddMyPlaceView extends StatefulWidget {
 
 class _AddMyPlaceViewState extends State<AddMyPlaceView> {
   String newPlaceName = "";
-  List<String> allPlacesToShow = [];
+  List<Place> allPlacesToShow = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                 text = text.toLowerCase();
                 setState(() {
                   allPlacesToShow = allAvailablePlacesNames.where((place) {
-                    var search = place.toLowerCase();
+                    var search = place.name.toLowerCase();
                     return search.contains(text);
                   }).toList();
                 });
@@ -73,7 +74,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                       (place) => ListTile(
                         visualDensity:
                             VisualDensity(horizontal: 0, vertical: -4),
-                        title: Text(place),
+                        title: Text(place.getName())  ,
                         onTap: () {
                           setState(() {
                             final updater =
