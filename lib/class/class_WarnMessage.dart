@@ -13,8 +13,8 @@ class WarnMessage {
   String category;
   String event;
   String urgency;
-  String severity;
-  String certainty;
+  String severity; //@todo use emum
+  String certainty; //@todo use enum
   String effective; // just for DWD
   String onset; // just for DWD
   String expires; // just for DWD
@@ -22,11 +22,11 @@ class WarnMessage {
   String description;
   String instruction;
   List<Area> areaList;
-  //String area;
-  //List<String> geocodeName;
-  //String geocodeNumber;
   String contact;
   String web;
+
+  bool notified = false;
+  bool read = false;
 
   WarnMessage({
     required this.identifier,
@@ -51,9 +51,8 @@ class WarnMessage {
     required this.areaList,
     required this.contact,
     this.web = "",
-    //required this.area,
-    //required this.geocodeName,
-    //required this.geocodeNumber,
+    required this.notified,
+    required this.read,
   });
 
   factory WarnMessage.fromJson(Map<String, dynamic> json) {
@@ -79,7 +78,10 @@ class WarnMessage {
         instruction: json['instruction'],
         areaList: areaListFromJson(json['areaList']),
         contact: json['contact'],
-        web: json['web'] ?? "");
+        web: json['web'] ?? "",
+        notified: json['notified'] as bool,
+        read: json['read'] as bool
+    );
   }
 
   /// is used to create a new WarnMessage object with data from the API call.
@@ -87,6 +89,7 @@ class WarnMessage {
   /// cache the warnings.
   factory WarnMessage.fromJsonTemp(Map<String, dynamic> json, String provider,
       String publisher, List<Area> areaList) {
+    print("Wir legen eine neue Warnmessage an...");
     return WarnMessage(
         source: provider,
         identifier: json["identifier"] ?? "?",
@@ -109,7 +112,43 @@ class WarnMessage {
         publisher: publisher,
         contact: json["info"][0]["contact"] ?? "",
         web: json["info"][0]["web"] ?? "",
-        areaList: areaList);
+        areaList: areaList,
+        notified: false,
+        read: false
+    );
+  }
+
+  /// is used to create a new WarnMessage object with data from the API call.
+  /// Note that the json structure is different from the structure we use to
+  /// cache the warnings.
+  factory WarnMessage.fromJsonAlertSwiss(Map<String, dynamic> json,
+     List<Area> areaList, String instructions, String license) {
+    return WarnMessage(
+        source: "Alert Swiss",
+        identifier: json["identifier"] ?? "?",
+        sender: json["sender"] ?? "?",
+        sent: json["sent"] ?? "?",
+        status: "?", // missing for alert swiss
+        messageType: "Alert", // missing
+        scope: "?", // missing
+        category: json["event"] ?? "?", // missing
+        event: json["event"] ?? "?",
+        urgency: "?",
+        severity: json["severity"] ?? "?",
+        certainty: "?", // missing
+        effective: "", // missing
+        onset: json["onset"] ?? "", // m
+        expires: json["expires"] ?? "", // m
+        headline: json["title"] ?? "?",
+        description: json["description"] ?? "",
+        instruction: instructions,
+        publisher: license,
+        contact: json["contact"] ?? "",
+        web: json["link"] ?? "",
+        areaList: areaList,
+        notified: false,
+        read: false
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -134,5 +173,7 @@ class WarnMessage {
         'instruction': instruction,
         'areaList': areaList,
         'contact': contact,
+        'notified': notified,
+        'read': read
       };
 }
