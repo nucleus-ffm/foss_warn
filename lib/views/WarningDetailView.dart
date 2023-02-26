@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
-import '../services/markWarningsAsRead.dart';
 import '../services/urlLauncher.dart';
 import '../services/helperFunctionToTranslateAndChooseColorType.dart';
 import '../views/SettingsView.dart';
@@ -115,7 +114,6 @@ class _DetailScreenState extends State<DetailScreen> {
                 style: TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    //print("Link tabed");
                     launchEmail(url);
                   }));
             pointer = endPos;
@@ -136,7 +134,7 @@ class _DetailScreenState extends State<DetailScreen> {
               text: text.substring(pointer, text.length),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print("text tabed");
+                  print("text taped");
                 }));
           pointer = text.length;
         } else {
@@ -145,7 +143,7 @@ class _DetailScreenState extends State<DetailScreen> {
               text: text.substring(pointer, startPos),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print("text tabed");
+                  print("text taped");
                 }));
           pointer = startPos - 1;
         }
@@ -162,8 +160,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void>? _launched;
-
     /// returns a List of Buttons with links to embedded pictures
     List<Widget> generateAssets(String text) {
       List<Widget> widgetList = [];
@@ -210,8 +206,8 @@ class _DetailScreenState extends State<DetailScreen> {
       return widgetList;
     }
 
-    markOneWarningAsReadFromDetailView(widget.warnMessage);
-    clearReadWarningsList();
+    // set read status to true
+    widget.warnMessage.read = true;
 
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];
@@ -309,13 +305,14 @@ class _DetailScreenState extends State<DetailScreen> {
             children: [
               Text(
                 widget.warnMessage.headline,
-                style: Theme.of(context).textTheme.headline1,
+                style: Theme.of(context).textTheme.displayLarge,
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
-                AppLocalizations.of(context).warning_from + ": " +
+                AppLocalizations.of(context).warning_from +
+                    ": " +
                     formatSentDate(widget.warnMessage.sent),
                 style: TextStyle(
                     fontSize: warningFontSize, fontWeight: FontWeight.bold),
@@ -407,7 +404,8 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Text(
                       AppLocalizations.of(context).warning_type +
                           ": " +
-                          translateMessageType(widget.warnMessage.messageType, context),
+                          translateMessageType(
+                              widget.warnMessage.messageType, context),
                       style: TextStyle(
                           color: Colors.white, fontSize: warningFontSize),
                     ),
@@ -589,13 +587,15 @@ class _DetailScreenState extends State<DetailScreen> {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.green)),
                       onTap: () {
-                        setState(() {
-                          if (showMoreRegions) {
-                            showMoreRegions = false;
-                          } else {
-                            showMoreRegions = true;
-                          }
-                        });
+                        setState(
+                          () {
+                            if (showMoreRegions) {
+                              showMoreRegions = false;
+                            } else {
+                              showMoreRegions = true;
+                            }
+                          },
+                        );
                       },
                     )
                   : SizedBox(),
@@ -645,12 +645,12 @@ class _DetailScreenState extends State<DetailScreen> {
                                   color: Colors.green)),
                       onTap: () {
                         setState(() {
-                          if (showMorePlaces) {
-                            showMorePlaces = false;
-                          } else {
-                            showMorePlaces = true;
-                          }
-                        });
+                            if (showMorePlaces) {
+                              showMorePlaces = false;
+                            } else {
+                              showMorePlaces = true;
+                            }
+                          });
                       },
                     )
                   : SizedBox(),
@@ -696,30 +696,24 @@ class _DetailScreenState extends State<DetailScreen> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: warningFontSize + 5),
-                            )
+                            ),
                           ],
                         ),
                         Container(
-                            height: 100,
-                            child: GridView.count(
-                              primary: false,
-                              padding: const EdgeInsets.all(5),
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              crossAxisCount: 4,
-                              children: generateAssets(
-                                  widget.warnMessage.description),
-                            )),
+                          height: 100,
+                          child: GridView.count(
+                            primary: false,
+                            padding: const EdgeInsets.all(5),
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            crossAxisCount: 4,
+                            children:
+                                generateAssets(widget.warnMessage.description),
+                          ),
+                        ),
                       ],
                     )
                   : SizedBox(),
-
-              // @todo: ist das Kunst oder kann das weg?
-              /*Column(
-                children: generateAssets(widget.warnMessage.description),
-              ),*/
-
-
               widget.warnMessage.instruction != ""
                   ? Column(
                       children: [
@@ -826,10 +820,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         Flexible(
                           fit: FlexFit.loose,
                           child: TextButton(
-                            onPressed: () {
-                              _launched =
-                                  makePhoneCall(widget.warnMessage.contact);
-                            },
+                            onPressed: () =>
+                                makePhoneCall(widget.warnMessage.contact),
                             child: Text(
                               replaceHTMLTags(widget.warnMessage.contact),
                               style: TextStyle(
@@ -852,10 +844,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         Flexible(
                           fit: FlexFit.loose,
                           child: TextButton(
-                            onPressed: () {
-                              _launched =
-                                  launchUrlInBrowser(widget.warnMessage.web);
-                            },
+                            onPressed: () =>
+                                launchUrlInBrowser(widget.warnMessage.web),
                             child: Text(
                               generateURL(widget.warnMessage.web),
                               style: TextStyle(
