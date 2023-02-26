@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:foss_warn/class/class_AlertSwissPlace.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
 import 'package:foss_warn/views/SettingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../class/class_Place.dart';
+import '../class/class_NinaPlace.dart';
 import 'listHandler.dart';
 import '../main.dart';
 
@@ -19,22 +20,22 @@ saveMyPlacesList() async {
 
 loadMyPlacesList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  /*List<String> myPlaceListAsString = [];
-  if (preferences.containsKey("myPlaceListAsString")) {
-    myPlaceListAsString = preferences.getStringList('myPlaceListAsString')!;
-    myPlaceList.clear();
-    for (String i in myPlaceListAsString) {
-      myPlaceList.add(Place(name: i));
-    }
-  } */
+
   if (preferences.containsKey("MyPlacesListAsJson")) {
     var data  = jsonDecode(preferences.getString("MyPlacesListAsJson")!);
     myPlaceList.clear();
     for(int i = 0; i < data.length; i++) {
-      myPlaceList.add(Place(name: data[i]["name"], geocode: data[i]["geocode"]));
+      print(data[i].toString());
+      if(data[i].toString().contains("geocode")) {
+        // print("Nina Place");
+        myPlaceList.add(NinaPlace.fromJson(data[i]));
+      } else  if(data[i].toString().contains("shortName")) { //@todo think about better solution
+        // print("alert swiss place");
+        myPlaceList.add(AlertSwissPlace.fromJson(data[i]));
+      }
     }
+    print(myPlaceList);
   }
-
 }
 
 saveGeocodes(String jsonFile) async {
@@ -60,32 +61,6 @@ Future<dynamic> loadGeocode()  async {
 
 
 //Settings
-
-saveReadWarningsList() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setStringList("readWarningsList", readWarnings);
-}
-
-
-
-loadReadWarningsList() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  if (preferences.containsKey("readWarningsList")) {
-    readWarnings = preferences.getStringList("readWarningsList")!;
-  }
-}
-
-saveAlreadyNotifiedWarningsList() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setStringList("AlreadyNotifiedWarningsList", alreadyNotifiedWarnings);
-}
-
-loadAlreadyNotifiedWarningsList() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  if (preferences.containsKey("AlreadyNotifiedWarningsList")) {
-    alreadyNotifiedWarnings = preferences.getStringList("AlreadyNotifiedWarningsList")!;
-  }
-}
 
 saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
