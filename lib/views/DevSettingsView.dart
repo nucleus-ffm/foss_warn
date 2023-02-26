@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/class/class_Place.dart';
 import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 
 import '../class/class_alarmManager.dart';
+import '../class/abstract_Place.dart';
 import '../services/alertSwiss.dart';
 import '../services/geocodeHandler.dart';
 import '../widgets/dialogs/systemInformationDialog.dart';
@@ -42,22 +42,11 @@ class _DevSettingsState extends State<DevSettings> {
                 subtitle: Text(AppLocalizations.of(context)
                     .dev_settings_test_notification_text),
                 onTap: () {
-                  // @todo: Move code to function to avoid code doubling
                   checkForMyPlacesWarnings(false, true);
                   bool thereIsNoWarning = true;
                   for (Place myPlace in myPlaceList) {
                     //check if there are warning and if it they are important enough
-                    if (myPlace.warnings.length > 0 &&
-                        myPlace.warnings.any((warning) =>
-                            notificationSettingsImportance
-                                .contains(warning.severity))) {
-                      if (myPlace.warnings.every((warning) =>
-                          readWarnings.contains(warning.identifier))) {
-                        //all warnings read
-                      } else {
-                        thereIsNoWarning = false;
-                      }
-                    } else {}
+                    thereIsNoWarning = myPlace.checkIfThereIsAWarningToNotify();
                   }
                   if (thereIsNoWarning) {
                     final snackBar = SnackBar(
@@ -107,36 +96,18 @@ class _DevSettingsState extends State<DevSettings> {
               ListTile(
                 contentPadding: settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
-                    .dev_settings_delete_list_of_read_warnings),
-                subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_delete_list_of_read_warnings_text),
-                onTap: () {
-                  print("delete readWarningsList");
-                  readWarnings.clear();
-                  saveReadWarningsList();
-                  final snackBar = SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-              ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
+                    .dev_settings_delete_list_of_read_warnings + " & \n" +
+                    AppLocalizations.of(context)
                     .dev_settings_delete_notification_list),
                 subtitle: Text(AppLocalizations.of(context)
+                    .dev_settings_delete_list_of_read_warnings_text + " & \n"
+                    + AppLocalizations.of(context)
                     .dev_settings_delete_notification_list_text),
                 onTap: () {
-                  print("delete alreadyNotifiedWarnings");
-                  alreadyNotifiedWarnings.clear();
-                  saveAlreadyNotifiedWarningsList();
+                  print("reset read and notification status for all warnings");
+                  for(Place p in myPlaceList) {
+                    p.resetReadAndNotificationStatusForAllWarnings(context);
+                  }
                   final snackBar = SnackBar(
                     content: Text(
                       AppLocalizations.of(context).dev_settings_success,
