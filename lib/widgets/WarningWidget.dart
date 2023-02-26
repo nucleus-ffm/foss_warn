@@ -1,16 +1,13 @@
-// widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
 import 'package:foss_warn/widgets/dialogs/MessageTypeExplanation.dart';
 import 'package:provider/provider.dart';
-import '../services/markWarningsAsRead.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
-import '../services/listHandler.dart';
 import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {
@@ -52,10 +49,11 @@ class WarningWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                readWarnings.contains(warnMessage.identifier)
+                warnMessage.read
                     ? IconButton(
                         onPressed: () {
-                          markOneWarningAsUnread(warnMessage, context);
+                          warnMessage.read = false;
+                          //@todo update view
                         },
                         icon: Icon(
                           Icons.mark_chat_read,
@@ -63,7 +61,8 @@ class WarningWidget extends StatelessWidget {
                         ))
                     : IconButton(
                         onPressed: () {
-                          markOneWarningAsRead(warnMessage, context);
+                          warnMessage.read = true;
+                          //@todo update view
                         },
                         icon: Icon(
                           Icons.warning_amber_outlined,
@@ -89,8 +88,9 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateCategory(warnMessage.category, context),
-                                style: Theme.of(context).textTheme.headline3,
+                                translateCategory(
+                                    warnMessage.category, context),
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ),
                             color: Colors.indigo,
@@ -110,7 +110,8 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateMessageType(warnMessage.messageType, context),
+                                translateMessageType(
+                                    warnMessage.messageType, context),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
@@ -131,7 +132,7 @@ class WarningWidget extends StatelessWidget {
                                         " " +
                                         AppLocalizations.of(context)
                                             .warning_widget_and +
-                                    " " +
+                                        " " +
                                         (geocodeNameList.length - 1)
                                             .toString() +
                                         " " +
@@ -180,15 +181,16 @@ class WarningWidget extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetailScreen(warnMessage: warnMessage)),
-                      ).then((value) => updatePrevView());
-                    },
-                    icon: Icon(Icons.read_more))
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DetailScreen(warnMessage: warnMessage)),
+                    ).then((value) => updatePrevView());
+                  },
+                  icon: Icon(Icons.read_more),
+                )
               ],
             ),
           ),
