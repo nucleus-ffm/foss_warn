@@ -54,10 +54,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                 newPlaceName = text;
                 text = text.toLowerCase();
                 setState(() {
-                  allPlacesToShow = allAvailablePlacesNames.where((place) {
-                    var search = place.toLowerCase();
-                    return search.contains(text);
-                  }).toList();
+                  allPlacesToShow = allAvailablePlacesNames.where((place) => place.toLowerCase().contains(text)).toList();
                 });
               },
             ),

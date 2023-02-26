@@ -7,6 +7,7 @@ import 'SettingsView.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/dialogs/DisclaimerDialog.dart';
 import '../widgets/dialogs/privacyDialog.dart';
+import 'addMyPlaceView.dart';
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({Key? key}) : super(key: key);
@@ -16,8 +17,6 @@ class WelcomeView extends StatefulWidget {
 }
 
 class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
-  double _currentPage = 0.0;
-  final _pageViewController = new PageController();
   final _platform = const MethodChannel("flutter.native/helper");
   late Future<bool> _batteryOptimizationFuture;
   List<WelcomeScreenItem>? _welcomeScreenItems;
@@ -47,16 +46,9 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    _pageViewController.addListener(() {
-      setState(() {
-        _currentPage = _pageViewController.page!;
-      });
-    });
-
-    if(_welcomeScreenItems == null) {
+    if (_welcomeScreenItems == null) {
       _welcomeScreenItems = getWelcomeScreenItems(context);
     }
-    final isLastSlide = _currentPage == _welcomeScreenItems!.length - 1;
 
     return Scaffold(
       body: Container(
@@ -64,101 +56,63 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
           children: [
             PageView.builder(
               scrollDirection: Axis.horizontal,
-              controller: _pageViewController,
               itemCount: _welcomeScreenItems!.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  _buildSlide(index),
-            ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: EdgeInsets.only(top: 70.0),
-                  padding: EdgeInsets.symmetric(vertical: 40.0),
-                  child: isLastSlide
-                      ? TextButton(
-                          onPressed: () {
-                            setState(() {
-                              showWelcomeScreen = false;
-                            });
-                            saveSettings();
+              itemBuilder: (BuildContext context, int index) {
+                final WelcomeScreenItem item = _welcomeScreenItems![index];
+                final isLastSlide = index == _welcomeScreenItems!.length - 1;
 
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    HomeView(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            AppLocalizations.of(context).welcome_view_end_button,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue))
-                      : _buildStepsIndicator(),
-                ))
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: _buildSlide(item)),
+                    _buildActionButtons(context, item.action),
+                    isLastSlide
+                        ? SizedBox(height: 90)
+                        : Container(
+                            padding: EdgeInsets.symmetric(vertical: 40.0),
+                            child: _buildStepsIndicator(index))
+                  ],
+                );
+              },
+            )
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSlide(int index) {
-    WelcomeScreenItem item = _welcomeScreenItems![index];
-
+  Widget _buildSlide(WelcomeScreenItem item) {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 18.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Image.asset(
-                item.imagePath,
-                fit: BoxFit.fitWidth,
-                width: 220.0,
-                height: 200.0,
-                alignment: Alignment.bottomCenter,
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text(item.title,
-                          style: TextStyle(
-                              fontSize: 34.0,
-                              fontWeight: FontWeight.w300,
-                              height: 2.0)),
-                      Text(
-                        item.description,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            letterSpacing: 1.2,
-                            fontSize: 16.0,
-                            height: 1.3),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      _buildActionButtons(item.action)
-                    ],
-                  ),
-                ),
+            Image.asset(item.imagePath, width: 220.0, height: 200.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  Text(item.title,
+                      style: TextStyle(fontSize: 34.0, height: 2.0)),
+                  SingleChildScrollView(
+                    child: Text(
+                      item.description,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          letterSpacing: 1.2,
+                          fontSize: 16.0,
+                          height: 1.3),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
               ),
             )
           ],
         ));
   }
 
-  Widget _buildActionButtons(String? action) {
+  Widget _buildActionButtons(BuildContext context, String? action) {
     switch (action) {
       case "batteryOptimization":
         return Row(
@@ -170,33 +124,22 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData) {
                       final bool batteryOptimizationEnabled = snapshot.data!;
-                      return batteryOptimizationEnabled
-                          ? TextButton(
-                              onPressed: () =>
-                                  _showIgnoreBatteryOptimizationDialog(),
-                              child: Text(
-                                AppLocalizations.of(context).welcome_view_battery_optimisation_action,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              style: TextButton.styleFrom(
-                                  backgroundColor: Colors.blue),
-                            )
-                          : Column(
-                              children: [
-                                Icon(
-                                  Icons.check,
-                                  size: 56,
-                                  color: Colors.green,
-                                ),
-                                Text(AppLocalizations.of(context).welcome_view_battery_optimisation_action_success,
-                                style:  TextStyle(
-                                    color: Colors.grey,
-                                    letterSpacing: 1.2,
-                                    fontSize: 16.0,
-                                    height: 1.3),
-                                )
-                              ],
-                            );
+                      return FilledButton.icon(
+                        onPressed: batteryOptimizationEnabled
+                            ? () => _showIgnoreBatteryOptimizationDialog()
+                            : null,
+                        label: Text(
+                          batteryOptimizationEnabled
+                              ? AppLocalizations.of(context)
+                                  .welcome_view_battery_optimisation_action
+                              : AppLocalizations.of(context)
+                                  .welcome_view_battery_optimisation_action_success,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        icon: batteryOptimizationEnabled
+                            ? Icon(Icons.battery_saver)
+                            : Icon(Icons.check),
+                      );
                     } else {
                       print(
                           "Error getting battery optimization status: ${snapshot.error}");
@@ -207,10 +150,28 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 })
           ],
         );
+      case "setup":
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FilledButton(
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddMyPlaceView()),
+                )
+              },
+              child: Text(
+                "Setup a place",
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+        );
       case "disclaimer":
         return Column(
           children: [
-            TextButton(
+            FilledButton(
               onPressed: () {
                 showDialog(
                   context: navigatorKey.currentContext!,
@@ -221,29 +182,45 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 AppLocalizations.of(context).about_disclaimer,
                 style: TextStyle(color: Colors.white),
               ),
-              style: TextButton.styleFrom(backgroundColor: Colors.blue),
             ),
-            TextButton(
-              onPressed: () {
-                showDialog(
-                  context: navigatorKey.currentContext!,
-                  builder: (BuildContext context) => PrivacyDialog(),
-                );
-              },
-              child: Text(
-                AppLocalizations.of(context).about_privacy,
-                style: TextStyle(color: Colors.white),
-              ),
-              style: TextButton.styleFrom(backgroundColor: Colors.blue),
-            ),
+            FilledButton(
+                onPressed: () {
+                  showDialog(
+                    context: navigatorKey.currentContext!,
+                    builder: (BuildContext context) => PrivacyDialog(),
+                  );
+                },
+                child: Text(
+                  AppLocalizations.of(context).about_privacy,
+                  style: TextStyle(color: Colors.white),
+                )),
           ],
         );
+      case "end":
+        return FilledButton(
+            onPressed: () {
+              setState(() {
+                showWelcomeScreen = false;
+              });
+              saveSettings();
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => HomeView(),
+                ),
+              );
+            },
+            child: Text(
+              AppLocalizations.of(context).welcome_view_end_button,
+              style: TextStyle(color: Colors.white),
+            ));
       default:
-        return SizedBox(height: 50);
+        return SizedBox(height: 80);
     }
   }
 
-  Widget _buildStepsIndicator() {
+  Widget _buildStepsIndicator(int currentPage) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
@@ -253,7 +230,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 height: 10.0,
                 width: 10.0,
                 decoration: BoxDecoration(
-                    color: _currentPage.round() == index
+                    color: currentPage.round() == index
                         ? Color(0XFF256075)
                         : Color(0XFF256075).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(10.0)),
