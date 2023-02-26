@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:foss_warn/class/class_AlertSwissPlace.dart';
+
+import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
@@ -38,7 +41,24 @@ Future callAlertSwissAPI() async {
           tempWarnMessageList.add(temp);
         }
       }
-      warnMessageList.addAll(tempWarnMessageList); // transfer temp List in real list
+      //warnMessageList.addAll(tempWarnMessageList); // transfer temp List in real list
+
+      // store warnings in places //@todo testing
+      for(Place p in myPlaceList) {
+        if(p is AlertSwissPlace) {
+          for(WarnMessage message in tempWarnMessageList) {
+            for(Area a in message.areaList) {
+              for(Geocode g in a.geocodeList) {
+                if(g.geocodeName == p.shortName) {
+                  if(!p.warnings.any((element) => element.identifier == message.identifier)) {
+                    p.warnings.add(message);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   } catch (e) {
     print("Something went wrong: " + e.toString());
@@ -84,41 +104,12 @@ WarnMessage? createWarning(var data) {
   }
 
   try {
-    WarnMessage tempWarnMessage = WarnMessage(
-      source: "Alert Swiss",
-      identifier: data["identifier"] ?? "?",
-      sender: data["sender"] ?? "?",
-      sent: data["sent"] ?? "?",
-      status: "?", // missing for alert swiss
-      messageType: "Alert", // missing
-      scope: "?", // missing
-      category: data["event"] ?? "?", // missing
-      event: data["event"] ?? "?",
-      urgency: "?",
-      severity: data["severity"] ?? "?",
-      certainty: "?", // missing
-      effective: "", // missing
-      onset: data["onset"] ?? "", // m
-      expires: data["expires"] ?? "", // m
-      headline: data["title"] ?? "?",
-      description: data["description"] ?? "",
-      instruction: generateInstruction(data["instruction"] ?? []),
-      publisher: addLicense(data["publisherName"]),
-      contact: data["contact"] ?? "",
-      web: data["link"] ?? "",
-      areaList: generateAreaList(data["areas"]),
-      //areaList: generateAreaList(i),
-      //area: data[i]["info"][0]["area"][0]["areaDesc"],
-      //geocodeName: generateGeoCodeNameList(i),
-      //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-    );
-
     // don't display tech test alerts
     if(data["technicalTestAlert"] == "true") {
       return null;
     }
-
-    return tempWarnMessage;
+    return WarnMessage.fromJsonAlertSwiss(data, generateAreaList(data["areas"]),
+        generateInstruction(data["instruction"] ?? [] ),  addLicense(data["publisherName"]) );
   } catch (e) {
     print(
         "something went wrong while paring alert swiss data: " + e.toString());
