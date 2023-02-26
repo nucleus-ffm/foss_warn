@@ -83,32 +83,30 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "MOWAS",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "?",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "",
-            web: data[i]["info"][0]["web"] ?? "",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
+              source: "MOWAS",
+              identifier: data[i]["identifier"] ?? "?",
+              sender: data[i]["sender"] ?? "?",
+              sent: data[i]["sent"] ?? "?",
+              status: data[i]["status"] ?? "?",
+              messageType: data[i]["msgType"] ?? "?",
+              scope: data[i]["scope"] ?? "?",
+              category: data[i]["info"][0]["category"][0] ?? "?",
+              event: data[i]["info"][0]["event"] ?? "?",
+              urgency: data[i]["info"][0]["urgency"] ?? "?",
+              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
+              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              effective: data[i]["info"][0]["effective"] ?? "",
+              onset: data[i]["info"][0]["onset"] ?? "",
+              expires: data[i]["info"][0]["expires"] ?? "",
+              headline: data[i]["info"][0]["headline"] ?? "?",
+              description: data[i]["info"][0]["description"] ?? "",
+              instruction: data[i]["info"][0]["instruction"] ?? "",
+              publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
+              contact: data[i]["info"][0]["contact"] ?? "",
+              web: data[i]["info"][0]["web"] ?? "",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
           tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
@@ -182,32 +180,30 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "KATWARN",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "?",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "",
-            web: data[i]["info"][0]["web"] ?? "",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
+              source: "KATWARN",
+              identifier: data[i]["identifier"] ?? "?",
+              sender: data[i]["sender"] ?? "?",
+              sent: data[i]["sent"] ?? "?",
+              status: data[i]["status"] ?? "?",
+              messageType: data[i]["msgType"] ?? "?",
+              scope: data[i]["scope"] ?? "?",
+              category: data[i]["info"][0]["category"][0] ?? "?",
+              event: data[i]["info"][0]["event"] ?? "?",
+              urgency: data[i]["info"][0]["urgency"] ?? "?",
+              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
+              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              effective: data[i]["info"][0]["effective"] ?? "",
+              onset: data[i]["info"][0]["onset"] ?? "",
+              expires: data[i]["info"][0]["expires"] ?? "",
+              headline: data[i]["info"][0]["headline"] ?? "?",
+              description: data[i]["info"][0]["description"] ?? "",
+              instruction: data[i]["info"][0]["instruction"] ?? "",
+              publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
+              contact: data[i]["info"][0]["contact"] ?? "",
+              web: data[i]["info"][0]["web"] ?? "",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
           tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
@@ -278,33 +274,31 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "BIWAPP",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "?",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][0]["value"] ??
-                "?", // different to others ["parameter"][0]
-            contact: data[i]["info"][0]["contact"] ?? "",
-            web: data[i]["info"][0]["web"] ?? "",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
+              source: "BIWAPP",
+              identifier: data[i]["identifier"] ?? "?",
+              sender: data[i]["sender"] ?? "?",
+              sent: data[i]["sent"] ?? "?",
+              status: data[i]["status"] ?? "?",
+              messageType: data[i]["msgType"] ?? "?",
+              scope: data[i]["scope"] ?? "?",
+              category: data[i]["info"][0]["category"][0] ?? "?",
+              event: data[i]["info"][0]["event"] ?? "?",
+              urgency: data[i]["info"][0]["urgency"] ?? "?",
+              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
+              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              effective: data[i]["info"][0]["effective"] ?? "",
+              onset: data[i]["info"][0]["onset"] ?? "",
+              expires: data[i]["info"][0]["expires"] ?? "",
+              headline: data[i]["info"][0]["headline"] ?? "?",
+              description: data[i]["info"][0]["description"] ?? "",
+              instruction: data[i]["info"][0]["instruction"] ?? "",
+              publisher: data[i]["info"][0]["parameter"][0]["value"] ??
+                  "?", // different to others ["parameter"][0]
+              contact: data[i]["info"][0]["contact"] ?? "",
+              web: data[i]["info"][0]["web"] ?? "",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
           tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
@@ -380,32 +374,30 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "DWD",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["senderName"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "?",
-            web: data[i]["info"][0]["web"] ?? "?",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
+              source: "DWD",
+              identifier: data[i]["identifier"] ?? "?",
+              sender: data[i]["sender"] ?? "?",
+              sent: data[i]["sent"] ?? "?",
+              status: data[i]["status"] ?? "?",
+              messageType: data[i]["msgType"] ?? "?",
+              scope: data[i]["scope"] ?? "",
+              category: data[i]["info"][0]["category"][0] ?? "?",
+              event: data[i]["info"][0]["event"] ?? "?",
+              urgency: data[i]["info"][0]["urgency"] ?? "?",
+              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
+              effective: data[i]["info"][0]["effective"] ?? "",
+              onset: data[i]["info"][0]["onset"] ?? "",
+              expires: data[i]["info"][0]["expires"] ?? "",
+              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              headline: data[i]["info"][0]["headline"] ?? "?",
+              description: data[i]["info"][0]["description"] ?? "",
+              instruction: data[i]["info"][0]["instruction"] ?? "",
+              publisher: data[i]["info"][0]["senderName"] ?? "?",
+              contact: data[i]["info"][0]["contact"] ?? "?",
+              web: data[i]["info"][0]["web"] ?? "?",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
           tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
@@ -445,7 +437,7 @@ Future getData(bool useEtag) async {
       }
 
       //count messages
-      lhpWarningsCount = data.length; //TODO: check if this works
+      lhpWarningsCount = data.length;
 
       try {
         lhpParseStatus = true;
@@ -479,32 +471,30 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "LHP",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["senderName"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "?",
-            web: data[i]["info"][0]["web"] ?? "?",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
+              source: "LHP",
+              identifier: data[i]["identifier"] ?? "?",
+              sender: data[i]["sender"] ?? "?",
+              sent: data[i]["sent"] ?? "?",
+              status: data[i]["status"] ?? "?",
+              messageType: data[i]["msgType"] ?? "?",
+              scope: data[i]["scope"] ?? "",
+              category: data[i]["info"][0]["category"][0] ?? "?",
+              event: data[i]["info"][0]["event"] ?? "?",
+              urgency: data[i]["info"][0]["urgency"] ?? "?",
+              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
+              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              effective: data[i]["info"][0]["effective"] ?? "",
+              onset: data[i]["info"][0]["onset"] ?? "",
+              expires: data[i]["info"][0]["expires"] ?? "",
+              headline: data[i]["info"][0]["headline"] ?? "?",
+              description: data[i]["info"][0]["description"] ?? "",
+              instruction: data[i]["info"][0]["instruction"] ?? "",
+              publisher: data[i]["info"][0]["senderName"] ?? "?",
+              contact: data[i]["info"][0]["contact"] ?? "?",
+              web: data[i]["info"][0]["web"] ?? "?",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
           tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
@@ -526,7 +516,7 @@ Future getData(bool useEtag) async {
     allWarnMessageList = tempWarnMessageList; // transfer temp List in real list
     dataFetchStatusOldAPI = DataFetchStatus.success;
 
-    if(activateAlertSwiss) {
+    if (activateAlertSwiss) {
       await callAlertSwissAPI();
     }
 
