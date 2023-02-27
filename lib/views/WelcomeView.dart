@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../services/geocodeHandler.dart';
+import '../services/listHandler.dart';
 import '../services/welcomeScreenItems.dart';
 import '../main.dart';
 import 'SettingsView.dart';
@@ -24,6 +26,10 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    if (geocodeMap.isEmpty) {
+      print("call geocode handler");
+      geocodeHandler();
+    }
     WidgetsBinding.instance.addObserver(this);
     setState(() {
       _batteryOptimizationFuture = this._isBatteryOptimizationEnabled();
@@ -64,7 +70,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(child: _buildSlide(item)),
+                    _buildSlide(context, item),
                     _buildActionButtons(context, item.action),
                     isLastSlide
                         ? SizedBox(height: 90)
@@ -81,79 +87,75 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
     );
   }
 
-  Widget _buildSlide(WelcomeScreenItem item) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 18.0),
+  Widget _buildSlide(BuildContext context, WelcomeScreenItem item) {
+    return Expanded(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(item.imagePath, width: 220.0, height: 200.0),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                children: [
-                  Text(item.title,
-                      style: TextStyle(fontSize: 34.0, height: 2.0)),
-                  SingleChildScrollView(
-                    child: Text(
-                      item.description,
-                      style: TextStyle(
-                          color: Colors.grey,
-                          letterSpacing: 1.2,
-                          fontSize: 16.0,
-                          height: 1.3),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ));
+      children: [
+        SizedBox(height: MediaQuery.of(context).size.height / 4.5),
+        Image.asset(item.imagePath, width: 220.0, height: 200.0),
+        Text(item.title, style: TextStyle(fontSize: 34.0, height: 2.0)),
+        Expanded(
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50.0),
+                child: SingleChildScrollView(
+                    primary: true,
+                    child: Text(item.description,
+                        style: TextStyle(
+                            color: Colors.grey,
+                            letterSpacing: 1.2,
+                            fontSize: 16.0,
+                            height: 1.3),
+                        textAlign: TextAlign.center))))
+      ],
+    ));
   }
 
   Widget _buildActionButtons(BuildContext context, String? action) {
     switch (action) {
       case "batteryOptimization":
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FutureBuilder<bool>(
-                future: _batteryOptimizationFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      final bool batteryOptimizationEnabled = snapshot.data!;
-                      return FilledButton.icon(
-                        onPressed: batteryOptimizationEnabled
-                            ? () => _showIgnoreBatteryOptimizationDialog()
-                            : null,
-                        label: Text(
-                          batteryOptimizationEnabled
-                              ? AppLocalizations.of(context)
-                                  .welcome_view_battery_optimisation_action
-                              : AppLocalizations.of(context)
-                                  .welcome_view_battery_optimisation_action_success,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        icon: batteryOptimizationEnabled
-                            ? Icon(Icons.battery_saver)
-                            : Icon(Icons.check),
-                      );
-                    } else {
-                      print(
-                          "Error getting battery optimization status: ${snapshot.error}");
-                      return Text("Error", style: TextStyle(color: Colors.red));
-                    }
-                  } else
-                    return CircularProgressIndicator();
-                })
-          ],
-        );
+        return FutureBuilder<bool>(
+            future: _batteryOptimizationFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  final bool batteryOptimizationEnabled = snapshot.data!;
+                  return FilledButton.icon(
+                    onPressed: batteryOptimizationEnabled
+                        ? () => _showIgnoreBatteryOptimizationDialog()
+                        : null,
+                    label: Text(
+                      batteryOptimizationEnabled
+                          ? AppLocalizations.of(context)
+                          .welcome_view_battery_optimisation_action
+                          : AppLocalizations.of(context)
+                          .welcome_view_battery_optimisation_action_success,
+                    ),
+                    icon: batteryOptimizationEnabled
+                        ? Icon(Icons.battery_saver)
+                        : Icon(Icons.check, color: Colors.green)
+                  );
+                } else {
+                  print(
+                      "Error getting battery optimization status: ${snapshot.error}");
+                  return Text("Error", style: TextStyle(color: Colors.red));
+                }
+              } else
+                return CircularProgressIndicator();
+            });
       case "setup":
-        return Row(
+        return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("You added this places:", style: TextStyle(fontSize: 24.0)),
+            // @todo show added places
+            /*ListView.builder(
+              itemCount: myPlaceList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(myPlaceList[index].name),
+                );
+              },
+            ),*/
             FilledButton(
               onPressed: () => {
                 Navigator.push(
@@ -162,6 +164,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 )
               },
               child: Text(
+                // @todo translations
                 "Setup a place",
                 style: TextStyle(color: Colors.white),
               ),
