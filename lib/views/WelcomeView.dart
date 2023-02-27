@@ -120,20 +120,19 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 if (snapshot.hasData) {
                   final bool batteryOptimizationEnabled = snapshot.data!;
                   return FilledButton.icon(
-                    onPressed: batteryOptimizationEnabled
-                        ? () => _showIgnoreBatteryOptimizationDialog()
-                        : null,
-                    label: Text(
-                      batteryOptimizationEnabled
-                          ? AppLocalizations.of(context)
-                          .welcome_view_battery_optimisation_action
-                          : AppLocalizations.of(context)
-                          .welcome_view_battery_optimisation_action_success,
-                    ),
-                    icon: batteryOptimizationEnabled
-                        ? Icon(Icons.battery_saver)
-                        : Icon(Icons.check, color: Colors.green)
-                  );
+                      onPressed: batteryOptimizationEnabled
+                          ? () => _showIgnoreBatteryOptimizationDialog()
+                          : null,
+                      label: Text(
+                        batteryOptimizationEnabled
+                            ? AppLocalizations.of(context)
+                                .welcome_view_battery_optimisation_action
+                            : AppLocalizations.of(context)
+                                .welcome_view_battery_optimisation_action_success,
+                      ),
+                      icon: batteryOptimizationEnabled
+                          ? Icon(Icons.battery_saver)
+                          : Icon(Icons.check, color: Colors.green));
                 } else {
                   print(
                       "Error getting battery optimization status: ${snapshot.error}");
@@ -228,16 +227,17 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
           _welcomeScreenItems!.length,
-          (index) => Container(
-                margin: EdgeInsets.symmetric(horizontal: 3.0),
-                height: 10.0,
-                width: 10.0,
-                decoration: BoxDecoration(
-                    color: currentPage.round() == index
-                        ? Color(0XFF256075)
-                        : Color(0XFF256075).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(10.0)),
-              )),
+          (index) => Builder(builder: (context) {
+                final bool isActive = index == currentPage;
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 8),
+                  height: isActive ? 12 : 8,
+                  width: isActive ? 12 : 8,
+                  decoration: BoxDecoration(
+                      color: isActive ? Colors.blue[700] : Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(12))),
+                );
+              })),
     );
   }
 
