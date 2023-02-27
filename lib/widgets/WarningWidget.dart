@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
+import 'package:foss_warn/services/translateAndColorizeWarning.dart';
 import 'package:foss_warn/widgets/dialogs/MessageTypeExplanation.dart';
 import 'package:provider/provider.dart';
 import '../class/class_WarnMessage.dart';
@@ -88,7 +88,7 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateCategory(
+                                translateWarningCategory(
                                     warnMessage.category, context),
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
@@ -110,14 +110,14 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateMessageType(
+                                translateWarningType(
                                     warnMessage.messageType, context),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
                             ),
                             color:
-                                chooseMessageTypeColor(warnMessage.messageType),
+                                chooseWarningTypeColor(warnMessage.messageType),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(

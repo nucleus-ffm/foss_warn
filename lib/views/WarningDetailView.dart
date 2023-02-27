@@ -5,7 +5,7 @@ import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../services/urlLauncher.dart';
-import '../services/helperFunctionToTranslateAndChooseColorType.dart';
+import '../services/translateAndColorizeWarning.dart';
 import '../views/SettingsView.dart';
 
 import 'package:share_plus/share_plus.dart';
@@ -398,13 +398,13 @@ class _DetailScreenState extends State<DetailScreen> {
                     padding: EdgeInsets.all(7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: chooseMessageTypeColor(
+                      color: chooseWarningTypeColor(
                           widget.warnMessage.messageType),
                     ),
                     child: Text(
                       AppLocalizations.of(context).warning_type +
                           ": " +
-                          translateMessageType(
+                          translateWarningType(
                               widget.warnMessage.messageType, context),
                       style: TextStyle(
                           color: Colors.white, fontSize: warningFontSize),
@@ -415,12 +415,12 @@ class _DetailScreenState extends State<DetailScreen> {
                     padding: EdgeInsets.all(7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: chooseSeverityColor(widget.warnMessage.severity),
+                      color: chooseWarningSeverityColor(widget.warnMessage.severity),
                     ),
                     child: Text(
                       AppLocalizations.of(context).warning_severity +
                           ": " +
-                          translateMessageSeverity(widget.warnMessage.severity),
+                          translateWarningSeverity(widget.warnMessage.severity),
                       style: TextStyle(
                           color: Colors.white, fontSize: warningFontSize),
                     ),
@@ -437,7 +437,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               AppLocalizations.of(context).warning_urgency +
                                   ": " +
-                                  translateMessageUrgency(
+                                  translateWarningUrgency(
                                       widget.warnMessage.urgency),
                               style: TextStyle(
                                   color: Colors.white,
@@ -457,7 +457,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               AppLocalizations.of(context).warning_certainty +
                                   ": " +
-                                  translateMessageCertainty(
+                                  translateWarningCertainty(
                                       widget.warnMessage.certainty),
                               style: TextStyle(
                                   color: Colors.white,
@@ -528,7 +528,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               AppLocalizations.of(context).warning_status +
                                   ": " +
-                                  translateMessageStatus(
+                                  translateWarningStatus(
                                       widget.warnMessage.status),
                               style: TextStyle(fontSize: warningFontSize),
                             ),

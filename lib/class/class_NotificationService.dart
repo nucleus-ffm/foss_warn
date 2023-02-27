@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
+import 'package:foss_warn/services/translateAndColorizeWarning.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ class NotificationService {
     return NotificationDetails(
         android: AndroidNotificationDetails(
           'foss_warn_notifications_' + channel.trim().toLowerCase(),
-          "Warnstufe: " + translateMessageSeverity(channel),
+          "Warnstufe: " + translateWarningSeverity(channel),
           channelDescription: 'FOSS Warn notifications for '+  channel.trim().toLowerCase(),
           groupKey: "FossWarnWarnings",
           category: AndroidNotificationCategory("Warnings"),
