@@ -22,8 +22,8 @@ Get emergency alerts from warnung.bund.de <br>
 
 </p>
 <p align="center">
-<a href="https://translate.codeberg.org/engage/foss-warn/">
-<img src="https://translate.codeberg.org/widgets/foss-warn/-/foss-warn-app/svg-badge.svg" alt="Übersetzungsstatus" />
+<a href="https://hosted.weblate.org/engage/foss-warn/">
+<img src="https://hosted.weblate.org/widgets/foss-warn/-/svg-badge.svg" alt="Übersetzungsstatus" />
 </a>
 <a href="https://github.com/nucleus-ffm/foss_warn/blob/main/LICENSE" alt="Glicense"><img src="https://img.shields.io/github/license/nucleus-ffm/foss_warn"></a>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases" alt="Github All Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg"></a>
