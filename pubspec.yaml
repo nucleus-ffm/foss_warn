@@ -14,7 +14,7 @@ dependencies:
   http: ^0.13.5
   flutter_local_notifications: ^13.0.0
   shared_preferences: ^2.0.18
-  shared_preferences_android: ^2.0.16
+  shared_preferences_android: ^2.0.17
   provider: ^6.0.5
   rxdart: ^0.27.7
   url_launcher: ^6.1.10
