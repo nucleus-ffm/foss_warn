@@ -91,7 +91,7 @@ Future callAPI() async {
                 " (Statuscode:  ${response.statusCode} ) \n";
       }
     } catch (e) {
-      print("Something went wrong:  ${e}");
+      print("Something went wrong:  $e");
       successfullyFetched = false;
       error += e.toString() + " \n";
     }
