@@ -36,7 +36,7 @@ class NotificationService {
           'Statusanzeige',
           channelDescription: 'Status der Hintergrund Updates',
           groupKey: "FossWarnService",
-          category: AndroidNotificationCategory("service"),
+          category: AndroidNotificationCategory.service,
           importance: Importance.low,
           priority: Priority.min,
           playSound: false,
