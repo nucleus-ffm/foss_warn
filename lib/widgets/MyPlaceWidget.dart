@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/views/MyPlaceDetailView.dart';
+
 import '../class/abstract_Place.dart';
 import 'dialogs/DeletePlaceDialog.dart';
+import '../views/MyPlaceDetailView.dart';
 
 class MyPlaceWidget extends StatelessWidget {
   final Place myPlace;

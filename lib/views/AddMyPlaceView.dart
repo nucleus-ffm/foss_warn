@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/class/class_NotificationService.dart';
-import 'package:foss_warn/services/listHandler.dart';
 import 'package:provider/provider.dart';
+
 import '../class/abstract_Place.dart';
+import '../class/class_NotificationService.dart';
+import '../services/listHandler.dart';
 import '../services/updateProvider.dart';
 
 class AddMyPlaceView extends StatefulWidget {
@@ -35,7 +36,8 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
               cursorColor: Theme.of(context).colorScheme.secondary,
               autofocus: true,
               decoration: new InputDecoration(
-                labelText: AppLocalizations.of(context).add_new_place_place_name,
+                labelText:
+                    AppLocalizations.of(context).add_new_place_place_name,
                 labelStyle:
                     TextStyle(color: Theme.of(context).colorScheme.secondary),
                 enabledBorder: UnderlineInputBorder(
@@ -74,7 +76,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                       (place) => ListTile(
                         visualDensity:
                             VisualDensity(horizontal: 0, vertical: -4),
-                        title: Text(place.getName())  ,
+                        title: Text(place.getName()),
                         onTap: () {
                           setState(() {
                             final updater =

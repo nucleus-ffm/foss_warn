@@ -23,7 +23,6 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
     if (hour >= 24) {
       hour -= 24;
     }
-
   } else {
     minute += frequencyOfAPICall.toInt();
   }

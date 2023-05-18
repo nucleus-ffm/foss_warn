@@ -4,9 +4,8 @@ import '../services/saveAndLoadSharedPreferences.dart';
 import 'listHandler.dart';
 
 class Update with ChangeNotifier {
-
   // delete preset
-  Future<void> updateList(newPlace)  async {
+  Future<void> updateList(newPlace) async {
     myPlaceList.add(newPlace);
     saveMyPlacesList();
     await callAPI();

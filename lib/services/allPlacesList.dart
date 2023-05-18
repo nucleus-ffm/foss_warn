@@ -411,6 +411,3 @@ List<String> alertSwissPlacesList = [
   "JU",
   "CH",
 ];
-
-
-

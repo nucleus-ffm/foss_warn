@@ -29,13 +29,14 @@ int convertSourceToInt(String source) {
   return 0;
 }
 
-
 void sortWarnings() {
-  if(sortWarningsBy == "severity") {
-    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity).compareTo(convertSeverityToInt(a.severity)));
-  } else if(sortWarningsBy == "date") {
+  if (sortWarningsBy == "severity") {
+    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity)
+        .compareTo(convertSeverityToInt(a.severity)));
+  } else if (sortWarningsBy == "date") {
     warnMessageList.sort((a, b) => b.sent.compareTo(a.sent));
-  } else if(sortWarningsBy == "source") {
-    warnMessageList.sort((a, b) => convertSourceToInt(b.publisher).compareTo(convertSourceToInt(a.publisher)));
+  } else if (sortWarningsBy == "source") {
+    warnMessageList.sort((a, b) => convertSourceToInt(b.publisher)
+        .compareTo(convertSourceToInt(a.publisher)));
   }
 }

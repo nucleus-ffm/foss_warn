@@ -10,18 +10,18 @@ class StatusWidget extends StatelessWidget {
         width: 30,
         child: status
             ? parseStatus
-            ? Icon(
-          Icons.check_box,
-          color: Colors.green,
-        )
+                ? Icon(
+                    Icons.check_box,
+                    color: Colors.green,
+                  )
+                : Icon(
+                    Icons.speaker_notes_off_outlined,
+                    color: Colors.red,
+                  )
             : Icon(
-          Icons.speaker_notes_off_outlined,
-          color: Colors.red,
-        )
-            : Icon(
-          Icons.error,
-          color: Colors.red,
-        ));
+                Icons.error,
+                color: Colors.red,
+              ));
   }
 
   @override
@@ -86,7 +86,9 @@ class StatusWidget extends StatelessWidget {
                   SizedBox(
                     width: 140,
                     child: Text(
-                      " = " + AppLocalizations.of(context).status_server_not_reachable,
+                      " = " +
+                          AppLocalizations.of(context)
+                              .status_server_not_reachable,
                       style: TextStyle(fontSize: 12),
                     ),
                   )
@@ -141,21 +143,24 @@ class StatusWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Mowas:")),
-                  SizedBox(width: 30, child: Text(mowasWarningsCount.toString())),
+                  SizedBox(
+                      width: 30, child: Text(mowasWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Katwarn: ")),
-                  SizedBox(width: 30, child: Text(katwarnWarningsCount.toString())),
+                  SizedBox(
+                      width: 30, child: Text(katwarnWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Biwapp:")),
-                  SizedBox(width: 30, child: Text(biwappWarningsCount.toString())),
+                  SizedBox(
+                      width: 30, child: Text(biwappWarningsCount.toString())),
                 ],
               ),
               Row(
@@ -181,10 +186,10 @@ class StatusWidget extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context).main_dialog_close, style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+          child: Text(AppLocalizations.of(context).main_dialog_close,
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         )
       ],
     );
   }
-
 }

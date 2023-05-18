@@ -87,7 +87,7 @@ class _DetailScreenState extends State<DetailScreen> {
               style: TextStyle(color: Colors.blue),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print("Link tabed");
+                  print("Link tapped");
                   launchUrlInBrowser(url);
                 }));
           pointer = endPos;
@@ -134,7 +134,7 @@ class _DetailScreenState extends State<DetailScreen> {
               text: text.substring(pointer, text.length),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print("text taped");
+                  print("text tapped");
                 }));
           pointer = text.length;
         } else {
@@ -143,7 +143,7 @@ class _DetailScreenState extends State<DetailScreen> {
               text: text.substring(pointer, startPos),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print("text taped");
+                  print("text tapped");
                 }));
           pointer = startPos - 1;
         }
@@ -206,7 +206,6 @@ class _DetailScreenState extends State<DetailScreen> {
       return widgetList;
     }
 
-    // set read status to true
     widget.warnMessage.read = true;
 
     List<String> generateAreaDescList(int length) {
@@ -415,7 +414,8 @@ class _DetailScreenState extends State<DetailScreen> {
                     padding: EdgeInsets.all(7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: chooseWarningSeverityColor(widget.warnMessage.severity),
+                      color: chooseWarningSeverityColor(
+                          widget.warnMessage.severity),
                     ),
                     child: Text(
                       AppLocalizations.of(context).warning_severity +
@@ -645,12 +645,12 @@ class _DetailScreenState extends State<DetailScreen> {
                                   color: Colors.green)),
                       onTap: () {
                         setState(() {
-                            if (showMorePlaces) {
-                              showMorePlaces = false;
-                            } else {
-                              showMorePlaces = true;
-                            }
-                          });
+                          if (showMorePlaces) {
+                            showMorePlaces = false;
+                          } else {
+                            showMorePlaces = true;
+                          }
+                        });
                       },
                     )
                   : SizedBox(),

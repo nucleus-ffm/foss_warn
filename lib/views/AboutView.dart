@@ -43,8 +43,10 @@ class AboutView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
             child: Center(
-              child: Text(AppLocalizations.of(context).about_summery,
-              textAlign: TextAlign.center,),
+              child: Text(
+                AppLocalizations.of(context).about_summery,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
           Divider(),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/apiHandler.dart';
-import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
-import 'package:foss_warn/views/SettingsView.dart';
-import 'package:foss_warn/widgets/ConnectionErrorWidget.dart';
 import 'package:provider/provider.dart';
+
+import '../services/apiHandler.dart';
+import '../services/checkForMyPlacesWarnings.dart';
+import 'SettingsView.dart';
+import '../widgets/ConnectionErrorWidget.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../main.dart';
@@ -84,7 +85,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     List<WarnMessage> loadOnlyWarningsForMyPlaces() {
       print("loadOnlyWarningsForMyPlaces");
       List<WarnMessage> warningsForMyPlaces = [];
-      for(Place p in myPlaceList){
+      for (Place p in myPlaceList) {
         warningsForMyPlaces.addAll(p.warnings);
       }
       return warningsForMyPlaces;
@@ -102,9 +103,9 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                       Container(
                         child: ConnectionError(),
                       ),
-                      allWarnMessageList.isEmpty?
-                        NoWarningsInList():
-                      SizedBox(),
+                      allWarnMessageList.isEmpty
+                          ? NoWarningsInList()
+                          : SizedBox(),
                       ...allWarnMessageList
                           .map((warnMessage) =>
                               WarningWidget(warnMessage: warnMessage))
@@ -140,17 +141,21 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(AppLocalizations.of(context).all_warnings_everything_ok,
+                                    Text(
+                                        AppLocalizations.of(context)
+                                            .all_warnings_everything_ok,
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold)),
                                     Icon(
                                       Icons.check_circle_rounded,
                                       size: 200,
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
-                                    Text(
-                                        AppLocalizations.of(context).all_warnings_everything_ok_text),
+                                    Text(AppLocalizations.of(context)
+                                        .all_warnings_everything_ok_text),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
@@ -159,7 +164,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                         });
                                       },
                                       child: Text(
-                                        AppLocalizations.of(context).all_warnings_reload,
+                                        AppLocalizations.of(context)
+                                            .all_warnings_reload,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       style: TextButton.styleFrom(
@@ -186,25 +192,26 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                       ),
                     ],
                   ),
-                      Expanded(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(AppLocalizations.of(context).all_warnings_no_places_chosen,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                  Text("\n"),
-                                  Text(
-                                      AppLocalizations.of(context).all_warnings_no_places_chosen_text),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                AppLocalizations.of(context)
+                                    .all_warnings_no_places_chosen,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                            Text("\n"),
+                            Text(AppLocalizations.of(context)
+                                .all_warnings_no_places_chosen_text),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
       ),

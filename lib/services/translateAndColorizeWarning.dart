@@ -146,12 +146,15 @@ String translateWarningSeverity(String severity) {
 
 /// translate the status of a warning message
 /// @todo: Add translations
-String translateWarningStatus(String status) => (status == "Actual") ? "real" : status;
+String translateWarningStatus(String status) =>
+    (status == "Actual") ? "real" : status;
 
 /// translate the urgency of a warning message
 /// @todo: Add translations
-String translateWarningUrgency(String urgency) => (urgency == "Immediate") ? "unmittelbar" : urgency;
+String translateWarningUrgency(String urgency) =>
+    (urgency == "Immediate") ? "unmittelbar" : urgency;
 
 /// translate the certainty of a warning message
 /// @todo: Add translations
-String translateWarningCertainty(String certainty) => (certainty == "Observed") ? "beobachtet" : certainty;
+String translateWarningCertainty(String certainty) =>
+    (certainty == "Observed") ? "beobachtet" : certainty;

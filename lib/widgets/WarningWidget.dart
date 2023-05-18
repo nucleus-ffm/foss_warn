@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/translateAndColorizeWarning.dart';
-import 'package:foss_warn/widgets/dialogs/MessageTypeExplanation.dart';
 import 'package:provider/provider.dart';
+
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
+import '../services/translateAndColorizeWarning.dart';
+import '../widgets/dialogs/MessageTypeExplanation.dart';
 import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {

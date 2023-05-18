@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
-import 'package:foss_warn/views/aboutView.dart';
+import 'package:foss_warn/views/AboutView.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -179,12 +179,13 @@ class _HomeViewState extends State<HomeView> {
             ),
             IconButton(
               onPressed: () {
-                for(Place p in myPlaceList) {
+                for (Place p in myPlaceList) {
                   p.markAllWarningsAsRead(context);
                 }
                 final snackBar = SnackBar(
                   content: Text(
-                    AppLocalizations.of(context).main_app_bar_tooltip_mark_all_warnings_as_read,
+                    AppLocalizations.of(context)
+                        .main_app_bar_tooltip_mark_all_warnings_as_read,
                     style: TextStyle(color: Colors.black),
                   ),
                   backgroundColor: Colors.green[100],
@@ -195,12 +196,13 @@ class _HomeViewState extends State<HomeView> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: Icon(Icons.mark_chat_read),
-              tooltip: AppLocalizations.of(context).main_app_bar_tooltip_mark_all_warnings_as_read,
+              tooltip: AppLocalizations.of(context)
+                  .main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
                 onSelected: (result) {
-                  switch(result) {
+                  switch (result) {
                     case 0:
                       Navigator.push(
                         context,
@@ -216,8 +218,14 @@ class _HomeViewState extends State<HomeView> {
                   }
                 },
                 itemBuilder: (context) => <PopupMenuEntry>[
-                      PopupMenuItem(child: Text( AppLocalizations.of(context).main_dot_menu_settings), value: 0),
-                      PopupMenuItem(child: Text(AppLocalizations.of(context).main_dot_menu_about), value: 1)
+                      PopupMenuItem(
+                          child: Text(AppLocalizations.of(context)
+                              .main_dot_menu_settings),
+                          value: 0),
+                      PopupMenuItem(
+                          child: Text(
+                              AppLocalizations.of(context).main_dot_menu_about),
+                          value: 1)
                     ])
           ],
         ),

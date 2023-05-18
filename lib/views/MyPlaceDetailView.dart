@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/sortWarnings.dart';
+
 import '../class/abstract_Place.dart';
+import '../services/sortWarnings.dart';
 import '../widgets/WarningWidget.dart';
 
 class MyPlaceDetailScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("${myPlace.name}"),
+        title: Text("${myPlace.getName()}"),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(

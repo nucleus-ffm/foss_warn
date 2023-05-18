@@ -7,12 +7,11 @@ import 'package:provider/provider.dart';
 
 import '../widgets/MyPlaceWidget.dart';
 
-
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/ConnectionErrorWidget.dart';
-import 'addMyPlaceView.dart';
+import 'AddMyPlaceView.dart';
 
 class MyPlaces extends StatefulWidget {
   const MyPlaces({Key? key}) : super(key: key);
@@ -43,7 +42,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     // reload data when app is resumed
-    if(state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed) {
       print("App is resumed...");
       load();
     }
@@ -93,34 +92,35 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
             //check if myPlaceList is empty, if not show list else show text
             myPlaceList.isNotEmpty
                 ? SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: Padding(
-                      padding: const EdgeInsets.only(bottom: 65),
-                      child: Column(
-                        children: [
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                        padding: const EdgeInsets.only(bottom: 65),
+                        child: Column(children: [
                           Container(
                             child: ConnectionError(),
                           ),
-                        ...myPlaceList
-                            .map((place) => MyPlaceWidget(myPlace: place))
-                            .toList(),
-                            ]
-                      )),
-                )
+                          ...myPlaceList
+                              .map((place) => MyPlaceWidget(myPlace: place))
+                              .toList(),
+                        ])),
+                  )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(AppLocalizations.of(context).my_place_no_place_added
-                        ,
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      Text(
+                        AppLocalizations.of(context).my_place_no_place_added,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Text(AppLocalizations.of(context).my_place_no_place_added_text,
-                        textAlign: TextAlign.center,),
+                      Text(
+                        AppLocalizations.of(context)
+                            .my_place_no_place_added_text,
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
             Positioned(

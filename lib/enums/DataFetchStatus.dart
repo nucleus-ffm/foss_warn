@@ -1,5 +1,1 @@
-enum DataFetchStatus {
-  no_info,
-  success,
-  error
-}
+enum DataFetchStatus { no_info, success, error }

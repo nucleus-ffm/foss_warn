@@ -1,5 +1,4 @@
-import 'dart:core';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../services/listHandler.dart';
@@ -9,7 +8,7 @@ import 'class_NotificationService.dart';
 import 'class_WarnMessage.dart';
 
 abstract class Place {
-  String name;
+  final String name;
   int countWarnings = 0;
   List<WarnMessage> warnings = [];
 
@@ -17,10 +16,7 @@ abstract class Place {
     countWarnings = this.warnings.length;
   }
 
-  // return the name of the place
-  String getName() {
-    return name;
-  }
+  String getName() => name;
 
   // check if all warnings in `warnings` are
   // also in the alreadyReadWarnings list
@@ -52,21 +48,21 @@ abstract class Place {
   Future<void> sendNotificationForWarnings() async {
     for (WarnMessage myWarnMessage in warnings) {
       print(myWarnMessage.headline);
-      print("notified:" + ((!myWarnMessage.read &&
-          !myWarnMessage.notified ) &&
-          _checkIfEventShouldBeNotified(myWarnMessage.event)).toString());
-      if ( (!myWarnMessage.read &&
-          !myWarnMessage.notified ) &&
+      print("notified:" +
+          ((!myWarnMessage.read && !myWarnMessage.notified) &&
+                  _checkIfEventShouldBeNotified(myWarnMessage.event))
+              .toString());
+      if ((!myWarnMessage.read && !myWarnMessage.notified) &&
           _checkIfEventShouldBeNotified(myWarnMessage.event)) {
         // Alert is not already read or shown as notification
         // set notified to true to avoid sending notification twice
         myWarnMessage.notified = true;
 
         await NotificationService.showNotification(
-          // generate from the warning in the List the notification id
-          // because the warning identifier is no int, we have to generate a hash code
-            id: _generateNotificationID(myWarnMessage.identifier),
-            title: "Neue Warnung für ${name}",
+            // generate from the warning in the List the notification id
+            // because the warning identifier is no int, we have to generate a hash code
+            id: myWarnMessage.identifier.hashCode,
+            title: "Neue Warnung für $name",
             body: "${myWarnMessage.headline}",
             payload: name,
             channel: myWarnMessage.severity);
@@ -80,7 +76,7 @@ abstract class Place {
   /// set the read status from all warnings to true
   /// @context to update view
   void markAllWarningsAsRead(BuildContext context) {
-    for(WarnMessage myWarnMessage in warnings) {
+    for (WarnMessage myWarnMessage in warnings) {
       myWarnMessage.read = true;
     }
     final updater = Provider.of<Update>(context, listen: false);
@@ -91,7 +87,7 @@ abstract class Place {
   /// used for debug purpose
   /// @context to update view
   void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
-    for(WarnMessage myWarnMessage in warnings) {
+    for (WarnMessage myWarnMessage in warnings) {
       myWarnMessage.read = false;
       myWarnMessage.notified = false;
     }
@@ -106,13 +102,5 @@ abstract class Place {
     } else {
       return true;
     }
-  }
-
-  int _generateNotificationID(String warningID) {
-    /* return a hash code from input */
-    int id;
-    id = warningID.hashCode;
-    print("Notification id is: $id");
-    return id;
   }
 }

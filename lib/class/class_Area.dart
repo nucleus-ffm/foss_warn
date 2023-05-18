@@ -1,4 +1,4 @@
-import '../services/createAreaListFromjson.dart';
+import '../services/createAreaListFromJson.dart';
 import 'class_Geocode.dart';
 
 class Area {
@@ -11,7 +11,7 @@ class Area {
         geocodeList = geocodeListFromJson(json['geocodeList']);
 
   Map<String, dynamic> toJson() => {
-    'areaDesc': areaDesc,
-    'geocodeList': geocodeList,
-  };
+        'areaDesc': areaDesc,
+        'geocodeList': geocodeList,
+      };
 }

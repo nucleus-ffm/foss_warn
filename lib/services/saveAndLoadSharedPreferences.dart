@@ -1,12 +1,12 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:foss_warn/class/class_AlertSwissPlace.dart';
-import 'package:foss_warn/class/class_WarnMessage.dart';
-import 'package:foss_warn/views/SettingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter/material.dart';
+import '../class/class_AlertSwissPlace.dart';
 import '../class/class_NinaPlace.dart';
+import '../class/class_WarnMessage.dart';
+import '../views/SettingsView.dart';
+
 import 'listHandler.dart';
 import '../main.dart';
 
@@ -22,14 +22,15 @@ loadMyPlacesList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   if (preferences.containsKey("MyPlacesListAsJson")) {
-    var data  = jsonDecode(preferences.getString("MyPlacesListAsJson")!);
+    var data = jsonDecode(preferences.getString("MyPlacesListAsJson")!);
     myPlaceList.clear();
-    for(int i = 0; i < data.length; i++) {
+    for (int i = 0; i < data.length; i++) {
       print(data[i].toString());
-      if(data[i].toString().contains("geocode")) {
+      if (data[i].toString().contains("geocode")) {
         // print("Nina Place");
         myPlaceList.add(NinaPlace.fromJson(data[i]));
-      } else  if(data[i].toString().contains("shortName")) { //@todo think about better solution
+      } else if (data[i].toString().contains("shortName")) {
+        //@todo think about better solution
         // print("alert swiss place");
         myPlaceList.add(AlertSwissPlace.fromJson(data[i]));
       }
@@ -44,7 +45,7 @@ saveGeocodes(String jsonFile) async {
   preferences.setString("geocodes", jsonFile);
 }
 
-Future<dynamic> loadGeocode()  async {
+Future<dynamic> loadGeocode() async {
   print("load geocodes from storage");
   SharedPreferences preferences = await SharedPreferences.getInstance();
   // preferences.remove("geocodes");
@@ -58,30 +59,31 @@ Future<dynamic> loadGeocode()  async {
   }
 }
 
-
-
 //Settings
 
 saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("notificationGeneral", notificationGeneral.toString());
   preferences.setString("startScreen", startScreen.toString());
-  preferences.setString("showExtendedMetaData", showExtendedMetaData.toString());
+  preferences.setString(
+      "showExtendedMetaData", showExtendedMetaData.toString());
   preferences.setString("warningFontSize", warningFontSize.toString());
   preferences.setString("showWelcomeScreen", showWelcomeScreen.toString());
   preferences.setString("sortWarningsBy", sortWarningsBy.toString());
-  preferences.setString("showStatusNotification", showStatusNotification.toString());
+  preferences.setString(
+      "showStatusNotification", showStatusNotification.toString());
   preferences.setString("updateAvailable", updateAvailable.toString());
   preferences.setString("githubVersionNumber", githubVersionNumber.toString());
   preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
   preferences.setString("selectedTheme", selectedTheme.toString());
   preferences.setString("showAllWarnings", showAllWarnings.toString());
-  preferences.setString("notificationEventsSettings", jsonEncode(notificationEventsSettings));
+  preferences.setString(
+      "notificationEventsSettings", jsonEncode(notificationEventsSettings));
   preferences.setBool("activateAlertSwiss", activateAlertSwiss);
   print("Settings saved");
 }
 
-saveEtags() async {
+saveETags() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("mowasEtag", mowasETag);
   preferences.setString("biwappEtag", biwappETag);
@@ -91,7 +93,7 @@ saveEtags() async {
   print("etags saved");
 }
 
-loadEtags() async {
+loadETags() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.containsKey("mowasEtag")) {
     String temp = preferences.getString("mowasEtag")!;
@@ -201,7 +203,7 @@ loadSettings() async {
   }
   if (preferences.containsKey("selectedTheme")) {
     String temp = preferences.getString("selectedTheme")!;
-    switch(temp) {
+    switch (temp) {
       case 'ThemeMode.system':
         selectedTheme = ThemeMode.system;
         break;
@@ -264,12 +266,12 @@ loadNotificationSettingsImportanceList() async {
     print("notificationSettingsImportance exist - load now");
     notificationSettingsImportance.clear();
     notificationSettingsImportance =
-    preferences.getStringList('notificationSettingsImportance')!;
+        preferences.getStringList('notificationSettingsImportance')!;
     notificationWithSevere = false;
     notificationWithModerate = false;
     notificationWithMinor = false;
     for (String i in notificationSettingsImportance) {
-      switch(i.toLowerCase()) {
+      switch (i.toLowerCase()) {
         case "severe":
           notificationWithSevere = true;
           continue;
@@ -282,7 +284,8 @@ loadNotificationSettingsImportanceList() async {
       }
     }
     // fix legacy
-    if(notificationSettingsImportance.contains(["Severe", "Moderate", "Minor"])) {
+    if (notificationSettingsImportance
+        .contains(["Severe", "Moderate", "Minor"])) {
       saveNotificationSettingsImportanceList();
       loadNotificationSettingsImportanceList();
     }
@@ -302,11 +305,11 @@ cacheWarnings() async {
 }
 
 loadCachedWarnings() async {
-  SharedPreferences preferences =  await SharedPreferences.getInstance();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.containsKey("cachedWarnings")) {
     var data = jsonDecode(preferences.getString("cachedWarnings")!)!;
     // print(data);
-    for(int i = 0; i < data.length; i++) {
+    for (int i = 0; i < data.length; i++) {
       // print(data[i]);
       warnMessageList.add(WarnMessage.fromJson(data[i]));
     }
@@ -315,4 +318,3 @@ loadCachedWarnings() async {
     print("there are no saved warnings");
   }
 }
-

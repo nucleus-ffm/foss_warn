@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:foss_warn/class/class_AlertSwissPlace.dart';
-
+import '../class/class_AlertSwissPlace.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
@@ -24,7 +23,7 @@ Future callAlertSwissAPI() async {
     //print("create new Warn Message List");
 
     await loadSettings();
-    await loadEtags();
+    await loadETags();
 
     // get overview if warnings exits for myplaces
     response = await get(Uri.parse(url));
@@ -44,15 +43,15 @@ Future callAlertSwissAPI() async {
       //warnMessageList.addAll(tempWarnMessageList); // transfer temp List in real list
 
       // store warnings in places //@todo testing
-      for(Place p in myPlaceList) {
-        if(p is AlertSwissPlace) {
-          for(WarnMessage message in tempWarnMessageList) {
-            for(Area a in message.areaList) {
-              for(Geocode g in a.geocodeList) {
-                if(g.geocodeName == p.shortName) {
-                  if(!p.warnings.any((element) => element.identifier == message.identifier)) {
-                    p.warnings.add(message);
-                  }
+      for (Place p in myPlaceList) {
+        if (!(p is AlertSwissPlace)) break;
+
+        for (WarnMessage msg in tempWarnMessageList) {
+          for (Area a in msg.areaList) {
+            for (Geocode g in a.geocodeList) {
+              if (g.geocodeName == p.shortName) {
+                if (!p.warnings.any((w) => w.identifier == msg.identifier)) {
+                  p.warnings.add(msg);
                 }
               }
             }
@@ -96,7 +95,7 @@ WarnMessage? createWarning(var data) {
   }
 
   String addLicense(var pub) {
-    if(pub != null) {
+    if (pub != null) {
       return pub += "\nQuelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)";
     } else {
       return "Quelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)";
@@ -105,11 +104,14 @@ WarnMessage? createWarning(var data) {
 
   try {
     // don't display tech test alerts
-    if(data["technicalTestAlert"] == "true") {
+    if (data["technicalTestAlert"] == "true") {
       return null;
     }
-    return WarnMessage.fromJsonAlertSwiss(data, generateAreaList(data["areas"]),
-        generateInstruction(data["instruction"] ?? [] ),  addLicense(data["publisherName"]) );
+    return WarnMessage.fromJsonAlertSwiss(
+        data,
+        generateAreaList(data["areas"]),
+        generateInstruction(data["instruction"] ?? []),
+        addLicense(data["publisherName"]));
   } catch (e) {
     print(
         "something went wrong while paring alert swiss data: " + e.toString());

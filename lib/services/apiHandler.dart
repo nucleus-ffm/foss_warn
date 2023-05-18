@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:foss_warn/class/class_AlertSwissPlace.dart';
+import '../class/class_AlertSwissPlace.dart';
 import '../class/class_NinaPlace.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
@@ -48,7 +48,7 @@ Future callAPI() async {
         String geocode = p.geocode.geocodeNumber.substring(0, 5) + "0000000";
 
         await loadSettings();
-        await loadEtags();
+        await loadETags();
 
         print("call: " + baseUrl + "/dashboard/" + geocode + ".json");
         // get overview if warnings exits for myplaces
@@ -70,13 +70,16 @@ Future callAPI() async {
             if (responseDetails.statusCode == 200) {
               var warningDetails =
                   jsonDecode(utf8.decode(responseDetails.bodyBytes));
-              WarnMessage? temp = createWarning(warningDetails, provider,
-                  p.name, p.geocode);
+              WarnMessage? temp =
+                  createWarning(warningDetails, provider, p.name, p.geocode);
               if (temp != null) {
-
                 tempWarnMessageList.add(temp);
-                if(!p.warnings.any((element) => element.identifier == temp.identifier)) {
-                  print("add warning to p: " + temp.headline + " " + temp.notified.toString());
+                if (!p.warnings
+                    .any((element) => element.identifier == temp.identifier)) {
+                  print("add warning to p: " +
+                      temp.headline +
+                      " " +
+                      temp.notified.toString());
                   p.warnings.add(temp);
                   p.countWarnings++;
                 }
@@ -92,29 +95,29 @@ Future callAPI() async {
             }
           }
           // remove old warnings
-          List<WarnMessage> WarnMessageToRemove = [];
-          for(WarnMessage message in p.warnings) {
-            if(!tempWarnMessageList.any((element) => element.identifier == message.identifier)) {
-              WarnMessageToRemove.add(message);
+          List<WarnMessage> warnMessagesToRemove = [];
+          for (WarnMessage msg in p.warnings) {
+            if (!tempWarnMessageList
+                .any((tmp) => tmp.identifier == msg.identifier)) {
+              warnMessagesToRemove.add(msg);
             }
           }
-          for(WarnMessage message in WarnMessageToRemove) {
+          for (WarnMessage message in warnMessagesToRemove) {
             p.warnings.remove(message);
             p.countWarnings--;
           }
 
           areWarningsFromCache = false;
-          print("Save my places list with new warnings");
+          print("Saving myPlacesList with new warnings");
           saveMyPlacesList();
-
         } else {
           print("could not reach: ");
           successfullyFetched = false;
-          error += "We have a problem to reach the warnings for:  ${p.name}"
+          error += "Failed to get warnings for:  ${p.name}"
               " (Statuscode:  ${response.statusCode} ) \n";
         }
       } catch (e) {
-        print("Something went wrong while trying to call the NINA API:  ${e}");
+        print("Something went wrong while trying to call the NINA API:  $e");
         successfullyFetched = false;
         areWarningsFromCache = true;
         error += e.toString() + " \n";
@@ -153,8 +156,8 @@ Future callAPI() async {
 }
 
 /// generate WarnMessage object
-WarnMessage? createWarning(var data, String provider, String placeName,
-    Geocode geocode) {
+WarnMessage? createWarning(
+    var data, String provider, String placeName, Geocode geocode) {
   /// generate empty list as placeholder
   /// @todo fill with real data
   List<Area> generateAreaList(int i) {

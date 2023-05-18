@@ -24,7 +24,7 @@ Future getData(bool useEtag) async {
     //print("create new Warn Message List");
 
     await loadSettings();
-    await loadEtags();
+    await loadETags();
 
     // Get from MOWAS
     print("get from Mowas");
@@ -541,6 +541,6 @@ Future getData(bool useEtag) async {
       sendStatusUpdateNotification(false);
     }
   }
-  saveEtags();
+  saveETags();
   return "";
 }

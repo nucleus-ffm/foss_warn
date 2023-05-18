@@ -3,7 +3,7 @@ class Geocode {
   String geocodeNumber;
   String stateName = "";
 
-   Geocode({required this.geocodeName, required this.geocodeNumber}){
+  Geocode({required this.geocodeName, required this.geocodeNumber}) {
     stateName = _extractStateNameFromGeocode();
   }
 
@@ -13,21 +13,21 @@ class Geocode {
         stateName = json['stateName'];
 
   Map<String, dynamic> toJson() => {
-    'geocodeName': geocodeName,
-    'geocodeNumber': geocodeNumber,
-    'stateName': stateName
-  };
+        'geocodeName': geocodeName,
+        'geocodeNumber': geocodeNumber,
+        'stateName': stateName
+      };
 
   String _extractStateNameFromGeocode() {
-    if(geocodeNumber.length < 2)
-      return "error";
+    if (geocodeNumber.length < 2) return "error";
+
     String stateCode = geocodeNumber.substring(0, 2);
 
     switch (stateCode) {
       case "01":
         return "(SH)"; //Schleswig-Holstein
       case "02":
-        return "(HH)";  // Freie und Hansestadt Hamburg
+        return "(HH)"; // Freie und Hansestadt Hamburg
       case "03":
         return "(NI)"; // Niedersachsen
       case "04":
@@ -45,7 +45,7 @@ class Geocode {
       case "10":
         return "(SL)"; //Saarland
       case "11":
-        return "(B)";  //Berlin
+        return "(B)"; //Berlin
       case "12":
         return "(BB)"; //Brandenburg
       case "13":
