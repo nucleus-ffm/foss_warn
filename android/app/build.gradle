@@ -32,6 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    namespace "de.nucleus.foss_warn"
     compileSdkVersion 33
 
     compileOptions {
