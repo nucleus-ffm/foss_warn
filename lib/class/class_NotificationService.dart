@@ -15,7 +15,7 @@ class NotificationService {
           "Warnstufe: " + translateMessageSeverity(channel),
           channelDescription: 'FOSS Warn notifications for '+  channel.trim().toLowerCase(),
           groupKey: "FossWarnWarnings",
-          category: AndroidNotificationCategory("Warnings"),
+          category: AndroidNotificationCategory.alarm,
           importance: Importance.max,
           priority: Priority.max,
 
