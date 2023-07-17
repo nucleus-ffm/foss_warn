@@ -8,13 +8,13 @@ final greenTheme = ThemeData(
     accentColor: Colors.green[700],
     brightness: Brightness.light,
   ),
-  textTheme: const TextTheme(
-    headline1: TextStyle(
+  textTheme: TextTheme(
+    displayLarge: TextStyle(
         fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
         fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-    bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-    headline3: TextStyle(fontSize: 14.0, color: Colors.white),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
 );
 
@@ -26,13 +26,13 @@ final darkTheme = ThemeData(
     accentColor: Colors.green[700],
     brightness: Brightness.dark,
   ),
-  textTheme: const TextTheme(
-      headline1: TextStyle(
+  textTheme: TextTheme(
+      displayLarge: TextStyle(
           fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-      headline2: TextStyle(
+      displayMedium: TextStyle(
           fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-      headline3: TextStyle(fontSize: 14.0, color: Colors.white)),
+      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
 );
 
 final orangeTheme = ThemeData(
@@ -42,11 +42,11 @@ final orangeTheme = ThemeData(
     accentColor: Colors.orange[700],
     brightness: Brightness.light,
   ),
-  textTheme: const TextTheme(
-      headline1: TextStyle(
+  textTheme: TextTheme(
+      displayLarge: TextStyle(
           fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-      headline2: TextStyle(
+      displayMedium: TextStyle(
           fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyText1: TextStyle(fontSize: 14.0, color: Colors.grey),
-      headline3: TextStyle(fontSize: 14.0, color: Colors.white)),
+      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
 );
