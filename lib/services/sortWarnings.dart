@@ -31,8 +31,8 @@ int convertSourceToInt(String source) {
 
 void sortWarnings() {
   if (sortWarningsBy == "severity") {
-    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity)
-        .compareTo(convertSeverityToInt(a.severity)));
+    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity.name)
+        .compareTo(convertSeverityToInt(a.severity.name)));
   } else if (sortWarningsBy == "date") {
     warnMessageList.sort((a, b) => b.sent.compareTo(a.sent));
   } else if (sortWarningsBy == "source") {

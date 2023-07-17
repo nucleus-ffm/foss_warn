@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:foss_warn/enums/DataFetchStatus.dart';
 import 'package:foss_warn/services/alertSwiss.dart';
 
+import '../enums/Certainty.dart';
+import '../enums/Severity.dart';
 import '../main.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
@@ -93,8 +95,8 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
@@ -190,8 +192,8 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
@@ -284,8 +286,8 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
@@ -384,11 +386,10 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-              effective: data[i]["info"][0]["effective"] ?? "",
+              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
-              certainty: data[i]["info"][0]["certainty"] ?? "?",
               headline: data[i]["info"][0]["headline"] ?? "?",
               description: data[i]["info"][0]["description"] ?? "",
               instruction: data[i]["info"][0]["instruction"] ?? "",
@@ -481,8 +482,8 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-              certainty: data[i]["info"][0]["certainty"] ?? "?",
+              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",

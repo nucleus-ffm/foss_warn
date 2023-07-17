@@ -65,7 +65,7 @@ abstract class Place {
             title: "Neue Warnung für $name",
             body: "${myWarnMessage.headline}",
             payload: name,
-            channel: myWarnMessage.severity);
+            channel: myWarnMessage.severity.name);
       } else {
         print("there is no warning or the warning is not in "
             "the notificationSettingsImportance list");
@@ -95,6 +95,10 @@ abstract class Place {
     updater.updateReadStatusInList();
   }
 
+  /// return true or false if the warning should be irgnored or not
+  /// The event could be listed in the map notificationEventsSettings.
+  /// if it is listed in the map, return the stored value for the event
+  /// If not return as default true
   bool _checkIfEventShouldBeNotified(String event) {
     if (notificationEventsSettings[event] != null) {
       print(event + " " + notificationEventsSettings[event]!.toString());

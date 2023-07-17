@@ -1,5 +1,8 @@
+import '../enums/Certainty.dart';
+import '../enums/Severity.dart';
 import 'class_Area.dart';
 import '../services/createAreaListFromJson.dart';
+
 
 class WarnMessage {
   final String identifier;
@@ -13,8 +16,8 @@ class WarnMessage {
   final String category;
   final String event;
   final String urgency;
-  final String severity; //@todo use emum
-  final String certainty; //@todo use enum
+  final Severity severity;
+  final Certainty certainty;
   final String headline;
   final String description;
   final String instruction;
@@ -102,8 +105,8 @@ class WarnMessage {
         category: json["info"][0]["category"][0] ?? "?",
         event: json["info"][0]["event"] ?? "?",
         urgency: json["info"][0]["urgency"] ?? "?",
-        severity: json["info"][0]["severity"].toString().toLowerCase(),
-        certainty: json["info"][0]["certainty"] ?? "?",
+        severity: getSeverity(json["info"][0]["severity"].toString().toLowerCase()),
+        certainty: getCertainty(json["info"][0]["certainty"].toString().toLowerCase()),
         effective: json["info"][0]["effective"] ?? "",
         onset: json["info"][0]["onset"] ?? "",
         expires: json["info"][0]["expires"] ?? "",
@@ -134,8 +137,8 @@ class WarnMessage {
         category: json["event"] ?? "?", // missing
         event: json["event"] ?? "?",
         urgency: "?",
-        severity: json["severity"] ?? "?",
-        certainty: "?", // missing
+        severity: getSeverity(json["severity"]),
+        certainty: getCertainty(""), // missing
         effective: "", // missing
         onset: json["onset"] ?? "", // m
         expires: json["expires"] ?? "", // m

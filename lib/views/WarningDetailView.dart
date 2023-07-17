@@ -415,12 +415,12 @@ class _DetailScreenState extends State<DetailScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: chooseWarningSeverityColor(
-                          widget.warnMessage.severity),
+                          widget.warnMessage.severity.name),
                     ),
                     child: Text(
                       AppLocalizations.of(context).warning_severity +
                           ": " +
-                          translateWarningSeverity(widget.warnMessage.severity),
+                          translateWarningSeverity(widget.warnMessage.severity.name),
                       style: TextStyle(
                           color: Colors.white, fontSize: warningFontSize),
                     ),
@@ -458,7 +458,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               AppLocalizations.of(context).warning_certainty +
                                   ": " +
                                   translateWarningCertainty(
-                                      widget.warnMessage.certainty),
+                                      widget.warnMessage.certainty.name),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: warningFontSize),
