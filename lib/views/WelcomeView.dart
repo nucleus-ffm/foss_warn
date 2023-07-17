@@ -20,6 +20,7 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
   final _platform = const MethodChannel("flutter.native/helper");
+  bool _disclaimerAccepted = false;
   late Future<bool> _batteryOptimizationFuture;
   List<WelcomeScreenItem>? _welcomeScreenItems;
 
@@ -64,15 +65,15 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
               scrollDirection: Axis.horizontal,
               itemCount: _welcomeScreenItems!.length,
               itemBuilder: (BuildContext context, int index) {
-                final WelcomeScreenItem item = _welcomeScreenItems![index];
-                final isLastSlide = index == _welcomeScreenItems!.length - 1;
+                final WelcomeScreenItem _item = _welcomeScreenItems![index];
+                final _isLastSlide = index == _welcomeScreenItems!.length - 1;
 
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSlide(context, item),
-                    _buildActionButtons(context, item.action),
-                    isLastSlide
+                    _buildSlide(context, _item),
+                    _buildActionButtons(context, _item.action),
+                    _isLastSlide
                         ? SizedBox(height: 90)
                         : Container(
                             padding: EdgeInsets.symmetric(vertical: 40.0),
@@ -89,25 +90,28 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
 
   Widget _buildSlide(BuildContext context, WelcomeScreenItem item) {
     return Expanded(
-        child: Column(
-      children: [
-        SizedBox(height: MediaQuery.of(context).size.height / 4.5),
-        Image.asset(item.imagePath, width: 220.0, height: 200.0),
-        Text(item.title, style: TextStyle(fontSize: 34.0, height: 2.0)),
-        Expanded(
+      child: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height / 4.5),
+          Image.asset(item.imagePath, width: 220.0, height: 200.0),
+          Text(item.title, style: TextStyle(fontSize: 34.0, height: 2.0)),
+          Expanded(
             child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0),
-                child: SingleChildScrollView(
-                    primary: true,
-                    child: Text(item.description,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            letterSpacing: 1.2,
-                            fontSize: 16.0,
-                            height: 1.3),
-                        textAlign: TextAlign.center))))
-      ],
-    ));
+              padding: EdgeInsets.symmetric(horizontal: 50.0),
+              child: SingleChildScrollView(
+                  primary: true,
+                  child: Text(item.description,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          letterSpacing: 1.2,
+                          fontSize: 16.0,
+                          height: 1.3),
+                      textAlign: TextAlign.center)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildActionButtons(BuildContext context, String? action) {
@@ -186,16 +190,17 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
               ),
             ),
             FilledButton(
-                onPressed: () {
-                  showDialog(
-                    context: navigatorKey.currentContext!,
-                    builder: (BuildContext context) => PrivacyDialog(),
-                  );
-                },
-                child: Text(
-                  AppLocalizations.of(context).about_privacy,
-                  style: TextStyle(color: Colors.white),
-                )),
+              onPressed: () {
+                showDialog(
+                  context: navigatorKey.currentContext!,
+                  builder: (BuildContext context) => PrivacyDialog(),
+                );
+              },
+              child: Text(
+                AppLocalizations.of(context).about_privacy,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         );
       case "end":
