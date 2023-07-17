@@ -4,21 +4,24 @@ import 'package:foss_warn/class/abstract_Place.dart';
 import 'class_WarnMessage.dart';
 
 class NinaPlace extends Place {
-  final Geocode geocode;
+  final Geocode _geocode;
 
   NinaPlace({
-    required this.geocode,
+    required Geocode geocode,
     required String name,
-  }) : super(name: name, warnings: []);
+  }) : _geocode = geocode, super(name: name, warnings: []);
+
 
   /// returns the name of the place with the state
-  String getName() => "$name, ${geocode.stateName}";
+  @override
+  String getName() => "${super.getName()}, ${_geocode.getStateName()}";
+  Geocode getGeocode() => _geocode;
 
   NinaPlace.withWarnings(
-      {required this.geocode,
+      {required Geocode geocode,
       required String name,
       required List<WarnMessage> warnings})
-      : super(name: name, warnings: warnings);
+      : _geocode = geocode, super(name: name, warnings: warnings);
 
   factory NinaPlace.fromJson(Map<String, dynamic> json) {
     List<WarnMessage> createWarningList(var data) {
@@ -37,5 +40,5 @@ class NinaPlace extends Place {
   }
 
   Map<String, dynamic> toJson() =>
-      {'name': name, 'geocode': geocode, 'warnings': warnings};
+      {'name': getName(), 'geocode': getGeocode(), 'warnings': getWarnings()};
 }

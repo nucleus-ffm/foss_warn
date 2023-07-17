@@ -1,27 +1,31 @@
 class Geocode {
-  String geocodeName;
-  String geocodeNumber;
-  String stateName = "";
+  String _geocodeName;
+  String _geocodeNumber;
+  String _stateName = "";
 
-  Geocode({required this.geocodeName, required this.geocodeNumber}) {
-    stateName = _extractStateNameFromGeocode();
+  Geocode({required String geocodeName, required String geocodeNumber}) : _geocodeNumber = geocodeNumber, _geocodeName = geocodeName {
+    _stateName = _extractStateNameFromGeocode();
   }
 
+  String getGeocodeName() => _geocodeName;
+  String getGeocodeNumber() => _geocodeNumber;
+  String getStateName() => _stateName;
+
   Geocode.fromJson(Map<String, dynamic> json)
-      : geocodeName = json['geocodeName'],
-        geocodeNumber = json['geocodeNumber'],
-        stateName = json['stateName'];
+      : _geocodeName = json['geocodeName'],
+        _geocodeNumber = json['geocodeNumber'],
+        _stateName = json['stateName'];
 
   Map<String, dynamic> toJson() => {
-        'geocodeName': geocodeName,
-        'geocodeNumber': geocodeNumber,
-        'stateName': stateName
+        'geocodeName': _geocodeName,
+        'geocodeNumber': _geocodeNumber,
+        'stateName': _stateName
       };
 
   String _extractStateNameFromGeocode() {
-    if (geocodeNumber.length < 2) return "error";
+    if (_geocodeNumber.length < 2) return "error";
 
-    String stateCode = geocodeNumber.substring(0, 2);
+    String stateCode = _geocodeNumber.substring(0, 2);
 
     switch (stateCode) {
       case "01":

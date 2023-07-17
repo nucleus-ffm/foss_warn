@@ -2,11 +2,11 @@ import 'package:flutter/services.dart';
 
 /// collect all available infos to help finding Bugs and wrong settings
 Future<String> collectSystemInfo() async {
-  String result = "Systeminformationen \n\n";
+  String _result = "Systeminformationen \n\n";
 
-  result += "Akkuoptimierung: ${await _isBatteryOptimizationEnabled()} \n";
+  _result += "Akkuoptimierung: ${await _isBatteryOptimizationEnabled()} \n";
 
-  return result;
+  return _result;
 }
 
 Future<bool> _isBatteryOptimizationEnabled() async {

@@ -11,17 +11,17 @@ class MyPlaceWidget extends StatelessWidget {
 
   String checkForWarnings(BuildContext context) {
     print("[MyPlaceWidget] check for warnings");
-    if (myPlace.countWarnings > 0) {
-      if (myPlace.countWarnings > 1) {
+    if (myPlace.getCountWarnings() > 0) {
+      if (myPlace.getCountWarnings() > 1) {
         return AppLocalizations.of(context).my_place_there_are +
             " " +
-            myPlace.countWarnings.toString() +
+            myPlace.getCountWarnings().toString() +
             " " +
             AppLocalizations.of(context).my_place_warnings_more_then_one;
       } else {
         return AppLocalizations.of(context).my_place_there_are +
             " " +
-            myPlace.countWarnings.toString() +
+            myPlace.getCountWarnings().toString() +
             " " +
             AppLocalizations.of(context).my_place_warnings_only_one;
       }
@@ -43,7 +43,7 @@ class MyPlaceWidget extends StatelessWidget {
           );
         },
         onTap: () {
-          if (myPlace.countWarnings != 0) {
+          if (myPlace.getCountWarnings() != 0) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -89,7 +89,7 @@ class MyPlaceWidget extends StatelessWidget {
                 ],
               ),
               Flexible(
-                child: myPlace.countWarnings ==
+                child: myPlace.getCountWarnings() ==
                         0 //check the number of warnings and display check or warning
                     ? TextButton(
                         style: TextButton.styleFrom(

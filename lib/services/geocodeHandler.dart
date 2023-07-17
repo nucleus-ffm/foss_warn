@@ -20,30 +20,25 @@ Future<void> geocodeHandler() async {
   print("[geocodehandler]");
 
   try {
-    final data = await getPlaces();
+    final _data = await getPlaces();
 
-    if (data == null) {
+    if (_data == null) {
       print("could not reach geocode source");
       return;
     }
 
     allAvailablePlacesNames.clear();
 
-    for (int i = 0; i < data["daten"].length; i++) {
+    for (int i = 0; i < _data["daten"].length; i++) {
       // print( "name:" +  data["daten"][i][1] + "geocodeNumber:" +  data["daten"][i][0]);
       Place place = NinaPlace(
-          name: data["daten"][i][1],
+          name: _data["daten"][i][1],
           geocode:
-              Geocode(geocodeNumber: data["daten"][i][0], geocodeName: ""));
+              Geocode(geocodeNumber: _data["daten"][i][0], geocodeName: ""));
 
       // we can not receive any warning for OT (Ortsteile)
-      if (place.name.contains("OT")) continue;
+      if (place.getName().contains("OT")) continue;
 
-      /* final placeNameWithState =
-          "${place.name} ${place.geocode.stateName}"; */
-
-      // add to map only used in background
-      // geocodeMap.putIfAbsent(placeNameWithState, () => place.geocode.geocodeName);
       // add to list, used to display the Places List
       allAvailablePlacesNames.add(place);
     }

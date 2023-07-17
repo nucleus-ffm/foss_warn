@@ -15,12 +15,12 @@ import 'package:http/http.dart';
 
 /// call the nina api and load for myPlaces the warnings
 Future callAPI() async {
-  bool successfullyFetched = true;
-  String error = "";
-  List<WarnMessage> tempWarnMessageList = [];
-  tempWarnMessageList.clear();
+  bool _successfullyFetched = true;
+  String _error = "";
+  List<WarnMessage> _tempWarnMessageList = [];
+  _tempWarnMessageList.clear();
   print("call API");
-  String baseUrl = "https://warnung.bund.de/api31";
+  String _baseUrl = "https://warnung.bund.de/api31";
   // String geocode = "071110000000"; // just for testing
 
   await loadSettings();
@@ -28,11 +28,11 @@ Future callAPI() async {
 
   for (Place p in myPlaceList) {
     // if the place is for swiss skip this place
-    print(p.name);
+    print(p.getName());
     if (p is AlertSwissPlace) {
       if (!activateAlertSwiss) {
-        successfullyFetched = false;
-        error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
+        _successfullyFetched = false;
+        _error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
             " aber AlertSwiss nicht als Quelle aktiviert \n";
       }
       continue;
@@ -44,51 +44,51 @@ Future callAPI() async {
         var data; //var for response data
         // the warnings are only on kreisebene wo we only care about the first 5
         // letters from the code and fill the rest with 0s
-        print(p.geocode.geocodeNumber);
-        String geocode = p.geocode.geocodeNumber.substring(0, 5) + "0000000";
+        print(p.getGeocode().getGeocodeNumber());
+        String geocode = p.getGeocode().getGeocodeNumber().substring(0, 5) + "0000000";
 
         await loadSettings();
         await loadETags();
 
-        print("call: " + baseUrl + "/dashboard/" + geocode + ".json");
+        print("call: " + _baseUrl + "/dashboard/" + geocode + ".json");
         // get overview if warnings exits for myplaces
         response =
-            await get(Uri.parse(baseUrl + "/dashboard/" + geocode + ".json"));
+            await get(Uri.parse(_baseUrl + "/dashboard/" + geocode + ".json"));
 
         // check if request was successfully
         if (response.statusCode == 200) {
           data = jsonDecode(utf8.decode(response.bodyBytes));
-          tempWarnMessageList.clear();
+          _tempWarnMessageList.clear();
 
           for (int i = 0; i < data.length; i++) {
             String id = data[i]["payload"]["id"];
             String provider = data[i]["payload"]["data"]["provider"];
             print("provider: " + provider);
             var responseDetails =
-                await get(Uri.parse(baseUrl + "/warnings/" + id + ".json"));
+                await get(Uri.parse(_baseUrl + "/warnings/" + id + ".json"));
             // check if request was successfully
             if (responseDetails.statusCode == 200) {
               var warningDetails =
                   jsonDecode(utf8.decode(responseDetails.bodyBytes));
               WarnMessage? temp =
-                  createWarning(warningDetails, provider, p.name, p.geocode);
+                  createWarning(warningDetails, provider, p.getName(), p.getGeocode());
               if (temp != null) {
-                tempWarnMessageList.add(temp);
-                if (!p.warnings
+                _tempWarnMessageList.add(temp);
+                if (!p.getWarnings()
                     .any((element) => element.identifier == temp.identifier)) {
                   print("add warning to p: " +
                       temp.headline +
                       " " +
                       temp.notified.toString());
-                  p.warnings.add(temp);
-                  p.countWarnings++;
+                  p.addWarningToList(temp);
+                  p.incrementNumberOfWarnings();
                 }
 
                 // }  //@todo: fix displaying warnings twice
               }
             } else {
               print("[callAPI] Error: tried calling: " +
-                  baseUrl +
+                  _baseUrl +
                   "/warnings/" +
                   id +
                   ".json");
@@ -96,15 +96,15 @@ Future callAPI() async {
           }
           // remove old warnings
           List<WarnMessage> warnMessagesToRemove = [];
-          for (WarnMessage msg in p.warnings) {
-            if (!tempWarnMessageList
+          for (WarnMessage msg in p.getWarnings()) {
+            if (!_tempWarnMessageList
                 .any((tmp) => tmp.identifier == msg.identifier)) {
               warnMessagesToRemove.add(msg);
             }
           }
           for (WarnMessage message in warnMessagesToRemove) {
-            p.warnings.remove(message);
-            p.countWarnings--;
+            p.removeWarningFromList(message);
+            p.decrementNumberOfWarnings();
           }
 
           areWarningsFromCache = false;
@@ -112,23 +112,23 @@ Future callAPI() async {
           saveMyPlacesList();
         } else {
           print("could not reach: ");
-          successfullyFetched = false;
-          error += "Failed to get warnings for:  ${p.name}"
+          _successfullyFetched = false;
+          _error += "Failed to get warnings for:  ${p.getName()}"
               " (Statuscode:  ${response.statusCode} ) \n";
         }
       } catch (e) {
         print("Something went wrong while trying to call the NINA API:  $e");
-        successfullyFetched = false;
+        _successfullyFetched = false;
         areWarningsFromCache = true;
-        error += e.toString() + " \n";
+        _error += e.toString() + " \n";
       }
     }
   }
   if (showStatusNotification) {
-    if (error != "") {
-      sendStatusUpdateNotification(successfullyFetched, error);
+    if (_error != "") {
+      sendStatusUpdateNotification(_successfullyFetched, _error);
     } else {
-      sendStatusUpdateNotification(successfullyFetched);
+      sendStatusUpdateNotification(_successfullyFetched);
     }
   }
 

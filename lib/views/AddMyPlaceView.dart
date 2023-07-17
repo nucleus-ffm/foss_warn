@@ -16,8 +16,7 @@ class AddMyPlaceView extends StatefulWidget {
 }
 
 class _AddMyPlaceViewState extends State<AddMyPlaceView> {
-  String newPlaceName = "";
-  List<Place> allPlacesToShow = [];
+  List<Place> _allPlacesToShow = [];
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +53,10 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                 ),
               ),
               onChanged: (text) {
-                newPlaceName = text;
                 text = text.toLowerCase();
                 setState(() {
-                  allPlacesToShow = allAvailablePlacesNames.where((place) {
-                    var search = place.name.toLowerCase();
+                  _allPlacesToShow = allAvailablePlacesNames.where((place) {
+                    var search = place.getName().toLowerCase();
                     return search.contains(text);
                   }).toList();
                 });
@@ -71,7 +69,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
               //height: MediaQuery.of(context).size.height,
               //height: 100,
               child: ListView(
-                children: allPlacesToShow
+                children: _allPlacesToShow
                     .map(
                       (place) => ListTile(
                         visualDensity:

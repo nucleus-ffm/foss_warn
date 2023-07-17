@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
 class NotificationService {
-  static final flutterLocalNotificationsPlugin =
+  static final _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   static final onNotification = BehaviorSubject<String?>();
 
@@ -60,7 +60,7 @@ class NotificationService {
     String? payload,
     required String channel,
   }) async {
-    flutterLocalNotificationsPlugin.show(
+    _flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
@@ -76,7 +76,7 @@ class NotificationService {
     String? body,
     String? payload,
   }) async {
-    flutterLocalNotificationsPlugin.show(
+    _flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
@@ -104,7 +104,7 @@ class NotificationService {
           ledOnMs: 100,
         ),
         iOS: DarwinNotificationDetails());
-    await flutterLocalNotificationsPlugin.show(0, "Warnungen",
+    await _flutterLocalNotificationsPlugin.show(0, "Warnungen",
         "Es gibt für mehrere Orte Warnungen", notificationDetails);
   }
 
@@ -127,32 +127,32 @@ class NotificationService {
             macOS: null);
 
     // Request notifications permission (Android 13+)
-    await flutterLocalNotificationsPlugin
+    await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestPermission();
 
     // init the different notifications channels
     try {
-      await flutterLocalNotificationsPlugin
+      await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(AndroidNotificationChannel(
               "foss_warn_notifications_minor", "Warnstufe: Gering"));
 
-      await flutterLocalNotificationsPlugin
+      await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(AndroidNotificationChannel(
               "foss_warn_notifications_moderate", "Warnstufe: Mittel"));
 
-      await flutterLocalNotificationsPlugin
+      await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(AndroidNotificationChannel(
               "foss_warn_notifications_severe", "Warnstufe: Schwer"));
 
-      await flutterLocalNotificationsPlugin
+      await _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(AndroidNotificationChannel(
@@ -163,14 +163,14 @@ class NotificationService {
 
     // when App is closed
     final details =
-        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+        await _flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     if (details != null &&
         details.notificationResponse != null &&
         details.didNotificationLaunchApp) {
       onNotification.add(details.notificationResponse!.payload);
     }
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             onDidReceiveNotificationResponse); //onSelectNotification
 
@@ -188,7 +188,7 @@ class NotificationService {
 
     print("[android notification channels]");
     List<AndroidNotificationChannel>? temp =
-        (await flutterLocalNotificationsPlugin
+        (await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.getNotificationChannels());
@@ -198,7 +198,7 @@ class NotificationService {
         print("Channel is correct and not deleted:" + p.id + " " + p.name);
       } else {
         // remove old channel
-        await flutterLocalNotificationsPlugin
+        await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.deleteNotificationChannel(p.id);
@@ -218,11 +218,11 @@ class NotificationService {
 
   /// cancel one notification with the given id
   static cancelOneNotification(id) async {
-    await flutterLocalNotificationsPlugin.cancel(id);
+    await _flutterLocalNotificationsPlugin.cancel(id);
 
     // cancel summery notification if it is the last one
     List<ActiveNotification>? activeNotifications =
-        await flutterLocalNotificationsPlugin
+        await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.getActiveNotifications();
@@ -239,6 +239,6 @@ class NotificationService {
 
   /// cancel all notifications
   static cancelAllNotification() async {
-    await flutterLocalNotificationsPlugin.cancelAll();
+    await _flutterLocalNotificationsPlugin.cancelAll();
   }
 }

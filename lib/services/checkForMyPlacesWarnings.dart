@@ -9,7 +9,7 @@ import 'saveAndLoadSharedPreferences.dart';
 /// [true] if there are/is a warning - false if not <br>
 /// [useEtag]: if the etags should be used while calling the API
 Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManually) async {
-  bool returnValue = true;
+  bool _returnValue = true;
   print("check for warnings");
   // get data first
   await callAPI();
@@ -36,5 +36,5 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManually) async {
   for (Place myPlace in myPlaceList) {
     myPlace.sendNotificationForWarnings();
   }
-  return returnValue; //@todo remove return value?
+  return _returnValue; //@todo remove return value?
 }

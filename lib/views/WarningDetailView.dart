@@ -217,7 +217,7 @@ class _DetailScreenState extends State<DetailScreen> {
       }
       for (Area myArea in widget.warnMessage.areaList) {
         if (counter <= length || addAll) {
-          tempList.add(myArea.areaDesc);
+          tempList.add(myArea.getAreaDescription());
           counter++;
         } else {
           break;
@@ -237,9 +237,9 @@ class _DetailScreenState extends State<DetailScreen> {
         addAll = true;
       }
       for (Area myArea in widget.warnMessage.areaList) {
-        for (Geocode myGeocode in myArea.geocodeList) {
+        for (Geocode myGeocode in myArea.getGeocodeList()) {
           if (counter <= length || addAll) {
-            tempList.add(myGeocode.geocodeName);
+            tempList.add(myGeocode.getGeocodeName());
             counter++;
           } else {
             break;

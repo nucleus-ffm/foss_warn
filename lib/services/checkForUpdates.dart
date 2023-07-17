@@ -3,17 +3,17 @@ import 'package:http/http.dart';
 import 'dart:convert';
 
 Future<String> checkForUpdates() async {
-  Response response; //response var for get request
+  Response _response; //response var for get request
   var data; //var for response data
   print("Check for updates");
   try {
     var latestGithubReleaseUrl = Uri.parse(
         'https://api.github.com/repos/nucleus-ffm/foss_warn/releases/latest');
-    response = await get(latestGithubReleaseUrl);
+    _response = await get(latestGithubReleaseUrl);
     //print("Response status: " + response.statusCode.toString());
     //check response code 200 -> success
-    if (response.statusCode == 200) {
-      data = jsonDecode(utf8.decode(response.bodyBytes));
+    if (_response.statusCode == 200) {
+      data = jsonDecode(utf8.decode(_response.bodyBytes));
       print(data['tag_name']);
 
       // Github version

@@ -62,11 +62,8 @@ Future getData(bool useEtag) async {
                 j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -77,8 +74,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
-              tempArea.geocodeList = generateGeoCodeList(i, s);
+              tempArea.setAreaDescription(
+                  data[i]["info"][0]["area"][s]["areaDesc"]);
+              tempArea.setGeocodeList(generateGeoCodeList(i, s));
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -95,8 +93,10 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
-              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              severity: getSeverity(
+                  data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
@@ -159,11 +159,8 @@ Future getData(bool useEtag) async {
                 j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+                  Geocode(geocodeName: data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                      geocodeNumber:  data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -174,8 +171,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
-              tempArea.geocodeList = generateGeoCodeList(i, s);
+              tempArea.setAreaDescription(
+                  data[i]["info"][0]["area"][s]["areaDesc"]);
+              tempArea.setGeocodeList(generateGeoCodeList(i, s));
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -192,8 +190,10 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
-              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              severity: getSeverity(
+                  data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
@@ -253,11 +253,8 @@ Future getData(bool useEtag) async {
                 j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -268,8 +265,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
-              tempArea.geocodeList = generateGeoCodeList(i, s);
+              tempArea.setAreaDescription(
+                  data[i]["info"][0]["area"][s]["areaDesc"]);
+              tempArea.setGeocodeList(generateGeoCodeList(i, s));
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -286,8 +284,10 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
-              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              severity: getSeverity(
+                  data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
@@ -353,11 +353,8 @@ Future getData(bool useEtag) async {
                 j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -368,8 +365,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
-              tempArea.geocodeList = generateGeoCodeList(i, s);
+              tempArea.setAreaDescription(
+                  data[i]["info"][0]["area"][s]["areaDesc"]);
+              tempArea.setGeocodeList(generateGeoCodeList(i, s));
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -386,8 +384,10 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
-              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              severity: getSeverity(
+                  data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  data[i]["info"][0]["certainty"].toString().toLowerCase()),
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",
               headline: data[i]["info"][0]["headline"] ?? "?",
@@ -449,11 +449,8 @@ Future getData(bool useEtag) async {
                 j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -464,8 +461,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
-              tempArea.geocodeList = generateGeoCodeList(i, s);
+              tempArea.setAreaDescription(
+                  data[i]["info"][0]["area"][s]["areaDesc"]);
+              tempArea.setGeocodeList(generateGeoCodeList(i, s));
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -482,8 +480,10 @@ Future getData(bool useEtag) async {
               category: data[i]["info"][0]["category"][0] ?? "?",
               event: data[i]["info"][0]["event"] ?? "?",
               urgency: data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(data[i]["info"][0]["severity"].toString().toLowerCase()),
-              certainty: getCertainty(data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              severity: getSeverity(
+                  data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  data[i]["info"][0]["certainty"].toString().toLowerCase()),
               effective: data[i]["info"][0]["effective"] ?? "",
               onset: data[i]["info"][0]["onset"] ?? "",
               expires: data[i]["info"][0]["expires"] ?? "",

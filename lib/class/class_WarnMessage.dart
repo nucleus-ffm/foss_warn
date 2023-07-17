@@ -3,7 +3,6 @@ import '../enums/Severity.dart';
 import 'class_Area.dart';
 import '../services/createAreaListFromJson.dart';
 
-
 class WarnMessage {
   final String identifier;
   final String publisher;

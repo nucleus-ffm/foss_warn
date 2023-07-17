@@ -86,7 +86,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
       print("loadOnlyWarningsForMyPlaces");
       List<WarnMessage> warningsForMyPlaces = [];
       for (Place p in myPlaceList) {
-        warningsForMyPlaces.addAll(p.warnings);
+        warningsForMyPlaces.addAll(p.getWarnings());
       }
       return warningsForMyPlaces;
     }

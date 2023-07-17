@@ -8,20 +8,27 @@ import 'class_NotificationService.dart';
 import 'class_WarnMessage.dart';
 
 abstract class Place {
-  final String name;
-  int countWarnings = 0;
-  List<WarnMessage> warnings = [];
+  final String _name;
+  int _countWarnings = 0;
+  List<WarnMessage> _warnings = [];
 
-  Place({required this.name, required this.warnings}) {
-    countWarnings = this.warnings.length;
+  Place({required String name, required List<WarnMessage> warnings}) : _warnings = warnings, _name = name {
+    _countWarnings = this._warnings.length;
   }
 
-  String getName() => name;
+  String getName() => _name;
+  int getCountWarnings() => _countWarnings;
+  void incrementNumberOfWarnings() => _countWarnings++;
+  void decrementNumberOfWarnings() => _countWarnings--;
+  List<WarnMessage> getWarnings() => _warnings;
+  void addWarningToList(WarnMessage warnMessage) => _warnings.add(warnMessage);
+  void removeWarningFromList(WarnMessage warnMessage) => _warnings.remove(warnMessage);
+  
 
   // check if all warnings in `warnings` are
   // also in the alreadyReadWarnings list
   bool checkIfAllWarningsAreRead() {
-    for (WarnMessage myWarning in warnings) {
+    for (WarnMessage myWarning in _warnings) {
       if (!myWarning.read) {
         // there is min. one warning not read
         return false;
@@ -30,11 +37,11 @@ abstract class Place {
     return true;
   }
 
-  /// check if there is warning in the [warnings] which is not yet in the
+  /// check if there is warning in the [_warnings] which is not yet in the
   /// alreadyNotifiedWarnings list.
   /// return [true] if there is warning which no notification
   bool checkIfThereIsAWarningToNotify() {
-    for (WarnMessage myWarning in warnings) {
+    for (WarnMessage myWarning in _warnings) {
       if (!myWarning.notified &&
           notificationSettingsImportance.contains(myWarning.severity)) {
         // there is min. one warning without notification
@@ -44,9 +51,9 @@ abstract class Place {
     return false;
   }
 
-  /// checks if there can be a notification for a warning in [warnings]
+  /// checks if there can be a notification for a warning in [_warnings]
   Future<void> sendNotificationForWarnings() async {
-    for (WarnMessage myWarnMessage in warnings) {
+    for (WarnMessage myWarnMessage in _warnings) {
       print(myWarnMessage.headline);
       print("notified:" +
           ((!myWarnMessage.read && !myWarnMessage.notified) &&
@@ -62,9 +69,9 @@ abstract class Place {
             // generate from the warning in the List the notification id
             // because the warning identifier is no int, we have to generate a hash code
             id: myWarnMessage.identifier.hashCode,
-            title: "Neue Warnung für $name",
+            title: "Neue Warnung für $_name",
             body: "${myWarnMessage.headline}",
-            payload: name,
+            payload: _name,
             channel: myWarnMessage.severity.name);
       } else {
         print("there is no warning or the warning is not in "
@@ -76,7 +83,7 @@ abstract class Place {
   /// set the read status from all warnings to true
   /// @context to update view
   void markAllWarningsAsRead(BuildContext context) {
-    for (WarnMessage myWarnMessage in warnings) {
+    for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
     }
     final updater = Provider.of<Update>(context, listen: false);
@@ -87,7 +94,7 @@ abstract class Place {
   /// used for debug purpose
   /// @context to update view
   void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
-    for (WarnMessage myWarnMessage in warnings) {
+    for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = false;
       myWarnMessage.notified = false;
     }

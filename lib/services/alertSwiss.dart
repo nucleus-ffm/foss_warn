@@ -48,10 +48,10 @@ Future callAlertSwissAPI() async {
 
         for (WarnMessage msg in tempWarnMessageList) {
           for (Area a in msg.areaList) {
-            for (Geocode g in a.geocodeList) {
-              if (g.geocodeName == p.shortName) {
-                if (!p.warnings.any((w) => w.identifier == msg.identifier)) {
-                  p.warnings.add(msg);
+            for (Geocode g in a.getGeocodeList()) {
+              if (g.getGeocodeName() == p.getShortName()) {
+                if (!p.getWarnings().any((w) => w.identifier == msg.identifier)) {
+                  p.addWarningToList(msg);
                 }
               }
             }

@@ -26,8 +26,8 @@ class WarningWidget extends StatelessWidget {
     List<String> generateGeocodeList() {
       List<String> tempList = [];
       for (Area myArea in warnMessage.areaList) {
-        for (Geocode myGeocode in myArea.geocodeList) {
-          tempList.add(myGeocode.geocodeName);
+        for (Geocode myGeocode in myArea.getGeocodeList()) {
+          tempList.add(myGeocode.getGeocodeName());
         }
       }
       return tempList;
