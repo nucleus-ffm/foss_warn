@@ -8,10 +8,10 @@ class Area {
       : _geocodeList = geocodeList,
         _areaDesc = areaDesc;
 
-  String getAreaDescription() => _areaDesc;
-  void setAreaDescription(String desc) => _areaDesc = desc;
-  List<Geocode> getGeocodeList() => _geocodeList;
-  void setGeocodeList(List<Geocode> list) => _geocodeList = list;
+  String get areaDescription => _areaDesc;
+  void set areaDescription(String desc) => _areaDesc = desc;
+  List<Geocode> get geocodeList => _geocodeList;
+  void set geocodeList(List<Geocode> list) => _geocodeList = list;
 
   Area.fromJson(Map<String, dynamic> json)
       : _areaDesc = json['areaDesc'],

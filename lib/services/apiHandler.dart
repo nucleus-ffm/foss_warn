@@ -28,7 +28,7 @@ Future callAPI() async {
 
   for (Place p in myPlaceList) {
     // if the place is for swiss skip this place
-    print(p.getName());
+    print(p.name);
     if (p is AlertSwissPlace) {
       if (!activateAlertSwiss) {
         _successfullyFetched = false;
@@ -44,8 +44,8 @@ Future callAPI() async {
         var data; //var for response data
         // the warnings are only on kreisebene wo we only care about the first 5
         // letters from the code and fill the rest with 0s
-        print(p.getGeocode().getGeocodeNumber());
-        String geocode = p.getGeocode().getGeocodeNumber().substring(0, 5) + "0000000";
+        print(p.geocode.geocodeNumber);
+        String geocode = p.geocode.geocodeNumber.substring(0, 5) + "0000000";
 
         await loadSettings();
         await loadETags();
@@ -71,10 +71,10 @@ Future callAPI() async {
               var warningDetails =
                   jsonDecode(utf8.decode(responseDetails.bodyBytes));
               WarnMessage? temp =
-                  createWarning(warningDetails, provider, p.getName(), p.getGeocode());
+                  createWarning(warningDetails, provider, p.name, p.geocode);
               if (temp != null) {
                 _tempWarnMessageList.add(temp);
-                if (!p.getWarnings()
+                if (!p.warnings
                     .any((element) => element.identifier == temp.identifier)) {
                   print("add warning to p: " +
                       temp.headline +
@@ -96,7 +96,7 @@ Future callAPI() async {
           }
           // remove old warnings
           List<WarnMessage> warnMessagesToRemove = [];
-          for (WarnMessage msg in p.getWarnings()) {
+          for (WarnMessage msg in p.warnings) {
             if (!_tempWarnMessageList
                 .any((tmp) => tmp.identifier == msg.identifier)) {
               warnMessagesToRemove.add(msg);
@@ -113,7 +113,7 @@ Future callAPI() async {
         } else {
           print("could not reach: ");
           _successfullyFetched = false;
-          _error += "Failed to get warnings for:  ${p.getName()}"
+          _error += "Failed to get warnings for:  ${p.name}"
               " (Statuscode:  ${response.statusCode} ) \n";
         }
       } catch (e) {

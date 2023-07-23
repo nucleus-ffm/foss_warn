@@ -16,7 +16,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("${myPlace.getName()}"),
+        title: Text("${myPlace.name}"),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
@@ -43,7 +43,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: myPlace.getWarnings()
+          children: myPlace.warnings
               .map((warning) => WarningWidget(warnMessage: warning))
               .toList(),
         ),

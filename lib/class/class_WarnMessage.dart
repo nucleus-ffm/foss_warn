@@ -23,7 +23,6 @@ class WarnMessage {
   final List<Area> areaList;
   final String contact;
   final String web;
-
   // specific for warnings from DWD
   final String effective;
   final String onset;

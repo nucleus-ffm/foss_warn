@@ -16,14 +16,17 @@ abstract class Place {
     _countWarnings = this._warnings.length;
   }
 
-  String getName() => _name;
-  int getCountWarnings() => _countWarnings;
+  String get name => _name;
+  int get countWarnings=> _countWarnings;
+  List<WarnMessage> get warnings => _warnings;
+
+  // control the number of warnings
   void incrementNumberOfWarnings() => _countWarnings++;
   void decrementNumberOfWarnings() => _countWarnings--;
-  List<WarnMessage> getWarnings() => _warnings;
+
+  // control the list for warnings
   void addWarningToList(WarnMessage warnMessage) => _warnings.add(warnMessage);
   void removeWarningFromList(WarnMessage warnMessage) => _warnings.remove(warnMessage);
-  
 
   // check if all warnings in `warnings` are
   // also in the alreadyReadWarnings list
@@ -102,7 +105,7 @@ abstract class Place {
     updater.updateReadStatusInList();
   }
 
-  /// return true or false if the warning should be irgnored or not
+  /// return [true] or false if the warning should be irgnored or not
   /// The event could be listed in the map notificationEventsSettings.
   /// if it is listed in the map, return the stored value for the event
   /// If not return as default true

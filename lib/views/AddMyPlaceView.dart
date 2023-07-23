@@ -56,7 +56,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                 text = text.toLowerCase();
                 setState(() {
                   _allPlacesToShow = allAvailablePlacesNames.where((place) {
-                    var search = place.getName().toLowerCase();
+                    var search = place.name.toLowerCase();
                     return search.contains(text);
                   }).toList();
                 });
@@ -74,7 +74,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                       (place) => ListTile(
                         visualDensity:
                             VisualDensity(horizontal: 0, vertical: -4),
-                        title: Text(place.getName()),
+                        title: Text(place.name),
                         onTap: () {
                           setState(() {
                             final updater =

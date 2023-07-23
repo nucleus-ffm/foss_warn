@@ -3,13 +3,15 @@ class Geocode {
   String _geocodeNumber;
   String _stateName = "";
 
-  Geocode({required String geocodeName, required String geocodeNumber}) : _geocodeNumber = geocodeNumber, _geocodeName = geocodeName {
+  Geocode({required String geocodeName, required String geocodeNumber})
+      : _geocodeNumber = geocodeNumber,
+        _geocodeName = geocodeName {
     _stateName = _extractStateNameFromGeocode();
   }
 
-  String getGeocodeName() => _geocodeName;
-  String getGeocodeNumber() => _geocodeNumber;
-  String getStateName() => _stateName;
+  String get geocodeNumber => _geocodeNumber;
+  String get stateName => _stateName;
+  String get geocodeName => _geocodeName;
 
   Geocode.fromJson(Map<String, dynamic> json)
       : _geocodeName = json['geocodeName'],

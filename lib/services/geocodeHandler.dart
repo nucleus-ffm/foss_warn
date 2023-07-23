@@ -37,7 +37,7 @@ Future<void> geocodeHandler() async {
               Geocode(geocodeNumber: _data["daten"][i][0], geocodeName: ""));
 
       // we can not receive any warning for OT (Ortsteile)
-      if (place.getName().contains("OT")) continue;
+      if (place.name.contains("OT")) continue;
 
       // add to list, used to display the Places List
       allAvailablePlacesNames.add(place);

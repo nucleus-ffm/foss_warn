@@ -9,19 +9,20 @@ class NinaPlace extends Place {
   NinaPlace({
     required Geocode geocode,
     required String name,
-  }) : _geocode = geocode, super(name: name, warnings: []);
-
+  })  : _geocode = geocode,
+        super(name: name, warnings: []);
 
   /// returns the name of the place with the state
   @override
-  String getName() => "${super.getName()}, ${_geocode.getStateName()}";
-  Geocode getGeocode() => _geocode;
+  String get name => "${super.name}, ${_geocode.stateName}";
+  Geocode get geocode => _geocode;
 
   NinaPlace.withWarnings(
       {required Geocode geocode,
       required String name,
       required List<WarnMessage> warnings})
-      : _geocode = geocode, super(name: name, warnings: warnings);
+      : _geocode = geocode,
+        super(name: name, warnings: warnings);
 
   factory NinaPlace.fromJson(Map<String, dynamic> json) {
     List<WarnMessage> createWarningList(var data) {
@@ -40,5 +41,5 @@ class NinaPlace extends Place {
   }
 
   Map<String, dynamic> toJson() =>
-      {'name': getName(), 'geocode': getGeocode(), 'warnings': getWarnings()};
+      {'name': name, 'geocode': geocode, 'warnings': warnings};
 }

@@ -162,8 +162,8 @@ class NotificationService {
     }
 
     // when App is closed
-    final details =
-        await _flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+    final details = await _flutterLocalNotificationsPlugin
+        .getNotificationAppLaunchDetails();
     if (details != null &&
         details.notificationResponse != null &&
         details.didNotificationLaunchApp) {

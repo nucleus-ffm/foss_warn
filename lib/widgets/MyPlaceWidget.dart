@@ -11,17 +11,17 @@ class MyPlaceWidget extends StatelessWidget {
 
   String checkForWarnings(BuildContext context) {
     print("[MyPlaceWidget] check for warnings");
-    if (myPlace.getCountWarnings() > 0) {
-      if (myPlace.getCountWarnings() > 1) {
+    if (myPlace.countWarnings > 0) {
+      if (myPlace.countWarnings > 1) {
         return AppLocalizations.of(context).my_place_there_are +
             " " +
-            myPlace.getCountWarnings().toString() +
+            myPlace.countWarnings.toString() +
             " " +
             AppLocalizations.of(context).my_place_warnings_more_then_one;
       } else {
         return AppLocalizations.of(context).my_place_there_are +
             " " +
-            myPlace.getCountWarnings().toString() +
+            myPlace.countWarnings.toString() +
             " " +
             AppLocalizations.of(context).my_place_warnings_only_one;
       }
@@ -43,7 +43,7 @@ class MyPlaceWidget extends StatelessWidget {
           );
         },
         onTap: () {
-          if (myPlace.getCountWarnings() != 0) {
+          if (myPlace.countWarnings != 0) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -75,7 +75,7 @@ class MyPlaceWidget extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            myPlace.getName(),
+                            myPlace.name,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                             softWrap: false,
@@ -89,7 +89,7 @@ class MyPlaceWidget extends StatelessWidget {
                 ],
               ),
               Flexible(
-                child: myPlace.getCountWarnings() ==
+                child: myPlace.countWarnings ==
                         0 //check the number of warnings and display check or warning
                     ? TextButton(
                         style: TextButton.styleFrom(

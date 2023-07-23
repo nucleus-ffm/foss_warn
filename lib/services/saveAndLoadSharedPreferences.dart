@@ -15,8 +15,12 @@ saveMyPlacesList() async {
   //List<String> myPlaceListAsString = myPlaceList.map((i) => i.name).toList();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   // preferences.setStringList('myPlaceListAsString', myPlaceListAsString);
-  preferences.setString("MyPlacesListAsJson", jsonEncode(myPlaceList));
-}
+  try {
+    preferences.setString("MyPlacesListAsJson", jsonEncode(myPlaceList));
+  } catch (e) {
+    print("Failed to save myPlaces:" + e.toString());
+  }
+  }
 
 loadMyPlacesList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();

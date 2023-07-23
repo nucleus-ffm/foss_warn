@@ -4,7 +4,7 @@ import 'class_WarnMessage.dart';
 class AlertSwissPlace extends Place {
   final String _shortName;
 
-  String getShortName() => _shortName;
+  String get shortName => _shortName;
 
   AlertSwissPlace({required String shortName, required String name})
       : _shortName = shortName, super(name: name, warnings: []);
@@ -31,5 +31,5 @@ class AlertSwissPlace extends Place {
   }
 
   Map<String, dynamic> toJson() =>
-      {'name': getName(), 'shortName': getShortName(), 'warnings': getWarnings()};
+      {'name': name, 'shortName': shortName, 'warnings': warnings};
 }

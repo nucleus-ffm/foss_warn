@@ -74,9 +74,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.setAreaDescription(
-                  data[i]["info"][0]["area"][s]["areaDesc"]);
-              tempArea.setGeocodeList(generateGeoCodeList(i, s));
+              tempArea.areaDescription =
+                  data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -171,9 +171,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.setAreaDescription(
-                  data[i]["info"][0]["area"][s]["areaDesc"]);
-              tempArea.setGeocodeList(generateGeoCodeList(i, s));
+              tempArea.areaDescription =
+                  data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -265,9 +265,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.setAreaDescription(
-                  data[i]["info"][0]["area"][s]["areaDesc"]);
-              tempArea.setGeocodeList(generateGeoCodeList(i, s));
+              tempArea.areaDescription =
+              data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -365,9 +365,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.setAreaDescription(
-                  data[i]["info"][0]["area"][s]["areaDesc"]);
-              tempArea.setGeocodeList(generateGeoCodeList(i, s));
+              tempArea.areaDescription =
+              data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
             return tempAreaList;
@@ -461,9 +461,9 @@ Future getData(bool useEtag) async {
             //loop through list of areas
             for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.setAreaDescription(
-                  data[i]["info"][0]["area"][s]["areaDesc"]);
-              tempArea.setGeocodeList(generateGeoCodeList(i, s));
+              tempArea.areaDescription =
+              data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
             return tempAreaList;

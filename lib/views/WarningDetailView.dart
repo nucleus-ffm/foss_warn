@@ -217,7 +217,7 @@ class _DetailScreenState extends State<DetailScreen> {
       }
       for (Area myArea in widget.warnMessage.areaList) {
         if (counter <= length || addAll) {
-          tempList.add(myArea.getAreaDescription());
+          tempList.add(myArea.areaDescription);
           counter++;
         } else {
           break;
@@ -237,9 +237,9 @@ class _DetailScreenState extends State<DetailScreen> {
         addAll = true;
       }
       for (Area myArea in widget.warnMessage.areaList) {
-        for (Geocode myGeocode in myArea.getGeocodeList()) {
+        for (Geocode myGeocode in myArea.geocodeList) {
           if (counter <= length || addAll) {
-            tempList.add(myGeocode.getGeocodeName());
+            tempList.add(myGeocode.geocodeName);
             counter++;
           } else {
             break;
@@ -256,6 +256,7 @@ class _DetailScreenState extends State<DetailScreen> {
           subject: shareSubject,
           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
     }
+
 
     return Scaffold(
       appBar: AppBar(
