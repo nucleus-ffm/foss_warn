@@ -21,14 +21,14 @@ class MyPlaces extends StatefulWidget {
 }
 
 class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
-  bool loading = false;
+  bool _loading = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     if (myPlaceList.isEmpty) {
-      loading = true;
+      _loading = true;
     }
   }
 
@@ -53,23 +53,23 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
     await loadMyPlacesList();
     await callAPI();
     setState(() {
-      loading = false;
+      _loading = false;
     });
   }
 
   Future<void> reloadData() async {
     setState(() {
-      loading = true;
+      _loading = true;
     });
     //await Future.delayed(Duration(seconds: 2));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (loading == true) {
+    if (_loading == true) {
       load();
     }
-    while (loading) {
+    while (_loading) {
       return Center(
         child: SizedBox(
           height: 70,
@@ -136,7 +136,6 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                 },
               ),
             ),
-            //Positioned(child: Text("Hallo Welt"))
           ],
         ),
       ),
