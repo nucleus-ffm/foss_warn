@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
+import 'package:foss_warn/class/class_userPreferences.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/AboutView.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'class/abstract_Place.dart';
-import 'enums/DataFetchStatus.dart';
+import 'class/class_appState.dart';
 import 'views/MyPlacesView.dart';
 import 'views/SettingsView.dart';
 import 'views/AllWarningsView.dart';
@@ -25,6 +26,8 @@ import 'widgets/dialogs/SortByDialog.dart';
 import 'themes/themes.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final AppState appState = AppState();
+final UserPreferences userPreferences = UserPreferences();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +36,7 @@ void main() async {
 
   await loadSettings();
 
-  if (notificationGeneral) {
+  if (userPreferences.shouldNotifyGeneral) {
     print("Background notification enabled");
     // AlarmManager().cancelBackgroundTask(); // just for debug
     AlarmManager().initialize();
@@ -51,34 +54,6 @@ void main() async {
   );
 }
 
-// status = true if API call and parsing was successful
-bool mowasStatus = false;
-bool mowasParseStatus = false;
-bool katwarnStatus = false;
-bool katwarnParseStatus = false;
-bool biwappStatus = false;
-bool biwappParseStatus = false;
-bool dwdStatus = false;
-bool dwdParseStatus = false;
-bool lhpStatus = false;
-bool lhpParseStatus = false;
-DataFetchStatus dataFetchStatusOldAPI = DataFetchStatus.no_info;
-
-// ETags to check for changes in server data since data was fetched
-String mowasETag = "";
-String biwappETag = "";
-String katwarnETag = "";
-String dwdETag = "";
-String lhpETag = "";
-
-int mowasWarningsCount = 0;
-int katwarnWarningsCount = 0;
-int biwappWarningsCount = 0;
-int dwdWarningsCount = 0;
-int lhpWarningsCount = 0;
-
-bool isFirstStart = true;
-
 class FOSSWarn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -86,12 +61,12 @@ class FOSSWarn extends StatelessWidget {
       title: 'FOSS Warn',
       theme: greenTheme,
       darkTheme: darkTheme,
-      themeMode: selectedTheme,
+      themeMode: userPreferences.selectedTheme,
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: showWelcomeScreen ? WelcomeView() : HomeView(),
+      home: userPreferences.showWelcomeScreen ? WelcomeView() : HomeView(),
     );
   }
 }
@@ -104,7 +79,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int _selectedIndex = startScreen; // selected start view
+  int _selectedIndex = userPreferences.startScreen; // selected start view
   // list of views for the navigation bar
   final List<Widget> _pages = <Widget>[
     AllWarningsView(),
@@ -150,7 +125,7 @@ class _HomeViewState extends State<HomeView> {
               SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
           backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [
-            showAllWarnings
+            userPreferences.showAllWarnings
                 ? IconButton(
                     icon: Icon(Icons.info_outline),
                     onPressed: () {
