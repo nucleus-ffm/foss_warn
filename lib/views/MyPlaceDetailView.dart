@@ -6,9 +6,9 @@ import '../services/sortWarnings.dart';
 import '../widgets/WarningWidget.dart';
 
 class MyPlaceDetailScreen extends StatelessWidget {
-  final Place myPlace;
-  const MyPlaceDetailScreen({Key? key, required this.myPlace})
-      : super(key: key);
+  final Place _myPlace;
+  const MyPlaceDetailScreen({Key? key, required Place myPlace})
+      : _myPlace = myPlace, super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +16,12 @@ class MyPlaceDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("${myPlace.name}"),
+        title: Text("${_myPlace.name}"),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
             onPressed: () {
-              myPlace.markAllWarningsAsRead(context);
+              _myPlace.markAllWarningsAsRead(context);
               final snackBar = SnackBar(
                 content: Text(
                   AppLocalizations.of(context)
@@ -43,7 +43,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: myPlace.warnings
+          children: _myPlace.warnings
               .map((warning) => WarningWidget(warnMessage: warning))
               .toList(),
         ),
