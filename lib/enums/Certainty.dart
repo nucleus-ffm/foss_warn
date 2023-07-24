@@ -1,6 +1,8 @@
 enum Certainty {
   Observed,
-  other
+  other;
+  String toJson() => name;
+  static Certainty fromJson(String json) => values.byName(json);
 }
 
 /// extract the serverity from the string and return the corresponding enum
