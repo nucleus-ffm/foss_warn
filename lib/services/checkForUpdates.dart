@@ -1,10 +1,11 @@
-import 'package:foss_warn/views/SettingsView.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
+import '../main.dart';
+
 Future<String> checkForUpdates() async {
   Response _response; //response var for get request
-  var data; //var for response data
+  var _data; //var for response data
   print("Check for updates");
   try {
     var latestGithubReleaseUrl = Uri.parse(
@@ -13,43 +14,43 @@ Future<String> checkForUpdates() async {
     //print("Response status: " + response.statusCode.toString());
     //check response code 200 -> success
     if (_response.statusCode == 200) {
-      data = jsonDecode(utf8.decode(_response.bodyBytes));
-      print(data['tag_name']);
+      _data = jsonDecode(utf8.decode(_response.bodyBytes));
+      print(_data['tag_name']);
 
       // Github version
-      int firstDotGithub = data['tag_name'].toString().indexOf(".");
+      int firstDotGithub = _data['tag_name'].toString().indexOf(".");
       int secondDotGithub =
-          data['tag_name'].toString().indexOf(".", firstDotGithub + 1);
+          _data['tag_name'].toString().indexOf(".", firstDotGithub + 1);
 
       int majorReleaseVersionGithub =
-          int.parse(data['tag_name'].toString().substring(0, firstDotGithub));
-      int minorReleaseVersionGithub = int.parse(data['tag_name']
+          int.parse(_data['tag_name'].toString().substring(0, firstDotGithub));
+      int minorReleaseVersionGithub = int.parse(_data['tag_name']
           .toString()
           .substring(firstDotGithub + 1, secondDotGithub));
-      int patchLevelGithub = int.parse(data['tag_name']
+      int patchLevelGithub = int.parse(_data['tag_name']
           .toString()
-          .substring(secondDotGithub + 1, data['tag_name'].toString().length));
+          .substring(secondDotGithub + 1, _data['tag_name'].toString().length));
 
       //installed version
-      int firstDot = versionNumber.indexOf(".");
-      int secondDot = versionNumber.indexOf(".", firstDot + 1);
+      int firstDot = userPreferences.versionNumber.indexOf(".");
+      int secondDot = userPreferences.versionNumber.indexOf(".", firstDot + 1);
 
-      int majorReleaseVersion = int.parse(versionNumber.substring(0, firstDot));
+      int majorReleaseVersion = int.parse(userPreferences.versionNumber.substring(0, firstDot));
       int minorReleaseVersion =
-          int.parse(versionNumber.substring(firstDot + 1, secondDot));
+          int.parse(userPreferences.versionNumber.substring(firstDot + 1, secondDot));
       int patchLevel = int.parse(
-          versionNumber.substring(secondDot + 1, versionNumber.length));
+          userPreferences.versionNumber.substring(secondDot + 1, userPreferences.versionNumber.length));
 
       // store github version number for later
-      githubVersionNumber = data['tag_name'];
+      // userPreferences.githubVersionNumber = data['tag_name'];
 
-      if (data['tag_name'] == versionNumber) {
-        print("latest version installed $versionNumber -> ${data['tag_name']}");
+      if (_data['tag_name'] == userPreferences.versionNumber) {
+        print("latest version installed ${userPreferences.versionNumber} -> ${_data['tag_name']}");
         return "latest version installed";
       } else if (majorReleaseVersionGithub > majorReleaseVersion) {
         //new major Release
         print(
-            "new major Release available $versionNumber -> ${data['tag_name']}");
+            "new major Release available ${userPreferences.versionNumber} -> ${_data['tag_name']}");
         return "new major Release available";
       } else if (majorReleaseVersionGithub < majorReleaseVersion) {
         print("you have an newer version then the latest on Github");
@@ -57,7 +58,7 @@ Future<String> checkForUpdates() async {
       } else if (minorReleaseVersionGithub > minorReleaseVersion) {
         // new minor Release
         print(
-            "new minor Releaseavailable $versionNumber -> ${data['tag_name']}");
+            "new minor Releaseavailable ${userPreferences.versionNumber} -> ${_data['tag_name']}");
         return "new minor Release available";
       } else if (minorReleaseVersionGithub < minorReleaseVersion) {
         // new minor Release
@@ -66,7 +67,7 @@ Future<String> checkForUpdates() async {
       } else if (patchLevelGithub > patchLevel) {
         // new patchLevel version
         print(
-            "new patchLevel Release available $versionNumber -> ${data['tag_name']}");
+            "new patchLevel Release available ${userPreferences.versionNumber} -> ${_data['tag_name']}");
         return "new patchLevel Release available";
       } else {
         print("you have an newer version then the latest on Github");
