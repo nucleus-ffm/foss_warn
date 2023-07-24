@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../services/listHandler.dart';
 import '../services/updateProvider.dart';
-import '../views/SettingsView.dart';
 import 'class_NotificationService.dart';
 import 'class_WarnMessage.dart';
 
@@ -58,7 +58,7 @@ abstract class Place {
   Future<void> sendNotificationForWarnings() async {
     for (WarnMessage myWarnMessage in _warnings) {
       print(myWarnMessage.headline);
-      print("notified:" +
+      print("should notify? :" +
           ((!myWarnMessage.read && !myWarnMessage.notified) &&
                   _checkIfEventShouldBeNotified(myWarnMessage.event))
               .toString());
@@ -110,11 +110,12 @@ abstract class Place {
   /// if it is listed in the map, return the stored value for the event
   /// If not return as default true
   bool _checkIfEventShouldBeNotified(String event) {
-    if (notificationEventsSettings[event] != null) {
-      print(event + " " + notificationEventsSettings[event]!.toString());
-      return notificationEventsSettings[event]!;
+    if (userPreferences.notificationEventsSettings[event] != null) {
+      print(event + " " + userPreferences.notificationEventsSettings[event]!.toString());
+      return userPreferences.notificationEventsSettings[event]!;
     } else {
       return true;
     }
   }
+  Map<String, dynamic> toJson();
 }
