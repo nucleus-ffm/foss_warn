@@ -4,23 +4,24 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
+import '../main.dart';
+import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/urlLauncher.dart';
 import '../services/translateAndColorizeWarning.dart';
-import '../views/SettingsView.dart';
 
 import 'package:share_plus/share_plus.dart';
 
 class DetailScreen extends StatefulWidget {
-  final WarnMessage warnMessage;
-  const DetailScreen({Key? key, required this.warnMessage}) : super(key: key);
+  final WarnMessage _warnMessage;
+  const DetailScreen({Key? key, required WarnMessage warnMessage}) : _warnMessage = warnMessage, super(key: key);
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  bool showMoreRegions = false;
-  bool showMorePlaces = false;
+  bool _showMoreRegions = false;
+  bool _showMorePlaces = false;
 
   // @todo think about moving code to better place
   String replaceHTMLTags(String text) {
@@ -206,7 +207,10 @@ class _DetailScreenState extends State<DetailScreen> {
       return widgetList;
     }
 
-    widget.warnMessage.read = true;
+    setState(() {
+      widget._warnMessage.read = true;
+    });
+    saveMyPlacesList(); //@todo nötig?
 
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];
@@ -215,7 +219,7 @@ class _DetailScreenState extends State<DetailScreen> {
       if (length == -1) {
         addAll = true;
       }
-      for (Area myArea in widget.warnMessage.areaList) {
+      for (Area myArea in widget._warnMessage.areaList) {
         if (counter <= length || addAll) {
           tempList.add(myArea.areaDescription);
           counter++;
@@ -236,7 +240,7 @@ class _DetailScreenState extends State<DetailScreen> {
       if (length == -1) {
         addAll = true;
       }
-      for (Area myArea in widget.warnMessage.areaList) {
+      for (Area myArea in widget._warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
           if (counter <= length || addAll) {
             tempList.add(myGeocode.geocodeName);
@@ -260,17 +264,17 @@ class _DetailScreenState extends State<DetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.warnMessage.headline),
+        title: Text(widget._warnMessage.headline),
         backgroundColor: Colors.green[700],
         actions: [
           IconButton(
               tooltip: AppLocalizations.of(context).warning_share,
               onPressed: () {
-                final String shareText = widget.warnMessage.headline +
+                final String shareText = widget._warnMessage.headline +
                     "\n\n" +
                     AppLocalizations.of(context).warning_from +
                     ": " +
-                    formatSentDate(widget.warnMessage.sent) +
+                    formatSentDate(widget._warnMessage.sent) +
                     "\n\n" +
                     AppLocalizations.of(context).warning_region +
                     ": " +
@@ -279,19 +283,19 @@ class _DetailScreenState extends State<DetailScreen> {
                     "\n\n" +
                     AppLocalizations.of(context).warning_description +
                     ":\n" +
-                    replaceHTMLTags(widget.warnMessage.description) +
+                    replaceHTMLTags(widget._warnMessage.description) +
                     " \n\n" +
                     AppLocalizations.of(context).warning_recommended_action +
                     ":\n" +
-                    replaceHTMLTags(widget.warnMessage.instruction) +
+                    replaceHTMLTags(widget._warnMessage.instruction) +
                     "\n\n" +
                     AppLocalizations.of(context).warning_source +
                     ":\n" +
-                    widget.warnMessage.publisher +
+                    widget._warnMessage.publisher +
                     "\n\n-- " +
                     AppLocalizations.of(context).warning_shared_by_foss_warn +
                     " --";
-                final String shareSubject = widget.warnMessage.headline;
+                final String shareSubject = widget._warnMessage.headline;
                 shareWarning(context, shareText, shareSubject);
               },
               icon: Icon(Icons.share))
@@ -304,7 +308,7 @@ class _DetailScreenState extends State<DetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.warnMessage.headline,
+                widget._warnMessage.headline,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               SizedBox(
@@ -313,45 +317,45 @@ class _DetailScreenState extends State<DetailScreen> {
               Text(
                 AppLocalizations.of(context).warning_from +
                     ": " +
-                    formatSentDate(widget.warnMessage.sent),
+                    formatSentDate(widget._warnMessage.sent),
                 style: TextStyle(
-                    fontSize: warningFontSize, fontWeight: FontWeight.bold),
+                    fontSize: userPreferences.warningFontSize, fontWeight: FontWeight.bold),
               ),
-              widget.warnMessage.effective != ""
+              widget._warnMessage.effective != ""
                   ? Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 1),
                       child: Text(
                         AppLocalizations.of(context).warning_effective +
                             " " +
-                            formatSentDate(widget.warnMessage.effective),
+                            formatSentDate(widget._warnMessage.effective),
                         style: TextStyle(
-                            fontSize: warningFontSize,
+                            fontSize: userPreferences.warningFontSize,
                             fontWeight: FontWeight.bold),
                       ),
                     )
                   : SizedBox(),
-              widget.warnMessage.onset != ""
+              widget._warnMessage.onset != ""
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
                         AppLocalizations.of(context).warning_onset +
                             " " +
-                            formatSentDate(widget.warnMessage.onset),
+                            formatSentDate(widget._warnMessage.onset),
                         style: TextStyle(
-                            fontSize: warningFontSize,
+                            fontSize: userPreferences.warningFontSize,
                             fontWeight: FontWeight.bold),
                       ),
                     )
                   : SizedBox(),
-              widget.warnMessage.expires != ""
+              widget._warnMessage.expires != ""
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
                         AppLocalizations.of(context).warning_expires +
                             " " +
-                            formatSentDate(widget.warnMessage.expires),
+                            formatSentDate(widget._warnMessage.expires),
                         style: TextStyle(
-                            fontSize: warningFontSize,
+                            fontSize: userPreferences.warningFontSize,
                             fontWeight: FontWeight.bold),
                       ),
                     )
@@ -368,7 +372,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Text(
                     AppLocalizations.of(context).warning_tags + ":",
                     style: TextStyle(
-                        fontSize: warningFontSize + 5,
+                        fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -388,9 +392,9 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Text(
                       AppLocalizations.of(context).warning_event +
                           ": " +
-                          widget.warnMessage.event,
+                          widget._warnMessage.event,
                       style: TextStyle(
-                          color: Colors.white, fontSize: warningFontSize),
+                          color: Colors.white, fontSize: userPreferences.warningFontSize),
                     ),
                   ),
                   Container(
@@ -399,15 +403,15 @@ class _DetailScreenState extends State<DetailScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: chooseWarningTypeColor(
-                          widget.warnMessage.messageType),
+                          widget._warnMessage.messageType),
                     ),
                     child: Text(
                       AppLocalizations.of(context).warning_type +
                           ": " +
                           translateWarningType(
-                              widget.warnMessage.messageType, context),
+                              widget._warnMessage.messageType, context),
                       style: TextStyle(
-                          color: Colors.white, fontSize: warningFontSize),
+                          color: Colors.white, fontSize: userPreferences.warningFontSize),
                     ),
                   ),
                   Container(
@@ -416,17 +420,17 @@ class _DetailScreenState extends State<DetailScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: chooseWarningSeverityColor(
-                          widget.warnMessage.severity.name),
+                          widget._warnMessage.severity.name),
                     ),
                     child: Text(
                       AppLocalizations.of(context).warning_severity +
                           ": " +
-                          translateWarningSeverity(widget.warnMessage.severity.name),
+                          translateWarningSeverity(widget._warnMessage.severity.name),
                       style: TextStyle(
-                          color: Colors.white, fontSize: warningFontSize),
+                          color: Colors.white, fontSize: userPreferences.warningFontSize),
                     ),
                   ),
-                  showExtendedMetaData
+                  userPreferences.showExtendedMetaData
                       ? Wrap(children: [
                           Container(
                             margin: EdgeInsets.all(3),
@@ -439,10 +443,10 @@ class _DetailScreenState extends State<DetailScreen> {
                               AppLocalizations.of(context).warning_urgency +
                                   ": " +
                                   translateWarningUrgency(
-                                      widget.warnMessage.urgency),
+                                      widget._warnMessage.urgency),
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: warningFontSize),
+                                  fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                           SizedBox(
@@ -459,10 +463,10 @@ class _DetailScreenState extends State<DetailScreen> {
                               AppLocalizations.of(context).warning_certainty +
                                   ": " +
                                   translateWarningCertainty(
-                                      widget.warnMessage.certainty.name),
+                                      widget._warnMessage.certainty.name),
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: warningFontSize),
+                                  fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                           SizedBox(
@@ -478,8 +482,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               AppLocalizations.of(context).warning_scope +
                                   ": " +
-                                  widget.warnMessage.scope,
-                              style: TextStyle(fontSize: warningFontSize),
+                                  widget._warnMessage.scope,
+                              style: TextStyle(fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                           SizedBox(
@@ -495,8 +499,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               AppLocalizations.of(context).warning_identifier +
                                   ": " +
-                                  widget.warnMessage.identifier,
-                              style: TextStyle(fontSize: warningFontSize),
+                                  widget._warnMessage.identifier,
+                              style: TextStyle(fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                           SizedBox(
@@ -512,8 +516,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               AppLocalizations.of(context).warning_sender +
                                   ": " +
-                                  widget.warnMessage.sender,
-                              style: TextStyle(fontSize: warningFontSize),
+                                  widget._warnMessage.sender,
+                              style: TextStyle(fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                           SizedBox(
@@ -530,8 +534,8 @@ class _DetailScreenState extends State<DetailScreen> {
                               AppLocalizations.of(context).warning_status +
                                   ": " +
                                   translateWarningStatus(
-                                      widget.warnMessage.status),
-                              style: TextStyle(fontSize: warningFontSize),
+                                      widget._warnMessage.status),
+                              style: TextStyle(fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                           SizedBox(
@@ -553,7 +557,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Text(
                     AppLocalizations.of(context).warning_region + ":",
                     style: TextStyle(
-                        fontSize: warningFontSize + 5,
+                        fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -561,22 +565,22 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 2,
               ),
-              showMoreRegions
+              _showMoreRegions
                   ? SelectableText(
                       generateAreaDescList(-1).toString().substring(
                           1, generateAreaDescList(-1).toString().length - 1),
                       style: TextStyle(
-                        fontSize: warningFontSize,
+                        fontSize: userPreferences.warningFontSize,
                       ))
                   : SelectableText(
                       generateAreaDescList(10).toString().substring(
                           1, generateAreaDescList(10).toString().length - 1),
                       style: TextStyle(
-                        fontSize: warningFontSize,
+                        fontSize: userPreferences.warningFontSize,
                       )),
               generateAreaDescList(-1).length > 10
                   ? InkWell(
-                      child: showMoreRegions
+                      child: _showMoreRegions
                           ? Text(
                               AppLocalizations.of(context).warning_show_less,
                               style: TextStyle(
@@ -590,10 +594,10 @@ class _DetailScreenState extends State<DetailScreen> {
                       onTap: () {
                         setState(
                           () {
-                            if (showMoreRegions) {
-                              showMoreRegions = false;
+                            if (_showMoreRegions) {
+                              _showMoreRegions = false;
                             } else {
-                              showMoreRegions = true;
+                              _showMoreRegions = true;
                             }
                           },
                         );
@@ -612,7 +616,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Text(
                     AppLocalizations.of(context).warning_places + ":",
                     style: TextStyle(
-                        fontSize: warningFontSize + 5,
+                        fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -620,20 +624,20 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 2,
               ),
-              showMorePlaces
+              _showMorePlaces
                   ? SelectableText(
                       generateGeocodeNameList(-1).toString().substring(
                           1, generateGeocodeNameList(-1).toString().length - 1),
-                      style: TextStyle(fontSize: warningFontSize),
+                      style: TextStyle(fontSize: userPreferences.warningFontSize),
                     )
                   : SelectableText(
                       generateGeocodeNameList(10).toString().substring(
                           1, generateGeocodeNameList(10).toString().length - 1),
-                      style: TextStyle(fontSize: warningFontSize),
+                      style: TextStyle(fontSize: userPreferences.warningFontSize),
                     ),
               generateGeocodeNameList(-1).length > 10
                   ? InkWell(
-                      child: showMorePlaces
+                      child: _showMorePlaces
                           ? Text(
                               AppLocalizations.of(context).warning_show_less,
                               style: TextStyle(
@@ -646,10 +650,10 @@ class _DetailScreenState extends State<DetailScreen> {
                                   color: Colors.green)),
                       onTap: () {
                         setState(() {
-                          if (showMorePlaces) {
-                            showMorePlaces = false;
+                          if (_showMorePlaces) {
+                            _showMorePlaces = false;
                           } else {
-                            showMorePlaces = true;
+                            _showMorePlaces = true;
                           }
                         });
                       },
@@ -667,7 +671,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   AppLocalizations.of(context).warning_description + ":",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: warningFontSize + 5),
+                      fontSize: userPreferences.warningFontSize + 5),
                 ),
               ]),
               SizedBox(
@@ -676,13 +680,13 @@ class _DetailScreenState extends State<DetailScreen> {
               SelectableText.rich(
                 TextSpan(
                     children:
-                        generateDescriptionBody(widget.warnMessage.description),
-                    style: TextStyle(fontSize: warningFontSize)),
+                        generateDescriptionBody(widget._warnMessage.description),
+                    style: TextStyle(fontSize: userPreferences.warningFontSize)),
               ),
               SizedBox(
                 height: 5,
               ),
-              generateAssets(widget.warnMessage.description).isNotEmpty
+              generateAssets(widget._warnMessage.description).isNotEmpty
                   ? Column(
                       children: [
                         Row(
@@ -696,7 +700,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   ":",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: warningFontSize + 5),
+                                  fontSize: userPreferences.warningFontSize + 5),
                             ),
                           ],
                         ),
@@ -709,13 +713,13 @@ class _DetailScreenState extends State<DetailScreen> {
                             mainAxisSpacing: 10,
                             crossAxisCount: 4,
                             children:
-                                generateAssets(widget.warnMessage.description),
+                                generateAssets(widget._warnMessage.description),
                           ),
                         ),
                       ],
                     )
                   : SizedBox(),
-              widget.warnMessage.instruction != ""
+              widget._warnMessage.instruction != ""
                   ? Column(
                       children: [
                         SizedBox(
@@ -733,7 +737,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   ":",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: warningFontSize + 5),
+                                  fontSize: userPreferences.warningFontSize + 5),
                             ),
                           ],
                         ),
@@ -743,12 +747,12 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 2,
               ),
-              widget.warnMessage.instruction != ""
+              widget._warnMessage.instruction != ""
                   ? SelectableText.rich(
                       TextSpan(
                           children: generateDescriptionBody(
-                              widget.warnMessage.instruction),
-                          style: TextStyle(fontSize: warningFontSize)),
+                              widget._warnMessage.instruction),
+                          style: TextStyle(fontSize: userPreferences.warningFontSize)),
                     )
                   : SizedBox(),
               SizedBox(
@@ -764,18 +768,18 @@ class _DetailScreenState extends State<DetailScreen> {
                     AppLocalizations.of(context).warning_source + ":",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: warningFontSize + 5),
+                        fontSize: userPreferences.warningFontSize + 5),
                   )
                 ],
               ),
               Text(
-                widget.warnMessage.publisher,
-                style: TextStyle(fontSize: warningFontSize),
+                widget._warnMessage.publisher,
+                style: TextStyle(fontSize: userPreferences.warningFontSize),
               ),
               SizedBox(
                 height: 20,
               ),
-              widget.warnMessage.contact != ""
+              widget._warnMessage.contact != ""
                   ? Row(
                       children: [
                         Icon(Icons.web),
@@ -787,11 +791,11 @@ class _DetailScreenState extends State<DetailScreen> {
                               ":",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: warningFontSize + 5),
+                              fontSize: userPreferences.warningFontSize + 5),
                         ),
                       ],
                     )
-                  : widget.warnMessage.web != ""
+                  : widget._warnMessage.web != ""
                       ? Row(
                           children: [
                             Icon(Icons.web),
@@ -803,7 +807,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   ":",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: warningFontSize + 5),
+                                  fontSize: userPreferences.warningFontSize + 5),
                             ),
                           ],
                         )
@@ -811,7 +815,7 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 2,
               ),
-              widget.warnMessage.contact != ""
+              widget._warnMessage.contact != ""
                   ? Row(
                       children: [
                         Icon(Icons.call),
@@ -822,11 +826,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           fit: FlexFit.loose,
                           child: TextButton(
                             onPressed: () =>
-                                makePhoneCall(widget.warnMessage.contact),
+                                makePhoneCall(widget._warnMessage.contact),
                             child: Text(
-                              replaceHTMLTags(widget.warnMessage.contact),
+                              replaceHTMLTags(widget._warnMessage.contact),
                               style: TextStyle(
-                                  fontSize: warningFontSize,
+                                  fontSize: userPreferences.warningFontSize,
                                   color:
                                       Theme.of(context).colorScheme.secondary),
                             ),
@@ -835,7 +839,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       ],
                     )
                   : SizedBox(),
-              widget.warnMessage.web != ""
+              widget._warnMessage.web != ""
                   ? Row(
                       children: [
                         Icon(Icons.open_in_new),
@@ -846,11 +850,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           fit: FlexFit.loose,
                           child: TextButton(
                             onPressed: () =>
-                                launchUrlInBrowser(widget.warnMessage.web),
+                                launchUrlInBrowser(widget._warnMessage.web),
                             child: Text(
-                              generateURL(widget.warnMessage.web),
+                              generateURL(widget._warnMessage.web),
                               style: TextStyle(
-                                  fontSize: warningFontSize,
+                                  fontSize: userPreferences.warningFontSize,
                                   color:
                                       Theme.of(context).colorScheme.secondary),
                             ),
