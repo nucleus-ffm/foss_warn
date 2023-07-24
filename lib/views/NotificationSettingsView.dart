@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../class/class_alarmManager.dart';
+import '../main.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
-import 'SettingsView.dart';
 
 class NotificationSettingsView extends StatefulWidget {
   const NotificationSettingsView({Key? key}) : super(key: key);
@@ -41,11 +41,11 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                       .notification_settings_notify_by_extreme),
                   trailing: Switch(
                       activeColor: Theme.of(context).colorScheme.secondary,
-                      value: notificationWithExtreme,
+                      value: userPreferences.notificationWithExtreme,
                       onChanged: (value) {
-                        if (notificationGeneral) {
+                        if (userPreferences.shouldNotifyGeneral) {
                           setState(() {
-                            notificationWithExtreme = value;
+                            userPreferences.notificationWithExtreme = value;
                             saveNotificationSettingsImportanceList();
                             /*BackgroundTaskManager()
                                       .cancelBackgroundTask();
@@ -65,11 +65,11 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                       .notification_settings_notify_by_severe),
                   trailing: Switch(
                       activeColor: Theme.of(context).colorScheme.secondary,
-                      value: notificationWithSevere,
+                      value: userPreferences.notificationWithSevere,
                       onChanged: (value) {
-                        if (notificationGeneral) {
+                        if (userPreferences.shouldNotifyGeneral) {
                           setState(() {
-                            notificationWithSevere = value;
+                            userPreferences.notificationWithSevere = value;
                             saveNotificationSettingsImportanceList();
                             /*BackgroundTaskManager()
                                       .cancelBackgroundTask();
@@ -89,11 +89,11 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                       .notification_settings_notify_by_moderate),
                   trailing: Switch(
                       activeColor: Theme.of(context).colorScheme.secondary,
-                      value: notificationWithModerate,
+                      value: userPreferences.notificationWithModerate,
                       onChanged: (value) {
-                        if (notificationGeneral) {
+                        if (userPreferences.shouldNotifyGeneral) {
                           setState(() {
-                            notificationWithModerate = value;
+                            userPreferences.notificationWithModerate = value;
                             saveNotificationSettingsImportanceList();
                             /*BackgroundTaskManager()
                                       .cancelBackgroundTask();
@@ -113,11 +113,11 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                       .notification_settings_notify_by_minor),
                   trailing: Switch(
                       activeColor: Theme.of(context).colorScheme.secondary,
-                      value: notificationWithMinor,
+                      value: userPreferences.notificationWithMinor,
                       onChanged: (value) {
-                        if (notificationGeneral) {
+                        if (userPreferences.shouldNotifyGeneral) {
                           setState(() {
-                            notificationWithMinor = value;
+                            userPreferences.notificationWithMinor = value;
                             saveNotificationSettingsImportanceList();
                             /*BackgroundTaskManager()
                                       .cancelBackgroundTask();
@@ -144,20 +144,20 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                         .notification_settings_thunderstorm),
                     trailing: Switch(
                         activeColor: Theme.of(context).colorScheme.secondary,
-                        value: notificationEventsSettings["STARKES GEWITTER"] !=
+                        value: userPreferences.notificationEventsSettings["STARKES GEWITTER"] !=
                                 null
-                            ? notificationEventsSettings["STARKES GEWITTER"]!
+                            ? userPreferences.notificationEventsSettings["STARKES GEWITTER"]!
                             : true,
                         //value: notificationEventsSettings.values.firstWhere((element) => notificationEventsSettings[element]== "starkesGewitter", orElse: () => true),
                         onChanged: (value) {
                           setState(() {
-                            notificationEventsSettings.putIfAbsent(
+                            userPreferences.notificationEventsSettings.putIfAbsent(
                                 "STARKES GEWITTER", () => value);
-                            notificationEventsSettings.update(
+                            userPreferences.notificationEventsSettings.update(
                                 "STARKES GEWITTER", (newValue) => value);
                           });
                           saveSettings();
-                          print(notificationEventsSettings);
+                          print(userPreferences.notificationEventsSettings);
                         })),
                 ListTile(
                     contentPadding: settingsTileListPadding,
@@ -166,15 +166,15 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                     trailing: Switch(
                         activeColor: Theme.of(context).colorScheme.secondary,
                         value:
-                            notificationEventsSettings["STARKES WETTER"] != null
-                                ? notificationEventsSettings["STARKES WETTER"]!
+                        userPreferences.notificationEventsSettings["STARKES WETTER"] != null
+                                ? userPreferences.notificationEventsSettings["STARKES WETTER"]!
                                 : true,
                         //value: notificationEventsSettings.values.firstWhere((element) => notificationEventsSettings[element]== "starkesGewitter", orElse: () => true),
                         onChanged: (value) {
                           setState(() {
-                            notificationEventsSettings.putIfAbsent(
+                            userPreferences.notificationEventsSettings.putIfAbsent(
                                 "STARKES WETTER", () => value);
-                            notificationEventsSettings.update(
+                            userPreferences.notificationEventsSettings.update(
                                 "STARKES WETTER", (newValue) => value);
                           });
                           saveSettings();
