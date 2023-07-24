@@ -44,35 +44,35 @@ class StatusWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Mowas: ")),
-                  generateStatusFlag(mowasStatus, mowasParseStatus),
+                  generateStatusFlag(appState.mowasStatus, appState.mowasParseStatus),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Katwarn: ")),
-                  generateStatusFlag(katwarnStatus, katwarnParseStatus),
+                  generateStatusFlag(appState.katwarnStatus, appState.katwarnParseStatus),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("Biwapp: ")),
-                  generateStatusFlag(biwappStatus, biwappParseStatus),
+                  generateStatusFlag(appState.biwappStatus, appState.biwappParseStatus),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("DWD: ")),
-                  generateStatusFlag(dwdStatus, dwdParseStatus),
+                  generateStatusFlag(appState.dwdStatus, appState.dwdParseStatus),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("LHP: ")),
-                  generateStatusFlag(lhpStatus, lhpParseStatus),
+                  generateStatusFlag(appState.lhpStatus, appState.lhpParseStatus),
                 ],
               ),
               SizedBox(
@@ -144,7 +144,7 @@ class StatusWidget extends StatelessWidget {
                 children: [
                   SizedBox(width: 130, child: Text("Mowas:")),
                   SizedBox(
-                      width: 30, child: Text(mowasWarningsCount.toString())),
+                      width: 30, child: Text(appState.mowasWarningsCount.toString())),
                 ],
               ),
               Row(
@@ -152,7 +152,7 @@ class StatusWidget extends StatelessWidget {
                 children: [
                   SizedBox(width: 130, child: Text("Katwarn: ")),
                   SizedBox(
-                      width: 30, child: Text(katwarnWarningsCount.toString())),
+                      width: 30, child: Text(appState.katwarnWarningsCount.toString())),
                 ],
               ),
               Row(
@@ -160,21 +160,21 @@ class StatusWidget extends StatelessWidget {
                 children: [
                   SizedBox(width: 130, child: Text("Biwapp:")),
                   SizedBox(
-                      width: 30, child: Text(biwappWarningsCount.toString())),
+                      width: 30, child: Text(appState.biwappWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("DWD:")),
-                  SizedBox(width: 30, child: Text(dwdWarningsCount.toString())),
+                  SizedBox(width: 30, child: Text(appState.dwdWarningsCount.toString())),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: 130, child: Text("LHP:")),
-                  SizedBox(width: 30, child: Text(lhpWarningsCount.toString())),
+                  SizedBox(width: 30, child: Text(appState.lhpWarningsCount.toString())),
                 ],
               ),
             ],
