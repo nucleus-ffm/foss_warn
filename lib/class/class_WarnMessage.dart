@@ -71,8 +71,8 @@ class WarnMessage {
         category: json['category'],
         event: json['event'],
         urgency: json['urgency'],
-        severity: json['severity'],
-        certainty: json['certainty'],
+        severity: Severity.fromJson(json['severity']),
+        certainty: Certainty.fromJson(json['certainty']),
         effective: json['effective'],
         onset: json['onset'],
         expires: json['expires'],
@@ -83,7 +83,8 @@ class WarnMessage {
         contact: json['contact'],
         web: json['web'] ?? "",
         notified: json['notified'] as bool,
-        read: json['read'] as bool);
+        read: json['read'] as bool
+    );
   }
 
   /// is used to create a new WarnMessage object with data from the API call.
