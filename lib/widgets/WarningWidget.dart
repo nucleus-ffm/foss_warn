@@ -54,7 +54,8 @@ class WarningWidget extends StatelessWidget {
                     ? IconButton(
                         onPressed: () {
                           warnMessage.read = false;
-                          //@todo update view
+                          final updater = Provider.of<Update>(context, listen: false);
+                          updater.updateReadStatusInList();
                         },
                         icon: Icon(
                           Icons.mark_chat_read,
@@ -63,7 +64,8 @@ class WarningWidget extends StatelessWidget {
                     : IconButton(
                         onPressed: () {
                           warnMessage.read = true;
-                          //@todo update view
+                          final updater = Provider.of<Update>(context, listen: false);
+                          updater.updateReadStatusInList();
                         },
                         icon: Icon(
                           Icons.warning_amber_outlined,
