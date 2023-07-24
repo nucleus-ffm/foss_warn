@@ -19,7 +19,7 @@ class DevSettings extends StatefulWidget {
 }
 
 class _DevSettingsState extends State<DevSettings> {
-  final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+  final EdgeInsets _settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _DevSettingsState extends State<DevSettings> {
           child: Column(
             children: [
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
                     .dev_settings_test_notification),
                 subtitle: Text(AppLocalizations.of(context)
@@ -64,7 +64,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
                     .dev_settings_restart_background_service),
                 subtitle: Text(AppLocalizations.of(context)
@@ -94,7 +94,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
                         .dev_settings_delete_list_of_read_warnings +
                     " & \n" +
@@ -124,7 +124,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(
                     AppLocalizations.of(context).dev_settings_call_alert_swiss),
                 subtitle: Text(AppLocalizations.of(context)
@@ -146,7 +146,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
                     .dev_settings_load_cached_warnings),
                 subtitle: Text(AppLocalizations.of(context)
@@ -168,7 +168,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(
                     AppLocalizations.of(context).dev_settings_test_geocode),
                 subtitle: Text(AppLocalizations.of(context)
@@ -190,7 +190,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(
                     AppLocalizations.of(context).dev_settings_delete_warnings),
                 subtitle: Text(AppLocalizations.of(context)
@@ -212,7 +212,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text("Systeminformationen zur Fehlerbehebung sammeln"),
                 subtitle: Text(
                     "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet."),
