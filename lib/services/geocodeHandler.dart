@@ -10,13 +10,10 @@ import 'allPlacesList.dart';
 
 import 'package:http/http.dart';
 
-const String url =
-    "https://www.xrepository.de/api/xrepository/urn:de:bund:destatis"
-    ":bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/"
-    "Regionalschl_ssel_2021-07-31.json";
-
 //  @todo: move to geocode class?
 Future<void> geocodeHandler() async {
+
+
   print("[geocodehandler]");
 
   try {
@@ -55,13 +52,18 @@ Future<void> geocodeHandler() async {
 /// Fetch places from sharedPrefs (cache) or server.
 /// Returns a JSON with an unparsed (!) list of Place(s) in field "daten".
 Future<dynamic> getPlaces() async {
+  const String _url =
+      "https://www.xrepository.de/api/xrepository/urn:de:bund:destatis"
+      ":bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/"
+      "Regionalschl_ssel_2021-07-31.json";
+
   dynamic savedData = await loadGeocode();
 
   if (savedData != null) {
     print("[geocodeHandler] data already stored");
     return savedData;
   } else {
-    final Response response = await get(Uri.parse(url));
+    final Response response = await get(Uri.parse(_url));
     if (response.statusCode != 200) return;
 
     print("[geocodehandler] got data ");
