@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:foss_warn/class/class_Geocode.dart';
 import 'package:foss_warn/class/abstract_Place.dart';
 
@@ -15,6 +16,7 @@ class NinaPlace extends Place {
   /// returns the name of the place with the state
   @override
   String get name => "${super.name}, ${_geocode.stateName}";
+  String get nameWithoutState => super.name;
   Geocode get geocode => _geocode;
 
   NinaPlace.withWarnings(
@@ -25,11 +27,14 @@ class NinaPlace extends Place {
         super(name: name, warnings: warnings);
 
   factory NinaPlace.fromJson(Map<String, dynamic> json) {
-    List<WarnMessage> createWarningList(var data) {
+
+    /// create new warnMessage objects from saved data
+    List<WarnMessage> createWarningList(String data) {
+      List<dynamic> _jsonData = jsonDecode(data);
       List<WarnMessage> result = [];
-      for (int i = 0; i < data.length; i++) {
-        result.add(WarnMessage.fromJson(data[i]));
-      }
+        for (int i = 0; i < _jsonData.length; i++) {
+          result.add(WarnMessage.fromJson(_jsonData[i]));
+        }
       return result;
     }
 
@@ -40,6 +45,14 @@ class NinaPlace extends Place {
     );
   }
 
-  Map<String, dynamic> toJson() =>
-      {'name': name, 'geocode': geocode, 'warnings': warnings};
+  @override
+  Map<String, dynamic> toJson() {
+    try {
+      return {'name': nameWithoutState, 'geocode': geocode, 'warnings': jsonEncode(warnings)
+      };
+    } catch (e) {
+      print("Error nina place to json: " + e.toString());
+      return {};
+    }
+  }
 }
