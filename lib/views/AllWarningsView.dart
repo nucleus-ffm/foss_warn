@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../services/apiHandler.dart';
 import '../services/checkForMyPlacesWarnings.dart';
-import 'SettingsView.dart';
 import '../widgets/ConnectionErrorWidget.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
@@ -25,14 +24,13 @@ class AllWarningsView extends StatefulWidget {
 }
 
 class _AllWarningsViewState extends State<AllWarningsView> {
-  var data;
-  bool loading = false;
+  bool _loading = false;
   @override
   void initState() {
     super.initState();
-    if (isFirstStart) {
-      loading = true;
-      isFirstStart = false;
+    if (userPreferences.isFirstStart) {
+      _loading = true;
+      userPreferences.isFirstStart = false;
     }
   }
 
@@ -40,33 +38,33 @@ class _AllWarningsViewState extends State<AllWarningsView> {
   Widget build(BuildContext context) {
     Future<void> reloadData() async {
       setState(() {
-        loading = true;
+        _loading = true;
       });
       //
     }
 
     void loadData() async {
       print("[allWarningsView] Load Data");
-      if (showAllWarnings) {
+      if (userPreferences.showAllWarnings) {
         // call (old) api with all warnings
-        data = await getData(false);
+        await getData(false);
       } else {
         // call (new) api just for my places/ alert swiss
-        data = await callAPI();
+        await callAPI();
       }
       checkForMyPlacesWarnings(false, true);
       sortWarnings();
       loadNotificationSettingsImportanceList();
       setState(() {
         print("loading finished");
-        loading = false;
+        _loading = false;
       });
     }
 
-    if (loading == true) {
+    if (_loading == true) {
       loadData();
     }
-    while (loading) {
+    while (_loading) {
       // show loading screen
       return Center(
         child: SizedBox(
@@ -96,7 +94,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
         child: myPlaceList.isNotEmpty // check if there is a place saved
-            ? showAllWarnings // if warnings that are not in MyPlaces shown
+            ? userPreferences.showAllWarnings // if warnings that are not in MyPlaces shown
                 ? SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(children: [
@@ -160,7 +158,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                     TextButton(
                                       onPressed: () {
                                         setState(() {
-                                          loading = true;
+                                          _loading = true;
                                         });
                                       },
                                       child: Text(
