@@ -24,6 +24,8 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManually) async {
   }
 
   // inform user if he hasn't add any places yet
+  // @todo move to own timed function or find solution to not show a notification if the app is started the first time
+  // @todo add translation
   if (myPlaceList.isEmpty) {
     await NotificationService.showNotification(
         id: 3,
