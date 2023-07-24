@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/welcomeScreenItems.dart';
 import '../main.dart';
-import 'SettingsView.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/dialogs/DisclaimerDialog.dart';
 import '../widgets/dialogs/privacyDialog.dart';
@@ -74,7 +73,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                       ? TextButton(
                           onPressed: () {
                             setState(() {
-                              showWelcomeScreen = false;
+                              userPreferences.showWelcomeScreen = false;
                             });
                             saveSettings();
 

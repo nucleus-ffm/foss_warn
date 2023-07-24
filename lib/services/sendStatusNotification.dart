@@ -1,4 +1,4 @@
-import '../views/SettingsView.dart';
+import '../main.dart';
 import '../class/class_NotificationService.dart';
 
 sendStatusUpdateNotification(bool success, [String? error]) async {
@@ -11,20 +11,20 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
       formattedMinuteNow,
       formattedHourNow = "";
 
-  if (now.minute + frequencyOfAPICall >= 60) {
-    hourToAdd = (now.minute + frequencyOfAPICall.toInt()) ~/ 60;
-    minute = (now.minute + frequencyOfAPICall.toInt()) % 60;
+  if (now.minute + userPreferences.frequencyOfAPICall >= 60) {
+    hourToAdd = (now.minute + userPreferences.frequencyOfAPICall.toInt()) ~/ 60;
+    minute = (now.minute + userPreferences.frequencyOfAPICall.toInt()) % 60;
     hour += hourToAdd;
 
     print("minutes: " + minute.toString());
     print("add hour: " + hourToAdd.toString());
-    print("Min + next " + (now.minute + frequencyOfAPICall.toInt()).toString());
+    print("Min + next " + (now.minute + userPreferences.frequencyOfAPICall.toInt()).toString());
 
     if (hour >= 24) {
       hour -= 24;
     }
   } else {
-    minute += frequencyOfAPICall.toInt();
+    minute += userPreferences.frequencyOfAPICall.toInt();
   }
 
   // format time to hh:mm

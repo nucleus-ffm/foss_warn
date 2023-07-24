@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/widgets/dialogs/DisclaimerDialog.dart';
 import 'package:foss_warn/widgets/dialogs/WarningSourcesDialog.dart';
+import '../main.dart';
 import '../services/urlLauncher.dart';
 import '../widgets/dialogs/missingImprintDialog.dart';
 import '../widgets/dialogs/privacyDialog.dart';
 import '../widgets/dialogs/ChangeLogDialog.dart';
-import 'SettingsView.dart';
 
 class AboutView extends StatelessWidget {
   @override
@@ -158,7 +158,7 @@ class AboutView extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "$versionNumber (beta)",
+              "${userPreferences.versionNumber} (beta)",
               style: Theme.of(context).textTheme.bodyText1,
             ),
             onTap: () {

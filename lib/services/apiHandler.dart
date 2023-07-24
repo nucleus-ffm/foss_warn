@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:foss_warn/main.dart';
+
 import '../class/class_AlertSwissPlace.dart';
 import '../class/class_NinaPlace.dart';
 import '../class/class_WarnMessage.dart';
@@ -7,7 +9,6 @@ import '../class/class_Geocode.dart';
 import '../class/abstract_Place.dart';
 import 'alertSwiss.dart';
 import 'listHandler.dart';
-import '../views/SettingsView.dart';
 import 'sendStatusNotification.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
@@ -30,7 +31,7 @@ Future callAPI() async {
     // if the place is for swiss skip this place
     print(p.name);
     if (p is AlertSwissPlace) {
-      if (!activateAlertSwiss) {
+      if (!userPreferences.activateAlertSwiss) {
         _successfullyFetched = false;
         _error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
             " aber AlertSwiss nicht als Quelle aktiviert \n";
@@ -107,7 +108,7 @@ Future callAPI() async {
             p.decrementNumberOfWarnings();
           }
 
-          areWarningsFromCache = false;
+          userPreferences.areWarningsFromCache = false;
           print("Saving myPlacesList with new warnings");
           saveMyPlacesList();
         } else {
@@ -119,12 +120,12 @@ Future callAPI() async {
       } catch (e) {
         print("Something went wrong while trying to call the NINA API:  $e");
         _successfullyFetched = false;
-        areWarningsFromCache = true;
+        userPreferences.areWarningsFromCache = true;
         _error += e.toString() + " \n";
       }
     }
   }
-  if (showStatusNotification) {
+  if (userPreferences.showStatusNotification) {
     if (_error != "") {
       sendStatusUpdateNotification(_successfullyFetched, _error);
     } else {
@@ -136,7 +137,7 @@ Future callAPI() async {
   // warnMessageList = tempWarnMessageList; // transfer temp List in real list
 
   // call alert Swiss
-  if (activateAlertSwiss) {
+  if (userPreferences.activateAlertSwiss) {
     await callAlertSwissAPI();
   }
 
