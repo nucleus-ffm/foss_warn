@@ -1,7 +1,10 @@
+import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
+
 import '../main.dart';
 import '../class/class_NotificationService.dart';
 
 sendStatusUpdateNotification(bool success, [String? error]) async {
+  String _lastUpdate = await loadLastBackgroundUpdateTime();
   DateTime now = DateTime.now();
   int hour = now.hour;
   int hourToAdd = 0;
@@ -56,6 +59,7 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
       formattedHourNext + ":" + formattedMinuteNext;
 
   if (success) {
+    saveLastBackgroundUpdateTime(nowFormattedDate);
     print("updating status notification...");
     await NotificationService.showStatusNotification(
       id: 1,
@@ -69,7 +73,7 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
       id: 1,
       title: "FOSS Warn - Aktualisierung fehlgeschlagen",
       body:
-          "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr \n"
+          "letztes erfolgreiches Update: $_lastUpdate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr \n"
           "Error: $error",
       payload: "statusanzeige",
     );
