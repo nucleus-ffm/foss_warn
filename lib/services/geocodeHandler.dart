@@ -13,7 +13,6 @@ import 'package:http/http.dart';
 //  @todo: move to geocode class?
 Future<void> geocodeHandler() async {
 
-
   print("[geocodehandler]");
 
   try {
@@ -31,7 +30,7 @@ Future<void> geocodeHandler() async {
       Place place = NinaPlace(
           name: _data["daten"][i][1],
           geocode:
-              Geocode(geocodeNumber: _data["daten"][i][0], geocodeName: ""));
+              Geocode(geocodeNumber: _data["daten"][i][0], geocodeName: _data["daten"][i][1]));
 
       // we can not receive any warning for OT (Ortsteile)
       if (place.name.contains("OT")) continue;
