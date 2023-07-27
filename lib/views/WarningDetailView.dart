@@ -71,7 +71,7 @@ class _DetailScreenState extends State<DetailScreen> {
         String url = "";
         String urlDescription = "";
 
-        //add url only if there is an url (urlStart != -1)
+        // add url only if there is an url (urlStart != -1)
         if (urlStart != -1 && urlEnds != -1) {
           url = text.substring(urlStart, urlEnds);
           int desStart = text.indexOf(">", urlStart) + 1;
@@ -232,25 +232,24 @@ class _DetailScreenState extends State<DetailScreen> {
 
     /// returns a list of GeocodeNames
     /// @length -1 = all
-    ///
     List<String> generateGeocodeNameList(int length) {
-      List<String> tempList = [];
-      int counter = 0;
-      bool addAll = false;
+      List<String> _tempList = [];
+      int _counter = 0;
+      bool _addAll = false;
       if (length == -1) {
-        addAll = true;
+        _addAll = true;
       }
       for (Area myArea in widget._warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
-          if (counter <= length || addAll) {
-            tempList.add(myGeocode.geocodeName);
-            counter++;
+          if (_counter <= length || _addAll) {
+            _tempList.add(myGeocode.geocodeName);
+            _counter++;
           } else {
             break;
           }
         }
       }
-      return tempList;
+      return _tempList;
     }
 
     void shareWarning(
@@ -260,7 +259,6 @@ class _DetailScreenState extends State<DetailScreen> {
           subject: shareSubject,
           sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
     }
-
 
     return Scaffold(
       appBar: AppBar(
@@ -298,7 +296,8 @@ class _DetailScreenState extends State<DetailScreen> {
                 final String shareSubject = widget._warnMessage.headline;
                 shareWarning(context, shareText, shareSubject);
               },
-              icon: Icon(Icons.share))
+              icon: Icon(Icons.share),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -392,7 +391,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Text(
                       AppLocalizations.of(context).warning_event +
                           ": " +
-                          widget._warnMessage.event,
+                          translateWarningCategory(widget._warnMessage.event, context),
                       style: TextStyle(
                           color: Colors.white, fontSize: userPreferences.warningFontSize),
                     ),
