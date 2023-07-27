@@ -14,7 +14,7 @@ class AppState {
   bool lhpParseStatus = false;
   DataFetchStatus dataFetchStatusOldAPI = DataFetchStatus.no_info;
 
-// ETags to check for changes in server data since data was fetched
+  // ETags to check for changes in server data since data was fetched
   String mowasETag = "";
   String biwappETag = "";
   String katwarnETag = "";
