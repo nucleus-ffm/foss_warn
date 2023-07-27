@@ -72,6 +72,8 @@ String translateWarningCategory(String category, BuildContext context) {
       return AppLocalizations.of(context).explanation_other;
     case "Safety":
       return AppLocalizations.of(context).explanation_safety;
+    case "Security":
+      return AppLocalizations.of(context).explanation_safety;
     case "Met":
       return AppLocalizations.of(context).explanation_weather;
     case "Env":
@@ -131,13 +133,13 @@ Color chooseWarningSeverityColor(String severity) {
 /// @todo: Add translations
 String translateWarningSeverity(String severity) {
   switch (severity) {
-    case "Minor":
+    case "minor":
       return "Gering";
-    case "Moderate":
+    case "moderate":
       return "Mittel";
-    case "Extreme":
+    case "extreme":
       return "Extrem";
-    case "Severe":
+    case "severe":
       return "Schwer";
     default:
       return severity;
