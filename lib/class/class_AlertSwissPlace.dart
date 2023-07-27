@@ -8,14 +8,16 @@ class AlertSwissPlace extends Place {
 
   String get shortName => _shortName;
 
-  AlertSwissPlace({required String shortName, required String name})
-      : _shortName = shortName, super(name: name, warnings: []);
+  AlertSwissPlace({required String shortName, required String name, String eTag = ""})
+      : _shortName = shortName, super(name: name, warnings: [], eTag: eTag);
 
   AlertSwissPlace.withWarnings(
       {required String shortName,
       required String name,
-      required List<WarnMessage> warnings})
-      : _shortName = shortName, super(name: name, warnings: warnings);
+      required List<WarnMessage> warnings,
+      required eTag
+      })
+      : _shortName = shortName, super(name: name, warnings: warnings, eTag: eTag);
 
   factory AlertSwissPlace.fromJson(Map<String, dynamic> json) {
 
@@ -32,10 +34,12 @@ class AlertSwissPlace extends Place {
     return AlertSwissPlace.withWarnings(
         name: json['name'] as String,
         shortName: json['shortName'] as String,
-        warnings: createWarningList(json['warnings']));
+        warnings: createWarningList(json['warnings']),
+        eTag: ""
+    );
   }
 
   @override
   Map<String, dynamic> toJson() =>
-      {'name': name, 'shortName': shortName, 'warnings': jsonEncode(warnings)};
+      {'name': name, 'shortName': shortName, 'warnings': jsonEncode(warnings), 'eTag': eTag};
 }

@@ -11,9 +11,17 @@ abstract class Place {
   final String _name;
   int _countWarnings = 0;
   List<WarnMessage> _warnings = [];
+  String _eTag = "";
 
-  Place({required String name, required List<WarnMessage> warnings}) : _warnings = warnings, _name = name {
+  String get eTag => _eTag;
+
+  set eTag(String newETag) {
+    _eTag = newETag;
+  }
+
+  Place({required String name, required List<WarnMessage> warnings, required String eTag}) : _warnings = warnings, _name = name {
     _countWarnings = this._warnings.length;
+    _eTag = eTag;
   }
 
   String get name => _name;

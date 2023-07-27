@@ -10,8 +10,9 @@ class NinaPlace extends Place {
   NinaPlace({
     required Geocode geocode,
     required String name,
+    String eTag = "",
   })  : _geocode = geocode,
-        super(name: name, warnings: []);
+        super(name: name, warnings: [], eTag: eTag);
 
   /// returns the name of the place with the state
   @override
@@ -22,9 +23,10 @@ class NinaPlace extends Place {
   NinaPlace.withWarnings(
       {required Geocode geocode,
       required String name,
-      required List<WarnMessage> warnings})
+      required List<WarnMessage> warnings,
+      required String eTag})
       : _geocode = geocode,
-        super(name: name, warnings: warnings);
+        super(name: name, warnings: warnings, eTag: eTag);
 
   factory NinaPlace.fromJson(Map<String, dynamic> json) {
 
@@ -42,13 +44,14 @@ class NinaPlace extends Place {
       name: json['name'] as String,
       geocode: Geocode.fromJson(json['geocode']),
       warnings: createWarningList(json['warnings']),
+      eTag:  (json['eTag'] ?? "") as String,
     );
   }
 
   @override
   Map<String, dynamic> toJson() {
     try {
-      return {'name': nameWithoutState, 'geocode': geocode, 'warnings': jsonEncode(warnings)
+      return {'name': nameWithoutState, 'geocode': geocode, 'warnings': jsonEncode(warnings), 'eTag': eTag
       };
     } catch (e) {
       print("Error nina place to json: " + e.toString());
