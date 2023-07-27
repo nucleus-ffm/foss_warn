@@ -59,8 +59,20 @@ Future<dynamic> loadGeocode() async {
   }
 }
 
-//Settings
+Future<String> loadLastBackgroundUpdateTime() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  if (preferences.containsKey("lastBackgroundUpdateTime")) {
+    return preferences.getString("lastBackgroundUpdateTime")!;
+  }
+  return "";
+}
 
+void saveLastBackgroundUpdateTime(String time) async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString("lastBackgroundUpdateTime", time);
+}
+
+// Settings
 saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString(
