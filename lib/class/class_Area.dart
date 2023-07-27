@@ -8,6 +8,7 @@ class Area {
       : _geocodeList = geocodeList,
         _areaDesc = areaDesc;
 
+  /// returns the description (kreisname)
   String get areaDescription => _areaDesc;
   void set areaDescription(String desc) => _areaDesc = desc;
   List<Geocode> get geocodeList => _geocodeList;
