@@ -20,7 +20,6 @@ Future callAlertSwissAPI() async {
 
     List<WarnMessage> tempWarnMessageList = [];
     tempWarnMessageList.clear();
-    //print("create new Warn Message List");
 
     await loadSettings();
     await loadETags();
@@ -40,7 +39,6 @@ Future callAlertSwissAPI() async {
           tempWarnMessageList.add(temp);
         }
       }
-      //warnMessageList.addAll(tempWarnMessageList); // transfer temp List in real list
 
       // store warnings in places //@todo testing
       for (Place p in myPlaceList) {
@@ -94,24 +92,17 @@ WarnMessage? createWarning(var data) {
     return tempAreaList;
   }
 
-  String addLicense(var pub) {
-    if (pub != null) {
-      return pub += "\nQuelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)";
-    } else {
-      return "Quelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)";
-    }
-  }
-
   try {
     // don't display tech test alerts
     if (data["technicalTestAlert"] == "true") {
       return null;
     }
     return WarnMessage.fromJsonAlertSwiss(
-        data,
-        generateAreaList(data["areas"]),
-        generateInstruction(data["instruction"] ?? []),
-        addLicense(data["publisherName"]));
+      data,
+      generateAreaList(data["areas"]),
+      generateInstruction(data["instruction"] ?? []),
+      "${data["publisherName"] ?? ""} \nQuelle: www.alertswiss.ch (CC BY-NC-SA 2.5 CH)",
+    );
   } catch (e) {
     print(
         "something went wrong while paring alert swiss data: " + e.toString());
