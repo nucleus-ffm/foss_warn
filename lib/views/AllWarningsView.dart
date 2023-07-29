@@ -40,7 +40,6 @@ class _AllWarningsViewState extends State<AllWarningsView> {
       setState(() {
         _loading = true;
       });
-      //
     }
 
     void loadData() async {
