@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// handle user preferences. The values written here are default values
+/// the correct values are loaded in loadSettings() from sharedPreferences
 class UserPreferences {
   bool notificationWithExtreme = true;
   bool notificationWithSevere = true;
@@ -24,7 +26,8 @@ class UserPreferences {
   bool showAllWarnings = false;
   bool areWarningsFromCache = false;
 
-  String versionNumber = "0.5.1"; // shown in the about view
+  String versionNumber = "0.6.0 - Alpha2 "; // shown in the about view
+  String previousInstalledVersion  = "";
   // String githubVersionNumber = versionNumber; // used in the update check
   // bool gitHubRelease =  false; // if true, there the check for update Button is shown
 
