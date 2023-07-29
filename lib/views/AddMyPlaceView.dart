@@ -66,8 +66,6 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
               height: 15,
             ),
             Flexible(
-              //height: MediaQuery.of(context).size.height,
-              //height: 100,
               child: ListView(
                 children: _allPlacesToShow
                     .map(
