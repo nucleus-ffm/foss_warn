@@ -11,15 +11,14 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  http: ^1.0.0
-  flutter_local_notifications: ^14.1.1
-  shared_preferences: ^2.1.1
-  shared_preferences_android: ^2.1.4
+  http: ^1.1.0
+  flutter_local_notifications: ^15.1.0+1
+  shared_preferences: ^2.2.0
+  shared_preferences_android: ^2.2.0
   provider: ^6.0.5
   rxdart: ^0.27.7
-  url_launcher: ^6.1.11
+  url_launcher: ^6.1.12
   share_plus: ^7.0.2
-  app_settings: ^4.2.0
   android_alarm_manager_plus: ^3.0.1
   intl: ^0.18.0 # for localizations
 
