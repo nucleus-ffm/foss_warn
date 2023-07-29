@@ -31,7 +31,7 @@ class Geocode {
 
     switch (stateCode) {
       case "01":
-        return "(SH)"; //Schleswig-Holstein
+        return "(SH)"; // Schleswig-Holstein
       case "02":
         return "(HH)"; // Freie und Hansestadt Hamburg
       case "03":
@@ -41,27 +41,27 @@ class Geocode {
       case "05":
         return "(NW)"; // Nordrhein-Westfalen
       case "06":
-        return "(HE)"; //Hessen
+        return "(HE)"; // Hessen
       case "07":
-        return "(RP)"; //Rheinland-Pfalz
+        return "(RP)"; // Rheinland-Pfalz
       case "08":
-        return "(BW)"; //Baden-Württemberg
+        return "(BW)"; // Baden-Württemberg
       case "09":
-        return "(BY)"; //Bayern
+        return "(BY)"; // Bayern
       case "10":
-        return "(SL)"; //Saarland
+        return "(SL)"; // Saarland
       case "11":
-        return "(B)"; //Berlin
+        return "(B)"; // Berlin
       case "12":
-        return "(BB)"; //Brandenburg
+        return "(BB)"; // Brandenburg
       case "13":
-        return "(MV)"; //Mecklenburg-Vorpommern
+        return "(MV)"; // Mecklenburg-Vorpommern
       case "14":
-        return "(SN)"; //Sachsen
+        return "(SN)"; // Sachsen
       case "15":
-        return "(LSA)"; //Sachsen-Anhalt
+        return "(LSA)"; // Sachsen-Anhalt
       case "16":
-        return "(TH)"; //Thüringen
+        return "(TH)"; // Thüringen
       default:
         return "error";
     }
