@@ -1,6 +1,8 @@
 import '../main.dart';
 import 'listHandler.dart';
 
+/// used to sort warning
+/// returns an int corresponding to the severity
 int convertSeverityToInt(String severity) {
   switch (severity) {
     case "Minor":
@@ -15,6 +17,7 @@ int convertSeverityToInt(String severity) {
   return 0;
 }
 
+/// used to sort warning
 int convertSourceToInt(String source) {
   switch (source) {
     case "MOWAS":
