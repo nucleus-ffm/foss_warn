@@ -6,7 +6,6 @@ import '../class/class_Geocode.dart';
 import '../class/class_NinaPlace.dart';
 import 'listHandler.dart';
 import 'saveAndLoadSharedPreferences.dart';
-import 'allPlacesList.dart';
 
 import 'package:http/http.dart';
 
@@ -26,7 +25,6 @@ Future<void> geocodeHandler() async {
     allAvailablePlacesNames.clear();
 
     for (int i = 0; i < _data["daten"].length; i++) {
-      // print( "name:" +  data["daten"][i][1] + "geocodeNumber:" +  data["daten"][i][0]);
       Place place = NinaPlace(
           name: _data["daten"][i][1],
           geocode:
@@ -74,8 +72,6 @@ Future<dynamic> getPlaces() async {
 
 /// create map with short name and full name and create List with full name
 void createAlertSwissPlacesMap() {
-  alertSwissPlacesList.clear();
-
   allAvailablePlacesNames.add(AlertSwissPlace(name: "Zürich", shortName: "ZH"));
   allAvailablePlacesNames.add(AlertSwissPlace(name: "Bern", shortName: "BE"));
   allAvailablePlacesNames.add(AlertSwissPlace(name: "Luzern", shortName: "LU"));
