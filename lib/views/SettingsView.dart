@@ -121,10 +121,6 @@ class _SettingsState extends State<Settings> {
                     });
                     saveSettings();
                     if (userPreferences.shouldNotifyGeneral) {
-                      /*BackgroundTaskManager()
-                                      .cancelBackgroundTask();
-                                  BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay(); */
                       AlarmManager().cancelBackgroundTask();
                       AlarmManager().registerBackgroundTask();
                     } else {
