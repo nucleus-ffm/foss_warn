@@ -27,8 +27,6 @@ class UserPreferences {
   bool areWarningsFromCache = false;
 
   String versionNumber = "0.6.0-alpha_2 "; // shown in the about view
-  // String githubVersionNumber = versionNumber; // used in the update check
-  // bool gitHubRelease =  false; // if true, there the check for update Button is shown
 
   bool activateAlertSwiss = false;
   bool isFirstStart = true;
