@@ -9,11 +9,9 @@ import '../class/class_WarnMessage.dart';
 import 'listHandler.dart';
 import '../main.dart';
 
-//My Places
+// My Places
 saveMyPlacesList() async {
-  //List<String> myPlaceListAsString = myPlaceList.map((i) => i.name).toList();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  // preferences.setStringList('myPlaceListAsString', myPlaceListAsString);
   preferences.setString("MyPlacesListAsJson", jsonEncode(myPlaceList));
 }
 
@@ -59,6 +57,8 @@ Future<dynamic> loadGeocode() async {
   }
 }
 
+/// load the time when the API could be called successfully the last time.
+/// used in the status notification
 Future<String> loadLastBackgroundUpdateTime() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.containsKey("lastBackgroundUpdateTime")) {
@@ -67,6 +67,8 @@ Future<String> loadLastBackgroundUpdateTime() async {
   return "";
 }
 
+/// saved the time when the API could be called successfully the last time.
+/// used in the status notification
 void saveLastBackgroundUpdateTime(String time) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("lastBackgroundUpdateTime", time);
@@ -88,9 +90,6 @@ saveSettings() async {
       "sortWarningsBy", userPreferences.sortWarningsBy.toString());
   preferences.setString("showStatusNotification",
       userPreferences.showStatusNotification.toString());
-  preferences.setString(
-      "updateAvailable", userPreferences.updateAvailable.toString());
-  // @todo remove if not needed anymore preferences.setString("githubVersionNumber", userPreferences.githubVersionNumber.toString());
   preferences.setString(
       "frequencyOfAPICall", userPreferences.frequencyOfAPICall.toString());
   preferences.setString(
@@ -186,7 +185,6 @@ loadSettings() async {
   if (preferences.containsKey("sortWarningsBy")) {
     String temp = preferences.getString("sortWarningsBy")!;
     userPreferences.sortWarningsBy = temp;
-    //print("warningFontSize: $warningFontSize");
   } else {
     saveSettings();
     loadSettings();
@@ -212,17 +210,9 @@ loadSettings() async {
     userPreferences.updateAvailable = false;
   }
 
-  /* @todo: remove if not needed anymore
-   if (preferences.containsKey("githubVersionNumber")) {
-    String temp = preferences.getString("githubVersionNumber")!;
-    userPreferences.githubVersionNumber = temp;
-    //print("warningFontSize: $warningFontSize");
-  } */
-
   if (preferences.containsKey("frequencyOfAPICall")) {
     userPreferences.frequencyOfAPICall =
         double.parse(preferences.getString("frequencyOfAPICall")!);
-    //true;
   }
   if (preferences.containsKey("selectedTheme")) {
     String temp = preferences.getString("selectedTheme")!;
@@ -333,9 +323,7 @@ loadCachedWarnings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.containsKey("cachedWarnings")) {
     var data = jsonDecode(preferences.getString("cachedWarnings")!)!;
-    // print(data);
     for (int i = 0; i < data.length; i++) {
-      // print(data[i]);
       warnMessageList.add(WarnMessage.fromJson(data[i]));
     }
     userPreferences.areWarningsFromCache = true;
