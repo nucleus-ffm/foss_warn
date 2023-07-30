@@ -58,6 +58,10 @@ Yes, but you should prefer to download via F-Droid. Because of the extra work, t
 <summary>Is FOSS Warn currently german only?</summary>
 No, the UI is translated via weblate. Alerts via the NINA API are only available in German. Alerts from alertSwiss are available in several languages.
 </details>
+<details>
+<summary>How can I receive update notification for new versions when I use the APK from Github?</summary>
+In previous versions foss warn had a built-in update check. But we removed this code because it doesn't seem to be necessary for us. If you want to get a notification when we have released a new version, you should take a look at apps like <a href="https://github.com/ImranR98/Obtainium">Obtainium</a>.
+</details>
 
 ## Contribute
 FOSS Warn is currently a "two-man show". So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon.
