@@ -5,7 +5,6 @@ import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/updateProvider.dart';
 import 'package:foss_warn/views/DevSettingsView.dart';
 import 'package:provider/provider.dart';
-import 'package:app_settings/app_settings.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -53,22 +52,25 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final TextEditingController frequenzTextController =
-      new TextEditingController();
+  final TextEditingController frequencyController = TextEditingController();
   final double maxValueFrequencyOfAPICall = 999;
+  final _platform = const MethodChannel("flutter.native/helper");
 
   @override
   void initState() {
-    frequenzTextController.text = frequencyOfAPICall.toInt().toString();
+    frequencyController.text = frequencyOfAPICall.toInt().toString();
     return super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     const double indentOfCategoriesTitles = 15;
     if (startScreen == 0) {
-      dropdownValue = AppLocalizations.of(context).settings_start_view_all_warnings;
+      dropdownValue =
+          AppLocalizations.of(context).settings_start_view_all_warnings;
     } else {
-      dropdownValue = AppLocalizations.of(context).settings_start_view_only_my_places;
+      dropdownValue =
+          AppLocalizations.of(context).settings_start_view_only_my_places;
     }
 
     final Map<ThemeMode, String> themeLabels = {
@@ -90,7 +92,9 @@ class _SettingsState extends State<Settings> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: indentOfCategoriesTitles, top: indentOfCategoriesTitles),
+              padding: EdgeInsets.only(
+                  left: indentOfCategoriesTitles,
+                  top: indentOfCategoriesTitles),
               child: Text(
                 AppLocalizations.of(context).settings_notification,
                 style: TextStyle(
@@ -100,11 +104,13 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_android_notification_settings),
-              onTap: () => AppSettings.openNotificationSettings(),
+              title: Text(AppLocalizations.of(context)
+                  .settings_android_notification_settings),
+              onTap: () => _openNotificationSettings(),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_app_notification_settings),
+              title: Text(AppLocalizations.of(context)
+                  .settings_app_notification_settings),
               onTap: () {
                 Navigator.push(
                   context,
@@ -114,9 +120,10 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-                title: Text(AppLocalizations.of(context).settings_show_status_notification_title),
-                subtitle: Text(
-                    AppLocalizations.of(context).settings_show_status_notification_subtitle),
+                title: Text(AppLocalizations.of(context)
+                    .settings_show_status_notification_title),
+                subtitle: Text(AppLocalizations.of(context)
+                    .settings_show_status_notification_subtitle),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: showStatusNotification,
@@ -130,7 +137,8 @@ class _SettingsState extends State<Settings> {
                       }
                     })),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_background_service),
+              title: Text(
+                  AppLocalizations.of(context).settings_background_service),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: notificationGeneral,
@@ -167,7 +175,8 @@ class _SettingsState extends State<Settings> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(AppLocalizations.of(context).settings_frequent_of_background_update),
+                        Text(AppLocalizations.of(context)
+                            .settings_frequent_of_background_update),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,7 +188,7 @@ class _SettingsState extends State<Settings> {
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                controller: frequenzTextController,
+                                controller: frequencyController,
                                 onChanged: (value) {
                                   if (value != "") {
                                     if (double.parse(value) > 0 &&
@@ -190,7 +199,7 @@ class _SettingsState extends State<Settings> {
                                             double.parse(value);
                                       });
                                     } else {
-                                      frequenzTextController.text =
+                                      frequencyController.text =
                                           frequencyOfAPICall.round().toString();
                                     }
                                   }
@@ -215,7 +224,7 @@ class _SettingsState extends State<Settings> {
                                 onChanged: (value) {
                                   setState(() {
                                     frequencyOfAPICall = value.roundToDouble();
-                                    frequenzTextController.text =
+                                    frequencyController.text =
                                         frequencyOfAPICall.toInt().toString();
                                   });
                                 },
@@ -266,17 +275,23 @@ class _SettingsState extends State<Settings> {
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownValue = newValue!;
-                    if (dropdownValue == AppLocalizations.of(context).settings_start_view_all_warnings) {
+                    if (dropdownValue ==
+                        AppLocalizations.of(context)
+                            .settings_start_view_all_warnings) {
                       startScreen = 0;
-                    } else if (dropdownValue == AppLocalizations.of(context).settings_start_view_only_my_places) {
+                    } else if (dropdownValue ==
+                        AppLocalizations.of(context)
+                            .settings_start_view_only_my_places) {
                       startScreen = 1;
                     }
                   });
                   saveSettings();
                 },
-                items: <String>[AppLocalizations.of(context).settings_start_view_all_warnings,
-                  AppLocalizations.of(context).settings_start_view_only_my_places]
-                    .map<DropdownMenuItem<String>>((String value) {
+                items: <String>[
+                  AppLocalizations.of(context).settings_start_view_all_warnings,
+                  AppLocalizations.of(context)
+                      .settings_start_view_only_my_places
+                ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -285,7 +300,8 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-                title: Text(AppLocalizations.of(context).settings_show_extended_metadata),
+                title: Text(AppLocalizations.of(context)
+                    .settings_show_extended_metadata),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: showExtendedMetaData,
@@ -328,9 +344,10 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_display_all_warnings_title),
-              subtitle:
-                  Text(AppLocalizations.of(context).settings_display_all_warnings_subtitle),
+              title: Text(AppLocalizations.of(context)
+                  .settings_display_all_warnings_title),
+              subtitle: Text(AppLocalizations.of(context)
+                  .settings_display_all_warnings_subtitle),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: showAllWarnings,
@@ -382,7 +399,8 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).settings_alertSwiss),
-              subtitle: Text((AppLocalizations.of(context).settings_alertSwiss_subtitle)),
+              subtitle: Text(
+                  (AppLocalizations.of(context).settings_alertSwiss_subtitle)),
               trailing: Switch(
                 value: activateAlertSwiss,
                 onChanged: (value) {
@@ -395,7 +413,8 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text((AppLocalizations.of(context).settings_show_welcome_dialog)),
+              title: Text(
+                  (AppLocalizations.of(context).settings_show_welcome_dialog)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -418,5 +437,13 @@ class _SettingsState extends State<Settings> {
         ),
       ),
     );
+  }
+
+  Future<void> _openNotificationSettings() async {
+    try {
+      await _platform.invokeMethod("openNotificationSettings");
+    } on PlatformException catch (e) {
+      print(e);
+    }
   }
 }
