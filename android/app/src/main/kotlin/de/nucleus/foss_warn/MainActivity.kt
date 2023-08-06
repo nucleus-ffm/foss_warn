@@ -29,6 +29,10 @@ class MainActivity: FlutterActivity() {
                     val batteryOptimizationEnabled = isBatteryOptimizationEnabled()
                     result.success(batteryOptimizationEnabled)
                 }
+                "openNotificationSettings" -> {
+                    openNotificationSettings()
+                    result.success(null)
+                }
                 else -> result.notImplemented()
             }
         }
@@ -47,8 +51,12 @@ class MainActivity: FlutterActivity() {
 
     private fun isBatteryOptimizationEnabled(): Boolean {
         val pm: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        val packageName: String = getApplicationContext().getPackageName()
+        return !pm.isIgnoringBatteryOptimizations(getApplicationContext().getPackageName())
+    }
 
-        return !pm.isIgnoringBatteryOptimizations(packageName)
+    private fun openNotificationSettings() {
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, getApplicationContext().getPackageName())
+        startActivity(intent)
     }
 }

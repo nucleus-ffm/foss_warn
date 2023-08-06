@@ -5,7 +5,6 @@ import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/updateProvider.dart';
 import 'package:foss_warn/views/DevSettingsView.dart';
 import 'package:provider/provider.dart';
-import 'package:app_settings/app_settings.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -30,10 +29,12 @@ class _SettingsState extends State<Settings> {
   final TextEditingController frequenzTextController =
       new TextEditingController();
   final double _maxValueFrequencyOfAPICall = 999;
+  final _platform = const MethodChannel("flutter.native/helper");
 
   @override
   void initState() {
     frequenzTextController.text = userPreferences.frequencyOfAPICall.toInt().toString();
+
     return super.initState();
   }
 
@@ -45,6 +46,7 @@ class _SettingsState extends State<Settings> {
       0:  AppLocalizations.of(context).settings_start_view_all_warnings,
       1:  AppLocalizations.of(context).settings_start_view_only_my_places,
     };
+
 
     final Map<ThemeMode, String> themeLabels = {
       ThemeMode.system: AppLocalizations.of(context).settings_color_schema_auto,
@@ -79,7 +81,7 @@ class _SettingsState extends State<Settings> {
             ListTile(
               title: Text(AppLocalizations.of(context)
                   .settings_android_notification_settings),
-              onTap: () => AppSettings.openNotificationSettings(),
+              onTap: () => _openNotificationSettings(),
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)
@@ -157,7 +159,7 @@ class _SettingsState extends State<Settings> {
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                controller: frequenzTextController,
+                                controller: frequencyController,
                                 onChanged: (value) {
                                   if (value != "") {
                                     if (double.parse(value) > 0 &&
@@ -250,6 +252,7 @@ class _SettingsState extends State<Settings> {
                 items: [0, 1]
                     .map<DropdownMenuItem<int>>((value) {
                   return DropdownMenuItem<int>(
+
                     value: value,
                     child: Text(startViewLabels[value]!),
                   );
@@ -394,5 +397,13 @@ class _SettingsState extends State<Settings> {
         ),
       ),
     );
+  }
+
+  Future<void> _openNotificationSettings() async {
+    try {
+      await _platform.invokeMethod("openNotificationSettings");
+    } on PlatformException catch (e) {
+      print(e);
+    }
   }
 }

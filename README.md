@@ -22,8 +22,8 @@ Get emergency alerts from warnung.bund.de <br>
 
 </p>
 <p align="center">
-<a href="https://translate.codeberg.org/engage/foss-warn/">
-<img src="https://translate.codeberg.org/widgets/foss-warn/-/foss-warn-app/svg-badge.svg" alt="Übersetzungsstatus" />
+<a href="https://hosted.weblate.org/engage/foss-warn/">
+<img src="https://hosted.weblate.org/widgets/foss-warn/-/svg-badge.svg" alt="Übersetzungsstatus" />
 </a>
 <a href="https://github.com/nucleus-ffm/foss_warn/blob/main/LICENSE" alt="Glicense"><img src="https://img.shields.io/github/license/nucleus-ffm/foss_warn"></a>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases" alt="Github All Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/total.svg"></a>
@@ -56,15 +56,23 @@ Yes, but you should prefer to download via F-Droid. Because of the extra work, t
 </details>
 <details>
 <summary>Is FOSS Warn currently german only?</summary>
-Unfortunately, yes, but we are working on it. 
+No, the UI is translated via weblate. Alerts via the NINA API are only available in German. Alerts from alertSwiss are available in several languages.
+</details>
+<details>
+<summary>How can I receive update notification for new versions when I use the APK from Github?</summary>
+In previous versions foss warn had a built-in update check. But we removed this code because it doesn't seem to be necessary for us. If you want to get a notification when we have released a new version, you should take a look at apps like <a href="https://github.com/ImranR98/Obtainium">Obtainium</a>.
 </details>
 
 ## Contribute
-FOSS Warn is currently (mostly) a "one-man show". So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon
+FOSS Warn is currently a "two-man show". So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon.
 
-## Contributors
+### Translation
+We are using weblate to translate FOSS Warn. Feel free to help translate the application at [weblate](https://hosted.weblate.org/projects/foss-warn/foss-warn-app/).
+
+### Contributors
 special thanks to:
 - [Mats](https://github.com/MatsG23) who fixed [#36](https://github.com/nucleus-ffm/foss_warn/issues/36) and other stuff. You can see his work [here](https://github.com/nucleus-ffm/foss_warn/commits?author=MatsG23)
+- Everyone who helped translate the app
 
 ## Contact
 You can email me at `foss-warn {ät} posteo {point} de`. You can also follow the project on Mastodon [@foss_warn@social.tchncs.de](https://social.tchncs.de/@foss_warn)

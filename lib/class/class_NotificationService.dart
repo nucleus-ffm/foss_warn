@@ -16,7 +16,7 @@ class NotificationService {
           channelDescription:
               'FOSS Warn notifications for ' + channel.trim().toLowerCase(),
           groupKey: "FossWarnWarnings",
-          category: AndroidNotificationCategory("Warnings"),
+          category: AndroidNotificationCategory.alarm,
           importance: Importance.max,
           priority: Priority.max,
 
@@ -37,7 +37,7 @@ class NotificationService {
           'Statusanzeige',
           channelDescription: 'Status der Hintergrund Updates',
           groupKey: "FossWarnService",
-          category: AndroidNotificationCategory("service"),
+          category: AndroidNotificationCategory.service,
           importance: Importance.low,
           priority: Priority.min,
           playSound: false,
