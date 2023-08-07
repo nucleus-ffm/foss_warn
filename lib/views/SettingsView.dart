@@ -26,14 +26,14 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final TextEditingController frequenzTextController =
+  final TextEditingController frequencyController =
       new TextEditingController();
   final double _maxValueFrequencyOfAPICall = 999;
   final _platform = const MethodChannel("flutter.native/helper");
 
   @override
   void initState() {
-    frequenzTextController.text = userPreferences.frequencyOfAPICall.toInt().toString();
+    frequencyController.text = userPreferences.frequencyOfAPICall.toInt().toString();
 
     return super.initState();
   }
@@ -170,7 +170,7 @@ class _SettingsState extends State<Settings> {
                                             double.parse(value);
                                       });
                                     } else {
-                                      frequenzTextController.text =
+                                      frequencyController.text =
                                           userPreferences.frequencyOfAPICall.round().toString();
                                     }
                                   }
@@ -195,7 +195,7 @@ class _SettingsState extends State<Settings> {
                                 onChanged: (value) {
                                   setState(() {
                                     userPreferences.frequencyOfAPICall = value.roundToDouble();
-                                    frequenzTextController.text =
+                                    frequencyController.text =
                                         userPreferences.frequencyOfAPICall.toInt().toString();
                                   });
                                 },
