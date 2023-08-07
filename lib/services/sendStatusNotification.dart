@@ -1,30 +1,36 @@
-import '../views/SettingsView.dart';
+import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
+
+import '../main.dart';
 import '../class/class_NotificationService.dart';
 
 sendStatusUpdateNotification(bool success, [String? error]) async {
+  String _lastUpdate = await loadLastBackgroundUpdateTime();
   DateTime now = DateTime.now();
   int hour = now.hour;
   int hourToAdd = 0;
   int minute = now.minute;
-  String formattedMinuteNext = "";
-  String formattedHourNext = "";
-  String formattedMinuteNow = "";
-  String formattedHourNow = "";
-  if (now.minute + frequencyOfAPICall >= 60) {
-    print("Min + next " + (now.minute + frequencyOfAPICall.toInt()).toString());
-    hourToAdd = (now.minute + frequencyOfAPICall.toInt()) ~/ 60;
-    print("add hour: " + hourToAdd.toString());
-    minute = (now.minute + frequencyOfAPICall.toInt()) % 60;
-    print("minutes: " + minute.toString());
+  String formattedMinuteNext,
+      formattedHourNext,
+      formattedMinuteNow,
+      formattedHourNow = "";
+
+  if (now.minute + userPreferences.frequencyOfAPICall >= 60) {
+    hourToAdd = (now.minute + userPreferences.frequencyOfAPICall.toInt()) ~/ 60;
+    minute = (now.minute + userPreferences.frequencyOfAPICall.toInt()) % 60;
     hour += hourToAdd;
+
+    print("minutes: " + minute.toString());
+    print("add hour: " + hourToAdd.toString());
+    print("Min + next " + (now.minute + userPreferences.frequencyOfAPICall.toInt()).toString());
+
     if (hour >= 24) {
       hour -= 24;
     }
   } else {
-    minute += frequencyOfAPICall.toInt();
+    minute += userPreferences.frequencyOfAPICall.toInt();
   }
 
-  // format time to that it is hh:mm
+  // format time to hh:mm
   if (now.minute.toString().length == 1) {
     formattedMinuteNow = "0" + now.minute.toString();
   } else {
@@ -53,6 +59,7 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
       formattedHourNext + ":" + formattedMinuteNext;
 
   if (success) {
+    saveLastBackgroundUpdateTime(nowFormattedDate);
     print("updating status notification...");
     await NotificationService.showStatusNotification(
       id: 1,
@@ -66,7 +73,7 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
       id: 1,
       title: "FOSS Warn - Aktualisierung fehlgeschlagen",
       body:
-          "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr \n"
+          "letztes erfolgreiches Update: $_lastUpdate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr \n"
           "Error: $error",
       payload: "statusanzeige",
     );

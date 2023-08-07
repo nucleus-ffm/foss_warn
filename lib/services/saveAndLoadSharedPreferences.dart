@@ -1,40 +1,40 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:foss_warn/class/class_WarnMessage.dart';
-import 'package:foss_warn/views/SettingsView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../class/class_Place.dart';
+import 'package:flutter/material.dart';
+import '../class/class_AlertSwissPlace.dart';
+import '../class/class_NinaPlace.dart';
+import '../class/class_WarnMessage.dart';
+
 import 'listHandler.dart';
 import '../main.dart';
 
-//My Places
+// My Places
 saveMyPlacesList() async {
-  //List<String> myPlaceListAsString = myPlaceList.map((i) => i.name).toList();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  // preferences.setStringList('myPlaceListAsString', myPlaceListAsString);
   preferences.setString("MyPlacesListAsJson", jsonEncode(myPlaceList));
 }
 
 loadMyPlacesList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  /*List<String> myPlaceListAsString = [];
-  if (preferences.containsKey("myPlaceListAsString")) {
-    myPlaceListAsString = preferences.getStringList('myPlaceListAsString')!;
-    myPlaceList.clear();
-    for (String i in myPlaceListAsString) {
-      myPlaceList.add(Place(name: i));
-    }
-  } */
-  if (preferences.containsKey("MyPlacesListAsJson")) {
-    var data  = jsonDecode(preferences.getString("MyPlacesListAsJson")!);
-    myPlaceList.clear();
-    for(int i = 0; i < data.length; i++) {
-      myPlaceList.add(Place(name: data[i]["name"], geocode: data[i]["geocode"]));
-    }
-  }
 
+  if (preferences.containsKey("MyPlacesListAsJson")) {
+    List<dynamic> data =
+        jsonDecode(preferences.getString("MyPlacesListAsJson")!);
+    myPlaceList.clear();
+    for (int i = 0; i < data.length; i++) {
+      print(data[i].toString());
+      if (data[i].toString().contains("geocode")) {
+        // print("Nina Place");
+        myPlaceList.add(NinaPlace.fromJson(data[i]));
+      } else if (data[i].toString().contains("shortName")) {
+        //@todo think about better solution
+        // print("alert swiss place");
+        myPlaceList.add(AlertSwissPlace.fromJson(data[i]));
+      }
+    }
+    print(myPlaceList);
+  }
 }
 
 saveGeocodes(String jsonFile) async {
@@ -43,7 +43,7 @@ saveGeocodes(String jsonFile) async {
   preferences.setString("geocodes", jsonFile);
 }
 
-Future<dynamic> loadGeocode()  async {
+Future<dynamic> loadGeocode() async {
   print("load geocodes from storage");
   SharedPreferences preferences = await SharedPreferences.getInstance();
   // preferences.remove("geocodes");
@@ -57,86 +57,82 @@ Future<dynamic> loadGeocode()  async {
   }
 }
 
-
-
-//Settings
-
-saveReadWarningsList() async {
+/// load the time when the API could be called successfully the last time.
+/// used in the status notification
+Future<String> loadLastBackgroundUpdateTime() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setStringList("readWarningsList", readWarnings);
-}
-
-
-
-loadReadWarningsList() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  if (preferences.containsKey("readWarningsList")) {
-    readWarnings = preferences.getStringList("readWarningsList")!;
+  if (preferences.containsKey("lastBackgroundUpdateTime")) {
+    return preferences.getString("lastBackgroundUpdateTime")!;
   }
+  return "";
 }
 
-saveAlreadyNotifiedWarningsList() async {
+/// saved the time when the API could be called successfully the last time.
+/// used in the status notification
+void saveLastBackgroundUpdateTime(String time) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setStringList("AlreadyNotifiedWarningsList", alreadyNotifiedWarnings);
+  preferences.setString("lastBackgroundUpdateTime", time);
 }
 
-loadAlreadyNotifiedWarningsList() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  if (preferences.containsKey("AlreadyNotifiedWarningsList")) {
-    alreadyNotifiedWarnings = preferences.getStringList("AlreadyNotifiedWarningsList")!;
-  }
-}
-
+// Settings
 saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("notificationGeneral", notificationGeneral.toString());
-  preferences.setString("startScreen", startScreen.toString());
-  preferences.setString("showExtendedMetaData", showExtendedMetaData.toString());
-  preferences.setString("warningFontSize", warningFontSize.toString());
-  preferences.setString("showWelcomeScreen", showWelcomeScreen.toString());
-  preferences.setString("sortWarningsBy", sortWarningsBy.toString());
-  preferences.setString("showStatusNotification", showStatusNotification.toString());
-  preferences.setString("updateAvailable", updateAvailable.toString());
-  preferences.setString("githubVersionNumber", githubVersionNumber.toString());
-  preferences.setString("frequencyOfAPICall", frequencyOfAPICall.toString());
-  preferences.setString("selectedTheme", selectedTheme.toString());
-  preferences.setString("showAllWarnings", showAllWarnings.toString());
-  preferences.setString("notificationEventsSettings", jsonEncode(notificationEventsSettings));
-  preferences.setBool("activateAlertSwiss", activateAlertSwiss);
+  preferences.setString(
+      "notificationGeneral", userPreferences.shouldNotifyGeneral.toString());
+  preferences.setString("startScreen", userPreferences.startScreen.toString());
+  preferences.setString(
+      "showExtendedMetaData", userPreferences.showExtendedMetaData.toString());
+  preferences.setString(
+      "warningFontSize", userPreferences.warningFontSize.toString());
+  preferences.setString(
+      "showWelcomeScreen", userPreferences.showWelcomeScreen.toString());
+  preferences.setString(
+      "sortWarningsBy", userPreferences.sortWarningsBy.toString());
+  preferences.setString("showStatusNotification",
+      userPreferences.showStatusNotification.toString());
+  preferences.setString(
+      "frequencyOfAPICall", userPreferences.frequencyOfAPICall.toString());
+  preferences.setString(
+      "selectedTheme", userPreferences.selectedTheme.toString());
+  preferences.setString(
+      "showAllWarnings", userPreferences.showAllWarnings.toString());
+  preferences.setString("notificationEventsSettings",
+      jsonEncode(userPreferences.notificationEventsSettings));
+  preferences.setBool("activateAlertSwiss", userPreferences.activateAlertSwiss);
   print("Settings saved");
 }
 
-saveEtags() async {
+saveETags() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("mowasEtag", mowasETag);
-  preferences.setString("biwappEtag", biwappETag);
-  preferences.setString("katwarnEtag", katwarnETag);
-  preferences.setString("dwdEtag", dwdETag);
-  preferences.setString("lhpEtag", lhpETag);
+  preferences.setString("mowasEtag", appState.mowasETag);
+  preferences.setString("biwappEtag", appState.biwappETag);
+  preferences.setString("katwarnEtag", appState.katwarnETag);
+  preferences.setString("dwdEtag", appState.dwdETag);
+  preferences.setString("lhpEtag", appState.lhpETag);
   print("etags saved");
 }
 
-loadEtags() async {
+loadETags() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.containsKey("mowasEtag")) {
     String temp = preferences.getString("mowasEtag")!;
-    mowasETag = temp;
+    appState.mowasETag = temp;
   }
   if (preferences.containsKey("biwappEtag")) {
     String temp = preferences.getString("biwappEtag")!;
-    biwappETag = temp;
+    appState.biwappETag = temp;
   }
   if (preferences.containsKey("katwarnEtag")) {
     String temp = preferences.getString("katwarnEtag")!;
-    katwarnETag = temp;
+    appState.katwarnETag = temp;
   }
   if (preferences.containsKey("dwdEtag")) {
     String temp = preferences.getString("dwdEtag")!;
-    dwdETag = temp;
+    appState.dwdETag = temp;
   }
   if (preferences.containsKey("lhpEtag")) {
     String temp = preferences.getString("lhpEtag")!;
-    lhpETag = temp;
+    appState.lhpETag = temp;
   }
 }
 
@@ -146,32 +142,32 @@ loadSettings() async {
   if (preferences.containsKey("notificationGeneral")) {
     String temp = preferences.getString("notificationGeneral")!;
     if (temp == "true") {
-      notificationGeneral = true;
+      userPreferences.shouldNotifyGeneral = true;
     } else {
-      notificationGeneral = false;
+      userPreferences.shouldNotifyGeneral = false;
     }
   } else {
-    notificationGeneral = true;
+    userPreferences.shouldNotifyGeneral = true;
   }
   if (preferences.containsKey("startScreen")) {
     String temp = preferences.getString("startScreen")!;
-    startScreen = int.parse(temp);
-    print("Start Screen is: $startScreen");
+    userPreferences.startScreen = int.parse(temp);
+    print("Start Screen is: ${userPreferences.startScreen}");
   }
   if (preferences.containsKey("showExtendedMetaData")) {
     String temp = preferences.getString("showExtendedMetaData")!;
     if (temp == "true") {
-      showExtendedMetaData = true;
+      userPreferences.showExtendedMetaData = true;
     } else {
-      showExtendedMetaData = false;
+      userPreferences.showExtendedMetaData = false;
     }
   } else {
-    showExtendedMetaData = false;
+    userPreferences.showExtendedMetaData = false;
   }
   if (preferences.containsKey("warningFontSize")) {
     String temp = preferences.getString("warningFontSize")!;
-    warningFontSize = double.parse(temp);
-    print("warningFontSize: $warningFontSize");
+    userPreferences.warningFontSize = double.parse(temp);
+    print("warningFontSize: ${userPreferences.warningFontSize}");
   } else {
     saveSettings();
     loadSettings();
@@ -179,17 +175,16 @@ loadSettings() async {
   if (preferences.containsKey("showWelcomeScreen")) {
     String temp = preferences.getString("showWelcomeScreen")!;
     if (temp == "true") {
-      showWelcomeScreen = true;
+      userPreferences.showWelcomeScreen = true;
     } else {
-      showWelcomeScreen = false;
+      userPreferences.showWelcomeScreen = false;
     }
   } else {
-    showWelcomeScreen = true;
+    userPreferences.showWelcomeScreen = true;
   }
   if (preferences.containsKey("sortWarningsBy")) {
     String temp = preferences.getString("sortWarningsBy")!;
-    sortWarningsBy = temp;
-    //print("warningFontSize: $warningFontSize");
+    userPreferences.sortWarningsBy = temp;
   } else {
     saveSettings();
     loadSettings();
@@ -197,82 +192,79 @@ loadSettings() async {
   if (preferences.containsKey("showStatusNotification")) {
     String temp = preferences.getString("showStatusNotification")!;
     if (temp == "true") {
-      showStatusNotification = true;
+      userPreferences.showStatusNotification = true;
     } else {
-      showStatusNotification = false;
+      userPreferences.showStatusNotification = false;
     }
   } else {
-    showStatusNotification = true;
+    userPreferences.showStatusNotification = true;
   }
   if (preferences.containsKey("updateAvailable")) {
     String temp = preferences.getString("updateAvailable")!;
     if (temp == "true") {
-      updateAvailable = true;
+      userPreferences.updateAvailable = true;
     } else {
-      updateAvailable = false;
+      userPreferences.updateAvailable = false;
     }
   } else {
-    updateAvailable = false;
+    userPreferences.updateAvailable = false;
   }
-  if (preferences.containsKey("githubVersionNumber")) {
-    String temp = preferences.getString("githubVersionNumber")!;
-    githubVersionNumber = temp;
-    //print("warningFontSize: $warningFontSize");
-  }
+
   if (preferences.containsKey("frequencyOfAPICall")) {
-    frequencyOfAPICall =
+    userPreferences.frequencyOfAPICall =
         double.parse(preferences.getString("frequencyOfAPICall")!);
-    //true;
   }
   if (preferences.containsKey("selectedTheme")) {
     String temp = preferences.getString("selectedTheme")!;
-    switch(temp) {
+    switch (temp) {
       case 'ThemeMode.system':
-        selectedTheme = ThemeMode.system;
+        userPreferences.selectedTheme = ThemeMode.system;
         break;
       case 'ThemeMode.dark':
-        selectedTheme = ThemeMode.dark;
+        userPreferences.selectedTheme = ThemeMode.dark;
         break;
       case 'ThemeMode.light':
-        selectedTheme = ThemeMode.light;
+        userPreferences.selectedTheme = ThemeMode.light;
         break;
     }
   } else {
     // Default value
-    selectedTheme = ThemeMode.system;
+    userPreferences.selectedTheme = ThemeMode.system;
   }
   if (preferences.containsKey("showAllWarnings")) {
     String temp = preferences.getString("showAllWarnings")!;
     if (temp == "true") {
-      showAllWarnings = true;
+      userPreferences.showAllWarnings = true;
     } else {
-      showAllWarnings = false;
+      userPreferences.showAllWarnings = false;
     }
   } else {
-    showAllWarnings = false;
+    userPreferences.showAllWarnings = false;
   }
   if (preferences.containsKey("notificationEventsSettings")) {
     String temp = preferences.getString("notificationEventsSettings")!;
-    notificationEventsSettings = Map<String, bool>.from(jsonDecode(temp));
+    userPreferences.notificationEventsSettings =
+        Map<String, bool>.from(jsonDecode(temp));
   }
   if (preferences.containsKey("activateAlertSwiss")) {
-    activateAlertSwiss = preferences.getBool("activateAlertSwiss")!;
+    userPreferences.activateAlertSwiss =
+        preferences.getBool("activateAlertSwiss")!;
   }
 }
 
 saveNotificationSettingsImportanceList() async {
   print("Save saveNotificationSettingsImportanceList");
   notificationSettingsImportance.clear();
-  if (notificationWithExtreme) {
+  if (userPreferences.notificationWithExtreme) {
     notificationSettingsImportance.add("extreme");
   }
-  if (notificationWithSevere) {
+  if (userPreferences.notificationWithSevere) {
     notificationSettingsImportance.add("severe");
   }
-  if (notificationWithModerate) {
+  if (userPreferences.notificationWithModerate) {
     notificationSettingsImportance.add("moderate");
   }
-  if (notificationWithMinor) {
+  if (userPreferences.notificationWithMinor) {
     notificationSettingsImportance.add("minor");
   }
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -289,25 +281,26 @@ loadNotificationSettingsImportanceList() async {
     print("notificationSettingsImportance exist - load now");
     notificationSettingsImportance.clear();
     notificationSettingsImportance =
-    preferences.getStringList('notificationSettingsImportance')!;
-    notificationWithSevere = false;
-    notificationWithModerate = false;
-    notificationWithMinor = false;
+        preferences.getStringList('notificationSettingsImportance')!;
+    userPreferences.notificationWithSevere = false;
+    userPreferences.notificationWithModerate = false;
+    userPreferences.notificationWithMinor = false;
     for (String i in notificationSettingsImportance) {
-      switch(i.toLowerCase()) {
+      switch (i.toLowerCase()) {
         case "severe":
-          notificationWithSevere = true;
+          userPreferences.notificationWithSevere = true;
           continue;
         case "moderate":
-          notificationWithModerate = true;
+          userPreferences.notificationWithModerate = true;
           continue;
         case "minor":
-          notificationWithMinor = true;
+          userPreferences.notificationWithMinor = true;
           continue;
       }
     }
     // fix legacy
-    if(notificationSettingsImportance.contains(["Severe", "Moderate", "Minor"])) {
+    if (notificationSettingsImportance
+        .contains(["Severe", "Moderate", "Minor"])) {
       saveNotificationSettingsImportanceList();
       loadNotificationSettingsImportanceList();
     }
@@ -323,21 +316,18 @@ cacheWarnings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("cachedWarnings", jsonEncode(warnMessageList));
   print("warnings cached");
-  areWarningsFromCache = false;
+  userPreferences.areWarningsFromCache = false;
 }
 
 loadCachedWarnings() async {
-  SharedPreferences preferences =  await SharedPreferences.getInstance();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.containsKey("cachedWarnings")) {
     var data = jsonDecode(preferences.getString("cachedWarnings")!)!;
-    // print(data);
-    for(int i = 0; i < data.length; i++) {
-      // print(data[i]);
+    for (int i = 0; i < data.length; i++) {
       warnMessageList.add(WarnMessage.fromJson(data[i]));
     }
-    areWarningsFromCache = true;
+    userPreferences.areWarningsFromCache = true;
   } else {
     print("there are no saved warnings");
   }
 }
-

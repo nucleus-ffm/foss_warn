@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../main.dart';
 import '../services/apiHandler.dart';
 import 'NotificationSettingsView.dart';
 import 'WelcomeView.dart';
@@ -17,33 +18,6 @@ import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/dialogs/FontSizeDialog.dart';
 import '../widgets/dialogs/SortByDialog.dart';
 
-bool notificationWithExtreme = true;
-bool notificationWithSevere = true;
-bool notificationWithModerate = true;
-bool notificationWithMinor = false;
-bool notificationGeneral = true;
-bool showStatusNotification = true;
-Map<String, bool> notificationEventsSettings = new Map();
-
-bool showExtendedMetaData = false; // show more tags in WarningDetailView
-ThemeMode selectedTheme = ThemeMode.system;
-double frequencyOfAPICall = 15;
-String dropdownValue = '';
-int startScreen = 0;
-double warningFontSize = 14;
-bool showWelcomeScreen = true;
-String sortWarningsBy = "severity";
-bool updateAvailable = false;
-bool showAllWarnings = false;
-bool areWarningsFromCache = false;
-
-String versionNumber = "0.5.1"; // shown in the about view
-String githubVersionNumber = versionNumber; // used in the update check
-bool gitHubRelease =
-    false; // if true, there the check for update Button is shown
-
-bool activateAlertSwiss = false;
-
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
 
@@ -52,26 +26,27 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final TextEditingController frequencyController = TextEditingController();
-  final double maxValueFrequencyOfAPICall = 999;
+  final TextEditingController frequenzTextController =
+      new TextEditingController();
+  final double _maxValueFrequencyOfAPICall = 999;
   final _platform = const MethodChannel("flutter.native/helper");
 
   @override
   void initState() {
-    frequencyController.text = frequencyOfAPICall.toInt().toString();
+    frequenzTextController.text = userPreferences.frequencyOfAPICall.toInt().toString();
+
     return super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     const double indentOfCategoriesTitles = 15;
-    if (startScreen == 0) {
-      dropdownValue =
-          AppLocalizations.of(context).settings_start_view_all_warnings;
-    } else {
-      dropdownValue =
-          AppLocalizations.of(context).settings_start_view_only_my_places;
-    }
+
+    final Map<int, String> startViewLabels = {
+      0:  AppLocalizations.of(context).settings_start_view_all_warnings,
+      1:  AppLocalizations.of(context).settings_start_view_only_my_places,
+    };
+
 
     final Map<ThemeMode, String> themeLabels = {
       ThemeMode.system: AppLocalizations.of(context).settings_color_schema_auto,
@@ -126,13 +101,13 @@ class _SettingsState extends State<Settings> {
                     .settings_show_status_notification_subtitle),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
-                    value: showStatusNotification,
+                    value: userPreferences.showStatusNotification,
                     onChanged: (value) {
                       setState(() {
-                        showStatusNotification = value;
+                        userPreferences.showStatusNotification = value;
                       });
                       saveSettings();
-                      if (showStatusNotification == false) {
+                      if (userPreferences.showStatusNotification == false) {
                         NotificationService.cancelOneNotification(1);
                       }
                     })),
@@ -141,26 +116,22 @@ class _SettingsState extends State<Settings> {
                   AppLocalizations.of(context).settings_background_service),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
-                  value: notificationGeneral,
+                  value: userPreferences.shouldNotifyGeneral,
                   onChanged: (value) {
                     setState(() {
-                      notificationGeneral = value;
+                      userPreferences.shouldNotifyGeneral = value;
                     });
                     saveSettings();
-                    if (notificationGeneral) {
-                      /*BackgroundTaskManager()
-                                      .cancelBackgroundTask();
-                                  BackgroundTaskManager()
-                                      .registerBackgroundTaskWithDelay(); */
+                    if (userPreferences.shouldNotifyGeneral) {
                       AlarmManager().cancelBackgroundTask();
                       AlarmManager().registerBackgroundTask();
                     } else {
                       AlarmManager().cancelBackgroundTask();
                       setState(() {
-                        notificationWithExtreme = false;
-                        notificationWithSevere = false;
-                        notificationWithModerate = false;
-                        notificationWithMinor = false;
+                        userPreferences.notificationWithExtreme = false;
+                        userPreferences.notificationWithSevere = false;
+                        userPreferences.notificationWithModerate = false;
+                        userPreferences.notificationWithMinor = false;
                       });
                       print("background notification disabled");
                     }
@@ -193,14 +164,14 @@ class _SettingsState extends State<Settings> {
                                   if (value != "") {
                                     if (double.parse(value) > 0 &&
                                         double.parse(value) <=
-                                            maxValueFrequencyOfAPICall) {
+                                            _maxValueFrequencyOfAPICall) {
                                       setState(() {
-                                        frequencyOfAPICall =
+                                        userPreferences.frequencyOfAPICall =
                                             double.parse(value);
                                       });
                                     } else {
-                                      frequencyController.text =
-                                          frequencyOfAPICall.round().toString();
+                                      frequenzTextController.text =
+                                          userPreferences.frequencyOfAPICall.round().toString();
                                     }
                                   }
                                 },
@@ -216,16 +187,16 @@ class _SettingsState extends State<Settings> {
                             Text("min"),
                             Expanded(
                               child: Slider(
-                                value: frequencyOfAPICall,
+                                value: userPreferences.frequencyOfAPICall,
                                 activeColor:
                                     Theme.of(context).colorScheme.secondary,
                                 min: 1,
-                                max: maxValueFrequencyOfAPICall,
+                                max: _maxValueFrequencyOfAPICall,
                                 onChanged: (value) {
                                   setState(() {
-                                    frequencyOfAPICall = value.roundToDouble();
-                                    frequencyController.text =
-                                        frequencyOfAPICall.toInt().toString();
+                                    userPreferences.frequencyOfAPICall = value.roundToDouble();
+                                    frequenzTextController.text =
+                                        userPreferences.frequencyOfAPICall.toInt().toString();
                                   });
                                 },
                                 onChangeEnd: (value) {
@@ -261,8 +232,8 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context).settings_start_view),
-              trailing: DropdownButton<String>(
-                value: dropdownValue,
+              trailing: DropdownButton<int>(
+                value: userPreferences.startScreen,
                 icon: const Icon(Icons.arrow_downward),
                 iconSize: 24,
                 elevation: 16,
@@ -272,29 +243,18 @@ class _SettingsState extends State<Settings> {
                   height: 2,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                onChanged: (String? newValue) {
+                onChanged: (int? newValue) {
                   setState(() {
-                    dropdownValue = newValue!;
-                    if (dropdownValue ==
-                        AppLocalizations.of(context)
-                            .settings_start_view_all_warnings) {
-                      startScreen = 0;
-                    } else if (dropdownValue ==
-                        AppLocalizations.of(context)
-                            .settings_start_view_only_my_places) {
-                      startScreen = 1;
-                    }
+                    userPreferences.startScreen = newValue!;
                   });
                   saveSettings();
                 },
-                items: <String>[
-                  AppLocalizations.of(context).settings_start_view_all_warnings,
-                  AppLocalizations.of(context)
-                      .settings_start_view_only_my_places
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
+                items: [0, 1]
+                    .map<DropdownMenuItem<int>>((value) {
+                  return DropdownMenuItem<int>(
+
                     value: value,
-                    child: Text(value),
+                    child: Text(startViewLabels[value]!),
                   );
                 }).toList(),
               ),
@@ -304,17 +264,17 @@ class _SettingsState extends State<Settings> {
                     .settings_show_extended_metadata),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
-                    value: showExtendedMetaData,
+                    value: userPreferences.showExtendedMetaData,
                     onChanged: (value) {
                       setState(() {
-                        showExtendedMetaData = value;
+                        userPreferences.showExtendedMetaData = value;
                       });
                       saveSettings();
                     })),
             ListTile(
               title: Text(AppLocalizations.of(context).settings_color_schema),
               trailing: DropdownButton<ThemeMode>(
-                value: selectedTheme,
+                value: userPreferences.selectedTheme,
                 icon: const Icon(Icons.arrow_downward),
                 iconSize: 24,
                 elevation: 16,
@@ -326,7 +286,7 @@ class _SettingsState extends State<Settings> {
                 ),
                 onChanged: (ThemeMode? newValue) {
                   setState(() {
-                    selectedTheme = newValue!;
+                    userPreferences.selectedTheme = newValue!;
                   });
                   saveSettings();
 
@@ -350,10 +310,10 @@ class _SettingsState extends State<Settings> {
                   .settings_display_all_warnings_subtitle),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
-                  value: showAllWarnings,
+                  value: userPreferences.showAllWarnings,
                   onChanged: (value) {
                     setState(() {
-                      showAllWarnings = value;
+                      userPreferences.showAllWarnings = value;
                     });
                     saveSettings();
                     final updater = Provider.of<Update>(context, listen: false);
@@ -402,10 +362,10 @@ class _SettingsState extends State<Settings> {
               subtitle: Text(
                   (AppLocalizations.of(context).settings_alertSwiss_subtitle)),
               trailing: Switch(
-                value: activateAlertSwiss,
+                value: userPreferences.activateAlertSwiss,
                 onChanged: (value) {
                   setState(() {
-                    activateAlertSwiss = value;
+                    userPreferences.activateAlertSwiss = value;
                   });
                   saveSettings();
                 },

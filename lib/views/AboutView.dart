@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/widgets/dialogs/DisclaimerDialog.dart';
 import 'package:foss_warn/widgets/dialogs/WarningSourcesDialog.dart';
+import '../main.dart';
 import '../services/urlLauncher.dart';
 import '../widgets/dialogs/missingImprintDialog.dart';
 import '../widgets/dialogs/privacyDialog.dart';
 import '../widgets/dialogs/ChangeLogDialog.dart';
-import 'SettingsView.dart';
 
 class AboutView extends StatelessWidget {
   @override
@@ -43,8 +43,10 @@ class AboutView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
             child: Center(
-              child: Text(AppLocalizations.of(context).about_summery,
-              textAlign: TextAlign.center,),
+              child: Text(
+                AppLocalizations.of(context).about_summery,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
           Divider(),
@@ -55,7 +57,7 @@ class AboutView extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(AppLocalizations.of(context).about_source_subtitle,
-                style: Theme.of(context).textTheme.bodyText1),
+                style: Theme.of(context).textTheme.bodyLarge),
             onTap: () {
               showDialog(
                 context: context,
@@ -70,7 +72,7 @@ class AboutView extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text("https://warnung.bund.de/meldungen",
-                style: Theme.of(context).textTheme.bodyText1),
+                style: Theme.of(context).textTheme.bodyLarge),
             onTap: () =>
                 launchUrlInBrowser('https://warnung.bund.de/meldungen'),
           ),
@@ -82,7 +84,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               "Nucleus",
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () => launchUrlInBrowser('https://github.com/nucleus-ffm'),
           ),
@@ -94,7 +96,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               "foss-warn@posteo.de",
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () => launchEmail('mailto:foss-warn@posteo.de'),
           ),
@@ -106,7 +108,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               AppLocalizations.of(context).about_imprint_subtitle,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
               showDialog(
@@ -123,7 +125,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               AppLocalizations.of(context).about_privacy_subtitle,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
               showDialog(
@@ -140,7 +142,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               AppLocalizations.of(context).about_disclaimer_subtitle,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
               showDialog(
@@ -156,8 +158,8 @@ class AboutView extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "$versionNumber (beta)",
-              style: Theme.of(context).textTheme.bodyText1,
+              "${userPreferences.versionNumber} (beta)",
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
               showDialog(
@@ -174,7 +176,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               "GPL v3.0",
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
           ListTile(
@@ -185,7 +187,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               AppLocalizations.of(context).about_other_license_subtitle,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
               Navigator.push(
@@ -202,7 +204,7 @@ class AboutView extends StatelessWidget {
               ),
               subtitle: Text(
                 AppLocalizations.of(context).about_contributors_subtitle,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () => launchUrlInBrowser(
                   'https://github.com/nucleus-ffm/foss_warn/blob/main/README.md#contributors')),
@@ -214,7 +216,7 @@ class AboutView extends StatelessWidget {
             ),
             subtitle: Text(
               AppLocalizations.of(context).about_sourcecode_subtitle,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () =>
                 launchUrlInBrowser('https://github.com/nucleus-ffm/foss_warn'),

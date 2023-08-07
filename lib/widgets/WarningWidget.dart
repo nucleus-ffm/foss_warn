@@ -1,21 +1,19 @@
-// widget für die einzelnen Warnungen als Card
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/helperFunctionToTranslateAndChooseColorType.dart';
-import 'package:foss_warn/widgets/dialogs/MessageTypeExplanation.dart';
 import 'package:provider/provider.dart';
-import '../services/markWarningsAsRead.dart';
+
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
-import '../services/listHandler.dart';
+import '../services/translateAndColorizeWarning.dart';
+import '../widgets/dialogs/MessageTypeExplanation.dart';
 import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {
-  final WarnMessage warnMessage;
-  const WarningWidget({Key? key, required this.warnMessage}) : super(key: key);
+  final WarnMessage _warnMessage;
+  const WarningWidget({Key? key, required WarnMessage warnMessage}) : _warnMessage = warnMessage, super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class WarningWidget extends StatelessWidget {
 
     List<String> generateGeocodeList() {
       List<String> tempList = [];
-      for (Area myArea in warnMessage.areaList) {
+      for (Area myArea in _warnMessage.areaList) {
         for (Geocode myGeocode in myArea.geocodeList) {
           tempList.add(myGeocode.geocodeName);
         }
@@ -44,7 +42,7 @@ class WarningWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailScreen(warnMessage: warnMessage)),
+                  builder: (context) => DetailScreen(warnMessage: _warnMessage)),
             ).then((value) => updatePrevView());
           },
           child: Padding(
@@ -52,10 +50,12 @@ class WarningWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                readWarnings.contains(warnMessage.identifier)
+                _warnMessage.read
                     ? IconButton(
                         onPressed: () {
-                          markOneWarningAsUnread(warnMessage, context);
+                          _warnMessage.read = false;
+                          final updater = Provider.of<Update>(context, listen: false);
+                          updater.updateReadStatusInList();
                         },
                         icon: Icon(
                           Icons.mark_chat_read,
@@ -63,7 +63,9 @@ class WarningWidget extends StatelessWidget {
                         ))
                     : IconButton(
                         onPressed: () {
-                          markOneWarningAsRead(warnMessage, context);
+                          _warnMessage.read = true;
+                          final updater = Provider.of<Update>(context, listen: false);
+                          updater.updateReadStatusInList();
                         },
                         icon: Icon(
                           Icons.warning_amber_outlined,
@@ -89,8 +91,9 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateCategory(warnMessage.category, context),
-                                style: Theme.of(context).textTheme.headline3,
+                                translateWarningCategory(
+                                    _warnMessage.category, context),
+                                style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ),
                             color: Colors.indigo,
@@ -110,13 +113,14 @@ class WarningWidget extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                translateMessageType(warnMessage.messageType, context),
+                                translateWarningType(
+                                    _warnMessage.messageType, context),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
                             ),
                             color:
-                                chooseMessageTypeColor(warnMessage.messageType),
+                                chooseWarningTypeColor(_warnMessage.messageType),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
@@ -131,7 +135,7 @@ class WarningWidget extends StatelessWidget {
                                         " " +
                                         AppLocalizations.of(context)
                                             .warning_widget_and +
-                                    " " +
+                                        " " +
                                         (geocodeNameList.length - 1)
                                             .toString() +
                                         " " +
@@ -151,7 +155,7 @@ class WarningWidget extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        warnMessage.headline,
+                        _warnMessage.headline,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -163,14 +167,14 @@ class WarningWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              formatSentDate(warnMessage.sent),
+                              formatSentDate(_warnMessage.sent),
                               style: TextStyle(fontSize: 12),
                             ),
                             SizedBox(
                               width: 20,
                             ),
                             Text(
-                              warnMessage.source,
+                              _warnMessage.source,
                               style: TextStyle(fontSize: 12),
                             )
                           ],
@@ -180,15 +184,16 @@ class WarningWidget extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetailScreen(warnMessage: warnMessage)),
-                      ).then((value) => updatePrevView());
-                    },
-                    icon: Icon(Icons.read_more))
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DetailScreen(warnMessage: _warnMessage)),
+                    ).then((value) => updatePrevView());
+                  },
+                  icon: Icon(Icons.read_more),
+                )
               ],
             ),
           ),

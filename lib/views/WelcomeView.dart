@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/welcomeScreenItems.dart';
 import '../main.dart';
-import 'SettingsView.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/dialogs/DisclaimerDialog.dart';
 import '../widgets/dialogs/privacyDialog.dart';
@@ -51,7 +50,8 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
         _currentPage = _pageViewController.page!;
       });
     });
-    final isLastSlide = _currentPage == getWelcomeScreenItems(context).length - 1;
+    final isLastSlide =
+        _currentPage == getWelcomeScreenItems(context).length - 1;
 
     return Scaffold(
       body: Container(
@@ -73,20 +73,20 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                       ? TextButton(
                           onPressed: () {
                             setState(() {
-                              showWelcomeScreen = false;
+                              userPreferences.showWelcomeScreen = false;
                             });
                             saveSettings();
 
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    HomeView(),
+                                builder: (BuildContext context) => HomeView(),
                               ),
                             );
                           },
                           child: Text(
-                            AppLocalizations.of(context).welcome_view_end_button,
+                            AppLocalizations.of(context)
+                                .welcome_view_end_button,
                             style: TextStyle(color: Colors.white),
                           ),
                           style: TextButton.styleFrom(
@@ -170,7 +170,8 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                               onPressed: () =>
                                   _showIgnoreBatteryOptimizationDialog(),
                               child: Text(
-                                AppLocalizations.of(context).welcome_view_battery_optimisation_action,
+                                AppLocalizations.of(context)
+                                    .welcome_view_battery_optimisation_action,
                                 style: TextStyle(color: Colors.white),
                               ),
                               style: TextButton.styleFrom(
@@ -183,12 +184,14 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                                   size: 56,
                                   color: Colors.green,
                                 ),
-                                Text(AppLocalizations.of(context).welcome_view_battery_optimisation_action_success,
-                                style:  TextStyle(
-                                    color: Colors.grey,
-                                    letterSpacing: 1.2,
-                                    fontSize: 16.0,
-                                    height: 1.3),
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .welcome_view_battery_optimisation_action_success,
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      letterSpacing: 1.2,
+                                      fontSize: 16.0,
+                                      height: 1.3),
                                 )
                               ],
                             );

@@ -1,16 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:foss_warn/services/allPlacesList.dart';
 import 'package:foss_warn/services/apiHandler.dart';
-import '../class/class_Place.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import 'listHandler.dart';
 
 class Update with ChangeNotifier {
-
   // delete preset
-  Future<void> updateList(newPlaceName)  async {
-    myPlaceList.add(Place(name: newPlaceName,
-        geocode: geocodeMap[newPlaceName] ?? alertSwissPlacesMap[newPlaceName]!));
+  Future<void> updateList(newPlace) async {
+    myPlaceList.add(newPlace);
     saveMyPlacesList();
     await callAPI();
     print("we have to rebuild the view");

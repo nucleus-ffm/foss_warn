@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../views/SettingsView.dart';
+import '../../main.dart';
 import '../../services/saveAndLoadSharedPreferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -27,10 +27,10 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 leading: Radio(
                   value: 12.0,
-                  groupValue: warningFontSize,
+                  groupValue: userPreferences.warningFontSize,
                   onChanged: (value) {
                     setState(() {
-                      warningFontSize = 12.0;
+                      userPreferences.warningFontSize = 12.0;
                       saveSettings();
                       Navigator.of(context).pop();
                     });
@@ -38,7 +38,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 onTap: () {
                   setState(() {
-                    warningFontSize = 12.0;
+                    userPreferences.warningFontSize = 12.0;
                     saveSettings();
                     Navigator.of(context).pop();
                   });
@@ -51,10 +51,10 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 leading: Radio(
                   value: 14.0,
-                  groupValue: warningFontSize,
+                  groupValue: userPreferences.warningFontSize,
                   onChanged: (value) {
                     setState(() {
-                      warningFontSize = 14.0;
+                      userPreferences.warningFontSize = 14.0;
                       saveSettings();
                       Navigator.of(context).pop();
                     });
@@ -62,7 +62,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 onTap: () {
                   setState(() {
-                    warningFontSize = 14.0;
+                    userPreferences.warningFontSize = 14.0;
                     saveSettings();
                     Navigator.of(context).pop();
                   });
@@ -75,10 +75,10 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 leading: Radio(
                   value: 16,
-                  groupValue: warningFontSize,
+                  groupValue: userPreferences.warningFontSize,
                   onChanged: (value) {
                     setState(() {
-                      warningFontSize = 16.0;
+                      userPreferences.warningFontSize = 16.0;
                       saveSettings();
                       Navigator.of(context).pop();
                     });
@@ -86,7 +86,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 onTap: () {
                   setState(() {
-                    warningFontSize = 16.0;
+                    userPreferences.warningFontSize = 16.0;
                     saveSettings();
                     Navigator.of(context).pop();
                   });
@@ -99,10 +99,10 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 leading: Radio(
                   value: 18.0,
-                  groupValue: warningFontSize,
+                  groupValue: userPreferences.warningFontSize,
                   onChanged: (value) {
                     setState(() {
-                      warningFontSize = 18.0;
+                      userPreferences.warningFontSize = 18.0;
                       saveSettings();
                       Navigator.of(context).pop();
                     });
@@ -110,7 +110,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 ),
                 onTap: () {
                   setState(() {
-                    warningFontSize = 18.0;
+                    userPreferences.warningFontSize = 18.0;
                     saveSettings();
                     Navigator.of(context).pop();
                   });

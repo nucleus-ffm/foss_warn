@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/class/class_Place.dart';
-import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
-import 'package:foss_warn/services/listHandler.dart';
-import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 
 import '../class/class_alarmManager.dart';
+import '../class/abstract_Place.dart';
+import '../services/checkForMyPlacesWarnings.dart';
+import '../services/listHandler.dart';
+import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/alertSwiss.dart';
 import '../services/geocodeHandler.dart';
 import '../widgets/dialogs/systemInformationDialog.dart';
@@ -19,8 +19,8 @@ class DevSettings extends StatefulWidget {
 }
 
 class _DevSettingsState extends State<DevSettings> {
-  final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
-  
+  final EdgeInsets _settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,33 +31,22 @@ class _DevSettingsState extends State<DevSettings> {
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: SingleChildScrollView(
-        child: Padding (
+        child: Padding(
           padding: const EdgeInsets.only(top: 0, bottom: 20),
           child: Column(
             children: [
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
                     .dev_settings_test_notification),
                 subtitle: Text(AppLocalizations.of(context)
                     .dev_settings_test_notification_text),
                 onTap: () {
-                  // @todo: Move code to function to avoid code doubling
                   checkForMyPlacesWarnings(false, true);
                   bool thereIsNoWarning = true;
                   for (Place myPlace in myPlaceList) {
                     //check if there are warning and if it they are important enough
-                    if (myPlace.warnings.length > 0 &&
-                        myPlace.warnings.any((warning) =>
-                            notificationSettingsImportance
-                                .contains(warning.severity))) {
-                      if (myPlace.warnings.every((warning) =>
-                          readWarnings.contains(warning.identifier))) {
-                        //all warnings read
-                      } else {
-                        thereIsNoWarning = false;
-                      }
-                    } else {}
+                    thereIsNoWarning = myPlace.checkIfThereIsAWarningToNotify();
                   }
                   if (thereIsNoWarning) {
                     final snackBar = SnackBar(
@@ -75,7 +64,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
                     .dev_settings_restart_background_service),
                 subtitle: Text(AppLocalizations.of(context)
@@ -105,15 +94,22 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
-                    .dev_settings_delete_list_of_read_warnings),
+                        .dev_settings_delete_list_of_read_warnings +
+                    " & \n" +
+                    AppLocalizations.of(context)
+                        .dev_settings_delete_notification_list),
                 subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_delete_list_of_read_warnings_text),
+                        .dev_settings_delete_list_of_read_warnings_text +
+                    " & \n" +
+                    AppLocalizations.of(context)
+                        .dev_settings_delete_notification_list_text),
                 onTap: () {
-                  print("delete readWarningsList");
-                  readWarnings.clear();
-                  saveReadWarningsList();
+                  print("reset read and notification status for all warnings");
+                  for (Place p in myPlaceList) {
+                    p.resetReadAndNotificationStatusForAllWarnings(context);
+                  }
                   final snackBar = SnackBar(
                     content: Text(
                       AppLocalizations.of(context).dev_settings_success,
@@ -128,30 +124,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    .dev_settings_delete_notification_list),
-                subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_delete_notification_list_text),
-                onTap: () {
-                  print("delete alreadyNotifiedWarnings");
-                  alreadyNotifiedWarnings.clear();
-                  saveAlreadyNotifiedWarningsList();
-                  final snackBar = SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-              ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(
                     AppLocalizations.of(context).dev_settings_call_alert_swiss),
                 subtitle: Text(AppLocalizations.of(context)
@@ -173,7 +146,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
                     .dev_settings_load_cached_warnings),
                 subtitle: Text(AppLocalizations.of(context)
@@ -195,7 +168,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(
                     AppLocalizations.of(context).dev_settings_test_geocode),
                 subtitle: Text(AppLocalizations.of(context)
@@ -217,7 +190,7 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                contentPadding: settingsTileListPadding,
+                contentPadding: _settingsTileListPadding,
                 title: Text(
                     AppLocalizations.of(context).dev_settings_delete_warnings),
                 subtitle: Text(AppLocalizations.of(context)
@@ -239,36 +212,35 @@ class _DevSettingsState extends State<DevSettings> {
                 },
               ),
               ListTile(
-                    contentPadding: settingsTileListPadding,
-                    title:
-                        Text("Systeminformationen zur Fehlerbehebung sammeln"),
-                    subtitle: Text(
-                        "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet."),
-                    onTap: () {
-                      print("Systeminformationen sammeln");
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => SystemInformationDialog(),
-                      );
+                contentPadding: _settingsTileListPadding,
+                title: Text("Systeminformationen zur Fehlerbehebung sammeln"),
+                subtitle: Text(
+                    "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet."),
+                onTap: () {
+                  print("Systeminformationen sammeln");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        SystemInformationDialog(),
+                  );
 
-                      final snackBar = SnackBar(
-                        content: const Text(
-                          "Collecting system information...",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        backgroundColor: Colors.green[100],
-                      );
+                  final snackBar = SnackBar(
+                    content: const Text(
+                      "Collecting system information...",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
 
-                      // Find the ScaffoldMessenger in the widget tree
-                      // and use it to show a SnackBar.
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                  ),
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
             ],
           ),
         ),
       ),
-
     );
   }
 }

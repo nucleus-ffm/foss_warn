@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:foss_warn/enums/DataFetchStatus.dart';
 import 'package:foss_warn/services/alertSwiss.dart';
 
+import '../enums/Certainty.dart';
+import '../enums/Severity.dart';
 import '../main.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
 import 'listHandler.dart';
-import '../views/SettingsView.dart';
 import 'sendStatusNotification.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
@@ -16,15 +17,15 @@ import 'package:http/http.dart';
 /// fetch data from (old) API
 Future getData(bool useEtag) async {
   try {
-    Response response; //response var for get request
-    var data; //var for response data
+    Response _response; //response var for get request
+    var _data; //var for response data
 
-    List<WarnMessage> tempWarnMessageList = [];
-    tempWarnMessageList.clear();
+    List<WarnMessage> _tempWarnMessageList = [];
+    _tempWarnMessageList.clear();
     //print("create new Warn Message List");
 
     await loadSettings();
-    await loadEtags();
+    await loadETags();
 
     // Get from MOWAS
     print("get from Mowas");
@@ -32,39 +33,36 @@ Future getData(bool useEtag) async {
         Uri.parse('https://warnung.bund.de/bbk.mowas/gefahrendurchsagen.json');
 
     if (useEtag) {
-      response = await get(urlMowas, headers: {'If-None-Match': mowasETag});
+      _response = await get(urlMowas, headers: {'If-None-Match': appState.mowasETag});
     } else {
-      response = await get(urlMowas);
+      _response = await get(urlMowas);
     }
 
     //print("Response status: " + response.statusCode.toString());
     //check response code 200 -> success
-    if (response.statusCode == 200) {
-      data = jsonDecode(utf8.decode(response.bodyBytes));
+    if (_response.statusCode == 200) {
+      _data = jsonDecode(utf8.decode(_response.bodyBytes));
       //update status and count messages
-      mowasStatus = true;
-      if (response.headers["etag"] != null) {
-        mowasETag = (response.headers["etag"])!;
+      appState.mowasStatus = true;
+      if (_response.headers["etag"] != null) {
+        appState.mowasETag = (_response.headers["etag"])!;
       } else {
-        print("Error with Etag: " + response.headers.toString());
+        print("Error with Etag: " + _response.headers.toString());
       }
-      mowasWarningsCount = data.length;
+      appState.mowasWarningsCount = _data.length;
 
       try {
-        mowasParseStatus = true;
+        appState.mowasParseStatus = true;
         // parse Json and create WarnMessage class instances from it
-        for (var i = 0; i <= data.length - 1; i++) {
+        for (var i = 0; i <= _data.length - 1; i++) {
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
             for (var j = 0;
-                j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+                j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -73,9 +71,10 @@ Future getData(bool useEtag) async {
           List<Area> generateAreaList(int i) {
             List<Area> tempAreaList = [];
             //loop through list of areas
-            for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
+            for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.areaDescription =
+                  _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -83,47 +82,47 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "MOWAS",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "?",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "",
-            web: data[i]["info"][0]["web"] ?? "",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
-          tempWarnMessageList.add(tempWarnMessage);
+              source: "MOWAS",
+              identifier: _data[i]["identifier"] ?? "?",
+              sender: _data[i]["sender"] ?? "?",
+              sent: _data[i]["sent"] ?? "?",
+              status: _data[i]["status"] ?? "?",
+              messageType: _data[i]["msgType"] ?? "?",
+              scope: _data[i]["scope"] ?? "?",
+              category: _data[i]["info"][0]["category"][0] ?? "?",
+              event: _data[i]["info"][0]["event"] ?? "?",
+              urgency: _data[i]["info"][0]["urgency"] ?? "?",
+              severity: getSeverity(
+                  _data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  _data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              effective: _data[i]["info"][0]["effective"] ?? "",
+              onset: _data[i]["info"][0]["onset"] ?? "",
+              expires: _data[i]["info"][0]["expires"] ?? "",
+              headline: _data[i]["info"][0]["headline"] ?? "?",
+              description: _data[i]["info"][0]["description"] ?? "",
+              instruction: _data[i]["info"][0]["instruction"] ?? "",
+              publisher: _data[i]["info"][0]["parameter"][2]["value"] ?? "?",
+              contact: _data[i]["info"][0]["contact"] ?? "",
+              web: _data[i]["info"][0]["web"] ?? "",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
+          _tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
         print("Error while paring mowas data: " + e.toString());
-        mowasParseStatus = false;
+        appState.mowasParseStatus = false;
       }
-    } else if (response.statusCode == 304) {
+    } else if (_response.statusCode == 304) {
       // nothing changed
       print("no change for mowas");
-      mowasStatus = true;
-      mowasParseStatus = true;
+      appState.mowasStatus = true;
+      appState.mowasParseStatus = true;
     } else {
       //something went wrong
-      print("can not get mowas data" + response.statusCode.toString());
-      mowasStatus = false;
+      print("can not get mowas data" + _response.statusCode.toString());
+      appState.mowasStatus = false;
     }
 
     // GET from KATWARN
@@ -131,39 +130,36 @@ Future getData(bool useEtag) async {
     var urlKatwarn =
         Uri.parse('https://warnung.bund.de/bbk.katwarn/warnmeldungen.json');
     if (useEtag) {
-      response = await get(urlKatwarn, headers: {'If-None-Match': katwarnETag});
+      _response = await get(urlKatwarn, headers: {'If-None-Match': appState.katwarnETag});
     } else {
-      response = await get(urlKatwarn);
+      _response = await get(urlKatwarn);
     }
-    response = await get(urlKatwarn);
+    _response = await get(urlKatwarn);
     //print("Response status: " + response.statusCode.toString());
-    if (response.statusCode == 200) {
-      data = jsonDecode(utf8.decode(response.bodyBytes));
-      if (response.headers["etag"] != null) {
-        katwarnETag = (response.headers["etag"])!;
+    if (_response.statusCode == 200) {
+      _data = jsonDecode(utf8.decode(_response.bodyBytes));
+      if (_response.headers["etag"] != null) {
+        appState.katwarnETag = (_response.headers["etag"])!;
       } else {
-        print("Error with Etag: " + response.headers.toString());
+        print("Error with Etag: " + _response.headers.toString());
       }
 
       //update status und count messages
-      katwarnStatus = true;
-      katwarnWarningsCount = data.length;
+      appState.katwarnStatus = true;
+      appState.katwarnWarningsCount = _data.length;
 
       try {
-        katwarnParseStatus = true;
+        appState.katwarnParseStatus = true;
         // parse Json and create WarnMessage class instances from it
-        for (var i = 0; i <= data.length - 1; i++) {
+        for (var i = 0; i <= _data.length - 1; i++) {
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
             for (var j = 0;
-                j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+                j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+                  Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                      geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -172,9 +168,10 @@ Future getData(bool useEtag) async {
           List<Area> generateAreaList(int i) {
             List<Area> tempAreaList = [];
             //loop through list of areas
-            for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
+            for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.areaDescription =
+                  _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -182,84 +179,81 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "KATWARN",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "?",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][2]["value"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "",
-            web: data[i]["info"][0]["web"] ?? "",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
-          tempWarnMessageList.add(tempWarnMessage);
+              source: "KATWARN",
+              identifier: _data[i]["identifier"] ?? "?",
+              sender: _data[i]["sender"] ?? "?",
+              sent: _data[i]["sent"] ?? "?",
+              status: _data[i]["status"] ?? "?",
+              messageType: _data[i]["msgType"] ?? "?",
+              scope: _data[i]["scope"] ?? "?",
+              category: _data[i]["info"][0]["category"][0] ?? "?",
+              event: _data[i]["info"][0]["event"] ?? "?",
+              urgency: _data[i]["info"][0]["urgency"] ?? "?",
+              severity: getSeverity(
+                  _data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  _data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              effective: _data[i]["info"][0]["effective"] ?? "",
+              onset: _data[i]["info"][0]["onset"] ?? "",
+              expires: _data[i]["info"][0]["expires"] ?? "",
+              headline: _data[i]["info"][0]["headline"] ?? "?",
+              description: _data[i]["info"][0]["description"] ?? "",
+              instruction: _data[i]["info"][0]["instruction"] ?? "",
+              publisher: _data[i]["info"][0]["parameter"][2]["value"] ?? "?",
+              contact: _data[i]["info"][0]["contact"] ?? "",
+              web: _data[i]["info"][0]["web"] ?? "",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
+          _tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
         print("Errror wile parsing katwarn Data: " + e.toString());
-        katwarnParseStatus = false;
+        appState.katwarnParseStatus = false;
       }
-    } else if (response.statusCode == 304) {
+    } else if (_response.statusCode == 304) {
       // nothing changed
       print("no change for katwarn");
-      katwarnStatus = true;
-      katwarnParseStatus = true;
+      appState.katwarnStatus = true;
+      appState.katwarnParseStatus = true;
     } else {
       //something went wrong
       print("can not get Katwarn data");
-      katwarnStatus = false;
+      appState.katwarnStatus = false;
     }
 
     // GET from BIWAPP
     print("get from Biwapp");
     var urlBiwapp =
         Uri.parse('https://warnung.bund.de/bbk.biwapp/warnmeldungen.json');
-    response = await get(urlBiwapp);
+    _response = await get(urlBiwapp);
     //print("Response status: " + response.statusCode.toString());
-    if (response.statusCode == 200) {
-      data = jsonDecode(utf8.decode(response.bodyBytes));
+    if (_response.statusCode == 200) {
+      _data = jsonDecode(utf8.decode(_response.bodyBytes));
       // store etag
-      if (response.headers["etag"] != null) {
-        biwappETag = (response.headers["etag"])!;
+      if (_response.headers["etag"] != null) {
+        appState.biwappETag = (_response.headers["etag"])!;
       } else {
-        print("Error with Etag: " + response.headers.toString());
+        print("Error with Etag: " + _response.headers.toString());
       }
       //check status and count messages
-      biwappStatus = true;
-      biwappWarningsCount = data.length;
+      appState.biwappStatus = true;
+      appState.biwappWarningsCount = _data.length;
 
       try {
-        biwappParseStatus = true;
+        appState.biwappParseStatus = true;
         // parse Json and create WarnMessage class instances from it
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < _data.length; i++) {
           //print("[get biwapp data] i= $i länge= ${data.length}");
 
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
             for (var j = 0;
-                j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+                j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -268,9 +262,10 @@ Future getData(bool useEtag) async {
           List<Area> generateAreaList(int i) {
             List<Area> tempAreaList = [];
             //loop through list of areas
-            for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
+            for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.areaDescription =
+              _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -278,48 +273,48 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "BIWAPP",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "?",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["parameter"][0]["value"] ??
-                "?", // different to others ["parameter"][0]
-            contact: data[i]["info"][0]["contact"] ?? "",
-            web: data[i]["info"][0]["web"] ?? "",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
-          tempWarnMessageList.add(tempWarnMessage);
+              source: "BIWAPP",
+              identifier: _data[i]["identifier"] ?? "?",
+              sender: _data[i]["sender"] ?? "?",
+              sent: _data[i]["sent"] ?? "?",
+              status: _data[i]["status"] ?? "?",
+              messageType: _data[i]["msgType"] ?? "?",
+              scope: _data[i]["scope"] ?? "?",
+              category: _data[i]["info"][0]["category"][0] ?? "?",
+              event: _data[i]["info"][0]["event"] ?? "?",
+              urgency: _data[i]["info"][0]["urgency"] ?? "?",
+              severity: getSeverity(
+                  _data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  _data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              effective: _data[i]["info"][0]["effective"] ?? "",
+              onset: _data[i]["info"][0]["onset"] ?? "",
+              expires: _data[i]["info"][0]["expires"] ?? "",
+              headline: _data[i]["info"][0]["headline"] ?? "?",
+              description: _data[i]["info"][0]["description"] ?? "",
+              instruction: _data[i]["info"][0]["instruction"] ?? "",
+              publisher: _data[i]["info"][0]["parameter"][0]["value"] ??
+                  "?", // different to others ["parameter"][0]
+              contact: _data[i]["info"][0]["contact"] ?? "",
+              web: _data[i]["info"][0]["web"] ?? "",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
+          _tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
         print("Error while parsing biwapp data: " + e.toString());
-        biwappParseStatus = false;
+        appState.biwappParseStatus = false;
       }
-    } else if (response.statusCode == 304) {
+    } else if (_response.statusCode == 304) {
       // nothing changed
-      biwappStatus = true;
-      biwappParseStatus = true;
+      appState.biwappStatus = true;
+      appState.biwappParseStatus = true;
     } else {
       //something went wrong
       print("no change for biwapp");
       print("can not get biwwapp data");
-      biwappStatus = false;
+      appState.biwappStatus = false;
     }
 
     // GET from DWD
@@ -328,40 +323,37 @@ Future getData(bool useEtag) async {
         'https://warnung.bund.de/bbk.dwd/unwetter.json'); //https://s3.eu-central-1.amazonaws.com/app-prod-static.warnwetter.de/v16/gemeinde_warnings.json
 
     if (useEtag) {
-      response = await get(urlDWDwarnings, headers: {'If-None-Match': dwdETag});
+      _response = await get(urlDWDwarnings, headers: {'If-None-Match': appState.dwdETag});
     } else {
-      response = await get(urlDWDwarnings);
+      _response = await get(urlDWDwarnings);
     }
 
     //print("Response status: " + response.statusCode.toString());
-    if (response.statusCode == 200) {
+    if (_response.statusCode == 200) {
       //updates status
-      dwdStatus = true;
+      appState.dwdStatus = true;
 
-      data = jsonDecode(utf8.decode(response.bodyBytes));
+      _data = jsonDecode(utf8.decode(_response.bodyBytes));
       //store etag
-      if (response.headers["etag"] != null) {
-        dwdETag = (response.headers["etag"])!;
+      if (_response.headers["etag"] != null) {
+        appState.dwdETag = (_response.headers["etag"])!;
       } else {
-        print("Error with Etag: " + response.headers.toString());
+        print("Error with Etag: " + _response.headers.toString());
       }
 
-      dwdWarningsCount = data.length;
+      appState.dwdWarningsCount = _data.length;
 
       try {
-        dwdParseStatus = true;
-        for (var i = 0; i <= data.length - 1; i++) {
+        appState.dwdParseStatus = true;
+        for (var i = 0; i <= _data.length - 1; i++) {
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
             for (var j = 0;
-                j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+                j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -370,9 +362,10 @@ Future getData(bool useEtag) async {
           List<Area> generateAreaList(int i) {
             List<Area> tempAreaList = [];
             //loop through list of areas
-            for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
+            for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.areaDescription =
+              _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -380,47 +373,46 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "DWD",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["senderName"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "?",
-            web: data[i]["info"][0]["web"] ?? "?",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
-          tempWarnMessageList.add(tempWarnMessage);
+              source: "DWD",
+              identifier: _data[i]["identifier"] ?? "?",
+              sender: _data[i]["sender"] ?? "?",
+              sent: _data[i]["sent"] ?? "?",
+              status: _data[i]["status"] ?? "?",
+              messageType: _data[i]["msgType"] ?? "?",
+              scope: _data[i]["scope"] ?? "",
+              category: _data[i]["info"][0]["category"][0] ?? "?",
+              event: _data[i]["info"][0]["event"] ?? "?",
+              urgency: _data[i]["info"][0]["urgency"] ?? "?",
+              severity: getSeverity(
+                  _data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  _data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              onset: _data[i]["info"][0]["onset"] ?? "",
+              expires: _data[i]["info"][0]["expires"] ?? "",
+              headline: _data[i]["info"][0]["headline"] ?? "?",
+              description: _data[i]["info"][0]["description"] ?? "",
+              instruction: _data[i]["info"][0]["instruction"] ?? "",
+              publisher: _data[i]["info"][0]["senderName"] ?? "?",
+              contact: _data[i]["info"][0]["contact"] ?? "?",
+              web: _data[i]["info"][0]["web"] ?? "?",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
+          _tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
         print("Error while parsing DWD Data: " + e.toString());
-        dwdParseStatus = false;
+        appState.dwdParseStatus = false;
       }
-    } else if (response.statusCode == 304) {
+    } else if (_response.statusCode == 304) {
       // nothing changed
       print("no change for dwd");
-      dwdStatus = true;
-      dwdParseStatus = true;
+      appState.dwdStatus = true;
+      appState.dwdParseStatus = true;
     } else {
       //something went wrong
       print("can not get DWD data");
-      dwdStatus = false;
+      appState.dwdStatus = false;
     }
 
     // GET from HWZ
@@ -428,39 +420,36 @@ Future getData(bool useEtag) async {
     var urlLHPwarnings =
         Uri.parse('https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
     if (useEtag) {
-      response = await get(urlLHPwarnings, headers: {'If-None-Match': lhpETag});
+      _response = await get(urlLHPwarnings, headers: {'If-None-Match': appState.lhpETag});
     } else {
-      response = await get(urlLHPwarnings);
+      _response = await get(urlLHPwarnings);
     }
     //print("Response status: " + response.statusCode.toString());
-    if (response.statusCode == 200) {
+    if (_response.statusCode == 200) {
       //updates status
-      lhpStatus = true;
+      appState.lhpStatus = true;
 
-      data = jsonDecode(utf8.decode(response.bodyBytes));
-      if (response.headers["etag"] != null) {
-        lhpETag = (response.headers["etag"])!;
+      _data = jsonDecode(utf8.decode(_response.bodyBytes));
+      if (_response.headers["etag"] != null) {
+        appState.lhpETag = (_response.headers["etag"])!;
       } else {
-        print("Error with Etag: " + response.headers.toString());
+        print("Error with Etag: " + _response.headers.toString());
       }
 
       //count messages
-      lhpWarningsCount = data.length; //TODO: check if this works
+      appState.lhpWarningsCount = _data.length;
 
       try {
-        lhpParseStatus = true;
-        for (var i = 0; i <= data.length - 1; i++) {
+        appState.lhpParseStatus = true;
+        for (var i = 0; i <= _data.length - 1; i++) {
           List<Geocode> generateGeoCodeList(int i, int s) {
             List<Geocode> tempGeocodeList = [];
             for (var j = 0;
-                j <= data[i]["info"][0]["area"][s]["geocode"].length - 1;
+                j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
               Geocode tempGeocode =
-                  Geocode(geocodeName: "", geocodeNumber: ""); //init
-              tempGeocode.geocodeName =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["valueName"];
-              tempGeocode.geocodeNumber =
-                  data[i]["info"][0]["area"][s]["geocode"][j]["value"];
+              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
+                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -469,9 +458,10 @@ Future getData(bool useEtag) async {
           List<Area> generateAreaList(int i) {
             List<Area> tempAreaList = [];
             //loop through list of areas
-            for (var s = 0; s <= data[i]["info"][0]["area"].length - 1; s++) {
+            for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
-              tempArea.areaDesc = data[i]["info"][0]["area"][s]["areaDesc"];
+              tempArea.areaDescription =
+              _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -479,54 +469,54 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-            source: "LHP",
-            identifier: data[i]["identifier"] ?? "?",
-            sender: data[i]["sender"] ?? "?",
-            sent: data[i]["sent"] ?? "?",
-            status: data[i]["status"] ?? "?",
-            messageType: data[i]["msgType"] ?? "?",
-            scope: data[i]["scope"] ?? "",
-            category: data[i]["info"][0]["category"][0] ?? "?",
-            event: data[i]["info"][0]["event"] ?? "?",
-            urgency: data[i]["info"][0]["urgency"] ?? "?",
-            severity: data[i]["info"][0]["severity"].toString().toLowerCase(),
-            certainty: data[i]["info"][0]["certainty"] ?? "?",
-            effective: data[i]["info"][0]["effective"] ?? "",
-            onset: data[i]["info"][0]["onset"] ?? "",
-            expires: data[i]["info"][0]["expires"] ?? "",
-            headline: data[i]["info"][0]["headline"] ?? "?",
-            description: data[i]["info"][0]["description"] ?? "",
-            instruction: data[i]["info"][0]["instruction"] ?? "",
-            publisher: data[i]["info"][0]["senderName"] ?? "?",
-            contact: data[i]["info"][0]["contact"] ?? "?",
-            web: data[i]["info"][0]["web"] ?? "?",
-            areaList: generateAreaList(i),
-            //area: data[i]["info"][0]["area"][0]["areaDesc"],
-            //geocodeName: generateGeoCodeNameList(i),
-            //geocodeNumber: data[i]["info"][0]["area"][0]["geocode"][0]["value"],
-          );
-          tempWarnMessageList.add(tempWarnMessage);
+              source: "LHP",
+              identifier: _data[i]["identifier"] ?? "?",
+              sender: _data[i]["sender"] ?? "?",
+              sent: _data[i]["sent"] ?? "?",
+              status: _data[i]["status"] ?? "?",
+              messageType: _data[i]["msgType"] ?? "?",
+              scope: _data[i]["scope"] ?? "",
+              category: _data[i]["info"][0]["category"][0] ?? "?",
+              event: _data[i]["info"][0]["event"] ?? "?",
+              urgency: _data[i]["info"][0]["urgency"] ?? "?",
+              severity: getSeverity(
+                  _data[i]["info"][0]["severity"].toString().toLowerCase()),
+              certainty: getCertainty(
+                  _data[i]["info"][0]["certainty"].toString().toLowerCase()),
+              effective: _data[i]["info"][0]["effective"] ?? "",
+              onset: _data[i]["info"][0]["onset"] ?? "",
+              expires: _data[i]["info"][0]["expires"] ?? "",
+              headline: _data[i]["info"][0]["headline"] ?? "?",
+              description: _data[i]["info"][0]["description"] ?? "",
+              instruction: _data[i]["info"][0]["instruction"] ?? "",
+              publisher: _data[i]["info"][0]["senderName"] ?? "?",
+              contact: _data[i]["info"][0]["contact"] ?? "?",
+              web: _data[i]["info"][0]["web"] ?? "?",
+              areaList: generateAreaList(i),
+              notified: false,
+              read: false);
+          _tempWarnMessageList.add(tempWarnMessage);
         }
       } catch (e) {
         print("Error while parsing LHP Data: " + e.toString());
-        lhpParseStatus = false;
+        appState.lhpParseStatus = false;
       }
-    } else if (response.statusCode == 304) {
+    } else if (_response.statusCode == 304) {
       // nothing changed
       print("no change for lhp");
-      lhpStatus = true;
-      lhpParseStatus = true;
+      appState.lhpStatus = true;
+      appState.lhpParseStatus = true;
     } else {
       //something went wrong
       print("can not get LHP data");
-      lhpStatus = false;
+      appState.lhpStatus = false;
     }
 
     allWarnMessageList.clear(); //clear List
-    allWarnMessageList = tempWarnMessageList; // transfer temp List in real list
-    dataFetchStatusOldAPI = DataFetchStatus.success;
+    allWarnMessageList = _tempWarnMessageList; // transfer temp List in real list
+    appState.dataFetchStatusOldAPI = DataFetchStatus.success;
 
-    if(activateAlertSwiss) {
+    if (userPreferences.activateAlertSwiss) {
       await callAlertSwissAPI();
     }
 
@@ -534,23 +524,23 @@ Future getData(bool useEtag) async {
     // cacheWarnings();
 
     //print("New WarnList ist here");
-    if (showStatusNotification) {
+    if (userPreferences.showStatusNotification) {
       sendStatusUpdateNotification(true);
     }
   } catch (e) {
     print("Error while trying to fetch data: " + e.toString());
     // print("load cache");
     // loadCachedWarnings();
-    dwdStatus = false;
-    mowasStatus = false;
-    biwappStatus = false;
-    katwarnStatus = false;
-    dataFetchStatusOldAPI = DataFetchStatus.error;
-    lhpStatus = false;
-    if (showStatusNotification) {
+    appState.dwdStatus = false;
+    appState.mowasStatus = false;
+    appState.biwappStatus = false;
+    appState.katwarnStatus = false;
+    appState.dataFetchStatusOldAPI = DataFetchStatus.error;
+    appState.lhpStatus = false;
+    if (userPreferences.showStatusNotification) {
       sendStatusUpdateNotification(false);
     }
   }
-  saveEtags();
+  saveETags();
   return "";
 }
