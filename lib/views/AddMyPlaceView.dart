@@ -73,15 +73,15 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                         visualDensity:
                             VisualDensity(horizontal: 0, vertical: -4),
                         title: Text(place.name),
-                        onTap: () {
-                          setState(() {
-                            final updater =
-                                Provider.of<Update>(context, listen: false);
-                            updater.updateList(place);
-                            // cancel warning of missing places (ID: 3)
-                            NotificationService.cancelOneNotification(3);
-                            Navigator.of(context).pop();
-                          });
+                        onTap: () async {
+                          final updater = Provider.of<Update>(context, listen: false);
+                          await updater.updateList(place);
+
+                          FocusManager.instance.primaryFocus?.unfocus();
+
+                          // cancel warning of missing places (ID: 3)
+                          NotificationService.cancelOneNotification(3);
+                          Navigator.of(context).pop();
                         },
                       ),
                     )

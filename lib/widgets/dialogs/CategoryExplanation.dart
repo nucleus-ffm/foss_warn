@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CategoryExplanation extends StatefulWidget {
-  const CategoryExplanation({Key? key}) : super(key: key);
-
-  @override
-  _CategoryExplanationState createState() => _CategoryExplanationState();
-}
-
-class _CategoryExplanationState extends State<CategoryExplanation> {
+class CategoryExplanation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

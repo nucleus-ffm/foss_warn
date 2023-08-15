@@ -4,8 +4,6 @@ import '../../services/saveAndLoadSharedPreferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FontSizeDialog extends StatefulWidget {
-  const FontSizeDialog({Key? key}) : super(key: key);
-
   @override
   _FontSizeDialogState createState() => _FontSizeDialogState();
 }
@@ -31,17 +29,19 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   onChanged: (value) {
                     setState(() {
                       userPreferences.warningFontSize = 12.0;
-                      saveSettings();
-                      Navigator.of(context).pop();
                     });
+
+                    saveSettings();
+                    Navigator.of(context).pop();
                   },
                 ),
                 onTap: () {
                   setState(() {
                     userPreferences.warningFontSize = 12.0;
-                    saveSettings();
-                    Navigator.of(context).pop();
                   });
+
+                  saveSettings();
+                  Navigator.of(context).pop();
                 },
               ),
               ListTile(

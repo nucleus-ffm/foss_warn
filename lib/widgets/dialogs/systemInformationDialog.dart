@@ -2,15 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../services/collectSystemInfo.dart';
 
-class SystemInformationDialog extends StatefulWidget {
-  const SystemInformationDialog({Key? key}) : super(key: key);
-
-  @override
-  _SystemInformationDialogState createState() =>
-      _SystemInformationDialogState();
-}
-
-class _SystemInformationDialogState extends State<SystemInformationDialog> {
+class SystemInformationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(

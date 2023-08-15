@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ChangeLogDialog extends StatelessWidget {
-  const ChangeLogDialog({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

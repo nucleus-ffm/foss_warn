@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/widgets/dialogs/ConfirmDialog.dart';
 import '../services/geocodeHandler.dart';
 import '../services/listHandler.dart';
 import '../services/welcomeScreenItems.dart';
@@ -19,17 +20,12 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
   final _platform = const MethodChannel("flutter.native/helper");
-  bool _disclaimerAccepted = false;
   late Future<bool> _batteryOptimizationFuture;
   List<WelcomeScreenItem>? _welcomeScreenItems;
 
   @override
   void initState() {
     super.initState();
-    if (geocodeMap.isEmpty) {
-      print("call geocode handler");
-      geocodeHandler();
-    }
     WidgetsBinding.instance.addObserver(this);
     setState(() {
       _batteryOptimizationFuture = this._isBatteryOptimizationEnabled();
@@ -42,7 +38,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       setState(() {
         _batteryOptimizationFuture = this._isBatteryOptimizationEnabled();
@@ -57,60 +53,52 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
     }
 
     return Scaffold(
-      body: Container(
-        child: Stack(
-          children: [
-            PageView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _welcomeScreenItems!.length,
-              itemBuilder: (BuildContext context, int index) {
-                final WelcomeScreenItem _item = _welcomeScreenItems![index];
-                final _isLastSlide = index == _welcomeScreenItems!.length - 1;
+        body: PageView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: _welcomeScreenItems!.length,
+      itemBuilder: (BuildContext context, int index) {
+        final _item = _welcomeScreenItems![index];
+        final _isLastSlide = (index == _welcomeScreenItems!.length - 1);
 
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildSlide(context, _item),
-                    _buildActionButtons(context, _item.action),
-                    _isLastSlide
-                        ? SizedBox(height: 90)
-                        : Container(
-                            padding: EdgeInsets.symmetric(vertical: 40.0),
-                            child: _buildStepsIndicator(index))
-                  ],
-                );
-              },
-            )
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildSlide(context, _item),
+            _buildActionButtons(context, _item.action),
+            _isLastSlide
+                ? SizedBox(height: 90)
+                : Container(
+                    padding: EdgeInsets.symmetric(vertical: 40.0),
+                    child: _buildStepsIndicator(index))
           ],
-        ),
-      ),
-    );
+        );
+      },
+    ));
   }
 
   Widget _buildSlide(BuildContext context, WelcomeScreenItem item) {
     return Expanded(
-      child: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height / 4.5),
-          Image.asset(item.imagePath, width: 220.0, height: 200.0),
-          Text(item.title, style: TextStyle(fontSize: 34.0, height: 2.0)),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50.0),
-              child: SingleChildScrollView(
-                  primary: true,
-                  child: Text(item.description,
-                      style: TextStyle(
-                          color: Colors.grey,
-                          letterSpacing: 1.2,
-                          fontSize: 16.0,
-                          height: 1.3),
-                      textAlign: TextAlign.center)),
-            ),
-          ),
-        ],
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+      SizedBox(height: MediaQuery.of(context).size.height / 5.5),
+      Expanded(
+        child: Image.asset(item.imagePath, width: 220.0, height: 170.0),
       ),
-    );
+      Text(item.title, style: TextStyle(fontSize: 34.0, height: 2.0)),
+      Flexible(
+        fit: FlexFit.loose,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40.0),
+          child: SingleChildScrollView(
+              child: Text(item.description,
+                  style: TextStyle(
+                      color: Colors.grey,
+                      letterSpacing: 1.2,
+                      fontSize: 16.0,
+                      height: 1.3),
+                  textAlign: TextAlign.center)),
+        ),
+      ),
+    ]));
   }
 
   Widget _buildActionButtons(BuildContext context, String? action) {
@@ -145,34 +133,45 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 return CircularProgressIndicator();
             });
       case "setup":
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("You added this places:", style: TextStyle(fontSize: 24.0)),
-            // @todo show added places
-            /*ListView.builder(
-              itemCount: myPlaceList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(myPlaceList[index].name),
-                );
-              },
-            ),*/
-            FilledButton(
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddMyPlaceView()),
-                )
+        if (myPlaceList.isEmpty) {
+          return FilledButton(
+              onPressed: () {
+                if (geocodeMap.isEmpty) {
+                  // @todo: translations
+                  showDialog(
+                    context: context,
+                    builder: (context) => ConfirmDialog(
+                        title: "Make API call?",
+                        description:
+                            "If you want to setup a place right now, the full list of places must be downloaded. Are you okay with using the API at this stage?",
+                        actionText: "Agree",
+                        onConfirmed: () {
+                          print("call geocode handler");
+                          geocodeHandler();
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddMyPlaceView()),
+                          );
+                        }),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddMyPlaceView()),
+                  );
+                }
               },
               child: Text(
-                // @todo translations
-                "Setup a place",
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          ],
-        );
+                  // @todo translations
+                  "Setup a place"));
+        } else {
+          return FilledButton.icon(
+              onPressed: null,
+              icon: Icon(Icons.check, color: Colors.green),
+              label: Text(myPlaceList.first.name));
+        }
       case "disclaimer":
         return Column(
           children: [
@@ -205,9 +204,11 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
       case "end":
         return FilledButton(
             onPressed: () {
-              userPreferences.showWelcomeScreen = false;
-              saveSettings();
+              setState(() {
+                userPreferences.showWelcomeScreen = false;
+              });
 
+              saveSettings();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

@@ -4,14 +4,11 @@ import '../../main.dart';
 import '../../services/saveAndLoadSharedPreferences.dart';
 
 class SortByDialog extends StatefulWidget {
-  const SortByDialog({Key? key}) : super(key: key);
-
   @override
   _SortByDialogState createState() => _SortByDialogState();
 }
 
 class _SortByDialogState extends State<SortByDialog> {
-  List fontSizeList = [8, 9, 10, 11, 12, 13, 14, 15, 16];
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -23,8 +20,7 @@ class _SortByDialogState extends State<SortByDialog> {
             children: [
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context).sorting_by_date,
-                  //style: TextStyle(fontSize: 12),
+                  AppLocalizations.of(context).sorting_by_date
                 ),
                 leading: Radio(
                   value: "date",
@@ -32,23 +28,24 @@ class _SortByDialogState extends State<SortByDialog> {
                   onChanged: (value) {
                     setState(() {
                       userPreferences.sortWarningsBy = "date";
-                      saveSettings();
-                      Navigator.of(context).pop();
                     });
+
+                    saveSettings();
+                    Navigator.of(context).pop();
                   },
                 ),
                 onTap: () {
                   setState(() {
                     userPreferences.sortWarningsBy = "date";
-                    saveSettings();
-                    Navigator.of(context).pop();
                   });
+
+                  saveSettings();
+                  Navigator.of(context).pop();
                 },
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context).sorting_by_warning_level,
-                  //style: TextStyle(fontSize: 14),
+                  AppLocalizations.of(context).sorting_by_warning_level
                 ),
                 leading: Radio(
                   value: "severity",
@@ -71,8 +68,7 @@ class _SortByDialogState extends State<SortByDialog> {
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context).sorting_by_source,
-                  //style: TextStyle(fontSize: 16),
+                  AppLocalizations.of(context).sorting_by_source
                 ),
                 leading: Radio(
                   value: "source",

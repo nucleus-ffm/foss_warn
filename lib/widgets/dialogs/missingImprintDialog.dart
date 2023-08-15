@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MissingImprintDialog extends StatefulWidget {
-  const MissingImprintDialog({Key? key}) : super(key: key);
-
-  @override
-  _MissingImprintDialogState createState() => _MissingImprintDialogState();
-}
-
-class _MissingImprintDialogState extends State<MissingImprintDialog> {
+class MissingImprintDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
