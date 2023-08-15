@@ -8,7 +8,7 @@ import '../main.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/dialogs/DisclaimerDialog.dart';
 import '../widgets/dialogs/privacyDialog.dart';
-import 'addMyPlaceView.dart';
+import 'AddMyPlaceView.dart';
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({Key? key}) : super(key: key);
@@ -205,9 +205,6 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
       case "end":
         return FilledButton(
             onPressed: () {
-              setState(() {
-                showWelcomeScreen = false;
-              });
               saveSettings();
 
               Navigator.pushReplacement(
