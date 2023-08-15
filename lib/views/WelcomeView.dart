@@ -5,7 +5,6 @@ import '../services/geocodeHandler.dart';
 import '../services/listHandler.dart';
 import '../services/welcomeScreenItems.dart';
 import '../main.dart';
-import 'SettingsView.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/dialogs/DisclaimerDialog.dart';
 import '../widgets/dialogs/privacyDialog.dart';

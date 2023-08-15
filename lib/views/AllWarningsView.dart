@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/apiHandler.dart';
-import 'package:foss_warn/services/checkForMyPlacesWarnings.dart';
-import 'package:foss_warn/views/SettingsView.dart';
-import 'package:foss_warn/widgets/ConnectionErrorWidget.dart';
 import 'package:provider/provider.dart';
-import '../class/class_Area.dart';
-import '../class/class_Geocode.dart';
+
+import '../services/apiHandler.dart';
+import '../services/checkForMyPlacesWarnings.dart';
+import '../widgets/ConnectionErrorWidget.dart';
+import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../main.dart';
-import '../services/allPlacesList.dart';
 import '../services/getData.dart';
 import '../services/listHandler.dart';
 import '../widgets/WarningWidget.dart';
@@ -26,14 +24,13 @@ class AllWarningsView extends StatefulWidget {
 }
 
 class _AllWarningsViewState extends State<AllWarningsView> {
-  var data;
-  bool loading = false;
+  bool _loading = false;
   @override
   void initState() {
     super.initState();
-    if (isFirstStart) {
-      loading = true;
-      isFirstStart = false;
+    if (userPreferences.isFirstStart) {
+      _loading = true;
+      userPreferences.isFirstStart = false;
     }
   }
 
@@ -41,33 +38,32 @@ class _AllWarningsViewState extends State<AllWarningsView> {
   Widget build(BuildContext context) {
     Future<void> reloadData() async {
       setState(() {
-        loading = true;
+        _loading = true;
       });
-      //
     }
 
     void loadData() async {
       print("[allWarningsView] Load Data");
-      if (showAllWarnings) {
+      if (userPreferences.showAllWarnings) {
         // call (old) api with all warnings
-        data = await getData(false);
+        await getData(false);
       } else {
         // call (new) api just for my places/ alert swiss
-        data = await callAPI();
+        await callAPI();
       }
       checkForMyPlacesWarnings(false, true);
       sortWarnings();
       loadNotificationSettingsImportanceList();
       setState(() {
         print("loading finished");
-        loading = false;
+        _loading = false;
       });
     }
 
-    if (loading == true) {
+    if (_loading == true) {
       loadData();
     }
-    while (loading) {
+    while (_loading) {
       // show loading screen
       return Center(
         child: SizedBox(
@@ -86,24 +82,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     List<WarnMessage> loadOnlyWarningsForMyPlaces() {
       print("loadOnlyWarningsForMyPlaces");
       List<WarnMessage> warningsForMyPlaces = [];
-      for (WarnMessage warnMessage in warnMessageList) {
-        for (Area myArea in warnMessage.areaList) {
-          for (Geocode myGeocode in myArea.geocodeList) {
-            if (myPlaceList
-                    .any((element) => element.name == myGeocode.geocodeName) ||
-                // check for alertSwiss
-                myPlaceList.any((element) =>
-                    alertSwissPlacesMap[element.name] ==
-                    myGeocode.geocodeName)) {
-              if (warningsForMyPlaces.contains(warnMessage)) {
-                // print("Warn Messsage already in List");
-                // warn messeage already in list from geocodename
-              } else {
-                warningsForMyPlaces.add(warnMessage);
-              }
-            }
-          }
-        }
+      for (Place p in myPlaceList) {
+        warningsForMyPlaces.addAll(p.warnings);
       }
       return warningsForMyPlaces;
     }
@@ -113,16 +93,16 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
         child: myPlaceList.isNotEmpty // check if there is a place saved
-            ? showAllWarnings // if warnings that are not in MyPlaces shown
+            ? userPreferences.showAllWarnings // if warnings that are not in MyPlaces shown
                 ? SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(children: [
                       Container(
                         child: ConnectionError(),
                       ),
-                      allWarnMessageList.isEmpty?
-                        NoWarningsInList():
-                      SizedBox(),
+                      allWarnMessageList.isEmpty
+                          ? NoWarningsInList()
+                          : SizedBox(),
                       ...allWarnMessageList
                           .map((warnMessage) =>
                               WarningWidget(warnMessage: warnMessage))
@@ -158,26 +138,31 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(AppLocalizations.of(context).all_warnings_everything_ok,
+                                    Text(
+                                        AppLocalizations.of(context)
+                                            .all_warnings_everything_ok,
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold)),
                                     Icon(
                                       Icons.check_circle_rounded,
                                       size: 200,
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
-                                    Text(
-                                        AppLocalizations.of(context).all_warnings_everything_ok_text),
+                                    Text(AppLocalizations.of(context)
+                                        .all_warnings_everything_ok_text),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
                                         setState(() {
-                                          loading = true;
+                                          _loading = true;
                                         });
                                       },
                                       child: Text(
-                                        AppLocalizations.of(context).all_warnings_reload,
+                                        AppLocalizations.of(context)
+                                            .all_warnings_reload,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       style: TextButton.styleFrom(
@@ -204,25 +189,26 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                       ),
                     ],
                   ),
-                      Expanded(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(AppLocalizations.of(context).all_warnings_no_places_chosen,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
-                                  Text("\n"),
-                                  Text(
-                                      AppLocalizations.of(context).all_warnings_no_places_chosen_text),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                AppLocalizations.of(context)
+                                    .all_warnings_no_places_chosen,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                            Text("\n"),
+                            Text(AppLocalizations.of(context)
+                                .all_warnings_no_places_chosen_text),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
       ),

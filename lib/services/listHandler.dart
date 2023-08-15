@@ -1,11 +1,11 @@
-import '../class/class_Place.dart';
 import '../class/class_WarnMessage.dart';
+import '../class/abstract_Place.dart';
 
 List<Place> myPlaceList = [];
-List<String> readWarnings = [];
-List<String> alreadyNotifiedWarnings = [];
 List<String> notificationSettingsImportance = [];
-List<WarnMessage> warnMessageList = []; // where the warnings for my places are stored
-List<WarnMessage> allWarnMessageList = []; // used if showAllWarnings is enabled to store all warnings
+// where the warnings for my places are stored
+List<WarnMessage> warnMessageList = [];
+// used if showAllWarnings is enabled to store all warnings
+List<WarnMessage> allWarnMessageList = [];
 Map<String, String> geocodeMap = new Map();
-List<String> allAvailablePlacesNames = [];
+List<Place> allAvailablePlacesNames = [];

@@ -1,6 +1,8 @@
-import '../views/SettingsView.dart';
+import '../main.dart';
 import 'listHandler.dart';
 
+/// used to sort warning
+/// returns an int corresponding to the severity
 int convertSeverityToInt(String severity) {
   switch (severity) {
     case "Minor":
@@ -15,6 +17,7 @@ int convertSeverityToInt(String severity) {
   return 0;
 }
 
+/// used to sort warning
 int convertSourceToInt(String source) {
   switch (source) {
     case "MOWAS":
@@ -29,13 +32,14 @@ int convertSourceToInt(String source) {
   return 0;
 }
 
-
 void sortWarnings() {
-  if(sortWarningsBy == "severity") {
-    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity).compareTo(convertSeverityToInt(a.severity)));
-  } else if(sortWarningsBy == "date") {
+  if (userPreferences.sortWarningsBy == "severity") {
+    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity.name)
+        .compareTo(convertSeverityToInt(a.severity.name)));
+  } else if (userPreferences.sortWarningsBy == "date") {
     warnMessageList.sort((a, b) => b.sent.compareTo(a.sent));
-  } else if(sortWarningsBy == "source") {
-    warnMessageList.sort((a, b) => convertSourceToInt(b.publisher).compareTo(convertSourceToInt(a.publisher)));
+  } else if (userPreferences.sortWarningsBy == "source") {
+    warnMessageList.sort((a, b) => convertSourceToInt(b.publisher)
+        .compareTo(convertSourceToInt(a.publisher)));
   }
 }

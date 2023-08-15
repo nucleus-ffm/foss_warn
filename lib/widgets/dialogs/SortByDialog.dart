@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../views/SettingsView.dart';
+import '../../main.dart';
 import '../../services/saveAndLoadSharedPreferences.dart';
 
 class SortByDialog extends StatefulWidget {
@@ -28,10 +28,10 @@ class _SortByDialogState extends State<SortByDialog> {
                 ),
                 leading: Radio(
                   value: "date",
-                  groupValue: sortWarningsBy,
+                  groupValue: userPreferences.sortWarningsBy,
                   onChanged: (value) {
                     setState(() {
-                      sortWarningsBy = "date";
+                      userPreferences.sortWarningsBy = "date";
                       saveSettings();
                       Navigator.of(context).pop();
                     });
@@ -39,7 +39,7 @@ class _SortByDialogState extends State<SortByDialog> {
                 ),
                 onTap: () {
                   setState(() {
-                    sortWarningsBy = "date";
+                    userPreferences.sortWarningsBy = "date";
                     saveSettings();
                     Navigator.of(context).pop();
                   });
@@ -52,10 +52,10 @@ class _SortByDialogState extends State<SortByDialog> {
                 ),
                 leading: Radio(
                   value: "severity",
-                  groupValue: sortWarningsBy,
+                  groupValue: userPreferences.sortWarningsBy,
                   onChanged: (value) {
                     setState(() {
-                      sortWarningsBy = "severity";
+                      userPreferences.sortWarningsBy = "severity";
                       saveSettings();
                       Navigator.of(context).pop();
                     });
@@ -63,7 +63,7 @@ class _SortByDialogState extends State<SortByDialog> {
                 ),
                 onTap: () {
                   setState(() {
-                    sortWarningsBy = "severity";
+                    userPreferences.sortWarningsBy = "severity";
                     saveSettings();
                     Navigator.of(context).pop();
                   });
@@ -76,10 +76,10 @@ class _SortByDialogState extends State<SortByDialog> {
                 ),
                 leading: Radio(
                   value: "source",
-                  groupValue: sortWarningsBy,
+                  groupValue: userPreferences.sortWarningsBy,
                   onChanged: (value) {
                     setState(() {
-                      sortWarningsBy = "source";
+                      userPreferences.sortWarningsBy = "source";
                       saveSettings();
                       Navigator.of(context).pop();
                     });
@@ -87,7 +87,7 @@ class _SortByDialogState extends State<SortByDialog> {
                 ),
                 onTap: () {
                   setState(() {
-                    sortWarningsBy = "source";
+                    userPreferences.sortWarningsBy = "source";
                     saveSettings();
                     Navigator.of(context).pop();
                   });
@@ -102,7 +102,8 @@ class _SortByDialogState extends State<SortByDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context).main_dialog_close, style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+          child: Text(AppLocalizations.of(context).main_dialog_close,
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],
     );

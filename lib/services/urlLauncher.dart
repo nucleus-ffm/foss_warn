@@ -5,7 +5,7 @@ Future<void> launchUrlInBrowser(String url) async {
   if (url.startsWith('http')) {
     correctURL = Uri.parse(url);
   } else if (url.startsWith("<a")) {
-    int beginURL = url.indexOf("\"")+1;
+    int beginURL = url.indexOf("\"") + 1;
     int endURL = url.indexOf("\"", beginURL + 1);
 
     correctURL = Uri.parse(url.substring(beginURL, endURL));

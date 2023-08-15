@@ -31,8 +31,9 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                     child: TextButton(
                         onPressed: () => launchUrlInBrowser(
                             'https://warnung.bund.de/datenschutz'),
-                        child: Text(
-                            AppLocalizations.of(context).privacy_link_to_privacy +" Warnung.bund.de")),
+                        child: Text(AppLocalizations.of(context)
+                                .privacy_link_to_privacy +
+                            " Warnung.bund.de")),
                   ),
                 ],
               ),
@@ -44,8 +45,9 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                     child: TextButton(
                         onPressed: () => launchUrlInBrowser(
                             'https://www.xrepository.de/cms/datenschutz.html'),
-                        child: Text(
-                            AppLocalizations.of(context).privacy_link_to_privacy + " xrepository.de")),
+                        child: Text(AppLocalizations.of(context)
+                                .privacy_link_to_privacy +
+                            " xrepository.de")),
                   ),
                 ],
               ),

@@ -7,7 +7,7 @@ class NoWarningsInList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height*0.8,
+      height: MediaQuery.of(context).size.height * 0.8,
       child: Column(
         // else show a screen with
         mainAxisSize: MainAxisSize.max,
@@ -21,17 +21,17 @@ class NoWarningsInList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(AppLocalizations.of(context).all_warnings_nothing_to_show,
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold)),
+                  Text(
+                      AppLocalizations.of(context).all_warnings_nothing_to_show,
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
                   Icon(
                     Icons.cloud,
                     size: 200,
                     color: Colors.green,
                   ),
-                  Text(
-                      AppLocalizations.of(context).all_warnings_nothing_to_show_text),
+                  Text(AppLocalizations.of(context)
+                      .all_warnings_nothing_to_show_text),
                   SizedBox(height: 10),
                 ],
               ),

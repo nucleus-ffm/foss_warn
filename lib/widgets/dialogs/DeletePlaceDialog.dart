@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../class/class_Place.dart';
+import '../../class/abstract_Place.dart';
 import '../../services/updateProvider.dart';
 import 'package:provider/provider.dart';
 

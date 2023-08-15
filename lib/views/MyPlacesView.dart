@@ -7,12 +7,11 @@ import 'package:provider/provider.dart';
 
 import '../widgets/MyPlaceWidget.dart';
 
-
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/ConnectionErrorWidget.dart';
-import 'addMyPlaceView.dart';
+import 'AddMyPlaceView.dart';
 
 class MyPlaces extends StatefulWidget {
   const MyPlaces({Key? key}) : super(key: key);
@@ -22,14 +21,14 @@ class MyPlaces extends StatefulWidget {
 }
 
 class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
-  bool loading = false;
+  bool _loading = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     if (myPlaceList.isEmpty) {
-      loading = true;
+      _loading = true;
     }
   }
 
@@ -43,7 +42,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     // reload data when app is resumed
-    if(state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed) {
       print("App is resumed...");
       load();
     }
@@ -54,23 +53,23 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
     await loadMyPlacesList();
     await callAPI();
     setState(() {
-      loading = false;
+      _loading = false;
     });
   }
 
   Future<void> reloadData() async {
     setState(() {
-      loading = true;
+      _loading = true;
     });
     //await Future.delayed(Duration(seconds: 2));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (loading == true) {
+    if (_loading == true) {
       load();
     }
-    while (loading) {
+    while (_loading) {
       return Center(
         child: SizedBox(
           height: 70,
@@ -93,34 +92,35 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
             //check if myPlaceList is empty, if not show list else show text
             myPlaceList.isNotEmpty
                 ? SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: Padding(
-                      padding: const EdgeInsets.only(bottom: 65),
-                      child: Column(
-                        children: [
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                        padding: const EdgeInsets.only(bottom: 65),
+                        child: Column(children: [
                           Container(
                             child: ConnectionError(),
                           ),
-                        ...myPlaceList
-                            .map((place) => MyPlaceWidget(myPlace: place))
-                            .toList(),
-                            ]
-                      )),
-                )
+                          ...myPlaceList
+                              .map((place) => MyPlaceWidget(myPlace: place))
+                              .toList(),
+                        ])),
+                  )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(AppLocalizations.of(context).my_place_no_place_added
-                        ,
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      Text(
+                        AppLocalizations.of(context).my_place_no_place_added,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Text(AppLocalizations.of(context).my_place_no_place_added_text,
-                        textAlign: TextAlign.center,),
+                      Text(
+                        AppLocalizations.of(context)
+                            .my_place_no_place_added_text,
+                        textAlign: TextAlign.center,
+                      ),
                     ],
                   ),
             Positioned(
@@ -136,7 +136,6 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                 },
               ),
             ),
-            //Positioned(child: Text("Hallo Welt"))
           ],
         ),
       ),

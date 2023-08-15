@@ -18,32 +18,31 @@ class ChangeLogDialog extends StatelessWidget {
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               Text("* Links werden jetzt im externen Browser geöffnet\n"
-                  "* Die Status-Benachrichtigung ist jetzt permanent \n"
-              ),
+                  "* Die Status-Benachrichtigung ist jetzt permanent \n"),
               Text(
                 "0.5.0 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
-              Text("* Die App ist jetzt übersetzt in Fr, En, Uk, De (Danke an die Helfer/innen)\n"
-                  "* kleine Fehlerbehebungen und Verbesserungen \n"
-              ),
+              Text(
+                  "* Die App ist jetzt übersetzt in Fr, En, Uk, De (Danke an die Helfer/innen)\n"
+                  "* kleine Fehlerbehebungen und Verbesserungen \n"),
               Text(
                 "0.4.6 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
-              Text("* Im Einführungsdialog kann man jetzt direkt die Akkuoptimierung ausschalten \n"
+              Text(
+                  "* Im Einführungsdialog kann man jetzt direkt die Akkuoptimierung ausschalten \n"
                   "* Die Orte in der Liste haben jetzt ihr Bundesland in Klammern"
                   " dahinter stehen \n "
                   "* kleine Anpassungen \n"),
-                Text(
+              Text(
                 "0.4.5 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               Text("* Fehlerbehebungen \n"
                   "* Die Einstellungen sehen jetzt etwas anders aus \n "
                   "* Datenschutzerklärung aktualisiert \n"
-                  "* Optimierungen \n"
-              ),
+                  "* Optimierungen \n"),
               Text(
                 "0.4.4 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -51,28 +50,24 @@ class ChangeLogDialog extends StatelessWidget {
               Text("* Fehlerbehebungen \n"
                   "* Die Einstellungen und die Über-Seite sind jetzt über"
                   " die drei Punkte zu erreichen"
-                  " und nicht mehr über die Navigationsleiste \n"
-              ),
+                  " und nicht mehr über die Navigationsleiste \n"),
               Text(
                 "0.4.3 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               Text("* Fehlerbehebungen \n"
-                  "* Das Design übernimmt jetzt standardmäßig das Systemdesign \n"
-              ),
+                  "* Das Design übernimmt jetzt standardmäßig das Systemdesign \n"),
               Text(
                 "0.4.2 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               Text("* falsch angezeigten Verbindungsfehler behoben \n"
-                  "* die Datenabfragefrequenz kann man jetzt auch über eine Texteingabe einstellen \n"
-              ),
+                  "* die Datenabfragefrequenz kann man jetzt auch über eine Texteingabe einstellen \n"),
               Text(
                 "0.4.1 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
-              Text("* Fehlerbehebungen \n"
-              ),
+              Text("* Fehlerbehebungen \n"),
               Text(
                 "0.4.0 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -80,16 +75,14 @@ class ChangeLogDialog extends StatelessWidget {
               Text("* Fehlerbehebungen \n"
                   "* FOSS Warn verwendet jetzt eine andere API \n"
                   "* FOSS Warn verwendet jetzt eine andere Liste für die Ortschaften \n"
-                  "* Es ist jetzt möglich Warnungen von AlertSwiss zu erhalten (Alpha) \n"
-              ),
+                  "* Es ist jetzt möglich Warnungen von AlertSwiss zu erhalten (Alpha) \n"),
               Text(
                 "0.3.0 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               Text("* Fehlerbehebungen \n"
                   "* Man kann jetzt genauer einstellen, für welche Warnungen"
-                  " man eine Benachrichtigung erhalten möchte (wird noch erweitert)\n"
-                  ),
+                  " man eine Benachrichtigung erhalten möchte (wird noch erweitert)\n"),
               Text(
                 "0.2.10 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

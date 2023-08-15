@@ -3,8 +3,8 @@ import 'dart:isolate';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:shared_preferences_android/shared_preferences_android.dart';
 
+import '../main.dart';
 import '../services/checkForMyPlacesWarnings.dart';
-import '../views/SettingsView.dart';
 
 class AlarmManager {
   void initialize() async {
@@ -29,7 +29,7 @@ class AlarmManager {
   /// creates a new background task to call the APIs
   void registerBackgroundTask() async {
     await AndroidAlarmManager.periodic(
-        Duration(minutes: frequencyOfAPICall.toInt()), 1, callback,
+        Duration(minutes: userPreferences.frequencyOfAPICall.toInt()), 1, callback,
         exact: true,
         rescheduleOnReboot: true,
         allowWhileIdle: true,

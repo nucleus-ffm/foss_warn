@@ -1,139 +1,112 @@
 import 'dart:convert';
-import 'package:foss_warn/services/allPlacesList.dart';
+import 'package:foss_warn/main.dart';
 
-import '../class/class_Place.dart';
+import '../class/class_AlertSwissPlace.dart';
+import '../class/class_NinaPlace.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
+import '../class/abstract_Place.dart';
 import 'alertSwiss.dart';
 import 'listHandler.dart';
-//import 'markWarningsAsRead.dart';
-import '../views/SettingsView.dart';
 import 'sendStatusNotification.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
 import 'package:http/http.dart';
 
 /// call the nina api and load for myPlaces the warnings
-Future callAPI() async {
-  bool successfullyFetched = true;
-  String error = "";
-  List<WarnMessage> tempWarnMessageList = [];
-  tempWarnMessageList.clear();
-  print("call API");
-  String baseUrl = "https://warnung.bund.de/api31";
+Future<void> callAPI() async {
+  bool _successfullyFetched = true;
+  String _error = "";
+  List<WarnMessage> _tempWarnMessageList = [];
+  _tempWarnMessageList.clear();
+  String _baseUrl = "https://warnung.bund.de/api31";
+  dynamic _data; //var for response _data
   // String geocode = "071110000000"; // just for testing
 
-  await loadSettings();
+  print("call API");
 
-  for (Place p in myPlaceList) {
+  await loadSettings();
+  await loadMyPlacesList();
+
+  for (Place place in myPlaceList) {
     // if the place is for swiss skip this place
-    print(p.name);
-    if (alertSwissPlacesList.contains(p.name)) {
-      if (!activateAlertSwiss) {
-        successfullyFetched = false;
-        error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
+    // print(place.name);
+    if (place is AlertSwissPlace) {
+      if (!userPreferences.activateAlertSwiss) {
+        _successfullyFetched = false;
+        _error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
             " aber AlertSwiss nicht als Quelle aktiviert \n";
       }
       continue;
     }
-    try {
-      Response response; //response var for get request
-      var data; //var for response data
-      // the warnings are only on kreisebene wo we only care about the first 5
-      // letters from the code and fill the rest with 0s
-      String geocode = p.geocode.substring(0, 5) + "0000000";
+    // it is a nina place
+    else if (place is NinaPlace) {
+      try {
+        Response _response;
+        _response = await getDashboard(place, _baseUrl);
 
-      await loadSettings();
-      await loadEtags();
-
-      print("call: " + baseUrl + "/dashboard/" + geocode + ".json");
-      // get overview if warnings exits for myplaces
-      response =
-          await get(Uri.parse(baseUrl + "/dashboard/" + geocode + ".json"));
-
-      // check if request was successfully
-      if (response.statusCode == 200) {
-        data = jsonDecode(utf8.decode(response.bodyBytes));
-
-        for (int i = 0; i < data.length; i++) {
-          String id = data[i]["payload"]["id"];
-          String provider = data[i]["payload"]["data"]["provider"];
-          print("provider: " + provider);
-          var responseDetails =
-              await get(Uri.parse(baseUrl + "/warnings/" + id + ".json"));
-          // check if request was successfully
-          if (responseDetails.statusCode == 200) {
-            var warningDetails =
-                jsonDecode(utf8.decode(responseDetails.bodyBytes));
-            WarnMessage? temp = createWarning(warningDetails, provider, p.name,
-                p.geocode, tempWarnMessageList);
-            if (temp != null) {
-              /*if(tempWarnMessageList.any((element) => element.identifier == temp.identifier)) {
-                print("warnings already added");
-              } else {*/
-              tempWarnMessageList.add(temp);
-              // } //@todo: fix displaying warnings twice
-            }
-          } else {
-            print("[callAPI] Error: tried calling: " +
-                baseUrl +
-                "/warnings/" +
-                id +
-                ".json");
-          }
+        // 304 = with etag no change since last request
+        if (_response.statusCode == 304) {
+          print("Nothing change for: " + place.name);
         }
-      } else {
-        print("could not reach: ");
-        successfullyFetched = false;
-        error +=
-            "We have a problem to reach the warnings for:  ${p.name}"
-                " (Statuscode:  ${response.statusCode} ) \n";
+        // 200 = check if request was successfully
+        else if (_response.statusCode == 200) {
+          // decode the _data
+          _data = jsonDecode(utf8.decode(_response.bodyBytes));
+          _tempWarnMessageList.clear();
+          // parse the _data into List of Warnings
+          _tempWarnMessageList = await parseNinaJsonData(_data, _baseUrl, place);
+          // remove old warning
+          removeOldWarningFromList(place, _tempWarnMessageList);
+          userPreferences.areWarningsFromCache = false;
+          print("Saving myPlacesList with new warnings");
+          // store warning
+          saveMyPlacesList();
+        }
+        // connection error
+        else {
+          print("could not reach: ");
+          _successfullyFetched = false;
+          _error += "Failed to get warnings for:  ${place.name}"
+              " (Statuscode:  ${_response.statusCode} ) \n";
+        }
+      } catch (e) {
+        print("Something went wrong while trying to call the NINA API:  $e");
+        _successfullyFetched = false;
+        // set areWarningFrom cache to true to display information
+        userPreferences.areWarningsFromCache = true;
+        _error += e.toString() + " \n";
       }
-    } catch (e) {
-      print("Something went wrong:  $e");
-      successfullyFetched = false;
-      error += e.toString() + " \n";
     }
   }
-  if (showStatusNotification) {
-    if (error != "") {
-      sendStatusUpdateNotification(successfullyFetched, error);
+  // update status notification if the user wants
+  if (userPreferences.showStatusNotification) {
+    if (_error != "") {
+      sendStatusUpdateNotification(_successfullyFetched, _error);
     } else {
-      sendStatusUpdateNotification(successfullyFetched);
+      sendStatusUpdateNotification(_successfullyFetched);
     }
   }
 
-  warnMessageList.clear(); //clear List
-  warnMessageList = tempWarnMessageList; // transfer temp List in real list
-
-  if (activateAlertSwiss) {
+  // call alert Swiss
+  if (userPreferences.activateAlertSwiss) {
     await callAlertSwissAPI();
   }
 
-  if (warnMessageList.isNotEmpty) {
-    cacheWarnings();
-  } else if (!successfullyFetched) {
-    loadCachedWarnings();
-  } else {
-    // there are no warnings and no stored
-    // warning, so we we have nothing to display
-    areWarningsFromCache = false;
-  }
-
   print("finished calling API");
-  return "";
 }
 
 /// generate WarnMessage object
-WarnMessage? createWarning(var data, String provider, String placeName,
-    String geocode, List<WarnMessage> tempWarnMessageList) {
+WarnMessage? createWarning(
+    dynamic data, String provider, String placeName, Geocode geocode) {
   /// generate empty list as placeholder
+  /// @todo fill with real data
   List<Area> generateAreaList(int i) {
     List<Area> tempAreaList = [];
     tempAreaList.add(
       Area(areaDesc: placeName, geocodeList: [
-        Geocode(geocodeName: placeName, geocodeNumber: geocode),
+        geocode,
       ]),
     );
     return tempAreaList;
@@ -155,4 +128,83 @@ WarnMessage? createWarning(var data, String provider, String placeName,
     print("Error parsing warning: ${data["identifier"]} -> ${e.toString()}");
   }
   return null;
+}
+
+/// call the dashboard for the given place and return the response
+/// uses etag to only fetch the site if there are changes
+Future<Response> getDashboard(NinaPlace place, String baseUrl) async {
+  Response _response; //response var for get request
+
+  // the warnings are only on kreisebene wo we only care about the first 5
+  // letters from the code and fill the rest with 0s
+  print(place.geocode.geocodeNumber);
+  String geocode = place.geocode.geocodeNumber.substring(0, 5) + "0000000";
+  Uri _urlDashboard = Uri.parse(baseUrl + "/dashboard/" + geocode + ".json");
+
+  print("call: " + baseUrl + "/dashboard/" + geocode + ".json");
+  // get overview if warnings exits for myplaces
+  print("Etag for: ${place.name} is ${place.eTag}");
+
+  _response =
+  await get(_urlDashboard, headers: {'If-None-Match': place.eTag});
+
+  place.eTag = _response.headers["etag"]!;
+  print("new etag for: ${place.name} is:  ${_response.headers["etag"]}");
+  return _response;
+}
+
+/// crate from the given data a new List<WarnMessage and return the list
+Future<List<WarnMessage>> parseNinaJsonData(
+    dynamic data, String baseUrl, NinaPlace place) async {
+  List<WarnMessage> _tempWarnMessageList = [];
+  for (int i = 0; i < data.length; i++) {
+    String id = data[i]["payload"]["id"];
+    String provider = data[i]["payload"]["data"]["provider"];
+    print("provider: " + provider);
+    Response responseDetails =
+        await get(Uri.parse(baseUrl + "/warnings/" + id + ".json"));
+    // check if request was successfully
+    if (responseDetails.statusCode == 200) {
+      var warningDetails = jsonDecode(utf8.decode(responseDetails.bodyBytes));
+      WarnMessage? temp =
+          createWarning(warningDetails, provider, place.name, place.geocode);
+      if (temp != null) {
+        _tempWarnMessageList.add(temp);
+        if (!place.warnings
+            .any((element) => element.identifier == temp.identifier)) {
+          print("add warning to p: " +
+              temp.headline +
+              " " +
+              temp.notified.toString());
+          place.addWarningToList(temp);
+          place.incrementNumberOfWarnings();
+        }
+
+        // }  //@todo: fix displaying warnings twice
+      }
+    } else {
+      print("[callAPI] Error: tried calling: " +
+          baseUrl +
+          "/warnings/" +
+          id +
+          ".json");
+    }
+  }
+  return _tempWarnMessageList;
+}
+
+/// check if stored warnings are still up-to-date and remove if not
+void removeOldWarningFromList(
+    NinaPlace place, List<WarnMessage> tempWarnMessageList) {
+  // remove old warnings
+  List<WarnMessage> warnMessagesToRemove = [];
+  for (WarnMessage msg in place.warnings) {
+    if (!tempWarnMessageList.any((tmp) => tmp.identifier == msg.identifier)) {
+      warnMessagesToRemove.add(msg);
+    }
+  }
+  for (WarnMessage message in warnMessagesToRemove) {
+    place.removeWarningFromList(message);
+    place.decrementNumberOfWarnings();
+  }
 }
