@@ -205,6 +205,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
       case "end":
         return FilledButton(
             onPressed: () {
+              userPreferences.showWelcomeScreen = false;
               saveSettings();
 
               Navigator.pushReplacement(
