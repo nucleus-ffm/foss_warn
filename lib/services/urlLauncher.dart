@@ -24,16 +24,38 @@ Future<void> launchUrlInBrowser(String url) async {
 
 Future<void> makePhoneCall(String url) async {
   Uri correctURL;
-  RegExp exp = RegExp("[0-9]");
-  int firstNumber = url.indexOf(exp);
-  //print("First Number at: " + firstNumber.toString());
-  correctURL = Uri.parse('tel:' + url.substring(firstNumber, url.length));
-  print(correctURL.toString());
+  // replace every space in the url
+  url = url.replaceAll(" ", "");
+  RegExp exp = RegExp("\\+|[0-9]|\s");
+  int firstNumber = 0;
 
-  if (await canLaunchUrl(correctURL)) {
-    await launchUrl(correctURL);
-  } else {
-    throw 'Could not launch ${correctURL.toString()}';
+  // this loop will be executed only if `continue` is called.
+  // otherwise it will be executed once
+  while (firstNumber != -1) {
+    // search for valid next numbers.
+    firstNumber = url.indexOf(exp, firstNumber + 1);
+    // we can not find a valid telephone number. stop searching
+    if(firstNumber == -1) break;
+
+    int lastNumber = firstNumber;
+    // find the end of the telephone number
+    while (lastNumber < url.length && exp.hasMatch(url[lastNumber])) {
+      lastNumber++;
+    }
+    // check if it es just one oder two numbers, which can not be a valid telephone number
+    // start search again
+    if (lastNumber - firstNumber < 4) continue;
+
+    correctURL = Uri.parse(
+        'tel:' + url.substring(firstNumber, lastNumber).replaceAll(" ", ""));
+    print(correctURL.toString());
+
+    if (await canLaunchUrl(correctURL)) {
+      await launchUrl(correctURL);
+      break;
+    } else {
+      throw 'Could not launch ${correctURL.toString()}';
+    }
   }
 }
 
