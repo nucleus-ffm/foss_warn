@@ -9,28 +9,16 @@ import 'class_WarnMessage.dart';
 
 abstract class Place {
   final String _name;
-  int _countWarnings = 0;
   List<WarnMessage> _warnings = [];
-  String _eTag = "";
-
-  String get eTag => _eTag;
-
-  set eTag(String newETag) {
-    _eTag = newETag;
-  }
+  String eTag = "";
 
   Place({required String name, required List<WarnMessage> warnings, required String eTag}) : _warnings = warnings, _name = name {
-    _countWarnings = this._warnings.length;
-    _eTag = eTag;
+    eTag = eTag;
   }
 
   String get name => _name;
-  int get countWarnings=> _countWarnings;
+  int get countWarnings=> this.warnings.length;
   List<WarnMessage> get warnings => _warnings;
-
-  // control the number of warnings
-  void incrementNumberOfWarnings() => _countWarnings++;
-  void decrementNumberOfWarnings() => _countWarnings--;
 
   // control the list for warnings
   void addWarningToList(WarnMessage warnMessage) => _warnings.add(warnMessage);
@@ -125,5 +113,6 @@ abstract class Place {
       return true;
     }
   }
+
   Map<String, dynamic> toJson();
 }

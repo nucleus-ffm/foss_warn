@@ -177,7 +177,6 @@ Future<List<WarnMessage>> parseNinaJsonData(
               " " +
               temp.notified.toString());
           place.addWarningToList(temp);
-          place.incrementNumberOfWarnings();
         }
 
         // }  //@todo: fix displaying warnings twice
@@ -205,6 +204,5 @@ void removeOldWarningFromList(
   }
   for (WarnMessage message in warnMessagesToRemove) {
     place.removeWarningFromList(message);
-    place.decrementNumberOfWarnings();
   }
 }
