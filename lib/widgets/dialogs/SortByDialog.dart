@@ -32,17 +32,17 @@ class _SortByDialogState extends State<SortByDialog> {
                   onChanged: (value) {
                     setState(() {
                       userPreferences.sortWarningsBy = "date";
-                      saveSettings();
-                      Navigator.of(context).pop();
                     });
+                    saveSettings();
+                    Navigator.of(context).pop();
                   },
                 ),
                 onTap: () {
                   setState(() {
                     userPreferences.sortWarningsBy = "date";
-                    saveSettings();
-                    Navigator.of(context).pop();
                   });
+                  saveSettings();
+                  Navigator.of(context).pop();
                 },
               ),
               ListTile(
@@ -56,17 +56,17 @@ class _SortByDialogState extends State<SortByDialog> {
                   onChanged: (value) {
                     setState(() {
                       userPreferences.sortWarningsBy = "severity";
-                      saveSettings();
-                      Navigator.of(context).pop();
                     });
+                    saveSettings();
+                    Navigator.of(context).pop();
                   },
                 ),
                 onTap: () {
                   setState(() {
                     userPreferences.sortWarningsBy = "severity";
-                    saveSettings();
-                    Navigator.of(context).pop();
                   });
+                  saveSettings();
+                  Navigator.of(context).pop();
                 },
               ),
               ListTile(
@@ -80,17 +80,17 @@ class _SortByDialogState extends State<SortByDialog> {
                   onChanged: (value) {
                     setState(() {
                       userPreferences.sortWarningsBy = "source";
-                      saveSettings();
-                      Navigator.of(context).pop();
                     });
+                    saveSettings();
+                    Navigator.of(context).pop();
                   },
                 ),
                 onTap: () {
                   setState(() {
                     userPreferences.sortWarningsBy = "source";
-                    saveSettings();
-                    Navigator.of(context).pop();
                   });
+                  saveSettings();
+                  Navigator.of(context).pop();
                 },
               ),
             ],
