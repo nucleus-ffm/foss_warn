@@ -86,7 +86,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                           },
                           child: Text(
                             AppLocalizations.of(context)
-                                .welcome_view_end_button,
+                                !.welcome_view_end_button,
                             style: TextStyle(color: Colors.white),
                           ),
                           style: TextButton.styleFrom(
@@ -171,7 +171,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                                   _showIgnoreBatteryOptimizationDialog(),
                               child: Text(
                                 AppLocalizations.of(context)
-                                    .welcome_view_battery_optimisation_action,
+                                    !.welcome_view_battery_optimisation_action,
                                 style: TextStyle(color: Colors.white),
                               ),
                               style: TextButton.styleFrom(
@@ -186,7 +186,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                                 ),
                                 Text(
                                   AppLocalizations.of(context)
-                                      .welcome_view_battery_optimisation_action_success,
+                                      !.welcome_view_battery_optimisation_action_success,
                                   style: TextStyle(
                                       color: Colors.grey,
                                       letterSpacing: 1.2,
@@ -216,7 +216,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 );
               },
               child: Text(
-                AppLocalizations.of(context).about_disclaimer,
+                AppLocalizations.of(context)!.about_disclaimer,
                 style: TextStyle(color: Colors.white),
               ),
               style: TextButton.styleFrom(backgroundColor: Colors.blue),
@@ -229,7 +229,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 );
               },
               child: Text(
-                AppLocalizations.of(context).about_privacy,
+                AppLocalizations.of(context)!.about_privacy,
                 style: TextStyle(color: Colors.white),
               ),
               style: TextButton.styleFrom(backgroundColor: Colors.blue),

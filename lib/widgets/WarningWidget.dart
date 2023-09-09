@@ -134,17 +134,17 @@ class WarningWidget extends StatelessWidget {
                                     ? geocodeNameList.first +
                                         " " +
                                         AppLocalizations.of(context)
-                                            .warning_widget_and +
+                                            !.warning_widget_and +
                                         " " +
                                         (geocodeNameList.length - 1)
                                             .toString() +
                                         " " +
                                         AppLocalizations.of(context)
-                                            .warning_widget_other
+                                            !.warning_widget_other
                                     : geocodeNameList.isNotEmpty
                                         ? geocodeNameList.first
                                         : AppLocalizations.of(context)
-                                            .warning_widget_unknown,
+                                            !.warning_widget_unknown,
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),

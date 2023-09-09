@@ -12,7 +12,7 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).explanation_headline),
+      title: Text(AppLocalizations.of(context)!.explanation_headline),
       content: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,69 +23,69 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
                 style: DefaultTextStyle.of(context).style,
                 children: <TextSpan>[
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_health +
+                      text: AppLocalizations.of(context)!.explanation_health +
                           ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_health_text),
+                          AppLocalizations.of(context)!.explanation_health_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_fire + ": ",
+                          AppLocalizations.of(context)!.explanation_fire + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_fire_text),
+                      text: AppLocalizations.of(context)!.explanation_fire_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                              .explanation_infrastructure +
+                              !.explanation_infrastructure +
                           ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_infrastructure_text),
+                          !.explanation_infrastructure_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_CBRNE + ": ",
+                          AppLocalizations.of(context)!.explanation_CBRNE + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_CBRNE_text),
+                          AppLocalizations.of(context)!.explanation_CBRNE_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_environment +
+                          AppLocalizations.of(context)!.explanation_environment +
                               ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_environment_text),
+                          !.explanation_environment_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_weather +
+                      text: AppLocalizations.of(context)!.explanation_weather +
                           ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_weather_text),
+                          !.explanation_weather_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
-                      text: AppLocalizations.of(context).explanation_safety +
+                      text: AppLocalizations.of(context)!.explanation_safety +
                           ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_safety_text),
+                          AppLocalizations.of(context)!.explanation_safety_text),
                   TextSpan(text: '\n \n'),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_other + ": ",
+                          AppLocalizations.of(context)!.explanation_other + ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text:
-                          AppLocalizations.of(context).explanation_other_text),
+                          AppLocalizations.of(context)!.explanation_other_text),
                 ],
               ),
             ),
@@ -97,7 +97,7 @@ class _CategoryExplanationState extends State<CategoryExplanation> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context).main_dialog_close,
+          child: Text(AppLocalizations.of(context)!.main_dialog_close,
               style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],
