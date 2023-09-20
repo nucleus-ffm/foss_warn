@@ -25,7 +25,7 @@ Future callAlertSwissAPI() async {
     await loadETags();
 
     // get overview if warnings exits for myplaces
-    response = await get(Uri.parse(url));
+    response = await get(Uri.parse(url)).timeout(Duration(seconds: 15));
 
     // check if request was sucsessfully
     if (response.statusCode == 200) {
