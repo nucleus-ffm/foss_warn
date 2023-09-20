@@ -52,7 +52,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         await callAPI();
       }
       checkForMyPlacesWarnings(false, true);
-      sortWarnings();
+      sortWarnings(allWarnMessageList);
       loadNotificationSettingsImportanceList();
       setState(() {
         print("loading finished");

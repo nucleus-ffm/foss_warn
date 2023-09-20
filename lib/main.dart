@@ -147,7 +147,6 @@ class _HomeViewState extends State<HomeView> {
                     return SortByDialog();
                   },
                 );
-                sortWarnings();
                 final updater = Provider.of<Update>(context, listen: false);
                 updater.updateReadStatusInList();
               },
