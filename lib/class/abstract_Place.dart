@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:provider/provider.dart';
 
 import '../main.dart';
@@ -54,6 +55,7 @@ abstract class Place {
   Future<void> sendNotificationForWarnings() async {
     for (WarnMessage myWarnMessage in _warnings) {
       print(myWarnMessage.headline);
+      print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
       print("should notify? :" +
           ((!myWarnMessage.read && !myWarnMessage.notified) &&
                   _checkIfEventShouldBeNotified(myWarnMessage.event))
@@ -95,10 +97,11 @@ abstract class Place {
   void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = false;
-      myWarnMessage.notified = false;
+      myWarnMessage.read = false;
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
+    saveMyPlacesList();
   }
 
   /// return [true] or false if the warning should be irgnored or not
