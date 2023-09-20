@@ -97,7 +97,7 @@ abstract class Place {
   void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = false;
-      myWarnMessage.read = false;
+      myWarnMessage.notified = false;
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
