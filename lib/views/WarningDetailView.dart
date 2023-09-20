@@ -189,7 +189,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   },
                   child: Text(
                     AppLocalizations.of(context)
-                        .warning_open_picture_with_browser,
+                        !.warning_open_picture_with_browser,
                     style: TextStyle(color: Colors.white),
                   ),
                   style: TextButton.styleFrom(backgroundColor: Colors.blue)));
@@ -266,32 +266,32 @@ class _DetailScreenState extends State<DetailScreen> {
         backgroundColor: Colors.green[700],
         actions: [
           IconButton(
-              tooltip: AppLocalizations.of(context).warning_share,
+              tooltip: AppLocalizations.of(context)!.warning_share,
               onPressed: () {
                 final String shareText = widget._warnMessage.headline +
                     "\n\n" +
-                    AppLocalizations.of(context).warning_from +
+                    AppLocalizations.of(context)!.warning_from +
                     ": " +
                     formatSentDate(widget._warnMessage.sent) +
                     "\n\n" +
-                    AppLocalizations.of(context).warning_region +
+                    AppLocalizations.of(context)!.warning_region +
                     ": " +
                     generateAreaDescList(-1).toString().substring(
                         1, generateAreaDescList(-1).toString().length - 1) +
                     "\n\n" +
-                    AppLocalizations.of(context).warning_description +
+                    AppLocalizations.of(context)!.warning_description +
                     ":\n" +
                     replaceHTMLTags(widget._warnMessage.description) +
                     " \n\n" +
-                    AppLocalizations.of(context).warning_recommended_action +
+                    AppLocalizations.of(context)!.warning_recommended_action +
                     ":\n" +
                     replaceHTMLTags(widget._warnMessage.instruction) +
                     "\n\n" +
-                    AppLocalizations.of(context).warning_source +
+                    AppLocalizations.of(context)!.warning_source +
                     ":\n" +
                     widget._warnMessage.publisher +
                     "\n\n-- " +
-                    AppLocalizations.of(context).warning_shared_by_foss_warn +
+                    AppLocalizations.of(context)!.warning_shared_by_foss_warn +
                     " --";
                 final String shareSubject = widget._warnMessage.headline;
                 shareWarning(context, shareText, shareSubject);
@@ -314,7 +314,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 height: 10,
               ),
               Text(
-                AppLocalizations.of(context).warning_from +
+                AppLocalizations.of(context)!.warning_from +
                     ": " +
                     formatSentDate(widget._warnMessage.sent),
                 style: TextStyle(
@@ -324,7 +324,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 1),
                       child: Text(
-                        AppLocalizations.of(context).warning_effective +
+                        AppLocalizations.of(context)!.warning_effective +
                             " " +
                             formatSentDate(widget._warnMessage.effective),
                         style: TextStyle(
@@ -337,7 +337,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
-                        AppLocalizations.of(context).warning_onset +
+                        AppLocalizations.of(context)!.warning_onset +
                             " " +
                             formatSentDate(widget._warnMessage.onset),
                         style: TextStyle(
@@ -350,7 +350,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
-                        AppLocalizations.of(context).warning_expires +
+                        AppLocalizations.of(context)!.warning_expires +
                             " " +
                             formatSentDate(widget._warnMessage.expires),
                         style: TextStyle(
@@ -369,7 +369,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context).warning_tags + ":",
+                    AppLocalizations.of(context)!.warning_tags + ":",
                     style: TextStyle(
                         fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
@@ -389,7 +389,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       color: Colors.deepPurple,
                     ),
                     child: Text(
-                      AppLocalizations.of(context).warning_event +
+                      AppLocalizations.of(context)!.warning_event +
                           ": " +
                           translateWarningCategory(widget._warnMessage.event, context),
                       style: TextStyle(
@@ -405,7 +405,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           widget._warnMessage.messageType),
                     ),
                     child: Text(
-                      AppLocalizations.of(context).warning_type +
+                      AppLocalizations.of(context)!.warning_type +
                           ": " +
                           translateWarningType(
                               widget._warnMessage.messageType, context),
@@ -422,7 +422,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           widget._warnMessage.severity.name),
                     ),
                     child: Text(
-                      AppLocalizations.of(context).warning_severity +
+                      AppLocalizations.of(context)!.warning_severity +
                           ": " +
                           translateWarningSeverity(widget._warnMessage.severity.name),
                       style: TextStyle(
@@ -439,7 +439,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               color: Colors.green,
                             ),
                             child: Text(
-                              AppLocalizations.of(context).warning_urgency +
+                              AppLocalizations.of(context)!.warning_urgency +
                                   ": " +
                                   translateWarningUrgency(
                                       widget._warnMessage.urgency),
@@ -459,7 +459,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               color: Colors.blueGrey,
                             ),
                             child: Text(
-                              AppLocalizations.of(context).warning_certainty +
+                              AppLocalizations.of(context)!.warning_certainty +
                                   ": " +
                                   translateWarningCertainty(
                                       widget._warnMessage.certainty.name),
@@ -479,7 +479,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               color: Colors.amber,
                             ),
                             child: Text(
-                              AppLocalizations.of(context).warning_scope +
+                              AppLocalizations.of(context)!.warning_scope +
                                   ": " +
                                   widget._warnMessage.scope,
                               style: TextStyle(fontSize: userPreferences.warningFontSize),
@@ -496,7 +496,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               color: Colors.lightBlue[200],
                             ),
                             child: Text(
-                              AppLocalizations.of(context).warning_identifier +
+                              AppLocalizations.of(context)!.warning_identifier +
                                   ": " +
                                   widget._warnMessage.identifier,
                               style: TextStyle(fontSize: userPreferences.warningFontSize),
@@ -513,7 +513,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               color: Colors.orangeAccent,
                             ),
                             child: Text(
-                              AppLocalizations.of(context).warning_sender +
+                              AppLocalizations.of(context)!.warning_sender +
                                   ": " +
                                   widget._warnMessage.sender,
                               style: TextStyle(fontSize: userPreferences.warningFontSize),
@@ -530,7 +530,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               color: Colors.greenAccent,
                             ),
                             child: Text(
-                              AppLocalizations.of(context).warning_status +
+                              AppLocalizations.of(context)!.warning_status +
                                   ": " +
                                   translateWarningStatus(
                                       widget._warnMessage.status),
@@ -554,7 +554,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context).warning_region + ":",
+                    AppLocalizations.of(context)!.warning_region + ":",
                     style: TextStyle(
                         fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
@@ -581,12 +581,12 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? InkWell(
                       child: _showMoreRegions
                           ? Text(
-                              AppLocalizations.of(context).warning_show_less,
+                              AppLocalizations.of(context)!.warning_show_less,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red),
                             )
-                          : Text(AppLocalizations.of(context).warning_show_more,
+                          : Text(AppLocalizations.of(context)!.warning_show_more,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.green)),
@@ -613,7 +613,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context).warning_places + ":",
+                    AppLocalizations.of(context)!.warning_places + ":",
                     style: TextStyle(
                         fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
@@ -638,12 +638,12 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? InkWell(
                       child: _showMorePlaces
                           ? Text(
-                              AppLocalizations.of(context).warning_show_less,
+                              AppLocalizations.of(context)!.warning_show_less,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red),
                             )
-                          : Text(AppLocalizations.of(context).warning_show_more,
+                          : Text(AppLocalizations.of(context)!.warning_show_more,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.green)),
@@ -667,7 +667,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   width: 5,
                 ),
                 Text(
-                  AppLocalizations.of(context).warning_description + ":",
+                  AppLocalizations.of(context)!.warning_description + ":",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: userPreferences.warningFontSize + 5),
@@ -695,7 +695,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               width: 5,
                             ),
                             Text(
-                              AppLocalizations.of(context).warning_appendix +
+                              AppLocalizations.of(context)!.warning_appendix +
                                   ":",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -732,7 +732,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                             Text(
                               AppLocalizations.of(context)
-                                      .warning_recommended_action +
+                                      !.warning_recommended_action +
                                   ":",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -764,7 +764,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context).warning_source + ":",
+                    AppLocalizations.of(context)!.warning_source + ":",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: userPreferences.warningFontSize + 5),
@@ -786,7 +786,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           width: 5,
                         ),
                         Text(
-                          AppLocalizations.of(context).warning_contact_website +
+                          AppLocalizations.of(context)!.warning_contact_website +
                               ":",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -802,7 +802,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               width: 5,
                             ),
                             Text(
-                              AppLocalizations.of(context).warning_website +
+                              AppLocalizations.of(context)!.warning_website +
                                   ":",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

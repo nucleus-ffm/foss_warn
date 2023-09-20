@@ -1,4 +1,3 @@
-import '../class/class_WarnMessage.dart';
 import '../main.dart';
 import 'listHandler.dart';
 
@@ -33,15 +32,14 @@ int convertSourceToInt(String source) {
   return 0;
 }
 
-/// Sort the given List of warnMessage according userPreferences.sortWarningsBy
-void sortWarnings(List<WarnMessage> list) {
+void sortWarnings() {
   if (userPreferences.sortWarningsBy == "severity") {
-    list.sort((a, b) => convertSeverityToInt(b.severity.name)
+    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity.name)
         .compareTo(convertSeverityToInt(a.severity.name)));
   } else if (userPreferences.sortWarningsBy == "date") {
-    list.sort((a, b) => b.sent.compareTo(a.sent));
+    warnMessageList.sort((a, b) => b.sent.compareTo(a.sent));
   } else if (userPreferences.sortWarningsBy == "source") {
-    list.sort((a, b) => convertSourceToInt(b.publisher)
+    warnMessageList.sort((a, b) => convertSourceToInt(b.publisher)
         .compareTo(convertSourceToInt(a.publisher)));
   }
 }

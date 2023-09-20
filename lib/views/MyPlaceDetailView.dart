@@ -26,7 +26,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
               final snackBar = SnackBar(
                 content: Text(
                   AppLocalizations.of(context)
-                      .main_app_bar_tooltip_mark_all_warnings_as_read,
+                      !.main_app_bar_tooltip_mark_all_warnings_as_read,
                   style: TextStyle(color: Colors.black),
                 ),
                 backgroundColor: Colors.green[100],
@@ -38,7 +38,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
             },
             icon: Icon(Icons.mark_chat_read),
             tooltip: AppLocalizations.of(context)
-                .main_app_bar_tooltip_mark_all_warnings_as_read,
+                !.main_app_bar_tooltip_mark_all_warnings_as_read,
           )
         ],
       ),

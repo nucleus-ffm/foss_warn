@@ -140,7 +140,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                   children: [
                                     Text(
                                         AppLocalizations.of(context)
-                                            .all_warnings_everything_ok,
+                                            !.all_warnings_everything_ok,
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold)),
@@ -152,7 +152,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                           .secondary,
                                     ),
                                     Text(AppLocalizations.of(context)
-                                        .all_warnings_everything_ok_text),
+                                        !.all_warnings_everything_ok_text),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
@@ -162,7 +162,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                       },
                                       child: Text(
                                         AppLocalizations.of(context)
-                                            .all_warnings_reload,
+                                            !.all_warnings_reload,
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       style: TextButton.styleFrom(
@@ -198,12 +198,12 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                           children: [
                             Text(
                                 AppLocalizations.of(context)
-                                    .all_warnings_no_places_chosen,
+                                    !.all_warnings_no_places_chosen,
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold)),
                             Text("\n"),
                             Text(AppLocalizations.of(context)
-                                .all_warnings_no_places_chosen_text),
+                                !.all_warnings_no_places_chosen_text),
                           ],
                         ),
                       ),

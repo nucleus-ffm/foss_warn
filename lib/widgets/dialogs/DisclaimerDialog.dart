@@ -12,13 +12,13 @@ class _DisclaimerDialogState extends State<DisclaimerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).disclaimer_headline),
+      title: Text(AppLocalizations.of(context)!.disclaimer_headline),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(AppLocalizations.of(context).disclaimer_text),
+              Text(AppLocalizations.of(context)!.disclaimer_text),
             ],
           ),
         ),
@@ -29,7 +29,7 @@ class _DisclaimerDialogState extends State<DisclaimerDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context).main_dialog_understand,
+            AppLocalizations.of(context)!.main_dialog_understand,
             style: TextStyle(color: Colors.green),
           ),
         ),

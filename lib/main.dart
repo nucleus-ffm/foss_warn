@@ -37,10 +37,10 @@ void main() async {
   await loadSettings();
 
   if (userPreferences.shouldNotifyGeneral) {
-    print("Background notification enabled");
-    // AlarmManager().cancelBackgroundTask(); // just for debug
+    AlarmManager.callback();
     AlarmManager().initialize();
     AlarmManager().registerBackgroundTask();
+    print("Background notification enabled");
   } else {
     print("Background notification disabled due to user setting");
   }
@@ -159,7 +159,7 @@ class _HomeViewState extends State<HomeView> {
                 final snackBar = SnackBar(
                   content: Text(
                     AppLocalizations.of(context)
-                        .main_app_bar_tooltip_mark_all_warnings_as_read,
+                        !.main_app_bar_tooltip_mark_all_warnings_as_read,
                     style: TextStyle(color: Colors.black),
                   ),
                   backgroundColor: Colors.green[100],
@@ -171,7 +171,7 @@ class _HomeViewState extends State<HomeView> {
               },
               icon: Icon(Icons.mark_chat_read),
               tooltip: AppLocalizations.of(context)
-                  .main_app_bar_tooltip_mark_all_warnings_as_read,
+                  !.main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
@@ -194,11 +194,11 @@ class _HomeViewState extends State<HomeView> {
                 itemBuilder: (context) => <PopupMenuEntry>[
                       PopupMenuItem(
                           child: Text(AppLocalizations.of(context)
-                              .main_dot_menu_settings),
+                              !.main_dot_menu_settings),
                           value: 0),
                       PopupMenuItem(
                           child: Text(
-                              AppLocalizations.of(context).main_dot_menu_about),
+                              AppLocalizations.of(context)!.main_dot_menu_about),
                           value: 1)
                     ])
           ],
@@ -207,11 +207,11 @@ class _HomeViewState extends State<HomeView> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.add_alert),
-              label: AppLocalizations.of(context).main_nav_bar_all_warnings,
+              label: AppLocalizations.of(context)!.main_nav_bar_all_warnings,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.place),
-              label: AppLocalizations.of(context).main_nav_bar_my_places,
+              label: AppLocalizations.of(context)!.main_nav_bar_my_places,
             ),
           ],
           currentIndex: _selectedIndex,

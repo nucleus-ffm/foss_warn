@@ -22,7 +22,7 @@ class NoWarningsInList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                      AppLocalizations.of(context).all_warnings_nothing_to_show,
+                      AppLocalizations.of(context)!.all_warnings_nothing_to_show,
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
                   Icon(
@@ -31,7 +31,7 @@ class NoWarningsInList extends StatelessWidget {
                     color: Colors.green,
                   ),
                   Text(AppLocalizations.of(context)
-                      .all_warnings_nothing_to_show_text),
+                      !.all_warnings_nothing_to_show_text),
                   SizedBox(height: 10),
                 ],
               ),

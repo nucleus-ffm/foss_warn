@@ -23,7 +23,7 @@ class ConnectionError extends StatelessWidget {
               width: 10,
             ),
             Text(
-              AppLocalizations.of(context).connection_error_no_internet,
+              AppLocalizations.of(context)!.connection_error_no_internet,
               style: Theme.of(context).textTheme.displaySmall,
             )
           ],
@@ -47,7 +47,7 @@ class ConnectionError extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Text(
-                  AppLocalizations.of(context).connection_error_no_internet,
+                  AppLocalizations.of(context)!.connection_error_no_internet,
                   style: Theme.of(context).textTheme.displaySmall,
                   overflow: TextOverflow.ellipsis,
                 ),

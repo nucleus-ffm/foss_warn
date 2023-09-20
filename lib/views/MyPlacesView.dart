@@ -109,7 +109,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        AppLocalizations.of(context).my_place_no_place_added,
+                        AppLocalizations.of(context)!.my_place_no_place_added,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -118,7 +118,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                       ),
                       Text(
                         AppLocalizations.of(context)
-                            .my_place_no_place_added_text,
+                            !.my_place_no_place_added_text,
                         textAlign: TextAlign.center,
                       ),
                     ],

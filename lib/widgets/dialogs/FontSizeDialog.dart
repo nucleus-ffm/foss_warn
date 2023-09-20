@@ -14,7 +14,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).font_size_headline),
+      title: Text(AppLocalizations.of(context)!.font_size_headline),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
@@ -22,7 +22,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
             children: [
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context).font_size_small,
+                  AppLocalizations.of(context)!.font_size_small,
                   style: TextStyle(fontSize: 12),
                 ),
                 leading: Radio(
@@ -46,7 +46,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context).font_size_normal,
+                  AppLocalizations.of(context)!.font_size_normal,
                   style: TextStyle(fontSize: 14),
                 ),
                 leading: Radio(
@@ -70,7 +70,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context).font_size_big,
+                  AppLocalizations.of(context)!.font_size_big,
                   style: TextStyle(fontSize: 16),
                 ),
                 leading: Radio(
@@ -94,7 +94,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context).font_size_very_big,
+                  AppLocalizations.of(context)!.font_size_very_big,
                   style: TextStyle(fontSize: 18),
                 ),
                 leading: Radio(
@@ -126,7 +126,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context).main_dialog_close,
+            AppLocalizations.of(context)!.main_dialog_close,
             style: TextStyle(color: Colors.green),
           ),
         ),

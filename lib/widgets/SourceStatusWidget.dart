@@ -27,14 +27,14 @@ class StatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).status_headline),
+      title: Text(AppLocalizations.of(context)!.status_headline),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                AppLocalizations.of(context).status_source_status,
+                AppLocalizations.of(context)!.status_source_status,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -88,7 +88,7 @@ class StatusWidget extends StatelessWidget {
                     child: Text(
                       " = " +
                           AppLocalizations.of(context)
-                              .status_server_not_reachable,
+                              !.status_server_not_reachable,
                       style: TextStyle(fontSize: 12),
                     ),
                   )
@@ -104,7 +104,7 @@ class StatusWidget extends StatelessWidget {
                   SizedBox(
                     width: 140,
                     child: Text(
-                      " = " + AppLocalizations.of(context).status_everything_ok,
+                      " = " + AppLocalizations.of(context)!.status_everything_ok,
                       style: TextStyle(fontSize: 12),
                     ),
                   )
@@ -123,7 +123,7 @@ class StatusWidget extends StatelessWidget {
                   SizedBox(
                     width: 140,
                     child: Text(
-                      " = " + AppLocalizations.of(context).status_everything_ok,
+                      " = " + AppLocalizations.of(context)!.status_everything_ok,
                       style: TextStyle(fontSize: 12),
                     ),
                   )
@@ -133,7 +133,7 @@ class StatusWidget extends StatelessWidget {
                 height: 15,
               ),
               Text(
-                AppLocalizations.of(context).status_count_of_message,
+                AppLocalizations.of(context)!.status_count_of_message,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -186,7 +186,7 @@ class StatusWidget extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context).main_dialog_close,
+          child: Text(AppLocalizations.of(context)!.main_dialog_close,
               style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         )
       ],

@@ -13,20 +13,20 @@ class MyPlaceWidget extends StatelessWidget {
     print("[MyPlaceWidget] check for warnings");
     if (myPlace.countWarnings > 0) {
       if (myPlace.countWarnings > 1) {
-        return AppLocalizations.of(context).my_place_there_are +
+        return AppLocalizations.of(context)!.my_place_there_are +
             " " +
             myPlace.countWarnings.toString() +
             " " +
-            AppLocalizations.of(context).my_place_warnings_more_then_one;
+            AppLocalizations.of(context)!.my_place_warnings_more_then_one;
       } else {
-        return AppLocalizations.of(context).my_place_there_are +
+        return AppLocalizations.of(context)!.my_place_there_are +
             " " +
             myPlace.countWarnings.toString() +
             " " +
-            AppLocalizations.of(context).my_place_warnings_only_one;
+            AppLocalizations.of(context)!.my_place_warnings_only_one;
       }
     } else {
-      return AppLocalizations.of(context).my_places_no_warning_found;
+      return AppLocalizations.of(context)!.my_places_no_warning_found;
     }
   }
 
