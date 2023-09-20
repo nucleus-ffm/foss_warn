@@ -44,7 +44,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
     // reload data when app is resumed
     if (state == AppLifecycleState.resumed) {
       print("App is resumed...");
-      load();
+      reloadData();
     }
   }
 
