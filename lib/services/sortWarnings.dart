@@ -1,20 +1,21 @@
+import '../class/class_WarnMessage.dart';
+import '../enums/Severity.dart';
 import '../main.dart';
-import 'listHandler.dart';
 
 /// used to sort warning
 /// returns an int corresponding to the severity
-int convertSeverityToInt(String severity) {
+int convertSeverityToInt(Severity severity) {
   switch (severity) {
-    case "Minor":
+    case Severity.minor:
+    case Severity.other:
       return 0;
-    case "Moderate":
+    case Severity.moderate:
       return 1;
-    case "Extrem":
+    case Severity.extreme:
       return 2;
-    case "Severe":
+    case Severity.severe:
       return 3;
   }
-  return 0;
 }
 
 /// used to sort warning
@@ -32,14 +33,14 @@ int convertSourceToInt(String source) {
   return 0;
 }
 
-void sortWarnings() {
+void sortWarnings(List<WarnMessage> list) {
   if (userPreferences.sortWarningsBy == "severity") {
-    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity.name)
-        .compareTo(convertSeverityToInt(a.severity.name)));
+    list.sort((a, b) => convertSeverityToInt(b.severity)
+        .compareTo(convertSeverityToInt(a.severity)));
   } else if (userPreferences.sortWarningsBy == "date") {
-    warnMessageList.sort((a, b) => b.sent.compareTo(a.sent));
+    list.sort((a, b) => b.sent.compareTo(a.sent));
   } else if (userPreferences.sortWarningsBy == "source") {
-    warnMessageList.sort((a, b) => convertSourceToInt(b.publisher)
+    list.sort((a, b) => convertSourceToInt(b.publisher)
         .compareTo(convertSourceToInt(a.publisher)));
   }
 }
