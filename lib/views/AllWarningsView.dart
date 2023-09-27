@@ -85,6 +85,11 @@ class _AllWarningsViewState extends State<AllWarningsView> {
       for (Place p in myPlaceList) {
         warningsForMyPlaces.addAll(p.warnings);
       }
+      if (userPreferences.warningsForCurrentLocation) {
+        if (userPreferences.currentPlace?.warnings != null) {
+          warningsForMyPlaces.addAll(userPreferences.currentPlace!.warnings);
+        }
+      }
       return warningsForMyPlaces;
     }
 
@@ -93,7 +98,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
         child: myPlaceList.isNotEmpty // check if there is a place saved
-            ? userPreferences.showAllWarnings // if warnings that are not in MyPlaces shown
+            ? userPreferences
+                    .showAllWarnings // if warnings that are not in MyPlaces shown
                 ? SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(children: [

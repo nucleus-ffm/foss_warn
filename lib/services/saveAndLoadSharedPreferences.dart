@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import '../class/class_AlertSwissPlace.dart';
 import '../class/class_NinaPlace.dart';
-import '../class/class_WarnMessage.dart';
 
 import 'listHandler.dart';
 import '../main.dart';
@@ -99,7 +98,10 @@ saveSettings() async {
   preferences.setString("notificationEventsSettings",
       jsonEncode(userPreferences.notificationEventsSettings));
   preferences.setBool("activateAlertSwiss", userPreferences.activateAlertSwiss);
+  preferences.setBool(
+      "warningsForCurrentLocation", userPreferences.warningsForCurrentLocation);
   print("Settings saved");
+  preferences.setString("currentPlace", jsonEncode(userPreferences.currentPlace));
 }
 
 saveETags() async {
@@ -250,6 +252,19 @@ loadSettings() async {
     userPreferences.activateAlertSwiss =
         preferences.getBool("activateAlertSwiss")!;
   }
+  if (preferences.containsKey("warningsForCurrentLocation")) {
+    userPreferences.warningsForCurrentLocation =
+        preferences.getBool("warningsForCurrentLocation")!;
+  }
+  if (preferences.containsKey("currentPlace")) {
+    String? temp = preferences.getString("currentPlace");
+    if(temp != "null") {
+      userPreferences.currentPlace =
+          NinaPlace.fromJson(jsonDecode(temp!));
+    } else {
+      userPreferences.currentPlace = null;
+    }
+  }
 }
 
 saveNotificationSettingsImportanceList() async {
@@ -312,6 +327,7 @@ loadNotificationSettingsImportanceList() async {
   }
 }
 
+/* not needed anymore
 cacheWarnings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("cachedWarnings", jsonEncode(warnMessageList));
@@ -330,4 +346,4 @@ loadCachedWarnings() async {
   } else {
     print("there are no saved warnings");
   }
-}
+}*/
