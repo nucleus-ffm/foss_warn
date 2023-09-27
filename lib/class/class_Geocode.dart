@@ -2,26 +2,46 @@ class Geocode {
   String _geocodeName;
   String _geocodeNumber;
   String _stateName = "";
+  String _latitude; // Breitengrad
+  String _longitude; // Längengrad
+  String _PLZ;
 
-  Geocode({required String geocodeName, required String geocodeNumber})
+  Geocode(
+      {required String geocodeName,
+      required String geocodeNumber,
+      required latitude,
+      required longitude,
+      required PLZ})
       : _geocodeNumber = geocodeNumber,
-        _geocodeName = geocodeName {
+        _geocodeName = geocodeName,
+        _latitude = latitude,
+        _longitude = longitude,
+        _PLZ = PLZ {
     _stateName = _extractStateNameFromGeocode();
   }
 
   String get geocodeNumber => _geocodeNumber;
   String get stateName => _stateName;
   String get geocodeName => _geocodeName;
+  String get longitude => _longitude;
+  String get latitude => _latitude;
+  String get PLZ => _PLZ;
 
   Geocode.fromJson(Map<String, dynamic> json)
       : _geocodeName = json['geocodeName'],
         _geocodeNumber = json['geocodeNumber'],
-        _stateName = json['stateName'];
+        _stateName = json['stateName'] ?? "-1",
+        _latitude = json['latitude'] ?? "-1",
+        _longitude = json['longitude'] ?? "-1",
+        _PLZ = json['PLZ'] ?? "-1";
 
   Map<String, dynamic> toJson() => {
         'geocodeName': _geocodeName,
         'geocodeNumber': _geocodeNumber,
-        'stateName': _stateName
+        'stateName': _stateName,
+        'latitude': _latitude,
+        'longitude': _longitude,
+        'PLZ': _PLZ
       };
 
   String _extractStateNameFromGeocode() {

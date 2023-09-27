@@ -11,8 +11,7 @@ import 'package:http/http.dart';
 
 //  @todo: move to geocode class?
 Future<void> geocodeHandler() async {
-
-  print("[geocodehandler]");
+  // print("[geocodehandler]");
 
   try {
     final _data = await getPlaces();
@@ -24,11 +23,15 @@ Future<void> geocodeHandler() async {
 
     allAvailablePlacesNames.clear();
 
-    for (int i = 0; i < _data["daten"].length; i++) {
+    for (int i = 0; i < _data["Daten"].length; i++) {
       Place place = NinaPlace(
-          name: _data["daten"][i][1],
-          geocode:
-              Geocode(geocodeNumber: _data["daten"][i][0], geocodeName: _data["daten"][i][1]));
+          name: _data["Daten"][i][0],
+          geocode: Geocode(
+              geocodeNumber: _data["Daten"][i][4],
+              geocodeName: _data["Daten"][i][0],
+              longitude: _data["Daten"][i][2],
+              latitude: _data["Daten"][i][3],
+              PLZ: _data["Daten"][i][1]));
 
       // we can not receive any warning for OT (Ortsteile)
       if (place.name.contains("OT")) continue;
@@ -50,20 +53,21 @@ Future<void> geocodeHandler() async {
 /// Returns a JSON with an unparsed (!) list of Place(s) in field "daten".
 Future<dynamic> getPlaces() async {
   const String _url =
-      "https://www.xrepository.de/api/xrepository/urn:de:bund:destatis"
-      ":bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/"
-      "Regionalschl_ssel_2021-07-31.json";
+      "https://raw.githubusercontent.com/nucleus-ffm/ARSForNina/main/ARSNinaMini.json";
 
   dynamic savedData = await loadGeocode();
 
-  if (savedData != null) {
+  // check if data is stored and the data contains a PLZ (new dataset)
+  if (savedData != null && savedData["Daten"][0][1] != null) {
     print("[geocodeHandler] data already stored");
     return savedData;
   } else {
-    final Response response = await get(Uri.parse(_url));
+    final Response response =
+        await get(Uri.parse(_url)).timeout(Duration(seconds: 15));
     if (response.statusCode != 200) return;
 
     print("[geocodehandler] got data ");
+
     final data = utf8.decode(response.bodyBytes);
     saveGeocodes(data);
     return jsonDecode(data);
