@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/main.dart';
 
 import '../class/class_alarmManager.dart';
 import '../class/abstract_Place.dart';
 import '../services/checkForMyPlacesWarnings.dart';
 import '../services/listHandler.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
+import '../services/locationService.dart';
 import '../services/alertSwiss.dart';
 import '../services/geocodeHandler.dart';
 import '../widgets/dialogs/systemInformationDialog.dart';
@@ -152,8 +153,8 @@ class _DevSettingsState extends State<DevSettings> {
                 subtitle: Text(AppLocalizations.of(context)
                     .dev_settings_load_cached_warnings_text),
                 onTap: () {
-                  print("load cached warnings");
-                  loadCachedWarnings();
+                  print("load cached warnings (not longer working");
+                  //loadCachedWarnings();
                   final snackBar = SnackBar(
                     content: Text(
                       AppLocalizations.of(context).dev_settings_success,
@@ -196,8 +197,9 @@ class _DevSettingsState extends State<DevSettings> {
                 subtitle: Text(AppLocalizations.of(context)
                     .dev_settings_delete_warnings_text),
                 onTap: () {
-                  print("delete warnings");
-                  warnMessageList.clear();
+                  print("delete warnings not longer working");
+                  userPreferences.currentPlace?.resetReadAndNotificationStatusForAllWarnings(context);
+                  // warnMessageList.clear();
                   final snackBar = SnackBar(
                     content: Text(
                       AppLocalizations.of(context).dev_settings_success,
@@ -237,6 +239,31 @@ class _DevSettingsState extends State<DevSettings> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
               ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title: Text("test get currentPlace"),
+                subtitle: Text(
+                    "testet die Bestimmung der aktuellen Position und dem nächsten Ort "),
+                onTap: () async {
+                  print("suche aktuellen Standort und den nächsten bekannten Ort");
+                  Place? _currentPlace = await getCurrentClosedPlace();
+
+                  final snackBar = SnackBar(
+                    content: Text(
+                      _currentPlace != null ? "current place: ${_currentPlace.name}": "couldn't get place",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+              ),
+
+
+
             ],
           ),
         ),
