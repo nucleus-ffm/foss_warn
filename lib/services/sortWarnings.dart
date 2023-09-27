@@ -34,12 +34,12 @@ int convertSourceToInt(String source) {
 
 void sortWarnings() {
   if (userPreferences.sortWarningsBy == "severity") {
-    warnMessageList.sort((a, b) => convertSeverityToInt(b.severity.name)
+    allWarnMessageList.sort((a, b) => convertSeverityToInt(b.severity.name)
         .compareTo(convertSeverityToInt(a.severity.name)));
   } else if (userPreferences.sortWarningsBy == "date") {
-    warnMessageList.sort((a, b) => b.sent.compareTo(a.sent));
+    allWarnMessageList.sort((a, b) => b.sent.compareTo(a.sent));
   } else if (userPreferences.sortWarningsBy == "source") {
-    warnMessageList.sort((a, b) => convertSourceToInt(b.publisher)
+    allWarnMessageList.sort((a, b) => convertSourceToInt(b.publisher)
         .compareTo(convertSourceToInt(a.publisher)));
   }
 }
