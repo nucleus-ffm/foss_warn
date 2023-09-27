@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../main.dart';
 import '../services/apiHandler.dart';
+import '../services/locationService.dart';
 import 'NotificationSettingsView.dart';
 import 'WelcomeView.dart';
 
@@ -159,7 +160,7 @@ class _SettingsState extends State<Settings> {
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                controller: frequencyController,
+                                controller: frequenzTextController,
                                 onChanged: (value) {
                                   if (value != "") {
                                     if (double.parse(value) > 0 &&
@@ -392,6 +393,52 @@ class _SettingsState extends State<Settings> {
                   MaterialPageRoute(builder: (context) => DevSettings()),
                 );
               },
+            ),
+            Divider(
+              height: 50,
+              indent: 15.0,
+              endIndent: 15.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
+              child: Text(
+                "Location Settings", //@todo translate
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
+            ),
+            ListTile(
+              title: Text("Warnungen für die aktuelle Position erhalten (Experimentell)"),
+              subtitle: Text("Nutzt alle 90 Min. GPS Informationen und berechnet daraus"
+                  " den nächstgelegenen Ort. Für diesen Ort erhalten sie dann Warnungen."),
+              trailing: Switch(
+                value: userPreferences.warningsForCurrentLocation,
+                onChanged: (value) async {
+                  // check permission and enable feature when value is true
+                  if(value) {
+                    bool permissionCheck = await checkLocationPermission(context);
+                    // do not active setting, when FOSS Warn does
+                    // not have the right permission
+                    if(permissionCheck) {
+                      setState(() {
+                        userPreferences.warningsForCurrentLocation = value;
+                      });
+                      AlarmManager().registerLocationBackgroundTask();
+                      saveSettings();
+                    }
+                  } else {
+                    setState(() {
+                      userPreferences.warningsForCurrentLocation = value;
+                    });
+                    // cancel location background task (ID: 2)
+                    AlarmManager().cancelLocationBackgroundTask();
+                  }
+                  saveSettings();
+                },
+                activeColor: Colors.green,
+              ),
             ),
           ],
         ),
