@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/class/class_userPreferences.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
+import 'package:foss_warn/services/legacyHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/AboutView.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,6 @@ import 'class/class_NotificationService.dart';
 
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
-import 'services/sortWarnings.dart';
 
 import 'widgets/SourceStatusWidget.dart';
 import 'widgets/dialogs/SortByDialog.dart';
@@ -31,8 +31,9 @@ final UserPreferences userPreferences = UserPreferences();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().init();
   // TODO: run Legacy handler, use improved shared preferences types and names
+  await legacyHandler();
+  await NotificationService().init();
 
   await loadSettings();
 
@@ -103,6 +104,8 @@ class _HomeViewState extends State<HomeView> {
       print("call geocode handler");
       geocodeHandler();
     }
+    //display information if the app had to be resetted
+    showMigrationDialog(context);
   }
 
   void listenNotifications() {
@@ -118,6 +121,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           title: Text("FOSS Warn"),
