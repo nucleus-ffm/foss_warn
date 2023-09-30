@@ -77,25 +77,21 @@ void saveLastBackgroundUpdateTime(String time) async {
 // Settings
 saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString(
-      "notificationGeneral", userPreferences.shouldNotifyGeneral.toString());
-  preferences.setString("startScreen", userPreferences.startScreen.toString());
-  preferences.setString(
-      "showExtendedMetaData", userPreferences.showExtendedMetaData.toString());
-  preferences.setString(
-      "warningFontSize", userPreferences.warningFontSize.toString());
-  preferences.setString(
-      "showWelcomeScreen", userPreferences.showWelcomeScreen.toString());
+  preferences.setBool(
+      "notificationGeneral", userPreferences.shouldNotifyGeneral);
+  preferences.setInt("startScreen", userPreferences.startScreen);
+  preferences.setBool(
+      "showExtendedMetaData", userPreferences.showExtendedMetaData);
+  preferences.setDouble("warningFontSize", userPreferences.warningFontSize);
+  preferences.setBool("showWelcomeScreen", userPreferences.showWelcomeScreen);
   preferences.setString(
       "sortWarningsBy", userPreferences.sortWarningsBy.toString());
-  preferences.setString("showStatusNotification",
-      userPreferences.showStatusNotification.toString());
-  preferences.setString(
-      "frequencyOfAPICall", userPreferences.frequencyOfAPICall.toString());
+  preferences.setBool("showStatusNotification", userPreferences.showStatusNotification);
+  preferences.setDouble(
+      "frequencyOfAPICall", userPreferences.frequencyOfAPICall);
   preferences.setString(
       "selectedTheme", userPreferences.selectedTheme.toString());
-  preferences.setString(
-      "showAllWarnings", userPreferences.showAllWarnings.toString());
+  preferences.setBool("showAllWarnings", userPreferences.showAllWarnings);
   preferences.setString("notificationEventsSettings",
       jsonEncode(userPreferences.notificationEventsSettings));
   preferences.setBool("activateAlertSwiss", userPreferences.activateAlertSwiss);
@@ -140,79 +136,43 @@ loadSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   if (preferences.containsKey("notificationGeneral")) {
-    String temp = preferences.getString("notificationGeneral")!;
-    if (temp == "true") {
-      userPreferences.shouldNotifyGeneral = true;
-    } else {
-      userPreferences.shouldNotifyGeneral = false;
-    }
-  } else {
-    userPreferences.shouldNotifyGeneral = true;
+    userPreferences.shouldNotifyGeneral =
+        preferences.getBool("notificationGeneral")!;
   }
   if (preferences.containsKey("startScreen")) {
-    String temp = preferences.getString("startScreen")!;
-    userPreferences.startScreen = int.parse(temp);
-    print("Start Screen is: ${userPreferences.startScreen}");
+    userPreferences.startScreen = preferences.getInt("startScreen")!;
   }
   if (preferences.containsKey("showExtendedMetaData")) {
-    String temp = preferences.getString("showExtendedMetaData")!;
-    if (temp == "true") {
-      userPreferences.showExtendedMetaData = true;
-    } else {
-      userPreferences.showExtendedMetaData = false;
-    }
+    userPreferences.showExtendedMetaData =
+        preferences.getBool("showExtendedMetaData")!;
   } else {
     userPreferences.showExtendedMetaData = false;
   }
   if (preferences.containsKey("warningFontSize")) {
-    String temp = preferences.getString("warningFontSize")!;
-    userPreferences.warningFontSize = double.parse(temp);
-    print("warningFontSize: ${userPreferences.warningFontSize}");
+    userPreferences.warningFontSize = preferences.getDouble("warningFontSize")!;
   } else {
     saveSettings();
     loadSettings();
   }
   if (preferences.containsKey("showWelcomeScreen")) {
-    String temp = preferences.getString("showWelcomeScreen")!;
-    if (temp == "true") {
-      userPreferences.showWelcomeScreen = true;
-    } else {
-      userPreferences.showWelcomeScreen = false;
-    }
-  } else {
-    userPreferences.showWelcomeScreen = true;
+    userPreferences.showWelcomeScreen =
+        preferences.getBool("showWelcomeScreen")!;
   }
   if (preferences.containsKey("sortWarningsBy")) {
     String temp = preferences.getString("sortWarningsBy")!;
     userPreferences.sortWarningsBy = temp;
-  } else {
-    saveSettings();
-    loadSettings();
   }
   if (preferences.containsKey("showStatusNotification")) {
-    String temp = preferences.getString("showStatusNotification")!;
-    if (temp == "true") {
-      userPreferences.showStatusNotification = true;
-    } else {
-      userPreferences.showStatusNotification = false;
-    }
-  } else {
-    userPreferences.showStatusNotification = true;
+    userPreferences.showStatusNotification =
+        preferences.getBool("showStatusNotification")!;
   }
   if (preferences.containsKey("updateAvailable")) {
-    String temp = preferences.getString("updateAvailable")!;
-    if (temp == "true") {
-      userPreferences.updateAvailable = true;
-    } else {
-      userPreferences.updateAvailable = false;
-    }
-  } else {
-    userPreferences.updateAvailable = false;
+    userPreferences.updateAvailable = preferences.getBool("updateAvailable")!;
   }
 
   if (preferences.containsKey("frequencyOfAPICall")) {
     userPreferences.frequencyOfAPICall =
-        double.parse(preferences.getString("frequencyOfAPICall")!);
+        preferences.getDouble("frequencyOfAPICall")!;
   }
   if (preferences.containsKey("selectedTheme")) {
     String temp = preferences.getString("selectedTheme")!;
@@ -232,14 +192,7 @@ loadSettings() async {
     userPreferences.selectedTheme = ThemeMode.system;
   }
   if (preferences.containsKey("showAllWarnings")) {
-    String temp = preferences.getString("showAllWarnings")!;
-    if (temp == "true") {
-      userPreferences.showAllWarnings = true;
-    } else {
-      userPreferences.showAllWarnings = false;
-    }
-  } else {
-    userPreferences.showAllWarnings = false;
+    userPreferences.showAllWarnings = preferences.getBool("showAllWarnings")!;
   }
   if (preferences.containsKey("notificationEventsSettings")) {
     String temp = preferences.getString("notificationEventsSettings")!;
