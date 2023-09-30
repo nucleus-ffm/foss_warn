@@ -208,7 +208,7 @@ Place getClosedPlace(Position position) {
 Future<void> updateCurrentPlace([BuildContext? context]) async {
   Place? updatedPlace = await getCurrentClosedPlace();
   // only update the place if the place has changed
-  if (updatedPlace?.name != userPreferences.currentPlace) {
+  if (updatedPlace != null && updatedPlace.name != userPreferences.currentPlace) {
     userPreferences.currentPlace = updatedPlace;
     // check if we have a context (when app is open) or not (when call from background)
     if (context != null) {
