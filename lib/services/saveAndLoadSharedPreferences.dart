@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import '../class/class_AlertSwissPlace.dart';
 import '../class/class_NinaPlace.dart';
-import '../class/class_WarnMessage.dart';
 
 import 'listHandler.dart';
 import '../main.dart';
@@ -262,25 +261,5 @@ loadNotificationSettingsImportanceList() async {
     saveNotificationSettingsImportanceList(); //save init List
     loadNotificationSettingsImportanceList(); // try again
     print("notificationSettingsImportance should yet exist");
-  }
-}
-
-cacheWarnings() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("cachedWarnings", jsonEncode(warnMessageList));
-  print("warnings cached");
-  userPreferences.areWarningsFromCache = false;
-}
-
-loadCachedWarnings() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  if (preferences.containsKey("cachedWarnings")) {
-    var data = jsonDecode(preferences.getString("cachedWarnings")!)!;
-    for (int i = 0; i < data.length; i++) {
-      warnMessageList.add(WarnMessage.fromJson(data[i]));
-    }
-    userPreferences.areWarningsFromCache = true;
-  } else {
-    print("there are no saved warnings");
   }
 }

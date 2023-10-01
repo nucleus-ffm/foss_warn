@@ -6,7 +6,6 @@ import '../class/class_alarmManager.dart';
 import '../class/abstract_Place.dart';
 import '../services/checkForMyPlacesWarnings.dart';
 import '../services/listHandler.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/alertSwiss.dart';
 import '../services/geocodeHandler.dart';
 import '../widgets/dialogs/systemInformationDialog.dart';
@@ -132,28 +131,6 @@ class _DevSettingsState extends State<DevSettings> {
                 onTap: () {
                   print("call swiss API");
                   callAlertSwissAPI();
-                  final snackBar = SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context)!.dev_settings_success,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    !.dev_settings_load_cached_warnings),
-                subtitle: Text(AppLocalizations.of(context)
-                    !.dev_settings_load_cached_warnings_text),
-                onTap: () {
-                  print("load cached warnings");
-                  loadCachedWarnings();
                   final snackBar = SnackBar(
                     content: Text(
                       AppLocalizations.of(context)!.dev_settings_success,
