@@ -159,7 +159,7 @@ class _SettingsState extends State<Settings> {
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
-                                controller: frequencyController,
+                                controller: frequenzTextController,
                                 onChanged: (value) {
                                   if (value != "") {
                                     if (double.parse(value) > 0 &&

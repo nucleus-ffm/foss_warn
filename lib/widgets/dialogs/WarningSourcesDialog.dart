@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class WarningSourcesDialog extends StatefulWidget {
-  const WarningSourcesDialog({Key? key}) : super(key: key);
-
-  @override
-  _WarningSourcesDialog createState() => _WarningSourcesDialog();
-}
-
-class _WarningSourcesDialog extends State<WarningSourcesDialog> {
+class WarningSourcesDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

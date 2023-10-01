@@ -33,7 +33,6 @@ loadMyPlacesList() async {
         myPlaceList.add(AlertSwissPlace.fromJson(data[i]));
       }
     }
-    print(myPlaceList);
   }
 }
 

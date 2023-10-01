@@ -35,7 +35,8 @@ List<WelcomeScreenItem> getWelcomeScreenItems(BuildContext context) {
     WelcomeScreenItem(
         title: AppLocalizations.of(context).welcome_view_my_places_headline,
         description: AppLocalizations.of(context).welcome_view_my_places_text,
-        imagePath: "assets/location.png"),
+        imagePath: "assets/location.png",
+        action: "setup"),
     WelcomeScreenItem(
         title: AppLocalizations.of(context).welcome_view_warning_steps_headline,
         description:
@@ -44,6 +45,7 @@ List<WelcomeScreenItem> getWelcomeScreenItems(BuildContext context) {
     WelcomeScreenItem(
         title: AppLocalizations.of(context).welcome_view_lets_go_headline,
         description: AppLocalizations.of(context).welcome_view_lets_go_text,
-        imagePath: "assets/check.png")
+        imagePath: "assets/check.png",
+        action: "end")
   ]);
 }

@@ -2,14 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../services/urlLauncher.dart';
 
-class PrivacyDialog extends StatefulWidget {
-  const PrivacyDialog({Key? key}) : super(key: key);
-
-  @override
-  _PrivacyDialogState createState() => _PrivacyDialogState();
-}
-
-class _PrivacyDialogState extends State<PrivacyDialog> {
+class PrivacyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

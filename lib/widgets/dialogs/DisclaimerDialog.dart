@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class DisclaimerDialog extends StatefulWidget {
-  const DisclaimerDialog({Key? key}) : super(key: key);
-
-  @override
-  _DisclaimerDialogState createState() => _DisclaimerDialogState();
-}
-
-class _DisclaimerDialogState extends State<DisclaimerDialog> {
+class DisclaimerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
