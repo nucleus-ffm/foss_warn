@@ -175,7 +175,15 @@ class _SettingsState extends State<Settings> {
                                     }
                                   }
                                 },
+                                onTapOutside: (e) {
+                                  FocusScope.of(context).unfocus();
+                                  saveSettings();
+                                  AlarmManager().cancelBackgroundTask();
+                                  AlarmManager().registerBackgroundTask();
+                                  callAPI(); // call api and update notification
+                                },
                                 onEditingComplete: () {
+                                  FocusScope.of(context).unfocus();
                                   saveSettings();
                                   AlarmManager().cancelBackgroundTask();
                                   AlarmManager().registerBackgroundTask();
