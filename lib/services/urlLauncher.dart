@@ -24,38 +24,47 @@ Future<void> launchUrlInBrowser(String url) async {
 
 Future<void> makePhoneCall(String url) async {
   Uri correctURL;
-  // replace every space in the url
-  url = url.replaceAll(" ", "");
-  RegExp exp = RegExp("\\+|[0-9]|\s");
-  int firstNumber = 0;
+  url = extractPhoneNumber(url);
 
-  // this loop will be executed only if `continue` is called.
-  // otherwise it will be executed once
-  while (firstNumber != -1) {
-    // search for valid next numbers.
-    firstNumber = url.indexOf(exp, firstNumber + 1);
-    // we can not find a valid telephone number. stop searching
-    if(firstNumber == -1) break;
+  correctURL = Uri.parse('tel:' + url);
+  print(correctURL.toString());
 
-    int lastNumber = firstNumber;
-    // find the end of the telephone number
-    while (lastNumber < url.length && exp.hasMatch(url[lastNumber])) {
-      lastNumber++;
+  if (await canLaunchUrl(correctURL)) {
+    await launchUrl(correctURL);
+  } else {
+    throw 'Could not launch ${correctURL.toString()}';
+  }
+}
+
+String extractPhoneNumber(String url) {
+  //@todo this regex can certainly be further improved
+  try {
+    // remove some chars to detect even wierd formatted phone numbers
+    RegExp expToRemove = RegExp(r'[\s/-]');
+    url = url.replaceAll(expToRemove, "");
+    /* The regExpForTelephoneNumbers explained:
+    * (+\d{1,3}\s?)? - This part recognizes an optional country code starting with a plus sign (+) followed by 1 to 3 digits and an optional space.
+    * ((\d{1,3})\s?)? - This part recognizes an optional prefix in parentheses, starting with an opening parenthesis "(", followed by 1 to 3 digits, a closing parenthesis ")" and an optional space.
+    * \d{1,4} - This part recognizes 1 to 4 digits for the main number.
+    * [\s.-]? - This part recognizes an optional space, a hyphen "-" or a period "." as a separator.
+    * \d{1,4} - This part recognizes 1 to 4 digits for the second number group.
+    * [\s.-]? - This part again recognizes an optional space, a hyphen "-" or a period "." as a separator.
+    * \d{1,9} - This part recognizes 1 to 9 digits for the third number group.
+     */
+    RegExp regExpForTelephoneNumbers = RegExp(
+        r'(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}');
+    List<String> phoneNumbers = url.split(regExpForTelephoneNumbers);
+    List<String?> result = regExpForTelephoneNumbers
+        .allMatches(url)
+        .map((e) => e.group(0))
+        .toList();
+    if (result[0] != null) {
+      return result[0]!;
     }
-    // check if it es just one oder two numbers, which can not be a valid telephone number
-    // start search again
-    if (lastNumber - firstNumber < 4) continue;
-
-    correctURL = Uri.parse(
-        'tel:' + url.substring(firstNumber, lastNumber).replaceAll(" ", ""));
-    print(correctURL.toString());
-
-    if (await canLaunchUrl(correctURL)) {
-      await launchUrl(correctURL);
-      break;
-    } else {
-      throw 'Could not launch ${correctURL.toString()}';
-    }
+    return phoneNumbers[0];
+  } catch (e) {
+    print("no valid phone number found. ${e.toString()}");
+    return "no valid phone number";
   }
 }
 
