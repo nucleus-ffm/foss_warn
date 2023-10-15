@@ -45,7 +45,7 @@ Future<void> callAPI() async {
       try {
         Response _response;
         _response =
-            await getDashboard(place, _baseUrl).timeout(Duration(seconds: 15));
+            await getDashboard(place, _baseUrl).timeout(userPreferences.networkTimeout);
 
         // 304 = with etag no change since last request
         if (_response.statusCode == 304) {
@@ -58,7 +58,7 @@ Future<void> callAPI() async {
           _tempWarnMessageList.clear();
           // parse the _data into List of Warnings
           _tempWarnMessageList = await parseNinaJsonData(_data, _baseUrl, place)
-              .timeout(Duration(seconds: 15));
+              .timeout(userPreferences.networkTimeout);
           // remove old warning
           removeOldWarningFromList(place, _tempWarnMessageList);
           userPreferences.areWarningsFromCache = false;

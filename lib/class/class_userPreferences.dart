@@ -30,4 +30,6 @@ class UserPreferences {
 
   bool activateAlertSwiss = false;
   bool isFirstStart = true;
+
+  Duration networkTimeout = Duration(seconds: 8);
 }
