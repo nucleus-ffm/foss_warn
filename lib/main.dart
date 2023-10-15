@@ -31,10 +31,8 @@ final UserPreferences userPreferences = UserPreferences();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // TODO: run Legacy handler, use improved shared preferences types and names
   await legacyHandler();
   await NotificationService().init();
-
   await loadSettings();
 
   if (userPreferences.shouldNotifyGeneral) {
@@ -121,7 +119,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: Text("FOSS Warn"),
@@ -162,8 +159,8 @@ class _HomeViewState extends State<HomeView> {
                 }
                 final snackBar = SnackBar(
                   content: Text(
-                    AppLocalizations.of(context)
-                        !.main_app_bar_tooltip_mark_all_warnings_as_read,
+                    AppLocalizations.of(context)!
+                        .main_app_bar_tooltip_mark_all_warnings_as_read,
                     style: TextStyle(color: Colors.black),
                   ),
                   backgroundColor: Colors.green[100],
@@ -174,8 +171,8 @@ class _HomeViewState extends State<HomeView> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: Icon(Icons.mark_chat_read),
-              tooltip: AppLocalizations.of(context)
-                  !.main_app_bar_tooltip_mark_all_warnings_as_read,
+              tooltip: AppLocalizations.of(context)!
+                  .main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
@@ -197,12 +194,12 @@ class _HomeViewState extends State<HomeView> {
                 },
                 itemBuilder: (context) => <PopupMenuEntry>[
                       PopupMenuItem(
-                          child: Text(AppLocalizations.of(context)
-                              !.main_dot_menu_settings),
+                          child: Text(AppLocalizations.of(context)!
+                              .main_dot_menu_settings),
                           value: 0),
                       PopupMenuItem(
-                          child: Text(
-                              AppLocalizations.of(context)!.main_dot_menu_about),
+                          child: Text(AppLocalizations.of(context)!
+                              .main_dot_menu_about),
                           value: 1)
                     ])
           ],
