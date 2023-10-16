@@ -424,5 +424,9 @@
   "warning_widget_other": "other",
   "@warning_widget_other": {},
   "warning_widget_unknown": "unknown",
-  "@warning_widget_unknown": {}
+  "@warning_widget_unknown": {},
+  "legacy_warning_dialog_title": "Updated version to",
+  "@legacy_warning_dialog_title": {},
+  "legacy_warning_dialog_text": "FOSSWarn has been updated to a new version. With this new version we have improved the internal structure of the app. Externally there are no major changes, however all settings and saved locations had to be reset. Please check your settings and add your locations again.\n\nThank you for your understanding and sorry for the inconvenience",
+  "@legacy_warning_dialog_text": {}
 }
