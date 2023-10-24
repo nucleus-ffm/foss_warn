@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../class/class_NotificationService.dart';
 import '../main.dart';
 import '../widgets/dialogs/legacyWarningDialog.dart';
 
@@ -22,6 +23,14 @@ Future<void> legacyHandler() async {
 
       preferences.setBool("hadToResetSettings", true);
       preferences.setBool("showWelcomeScreen", false);
+      // show notification to get the users attention
+      await NotificationService.showNotification(
+          id: 4,
+          title: "FOSS Warn needs your attention",
+          body:
+              "FOSS Warn has been updated to a new version and needs your attention",
+          payload: "",
+          channel: "other");
     }
   } catch (e) {
     print("[legacyHandler] Error: ${e.toString()}");
