@@ -126,39 +126,36 @@ class NotificationService {
             iOS: initializationSettingsIOS,
             macOS: null);
 
-    // Request notifications permission (Android 13+)
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
+    final androidNotificationPlugin =
+        _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    if (androidNotificationPlugin != null) {
+      // Request notifications permission (Android 13+)
+      await androidNotificationPlugin.requestNotificationsPermission();
 
-    // init the different notifications channels
-    try {
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_minor", "Warnstufe: Gering"));
+      // Request schedule exact alarm permission (Android 14+)
+      await androidNotificationPlugin.requestExactAlarmsPermission();
 
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_moderate", "Warnstufe: Mittel"));
+      // init the different notifications channels
+      try {
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_minor", "Warnstufe: Gering"));
 
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_severe", "Warnstufe: Schwer"));
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_moderate", "Warnstufe: Mittel"));
 
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_extreme", "Warnstufe: Extrem"));
-    } catch (e) {
-      print("Error while creating notification channels: " + e.toString());
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_severe", "Warnstufe: Schwer"));
+
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_extreme", "Warnstufe: Extrem"));
+      } catch (e) {
+        print("Error while creating notification channels: " + e.toString());
+      }
     }
 
     // when App is closed
