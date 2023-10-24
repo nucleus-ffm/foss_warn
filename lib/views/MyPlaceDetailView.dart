@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/listHandler.dart';
 
 import '../class/abstract_Place.dart';
 import '../services/sortWarnings.dart';
