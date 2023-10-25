@@ -1,48 +1,51 @@
-import 'package:url_launcher/url_launcher.dart';
+import "package:url_launcher/url_launcher.dart";
+
+String extractWebAddress(String text) {
+  if (text.startsWith("<a")) {
+    int beginIndex = text.indexOf("href=\"") + 6;
+    int endIndex = text.indexOf("\"", beginIndex);
+    text= text.substring(beginIndex, endIndex);
+  }
+
+  final RegExp webAddressRegEx = RegExp(r"((http|https)://)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)");
+  final RegExpMatch? match = webAddressRegEx.firstMatch(text);
+  if(match != null && match.start == 0 && match.end == text.length) {
+    return text;
+  }
+
+  return "invalid";
+}
 
 Future<void> launchUrlInBrowser(String url) async {
-  Uri correctURL;
-  if (url.startsWith('http')) {
-    correctURL = Uri.parse(url);
-  } else if (url.startsWith("<a")) {
-    int beginURL = url.indexOf("\"") + 1;
-    int endURL = url.indexOf("\"", beginURL + 1);
-
-    correctURL = Uri.parse(url.substring(beginURL, endURL));
+  Uri webAddress = Uri.parse(extractWebAddress(url));
+  if (await canLaunchUrl(webAddress)) {
+    await launchUrl(webAddress, mode: LaunchMode.externalApplication);
   } else {
-    int firstPoint = url.indexOf('.');
-    String domain = url.substring(firstPoint + 1, url.length);
-    correctURL = Uri.parse('https://' + domain);
-  }
-  print("open: " + correctURL.toString());
-  if (await canLaunchUrl(correctURL)) {
-    await launchUrl(correctURL, mode: LaunchMode.externalApplication);
-  } else {
-    throw 'Could not launch $correctURL';
+    throw "Could not launch $webAddress";
   }
 }
 
 Future<void> makePhoneCall(String url) async {
-  Uri correctURL;
-  url = extractPhoneNumber(url);
+  String phoneNumber = extractPhoneNumber(url);
+  Uri uri = Uri.parse("tel:$phoneNumber");
 
-  correctURL = Uri.parse('tel:' + url);
-  print(correctURL.toString());
+  print("Extracted phone number: $phoneNumber");
 
-  if (await canLaunchUrl(correctURL)) {
-    await launchUrl(correctURL);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
   } else {
-    throw 'Could not launch ${correctURL.toString()}';
+    throw "Could not launch ${uri.toString()}";
   }
 }
 
-String extractPhoneNumber(String url) {
-  //@todo this regex can certainly be further improved
+String extractPhoneNumber(String text) {
   try {
-    // remove some chars to detect even wierd formatted phone numbers
-    RegExp expToRemove = RegExp(r'[\s/-]');
-    url = url.replaceAll(expToRemove, "");
-    /* The regExpForTelephoneNumbers explained:
+    // remove some chars to detect even weird formatted phone numbers
+    RegExp expToRemove = RegExp(r"[\s/-]");
+    text = text.replaceAll(expToRemove, "");
+
+    // @todo this regex can certainly be further improved
+    /*
     * (+\d{1,3}\s?)? - This part recognizes an optional country code starting with a plus sign (+) followed by 1 to 3 digits and an optional space.
     * ((\d{1,3})\s?)? - This part recognizes an optional prefix in parentheses, starting with an opening parenthesis "(", followed by 1 to 3 digits, a closing parenthesis ")" and an optional space.
     * \d{1,4} - This part recognizes 1 to 4 digits for the main number.
@@ -51,20 +54,21 @@ String extractPhoneNumber(String url) {
     * [\s.-]? - This part again recognizes an optional space, a hyphen "-" or a period "." as a separator.
     * \d{1,9} - This part recognizes 1 to 9 digits for the third number group.
      */
-    RegExp regExpForTelephoneNumbers = RegExp(
-        r'(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}');
-    List<String> phoneNumbers = url.split(regExpForTelephoneNumbers);
-    List<String?> result = regExpForTelephoneNumbers
-        .allMatches(url)
-        .map((e) => e.group(0))
-        .toList();
+    RegExp phoneNumberRegex = RegExp(
+        r"(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}");
+
+    List<String> phoneNumbers = text.split(phoneNumberRegex);
+    List<String?> result =
+        phoneNumberRegex.allMatches(text).map((e) => e.group(0)).toList();
+
     if (result[0] != null) {
       return result[0]!;
     }
+
     return phoneNumbers[0];
   } catch (e) {
-    print("no valid phone number found. ${e.toString()}");
-    return "no valid phone number";
+    print("No valid phone number found: " + e.toString());
+    return "invalid";
   }
 }
 
@@ -73,6 +77,6 @@ Future<void> launchEmail(String url) async {
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
   } else {
-    throw 'Could not launch $url';
+    throw "Could not launch $url";
   }
 }
