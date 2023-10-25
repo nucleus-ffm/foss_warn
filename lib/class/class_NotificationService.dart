@@ -2,7 +2,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foss_warn/services/translateAndColorizeWarning.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
-
+///
+/// ID 2: Status notification
+/// ID 3: No Places selected warning
+/// ID 4: legacy warning
 class NotificationService {
   static final _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -181,7 +184,7 @@ class NotificationService {
     channelIds.add("foss_warn_notifications_moderate");
     channelIds.add("foss_warn_notifications_extreme");
     channelIds.add("foss_warn_status");
-    channelIds.add("foss_warn_other");
+    channelIds.add("foss_warn_notifications_other");
 
     print("[android notification channels]");
     List<AndroidNotificationChannel>? temp =
