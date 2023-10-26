@@ -13,13 +13,13 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).privacy_headline),
+      title: Text(AppLocalizations.of(context)!.privacy_headline),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(AppLocalizations.of(context).privacy_main_text),
+              Text(AppLocalizations.of(context)!.privacy_main_text),
               SizedBox(
                 height: 10,
               ),
@@ -32,7 +32,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                         onPressed: () => launchUrlInBrowser(
                             'https://warnung.bund.de/datenschutz'),
                         child: Text(AppLocalizations.of(context)
-                                .privacy_link_to_privacy +
+                                !.privacy_link_to_privacy +
                             " Warnung.bund.de")),
                   ),
                 ],
@@ -46,7 +46,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                         onPressed: () => launchUrlInBrowser(
                             'https://www.xrepository.de/cms/datenschutz.html'),
                         child: Text(AppLocalizations.of(context)
-                                .privacy_link_to_privacy +
+                                !.privacy_link_to_privacy +
                             " xrepository.de")),
                   ),
                 ],
@@ -61,7 +61,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context).main_dialog_understand,
+            AppLocalizations.of(context)!.main_dialog_understand,
             style: TextStyle(color: Colors.green),
           ),
         ),

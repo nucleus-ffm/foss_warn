@@ -16,7 +16,7 @@ class NinaPlace extends Place {
 
   /// returns the name of the place with the state
   @override
-  String get name => "${super.name}, (${_geocode.stateName})";
+  String get name => "${super.name} (${_geocode.stateName})";
 
   String get nameWithoutState => super.name;
 

@@ -12,44 +12,44 @@ class _WarningSourcesDialog extends State<WarningSourcesDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).source_headline),
+      title: Text(AppLocalizations.of(context)!.source_headline),
       content: Container(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.5,
         child: ListView(
           children: [
             ListTile(
-              title: Text(AppLocalizations.of(context).source_mowas_title),
+              title: Text(AppLocalizations.of(context)!.source_mowas_title),
               subtitle: Text(
-                AppLocalizations.of(context).source_mowas_description,
+                AppLocalizations.of(context)!.source_mowas_description,
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).source_biwapp_title),
+              title: Text(AppLocalizations.of(context)!.source_biwapp_title),
               subtitle: Text(
-                AppLocalizations.of(context).source_biwapp_description,
+                AppLocalizations.of(context)!.source_biwapp_description,
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).source_katwarn_title),
+              title: Text(AppLocalizations.of(context)!.source_katwarn_title),
               subtitle: Text(
-                AppLocalizations.of(context).source_katwarn_description,
+                AppLocalizations.of(context)!.source_katwarn_description,
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).source_dwd_title),
+              title: Text(AppLocalizations.of(context)!.source_dwd_title),
               subtitle:
-                  Text(AppLocalizations.of(context).source_dwd_description),
+                  Text(AppLocalizations.of(context)!.source_dwd_description),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).source_lhp_title),
+              title: Text(AppLocalizations.of(context)!.source_lhp_title),
               subtitle:
-                  Text(AppLocalizations.of(context).source_lhp_description),
+                  Text(AppLocalizations.of(context)!.source_lhp_description),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).source_alertswiss_title),
+              title: Text(AppLocalizations.of(context)!.source_alertswiss_title),
               subtitle: Text(
-                AppLocalizations.of(context).source_alertswiss_description,
+                AppLocalizations.of(context)!.source_alertswiss_description,
               ),
             ),
           ],
@@ -58,7 +58,7 @@ class _WarningSourcesDialog extends State<WarningSourcesDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(AppLocalizations.of(context).main_dialog_close,
+          child: Text(AppLocalizations.of(context)!.main_dialog_close,
               style: TextStyle(color: Colors.green)),
         ),
       ],

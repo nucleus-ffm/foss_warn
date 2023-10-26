@@ -44,7 +44,8 @@ Future<void> callAPI() async {
     else if (place is NinaPlace) {
       try {
         Response _response;
-        _response = await getDashboard(place, _baseUrl);
+        _response =
+            await getDashboard(place, _baseUrl).timeout(userPreferences.networkTimeout);
 
         // 304 = with etag no change since last request
         if (_response.statusCode == 304) {
@@ -56,7 +57,8 @@ Future<void> callAPI() async {
           _data = jsonDecode(utf8.decode(_response.bodyBytes));
           _tempWarnMessageList.clear();
           // parse the _data into List of Warnings
-          _tempWarnMessageList = await parseNinaJsonData(_data, _baseUrl, place);
+          _tempWarnMessageList = await parseNinaJsonData(_data, _baseUrl, place)
+              .timeout(userPreferences.networkTimeout);
           // remove old warning
           removeOldWarningFromList(place, _tempWarnMessageList);
           userPreferences.areWarningsFromCache = false;
@@ -145,8 +147,7 @@ Future<Response> getDashboard(NinaPlace place, String baseUrl) async {
   // get overview if warnings exits for myplaces
   print("Etag for: ${place.name} is ${place.eTag}");
 
-  _response =
-  await get(_urlDashboard, headers: {'If-None-Match': place.eTag});
+  _response = await get(_urlDashboard, headers: {'If-None-Match': place.eTag});
 
   place.eTag = _response.headers["etag"]!;
   print("new etag for: ${place.name} is:  ${_response.headers["etag"]}");
@@ -177,7 +178,6 @@ Future<List<WarnMessage>> parseNinaJsonData(
               " " +
               temp.notified.toString());
           place.addWarningToList(temp);
-          place.incrementNumberOfWarnings();
         }
 
         // }  //@todo: fix displaying warnings twice
@@ -205,6 +205,5 @@ void removeOldWarningFromList(
   }
   for (WarnMessage message in warnMessagesToRemove) {
     place.removeWarningFromList(message);
-    place.decrementNumberOfWarnings();
   }
 }

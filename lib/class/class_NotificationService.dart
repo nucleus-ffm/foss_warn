@@ -2,7 +2,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foss_warn/services/translateAndColorizeWarning.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
-
+///
+/// ID 2: Status notification
+/// ID 3: No Places selected warning
+/// ID 4: legacy warning
 class NotificationService {
   static final _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -126,39 +129,36 @@ class NotificationService {
             iOS: initializationSettingsIOS,
             macOS: null);
 
-    // Request notifications permission (Android 13+)
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+    final androidNotificationPlugin =
+        _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    if (androidNotificationPlugin != null) {
+      // Request notifications permission (Android 13+)
+      await androidNotificationPlugin.requestNotificationsPermission();
 
-    // init the different notifications channels
-    try {
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_minor", "Warnstufe: Gering"));
+      // Request schedule exact alarm permission (Android 14+)
+      await androidNotificationPlugin.requestExactAlarmsPermission();
 
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_moderate", "Warnstufe: Mittel"));
+      // init the different notifications channels
+      try {
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_minor", "Warnstufe: Gering"));
 
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_severe", "Warnstufe: Schwer"));
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_moderate", "Warnstufe: Mittel"));
 
-      await _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(AndroidNotificationChannel(
-              "foss_warn_notifications_extreme", "Warnstufe: Extrem"));
-    } catch (e) {
-      print("Error while creating notification channels: " + e.toString());
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_severe", "Warnstufe: Schwer"));
+
+        await androidNotificationPlugin.createNotificationChannel(
+            AndroidNotificationChannel(
+                "foss_warn_notifications_extreme", "Warnstufe: Extrem"));
+      } catch (e) {
+        print("Error while creating notification channels: " + e.toString());
+      }
     }
 
     // when App is closed
@@ -184,7 +184,7 @@ class NotificationService {
     channelIds.add("foss_warn_notifications_moderate");
     channelIds.add("foss_warn_notifications_extreme");
     channelIds.add("foss_warn_status");
-    channelIds.add("foss_warn_other");
+    channelIds.add("foss_warn_notifications_other");
 
     print("[android notification channels]");
     List<AndroidNotificationChannel>? temp =

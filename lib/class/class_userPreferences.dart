@@ -26,8 +26,10 @@ class UserPreferences {
   bool showAllWarnings = false;
   bool areWarningsFromCache = false;
 
-  String versionNumber = "0.6.0-alpha_2 "; // shown in the about view
+  String versionNumber = "0.6.0-alpha_3 "; // shown in the about view
 
   bool activateAlertSwiss = false;
   bool isFirstStart = true;
+
+  Duration networkTimeout = Duration(seconds: 8);
 }

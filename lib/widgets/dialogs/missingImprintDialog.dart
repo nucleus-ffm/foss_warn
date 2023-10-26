@@ -12,13 +12,13 @@ class _MissingImprintDialogState extends State<MissingImprintDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).imprint_headline),
+      title: Text(AppLocalizations.of(context)!.imprint_headline),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(AppLocalizations.of(context).imprint_main_text),
+              Text(AppLocalizations.of(context)!.imprint_main_text),
             ],
           ),
         ),
@@ -28,7 +28,7 @@ class _MissingImprintDialogState extends State<MissingImprintDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context).main_dialog_close,
+          child: Text(AppLocalizations.of(context)!.main_dialog_close,
               style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],

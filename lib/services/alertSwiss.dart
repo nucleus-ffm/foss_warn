@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:foss_warn/main.dart';
+
 import '../class/class_AlertSwissPlace.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
@@ -25,7 +27,7 @@ Future callAlertSwissAPI() async {
     await loadETags();
 
     // get overview if warnings exits for myplaces
-    response = await get(Uri.parse(url));
+    response = await get(Uri.parse(url)).timeout(userPreferences.networkTimeout);
 
     // check if request was sucsessfully
     if (response.statusCode == 200) {

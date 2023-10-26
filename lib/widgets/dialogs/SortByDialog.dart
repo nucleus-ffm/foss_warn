@@ -11,99 +11,67 @@ class SortByDialog extends StatefulWidget {
 }
 
 class _SortByDialogState extends State<SortByDialog> {
-  List fontSizeList = [8, 9, 10, 11, 12, 13, 14, 15, 16];
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(AppLocalizations.of(context).sorting_headline),
-      content: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: Text(
-                  AppLocalizations.of(context).sorting_by_date,
-                  //style: TextStyle(fontSize: 12),
-                ),
-                leading: Radio(
-                  value: "date",
-                  groupValue: userPreferences.sortWarningsBy,
-                  onChanged: (value) {
-                    setState(() {
-                      userPreferences.sortWarningsBy = "date";
-                      saveSettings();
-                      Navigator.of(context).pop();
-                    });
-                  },
-                ),
-                onTap: () {
-                  setState(() {
-                    userPreferences.sortWarningsBy = "date";
-                    saveSettings();
-                    Navigator.of(context).pop();
-                  });
-                },
-              ),
-              ListTile(
-                title: Text(
-                  AppLocalizations.of(context).sorting_by_warning_level,
-                  //style: TextStyle(fontSize: 14),
-                ),
-                leading: Radio(
-                  value: "severity",
-                  groupValue: userPreferences.sortWarningsBy,
-                  onChanged: (value) {
-                    setState(() {
-                      userPreferences.sortWarningsBy = "severity";
-                      saveSettings();
-                      Navigator.of(context).pop();
-                    });
-                  },
-                ),
-                onTap: () {
-                  setState(() {
-                    userPreferences.sortWarningsBy = "severity";
-                    saveSettings();
-                    Navigator.of(context).pop();
-                  });
-                },
-              ),
-              ListTile(
-                title: Text(
-                  AppLocalizations.of(context).sorting_by_source,
-                  //style: TextStyle(fontSize: 16),
-                ),
-                leading: Radio(
-                  value: "source",
-                  groupValue: userPreferences.sortWarningsBy,
-                  onChanged: (value) {
-                    setState(() {
-                      userPreferences.sortWarningsBy = "source";
-                      saveSettings();
-                      Navigator.of(context).pop();
-                    });
-                  },
-                ),
-                onTap: () {
-                  setState(() {
-                    userPreferences.sortWarningsBy = "source";
-                    saveSettings();
-                    Navigator.of(context).pop();
-                  });
-                },
-              ),
-            ],
+    return SimpleDialog(
+      title: Text(AppLocalizations.of(context)!.sorting_headline),
+      children: [
+        ListTile(
+          title: Text(
+            AppLocalizations.of(context)!.sorting_by_date,
+            //style: TextStyle(fontSize: 12),
           ),
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.date_range),
+          ),
+          selectedColor: Theme.of(context).colorScheme.secondary,
+          selected: userPreferences.sortWarningsBy == "date" ? true : false,
+          onTap: () {
+            setState(() {
+              userPreferences.sortWarningsBy = "date";
+            });
+            saveSettings();
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context).main_dialog_close,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+        ),
+        ListTile(
+          title: Text(
+            AppLocalizations.of(context)!.sorting_by_warning_level,
+            //style: TextStyle(fontSize: 14),
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.warning),
+          ),
+          selectedColor: Theme.of(context).colorScheme.secondary,
+          selected: userPreferences.sortWarningsBy == "severity" ? true : false,
+          onTap: () {
+            setState(() {
+              userPreferences.sortWarningsBy = "severity";
+            });
+            saveSettings();
+            Navigator.of(context).pop();
+          },
+        ),
+        ListTile(
+          title: Text(
+            AppLocalizations.of(context)!.sorting_by_source,
+            //style: TextStyle(fontSize: 16),
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.source),
+          ),
+          selectedColor: Theme.of(context).colorScheme.secondary,
+          selected: userPreferences.sortWarningsBy == "source" ? true : false,
+          onTap: () {
+            setState(() {
+              userPreferences.sortWarningsBy = "source";
+            });
+            saveSettings();
+            Navigator.of(context).pop();
+          },
         ),
       ],
     );

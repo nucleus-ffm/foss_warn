@@ -6,7 +6,6 @@ import '../class/class_alarmManager.dart';
 import '../class/abstract_Place.dart';
 import '../services/checkForMyPlacesWarnings.dart';
 import '../services/listHandler.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/alertSwiss.dart';
 import '../services/geocodeHandler.dart';
 import '../widgets/dialogs/systemInformationDialog.dart';
@@ -25,7 +24,7 @@ class _DevSettingsState extends State<DevSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).dev_settings_headline),
+        title: Text(AppLocalizations.of(context)!.dev_settings_headline),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
@@ -38,9 +37,9 @@ class _DevSettingsState extends State<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
-                    .dev_settings_test_notification),
+                    !.dev_settings_test_notification),
                 subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_test_notification_text),
+                    !.dev_settings_test_notification_text),
                 onTap: () {
                   checkForMyPlacesWarnings(false, true);
                   bool thereIsNoWarning = true;
@@ -66,9 +65,9 @@ class _DevSettingsState extends State<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
-                    .dev_settings_restart_background_service),
+                    !.dev_settings_restart_background_service),
                 subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_restart_background_service_text),
+                    !.dev_settings_restart_background_service_text),
                 onTap: () {
                   print("restart background service");
                   try {
@@ -82,7 +81,7 @@ class _DevSettingsState extends State<DevSettings> {
                   }
                   final snackBar = SnackBar(
                     content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
+                      AppLocalizations.of(context)!.dev_settings_success,
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
@@ -96,15 +95,15 @@ class _DevSettingsState extends State<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(AppLocalizations.of(context)
-                        .dev_settings_delete_list_of_read_warnings +
+                        !.dev_settings_delete_list_of_read_warnings +
                     " & \n" +
                     AppLocalizations.of(context)
-                        .dev_settings_delete_notification_list),
+                        !.dev_settings_delete_notification_list),
                 subtitle: Text(AppLocalizations.of(context)
-                        .dev_settings_delete_list_of_read_warnings_text +
+                        !.dev_settings_delete_list_of_read_warnings_text +
                     " & \n" +
                     AppLocalizations.of(context)
-                        .dev_settings_delete_notification_list_text),
+                        !.dev_settings_delete_notification_list_text),
                 onTap: () {
                   print("reset read and notification status for all warnings");
                   for (Place p in myPlaceList) {
@@ -112,7 +111,7 @@ class _DevSettingsState extends State<DevSettings> {
                   }
                   final snackBar = SnackBar(
                     content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
+                      AppLocalizations.of(context)!.dev_settings_success,
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
@@ -126,37 +125,15 @@ class _DevSettingsState extends State<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(
-                    AppLocalizations.of(context).dev_settings_call_alert_swiss),
+                    AppLocalizations.of(context)!.dev_settings_call_alert_swiss),
                 subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_call_alert_swiss_text),
+                    !.dev_settings_call_alert_swiss_text),
                 onTap: () {
                   print("call swiss API");
                   callAlertSwissAPI();
                   final snackBar = SnackBar(
                     content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    .dev_settings_load_cached_warnings),
-                subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_load_cached_warnings_text),
-                onTap: () {
-                  print("load cached warnings");
-                  loadCachedWarnings();
-                  final snackBar = SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
+                      AppLocalizations.of(context)!.dev_settings_success,
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
@@ -170,15 +147,15 @@ class _DevSettingsState extends State<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(
-                    AppLocalizations.of(context).dev_settings_test_geocode),
+                    AppLocalizations.of(context)!.dev_settings_test_geocode),
                 subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_test_geocode_text),
+                    !.dev_settings_test_geocode_text),
                 onTap: () {
                   print("call geocodeHandler");
                   geocodeHandler();
                   final snackBar = SnackBar(
                     content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
+                      AppLocalizations.of(context)!.dev_settings_success,
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
@@ -192,15 +169,15 @@ class _DevSettingsState extends State<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(
-                    AppLocalizations.of(context).dev_settings_delete_warnings),
+                    AppLocalizations.of(context)!.dev_settings_delete_warnings),
                 subtitle: Text(AppLocalizations.of(context)
-                    .dev_settings_delete_warnings_text),
+                    !.dev_settings_delete_warnings_text),
                 onTap: () {
                   print("delete warnings");
                   warnMessageList.clear();
                   final snackBar = SnackBar(
                     content: Text(
-                      AppLocalizations.of(context).dev_settings_success,
+                      AppLocalizations.of(context)!.dev_settings_success,
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
