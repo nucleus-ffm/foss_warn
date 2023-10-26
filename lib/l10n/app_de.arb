@@ -424,5 +424,9 @@
   "dev_settings_delete_warnings_text": "Löscht die Liste mit Warnungen",
   "@dev_settings_delete_warnings_text": {},
   "explanation_CBRNE_text": "Information bei Zwischenfällen mit chemischen, biologischen, radiologischen, nuklearen und explosiven Stoffen.",
-  "@explanation_CBRNE_text": {}
+  "@explanation_CBRNE_text": {},
+  "legacy_warning_dialog_title": "Version aktualisiert auf",
+  "@legacy_warning_dialog_title": {},
+  "legacy_warning_dialog_text": "FOSS Warn wurde auf eine neue Version aktualisiert, die größere Verbesserungen in der inneren Struktur enthält. Dadurch mussten wir deine Appeinstellungen und gespeicherten Orte zurücksetzen. Bitte prüfe deine Einstellungen und füge deine Orte wieder neu hinzu.\n\nWir entschuldigen uns für den notwendigen Umstand.",
+  "@legacy_warning_dialog_text": {}
 }
