@@ -424,5 +424,9 @@
   "my_place_warnings_only_one": "попередження",
   "@my_place_warnings_only_one": {},
   "explanation_other_text": "Інформація з іншими повідомленнями",
-  "@explanation_other_text": {}
+  "@explanation_other_text": {},
+  "legacy_warning_dialog_title": "Версію оновлено до",
+  "@legacy_warning_dialog_title": {},
+  "legacy_warning_dialog_text": "FOSS Warn було оновлено до нової версії, яка покращила внутрішню структуру програми. Зміна призвела до скидання всіх налаштувань і ваших збережених локацій. Будь ласка, перевірте свої налаштування і додайте назад бажані локації.\n\nПриносимо вибачення за тимчасові незручності.",
+  "@legacy_warning_dialog_text": {}
 }

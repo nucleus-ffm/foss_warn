@@ -424,5 +424,9 @@
   "warning_effective": "Efficace",
   "@warning_effective": {},
   "warning_shared_by_foss_warn": "Partagé par FOSS Warn",
-  "@warning_shared_by_foss_warn": {}
+  "@warning_shared_by_foss_warn": {},
+  "legacy_warning_dialog_title": "Version mise à jour à",
+  "@legacy_warning_dialog_title": {},
+  "legacy_warning_dialog_text": "FOSS Warn a été mis à jour vers une nouvelle version améliorant la structure interne de l'application. Ce changement a entraîné la réinitialisation de tous les paramètres et des emplacements sauvegardés. Veuillez vérifier vos paramètres et ajouter à nouveau vos emplacements souhaités.\n\nNous nous excusons pour tout inconvénient.",
+  "@legacy_warning_dialog_text": {}
 }
