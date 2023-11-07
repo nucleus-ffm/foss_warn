@@ -118,4 +118,5 @@ abstract class Place {
   }
 
   Map<String, dynamic> toJson();
+  Future<(String, bool)> callAPIAndGetWarnings();
 }

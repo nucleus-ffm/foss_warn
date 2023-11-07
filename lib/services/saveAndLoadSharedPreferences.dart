@@ -94,7 +94,10 @@ saveSettings() async {
   preferences.setString("notificationEventsSettings",
       jsonEncode(userPreferences.notificationEventsSettings));
   preferences.setBool("activateAlertSwiss", userPreferences.activateAlertSwiss);
+  preferences.setBool(
+      "warningsForCurrentLocation", userPreferences.warningsForCurrentLocation);
   print("Settings saved");
+  preferences.setString("currentPlace", jsonEncode(userPreferences.currentPlace));
 }
 
 saveETags() async {
@@ -201,6 +204,19 @@ loadSettings() async {
   if (preferences.containsKey("activateAlertSwiss")) {
     userPreferences.activateAlertSwiss =
         preferences.getBool("activateAlertSwiss")!;
+  }
+  if (preferences.containsKey("warningsForCurrentLocation")) {
+    userPreferences.warningsForCurrentLocation =
+        preferences.getBool("warningsForCurrentLocation")!;
+  }
+  if (preferences.containsKey("currentPlace")) {
+    String? temp = preferences.getString("currentPlace");
+    if(temp != "null") {
+      userPreferences.currentPlace =
+          NinaPlace.fromJson(jsonDecode(temp!));
+    } else {
+      userPreferences.currentPlace = null;
+    }
   }
 }
 

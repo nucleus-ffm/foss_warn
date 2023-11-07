@@ -34,6 +34,7 @@ Future getData(bool useEtag) async {
 
     if (useEtag) {
       _response = await get(urlMowas, headers: {'If-None-Match': appState.mowasETag}).timeout(userPreferences.networkTimeout);
+
     } else {
       _response = await get(urlMowas).timeout(userPreferences.networkTimeout);
     }
@@ -60,9 +61,14 @@ Future getData(bool useEtag) async {
             for (var j = 0;
                 j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
-              Geocode tempGeocode =
-              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
-                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
+              Geocode tempGeocode = Geocode(
+                  geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["valueName"],
+                  geocodeNumber: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["value"],
+                  latitude: "-1",
+                  longitude: "-1",
+                  PLZ: "-1");
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -131,6 +137,7 @@ Future getData(bool useEtag) async {
         Uri.parse('https://warnung.bund.de/bbk.katwarn/warnmeldungen.json');
     if (useEtag) {
       _response = await get(urlKatwarn, headers: {'If-None-Match': appState.katwarnETag}).timeout(userPreferences.networkTimeout);
+
     } else {
       _response = await get(urlKatwarn).timeout(userPreferences.networkTimeout);
     }
@@ -156,9 +163,14 @@ Future getData(bool useEtag) async {
             for (var j = 0;
                 j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
-              Geocode tempGeocode =
-                  Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
-                      geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
+              Geocode tempGeocode = Geocode(
+                  geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["valueName"],
+                  geocodeNumber: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["value"],
+                  latitude: "-1",
+                  longitude: "-1",
+                  PLZ: "-1");
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -254,9 +266,14 @@ Future getData(bool useEtag) async {
             for (var j = 0;
                 j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
-              Geocode tempGeocode =
-              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
-                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
+              Geocode tempGeocode = Geocode(
+                  geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["valueName"],
+                  geocodeNumber: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["value"],
+                  latitude: "-1",
+                  longitude: "-1",
+                  PLZ: "-1");
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -268,7 +285,7 @@ Future getData(bool useEtag) async {
             for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
               tempArea.areaDescription =
-              _data[i]["info"][0]["area"][s]["areaDesc"];
+                  _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -327,6 +344,7 @@ Future getData(bool useEtag) async {
 
     if (useEtag) {
       _response = await get(urlDWDwarnings, headers: {'If-None-Match': appState.dwdETag}).timeout(userPreferences.networkTimeout);
+
     } else {
       _response = await get(urlDWDwarnings).timeout(userPreferences.networkTimeout);
     }
@@ -354,9 +372,14 @@ Future getData(bool useEtag) async {
             for (var j = 0;
                 j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
-              Geocode tempGeocode =
-              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
-                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
+              Geocode tempGeocode = Geocode(
+                  geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["valueName"],
+                  geocodeNumber: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["value"],
+                  latitude: "-1",
+                  longitude: "-1",
+                  PLZ: "-1");
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -368,7 +391,7 @@ Future getData(bool useEtag) async {
             for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
               tempArea.areaDescription =
-              _data[i]["info"][0]["area"][s]["areaDesc"];
+                  _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -424,6 +447,7 @@ Future getData(bool useEtag) async {
         Uri.parse('https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
     if (useEtag) {
       _response = await get(urlLHPwarnings, headers: {'If-None-Match': appState.lhpETag}).timeout(userPreferences.networkTimeout);
+
     } else {
       _response = await get(urlLHPwarnings).timeout(userPreferences.networkTimeout);
     }
@@ -450,9 +474,14 @@ Future getData(bool useEtag) async {
             for (var j = 0;
                 j <= _data[i]["info"][0]["area"][s]["geocode"].length - 1;
                 j++) {
-              Geocode tempGeocode =
-              Geocode(geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]["valueName"],
-                  geocodeNumber:  _data[i]["info"][0]["area"][s]["geocode"][j]["value"]);
+              Geocode tempGeocode = Geocode(
+                  geocodeName: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["valueName"],
+                  geocodeNumber: _data[i]["info"][0]["area"][s]["geocode"][j]
+                      ["value"],
+                  latitude: "-1",
+                  longitude: "-1",
+                  PLZ: "-1");
               tempGeocodeList.add(tempGeocode);
             }
             return tempGeocodeList;
@@ -464,7 +493,7 @@ Future getData(bool useEtag) async {
             for (var s = 0; s <= _data[i]["info"][0]["area"].length - 1; s++) {
               Area tempArea = Area(areaDesc: "", geocodeList: []); //init clear
               tempArea.areaDescription =
-              _data[i]["info"][0]["area"][s]["areaDesc"];
+                  _data[i]["info"][0]["area"][s]["areaDesc"];
               tempArea.geocodeList = generateGeoCodeList(i, s);
               tempAreaList.add(tempArea);
             }
@@ -516,7 +545,8 @@ Future getData(bool useEtag) async {
     }
 
     allWarnMessageList.clear(); //clear List
-    allWarnMessageList = _tempWarnMessageList; // transfer temp List in real list
+    allWarnMessageList =
+        _tempWarnMessageList; // transfer temp List in real list
     appState.dataFetchStatusOldAPI = DataFetchStatus.success;
 
     if (userPreferences.activateAlertSwiss) {

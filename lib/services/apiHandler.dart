@@ -1,18 +1,12 @@
-import 'dart:convert';
 import 'package:foss_warn/main.dart';
 
-import '../class/class_AlertSwissPlace.dart';
 import '../class/class_NinaPlace.dart';
 import '../class/class_WarnMessage.dart';
-import '../class/class_Area.dart';
-import '../class/class_Geocode.dart';
 import '../class/abstract_Place.dart';
 import 'alertSwiss.dart';
 import 'listHandler.dart';
 import 'sendStatusNotification.dart';
 import 'saveAndLoadSharedPreferences.dart';
-
-import 'package:http/http.dart';
 
 /// call the nina api and load for myPlaces the warnings
 Future<void> callAPI() async {
@@ -20,8 +14,6 @@ Future<void> callAPI() async {
   String _error = "";
   List<WarnMessage> _tempWarnMessageList = [];
   _tempWarnMessageList.clear();
-  String _baseUrl = "https://warnung.bund.de/api31";
-  dynamic _data; //var for response _data
   // String geocode = "071110000000"; // just for testing
 
   print("call API");
@@ -30,15 +22,12 @@ Future<void> callAPI() async {
   await loadMyPlacesList();
 
   for (Place place in myPlaceList) {
-    // if the place is for swiss skip this place
-    // print(place.name);
-    if (place is AlertSwissPlace) {
-      if (!userPreferences.activateAlertSwiss) {
-        _successfullyFetched = false;
-        _error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
-            " aber AlertSwiss nicht als Quelle aktiviert \n";
-      }
-      continue;
+    String SingleError;
+    bool status;
+    // call function to load warnings from the API
+    (SingleError, status) = await place.callAPIAndGetWarnings();
+    if (SingleError != "") {
+      _error += SingleError;
     }
     // it is a nina place
     else if (place is NinaPlace) {
@@ -80,8 +69,17 @@ Future<void> callAPI() async {
         userPreferences.areWarningsFromCache = true;
         _error += e.toString() + " \n";
       }
+
+    if (!status) {
+      _successfullyFetched = false;
+
     }
   }
+  // if enabled call warning for current place
+  if (userPreferences.warningsForCurrentLocation) {
+    userPreferences.currentPlace?.callAPIAndGetWarnings();
+  }
+
   // update status notification if the user wants
   if (userPreferences.showStatusNotification) {
     if (_error != "") {
@@ -98,6 +96,7 @@ Future<void> callAPI() async {
 
   print("finished calling API");
 }
+
 
 /// generate WarnMessage object
 WarnMessage? createWarning(

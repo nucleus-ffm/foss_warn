@@ -39,10 +39,17 @@ void main() async {
     AlarmManager.callback();
     AlarmManager().initialize();
     AlarmManager().registerBackgroundTask();
+    
     print("Background notification enabled");
+
+    if(userPreferences.warningsForCurrentLocation) {
+      AlarmManager().registerLocationBackgroundTask();
+    }
+
   } else {
     print("Background notification disabled due to user setting");
   }
+
 
   runApp(
     // rebuild widget on external data changes

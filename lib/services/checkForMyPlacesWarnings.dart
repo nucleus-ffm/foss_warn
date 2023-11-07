@@ -1,3 +1,4 @@
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/apiHandler.dart';
 import '../class/class_NotificationService.dart';
 import '../class/abstract_Place.dart';
@@ -37,6 +38,12 @@ Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManually) async {
 
   for (Place myPlace in myPlaceList) {
     myPlace.sendNotificationForWarnings();
+  }
+  // if enabled send notification for current place
+  if (userPreferences.warningsForCurrentLocation) {
+    if (userPreferences.currentPlace != null) {
+      userPreferences.currentPlace!.sendNotificationForWarnings();
+    }
   }
   return _returnValue; //@todo remove return value?
 }

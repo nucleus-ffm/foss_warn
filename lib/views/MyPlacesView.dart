@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/main.dart';
 
 import 'package:foss_warn/services/apiHandler.dart';
 
 import 'package:provider/provider.dart';
 
+import '../widgets/MyCurrentLocationPlaceWidget.dart';
 import '../widgets/MyPlaceWidget.dart';
 
 import '../services/updateProvider.dart';
@@ -96,6 +98,11 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                     child: Padding(
                         padding: const EdgeInsets.only(bottom: 65),
                         child: Column(children: [
+                          userPreferences.warningsForCurrentLocation
+                              ? Container(
+                                  child: MyCurrentLocationPlaceWidget(),
+                                )
+                              : SizedBox(),
                           Container(
                             child: ConnectionError(),
                           ),
@@ -105,9 +112,20 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                         ])),
                   )
                 : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment:
+                        userPreferences.warningsForCurrentLocation
+                            ? MainAxisAlignment.start
+                            : MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      userPreferences.warningsForCurrentLocation
+                          ? Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: Container(
+                                child: MyCurrentLocationPlaceWidget(),
+                              ),
+                            )
+                          : SizedBox(),
                       Text(
                         AppLocalizations.of(context)!.my_place_no_place_added,
                         style: TextStyle(

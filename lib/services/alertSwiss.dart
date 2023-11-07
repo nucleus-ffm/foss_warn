@@ -86,7 +86,11 @@ WarnMessage? createWarning(var data) {
           geocodeList: [
             Geocode(
                 geocodeName: data[i]["regions"][0]["region"],
-                geocodeNumber: "-1"),
+                geocodeNumber: "-1",
+                latitude: "-1", // placeholder
+                longitude: "-1",  // placeholder
+                PLZ: "-1"  // placeholder
+            ),
           ],
         ),
       );

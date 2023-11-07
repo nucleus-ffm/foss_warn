@@ -65,7 +65,7 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
       id: 1,
       title: "FOSS Warn ist aktiv",
       body:
-          "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr",
+          "letztes Update: $nowFormattedDate Uhr - nächstes Update: $nextUpdateTimeFormattedDate Uhr - aktueller Ort: ${userPreferences.currentPlace?.name}",
       payload: "statusanzeige",
     );
   } else {

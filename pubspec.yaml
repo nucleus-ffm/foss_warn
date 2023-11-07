@@ -4,7 +4,8 @@ publish_to: 'none'
 version: 0.6.0+28
 
 environment:
-  sdk: ">=2.17.0 <3.13.3"
+  sdk: ">=3.0.0 <3.13.3"
+
 
 dependencies:
   flutter:
@@ -21,6 +22,8 @@ dependencies:
   share_plus: ^7.2.1
   android_alarm_manager_plus: ^3.0.3
   intl: ^0.18.1 # for localizations
+  geolocator: ^10.0.1
+
 
   # flutter_launcher_icons: ^0.13.1
 

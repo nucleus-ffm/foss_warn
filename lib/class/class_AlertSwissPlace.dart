@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../main.dart';
 import 'abstract_Place.dart';
 import 'class_WarnMessage.dart';
 
@@ -42,4 +43,18 @@ class AlertSwissPlace extends Place {
   @override
   Map<String, dynamic> toJson() =>
       {'name': name, 'shortName': shortName, 'warnings': jsonEncode(warnings), 'eTag': eTag};
+
+
+  @override
+  Future<(String, bool)> callAPIAndGetWarnings() async {
+    String _error = "";
+    bool _successfullyFetched = true;
+    if (!userPreferences.activateAlertSwiss) {
+      _successfullyFetched = false;
+      _error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
+          " aber AlertSwiss nicht als Quelle aktiviert \n";
+    }
+    // we don't call the API here because we just can get the warnings as bundle
+   return (_error, _successfullyFetched);
+  }
 }
