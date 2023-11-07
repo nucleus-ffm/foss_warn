@@ -13,7 +13,7 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title:
-          Text(AppLocalizations.of(context).explanation_warning_level_headline),
+          Text(AppLocalizations.of(context)!.explanation_warning_level_headline),
       content: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,30 +25,30 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
                 children: <TextSpan>[
                   TextSpan(
                       text: AppLocalizations.of(context)
-                              .explanation_warning_level_attention +
+                              !.explanation_warning_level_attention +
                           ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_warning_level_attention_text),
+                          !.explanation_warning_level_attention_text),
                   TextSpan(text: '\n\n'),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                              .explanation_warning_level_update +
+                              !.explanation_warning_level_update +
                           ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_warning_level_update_text),
+                          !.explanation_warning_level_update_text),
                   TextSpan(text: '\n\n'),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                              .explanation_warning_level_all_clear +
+                              !.explanation_warning_level_all_clear +
                           ": ",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: AppLocalizations.of(context)
-                          .explanation_warning_level_all_clear_text),
+                          !.explanation_warning_level_all_clear_text),
                 ],
               ),
             ),
@@ -60,7 +60,7 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context).main_dialog_close,
+          child: Text(AppLocalizations.of(context)!.main_dialog_close,
               style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
         ),
       ],

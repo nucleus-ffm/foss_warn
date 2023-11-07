@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:provider/provider.dart';
 
 import '../main.dart';
@@ -9,28 +10,16 @@ import 'class_WarnMessage.dart';
 
 abstract class Place {
   final String _name;
-  int _countWarnings = 0;
   List<WarnMessage> _warnings = [];
-  String _eTag = "";
-
-  String get eTag => _eTag;
-
-  set eTag(String newETag) {
-    _eTag = newETag;
-  }
+  String eTag = "";
 
   Place({required String name, required List<WarnMessage> warnings, required String eTag}) : _warnings = warnings, _name = name {
-    _countWarnings = this._warnings.length;
-    _eTag = eTag;
+    eTag = eTag;
   }
 
   String get name => _name;
-  int get countWarnings=> _countWarnings;
+  int get countWarnings=> this.warnings.length;
   List<WarnMessage> get warnings => _warnings;
-
-  // control the number of warnings
-  void incrementNumberOfWarnings() => _countWarnings++;
-  void decrementNumberOfWarnings() => _countWarnings--;
 
   // control the list for warnings
   void addWarningToList(WarnMessage warnMessage) => _warnings.add(warnMessage);
@@ -66,6 +55,7 @@ abstract class Place {
   Future<void> sendNotificationForWarnings() async {
     for (WarnMessage myWarnMessage in _warnings) {
       print(myWarnMessage.headline);
+      print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
       print("should notify? :" +
           ((!myWarnMessage.read && !myWarnMessage.notified) &&
                   _checkIfEventShouldBeNotified(myWarnMessage.event))
@@ -111,6 +101,7 @@ abstract class Place {
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
+    saveMyPlacesList();
   }
 
   /// return [true] or false if the warning should be irgnored or not
@@ -125,6 +116,7 @@ abstract class Place {
       return true;
     }
   }
+
   Map<String, dynamic> toJson();
   Future<(String, bool)> callAPIAndGetWarnings();
 }

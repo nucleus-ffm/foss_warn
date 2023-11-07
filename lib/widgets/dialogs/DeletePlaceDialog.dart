@@ -16,12 +16,12 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).delete_place_headline),
+      title: Text(AppLocalizations.of(context)!.delete_place_headline),
       content: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(AppLocalizations.of(context).delete_place_confirmation),
+            Text(AppLocalizations.of(context)!.delete_place_confirmation),
           ],
         ),
       ),
@@ -31,7 +31,7 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context).delete_place_cancel,
+            AppLocalizations.of(context)!.delete_place_cancel,
             style: TextStyle(color: Colors.red),
           ),
         ),
@@ -44,7 +44,7 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            AppLocalizations.of(context).delete_place_delete,
+            AppLocalizations.of(context)!.delete_place_delete,
             style: TextStyle(color: Colors.green),
           ),
         )

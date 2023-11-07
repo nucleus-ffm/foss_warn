@@ -33,10 +33,10 @@ Future getData(bool useEtag) async {
         Uri.parse('https://warnung.bund.de/bbk.mowas/gefahrendurchsagen.json');
 
     if (useEtag) {
-      _response =
-          await get(urlMowas, headers: {'If-None-Match': appState.mowasETag});
+      _response = await get(urlMowas, headers: {'If-None-Match': appState.mowasETag}).timeout(userPreferences.networkTimeout);
+
     } else {
-      _response = await get(urlMowas);
+      _response = await get(urlMowas).timeout(userPreferences.networkTimeout);
     }
 
     //print("Response status: " + response.statusCode.toString());
@@ -136,12 +136,11 @@ Future getData(bool useEtag) async {
     var urlKatwarn =
         Uri.parse('https://warnung.bund.de/bbk.katwarn/warnmeldungen.json');
     if (useEtag) {
-      _response = await get(urlKatwarn,
-          headers: {'If-None-Match': appState.katwarnETag});
+      _response = await get(urlKatwarn, headers: {'If-None-Match': appState.katwarnETag}).timeout(userPreferences.networkTimeout);
+
     } else {
-      _response = await get(urlKatwarn);
+      _response = await get(urlKatwarn).timeout(userPreferences.networkTimeout);
     }
-    _response = await get(urlKatwarn);
     //print("Response status: " + response.statusCode.toString());
     if (_response.statusCode == 200) {
       _data = jsonDecode(utf8.decode(_response.bodyBytes));
@@ -238,7 +237,11 @@ Future getData(bool useEtag) async {
     print("get from Biwapp");
     var urlBiwapp =
         Uri.parse('https://warnung.bund.de/bbk.biwapp/warnmeldungen.json');
-    _response = await get(urlBiwapp);
+    if (useEtag) {
+      _response = await get(urlBiwapp, headers: {'If-None-Match': appState.biwappETag}).timeout(userPreferences.networkTimeout);
+    } else {
+      _response = await get(urlBiwapp).timeout(userPreferences.networkTimeout);
+    }
     //print("Response status: " + response.statusCode.toString());
     if (_response.statusCode == 200) {
       _data = jsonDecode(utf8.decode(_response.bodyBytes));
@@ -340,10 +343,10 @@ Future getData(bool useEtag) async {
         'https://warnung.bund.de/bbk.dwd/unwetter.json'); //https://s3.eu-central-1.amazonaws.com/app-prod-static.warnwetter.de/v16/gemeinde_warnings.json
 
     if (useEtag) {
-      _response = await get(urlDWDwarnings,
-          headers: {'If-None-Match': appState.dwdETag});
+      _response = await get(urlDWDwarnings, headers: {'If-None-Match': appState.dwdETag}).timeout(userPreferences.networkTimeout);
+
     } else {
-      _response = await get(urlDWDwarnings);
+      _response = await get(urlDWDwarnings).timeout(userPreferences.networkTimeout);
     }
 
     //print("Response status: " + response.statusCode.toString());
@@ -443,10 +446,10 @@ Future getData(bool useEtag) async {
     var urlLHPwarnings =
         Uri.parse('https://warnung.bund.de/bbk.lhp/hochwassermeldungen.json');
     if (useEtag) {
-      _response = await get(urlLHPwarnings,
-          headers: {'If-None-Match': appState.lhpETag});
+      _response = await get(urlLHPwarnings, headers: {'If-None-Match': appState.lhpETag}).timeout(userPreferences.networkTimeout);
+
     } else {
-      _response = await get(urlLHPwarnings);
+      _response = await get(urlLHPwarnings).timeout(userPreferences.networkTimeout);
     }
     //print("Response status: " + response.statusCode.toString());
     if (_response.statusCode == 200) {

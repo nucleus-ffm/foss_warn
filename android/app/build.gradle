@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "de.nucleus.foss_warn"
-    compileSdkVersion 33
+    compileSdk 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -81,6 +81,10 @@ android {
             }
             minifyEnabled true
             shrinkResources true
+            proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+            )
         }
     }
 }

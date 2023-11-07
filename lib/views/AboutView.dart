@@ -14,7 +14,7 @@ class AboutView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).about_headline),
+        title: Text(AppLocalizations.of(context)!.about_headline),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
@@ -44,7 +44,7 @@ class AboutView extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
             child: Center(
               child: Text(
-                AppLocalizations.of(context).about_summery,
+                AppLocalizations.of(context)!.about_summery,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -53,10 +53,10 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.source_outlined),
             title: Text(
-              AppLocalizations.of(context).about_source,
+              AppLocalizations.of(context)!.about_source,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(AppLocalizations.of(context).about_source_subtitle,
+            subtitle: Text(AppLocalizations.of(context)!.about_source_subtitle,
                 style: Theme.of(context).textTheme.bodyLarge),
             onTap: () {
               showDialog(
@@ -68,7 +68,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.open_in_browser_outlined),
             title: Text(
-              (AppLocalizations.of(context).about_official_source),
+              (AppLocalizations.of(context)!.about_official_source),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text("https://warnung.bund.de/meldungen",
@@ -79,7 +79,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.perm_identity_outlined),
             title: Text(
-              (AppLocalizations.of(context).about_author),
+              (AppLocalizations.of(context)!.about_author),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -91,7 +91,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.mail_outline),
             title: Text(
-              (AppLocalizations.of(context).about_contact),
+              (AppLocalizations.of(context)!.about_contact),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -103,11 +103,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.account_balance_outlined),
             title: Text(
-              (AppLocalizations.of(context).about_imprint),
+              (AppLocalizations.of(context)!.about_imprint),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              AppLocalizations.of(context).about_imprint_subtitle,
+              AppLocalizations.of(context)!.about_imprint_subtitle,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
@@ -120,11 +120,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.privacy_tip_outlined),
             title: Text(
-              AppLocalizations.of(context).about_privacy,
+              AppLocalizations.of(context)!.about_privacy,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              AppLocalizations.of(context).about_privacy_subtitle,
+              AppLocalizations.of(context)!.about_privacy_subtitle,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
@@ -137,11 +137,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.article_outlined),
             title: Text(
-              AppLocalizations.of(context).about_disclaimer,
+              AppLocalizations.of(context)!.about_disclaimer,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              AppLocalizations.of(context).about_disclaimer_subtitle,
+              AppLocalizations.of(context)!.about_disclaimer_subtitle,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
@@ -154,7 +154,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.star_outline),
             title: Text(
-              AppLocalizations.of(context).about_version,
+              AppLocalizations.of(context)!.about_version,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -171,7 +171,7 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.info_outline),
             title: Text(
-              AppLocalizations.of(context).about_licence,
+              AppLocalizations.of(context)!.about_licence,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
@@ -182,11 +182,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.business_center_outlined),
             title: Text(
-              AppLocalizations.of(context).about_other_license,
+              AppLocalizations.of(context)!.about_other_license,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              AppLocalizations.of(context).about_other_license_subtitle,
+              AppLocalizations.of(context)!.about_other_license_subtitle,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () {
@@ -199,11 +199,11 @@ class AboutView extends StatelessWidget {
           ListTile(
               leading: Icon(Icons.group_outlined),
               title: Text(
-                AppLocalizations.of(context).about_contributors,
+                AppLocalizations.of(context)!.about_contributors,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               subtitle: Text(
-                AppLocalizations.of(context).about_contributors_subtitle,
+                AppLocalizations.of(context)!.about_contributors_subtitle,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () => launchUrlInBrowser(
@@ -211,11 +211,11 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.code_outlined),
             title: Text(
-              AppLocalizations.of(context).about_sourcecode,
+              AppLocalizations.of(context)!.about_sourcecode,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              AppLocalizations.of(context).about_sourcecode_subtitle,
+              AppLocalizations.of(context)!.about_sourcecode_subtitle,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             onTap: () =>

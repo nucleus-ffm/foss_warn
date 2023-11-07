@@ -27,14 +27,14 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final TextEditingController frequenzTextController =
+  final TextEditingController frequencyController =
       new TextEditingController();
   final double _maxValueFrequencyOfAPICall = 999;
   final _platform = const MethodChannel("flutter.native/helper");
 
   @override
   void initState() {
-    frequenzTextController.text = userPreferences.frequencyOfAPICall.toInt().toString();
+    frequencyController.text = userPreferences.frequencyOfAPICall.toInt().toString();
 
     return super.initState();
   }
@@ -44,20 +44,20 @@ class _SettingsState extends State<Settings> {
     const double indentOfCategoriesTitles = 15;
 
     final Map<int, String> startViewLabels = {
-      0:  AppLocalizations.of(context).settings_start_view_all_warnings,
-      1:  AppLocalizations.of(context).settings_start_view_only_my_places,
+      0:  AppLocalizations.of(context)!.settings_start_view_all_warnings,
+      1:  AppLocalizations.of(context)!.settings_start_view_only_my_places,
     };
 
 
     final Map<ThemeMode, String> themeLabels = {
-      ThemeMode.system: AppLocalizations.of(context).settings_color_schema_auto,
-      ThemeMode.dark: AppLocalizations.of(context).settings_color_schema_dark,
-      ThemeMode.light: AppLocalizations.of(context).settings_color_schema_light
+      ThemeMode.system: AppLocalizations.of(context)!.settings_color_schema_auto,
+      ThemeMode.dark: AppLocalizations.of(context)!.settings_color_schema_dark,
+      ThemeMode.light: AppLocalizations.of(context)!.settings_color_schema_light
     };
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).settings),
+        title: Text(AppLocalizations.of(context)!.settings),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
@@ -72,7 +72,7 @@ class _SettingsState extends State<Settings> {
                   left: indentOfCategoriesTitles,
                   top: indentOfCategoriesTitles),
               child: Text(
-                AppLocalizations.of(context).settings_notification,
+                AppLocalizations.of(context)!.settings_notification,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -81,12 +81,12 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)
-                  .settings_android_notification_settings),
+                  !.settings_android_notification_settings),
               onTap: () => _openNotificationSettings(),
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)
-                  .settings_app_notification_settings),
+                  !.settings_app_notification_settings),
               onTap: () {
                 Navigator.push(
                   context,
@@ -97,9 +97,9 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
                 title: Text(AppLocalizations.of(context)
-                    .settings_show_status_notification_title),
+                    !.settings_show_status_notification_title),
                 subtitle: Text(AppLocalizations.of(context)
-                    .settings_show_status_notification_subtitle),
+                    !.settings_show_status_notification_subtitle),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: userPreferences.showStatusNotification,
@@ -114,7 +114,7 @@ class _SettingsState extends State<Settings> {
                     })),
             ListTile(
               title: Text(
-                  AppLocalizations.of(context).settings_background_service),
+                  AppLocalizations.of(context)!.settings_background_service),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: userPreferences.shouldNotifyGeneral,
@@ -148,7 +148,7 @@ class _SettingsState extends State<Settings> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(AppLocalizations.of(context)
-                            .settings_frequent_of_background_update),
+                            !.settings_frequent_of_background_update),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,12 +171,20 @@ class _SettingsState extends State<Settings> {
                                             double.parse(value);
                                       });
                                     } else {
-                                      frequenzTextController.text =
+                                      frequencyController.text =
                                           userPreferences.frequencyOfAPICall.round().toString();
                                     }
                                   }
                                 },
+                                onTapOutside: (e) {
+                                  FocusScope.of(context).unfocus();
+                                  saveSettings();
+                                  AlarmManager().cancelBackgroundTask();
+                                  AlarmManager().registerBackgroundTask();
+                                  callAPI(); // call api and update notification
+                                },
                                 onEditingComplete: () {
+                                  FocusScope.of(context).unfocus();
                                   saveSettings();
                                   AlarmManager().cancelBackgroundTask();
                                   AlarmManager().registerBackgroundTask();
@@ -196,7 +204,7 @@ class _SettingsState extends State<Settings> {
                                 onChanged: (value) {
                                   setState(() {
                                     userPreferences.frequencyOfAPICall = value.roundToDouble();
-                                    frequenzTextController.text =
+                                    frequencyController.text =
                                         userPreferences.frequencyOfAPICall.toInt().toString();
                                   });
                                 },
@@ -224,7 +232,7 @@ class _SettingsState extends State<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                AppLocalizations.of(context).settings_display,
+                AppLocalizations.of(context)!.settings_display,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -232,7 +240,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_start_view),
+              title: Text(AppLocalizations.of(context)!.settings_start_view),
               trailing: DropdownButton<int>(
                 value: userPreferences.startScreen,
                 icon: const Icon(Icons.arrow_downward),
@@ -262,7 +270,7 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
                 title: Text(AppLocalizations.of(context)
-                    .settings_show_extended_metadata),
+                    !.settings_show_extended_metadata),
                 trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: userPreferences.showExtendedMetaData,
@@ -273,7 +281,7 @@ class _SettingsState extends State<Settings> {
                       saveSettings();
                     })),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_color_schema),
+              title: Text(AppLocalizations.of(context)!.settings_color_schema),
               trailing: DropdownButton<ThemeMode>(
                 value: userPreferences.selectedTheme,
                 icon: const Icon(Icons.arrow_downward),
@@ -306,9 +314,9 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               title: Text(AppLocalizations.of(context)
-                  .settings_display_all_warnings_title),
+                  !.settings_display_all_warnings_title),
               subtitle: Text(AppLocalizations.of(context)
-                  .settings_display_all_warnings_subtitle),
+                  !.settings_display_all_warnings_subtitle),
               trailing: Switch(
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: userPreferences.showAllWarnings,
@@ -322,7 +330,7 @@ class _SettingsState extends State<Settings> {
                   }),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_font_size),
+              title: Text(AppLocalizations.of(context)!.settings_font_size),
               onTap: () {
                 showDialog(
                   context: context,
@@ -333,7 +341,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_sorting),
+              title: Text(AppLocalizations.of(context)!.settings_sorting),
               onTap: () {
                 showDialog(
                   context: context,
@@ -351,7 +359,7 @@ class _SettingsState extends State<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                AppLocalizations.of(context).settings_extended_settings,
+                AppLocalizations.of(context)!.settings_extended_settings,
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -359,9 +367,9 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context).settings_alertSwiss),
+              title: Text(AppLocalizations.of(context)!.settings_alertSwiss),
               subtitle: Text(
-                  (AppLocalizations.of(context).settings_alertSwiss_subtitle)),
+                  (AppLocalizations.of(context)!.settings_alertSwiss_subtitle)),
               trailing: Switch(
                 value: userPreferences.activateAlertSwiss,
                 onChanged: (value) {
@@ -375,7 +383,7 @@ class _SettingsState extends State<Settings> {
             ),
             ListTile(
               title: Text(
-                  (AppLocalizations.of(context).settings_show_welcome_dialog)),
+                  (AppLocalizations.of(context)!.settings_show_welcome_dialog)),
               onTap: () {
                 Navigator.push(
                   context,
@@ -386,7 +394,7 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-              title: Text((AppLocalizations.of(context).settings_dev_settings)),
+              title: Text((AppLocalizations.of(context)!.settings_dev_settings)),
               onTap: () {
                 Navigator.push(
                   context,

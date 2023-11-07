@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/class/class_userPreferences.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
+import 'package:foss_warn/services/legacyHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/AboutView.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,6 @@ import 'class/class_NotificationService.dart';
 
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
-import 'services/sortWarnings.dart';
 
 import 'widgets/SourceStatusWidget.dart';
 import 'widgets/dialogs/SortByDialog.dart';
@@ -31,19 +31,21 @@ final UserPreferences userPreferences = UserPreferences();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await legacyHandler();
   await NotificationService().init();
-  // TODO: run Legacy handler, use improved shared preferences types and names
-
   await loadSettings();
 
   if (userPreferences.shouldNotifyGeneral) {
-    print("Background notification enabled");
-    // AlarmManager().cancelBackgroundTask(); // just for debug
+    AlarmManager.callback();
     AlarmManager().initialize();
     AlarmManager().registerBackgroundTask();
+    
+    print("Background notification enabled");
+
     if(userPreferences.warningsForCurrentLocation) {
       AlarmManager().registerLocationBackgroundTask();
     }
+
   } else {
     print("Background notification disabled due to user setting");
   }
@@ -107,6 +109,8 @@ class _HomeViewState extends State<HomeView> {
       print("call geocode handler");
       geocodeHandler();
     }
+    //display information if the app had to be resetted
+    showMigrationDialog(context);
   }
 
   void listenNotifications() {
@@ -151,7 +155,6 @@ class _HomeViewState extends State<HomeView> {
                     return SortByDialog();
                   },
                 );
-                sortWarnings();
                 final updater = Provider.of<Update>(context, listen: false);
                 updater.updateReadStatusInList();
               },
@@ -163,7 +166,7 @@ class _HomeViewState extends State<HomeView> {
                 }
                 final snackBar = SnackBar(
                   content: Text(
-                    AppLocalizations.of(context)
+                    AppLocalizations.of(context)!
                         .main_app_bar_tooltip_mark_all_warnings_as_read,
                     style: TextStyle(color: Colors.black),
                   ),
@@ -175,7 +178,7 @@ class _HomeViewState extends State<HomeView> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: Icon(Icons.mark_chat_read),
-              tooltip: AppLocalizations.of(context)
+              tooltip: AppLocalizations.of(context)!
                   .main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
             PopupMenuButton(
@@ -198,12 +201,12 @@ class _HomeViewState extends State<HomeView> {
                 },
                 itemBuilder: (context) => <PopupMenuEntry>[
                       PopupMenuItem(
-                          child: Text(AppLocalizations.of(context)
+                          child: Text(AppLocalizations.of(context)!
                               .main_dot_menu_settings),
                           value: 0),
                       PopupMenuItem(
-                          child: Text(
-                              AppLocalizations.of(context).main_dot_menu_about),
+                          child: Text(AppLocalizations.of(context)!
+                              .main_dot_menu_about),
                           value: 1)
                     ])
           ],
@@ -212,11 +215,11 @@ class _HomeViewState extends State<HomeView> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.add_alert),
-              label: AppLocalizations.of(context).main_nav_bar_all_warnings,
+              label: AppLocalizations.of(context)!.main_nav_bar_all_warnings,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.place),
-              label: AppLocalizations.of(context).main_nav_bar_my_places,
+              label: AppLocalizations.of(context)!.main_nav_bar_my_places,
             ),
           ],
           currentIndex: _selectedIndex,

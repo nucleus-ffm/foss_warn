@@ -22,7 +22,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).add_new_place),
+        title: Text(AppLocalizations.of(context)!.add_new_place),
         backgroundColor: Theme.of(context).colorScheme.secondary,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
@@ -36,7 +36,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
               autofocus: true,
               decoration: new InputDecoration(
                 labelText:
-                    AppLocalizations.of(context).add_new_place_place_name,
+                    AppLocalizations.of(context)!.add_new_place_place_name,
                 labelStyle:
                     TextStyle(color: Theme.of(context).colorScheme.secondary),
                 enabledBorder: UnderlineInputBorder(

@@ -58,28 +58,28 @@ String translateWarningCategory(String category, BuildContext context) {
     case "Health":
     case "Contaminated drinking water":
     case "Pollution de l’eau potable":
-      return AppLocalizations.of(context).explanation_health;
+      return AppLocalizations.of(context)!.explanation_health;
     case "Infra":
-      return AppLocalizations.of(context).explanation_infrastructure;
+      return AppLocalizations.of(context)!.explanation_infrastructure;
     case "Fire":
     case "Forest fire":
     case "Safety precautions Forest fires":
-      return AppLocalizations.of(context).explanation_fire;
+      return AppLocalizations.of(context)!.explanation_fire;
     case "CBRNE":
-      return AppLocalizations.of(context).explanation_CBRNE;
+      return AppLocalizations.of(context)!.explanation_CBRNE;
     case "Other":
     case "Other incident":
-      return AppLocalizations.of(context).explanation_other;
+      return AppLocalizations.of(context)!.explanation_other;
     case "Safety":
-      return AppLocalizations.of(context).explanation_safety;
+      return AppLocalizations.of(context)!.explanation_safety;
     case "Security":
-      return AppLocalizations.of(context).explanation_safety;
+      return AppLocalizations.of(context)!.explanation_safety;
     case "Met":
-      return AppLocalizations.of(context).explanation_weather;
+      return AppLocalizations.of(context)!.explanation_weather;
     case "Env":
     case "Drought":
     case "Geo":
-      return AppLocalizations.of(context).explanation_environment;
+      return AppLocalizations.of(context)!.explanation_environment;
     default:
       return category;
   }
@@ -89,11 +89,11 @@ String translateWarningCategory(String category, BuildContext context) {
 String translateWarningType(String type, BuildContext context) {
   switch (type) {
     case "Update":
-      return AppLocalizations.of(context).explanation_warning_level_update;
+      return AppLocalizations.of(context)!.explanation_warning_level_update;
     case "Cancel":
-      return AppLocalizations.of(context).explanation_warning_level_all_clear;
+      return AppLocalizations.of(context)!.explanation_warning_level_all_clear;
     case "Alert":
-      return AppLocalizations.of(context).explanation_warning_level_attention;
+      return AppLocalizations.of(context)!.explanation_warning_level_attention;
     default:
       return type;
   }
@@ -141,6 +141,8 @@ String translateWarningSeverity(String severity) {
       return "Extrem";
     case "severe":
       return "Schwer";
+    case "other":
+      return "Sonstiges";
     default:
       return severity;
   }
