@@ -27,3 +27,20 @@
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 ##---------------End: proguard configuration for Gson  ----------
+
+
+## ---------- rules for androidx.window:window ------------ ##
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn androidx.window.extensions.WindowExtensions
+-dontwarn androidx.window.extensions.WindowExtensionsProvider
+-dontwarn androidx.window.extensions.layout.DisplayFeature
+-dontwarn androidx.window.extensions.layout.FoldingFeature
+-dontwarn androidx.window.extensions.layout.WindowLayoutComponent
+-dontwarn androidx.window.extensions.layout.WindowLayoutInfo
+-dontwarn androidx.window.sidecar.SidecarDeviceState
+-dontwarn androidx.window.sidecar.SidecarDisplayFeature
+-dontwarn androidx.window.sidecar.SidecarInterface$SidecarCallback
+-dontwarn androidx.window.sidecar.SidecarInterface
+-dontwarn androidx.window.sidecar.SidecarProvider
+-dontwarn androidx.window.sidecar.SidecarWindowLayoutInfo
+## --------- End: rules for androidx.window:window ------- ##
