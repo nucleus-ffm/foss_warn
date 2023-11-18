@@ -102,12 +102,6 @@ dependencies {
     implementation "androidx.window:window:1.0.0"
     // For Java-friendly APIs to register and unregister callbacks
     implementation "androidx.window:window-java:1.0.0"
-    // For RxJava2 integration
-    implementation "androidx.window:window-rxjava2:1.0.0"
-    // For RxJava3 integration
-    implementation "androidx.window:window-rxjava3:1.0.0"
-    // For testing
-    implementation "androidx.window:window-testing:1.0.0"
     // for flutter_local_notification plugin
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
 
