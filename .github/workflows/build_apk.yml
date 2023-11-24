@@ -26,7 +26,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-java@v2
       with:
-        java-version: {{env.JAVA_VERSION}}
+        java-version: ${{env.JAVA_VERSION}}
         distribution: adopt
 
     # Creating the key.properties file
@@ -39,8 +39,8 @@ jobs:
     
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: {{env.FLUTTER_VERSION}}
-        channel: {{env.FLUTTER_CHANNEL}}
+        flutter-version: ${{env.FLUTTER_VERSION}}
+        channel: ${{env.FLUTTER_CHANNEL}}
     - run: flutter --version
     - run: flutter pub get
     - run: flutter gen-l10n # generate translation strings
