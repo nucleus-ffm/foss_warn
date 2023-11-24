@@ -15,9 +15,9 @@ dependencies:
   flutter_local_notifications: ^16.1.0
   shared_preferences: ^2.2.2
   shared_preferences_android: ^2.2.1
-  provider: ^6.0.5
+  provider: ^6.1.1
   rxdart: ^0.27.7
-  url_launcher: ^6.1.14
+  url_launcher: ^6.2.1
   share_plus: ^7.2.1
   android_alarm_manager_plus: ^3.0.3
   intl: ^0.18.1 # for localizations
