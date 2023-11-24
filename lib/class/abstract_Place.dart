@@ -89,6 +89,7 @@ abstract class Place {
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
+    saveMyPlacesList();
   }
 
   /// set the read and notified status from all warnings to false
