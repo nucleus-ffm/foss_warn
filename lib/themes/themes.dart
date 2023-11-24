@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 // original theme
 final greenTheme = ThemeData(
+  useMaterial3: false,
   primarySwatch: Colors.blue,
   brightness: Brightness.light,
   colorScheme: ColorScheme.fromSwatch(
     accentColor: Colors.green[700],
     brightness: Brightness.light,
+    backgroundColor: Colors.white
   ),
   textTheme: TextTheme(
     displayLarge: TextStyle(
@@ -20,11 +22,13 @@ final greenTheme = ThemeData(
 
 // original green theme but dark
 final darkTheme = ThemeData(
+  useMaterial3: false,
   primarySwatch: Colors.blue,
   brightness: Brightness.dark,
   colorScheme: ColorScheme.fromSwatch(
     accentColor: Colors.green[700],
     brightness: Brightness.dark,
+    backgroundColor: Colors.grey[800]
   ),
   textTheme: TextTheme(
       displayLarge: TextStyle(
@@ -41,6 +45,7 @@ final orangeTheme = ThemeData(
   colorScheme: ColorScheme.fromSwatch(
     accentColor: Colors.orange[700],
     brightness: Brightness.light,
+    backgroundColor: Colors.white,
   ),
   textTheme: TextTheme(
       displayLarge: TextStyle(
