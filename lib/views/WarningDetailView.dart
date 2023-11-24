@@ -210,7 +210,8 @@ class _DetailScreenState extends State<DetailScreen> {
     setState(() {
       widget._warnMessage.read = true;
     });
-    saveMyPlacesList(); //@todo nötig?
+    // save places List to store new read state
+    saveMyPlacesList();
 
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];
