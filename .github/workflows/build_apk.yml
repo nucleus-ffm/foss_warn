@@ -5,8 +5,6 @@ name: build apk
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,7 +26,7 @@ jobs:
         flutter-version: "3.16.0"
         channel: 'stable'
     - run: flutter pub get
-    - run  flutter gen-l10n # generate translation strings
+    - run:  flutter gen-l10n # generate translation strings
     - run: flutter format --set-exit-if-changed .
     - run: flutter analyze .
     - run: flutter build apk
