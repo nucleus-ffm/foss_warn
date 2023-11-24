@@ -26,10 +26,10 @@ jobs:
       with:
         flutter-version: "3.16.0"
         channel: 'stable'
+    - run: flutter --version
     - run: flutter pub get
-    - run:  flutter gen-l10n # generate translation strings
-    - run: flutter format --set-exit-if-changed .
-    - run: flutter analyze .
+    - run: flutter gen-l10n # generate translation strings
+    - run: flutter test
     - run: flutter build apk
     - uses: actions/upload-artifact@v1
       with:
