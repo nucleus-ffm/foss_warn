@@ -35,7 +35,7 @@ jobs:
         echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
         echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
         echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
-        echo storeFile=\${{env.STOREFILE_PATH}}
+        echo storeFile=\${{env.STOREFILE_PATH}} >> ${{env.PROPERTIES_PATH}}
     # Decoding base64 key into a file
     - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
     
