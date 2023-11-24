@@ -22,6 +22,15 @@ jobs:
       with:
         java-version: '17.x'
         distribution: adopt
+
+    # Creating the key.properties file
+    - run: |
+        echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
+        echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
+        echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+    # Decoding base64 key into a file
+    - run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
+    
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: "3.16.0"
@@ -30,8 +39,13 @@ jobs:
     - run: flutter pub get
     - run: flutter gen-l10n # generate translation strings
     - run: flutter test
-    - run: flutter build apk
-    - uses: actions/upload-artifact@v1
+    - run: flutter build apk # build fat APK 
+    - run: flutter build apk --split-per-abi
+    - uses: actions/upload-artifact@v2
       with:
         name: release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: |
+          build/app/outputs/flutter-apk/app-release.apk
+          build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+          build/app/outputs/apk/release/app-arm64-v8a-release.apk
+          build/app/outputs/apk/release/app-x86_64-release.apk
