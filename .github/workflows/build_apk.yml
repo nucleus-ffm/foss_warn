@@ -37,8 +37,6 @@ jobs:
         echo keyAlias=${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
         echo storeFile=${{ env.STOREFILE_PATH }} >> ${{env.PROPERTIES_PATH}}
         # '>' = overwrites '>>' = appends
-        echo print key.properties with debug values
-        cat ${{env.PROPERTIES_PATH}}
     # Decoding base64 key into a file
     - run: |
         # create key.jks
@@ -47,7 +45,6 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: ${{env.FLUTTER_VERSION}}
-        channel: ${{env.FLUTTER_CHANNEL}}
     - run: flutter --version
     - run: flutter pub get
     - run: flutter gen-l10n # generate translation strings
