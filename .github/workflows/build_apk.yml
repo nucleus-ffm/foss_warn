@@ -32,8 +32,9 @@ jobs:
 
     # Creating the key.properties file
     - run: |
-        echo storePassword=\${{ secrets.STORE_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
-        echo keyPassword=\${{ secrets.KEY_PASSWORD }} > ${{env.PROPERTIES_PATH}}
+        # '>' = overwrites '>>' = appends
+        echo storePassword=\${{ secrets.STORE_PASSWORD }} > ${{env.PROPERTIES_PATH}}
+        echo keyPassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
         echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
         echo storeFile=\${{ env.STOREFILE_PATH }} >> ${{env.PROPERTIES_PATH}}
     # Decoding base64 key into a file
