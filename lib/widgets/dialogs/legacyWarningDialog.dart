@@ -13,19 +13,13 @@ class _LegacyWarningDialogState extends State<LegacyWarningDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Updated version to ${userPreferences.versionNumber}"),
+      title: Text("${AppLocalizations.of(context)!.legacy_warning_dialog_title} ${userPreferences.versionNumber}"),
       content: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                  "FOSSWarn is now updated to a new version."
-                      " With this new version we have improved the internal "
-                      "structure of the app. Externally there is no big change,"
-                      " but we had to reset all settings and saved locations."
-                      " Please check your settings and add your places again. "
-                      "\n\nThank you for your understanding and sorry for the inconvenience.")
+            children: [ //
+              Text(AppLocalizations.of(context)!.legacy_warning_dialog_text)
             ],
           ),
         ),

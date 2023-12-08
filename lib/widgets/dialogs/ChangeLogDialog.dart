@@ -14,6 +14,21 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
+                "0.6.1 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Fehlerbehebungen \n"),
+              Text(
+                "0.6.0 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Der Code ist jetzt neu strukturiert und besser organisiert\n"
+                   "* Die Daten werden jetzt intern besser verwaltet, dadurch müssen die Einstellungen und Orte neu eingestellt werden.\n"
+                   "* Die Sortierung funktioniert jetzt wieder wie erwartet \n"
+                   "* Die App stürzt jetzt bei einem Systemneustart nicht mehr ab. \n"
+                   "* Das Erkennen von Telefonnummern funktioniert jetzt zuverlässiger. \n"
+                   "* sonstige Fehlerbehebungen \n"),
+              Text(
                 "0.5.1 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),

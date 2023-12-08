@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
+import '../services/saveAndLoadSharedPreferences.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
 import '../services/translateAndColorizeWarning.dart';
@@ -56,6 +57,8 @@ class WarningWidget extends StatelessWidget {
                           _warnMessage.read = false;
                           final updater = Provider.of<Update>(context, listen: false);
                           updater.updateReadStatusInList();
+                          // save places list to store new read state
+                          saveMyPlacesList();
                         },
                         icon: Icon(
                           Icons.mark_chat_read,
@@ -66,6 +69,8 @@ class WarningWidget extends StatelessWidget {
                           _warnMessage.read = true;
                           final updater = Provider.of<Update>(context, listen: false);
                           updater.updateReadStatusInList();
+                          // save places list to store new read state
+                          saveMyPlacesList();
                         },
                         icon: Icon(
                           Icons.warning_amber_outlined,

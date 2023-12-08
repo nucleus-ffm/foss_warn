@@ -66,6 +66,12 @@ In previous versions foss warn had a built-in update check. But we removed this 
 ## Contribute
 FOSS Warn is currently a "two-man show". So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon.
 
+### How to get started with development
+- Make sure you have installed the Flutter SDK and plugins for AndroidStudio.
+- Clone the FOSSWarn repository
+- Inside the project, run `flutter gen-l10n` to build the translation strings.
+- You are now ready to run the application.
+
 ### Translation
 We are using weblate to translate FOSS Warn. Feel free to help translate the application at [weblate](https://hosted.weblate.org/projects/foss-warn/foss-warn-app/).
 

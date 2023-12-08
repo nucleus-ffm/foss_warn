@@ -424,5 +424,9 @@
   "warning_widget_other": "other",
   "@warning_widget_other": {},
   "warning_widget_unknown": "unknown",
-  "@warning_widget_unknown": {}
+  "@warning_widget_unknown": {},
+  "legacy_warning_dialog_title": "Version updated to",
+  "@legacy_warning_dialog_title": {},
+  "legacy_warning_dialog_text": "FOSS Warn has been updated to a new version improving the internal structure of the app. The shift has caused all settings and your saved locations to be reset. Please check your settings and add back your wanted locations.\n\nWe apologize for any inconvenience.",
+  "@legacy_warning_dialog_text": {}
 }

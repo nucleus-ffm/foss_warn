@@ -88,6 +88,7 @@ final greenDarkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.green[900],
+
   textTheme: TextTheme(
       displayLarge: TextStyle(
           fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
