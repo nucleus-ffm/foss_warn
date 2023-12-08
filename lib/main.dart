@@ -6,7 +6,6 @@ import 'package:foss_warn/services/legacyHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/AboutView.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'class/abstract_Place.dart';
@@ -23,7 +22,6 @@ import 'services/saveAndLoadSharedPreferences.dart';
 
 import 'widgets/SourceStatusWidget.dart';
 import 'widgets/dialogs/SortByDialog.dart';
-import 'themes/themes.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final AppState appState = AppState();
@@ -58,9 +56,9 @@ class FOSSWarn extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FOSS Warn',
-      theme: greenTheme,
-      darkTheme: darkTheme,
-      themeMode: userPreferences.selectedTheme,
+      theme: userPreferences.selectedLightTheme,
+      darkTheme: userPreferences.selectedDarkTheme,
+      themeMode: userPreferences.selectedThemeMode,
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -79,19 +77,12 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _selectedIndex = userPreferences.startScreen; // selected start view
+
   // list of views for the navigation bar
   final List<Widget> _pages = <Widget>[
     AllWarningsView(),
     MyPlaces(),
   ];
-
-  // the navigation bar
-  void _onItemTapped(int index) {
-    // change view
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   void initState() {
@@ -122,9 +113,6 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
         appBar: AppBar(
           title: Text("FOSS Warn"),
-          systemOverlayStyle:
-              SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
           actions: [
             userPreferences.showAllWarnings
                 ? IconButton(
@@ -161,9 +149,7 @@ class _HomeViewState extends State<HomeView> {
                   content: Text(
                     AppLocalizations.of(context)!
                         .main_app_bar_tooltip_mark_all_warnings_as_read,
-                    style: TextStyle(color: Colors.black),
                   ),
-                  backgroundColor: Colors.green[100],
                 );
 
                 // Find the ScaffoldMessenger in the widget tree
@@ -204,21 +190,21 @@ class _HomeViewState extends State<HomeView> {
                     ])
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add_alert),
-              label: AppLocalizations.of(context)!.main_nav_bar_all_warnings,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.place),
-              label: AppLocalizations.of(context)!.main_nav_bar_my_places,
-            ),
+        bottomNavigationBar: NavigationBar(
+          destinations: <NavigationDestination>[
+            NavigationDestination(
+                icon: Icon(Icons.add_alert),
+                label: AppLocalizations.of(context)!.main_nav_bar_all_warnings),
+            NavigationDestination(
+                icon: Icon(Icons.place),
+                label: AppLocalizations.of(context)!.main_nav_bar_my_places)
           ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Theme.of(context).colorScheme.secondary,
-          unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped,
+          onDestinationSelected: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          selectedIndex: _selectedIndex,
         ),
         body: _pages.elementAt(_selectedIndex));
   }

@@ -28,8 +28,7 @@ class _MissingImprintDialogState extends State<MissingImprintDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(AppLocalizations.of(context)!.main_dialog_close,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+          child: Text(AppLocalizations.of(context)!.main_dialog_close),
         ),
       ],
     );

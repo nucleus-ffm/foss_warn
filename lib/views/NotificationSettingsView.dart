@@ -21,7 +21,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
       appBar: AppBar(
         title:
             Text(AppLocalizations.of(context)!.notification_settings_headline),
-        backgroundColor: Colors.green[700],
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -17,7 +17,6 @@ class MyPlaceDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("${_myPlace.name}"),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
         actions: [
           IconButton(
             onPressed: () {
@@ -26,9 +25,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
                 content: Text(
                   AppLocalizations.of(context)
                       !.main_app_bar_tooltip_mark_all_warnings_as_read,
-                  style: TextStyle(color: Colors.black),
                 ),
-                backgroundColor: Colors.green[100],
               );
 
               // Find the ScaffoldMessenger in the widget tree

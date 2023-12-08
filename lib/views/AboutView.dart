@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/widgets/dialogs/DisclaimerDialog.dart';
 import 'package:foss_warn/widgets/dialogs/WarningSourcesDialog.dart';
@@ -15,9 +14,6 @@ class AboutView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.about_headline),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: ListView(
         padding: EdgeInsets.only(top: 10, bottom: 20),

@@ -28,7 +28,7 @@ class NoWarningsInList extends StatelessWidget {
                   Icon(
                     Icons.cloud,
                     size: 200,
-                    color: Colors.green,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   Text(AppLocalizations.of(context)
                       !.all_warnings_nothing_to_show_text),

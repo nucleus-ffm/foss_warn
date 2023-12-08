@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../class/class_alarmManager.dart';
@@ -25,9 +24,6 @@ class _DevSettingsState extends State<DevSettings> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.dev_settings_headline),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: SingleChildScrollView(
         child: Padding(

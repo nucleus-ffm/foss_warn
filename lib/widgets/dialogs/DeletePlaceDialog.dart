@@ -26,16 +26,16 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
         ),
       ),
       actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            AppLocalizations.of(context)!.delete_place_cancel,
-            style: TextStyle(color: Colors.red),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(AppLocalizations.of(context)!.delete_place_cancel)),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.error,
+            foregroundColor: Theme.of(context).colorScheme.onError
           ),
-        ),
-        new TextButton(
           onPressed: () {
             //remove place from list and update view
             print("place deleted");
@@ -45,7 +45,6 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
           },
           child: Text(
             AppLocalizations.of(context)!.delete_place_delete,
-            style: TextStyle(color: Colors.green),
           ),
         )
       ],

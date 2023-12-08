@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -23,9 +22,6 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.add_new_place),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 15, left: 15, right: 15),

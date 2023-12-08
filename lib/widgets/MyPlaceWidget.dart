@@ -93,13 +93,14 @@ class MyPlaceWidget extends StatelessWidget {
                         0 //check the number of warnings and display check or warning
                     ? TextButton(
                         style: TextButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
+                            foregroundColor: Theme.of(context).colorScheme.onSecondary,
                             shape: CircleBorder(),
                             padding: EdgeInsets.all(15)),
                         onPressed: () {},
                         child: Icon(
                           Icons.check,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSecondary,
                         ))
                     : myPlace.checkIfAllWarningsAreRead()
                         ? TextButton(

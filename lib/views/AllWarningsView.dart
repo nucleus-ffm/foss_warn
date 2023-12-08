@@ -163,7 +163,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                       child: Text(
                                         AppLocalizations.of(context)
                                             !.all_warnings_reload,
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
                                       ),
                                       style: TextButton.styleFrom(
                                           backgroundColor: Theme.of(context)

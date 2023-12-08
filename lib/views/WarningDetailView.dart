@@ -263,7 +263,6 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget._warnMessage.headline),
-        backgroundColor: Colors.green[700],
         actions: [
           IconButton(
               tooltip: AppLocalizations.of(context)!.warning_share,

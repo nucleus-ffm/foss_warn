@@ -19,13 +19,12 @@ class _SortByDialogState extends State<SortByDialog> {
         ListTile(
           title: Text(
             AppLocalizations.of(context)!.sorting_by_date,
-            //style: TextStyle(fontSize: 12),
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(Icons.date_range),
           ),
-          selectedColor: Theme.of(context).colorScheme.secondary,
+          selectedColor: Theme.of(context).colorScheme.primary,
           selected: userPreferences.sortWarningsBy == "date" ? true : false,
           onTap: () {
             setState(() {
@@ -38,13 +37,12 @@ class _SortByDialogState extends State<SortByDialog> {
         ListTile(
           title: Text(
             AppLocalizations.of(context)!.sorting_by_warning_level,
-            //style: TextStyle(fontSize: 14),
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(Icons.warning),
           ),
-          selectedColor: Theme.of(context).colorScheme.secondary,
+          selectedColor: Theme.of(context).colorScheme.primary,
           selected: userPreferences.sortWarningsBy == "severity" ? true : false,
           onTap: () {
             setState(() {
@@ -57,13 +55,12 @@ class _SortByDialogState extends State<SortByDialog> {
         ListTile(
           title: Text(
             AppLocalizations.of(context)!.sorting_by_source,
-            //style: TextStyle(fontSize: 16),
           ),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(Icons.source),
           ),
-          selectedColor: Theme.of(context).colorScheme.secondary,
+          selectedColor: Theme.of(context).colorScheme.primary,
           selected: userPreferences.sortWarningsBy == "source" ? true : false,
           onTap: () {
             setState(() {
