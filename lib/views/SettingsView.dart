@@ -91,7 +91,6 @@ class _SettingsState extends State<Settings> {
                 subtitle: Text(AppLocalizations.of(context)!
                     .settings_show_status_notification_subtitle),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.primary,
                     value: userPreferences.showStatusNotification,
                     onChanged: (value) {
                       setState(() {
@@ -106,7 +105,6 @@ class _SettingsState extends State<Settings> {
               title: Text(
                   AppLocalizations.of(context)!.settings_background_service),
               trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.primary,
                   value: userPreferences.shouldNotifyGeneral,
                   onChanged: (value) {
                     setState(() {
@@ -264,7 +262,6 @@ class _SettingsState extends State<Settings> {
                 title: Text(AppLocalizations.of(context)!
                     .settings_show_extended_metadata),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.primary,
                     value: userPreferences.showExtendedMetaData,
                     onChanged: (value) {
                       setState(() {
@@ -289,19 +286,6 @@ class _SettingsState extends State<Settings> {
               subtitle: Text(AppLocalizations.of(context)!
                   .settings_display_all_warnings_subtitle),
               trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.primary,
-                  /* trackOutlineColor: MaterialStateProperty.resolveWith(
-                        (final Set<MaterialState> states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return null;
-                      }
-
-                      return Theme.of(context).colorScheme.onPrimary;
-                    },
-                  ), */
-                  // inactiveThumbColor: Theme.of(context).colorScheme.onPrimary,
-                  //inactiveTrackColor: Colors.black,
-
                   value: userPreferences.showAllWarnings,
                   onChanged: (value) {
                     setState(() {
@@ -361,7 +345,6 @@ class _SettingsState extends State<Settings> {
                   });
                   saveSettings();
                 },
-                activeColor: Colors.green,
               ),
             ),
             ListTile(

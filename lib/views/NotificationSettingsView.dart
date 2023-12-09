@@ -38,7 +38,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 title: Text(AppLocalizations.of(context)
                     !.notification_settings_notify_by_extreme),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: userPreferences.notificationWithExtreme,
                     onChanged: (value) {
                       if (userPreferences.shouldNotifyGeneral) {
@@ -58,7 +57,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 title: Text(AppLocalizations.of(context)
                     !.notification_settings_notify_by_severe),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: userPreferences.notificationWithSevere,
                     onChanged: (value) {
                       if (userPreferences.shouldNotifyGeneral) {
@@ -78,8 +76,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 title: Text(AppLocalizations.of(context)
                     !.notification_settings_notify_by_moderate),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
-                    value: userPreferences.notificationWithModerate,
+                   value: userPreferences.notificationWithModerate,
                     onChanged: (value) {
                       if (userPreferences.shouldNotifyGeneral) {
                         setState(() {
@@ -98,7 +95,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 title: Text(AppLocalizations.of(context)
                     !.notification_settings_notify_by_minor),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: userPreferences.notificationWithMinor,
                     onChanged: (value) {
                       if (userPreferences.shouldNotifyGeneral) {
@@ -125,7 +121,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                   title: Text(AppLocalizations.of(context)
                       !.notification_settings_thunderstorm),
                   trailing: Switch(
-                      activeColor: Theme.of(context).colorScheme.secondary,
                       value: userPreferences.notificationEventsSettings[
                                   "STARKES GEWITTER"] !=
                               null
@@ -147,7 +142,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                   title: Text(AppLocalizations.of(context)
                       !.notification_settings_strong_weather),
                   trailing: Switch(
-                      activeColor: Theme.of(context).colorScheme.secondary,
                       value: userPreferences.notificationEventsSettings[
                                   "STARKES WETTER"] !=
                               null
@@ -168,7 +162,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                   title: Text(AppLocalizations.of(context)
                       !.notification_settings_everything_else),
                   trailing: Switch(
-                      activeColor: Theme.of(context).colorScheme.secondary,
                       value: true,
                       onChanged: null)),
               SizedBox(
@@ -183,7 +176,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                   title: Text(AppLocalizations.of(context)
                       !.notification_settings_everything),
                   trailing: Switch(
-                      activeColor: Theme.of(context).colorScheme.secondary,
                       value: true,
                       onChanged: null)),
               SizedBox(
@@ -198,7 +190,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 title: Text(AppLocalizations.of(context)
                     !.notification_settings_everything),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: true,
                     onChanged: null),
               ),
@@ -214,7 +205,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 title: Text(AppLocalizations.of(context)
                     !.notification_settings_everything),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: true,
                     onChanged: null),
               ),
@@ -230,7 +220,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                   title: Text(AppLocalizations.of(context)
                       !.notification_settings_everything),
                   trailing: Switch(
-                      activeColor: Theme.of(context).colorScheme.secondary,
                       value: true,
                       onChanged: null)),
             ],

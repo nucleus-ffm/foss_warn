@@ -829,9 +829,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               replaceHTMLTags(widget._warnMessage.contact),
                               style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
+                                  fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                         )
@@ -853,9 +851,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               generateURL(widget._warnMessage.web),
                               style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
+                                  fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                         )
