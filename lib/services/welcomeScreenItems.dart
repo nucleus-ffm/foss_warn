@@ -19,7 +19,7 @@ List<WelcomeScreenItem> getWelcomeScreenItems(BuildContext context) {
     WelcomeScreenItem(
         title: AppLocalizations.of(context)!.welcome_view_foss_warn_headline,
         description: AppLocalizations.of(context)!.welcome_view_foss_warn_text,
-        imagePath: "assets/app_icon.png"),
+        imagePath: "assets/app_icon/app_icon.png"),
     WelcomeScreenItem(
         title: AppLocalizations.of(context)!.welcome_view_important_headline,
         description: AppLocalizations.of(context)!.welcome_view_important_text,

@@ -23,12 +23,11 @@ class AboutView extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Image(
-                height: 120,
-                width: 120,
-                image: AssetImage('assets/app_icon.png'),
+                height: 180,
+                image: AssetImage('assets/app_icon/app_icon.png'),
               )),
           Padding(
-            padding: const EdgeInsets.only(bottom: 10, top: 10),
+            padding: const EdgeInsets.only(bottom: 10, top: 5),
             child: Center(
               child: Text(
                 "FOSS Warn",
