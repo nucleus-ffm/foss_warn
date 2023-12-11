@@ -38,6 +38,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+
+        // for flutter_local_notification: Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
     }
 
     kotlin {
@@ -95,4 +98,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // for flutter_local_notification plugin
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
 }
