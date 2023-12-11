@@ -5,7 +5,6 @@
     </style>
 
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
-        <item name="android:windowSplashScreenBackground">@color/ic_launcher_background</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/app_icon</item>
+        <item name="android:windowBackground">@color/ic_launcher_background</item>
     </style>
 </resources>
