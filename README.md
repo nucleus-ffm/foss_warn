@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/assets/app_icon.png" height=120 width=120/>
+  <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/assets/app_icon/app_icon.png" height=200 width=200/>
   <h1>FOSS Warn</h1>
 
 </div>
