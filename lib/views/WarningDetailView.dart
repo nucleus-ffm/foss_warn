@@ -264,7 +264,6 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget._warnMessage.headline),
-        backgroundColor: Colors.green[700],
         actions: [
           IconButton(
               tooltip: AppLocalizations.of(context)!.warning_share,
@@ -830,9 +829,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               replaceHTMLTags(widget._warnMessage.contact),
                               style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
+                                  fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                         )
@@ -854,9 +851,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             child: Text(
                               generateURL(widget._warnMessage.web),
                               style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
+                                  fontSize: userPreferences.warningFontSize),
                             ),
                           ),
                         )

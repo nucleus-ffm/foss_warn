@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/widgets/dialogs/DisclaimerDialog.dart';
 import 'package:foss_warn/widgets/dialogs/WarningSourcesDialog.dart';
@@ -15,9 +14,6 @@ class AboutView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.about_headline),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: ListView(
         padding: EdgeInsets.only(top: 10, bottom: 20),
@@ -27,12 +23,11 @@ class AboutView extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Image(
-                height: 120,
-                width: 120,
-                image: AssetImage('assets/app_icon.png'),
+                height: 180,
+                image: AssetImage('assets/app_icon/app_icon.png'),
               )),
           Padding(
-            padding: const EdgeInsets.only(bottom: 10, top: 10),
+            padding: const EdgeInsets.only(bottom: 10, top: 5),
             child: Center(
               child: Text(
                 "FOSS Warn",

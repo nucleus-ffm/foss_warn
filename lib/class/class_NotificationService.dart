@@ -50,7 +50,7 @@ class NotificationService {
           //@TODO: show an other icon for status notification
           //enable multiline notification
           styleInformation: BigTextStyleInformation(''),
-          color: Colors.green, // makes the icon red,
+          color: Colors.green, // makes the icon green,
         ),
         iOS: DarwinNotificationDetails());
   }
@@ -113,7 +113,7 @@ class NotificationService {
 
   Future<void> init() async {
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('res_notification_icon');
+        AndroidInitializationSettings('notification_icon');
 
     final DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(

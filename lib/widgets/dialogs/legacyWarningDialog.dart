@@ -31,7 +31,6 @@ class _LegacyWarningDialogState extends State<LegacyWarningDialog> {
           },
           child: Text(
             AppLocalizations.of(context)!.main_dialog_close,
-            style: TextStyle(color: Colors.green),
           ),
         ),
       ],

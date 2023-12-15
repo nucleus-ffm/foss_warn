@@ -75,7 +75,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
           height: 70,
           width: 70,
           child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
             strokeWidth: 4,
           ),
         ),
@@ -84,7 +84,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
 
     return Consumer<Update>(
       builder: (context, counter, child) => RefreshIndicator(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.primary,
         onRefresh: reloadData,
         child: Stack(
           fit: StackFit.expand,

@@ -58,8 +58,7 @@ class _WarningSourcesDialog extends State<WarningSourcesDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(AppLocalizations.of(context)!.main_dialog_close,
-              style: TextStyle(color: Colors.green)),
+          child: Text(AppLocalizations.of(context)!.main_dialog_close),
         ),
       ],
     );

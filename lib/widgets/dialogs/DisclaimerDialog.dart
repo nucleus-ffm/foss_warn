@@ -30,7 +30,6 @@ class _DisclaimerDialogState extends State<DisclaimerDialog> {
           },
           child: Text(
             AppLocalizations.of(context)!.main_dialog_understand,
-            style: TextStyle(color: Colors.green),
           ),
         ),
       ],

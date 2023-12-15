@@ -29,7 +29,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(Icons.abc),
                 ),
-                selectedColor: Theme.of(context).colorScheme.secondary,
+                selectedColor: Theme.of(context).colorScheme.primary,
                 selected:
                     userPreferences.warningFontSize == 12.0 ? true : false,
                 onTap: () {
@@ -49,7 +49,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(Icons.abc),
                 ),
-                selectedColor: Theme.of(context).colorScheme.secondary,
+                selectedColor: Theme.of(context).colorScheme.primary,
                 selected:
                     userPreferences.warningFontSize == 14.0 ? true : false,
                 onTap: () {
@@ -69,7 +69,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(Icons.abc),
                 ),
-                selectedColor: Theme.of(context).colorScheme.secondary,
+                selectedColor: Theme.of(context).colorScheme.primary,
                 selected:
                     userPreferences.warningFontSize == 16.0 ? true : false,
                 onTap: () {

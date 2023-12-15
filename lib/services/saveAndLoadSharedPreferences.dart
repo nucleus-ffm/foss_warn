@@ -85,11 +85,20 @@ saveSettings() async {
   preferences.setBool("showWelcomeScreen", userPreferences.showWelcomeScreen);
   preferences.setString(
       "sortWarningsBy", userPreferences.sortWarningsBy.toString());
-  preferences.setBool("showStatusNotification", userPreferences.showStatusNotification);
+  preferences.setBool(
+      "showStatusNotification", userPreferences.showStatusNotification);
   preferences.setDouble(
       "frequencyOfAPICall", userPreferences.frequencyOfAPICall);
   preferences.setString(
-      "selectedTheme", userPreferences.selectedTheme.toString());
+      "selectedThemeMode", userPreferences.selectedThemeMode.toString());
+  preferences.setInt(
+      "selectedLightTheme",
+      userPreferences.availableLightThemes
+          .indexOf(userPreferences.selectedLightTheme));
+  preferences.setInt(
+      "selectedDarkTheme",
+      userPreferences.availableDarkThemes
+          .indexOf(userPreferences.selectedDarkTheme));
   preferences.setBool("showAllWarnings", userPreferences.showAllWarnings);
   preferences.setString("notificationEventsSettings",
       jsonEncode(userPreferences.notificationEventsSettings));
@@ -173,23 +182,44 @@ loadSettings() async {
     userPreferences.frequencyOfAPICall =
         preferences.getDouble("frequencyOfAPICall")!;
   }
-  if (preferences.containsKey("selectedTheme")) {
-    String temp = preferences.getString("selectedTheme")!;
+  if (preferences.containsKey("selectedThemeMode")) {
+    String temp = preferences.getString("selectedThemeMode")!;
     switch (temp) {
       case 'ThemeMode.system':
-        userPreferences.selectedTheme = ThemeMode.system;
+        userPreferences.selectedThemeMode = ThemeMode.system;
         break;
       case 'ThemeMode.dark':
-        userPreferences.selectedTheme = ThemeMode.dark;
+        userPreferences.selectedThemeMode = ThemeMode.dark;
         break;
       case 'ThemeMode.light':
-        userPreferences.selectedTheme = ThemeMode.light;
+        userPreferences.selectedThemeMode = ThemeMode.light;
         break;
     }
   } else {
     // Default value
-    userPreferences.selectedTheme = ThemeMode.system;
+    userPreferences.selectedThemeMode = ThemeMode.system;
   }
+  if (preferences.containsKey("selectedLightTheme")) {
+    int temp = preferences.getInt("selectedLightTheme")!;
+    if (temp > userPreferences.availableLightThemes.length - 1 || temp == -1) {
+      userPreferences.selectedLightTheme =
+          userPreferences.availableLightThemes[0];
+    } else {
+      userPreferences.selectedLightTheme =
+          userPreferences.availableLightThemes[temp];
+    }
+  }
+  if (preferences.containsKey("selectedDarkTheme")) {
+    int temp = preferences.getInt("selectedDarkTheme")!;
+    if (temp > userPreferences.availableDarkThemes.length - 1 || temp == -1) {
+      userPreferences.selectedDarkTheme =
+          userPreferences.availableDarkThemes[0];
+    } else {
+      userPreferences.selectedDarkTheme =
+          userPreferences.availableDarkThemes[temp];
+    }
+  }
+
   if (preferences.containsKey("showAllWarnings")) {
     userPreferences.showAllWarnings = preferences.getBool("showAllWarnings")!;
   }

@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../main.dart';
 import '../services/apiHandler.dart';
+import '../widgets/dialogs/ChooseThemeDialog.dart';
 import 'NotificationSettingsView.dart';
 import 'WelcomeView.dart';
 
@@ -26,14 +27,14 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final TextEditingController frequencyController =
-      new TextEditingController();
+  final TextEditingController frequencyController = new TextEditingController();
   final double _maxValueFrequencyOfAPICall = 999;
   final _platform = const MethodChannel("flutter.native/helper");
 
   @override
   void initState() {
-    frequencyController.text = userPreferences.frequencyOfAPICall.toInt().toString();
+    frequencyController.text =
+        userPreferences.frequencyOfAPICall.toInt().toString();
 
     return super.initState();
   }
@@ -43,23 +44,13 @@ class _SettingsState extends State<Settings> {
     const double indentOfCategoriesTitles = 15;
 
     final Map<int, String> startViewLabels = {
-      0:  AppLocalizations.of(context)!.settings_start_view_all_warnings,
-      1:  AppLocalizations.of(context)!.settings_start_view_only_my_places,
-    };
-
-
-    final Map<ThemeMode, String> themeLabels = {
-      ThemeMode.system: AppLocalizations.of(context)!.settings_color_schema_auto,
-      ThemeMode.dark: AppLocalizations.of(context)!.settings_color_schema_dark,
-      ThemeMode.light: AppLocalizations.of(context)!.settings_color_schema_light
+      0: AppLocalizations.of(context)!.settings_start_view_all_warnings,
+      1: AppLocalizations.of(context)!.settings_start_view_only_my_places,
     };
 
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settings),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 10, bottom: 20),
@@ -75,17 +66,17 @@ class _SettingsState extends State<Settings> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary),
+                    color: Theme.of(context).colorScheme.primary),
               ),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)
-                  !.settings_android_notification_settings),
+              title: Text(AppLocalizations.of(context)!
+                  .settings_android_notification_settings),
               onTap: () => _openNotificationSettings(),
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)
-                  !.settings_app_notification_settings),
+              title: Text(AppLocalizations.of(context)!
+                  .settings_app_notification_settings),
               onTap: () {
                 Navigator.push(
                   context,
@@ -95,12 +86,11 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-                title: Text(AppLocalizations.of(context)
-                    !.settings_show_status_notification_title),
-                subtitle: Text(AppLocalizations.of(context)
-                    !.settings_show_status_notification_subtitle),
+                title: Text(AppLocalizations.of(context)!
+                    .settings_show_status_notification_title),
+                subtitle: Text(AppLocalizations.of(context)!
+                    .settings_show_status_notification_subtitle),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: userPreferences.showStatusNotification,
                     onChanged: (value) {
                       setState(() {
@@ -115,7 +105,6 @@ class _SettingsState extends State<Settings> {
               title: Text(
                   AppLocalizations.of(context)!.settings_background_service),
               trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
                   value: userPreferences.shouldNotifyGeneral,
                   onChanged: (value) {
                     setState(() {
@@ -146,8 +135,8 @@ class _SettingsState extends State<Settings> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(AppLocalizations.of(context)
-                            !.settings_frequent_of_background_update),
+                        Text(AppLocalizations.of(context)!
+                            .settings_frequent_of_background_update),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,8 +159,10 @@ class _SettingsState extends State<Settings> {
                                             double.parse(value);
                                       });
                                     } else {
-                                      frequencyController.text =
-                                          userPreferences.frequencyOfAPICall.round().toString();
+                                      frequencyController.text = userPreferences
+                                          .frequencyOfAPICall
+                                          .round()
+                                          .toString();
                                     }
                                   }
                                 },
@@ -190,6 +181,7 @@ class _SettingsState extends State<Settings> {
                                   callAPI(); // call api and update notification
                                 },
                                 decoration: InputDecoration(),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                             Text("min"),
@@ -197,14 +189,17 @@ class _SettingsState extends State<Settings> {
                               child: Slider(
                                 value: userPreferences.frequencyOfAPICall,
                                 activeColor:
-                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary,
                                 min: 1,
                                 max: _maxValueFrequencyOfAPICall,
                                 onChanged: (value) {
                                   setState(() {
-                                    userPreferences.frequencyOfAPICall = value.roundToDouble();
-                                    frequencyController.text =
-                                        userPreferences.frequencyOfAPICall.toInt().toString();
+                                    userPreferences.frequencyOfAPICall =
+                                        value.roundToDouble();
+                                    frequencyController.text = userPreferences
+                                        .frequencyOfAPICall
+                                        .toInt()
+                                        .toString();
                                   });
                                 },
                                 onChangeEnd: (value) {
@@ -235,7 +230,7 @@ class _SettingsState extends State<Settings> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary),
+                    color: Theme.of(context).colorScheme.primary),
               ),
             ),
             ListTile(
@@ -245,11 +240,10 @@ class _SettingsState extends State<Settings> {
                 icon: const Icon(Icons.arrow_downward),
                 iconSize: 24,
                 elevation: 16,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
                 underline: Container(
                   height: 2,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 onChanged: (int? newValue) {
                   setState(() {
@@ -257,10 +251,8 @@ class _SettingsState extends State<Settings> {
                   });
                   saveSettings();
                 },
-                items: [0, 1]
-                    .map<DropdownMenuItem<int>>((value) {
+                items: [0, 1].map<DropdownMenuItem<int>>((value) {
                   return DropdownMenuItem<int>(
-
                     value: value,
                     child: Text(startViewLabels[value]!),
                   );
@@ -268,10 +260,9 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             ListTile(
-                title: Text(AppLocalizations.of(context)
-                    !.settings_show_extended_metadata),
+                title: Text(AppLocalizations.of(context)!
+                    .settings_show_extended_metadata),
                 trailing: Switch(
-                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: userPreferences.showExtendedMetaData,
                     onChanged: (value) {
                       setState(() {
@@ -281,43 +272,21 @@ class _SettingsState extends State<Settings> {
                     })),
             ListTile(
               title: Text(AppLocalizations.of(context)!.settings_color_schema),
-              trailing: DropdownButton<ThemeMode>(
-                value: userPreferences.selectedTheme,
-                icon: const Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
-                underline: Container(
-                  height: 2,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                onChanged: (ThemeMode? newValue) {
-                  setState(() {
-                    userPreferences.selectedTheme = newValue!;
-                  });
-                  saveSettings();
-
-                  // Reload the full app for theme changes to reflect
-                  final updater = Provider.of<Update>(context, listen: false);
-                  updater.updateView();
-                },
-                items: [ThemeMode.system, ThemeMode.dark, ThemeMode.light]
-                    .map<DropdownMenuItem<ThemeMode>>((value) {
-                  return DropdownMenuItem<ThemeMode>(
-                    value: value,
-                    child: Text(themeLabels[value]!),
-                  );
-                }).toList(),
-              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ChooseThemeDialog();
+                  },
+                );
+              },
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)
-                  !.settings_display_all_warnings_title),
-              subtitle: Text(AppLocalizations.of(context)
-                  !.settings_display_all_warnings_subtitle),
+              title: Text(AppLocalizations.of(context)!
+                  .settings_display_all_warnings_title),
+              subtitle: Text(AppLocalizations.of(context)!
+                  .settings_display_all_warnings_subtitle),
               trailing: Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
                   value: userPreferences.showAllWarnings,
                   onChanged: (value) {
                     setState(() {
@@ -362,7 +331,7 @@ class _SettingsState extends State<Settings> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary),
+                    color: Theme.of(context).colorScheme.primary),
               ),
             ),
             ListTile(
@@ -377,7 +346,6 @@ class _SettingsState extends State<Settings> {
                   });
                   saveSettings();
                 },
-                activeColor: Colors.green,
               ),
             ),
             ListTile(
@@ -393,7 +361,8 @@ class _SettingsState extends State<Settings> {
               },
             ),
             ListTile(
-              title: Text((AppLocalizations.of(context)!.settings_dev_settings)),
+              title:
+                  Text((AppLocalizations.of(context)!.settings_dev_settings)),
               onTap: () {
                 Navigator.push(
                   context,

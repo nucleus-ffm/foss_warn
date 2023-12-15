@@ -62,7 +62,6 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
           },
           child: Text(
             AppLocalizations.of(context)!.main_dialog_understand,
-            style: TextStyle(color: Colors.green),
           ),
         ),
       ],
