@@ -179,7 +179,7 @@ class WarningWidget extends StatelessWidget {
                               width: 20,
                             ),
                             Text(
-                              _warnMessage.source,
+                              _warnMessage.source.name,
                               style: TextStyle(fontSize: 12),
                             )
                           ],
