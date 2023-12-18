@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:foss_warn/class/class_notificationPreferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
@@ -100,8 +101,8 @@ saveSettings() async {
       userPreferences.availableDarkThemes
           .indexOf(userPreferences.selectedDarkTheme));
   preferences.setBool("showAllWarnings", userPreferences.showAllWarnings);
-  preferences.setString("notificationEventsSettings",
-      jsonEncode(userPreferences.notificationEventsSettings));
+  preferences.setString("notificationSourceSettings",
+      jsonEncode(userPreferences.notificationSourceSettings));
   preferences.setBool("activateAlertSwiss", userPreferences.activateAlertSwiss);
   print("Settings saved");
 }
@@ -159,7 +160,7 @@ loadSettings() async {
   if (preferences.containsKey("warningFontSize")) {
     userPreferences.warningFontSize = preferences.getDouble("warningFontSize")!;
   } else {
-    saveSettings();
+    saveSettings(); //@todo remove?
     loadSettings();
   }
   if (preferences.containsKey("showWelcomeScreen")) {
@@ -223,10 +224,14 @@ loadSettings() async {
   if (preferences.containsKey("showAllWarnings")) {
     userPreferences.showAllWarnings = preferences.getBool("showAllWarnings")!;
   }
-  if (preferences.containsKey("notificationEventsSettings")) {
-    String temp = preferences.getString("notificationEventsSettings")!;
-    userPreferences.notificationEventsSettings =
-        Map<String, bool>.from(jsonDecode(temp));
+  if (preferences.containsKey("notificationSourceSettings")) {
+    List<dynamic> data =
+        jsonDecode(preferences.getString("notificationSourceSettings")!);
+    userPreferences.notificationSourceSettings.clear();
+    for (int i = 0; i < data.length; i++) {
+      userPreferences.notificationSourceSettings
+          .add(NotificationPreferences.fromJson(data[i]));
+    }
   }
   if (preferences.containsKey("activateAlertSwiss")) {
     userPreferences.activateAlertSwiss =
@@ -234,6 +239,7 @@ loadSettings() async {
   }
 }
 
+@deprecated
 saveNotificationSettingsImportanceList() async {
   print("Save saveNotificationSettingsImportanceList");
   notificationSettingsImportance.clear();
@@ -256,6 +262,7 @@ saveNotificationSettingsImportanceList() async {
   print(notificationSettingsImportance);
 }
 
+@deprecated
 loadNotificationSettingsImportanceList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   //check if notificationSettingsImportance already exists
