@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/enums/NotificationLevel.dart';
+import 'package:foss_warn/enums/WarningSource.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:provider/provider.dart';
 
+import '../enums/Severity.dart';
 import '../main.dart';
 import '../services/listHandler.dart';
 import '../services/updateProvider.dart';
@@ -13,17 +16,23 @@ abstract class Place {
   List<WarnMessage> _warnings = [];
   String eTag = "";
 
-  Place({required String name, required List<WarnMessage> warnings, required String eTag}) : _warnings = warnings, _name = name {
+  Place(
+      {required String name,
+      required List<WarnMessage> warnings,
+      required String eTag})
+      : _warnings = warnings,
+        _name = name {
     eTag = eTag;
   }
 
   String get name => _name;
-  int get countWarnings=> this.warnings.length;
+  int get countWarnings => this.warnings.length;
   List<WarnMessage> get warnings => _warnings;
 
   // control the list for warnings
   void addWarningToList(WarnMessage warnMessage) => _warnings.add(warnMessage);
-  void removeWarningFromList(WarnMessage warnMessage) => _warnings.remove(warnMessage);
+  void removeWarningFromList(WarnMessage warnMessage) =>
+      _warnings.remove(warnMessage);
 
   // check if all warnings in `warnings` are
   // also in the alreadyReadWarnings list
@@ -55,13 +64,16 @@ abstract class Place {
   Future<void> sendNotificationForWarnings() async {
     for (WarnMessage myWarnMessage in _warnings) {
       print(myWarnMessage.headline);
-      print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
-      print("should notify? :" +
+      //print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
+      /*print("should notify? :" +
           ((!myWarnMessage.read && !myWarnMessage.notified) &&
-                  _checkIfEventShouldBeNotified(myWarnMessage.event))
-              .toString());
+                  _checkIfEventShouldBeNotified(
+                      myWarnMessage.source, myWarnMessage.severity))
+              .toString());*/
+
       if ((!myWarnMessage.read && !myWarnMessage.notified) &&
-          _checkIfEventShouldBeNotified(myWarnMessage.event)) {
+          _checkIfEventShouldBeNotified(
+              myWarnMessage.source, myWarnMessage.severity)) {
         // Alert is not already read or shown as notification
         // set notified to true to avoid sending notification twice
         myWarnMessage.notified = true;
@@ -105,18 +117,27 @@ abstract class Place {
     saveMyPlacesList();
   }
 
-  /// return [true] or false if the warning should be irgnored or not
-  /// The event could be listed in the map notificationEventsSettings.
-  /// if it is listed in the map, return the stored value for the event
-  /// If not return as default true
-  bool _checkIfEventShouldBeNotified(String event) {
-    if (userPreferences.notificationEventsSettings[event] != null) {
-      print(event + " " + userPreferences.notificationEventsSettings[event]!.toString());
-      return userPreferences.notificationEventsSettings[event]!;
-    } else {
-      return true;
+  /// return [true] or false if the warning should be ignored or not
+  /// The source should be listed in the List notificationSourceSettings.
+  /// check if the user wants to be notified for
+  /// the given source and the given severity
+  bool _checkIfEventShouldBeNotified(WarningSource source, Severity severity) {
+    NotificationLevel? notificationPreferences = userPreferences
+        .notificationSourceSettings
+        .firstWhere((element) => element.warningSource == source)
+        .notificationLevel;
+
+    switch (severity) {
+      case Severity.minor:
+        return notificationPreferences == NotificationLevel.getUpToMinor;
+      case Severity.moderate:
+        return notificationPreferences == NotificationLevel.getUpToModerate;
+      case Severity.severe:
+        return notificationPreferences == NotificationLevel.getUpToSevere;
+      case Severity.extreme:
+        return notificationPreferences == NotificationLevel.getUpToExtreme;
+      default:
+        return true;
     }
   }
-
-  Map<String, dynamic> toJson();
 }
