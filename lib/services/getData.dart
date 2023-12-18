@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:foss_warn/enums/DataFetchStatus.dart';
+import 'package:foss_warn/enums/WarningSource.dart';
 import 'package:foss_warn/services/alertSwiss.dart';
 
 import '../enums/Certainty.dart';
@@ -82,7 +83,7 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-              source: "MOWAS",
+              source: WarningSource.mowas,
               identifier: _data[i]["identifier"] ?? "?",
               sender: _data[i]["sender"] ?? "?",
               sent: _data[i]["sent"] ?? "?",
@@ -178,7 +179,7 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-              source: "KATWARN",
+              source: WarningSource.katwarn,
               identifier: _data[i]["identifier"] ?? "?",
               sender: _data[i]["sender"] ?? "?",
               sent: _data[i]["sent"] ?? "?",
@@ -276,7 +277,7 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-              source: "BIWAPP",
+              source: WarningSource.biwapp,
               identifier: _data[i]["identifier"] ?? "?",
               sender: _data[i]["sender"] ?? "?",
               sent: _data[i]["sent"] ?? "?",
@@ -376,7 +377,7 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-              source: "DWD",
+              source: WarningSource.dwd,
               identifier: _data[i]["identifier"] ?? "?",
               sender: _data[i]["sender"] ?? "?",
               sent: _data[i]["sent"] ?? "?",
@@ -472,7 +473,7 @@ Future getData(bool useEtag) async {
           }
 
           WarnMessage tempWarnMessage = WarnMessage(
-              source: "LHP",
+              source: WarningSource.lhp,
               identifier: _data[i]["identifier"] ?? "?",
               sender: _data[i]["sender"] ?? "?",
               sent: _data[i]["sent"] ?? "?",
