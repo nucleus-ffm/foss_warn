@@ -106,6 +106,7 @@ class _SettingsState extends State<Settings> {
                   AppLocalizations.of(context)!.settings_background_service),
               trailing: Switch(
                   value: userPreferences.shouldNotifyGeneral,
+                  //@todo maybe we should add a confirmation dialog to prevent accidentally disabled background updates
                   onChanged: (value) {
                     setState(() {
                       userPreferences.shouldNotifyGeneral = value;
@@ -116,12 +117,6 @@ class _SettingsState extends State<Settings> {
                       AlarmManager().registerBackgroundTask();
                     } else {
                       AlarmManager().cancelBackgroundTask();
-                      setState(() {
-                        userPreferences.notificationWithExtreme = false;
-                        userPreferences.notificationWithSevere = false;
-                        userPreferences.notificationWithModerate = false;
-                        userPreferences.notificationWithMinor = false;
-                      });
                       print("background notification disabled");
                     }
                   }),
@@ -167,11 +162,17 @@ class _SettingsState extends State<Settings> {
                                   }
                                 },
                                 onTapOutside: (e) {
-                                  FocusScope.of(context).unfocus();
-                                  saveSettings();
-                                  AlarmManager().cancelBackgroundTask();
-                                  AlarmManager().registerBackgroundTask();
-                                  callAPI(); // call api and update notification
+                                  // Check whether the text field is in focus,
+                                  // because this method is executed every time
+                                  // you tap somewhere in the settings, even
+                                  // if the text field is not in focus at all
+                                  if (FocusScope.of(context).isFirstFocus) {
+                                    FocusScope.of(context).unfocus();
+                                    saveSettings();
+                                    AlarmManager().cancelBackgroundTask();
+                                    AlarmManager().registerBackgroundTask();
+                                    callAPI(); // call api and update notification
+                                  }
                                 },
                                 onEditingComplete: () {
                                   FocusScope.of(context).unfocus();
