@@ -1,3 +1,5 @@
+import 'package:foss_warn/enums/WarningSource.dart';
+
 import '../enums/Certainty.dart';
 import '../enums/Severity.dart';
 import 'class_Area.dart';
@@ -6,7 +8,7 @@ import '../services/createAreaListFromJson.dart';
 class WarnMessage {
   final String identifier;
   final String publisher;
-  final String source;
+  final WarningSource source;
   final String sender;
   final String sent;
   final String status;
@@ -62,7 +64,7 @@ class WarnMessage {
     return WarnMessage(
         identifier: json['identifier'],
         publisher: json['publisher'],
-        source: json['source'],
+        source: WarningSource.fromJson(json['source']),
         sender: json['sender'],
         sent: json['sent'],
         status: json['status'],
@@ -94,7 +96,7 @@ class WarnMessage {
       String publisher, List<Area> areaList) {
     print("Neue WarnMessage wird angelegt...");
     return WarnMessage(
-        source: provider,
+        source: WarningSource.fromString(provider),
         identifier: json["identifier"] ?? "?",
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
@@ -126,7 +128,7 @@ class WarnMessage {
   factory WarnMessage.fromJsonAlertSwiss(Map<String, dynamic> json,
       List<Area> areaList, String instructions, String license) {
     return WarnMessage(
-        source: "Alert Swiss",
+        source: WarningSource.alertSwiss,
         identifier: json["identifier"] ?? "?",
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
