@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/themes/themes.dart';
 
+import 'class_notificationPreferences.dart';
+
 /// handle user preferences. The values written here are default values
 /// the correct values are loaded in loadSettings() from sharedPreferences
 class UserPreferences {
+  @deprecated
   bool notificationWithExtreme = true;
+  @deprecated
   bool notificationWithSevere = true;
+  @deprecated
   bool notificationWithModerate = true;
+  @deprecated
   bool notificationWithMinor = false;
 
   bool shouldNotifyGeneral = true;
 
   bool showStatusNotification = true;
 
+  @deprecated
   Map<String, bool> notificationEventsSettings = new Map();
+  // to save the user settings for which source
+  // the user would like to be notified
+  List<NotificationPreferences> notificationSourceSettings = [];
 
   bool showExtendedMetaData = false; // show more tags in WarningDetailView
   ThemeMode selectedThemeMode = ThemeMode.system;
