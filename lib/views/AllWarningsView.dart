@@ -51,7 +51,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         // call (new) api just for my places/ alert swiss
         await callAPI();
       }
-      checkForMyPlacesWarnings(false, true);
+      checkForMyPlacesWarnings(true);
       sortWarnings(allWarnMessageList);
       loadNotificationSettingsImportanceList();
       setState(() {
