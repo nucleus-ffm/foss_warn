@@ -12,11 +12,6 @@ Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   print("check for warnings");
   // get data first
   await callAPI();
-  if (notificationSettingsImportance.isEmpty) {
-    print("notificationSettingsImportanceList is empty");
-    await loadNotificationSettingsImportanceList();
-    print(notificationSettingsImportance);
-  }
   if (myPlaceList.isEmpty) {
     print("myPlaceList is empty - load list");
     await loadMyPlacesList();
