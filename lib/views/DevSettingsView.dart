@@ -41,7 +41,7 @@ class _DevSettingsState extends State<DevSettings> {
                   bool thereIsNoWarning = true;
                   for (Place myPlace in myPlaceList) {
                     //check if there are warning and if it they are important enough
-                    thereIsNoWarning = myPlace.checkIfThereIsAWarningToNotify();
+                    thereIsNoWarning = !(myPlace.checkIfThereIsAWarningToNotify());
                   }
                   if (thereIsNoWarning) {
                     final snackBar = SnackBar(
