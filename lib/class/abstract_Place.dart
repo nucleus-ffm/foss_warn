@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../enums/Severity.dart';
 import '../main.dart';
-import '../services/listHandler.dart';
 import '../services/updateProvider.dart';
 import 'class_NotificationService.dart';
 import 'class_WarnMessage.dart';
@@ -52,7 +51,7 @@ abstract class Place {
   bool checkIfThereIsAWarningToNotify() {
     for (WarnMessage myWarning in _warnings) {
       if (!myWarning.notified &&
-          notificationSettingsImportance.contains(myWarning.severity)) {
+          _checkIfEventShouldBeNotified(myWarning.source, myWarning.severity)) {
         // there is min. one warning without notification
         return true;
       }
@@ -66,10 +65,10 @@ abstract class Place {
       print(myWarnMessage.headline);
       //print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
       /*print("should notify? :" +
-          ((!myWarnMessage.read && !myWarnMessage.notified) &&
-                  _checkIfEventShouldBeNotified(
-                      myWarnMessage.source, myWarnMessage.severity))
-              .toString());*/
+          (_checkIfEventShouldBeNotified(
+                  myWarnMessage.source, myWarnMessage.severity))
+              .toString());c*/
+      //(!myWarnMessage.read && !myWarnMessage.notified) &&
 
       if ((!myWarnMessage.read && !myWarnMessage.notified) &&
           _checkIfEventShouldBeNotified(
@@ -131,11 +130,17 @@ abstract class Place {
       case Severity.minor:
         return notificationPreferences == NotificationLevel.getUpToMinor;
       case Severity.moderate:
-        return notificationPreferences == NotificationLevel.getUpToModerate;
+        return notificationPreferences == NotificationLevel.getUpToModerate ||
+            notificationPreferences == NotificationLevel.getUpToMinor;
       case Severity.severe:
-        return notificationPreferences == NotificationLevel.getUpToSevere;
+        return notificationPreferences == NotificationLevel.getUpToMinor ||
+            notificationPreferences == NotificationLevel.getUpToModerate ||
+            notificationPreferences == NotificationLevel.getUpToSevere;
       case Severity.extreme:
-        return notificationPreferences == NotificationLevel.getUpToExtreme;
+        return notificationPreferences == NotificationLevel.getUpToMinor ||
+            notificationPreferences == NotificationLevel.getUpToModerate ||
+            notificationPreferences == NotificationLevel.getUpToSevere ||
+            notificationPreferences == NotificationLevel.getUpToExtreme;
       default:
         return true;
     }
