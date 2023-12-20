@@ -33,11 +33,14 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "de.nucleus.foss_warn"
-    compileSdk 33
+    compileSdk 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+
+        // for flutter_local_notification: Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
     }
 
     kotlin {
@@ -51,7 +54,7 @@ android {
     defaultConfig {
         applicationId "de.nucleus.foss_warn"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -95,4 +98,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // for flutter_local_notification plugin
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
 }
