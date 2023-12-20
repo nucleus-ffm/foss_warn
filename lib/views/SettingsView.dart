@@ -121,6 +121,7 @@ class _SettingsState extends State<Settings> {
                     }
                   }),
             ),
+            userPreferences.shouldNotifyGeneral ?
             ListTile(
               title: Row(
                 mainAxisSize: MainAxisSize.max,
@@ -218,7 +219,7 @@ class _SettingsState extends State<Settings> {
                   ),
                 ],
               ),
-            ),
+            ) : SizedBox(),
             Divider(
               height: 50,
               indent: 15.0,
