@@ -30,23 +30,10 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
             TextField(
               cursorColor: Theme.of(context).colorScheme.secondary,
               autofocus: true,
+              style: Theme.of(context).textTheme.titleMedium,
               decoration: new InputDecoration(
                 labelText:
                     AppLocalizations.of(context)!.add_new_place_place_name,
-                labelStyle:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
               ),
               onChanged: (text) {
                 text = text.toLowerCase();
@@ -68,7 +55,7 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                       (place) => ListTile(
                         visualDensity:
                             VisualDensity(horizontal: 0, vertical: -4),
-                        title: Text(place.name),
+                        title: Text(place.name, style: Theme.of(context).textTheme.titleMedium),
                         onTap: () {
                           setState(() {
                             final updater =

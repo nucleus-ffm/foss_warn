@@ -181,6 +181,7 @@ class _SettingsState extends State<Settings> {
                                   callAPI(); // call api and update notification
                                 },
                                 decoration: InputDecoration(),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                             Text("min"),
