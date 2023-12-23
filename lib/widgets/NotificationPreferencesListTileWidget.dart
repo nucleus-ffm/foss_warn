@@ -193,8 +193,8 @@ class _NotificationPreferencesListTileWidgetState
                               children: [
                                 Text("Gering"), // @todo translation
                                 Text("Mittel"),
-                                Text("Schwer"),
-                                Text("Extrem"),
+                                Text("extreme"),
+                                Text("severe")
                               ],
                             ),
                           )

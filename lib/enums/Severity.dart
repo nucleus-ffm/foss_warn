@@ -1,8 +1,8 @@
 enum Severity {
   minor,
   moderate,
-  severe,
-  extreme;
+  extreme,
+  severe;
 
   String toJson() => name;
   static Severity fromJson(String json) => values.byName(json);
