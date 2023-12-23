@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/enums/Severity.dart';
 import 'package:foss_warn/main.dart';
 import '../class/class_notificationPreferences.dart';
-import '../enums/NotificationLevel.dart';
 import '../enums/WarningSource.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -24,16 +24,16 @@ class _NotificationPreferencesListTileWidgetState
   // return the label for the given value
   String getLabelForWarningSeverity(double sliderValue) {
     switch (sliderValue.toInt()) {
-      case 3:
+      case 0:
         return AppLocalizations.of(context)!
             .notification_settings_notify_by_minor;
-      case 2:
-        return AppLocalizations.of(context)!
-            .notification_settings_notify_by_moderate;
       case 1:
         return AppLocalizations.of(context)!
+            .notification_settings_notify_by_moderate;
+      case 2:
+        return AppLocalizations.of(context)!
             .notification_settings_notify_by_severe;
-      case 0:
+      case 3:
         return AppLocalizations.of(context)!
             .notification_settings_notify_by_extreme;
       default:
@@ -64,8 +64,8 @@ class _NotificationPreferencesListTileWidgetState
     }
   }
 
-  /// decide if a source can be disable
-  bool SourceCanBeDisabled(WarningSource source) {
+  /// decide if a source can be disabled
+  bool isTogglableSource(WarningSource source) {
     switch (source) {
       case WarningSource.dwd:
         return true;
@@ -81,38 +81,6 @@ class _NotificationPreferencesListTileWidgetState
         return false;
       default:
         return false;
-    }
-  }
-
-  /// translate notification preferences into slider value
-  double getValueForWarningLevel(NotificationLevel notificationPreferences) {
-    switch (notificationPreferences) {
-      case NotificationLevel.getUpToMinor:
-        return 3;
-      case NotificationLevel.getUpToModerate:
-        return 2;
-      case NotificationLevel.getUpToSevere:
-        return 1;
-      case NotificationLevel.getUpToExtreme:
-        return 0;
-      default:
-        return 3;
-    }
-  }
-
-  /// translate slider value into notification preferences
-  NotificationLevel getNotificationPreferencesForValue(double value) {
-    switch (value.toInt()) {
-      case 0:
-        return NotificationLevel.getUpToExtreme;
-      case 1:
-        return NotificationLevel.getUpToSevere;
-      case 2:
-        return NotificationLevel.getUpToModerate;
-      case 3:
-        return NotificationLevel.getUpToMinor;
-      default:
-        return NotificationLevel.disabled;
     }
   }
 
@@ -133,26 +101,19 @@ class _NotificationPreferencesListTileWidgetState
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 // show a switch when source can be disabled
-                SourceCanBeDisabled(
-                        widget.notificationPreferences.warningSource)
+                isTogglableSource(widget.notificationPreferences.warningSource)
                     ? Switch(
                         value:
-                            widget.notificationPreferences.notificationLevel !=
-                                NotificationLevel.disabled,
+                            widget.notificationPreferences.disabled,
                         onChanged: (value) {
-                          // if source is enabled, set notificationLevel to getUpToMinor
-                          // if source is disabled set notification level to disabled,
-                          // the slider will be hidden when notification
-                          // level is set to disabled
+                          // the slider will be hidden when source is disabled
                           if (value) {
                             setState(() {
-                              widget.notificationPreferences.notificationLevel =
-                                  NotificationLevel.getUpToMinor;
+                              widget.notificationPreferences.disabled = false;
                             });
                           } else {
                             setState(() {
-                              widget.notificationPreferences.notificationLevel =
-                                  NotificationLevel.disabled;
+                              widget.notificationPreferences.disabled = true;
                             });
                           }
                           saveSettings();
@@ -169,10 +130,8 @@ class _NotificationPreferencesListTileWidgetState
                         widget.notificationPreferences.warningSource),
                     style: Theme.of(context).textTheme.bodyMedium),
                 // hide the slider when source is disabled
-                SourceCanBeDisabled(
-                            widget.notificationPreferences.warningSource) &&
-                        widget.notificationPreferences.notificationLevel ==
-                            NotificationLevel.disabled
+                isTogglableSource(widget.notificationPreferences.warningSource) &&
+                        widget.notificationPreferences.disabled
                     ? Container(
                         padding: EdgeInsets.only(top: 5),
                         child: Text(
@@ -191,25 +150,27 @@ class _NotificationPreferencesListTileWidgetState
                               Flexible(
                                 child: Slider(
                                   label: getLabelForWarningSeverity(
-                                      getValueForWarningLevel(widget
+                                      getIndexFromSeverity(widget
                                           .notificationPreferences
                                           .notificationLevel)),
                                   divisions: 3,
                                   min: 0,
                                   max: 3,
-                                  value: getValueForWarningLevel(widget
+                                  value: getIndexFromSeverity(widget
                                       .notificationPreferences
                                       .notificationLevel),
                                   onChanged: (value) {
                                     setState(
                                       () {
+                                        final notificationLevel = Severity.values[value.toInt()];
+
                                         print(widget.notificationPreferences
-                                            .warningSource.name);
+                                            .warningSource.name + ":" + notificationLevel.toString());
+
                                         // update notification level with slider value
                                         widget.notificationPreferences
                                                 .notificationLevel =
-                                            getNotificationPreferencesForValue(
-                                                value);
+                                            notificationLevel;
                                       },
                                     );
                                   },
@@ -230,10 +191,10 @@ class _NotificationPreferencesListTileWidgetState
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Extrem"), // @todo translation
-                                Text("Schwer"),
+                                Text("Gering"), // @todo translation
                                 Text("Mittel"),
-                                Text("Gering"),
+                                Text("Schwer"),
+                                Text("Extrem"),
                               ],
                             ),
                           )

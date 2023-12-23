@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/themes/themes.dart';
 
+import '../enums/Severity.dart';
+import '../enums/WarningSource.dart';
 import 'class_notificationPreferences.dart';
 
 /// handle user preferences. The values written here are default values
@@ -23,7 +25,25 @@ class UserPreferences {
   Map<String, bool> notificationEventsSettings = new Map();
   // to save the user settings for which source
   // the user would like to be notified
-  List<NotificationPreferences> notificationSourceSettings = [];
+  List<NotificationPreferences> notificationSourceSettings = _getDefaultValueForNotificationSourceSettings();
+
+  static List<NotificationPreferences> _getDefaultValueForNotificationSourceSettings() {
+    List<NotificationPreferences> temp = [];
+
+    for(WarningSource source in WarningSource.values) {
+      if(source == WarningSource.dwd || source == WarningSource.lhp) {
+        temp.add(NotificationPreferences(
+            warningSource: source,
+            notificationLevel: Severity.severe));
+      } else {
+        temp.add(NotificationPreferences(
+            warningSource: source,
+            notificationLevel: Severity.minor));
+      }
+    }
+
+    return temp;
+  }
 
   bool showExtendedMetaData = false; // show more tags in WarningDetailView
   ThemeMode selectedThemeMode = ThemeMode.system;

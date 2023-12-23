@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/enums/NotificationLevel.dart';
+import 'package:foss_warn/class/class_notificationPreferences.dart';
 import 'package:foss_warn/enums/WarningSource.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:provider/provider.dart';
@@ -121,28 +121,10 @@ abstract class Place {
   /// check if the user wants to be notified for
   /// the given source and the given severity
   bool _checkIfEventShouldBeNotified(WarningSource source, Severity severity) {
-    NotificationLevel? notificationPreferences = userPreferences
+    NotificationPreferences notificationSourceSetting = userPreferences
         .notificationSourceSettings
-        .firstWhere((element) => element.warningSource == source)
-        .notificationLevel;
+        .firstWhere((element) => element.warningSource == source);
 
-    switch (severity) {
-      case Severity.minor:
-        return notificationPreferences == NotificationLevel.getUpToMinor;
-      case Severity.moderate:
-        return notificationPreferences == NotificationLevel.getUpToModerate ||
-            notificationPreferences == NotificationLevel.getUpToMinor;
-      case Severity.severe:
-        return notificationPreferences == NotificationLevel.getUpToMinor ||
-            notificationPreferences == NotificationLevel.getUpToModerate ||
-            notificationPreferences == NotificationLevel.getUpToSevere;
-      case Severity.extreme:
-        return notificationPreferences == NotificationLevel.getUpToMinor ||
-            notificationPreferences == NotificationLevel.getUpToModerate ||
-            notificationPreferences == NotificationLevel.getUpToSevere ||
-            notificationPreferences == NotificationLevel.getUpToExtreme;
-      default:
-        return true;
-    }
+      return notificationSourceSetting.disabled == false && getIndexFromSeverity(notificationSourceSetting.notificationLevel) >= getIndexFromSeverity(severity);
   }
 }

@@ -7,7 +7,6 @@ import '../main.dart';
 int convertSeverityToInt(Severity severity) {
   switch (severity) {
     case Severity.minor:
-    case Severity.other:
       return 0;
     case Severity.moderate:
       return 1;

@@ -64,7 +64,7 @@ class WarnMessage {
     return WarnMessage(
         identifier: json['identifier'],
         publisher: json['publisher'],
-        source: WarningSource.fromJson(json['source']),
+        source: WarningSource.fromString(json['source'].toString()),
         sender: json['sender'],
         sent: json['sent'],
         status: json['status'],

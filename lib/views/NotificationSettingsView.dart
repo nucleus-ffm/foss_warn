@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/class/class_notificationPreferences.dart';
-import 'package:foss_warn/enums/NotificationLevel.dart';
-import 'package:foss_warn/enums/WarningSource.dart';
 import 'package:foss_warn/widgets/NotificationPreferencesListTileWidget.dart';
 
 import '../main.dart';
@@ -20,33 +17,6 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    // fill notificationSourceSettings with init data if empty
-    if (userPreferences.notificationSourceSettings.isEmpty) {
-      userPreferences.notificationSourceSettings.clear();
-      print("User Preferences notificationSourceSettings is empty");
-      userPreferences.notificationSourceSettings.add(NotificationPreferences(
-          warningSource: WarningSource.other,
-          notificationLevel: NotificationLevel.getUpToMinor));
-      userPreferences.notificationSourceSettings.add(NotificationPreferences(
-          warningSource: WarningSource.mowas,
-          notificationLevel: NotificationLevel.getUpToMinor));
-      userPreferences.notificationSourceSettings.add(NotificationPreferences(
-          warningSource: WarningSource.biwapp,
-          notificationLevel: NotificationLevel.getUpToMinor));
-      userPreferences.notificationSourceSettings.add(NotificationPreferences(
-          warningSource: WarningSource.katwarn,
-          notificationLevel: NotificationLevel.getUpToMinor));
-      userPreferences.notificationSourceSettings.add(NotificationPreferences(
-          warningSource: WarningSource.dwd,
-          notificationLevel: NotificationLevel.getUpToSevere));
-      userPreferences.notificationSourceSettings.add(NotificationPreferences(
-          warningSource: WarningSource.lhp,
-          notificationLevel: NotificationLevel.getUpToSevere));
-      userPreferences.notificationSourceSettings.add(NotificationPreferences(
-          warningSource: WarningSource.alertSwiss,
-          notificationLevel: NotificationLevel.getUpToMinor));
-    }
-
     return Scaffold(
       appBar: AppBar(
         title:

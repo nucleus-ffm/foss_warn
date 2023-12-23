@@ -1,9 +1,8 @@
 enum Severity {
   minor,
   moderate,
-  extreme,
   severe,
-  other;
+  extreme;
 
   String toJson() => name;
   static Severity fromJson(String json) => values.byName(json);
@@ -16,5 +15,17 @@ Severity getSeverity(String severity) {
       return sev;
     }
   }
-  return Severity.other;
+
+  return Severity.minor;
+}
+
+double getIndexFromSeverity(Severity notificationLevel) {
+  final severities = Severity.values;
+  for (int i = 0; i < severities.length; i++) {
+    if (severities[i] == notificationLevel) {
+      return i.toDouble();
+    }
+  }
+
+  return 0;
 }
