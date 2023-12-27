@@ -19,8 +19,8 @@ int convertSourceToInt(String source) {
 
 void sortWarnings(List<WarnMessage> list) {
   if (userPreferences.sortWarningsBy == "severity") {
-    list.sort((a, b) => getIndexFromSeverity(b.severity)
-        .compareTo(getIndexFromSeverity(a.severity)));
+    list.sort((a, b) => Severity.getIndexFromSeverity(b.severity)
+        .compareTo(Severity.getIndexFromSeverity(a.severity)));
   } else if (userPreferences.sortWarningsBy == "date") {
     list.sort((a, b) => b.sent.compareTo(a.sent));
   } else if (userPreferences.sortWarningsBy == "source") {

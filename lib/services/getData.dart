@@ -93,7 +93,7 @@ Future getData(bool useEtag) async {
               category: _data[i]["info"][0]["category"][0] ?? "?",
               event: _data[i]["info"][0]["event"] ?? "?",
               urgency: _data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(
+              severity: Severity.getSeverity(
                   _data[i]["info"][0]["severity"].toString().toLowerCase()),
               certainty: getCertainty(
                   _data[i]["info"][0]["certainty"].toString().toLowerCase()),
@@ -189,7 +189,7 @@ Future getData(bool useEtag) async {
               category: _data[i]["info"][0]["category"][0] ?? "?",
               event: _data[i]["info"][0]["event"] ?? "?",
               urgency: _data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(
+              severity: Severity.getSeverity(
                   _data[i]["info"][0]["severity"].toString().toLowerCase()),
               certainty: getCertainty(
                   _data[i]["info"][0]["certainty"].toString().toLowerCase()),
@@ -287,7 +287,7 @@ Future getData(bool useEtag) async {
               category: _data[i]["info"][0]["category"][0] ?? "?",
               event: _data[i]["info"][0]["event"] ?? "?",
               urgency: _data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(
+              severity: Severity.getSeverity(
                   _data[i]["info"][0]["severity"].toString().toLowerCase()),
               certainty: getCertainty(
                   _data[i]["info"][0]["certainty"].toString().toLowerCase()),
@@ -387,7 +387,7 @@ Future getData(bool useEtag) async {
               category: _data[i]["info"][0]["category"][0] ?? "?",
               event: _data[i]["info"][0]["event"] ?? "?",
               urgency: _data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(
+              severity: Severity.getSeverity(
                   _data[i]["info"][0]["severity"].toString().toLowerCase()),
               certainty: getCertainty(
                   _data[i]["info"][0]["certainty"].toString().toLowerCase()),
@@ -483,7 +483,7 @@ Future getData(bool useEtag) async {
               category: _data[i]["info"][0]["category"][0] ?? "?",
               event: _data[i]["info"][0]["event"] ?? "?",
               urgency: _data[i]["info"][0]["urgency"] ?? "?",
-              severity: getSeverity(
+              severity: Severity.getSeverity(
                   _data[i]["info"][0]["severity"].toString().toLowerCase()),
               certainty: getCertainty(
                   _data[i]["info"][0]["certainty"].toString().toLowerCase()),
