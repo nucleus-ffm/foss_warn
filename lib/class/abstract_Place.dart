@@ -105,7 +105,7 @@ abstract class Place {
 
   /// set the read and notified status from all warnings to false
   /// used for debug purpose
-  /// @context to update view
+  /// [@context] to update view
   void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = false;
@@ -116,15 +116,25 @@ abstract class Place {
     saveMyPlacesList();
   }
 
-  /// return [true] or false if the warning should be ignored or not
+  /// Return [true] if the user wants a notification - [false] if not.
+  ///
   /// The source should be listed in the List notificationSourceSettings.
   /// check if the user wants to be notified for
   /// the given source and the given severity
+  ///
+  /// example:
+  ///
+  /// Warning severity | Notification setting | notification?   <br>
+  /// Moderate (2)     | Minor (3)            | 3 >= 2 => true  <br>
+  /// Minor (3)        | Moderate (2)         | 2 >= 3 => false
   bool _checkIfEventShouldBeNotified(WarningSource source, Severity severity) {
     NotificationPreferences notificationSourceSetting = userPreferences
         .notificationSourceSettings
         .firstWhere((element) => element.warningSource == source);
 
-      return notificationSourceSetting.disabled == false && getIndexFromSeverity(notificationSourceSetting.notificationLevel) >= getIndexFromSeverity(severity);
+    return notificationSourceSetting.disabled == false &&
+        Severity.getIndexFromSeverity(
+                notificationSourceSetting.notificationLevel) >=
+            Severity.getIndexFromSeverity(severity);
   }
 }
