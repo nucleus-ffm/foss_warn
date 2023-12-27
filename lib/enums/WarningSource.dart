@@ -25,4 +25,15 @@ enum WarningSource {
         return WarningSource.other;
     }
   }
+
+  /// used to sort warning
+  static int getIndexFromWarningSource(WarningSource source) {
+    final sources = WarningSource.values;
+    for (int i = 0; i < sources.length; i++) {
+      if (sources[i] == source) {
+        return i.toInt();
+      }
+    }
+    return 0;
+  }
 }
