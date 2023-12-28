@@ -1,10 +1,10 @@
 enum WarningSource {
-  mowas,
-  biwapp,
-  katwarn,
-  dwd,
-  lhp,
   alertSwiss,
+  biwapp,
+  dwd,
+  katwarn,
+  lhp,
+  mowas
   other;
 
   String toJson() => name;
@@ -13,14 +13,14 @@ enum WarningSource {
     switch (name.toUpperCase()) {
       case "ALERT SWISS":
         return WarningSource.alertSwiss;
-      case "MOWAS":
-        return WarningSource.mowas;
-      case "KATWARN":
-        return WarningSource.katwarn;
       case "DWD":
         return WarningSource.dwd;
+      case "KATWARN":
+        return WarningSource.katwarn;
       case "LHP":
-        return WarningSource.lhp;
+        return WarningSource.lhp;  
+      case "MOWAS":
+        return WarningSource.mowas;
       default:
         return WarningSource.other;
     }
@@ -34,6 +34,8 @@ enum WarningSource {
         return i.toInt();
       }
     }
-    return 0;
+
+    // default return value: index of WarningSource.other
+    return 6;
   }
 }
