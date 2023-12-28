@@ -9,8 +9,8 @@ enum WarningSource {
 
   String toJson() => name;
 
-  static WarningSource fromString(String name) {
-    switch (name.toUpperCase()) {
+  static WarningSource fromString(String source) {
+    switch (source.toUpperCase()) {
       case "ALERT SWISS":
         return WarningSource.alertSwiss;
       case "MOWAS":
@@ -19,6 +19,8 @@ enum WarningSource {
         return WarningSource.katwarn;
       case "DWD":
         return WarningSource.dwd;
+      case "BIWAPP":
+        return WarningSource.biwapp;
       case "LHP":
         return WarningSource.lhp;
       default:
