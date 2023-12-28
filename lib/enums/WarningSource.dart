@@ -36,6 +36,7 @@ enum WarningSource {
         return i.toInt();
       }
     }
-    return 0;
+    // default return value: index of WarningSource.other
+    return 6;
   }
 }
