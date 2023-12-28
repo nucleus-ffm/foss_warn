@@ -7,6 +7,16 @@ enum Severity {
   String toJson() => name;
   static Severity fromJson(String json) => values.byName(json);
 
+  /// extract the severity from the string and return the corresponding enum
+  static Severity fromString(String severity) {
+    for (Severity sev in Severity.values) {
+      if (sev.name == severity) {
+        return sev;
+      }
+    }
+    return Severity.minor;
+  }
+
   static double getIndexFromSeverity(Severity notificationLevel) {
     final severities = Severity.values;
     for (int i = 0; i < severities.length; i++) {
@@ -17,18 +27,6 @@ enum Severity {
 
     return 0;
   }
-
-  /// extract the severity from the string and return the corresponding enum
-  static Severity getSeverity(String severity) {
-    for (Severity sev in Severity.values) {
-      if (sev.name == severity) {
-        return sev;
-      }
-    }
-
-    return Severity.minor;
-  }
-
 }
 
 
