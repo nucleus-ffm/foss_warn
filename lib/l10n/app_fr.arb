@@ -428,5 +428,15 @@
   "legacy_warning_dialog_title": "Version mise à jour à",
   "@legacy_warning_dialog_title": {},
   "legacy_warning_dialog_text": "FOSS Warn a été mis à jour vers une nouvelle version améliorant la structure interne de l'application. Ce changement a entraîné la réinitialisation de tous les paramètres et des emplacements sauvegardés. Veuillez vérifier vos paramètres et ajouter à nouveau vos emplacements souhaités.\n\nNous nous excusons pour tout inconvénient.",
-  "@legacy_warning_dialog_text": {}
+  "@legacy_warning_dialog_text": {},
+  "notification_settings_slidervalue_extreme": "extrême",
+  "@notification_settings_slidervalue_extreme": {},
+  "notification_settings_slidervalue_moderate": "modéré",
+  "@notification_settings_slidervalue_moderate": {},
+  "notification_settings_source_disabled": "Source désactivée - vous ne recevrez pas de notification",
+  "@notification_settings_source_disabled": {},
+  "notification_settings_slidervalue_severe": "sévères",
+  "@notification_settings_slidervalue_severe": {},
+  "notification_settings_slidervalue_minor": "mineurs",
+  "@notification_settings_slidervalue_minor": {}
 }
