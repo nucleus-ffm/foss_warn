@@ -15,7 +15,8 @@ enum Severity {
       }
     }
 
-    return 0;
+    // default return value: index of Severity.minor
+    return 3;
   }
 
   /// extract the severity from the string and return the corresponding enum
