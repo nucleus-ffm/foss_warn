@@ -106,7 +106,7 @@ class WarnMessage {
         category: json["info"][0]["category"][0] ?? "?",
         event: json["info"][0]["event"] ?? "?",
         urgency: json["info"][0]["urgency"] ?? "?",
-        severity: Severity.getSeverity(json["info"][0]["severity"].toString().toLowerCase()),
+        severity: Severity.fromString(json["info"][0]["severity"].toString().toLowerCase()),
         certainty: getCertainty(json["info"][0]["certainty"].toString().toLowerCase()),
         effective: json["info"][0]["effective"] ?? "",
         onset: json["info"][0]["onset"] ?? "",
@@ -138,7 +138,7 @@ class WarnMessage {
         category: json["event"] ?? "?", // missing
         event: json["event"] ?? "?",
         urgency: "?",
-        severity: Severity.getSeverity(json["severity"]),
+        severity: Severity.fromString(json["severity"]),
         certainty: getCertainty(""), // missing
         effective: "", // missing
         onset: json["onset"] ?? "", // m
