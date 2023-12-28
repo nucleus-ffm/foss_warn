@@ -13,22 +13,21 @@ enum WarningSource {
     switch (source.toUpperCase()) {
       case "ALERT SWISS":
         return WarningSource.alertSwiss;
-      case "MOWAS":
-        return WarningSource.mowas;
-      case "KATWARN":
-        return WarningSource.katwarn;
+      case "BIWAPP":
+        return WarningSource.biwapp;  
       case "DWD":
         return WarningSource.dwd;
-      case "BIWAPP":
-        return WarningSource.biwapp;
+      case "KATWARN":
+        return WarningSource.katwarn;  
       case "LHP":
-        return WarningSource.lhp;
+        return WarningSource.lhp;  
+      case "MOWAS":
+        return WarningSource.mowas;      
       default:
         return WarningSource.other;
     }
   }
 
-  /// used to sort warning
   static int getIndexFromWarningSource(WarningSource source) {
     final sources = WarningSource.values;
     for (int i = 0; i < sources.length; i++) {
@@ -36,6 +35,7 @@ enum WarningSource {
         return i.toInt();
       }
     }
+    
     // default return value: index of WarningSource.other
     return 6;
   }
