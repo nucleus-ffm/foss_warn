@@ -1,10 +1,10 @@
 enum WarningSource {
-  mowas,
-  biwapp,
-  katwarn,
-  dwd,
-  lhp,
   alertSwiss,
+  biwapp,
+  dwd,
+  katwarn,
+  lhp,
+  mowas,
   other;
 
   String toJson() => name;

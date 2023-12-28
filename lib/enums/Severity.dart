@@ -25,7 +25,8 @@ enum Severity {
       }
     }
 
-    return 0;
+    // default return value: index of Severity.minor
+    return 3;
   }
 }
 
