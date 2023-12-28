@@ -196,7 +196,7 @@ class NotificationService {
           "Statusanzeige",
           description: "Zeit den aktuellen Status der Hintergrundupdates an.",
           groupId: "de.nucleus.foss_warn.notifications_other",
-          importance: Importance.max,
+          importance: Importance.low,
         ));
 
         await androidNotificationPlugin
@@ -205,7 +205,7 @@ class NotificationService {
           "Sonstiges",
           description: "Sonstige Benachrichtigungen",
           groupId: "de.nucleus.foss_warn.notifications_other",
-          importance: Importance.max,
+          importance: Importance.defaultImportance,
         ));
       } catch (e) {
         print("Error while creating notification channels: " + e.toString());
