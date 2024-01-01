@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/widgets/NotificationPreferencesListTileWidget.dart';
+import 'package:foss_warn/widgets/dialogs/WarningSeverityExplanation.dart';
 
 import '../main.dart';
 
@@ -35,14 +36,35 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 padding: settingsTileListPadding,
                 child: Text(
                     "Hier können Sie einstellen, ab welcher Warnstufe Sie für"
-                    " welche Warnquelle eine Benachrichtigung erhalten möchten. "),
+                    " welche Warnquelle eine Benachrichtigung erhalten möchten."), //notification_settings_description
               ),
               SizedBox(
                 height: 10,
               ),
-              Padding(
+              Container(
                 padding: settingsTileListPadding,
-                child: Divider(),
+                child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return WarningSeverityExplanation();
+                        },
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.info),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                            "Erklärung zu den Warnstufen"), // notification_settings_open_severity_explanation
+                      ],
+                    )),
+              ),
+              SizedBox(
+                height: 10,
               ),
               // generate the settings tiles
               ...userPreferences.notificationSourceSettings
