@@ -58,7 +58,7 @@ class _NotificationPreferencesListTileWidgetState
         return AppLocalizations.of(context)!.source_alertswiss_description;
       case WarningSource.other:
         return "Generelle Einstellung, die verwendet wird, wenn keine"
-            " genauere Einstellung getroffen wurde.";
+            " genauere Einstellung getroffen wurde."; //source_other_description
       default:
         return "Error";
     }
@@ -91,114 +91,123 @@ class _NotificationPreferencesListTileWidgetState
         !userPreferences.activateAlertSwiss) {
       return SizedBox();
     } else {
-      return ListTile(
-        contentPadding: settingsTileListPadding,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              widget.notificationPreferences.warningSource.name.toUpperCase(),
-              style: Theme.of(context).textTheme.titleMedium,
+      return Column(
+        children: [
+          Padding(
+            padding: settingsTileListPadding,
+            child: Divider(),
+          ),
+          ListTile(
+            contentPadding: settingsTileListPadding,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.notificationPreferences.warningSource.name.toUpperCase(),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                // show a switch when source can be disabled
+                if (_isTogglableSource(
+                    widget.notificationPreferences.warningSource))
+                  Switch(
+                    value: !widget.notificationPreferences.disabled,
+                    onChanged: (value) {
+                      // the slider will be hidden when source is disabled
+                      setState(() {
+                        widget.notificationPreferences.disabled = !value;
+                      });
+                      saveSettings();
+                    },
+                  )
+                else
+                  SizedBox(),
+              ],
             ),
-            // show a switch when source can be disabled
-            if (_isTogglableSource(
-                widget.notificationPreferences.warningSource))
-              Switch(
-                value: !widget.notificationPreferences.disabled,
-                onChanged: (value) {
-                  // the slider will be hidden when source is disabled
-                  setState(() {
-                    widget.notificationPreferences.disabled = !value;
-                  });
-                  saveSettings();
-                },
-              )
-            else
-              SizedBox(),
-          ],
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-                _getDescriptionForEventSetting(
-                    widget.notificationPreferences.warningSource),
-                style: Theme.of(context).textTheme.bodyMedium),
-            // hide the slider when source is disabled
-            if (_isTogglableSource(
-                    widget.notificationPreferences.warningSource) &&
-                widget.notificationPreferences.disabled)
-              Container(
-                padding: EdgeInsets.only(top: 5),
-                child: Text(
-                    "Source disabled - you won't get a notification"), //@todo translate
-              )
-            else
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    _getDescriptionForEventSetting(
+                        widget.notificationPreferences.warningSource),
+                    style: Theme.of(context).textTheme.bodyMedium),
+                // hide the slider when source is disabled
+                if (_isTogglableSource(
+                        widget.notificationPreferences.warningSource) &&
+                    widget.notificationPreferences.disabled)
+                  Container(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Text(
+                        "Source disabled - you won't get a notification"), //@todo translate
+                  )
+                else
+                  Column(
                     children: [
-                      Icon(
-                        Icons.notifications_active,
-                        color: Colors.red,
-                      ),
-                      Flexible(
-                        child: Slider(
-                          label: getLabelForWarningSeverity(
-                              Severity.getIndexFromSeverity(widget
-                                  .notificationPreferences.notificationLevel)),
-                          divisions: 3,
-                          min: 0,
-                          max: 3,
-                          value: Severity.getIndexFromSeverity(
-                              widget.notificationPreferences.notificationLevel),
-                          onChanged: (value) {
-                            setState(
-                              () {
-                                final notificationLevel =
-                                    Severity.values[value.toInt()];
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(
+                            Icons.notifications_active,
+                            color: Colors.red,
+                          ),
+                          Flexible(
+                            child: Slider(
+                              label: getLabelForWarningSeverity(
+                                  Severity.getIndexFromSeverity(widget
+                                      .notificationPreferences.notificationLevel)),
+                              divisions: 3,
+                              min: 0,
+                              max: 3,
+                              value: Severity.getIndexFromSeverity(
+                                  widget.notificationPreferences.notificationLevel),
+                              onChanged: (value) {
+                                setState(
+                                  () {
+                                    final notificationLevel =
+                                        Severity.values[value.toInt()];
 
-                                print(widget.notificationPreferences
-                                        .warningSource.name +
-                                    ":" +
-                                    notificationLevel.toString());
+                                    print(widget.notificationPreferences
+                                            .warningSource.name +
+                                        ":" +
+                                        notificationLevel.toString());
 
-                                // update notification level with slider value
-                                widget.notificationPreferences
-                                    .notificationLevel = notificationLevel;
+                                    // update notification level with slider value
+                                    widget.notificationPreferences
+                                        .notificationLevel = notificationLevel;
+                                  },
+                                );
                               },
-                            );
-                          },
-                          onChangeEnd: (value) {
-                            // save settings, after change is complete
-                            saveSettings();
-                          },
+                              onChangeEnd: (value) {
+                                // save settings, after change is complete
+                                saveSettings();
+                              },
+                            ),
+                          ),
+                          Icon(
+                            Icons.notifications,
+                            color: Colors.orangeAccent,
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, right: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //@todo translation
+                            Text("extreme"), // notification_settings_slidervalue_extreme
+                            Text("severe"), // notification_settings_slidervalue_severe
+                            Text("moderate"), // notification_settings_slidervalue_moderate
+                            Text("minor"), // notification_settings_slidervalue_minor
+                          ],
                         ),
-                      ),
-                      Icon(
-                        Icons.notifications,
-                        color: Colors.orangeAccent,
-                      ),
+                      )
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("extreme"), // @todo translation
-                        Text("severe"),
-                        Text("moderate"),
-                        Text("minor"),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-          ],
-        ),
+              ],
+            ),
+          ),
+        ],
       );
     }
   }
