@@ -450,5 +450,11 @@
   "notification_settings_description": "This allows you to set the alert level at which you want to receive an alert and for which alert source.",
   "@notification_settings_description": {},
   "warning_severity_explanation_dialog_severe_description": "Significant threat to life or property. May affect your health, property and/or public infrastructure.",
-  "@warning_severity_explanation_dialog_severe_description": {}
+  "@warning_severity_explanation_dialog_severe_description": {},
+  "warning_severity_explanation_dialog_moderate_description": "A warning of a possible threat to life or property. Can severely disrupt normal daily routines.",
+  "@warning_severity_explanation_dialog_moderate_description": {},
+  "warning_severity_explanation_dialog_minor_description": "Minimal to no known threat to life or property. May interfere with normal daily activities.",
+  "@warning_severity_explanation_dialog_minor_description": {},
+  "warning_severity_explanation_dialog_extreme_description": "Extraordinary threat to life or property. May have a significant short-term impact on your health, property and/or public infrastructure.",
+  "@warning_severity_explanation_dialog_extreme_description": {}
 }
