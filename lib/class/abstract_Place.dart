@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/class/class_notificationPreferences.dart';
+import 'package:foss_warn/enums/WarningSource.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:provider/provider.dart';
 
+import '../enums/Severity.dart';
 import '../main.dart';
-import '../services/listHandler.dart';
 import '../services/updateProvider.dart';
 import 'class_NotificationService.dart';
 import 'class_WarnMessage.dart';
@@ -13,17 +15,23 @@ abstract class Place {
   List<WarnMessage> _warnings = [];
   String eTag = "";
 
-  Place({required String name, required List<WarnMessage> warnings, required String eTag}) : _warnings = warnings, _name = name {
+  Place(
+      {required String name,
+      required List<WarnMessage> warnings,
+      required String eTag})
+      : _warnings = warnings,
+        _name = name {
     eTag = eTag;
   }
 
   String get name => _name;
-  int get countWarnings=> this.warnings.length;
+  int get countWarnings => this.warnings.length;
   List<WarnMessage> get warnings => _warnings;
 
   // control the list for warnings
   void addWarningToList(WarnMessage warnMessage) => _warnings.add(warnMessage);
-  void removeWarningFromList(WarnMessage warnMessage) => _warnings.remove(warnMessage);
+  void removeWarningFromList(WarnMessage warnMessage) =>
+      _warnings.remove(warnMessage);
 
   // check if all warnings in `warnings` are
   // also in the alreadyReadWarnings list
@@ -43,7 +51,7 @@ abstract class Place {
   bool checkIfThereIsAWarningToNotify() {
     for (WarnMessage myWarning in _warnings) {
       if (!myWarning.notified &&
-          notificationSettingsImportance.contains(myWarning.severity)) {
+          _checkIfEventShouldBeNotified(myWarning.source, myWarning.severity)) {
         // there is min. one warning without notification
         return true;
       }
@@ -55,13 +63,16 @@ abstract class Place {
   Future<void> sendNotificationForWarnings() async {
     for (WarnMessage myWarnMessage in _warnings) {
       print(myWarnMessage.headline);
-      print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
-      print("should notify? :" +
-          ((!myWarnMessage.read && !myWarnMessage.notified) &&
-                  _checkIfEventShouldBeNotified(myWarnMessage.event))
-              .toString());
+      //print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
+      /*print("should notify? :" +
+          (_checkIfEventShouldBeNotified(
+                  myWarnMessage.source, myWarnMessage.severity))
+              .toString());c*/
+      //(!myWarnMessage.read && !myWarnMessage.notified) &&
+
       if ((!myWarnMessage.read && !myWarnMessage.notified) &&
-          _checkIfEventShouldBeNotified(myWarnMessage.event)) {
+          _checkIfEventShouldBeNotified(
+              myWarnMessage.source, myWarnMessage.severity)) {
         // Alert is not already read or shown as notification
         // set notified to true to avoid sending notification twice
         myWarnMessage.notified = true;
@@ -86,6 +97,7 @@ abstract class Place {
   void markAllWarningsAsRead(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
+      NotificationService.cancelOneNotification(myWarnMessage.identifier.hashCode);
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
@@ -94,7 +106,7 @@ abstract class Place {
 
   /// set the read and notified status from all warnings to false
   /// used for debug purpose
-  /// @context to update view
+  /// [@context] to update view
   void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = false;
@@ -105,18 +117,25 @@ abstract class Place {
     saveMyPlacesList();
   }
 
-  /// return [true] or false if the warning should be irgnored or not
-  /// The event could be listed in the map notificationEventsSettings.
-  /// if it is listed in the map, return the stored value for the event
-  /// If not return as default true
-  bool _checkIfEventShouldBeNotified(String event) {
-    if (userPreferences.notificationEventsSettings[event] != null) {
-      print(event + " " + userPreferences.notificationEventsSettings[event]!.toString());
-      return userPreferences.notificationEventsSettings[event]!;
-    } else {
-      return true;
-    }
-  }
+  /// Return [true] if the user wants a notification - [false] if not.
+  ///
+  /// The source should be listed in the List notificationSourceSettings.
+  /// check if the user wants to be notified for
+  /// the given source and the given severity
+  ///
+  /// example:
+  ///
+  /// Warning severity | Notification setting | notification?   <br>
+  /// Moderate (2)     | Minor (3)            | 3 >= 2 => true  <br>
+  /// Minor (3)        | Moderate (2)         | 2 >= 3 => false
+  bool _checkIfEventShouldBeNotified(WarningSource source, Severity severity) {
+    NotificationPreferences notificationSourceSetting = userPreferences
+        .notificationSourceSettings
+        .firstWhere((element) => element.warningSource == source);
 
-  Map<String, dynamic> toJson();
+    return notificationSourceSetting.disabled == false &&
+        Severity.getIndexFromSeverity(
+                notificationSourceSetting.notificationLevel) >=
+            Severity.getIndexFromSeverity(severity);
+  }
 }

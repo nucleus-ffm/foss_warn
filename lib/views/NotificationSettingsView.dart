@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/widgets/NotificationPreferencesListTileWidget.dart';
+import 'package:foss_warn/widgets/dialogs/WarningSeverityExplanation.dart';
 
-import '../class/class_alarmManager.dart';
 import '../main.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
 
 class NotificationSettingsView extends StatefulWidget {
   const NotificationSettingsView({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class NotificationSettingsView extends StatefulWidget {
 
 class _NotificationSettingsViewState extends State<NotificationSettingsView> {
   final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,200 +29,48 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 10),
-              Text(
-                AppLocalizations.of(context)!.notification_settings_notify_by,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              SizedBox(
+                height: 10,
               ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    !.notification_settings_notify_by_extreme),
-                trailing: Switch(
-                    value: userPreferences.notificationWithExtreme,
-                    onChanged: (value) {
-                      if (userPreferences.shouldNotifyGeneral) {
-                        setState(() {
-                          userPreferences.notificationWithExtreme = value;
-                          saveNotificationSettingsImportanceList();
-                          AlarmManager().cancelBackgroundTask();
-                          AlarmManager().registerBackgroundTask();
-                        });
-                      } else {
-                        print("Background notification is disabled");
-                      }
-                    }),
-              ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    !.notification_settings_notify_by_severe),
-                trailing: Switch(
-                    value: userPreferences.notificationWithSevere,
-                    onChanged: (value) {
-                      if (userPreferences.shouldNotifyGeneral) {
-                        setState(() {
-                          userPreferences.notificationWithSevere = value;
-                          saveNotificationSettingsImportanceList();
-                          AlarmManager().cancelBackgroundTask();
-                          AlarmManager().registerBackgroundTask();
-                        });
-                      } else {
-                        print("Background notification is disabled");
-                      }
-                    }),
-              ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    !.notification_settings_notify_by_moderate),
-                trailing: Switch(
-                   value: userPreferences.notificationWithModerate,
-                    onChanged: (value) {
-                      if (userPreferences.shouldNotifyGeneral) {
-                        setState(() {
-                          userPreferences.notificationWithModerate = value;
-                          saveNotificationSettingsImportanceList();
-                          AlarmManager().cancelBackgroundTask();
-                          AlarmManager().registerBackgroundTask();
-                        });
-                      } else {
-                        print("Background notification is disabled");
-                      }
-                    }),
-              ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    !.notification_settings_notify_by_minor),
-                trailing: Switch(
-                    value: userPreferences.notificationWithMinor,
-                    onChanged: (value) {
-                      if (userPreferences.shouldNotifyGeneral) {
-                        setState(() {
-                          userPreferences.notificationWithMinor = value;
-                          saveNotificationSettingsImportanceList();
-                          AlarmManager().cancelBackgroundTask();
-                          AlarmManager().registerBackgroundTask();
-                        });
-                      } else {
-                        print("Background notification is disabled");
-                      }
-                    }),
+              Container(
+                padding: settingsTileListPadding,
+                child: Text(
+                    AppLocalizations.of(context)!.notification_settings_description), //
               ),
               SizedBox(
                 height: 10,
               ),
-              Text(
-                "DWD",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              ListTile(
-                  contentPadding: settingsTileListPadding,
-                  title: Text(AppLocalizations.of(context)
-                      !.notification_settings_thunderstorm),
-                  trailing: Switch(
-                      value: userPreferences.notificationEventsSettings[
-                                  "STARKES GEWITTER"] !=
-                              null
-                          ? userPreferences
-                              .notificationEventsSettings["STARKES GEWITTER"]!
-                          : true,
-                      onChanged: (value) {
-                        setState(() {
-                          userPreferences.notificationEventsSettings
-                              .putIfAbsent("STARKES GEWITTER", () => value);
-                          userPreferences.notificationEventsSettings
-                              .update("STARKES GEWITTER", (newValue) => value);
-                        });
-                        saveSettings();
-                        print(userPreferences.notificationEventsSettings);
-                      })),
-              ListTile(
-                  contentPadding: settingsTileListPadding,
-                  title: Text(AppLocalizations.of(context)
-                      !.notification_settings_strong_weather),
-                  trailing: Switch(
-                      value: userPreferences.notificationEventsSettings[
-                                  "STARKES WETTER"] !=
-                              null
-                          ? userPreferences
-                              .notificationEventsSettings["STARKES WETTER"]!
-                          : true,
-                      onChanged: (value) {
-                        setState(() {
-                          userPreferences.notificationEventsSettings
-                              .putIfAbsent("STARKES WETTER", () => value);
-                          userPreferences.notificationEventsSettings
-                              .update("STARKES WETTER", (newValue) => value);
-                        });
-                        saveSettings();
-                      })),
-              ListTile(
-                  contentPadding: settingsTileListPadding,
-                  title: Text(AppLocalizations.of(context)
-                      !.notification_settings_everything_else),
-                  trailing: Switch(
-                      value: true,
-                      onChanged: null)),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Mowas",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              ListTile(
-                  contentPadding: settingsTileListPadding,
-                  title: Text(AppLocalizations.of(context)
-                      !.notification_settings_everything),
-                  trailing: Switch(
-                      value: true,
-                      onChanged: null)),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "BIWAPP",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    !.notification_settings_everything),
-                trailing: Switch(
-                    value: true,
-                    onChanged: null),
+              Container(
+                padding: settingsTileListPadding,
+                child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return WarningSeverityExplanation();
+                        },
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.info),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                            AppLocalizations.of(context)!.notification_settings_open_severity_explanation), //
+                      ],
+                    )),
               ),
               SizedBox(
                 height: 10,
               ),
-              Text(
-                "KATWARN",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              ListTile(
-                contentPadding: settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)
-                    !.notification_settings_everything),
-                trailing: Switch(
-                    value: true,
-                    onChanged: null),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "LHP",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              ListTile(
-                  contentPadding: settingsTileListPadding,
-                  title: Text(AppLocalizations.of(context)
-                      !.notification_settings_everything),
-                  trailing: Switch(
-                      value: true,
-                      onChanged: null)),
+              // generate the settings tiles
+              ...userPreferences.notificationSourceSettings
+                  .map((element) => NotificationPreferencesListTileWidget(
+                        notificationPreferences: element,
+                      ))
+                  .toList(),
             ],
           ),
         ),

@@ -37,11 +37,11 @@ class _DevSettingsState extends State<DevSettings> {
                 subtitle: Text(AppLocalizations.of(context)
                     !.dev_settings_test_notification_text),
                 onTap: () {
-                  checkForMyPlacesWarnings(false, true);
+                  checkForMyPlacesWarnings(true);
                   bool thereIsNoWarning = true;
                   for (Place myPlace in myPlaceList) {
                     //check if there are warning and if it they are important enough
-                    thereIsNoWarning = myPlace.checkIfThereIsAWarningToNotify();
+                    thereIsNoWarning = !(myPlace.checkIfThereIsAWarningToNotify());
                   }
                   if (thereIsNoWarning) {
                     final snackBar = SnackBar(

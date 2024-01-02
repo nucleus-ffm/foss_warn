@@ -1,3 +1,5 @@
+import 'package:foss_warn/enums/WarningSource.dart';
+
 import '../enums/Certainty.dart';
 import '../enums/Severity.dart';
 import 'class_Area.dart';
@@ -6,7 +8,7 @@ import '../services/createAreaListFromJson.dart';
 class WarnMessage {
   final String identifier;
   final String publisher;
-  final String source;
+  final WarningSource source;
   final String sender;
   final String sent;
   final String status;
@@ -62,7 +64,7 @@ class WarnMessage {
     return WarnMessage(
         identifier: json['identifier'],
         publisher: json['publisher'],
-        source: json['source'],
+        source: WarningSource.fromString(json['source'].toString()),
         sender: json['sender'],
         sent: json['sent'],
         status: json['status'],
@@ -94,7 +96,7 @@ class WarnMessage {
       String publisher, List<Area> areaList) {
     print("Neue WarnMessage wird angelegt...");
     return WarnMessage(
-        source: provider,
+        source: WarningSource.fromString(provider),
         identifier: json["identifier"] ?? "?",
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
@@ -104,7 +106,7 @@ class WarnMessage {
         category: json["info"][0]["category"][0] ?? "?",
         event: json["info"][0]["event"] ?? "?",
         urgency: json["info"][0]["urgency"] ?? "?",
-        severity: getSeverity(json["info"][0]["severity"].toString().toLowerCase()),
+        severity: Severity.fromString(json["info"][0]["severity"].toString().toLowerCase()),
         certainty: getCertainty(json["info"][0]["certainty"].toString().toLowerCase()),
         effective: json["info"][0]["effective"] ?? "",
         onset: json["info"][0]["onset"] ?? "",
@@ -126,7 +128,7 @@ class WarnMessage {
   factory WarnMessage.fromJsonAlertSwiss(Map<String, dynamic> json,
       List<Area> areaList, String instructions, String license) {
     return WarnMessage(
-        source: "Alert Swiss",
+        source: WarningSource.alertSwiss,
         identifier: json["identifier"] ?? "?",
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
@@ -136,16 +138,16 @@ class WarnMessage {
         category: json["event"] ?? "?", // missing
         event: json["event"] ?? "?",
         urgency: "?",
-        severity: getSeverity(json["severity"]),
+        severity: Severity.fromString(json["severity"]),
         certainty: getCertainty(""), // missing
         effective: "", // missing
         onset: json["onset"] ?? "", // m
         expires: json["expires"] ?? "", // m
-        headline: json["title"] ?? "?",
-        description: json["description"] ?? "",
+        headline: json["title"]["title"] ?? "?",
+        description: json["description"]["description"] ?? "",
         instruction: instructions,
         publisher: license,
-        contact: json["contact"] ?? "",
+        contact: json["contact"]["contact"] ?? "",
         web: json["link"] ?? "",
         areaList: areaList,
         notified: false,

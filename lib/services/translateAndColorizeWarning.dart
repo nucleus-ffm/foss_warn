@@ -136,7 +136,7 @@ String translateWarningSeverity(String severity) {
     case "minor":
       return "Gering";
     case "moderate":
-      return "Mittel";
+      return "Moderat";
     case "extreme":
       return "Extrem";
     case "severe":

@@ -7,17 +7,11 @@ import 'saveAndLoadSharedPreferences.dart';
 
 /// check all warnings if one of them is of a myPlace and if yes send a notification <br>
 /// [true] if there are/is a warning - false if not <br>
-/// [useEtag]: if the etags should be used while calling the API
-Future<bool> checkForMyPlacesWarnings(bool useEtag, bool loadManually) async {
+Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   bool _returnValue = true;
   print("check for warnings");
   // get data first
   await callAPI();
-  if (notificationSettingsImportance.isEmpty) {
-    print("notificationSettingsImportanceList is empty");
-    await loadNotificationSettingsImportanceList();
-    print(notificationSettingsImportance);
-  }
   if (myPlaceList.isEmpty) {
     print("myPlaceList is empty - load list");
     await loadMyPlacesList();
