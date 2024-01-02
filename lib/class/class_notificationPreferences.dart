@@ -13,7 +13,7 @@ class NotificationPreferences {
   factory NotificationPreferences.fromJson(Map<String, dynamic> json) {
     return NotificationPreferences(
         warningSource: WarningSource.fromString(json['warningSource'].toString()),
-        disabled: json['disabled'] == "true", // @todo is there a better way to deserialize a boolean?
+        disabled: json['disabled'],
         notificationLevel:
             Severity.fromJson(json['notificationLevel']));
   }
