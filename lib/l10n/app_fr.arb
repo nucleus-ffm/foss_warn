@@ -454,5 +454,7 @@
   "warning_severity_explanation_dialog_extreme_description": "Menace extraordinaire pour la vie ou les biens. Peut avoir un impact significatif à court terme sur votre santé, vos biens et/ou les infrastructures publiques.",
   "@warning_severity_explanation_dialog_extreme_description": {},
   "warning_severity_explanation_dialog_severe_description": "Menace importante pour la vie ou les biens. Peut affecter votre santé, vos biens et/ou les infrastructures publiques.",
-  "@warning_severity_explanation_dialog_severe_description": {}
+  "@warning_severity_explanation_dialog_severe_description": {},
+  "warning_severity_explanation_dialog_headline": "Gravité",
+  "@warning_severity_explanation_dialog_headline": {}
 }
