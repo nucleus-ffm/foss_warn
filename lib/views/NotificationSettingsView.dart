@@ -35,8 +35,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
               Container(
                 padding: settingsTileListPadding,
                 child: Text(
-                    "Hier können Sie einstellen, ab welcher Warnstufe Sie für"
-                    " welche Warnquelle eine Benachrichtigung erhalten möchten."), //notification_settings_description
+                    AppLocalizations.of(context)!.notification_settings_description), //
               ),
               SizedBox(
                 height: 10,
@@ -59,7 +58,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                           width: 10,
                         ),
                         Text(
-                            "Erklärung zu den Warnstufen"), // notification_settings_open_severity_explanation
+                            AppLocalizations.of(context)!.notification_settings_open_severity_explanation), //
                       ],
                     )),
               ),

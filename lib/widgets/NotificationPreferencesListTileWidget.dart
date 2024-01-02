@@ -57,8 +57,7 @@ class _NotificationPreferencesListTileWidgetState
       case WarningSource.alertSwiss:
         return AppLocalizations.of(context)!.source_alertswiss_description;
       case WarningSource.other:
-        return "Generelle Einstellung, die verwendet wird, wenn keine"
-            " genauere Einstellung getroffen wurde."; //source_other_description
+        return AppLocalizations.of(context)!.source_other_description;
       default:
         return "Error";
     }
@@ -137,7 +136,7 @@ class _NotificationPreferencesListTileWidgetState
                   Container(
                     padding: EdgeInsets.only(top: 5),
                     child: Text(
-                        "Source disabled - you won't get a notification"), //@todo translate
+                        AppLocalizations.of(context)!.notification_settings_source_disabled),
                   )
                 else
                   Column(
@@ -194,11 +193,10 @@ class _NotificationPreferencesListTileWidgetState
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            //@todo translation
-                            Text("extreme"), // notification_settings_slidervalue_extreme
-                            Text("severe"), // notification_settings_slidervalue_severe
-                            Text("moderate"), // notification_settings_slidervalue_moderate
-                            Text("minor"), // notification_settings_slidervalue_minor
+                            Text(AppLocalizations.of(context)!.notification_settings_slidervalue_extreme),
+                            Text(AppLocalizations.of(context)!.notification_settings_slidervalue_severe),
+                            Text(AppLocalizations.of(context)!.notification_settings_slidervalue_moderate),
+                            Text(AppLocalizations.of(context)!.notification_settings_slidervalue_minor),
                           ],
                         ),
                       )

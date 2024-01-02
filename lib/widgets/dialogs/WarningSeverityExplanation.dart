@@ -13,7 +13,7 @@ class _WarningSeverityExplanationState extends State<WarningSeverityExplanation>
   Widget build(BuildContext context) {
     return AlertDialog(
       title:
-      Text("Schweregrade"), //warning _severity_explanation_dialog_headline
+      Text(AppLocalizations.of(context)!.warning_severity_explanation_dialog_headline),
       content: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,38 +25,38 @@ class _WarningSeverityExplanationState extends State<WarningSeverityExplanation>
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium, //DefaultTextStyle.of(context).style,
-                children: const <TextSpan>[
+                children: <TextSpan>[
                   TextSpan(
-                      text: 'Extrem:',
+                      text: AppLocalizations.of(context)!.notification_settings_slidervalue_extreme,
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(text: '\n'),
                   TextSpan(
                       text: //warning_severity_explanation_dialog_extreme_description
-                      'Außerordentliche Bedrohung für Leben oder Eigentum. Kann sich kurzfristig signifikant auf ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur auswirken.'),
+                      AppLocalizations.of(context)!.warning_severity_explanation_dialog_extreme_description),
                   TextSpan(text: '\n\n'),
                   TextSpan(
-                      text: 'Schwer:',
+                      text: AppLocalizations.of(context)!.notification_settings_slidervalue_severe,
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(text: '\n'),
                   TextSpan(
                       text: //warning_severity_explanation_dialog_severe_description
-                      'Erhebliche Bedrohung für Leben oder Eigentum. Kann ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur beeinträchtigen.'),
+                      AppLocalizations.of(context)!.warning_severity_explanation_dialog_severe_description),
                   TextSpan(text: '\n\n'),
                   TextSpan(
-                      text: 'Moderat:',
+                      text: AppLocalizations.of(context)!.notification_settings_slidervalue_moderate,
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(text: '\n'),
                   TextSpan(
                       text: //warning_severity_explanation_dialog_moderate_description
-                      'Eine Warnung vor einer möglichen Bedrohung von Leben oder Eigentum. Kann den normeln Tagesablauf stark beeinträchtigen.'),
+                      AppLocalizations.of(context)!.warning_severity_explanation_dialog_moderate_description),
                   TextSpan(text: '\n\n'),
                   TextSpan(
-                      text: 'Gering:',
+                      text: AppLocalizations.of(context)!.notification_settings_slidervalue_minor,
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(text: '\n'),
                   TextSpan(
                       text: //warning_severity_explanation_dialog_minor_description
-                      'Minimale bis keine bekannte Bedrohung für Leben oder Eigentum. Kann den normalen Tagesablauf beeinträchtigen.'),
+                      AppLocalizations.of(context)!.warning_severity_explanation_dialog_minor_description),
                 ],
               ),
             ),
