@@ -11,7 +11,7 @@ enum WarningSource {
 
   static WarningSource fromString(String source) {
     switch (source.toUpperCase()) {
-      case "ALERT SWISS":
+      case "ALERTSWISS": case "ALERT SWISS":
         return WarningSource.alertSwiss;
       case "BIWAPP":
         return WarningSource.biwapp;  
