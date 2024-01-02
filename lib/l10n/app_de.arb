@@ -454,5 +454,7 @@
   "warning_severity_explanation_dialog_extreme_description": "Außerordentliche Bedrohung für Leben oder Eigentum. Kann sich kurzfristig signifikant auf ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur auswirken.",
   "@warning_severity_explanation_dialog_extreme_description": {},
   "warning_severity_explanation_dialog_severe_description": "Erhebliche Bedrohung für Leben oder Eigentum. Kann ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur beeinträchtigen.",
-  "@warning_severity_explanation_dialog_severe_description": {}
+  "@warning_severity_explanation_dialog_severe_description": {},
+  "warning_severity_explanation_dialog_headline": "Schweregrad",
+  "@warning_severity_explanation_dialog_headline": {}
 }
