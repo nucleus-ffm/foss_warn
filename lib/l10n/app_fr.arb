@@ -439,8 +439,6 @@
   "@notification_settings_slidervalue_severe": {},
   "notification_settings_slidervalue_minor": "mineurs",
   "@notification_settings_slidervalue_minor": {},
-  "warning _severity_explanation_dialog_headline": "Sévérité",
-  "@warning _severity_explanation_dialog_headline": {},
   "notification_settings_open_severity_explanation": "Explications sur le degré de gravité",
   "@notification_settings_open_severity_explanation": {},
   "warning_severity_explanation_dialog_moderate_description": "Avertissement d'une menace possible pour la vie ou les biens. Peut gravement perturber les activités quotidiennes normales.",
