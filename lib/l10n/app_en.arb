@@ -454,5 +454,7 @@
   "warning_severity_explanation_dialog_minor_description": "Minimal to no known threat to life or property. May interfere with normal daily activities.",
   "@warning_severity_explanation_dialog_minor_description": {},
   "warning_severity_explanation_dialog_extreme_description": "Extraordinary threat to life or property. May have a significant short-term impact on your health, property and/or public infrastructure.",
-  "@warning_severity_explanation_dialog_extreme_description": {}
+  "@warning_severity_explanation_dialog_extreme_description": {},
+  "warning_severity_explanation_dialog_headline": "Severity",
+  "@warning_severity_explanation_dialog_headline": {}
 }
