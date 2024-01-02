@@ -447,7 +447,7 @@
   "@warning _severity_explanation_dialog_headline": {},
   "notification_settings_open_severity_explanation": "Explanations of the degree of severity",
   "@notification_settings_open_severity_explanation": {},
-  "notification_settings_description": "This allows you to set the alert level at which you want to receive an alert and for which alert source.",
+  "notification_settings_description": "Here you can set the warning level for each source for which you want to receive a warning.",
   "@notification_settings_description": {},
   "warning_severity_explanation_dialog_severe_description": "Significant threat to life or property. May affect your health, property and/or public infrastructure.",
   "@warning_severity_explanation_dialog_severe_description": {},
