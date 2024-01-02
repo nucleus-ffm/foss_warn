@@ -163,7 +163,7 @@ class NotificationService {
         await androidNotificationPlugin
             .createNotificationChannel(AndroidNotificationChannel(
           "de.nucleus.foss_warn.notifications_moderate",
-          "Warnstufe: Mittel",
+          "Warnstufe: Moderat",
           description:
               "Eine Warnung vor einer starken Beeinträchtigung des normalen Tagesablaufs.",
           groupId: "de.nucleus.foss_warn.notifications_emergency_information",
