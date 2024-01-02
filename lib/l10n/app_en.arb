@@ -443,8 +443,6 @@
   "@source_other_description": {},
   "source_other_title": "Other",
   "@source_other_title": {},
-  "warning _severity_explanation_dialog_headline": "Severity",
-  "@warning _severity_explanation_dialog_headline": {},
   "notification_settings_open_severity_explanation": "Explanations of the degree of severity",
   "@notification_settings_open_severity_explanation": {},
   "notification_settings_description": "Here you can set the warning level for each source for which you want to receive a warning.",
@@ -456,5 +454,7 @@
   "warning_severity_explanation_dialog_minor_description": "Minimal to no known threat to life or property. May interfere with normal daily activities.",
   "@warning_severity_explanation_dialog_minor_description": {},
   "warning_severity_explanation_dialog_extreme_description": "Extraordinary threat to life or property. May have a significant short-term impact on your health, property and/or public infrastructure.",
-  "@warning_severity_explanation_dialog_extreme_description": {}
+  "@warning_severity_explanation_dialog_extreme_description": {},
+  "warning_severity_explanation_dialog_headline": "Severity",
+  "@warning_severity_explanation_dialog_headline": {}
 }
