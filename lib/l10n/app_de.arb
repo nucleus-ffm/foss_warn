@@ -439,8 +439,6 @@
   "@notification_settings_slidervalue_severe": {},
   "notification_settings_slidervalue_minor": "Gering",
   "@notification_settings_slidervalue_minor": {},
-  "warning _severity_explanation_dialog_headline": "Schweregrad",
-  "@warning _severity_explanation_dialog_headline": {},
   "notification_settings_open_severity_explanation": "Erklärungen zum Schweregrad",
   "@notification_settings_open_severity_explanation": {},
   "warning_severity_explanation_dialog_moderate_description": "Eine Warnung vor einer möglichen Bedrohung von Leben oder Eigentum. Kann den normalen Tagesablauf stark beeinträchtigen.",
