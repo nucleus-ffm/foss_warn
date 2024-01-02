@@ -143,11 +143,11 @@ class WarnMessage {
         effective: "", // missing
         onset: json["onset"] ?? "", // m
         expires: json["expires"] ?? "", // m
-        headline: json["title"] ?? "?",
-        description: json["description"] ?? "",
+        headline: json["title"]["title"] ?? "?",
+        description: json["description"]["description"] ?? "",
         instruction: instructions,
         publisher: license,
-        contact: json["contact"] ?? "",
+        contact: json["contact"]["contact"] ?? "",
         web: json["link"] ?? "",
         areaList: areaList,
         notified: false,
