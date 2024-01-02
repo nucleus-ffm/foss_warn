@@ -280,7 +280,7 @@ class NotificationService {
 
     if (activeNotifications!.length == 2 &&
         activeNotifications
-            .any((element) => element.channelId == "foss_warn_status")) {
+            .any((element) => element.channelId == "de.nucleus.foss_warn.notifications_state")) {
       if (activeNotifications[0].id == 0) {
         // summery notification has id 0
         cancelOneNotification(0);

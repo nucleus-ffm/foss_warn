@@ -97,6 +97,7 @@ abstract class Place {
   void markAllWarningsAsRead(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
+      NotificationService.cancelOneNotification(myWarnMessage.identifier.hashCode);
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();

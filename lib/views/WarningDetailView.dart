@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/class/class_NotificationService.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
@@ -216,6 +217,8 @@ class _DetailScreenState extends State<DetailScreen> {
     });
     // save places List to store new read state
     saveMyPlacesList();
+    // cancel the notification
+    NotificationService.cancelOneNotification(widget._warnMessage.identifier.hashCode);
 
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];
