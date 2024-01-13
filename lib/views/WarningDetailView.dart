@@ -377,7 +377,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context)!.warning_tags + ":",
+                    AppLocalizations.of(context)!.warning_tags,
                     style: TextStyle(
                         fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
@@ -581,7 +581,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context)!.warning_region + ":",
+                    AppLocalizations.of(context)!.warning_region,
                     style: TextStyle(
                         fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
@@ -641,7 +641,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context)!.warning_places + ":",
+                    AppLocalizations.of(context)!.warning_places,
                     style: TextStyle(
                         fontSize: userPreferences.warningFontSize + 5,
                         fontWeight: FontWeight.bold),
@@ -698,7 +698,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   width: 5,
                 ),
                 Text(
-                  AppLocalizations.of(context)!.warning_description + ":",
+                  AppLocalizations.of(context)!.warning_description,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: userPreferences.warningFontSize + 5),
@@ -799,7 +799,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     width: 5,
                   ),
                   Text(
-                    AppLocalizations.of(context)!.warning_source + ":",
+                    AppLocalizations.of(context)!.warning_source,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: userPreferences.warningFontSize + 5),

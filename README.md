@@ -35,10 +35,10 @@ An unofficial open source application written in Flutter to get emergency alerts
 ## Current state of development
 The app is currently in a BETA status. It works quite well, but be aware of the known problems.
 
-## TODO: 
+## TODO
  - see [project board](https://github.com/nucleus-ffm/foss_warn/projects?type=classic)
 
-## Known problems:
+## Known problems
 - the layout could be improved for small devices
 
 ## FAQ
