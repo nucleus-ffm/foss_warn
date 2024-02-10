@@ -1,11 +1,19 @@
 enum Severity {
-  extreme,
-  severe,
-  moderate,
-  minor;
+  Extreme,  // Extraordinary threat to life or property
+  Severe,   // Significant threat to life or property
+  Moderate, // Possible threat to life or property
+  Minor,    // Minimal to no known threat to life or property
+  Unknown;  // Severity unknown
 
   String toJson() => name;
-  static Severity fromJson(String json) => values.byName(json);
+  static Severity fromJson(String json) {
+    try {
+      return values.byName(json);
+    } catch (e) {
+      print("[Severity] no value found: " + e.toString());
+      return Severity.Unknown;
+    }
+  }
 
   /// extract the severity from the string and return the corresponding enum
   static Severity fromString(String severity) {
@@ -14,7 +22,7 @@ enum Severity {
         return sev;
       }
     }
-    return Severity.minor;
+    return Severity.Minor;
   }
 
   static double getIndexFromSeverity(Severity notificationLevel) {
