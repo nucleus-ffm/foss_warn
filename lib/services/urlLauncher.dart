@@ -1,5 +1,7 @@
 import "package:url_launcher/url_launcher.dart";
 
+import "../class/class_ErrorLogger.dart";
+
 String extractWebAddress(String text) {
   if (text.startsWith("<a")) {
     int beginIndex = text.indexOf("href=\"") + 6;
@@ -68,6 +70,11 @@ String extractPhoneNumber(String text) {
     return phoneNumbers[0];
   } catch (e) {
     print("No valid phone number found: " + e.toString());
+    // write to logfile
+    ErrorLogger.writeErrorLog(
+        "urlLauncher.dart",
+        "No valid phone number found",
+        e.toString());
     return "invalid";
   }
 }
