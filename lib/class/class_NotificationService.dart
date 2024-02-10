@@ -3,6 +3,8 @@ import 'package:foss_warn/services/translateAndColorizeWarning.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
+import 'class_ErrorLogger.dart';
+
 ///
 /// ID 2: Status notification
 /// ID 3: No Places selected warning
@@ -192,6 +194,16 @@ class NotificationService {
 
         await androidNotificationPlugin
             .createNotificationChannel(AndroidNotificationChannel(
+          "de.nucleus.foss_warn.notifications_update",
+          "Update",
+          description:
+          "Ein Update für eine bereits erhaltene Warnung.",
+          groupId: "de.nucleus.foss_warn.notifications_emergency_information",
+          importance: Importance.low,
+        ));
+
+        await androidNotificationPlugin
+            .createNotificationChannel(AndroidNotificationChannel(
           "de.nucleus.foss_warn.notifications_state",
           "Statusanzeige",
           description: "Zeit den aktuellen Status der Hintergrundupdates an.",
@@ -209,6 +221,10 @@ class NotificationService {
         ));
       } catch (e) {
         print("Error while creating notification channels: " + e.toString());
+        ErrorLogger.writeErrorLog(
+            "class_NotificationService.dart",
+            "Error while creating notification channels",
+            e.toString());
       }
     }
 
