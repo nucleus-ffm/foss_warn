@@ -4,6 +4,7 @@ import 'package:foss_warn/main.dart';
 
 import '../class/class_AlertSwissPlace.dart';
 import '../class/abstract_Place.dart';
+import '../class/class_ErrorLogger.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../class/class_Geocode.dart';
@@ -27,7 +28,8 @@ Future callAlertSwissAPI() async {
     await loadETags();
 
     // get overview if warnings exits for myplaces
-    response = await get(Uri.parse(url)).timeout(userPreferences.networkTimeout);
+    response =
+        await get(Uri.parse(url)).timeout(userPreferences.networkTimeout);
 
     // check if request was sucsessfully
     if (response.statusCode == 200) {
@@ -47,20 +49,21 @@ Future callAlertSwissAPI() async {
         if (!(p is AlertSwissPlace)) break;
 
         for (WarnMessage msg in tempWarnMessageList) {
-          for (Area a in msg.areaList) {
-            for (Geocode g in a.geocodeList) {
-              if (g.geocodeName == p.shortName) {
+          for (Area a in msg.info[0].area) {
+              if (a.geocode.geocodeName == p.shortName) {
                 if (!p.warnings.any((w) => w.identifier == msg.identifier)) {
                   p.addWarningToList(msg);
                 }
               }
-            }
           }
         }
       }
     }
   } catch (e) {
     print("Something went wrong: " + e.toString());
+    // write to logfile
+    ErrorLogger.writeErrorLog(
+        "alertSwiss.dart", "Error while calling alertSwiss API}", e.toString());
   }
 }
 
@@ -83,11 +86,13 @@ WarnMessage? createWarning(var data) {
       tempAreaList.add(
         Area(
           areaDesc: data[i]["description"]["description"],
-          geocodeList: [
-            Geocode(
-                geocodeName: data[i]["regions"][0]["region"],
-                geocodeNumber: "-1"),
-          ],
+          geocode:  Geocode(
+              geocodeName: data[i]["regions"][0]["region"],
+              geocodeNumber: "-1",
+              PLZ: -1,
+              longitude: "-1",
+              latitude: "-1" ),
+          polygon: data[i]["areas"][0]["polygons"][0]["coordinates"]
         ),
       );
     }
@@ -108,6 +113,10 @@ WarnMessage? createWarning(var data) {
   } catch (e) {
     print(
         "something went wrong while paring alert swiss data: " + e.toString());
+    // write to logfile
+    ErrorLogger.writeErrorLog("alertSwiss.dart",
+        "something went wrong while paring alert swiss data", e.toString());
   }
+
   return null;
 }
