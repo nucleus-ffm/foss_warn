@@ -5,6 +5,7 @@ import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/legacyHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/AboutView.dart';
+import 'package:foss_warn/views/mapView.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -20,7 +21,6 @@ import 'class/class_NotificationService.dart';
 import 'services/updateProvider.dart';
 import 'services/saveAndLoadSharedPreferences.dart';
 
-import 'widgets/SourceStatusWidget.dart';
 import 'widgets/dialogs/SortByDialog.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -82,6 +82,7 @@ class _HomeViewState extends State<HomeView> {
   final List<Widget> _pages = <Widget>[
     AllWarningsView(),
     MyPlaces(),
+    MapView()
   ];
 
   @override
@@ -89,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     loadMyPlacesList();
     listenNotifications();
-    if (geocodeMap.isEmpty) {
+    if (geocodeMap.isEmpty) { //@todo add to legacy handler
       print("call geocode handler");
       geocodeHandler();
     }
@@ -114,21 +115,9 @@ class _HomeViewState extends State<HomeView> {
         appBar: AppBar(
           title: Text("FOSS Warn"),
           actions: [
-            userPreferences.showAllWarnings
-                ? IconButton(
-                    icon: Icon(Icons.info_outline),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return StatusWidget();
-                        },
-                      );
-                    },
-                  )
-                : SizedBox(),
             IconButton(
               icon: Icon(Icons.sort),
+              tooltip: "Open dialog to sort warnings", //@todo translate
               onPressed: () {
                 showDialog(
                   context: context,
@@ -197,7 +186,10 @@ class _HomeViewState extends State<HomeView> {
                 label: AppLocalizations.of(context)!.main_nav_bar_all_warnings),
             NavigationDestination(
                 icon: Icon(Icons.place),
-                label: AppLocalizations.of(context)!.main_nav_bar_my_places)
+                label: AppLocalizations.of(context)!.main_nav_bar_my_places),
+            NavigationDestination(
+                icon: Icon(Icons.map),
+                label: "Map")
           ],
           onDestinationSelected: (int index) {
             setState(() {
