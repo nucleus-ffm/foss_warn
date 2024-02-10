@@ -8,10 +8,8 @@ import '../widgets/ConnectionErrorWidget.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../main.dart';
-import '../services/getData.dart';
 import '../services/listHandler.dart';
 import '../widgets/WarningWidget.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/sortWarnings.dart';
 import '../services/updateProvider.dart';
 import '../widgets/noWarningsInList.dart';
@@ -45,15 +43,14 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     void loadData() async {
       print("[allWarningsView] Load Data");
       if (userPreferences.showAllWarnings) {
-        // call (old) api with all warnings
-        await getData(false);
+        // call api for the map warnings
+        await callMapAPI();
       } else {
         // call (new) api just for my places/ alert swiss
         await callAPI();
       }
       checkForMyPlacesWarnings(true);
-      sortWarnings(allWarnMessageList);
-      loadNotificationSettingsImportanceList();
+      sortWarnings(mapWarningsList);
       setState(() {
         print("loading finished");
         _loading = false;
@@ -100,10 +97,10 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                       Container(
                         child: ConnectionError(),
                       ),
-                      allWarnMessageList.isEmpty
+                      mapWarningsList.isEmpty
                           ? NoWarningsInList()
                           : SizedBox(),
-                      ...allWarnMessageList
+                      ...mapWarningsList
                           .map((warnMessage) =>
                               WarningWidget(warnMessage: warnMessage))
                           .toList(),
