@@ -104,7 +104,7 @@ class StatusWidget extends StatelessWidget {
                   SizedBox(
                     width: 140,
                     child: Text(
-                      " = " + AppLocalizations.of(context)!.status_everything_ok,
+                      " = " + AppLocalizations.of(context)!.status_error_while_parsing,
                       style: TextStyle(fontSize: 12),
                     ),
                   )
