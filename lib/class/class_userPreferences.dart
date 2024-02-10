@@ -34,11 +34,11 @@ class UserPreferences {
       if(source == WarningSource.dwd || source == WarningSource.lhp) {
         temp.add(NotificationPreferences(
             warningSource: source,
-            notificationLevel: Severity.severe));
+            notificationLevel: Severity.Severe));
       } else {
         temp.add(NotificationPreferences(
             warningSource: source,
-            notificationLevel: Severity.minor));
+            notificationLevel: Severity.Minor));
       }
     }
 
@@ -59,7 +59,8 @@ class UserPreferences {
   bool showAllWarnings = false;
   bool areWarningsFromCache = false;
 
-  String versionNumber = "0.7.0"; // shown in the about view
+  String versionNumber = "0.8.0"; // shown in the about view
+  int previousInstalledVersionCode = 31;  //@todo load from storage update version after legacy handler
 
   bool activateAlertSwiss = false;
   bool isFirstStart = true;
@@ -68,4 +69,25 @@ class UserPreferences {
 
   List<ThemeData> availableLightThemes = [greenLightTheme, orangeLightTheme, purpleLightTheme, blueLightTheme, yellowLightTheme, indigoLightTheme];
   List<ThemeData> availableDarkThemes = [greenDarkTheme, orangeDarkTheme, purpleDarkTheme, yellowDarkTheme, blueDarkTheme, greyDarkTheme];
+
+  /// the path and filename where the error log is saved
+  String errorLogPath = "errorLog.txt";
+
+  /// Dark mode colors for the map.
+  /// invert(100%), hue-rotate(180deg), brightness(95%), contrast(90%)
+  ColorFilter mapDarkMode = ColorFilter.matrix(<double>[
+  -0.574, -1.43,  -0.144, 0, 255,
+  -0.426, -0.43,  -0.144, 0, 255,
+  -0.426, -1.43,  0.856,  0, 255,
+  0,      0,      0,      1, 0,
+  ]);
+
+  /// Light mode for the map
+  /// original colors from OSM
+  ColorFilter mapLightMode =  ColorFilter.matrix(<double>[
+  1,  0,  0, 0, 0,
+  0,  1,  0, 0, 0,
+  0,  0,  1, 0, 0,
+  0,  0,  0, 1, 0,
+  ]);
 }
