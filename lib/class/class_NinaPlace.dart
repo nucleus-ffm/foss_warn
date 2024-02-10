@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:foss_warn/class/class_Geocode.dart';
 import 'package:foss_warn/class/abstract_Place.dart';
 
+import 'class_ErrorLogger.dart';
 import 'class_WarnMessage.dart';
 
 class NinaPlace extends Place {
@@ -31,7 +32,6 @@ class NinaPlace extends Place {
         super(name: name, warnings: warnings, eTag: eTag);
 
   factory NinaPlace.fromJson(Map<String, dynamic> json) {
-
     /// create new warnMessage objects from saved data
     List<WarnMessage> createWarningList(String data) {
       List<dynamic> _jsonData = jsonDecode(data);
@@ -50,13 +50,16 @@ class NinaPlace extends Place {
     );
   }
 
-  @override
   Map<String, dynamic> toJson() {
     try {
       return {'name': nameWithoutState, 'geocode': geocode, 'warnings': jsonEncode(warnings), 'eTag': eTag
       };
     } catch (e) {
       print("Error nina place to json: " + e.toString());
+      ErrorLogger.writeErrorLog(
+          "class_NinaPlace.dart",
+          "Can not serialize nina place",
+          e.toString());
       return {};
     }
   }
