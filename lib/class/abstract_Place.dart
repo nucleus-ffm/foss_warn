@@ -51,7 +51,8 @@ abstract class Place {
   bool checkIfThereIsAWarningToNotify() {
     for (WarnMessage myWarning in _warnings) {
       if (!myWarning.notified &&
-          _checkIfEventShouldBeNotified(myWarning.source, myWarning.severity)) {
+          _checkIfEventShouldBeNotified(
+              myWarning.source, myWarning.info[0].severity)) {
         // there is min. one warning without notification
         return true;
       }
@@ -62,7 +63,7 @@ abstract class Place {
   /// checks if there can be a notification for a warning in [_warnings]
   Future<void> sendNotificationForWarnings() async {
     for (WarnMessage myWarnMessage in _warnings) {
-      print(myWarnMessage.headline);
+      print(myWarnMessage.info[0].headline);
       //print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
       /*print("should notify? :" +
           (_checkIfEventShouldBeNotified(
@@ -70,9 +71,11 @@ abstract class Place {
               .toString());c*/
       //(!myWarnMessage.read && !myWarnMessage.notified) &&
 
-      if ((!myWarnMessage.read && !myWarnMessage.notified) &&
+      if ((!myWarnMessage.read &&
+              !myWarnMessage.notified &&
+              !myWarnMessage.isUpdateOfAlreadyNotifiedWarning) &&
           _checkIfEventShouldBeNotified(
-              myWarnMessage.source, myWarnMessage.severity)) {
+              myWarnMessage.source, myWarnMessage.info[0].severity)) {
         // Alert is not already read or shown as notification
         // set notified to true to avoid sending notification twice
         myWarnMessage.notified = true;
@@ -82,9 +85,21 @@ abstract class Place {
             // because the warning identifier is no int, we have to generate a hash code
             id: myWarnMessage.identifier.hashCode,
             title: "Neue Warnung für $_name",
-            body: "${myWarnMessage.headline}",
+            body: "${myWarnMessage.info[0].headline}",
             payload: _name,
-            channel: myWarnMessage.severity.name);
+            channel: myWarnMessage.info[0].severity.name);
+      } else if (myWarnMessage.isUpdateOfAlreadyNotifiedWarning &&
+          !myWarnMessage.notified &&
+          !myWarnMessage.read) {
+        myWarnMessage.notified = true;
+        await await NotificationService.showNotification(
+            // generate from the warning in the List the notification id
+            // because the warning identifier is no int, we have to generate a hash code
+            id: myWarnMessage.identifier.hashCode,
+            title: "Update einer Warnung für $_name",
+            body: "${myWarnMessage.info[0].headline}",
+            payload: _name,
+            channel: "de.nucleus.foss_warn.notifications_update");
       } else {
         print("there is no warning or the warning is not in "
             "the notificationSettingsImportance list");
@@ -97,7 +112,8 @@ abstract class Place {
   void markAllWarningsAsRead(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
-      NotificationService.cancelOneNotification(myWarnMessage.identifier.hashCode);
+      NotificationService.cancelOneNotification(
+          myWarnMessage.identifier.hashCode);
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
