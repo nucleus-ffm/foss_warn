@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_NinaPlace.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
-import 'package:foss_warn/main.dart';
+import 'package:foss_warn/widgets/MapWidget.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../class/abstract_Place.dart';
@@ -17,6 +17,7 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   List<bool> _filters = List.generate(2, (index) => false);
+  final MapController mapController = MapController();
 
   List<ListTile> _createWarningOverviewForPlace(Place place) {
     List<ListTile> result = [];
@@ -69,27 +70,6 @@ class _MapViewState extends State<MapView> {
     );
   }
 
-  List<PolygonLayer> createPolygonsForMapWarning() {
-    List<PolygonLayer> result = [];
-    for (WarnMessage wm in mapWarningsList) {
-      result.add(
-        PolygonLayer(
-          polygons: [
-            Polygon(
-              points: wm.info.first.area.first.polygon,
-              color: Colors.orange
-                  .withOpacity(0.4), //Color(0xFFFB8C00).withOpacity(0.4),
-              borderColor: Color(0xFFFB8C00),
-              borderStrokeWidth: 1,
-              isFilled: true,
-            )
-          ],
-        ),
-      );
-    }
-    return result;
-  }
-
   List<MarkerLayer> _createMarkerLayer() {
     List<MarkerLayer> result = [];
     for (Place p in myPlaceList) {
@@ -98,9 +78,7 @@ class _MapViewState extends State<MapView> {
           MarkerLayer(
             markers: [
               Marker(
-                point: LatLng(
-                    double.parse(p.geocode.latitude.replaceAll(",", ".")),
-                    double.parse(p.geocode.longitude.replaceAll(",", "."))),
+                point: p.geocode.latLng,
                 child: InkWell(
                   child: Icon(
                     Icons.place,
@@ -149,22 +127,28 @@ class _MapViewState extends State<MapView> {
     return result;
   }
 
+  /// extract hex color value from string and return Color widget
+  /// accepts colors in format `#FB8C00`
+  /*
+  Color _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "90" + hexColor;
+    } else {
+      hexColor = "A0" + "FB8C00";
+    }
+    return Color(int.parse(hexColor, radix: 16));
+  }
+  */
+
+  /// create polygon layer for my places alerts
   List<PolygonLayer> _createPolygonLayer() {
     List<PolygonLayer> result = [];
     for (Place p in myPlaceList) {
       for (WarnMessage wm in p.warnings) {
         result.add(
           PolygonLayer(
-            polygons: [
-              Polygon(
-                points: wm.info.first.area.first.polygon,
-                color: Colors.orange
-                    .withOpacity(0.4), //Color(0xFFFB8C00).withOpacity(0.4),
-                borderColor: Color(0xFFFB8C00),
-                borderStrokeWidth: 1,
-                isFilled: true,
-              )
-            ],
+            polygons: MapWidget.createAllPolygons(wm.info.first.area),
           ),
         );
       }
@@ -175,37 +159,22 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FlutterMap(
-        options: MapOptions(
-            initialCenter: LatLng(50.998, 10.107),
-            initialZoom: 6.2,
-            interactionOptions: InteractionOptions(
-                flags: InteractiveFlag.all & ~InteractiveFlag.rotate)),
-        children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'de.nucleus.foss_warn',
-            tileBuilder:
-                (BuildContext context, Widget tileWidget, TileImage tile) {
-              // there is not build in dark mode with the tiles form osm.org therefore we
-              // have to manipulate the incoming tiles with some color magic
-              return userPreferences.selectedThemeMode == ThemeMode.dark ||
-                      MediaQuery.of(context).platformBrightness ==
-                          Brightness.dark
-                  ? ColorFiltered(
-                      colorFilter: userPreferences.mapDarkMode,
-                      child: tileWidget)
-                  : ColorFiltered(
-                      colorFilter: userPreferences.mapLightMode,
-                      child: tileWidget);
-            },
-          ),
-          buildFilterButtons(),
-          ..._filters[1] ? _createPolygonLayer() : [],
-          ..._filters[0] ? createPolygonsForMapWarning() : [],
-          ..._createMarkerLayer(),
-          SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
+      body: MapWidget(
+        initialCameraFit:
+            CameraFit.coordinates(padding: EdgeInsets.all(30), coordinates: [
+          LatLng(52.815, 7.009),
+          LatLng(53.264, 14.326),
+          LatLng(48.236, 12.964),
+          LatLng(48.704, 7.932),
+          LatLng(51.096, 6.746)
+        ]),
+        mapController: mapController,
+        widgets: [buildFilterButtons()],
+        polygonLayers: [
+          ..._filters[1] ? MapWidget.createPolygonLayer() : [],
+          ..._filters[0] ? MapWidget.createPolygonsForMapWarning() : [],
         ],
+        markerLayers: [..._createMarkerLayer()],
       ),
     );
   }
