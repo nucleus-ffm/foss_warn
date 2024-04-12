@@ -8,7 +8,8 @@ import '../widgets/WarningWidget.dart';
 class MyPlaceDetailScreen extends StatelessWidget {
   final Place _myPlace;
   const MyPlaceDetailScreen({Key? key, required Place myPlace})
-      : _myPlace = myPlace, super(key: key);
+      : _myPlace = myPlace,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,8 @@ class MyPlaceDetailScreen extends StatelessWidget {
               _myPlace.markAllWarningsAsRead(context);
               final snackBar = SnackBar(
                 content: Text(
-                  AppLocalizations.of(context)
-                      !.main_app_bar_tooltip_mark_all_warnings_as_read,
+                  AppLocalizations.of(context)!
+                      .main_app_bar_tooltip_mark_all_warnings_as_read,
                 ),
               );
 
@@ -33,15 +34,16 @@ class MyPlaceDetailScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
             icon: Icon(Icons.mark_chat_read),
-            tooltip: AppLocalizations.of(context)
-                !.main_app_bar_tooltip_mark_all_warnings_as_read,
+            tooltip: AppLocalizations.of(context)!
+                .main_app_bar_tooltip_mark_all_warnings_as_read,
           )
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: _myPlace.warnings
-              .map((warning) => WarningWidget(warnMessage: warning))
+              .map((warning) =>
+                  WarningWidget(warnMessage: warning, place: _myPlace))
               .toList(),
         ),
       ),
