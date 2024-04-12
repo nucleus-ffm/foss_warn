@@ -14,7 +14,6 @@ class ConnectionError extends StatelessWidget {
         appState.dataFetchStatusOldAPI == DataFetchStatus.error) {
       return Container(
         padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
-        //margin: EdgeInsets.only(bottom: 10),
         color: Colors.red,
         child: Row(
           children: [
