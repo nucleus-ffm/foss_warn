@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/enums/DataFetchStatus.dart';
-import '../main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../main.dart';
+import 'dialogs/ErrorDialog.dart';
 
 class ConnectionError extends StatelessWidget {
   const ConnectionError({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (userPreferences.showAllWarnings && appState.dataFetchStatusOldAPI == DataFetchStatus.error) {
+    if (userPreferences.showAllWarnings &&
+        appState.dataFetchStatusOldAPI == DataFetchStatus.error) {
       return Container(
         padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
         //margin: EdgeInsets.only(bottom: 10),
@@ -54,6 +57,39 @@ class ConnectionError extends StatelessWidget {
               ),
             )
           ],
+        ),
+      );
+    } else if (appState.error) {
+      // some error occurred
+      return InkWell(
+        onTap: () => showDialog(
+          context: context,
+          builder: (BuildContext context) => ErrorDialog(),
+        ),
+        child: Container(
+          padding: EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+          color: Theme.of(context).colorScheme.error,
+          child: Row(
+            children: [
+              Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    'Ups. Something went wrong. Please contact the developer',
+                    style: Theme.of(context).textTheme.displaySmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       );
     } else {
