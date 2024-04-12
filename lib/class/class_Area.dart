@@ -1,57 +1,65 @@
-import 'dart:convert';
-
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'class_Geocode.dart';
-
 class Area {
-  String description; // Kreisname
-  List<LatLng> polygon;
-  Geocode geocode; // currently only used by alert siwss
+  String description; // Kreisname or general description of the area
+  String geoJson; // polygons of the area stored as pure json file
+  String? region; // only used by alert swiss
 
-
-  Area({required String areaDesc, required Geocode geocode, required polygon})
+  Area({required String areaDesc, required geoJson})
       : this.description = areaDesc,
-        this.geocode = geocode,
-          this.polygon = _polygonFromJson(polygon)
-  ;
+        this.geoJson = geoJson;
+
+  Area.withRegion({required String areaDesc, required geoJson, required region})
+      : this.description = areaDesc,
+        this.region = region,
+        this.geoJson = geoJson;
 
   Area.fromJson(Map<String, dynamic> json)
       : description = json['areaDesc'],
-        geocode = Geocode.fromJson(json['geocode']),
-        polygon = _polygonFromJson(jsonDecode(json['polygon']));
+        geoJson = json['geoJson'] ?? "",
+        region = json['region'];
 
-  Area.fromJsonTemp(Map<String, dynamic> json, List<dynamic> coordinates)
+  Area.fromJsonWithAPIData(Map<String, dynamic> json, String geoJson)
       : description = json['areaDesc'],
-        geocode =  Geocode(geocodeName: "", geocodeNumber: "", PLZ: "-1" , longitude: "-1", latitude: "-1") , // The API only ever provides the information "valueName: "AreaID, value: "0" "
-        polygon = _polygonFromJsonTemp(coordinates);
+        geoJson = geoJson,
+        region = json['region'];
 
-  static List<LatLng> _polygonFromJson(List<dynamic> data) {
+  /*
+  /// store color information about the polygons of the area
+  static   Map<String, dynamic> _geoJsonProperties(dynamic data) {
+    return {
+      'warnId': data['warnId'],
+      'areaId': data['areaId'],
+      'strokeColor': data['strokeColor'],
+      'strokeOpacity': data['strokeOpacity'],
+      'strokeWeight': data['strokeWeight'],
+      'fillColor': data['fillColor'],
+      'fillOpacity': data['fillOpacity'],
+      'zIndex': data['zIndex'],
+    };
+  }
+  }*/
+
+  Map<String, dynamic> toJson() =>
+      {'areaDesc': description, 'region': region, 'geoJson': geoJson};
+
+  /// create a list with all latLon for all geoJsonFeatures
+  List<LatLng> getListWithAllPolygons() {
     List<LatLng> result = [];
-    for (int i= 0; i<data.length; i++) {
-      //print(data[i]);
-      result.add(LatLng(data[i]["coordinates"][1], data[i]["coordinates"][0]));
+    GeoJsonParser geoJsonParser = GeoJsonParser();
+    geoJsonParser.parseGeoJsonAsString(geoJson);
+    for (Polygon i in geoJsonParser.polygons) {
+      result.addAll(i.points);
     }
     return result;
   }
 
-  Map<String, dynamic> toJson() => {
-        'areaDesc': description,
-        'geocode': geocode,
-        'polygon' : jsonEncode(polygon)
-      };
-
-  static List<LatLng> _polygonFromJsonTemp(List<dynamic> data) {
-    List<LatLng> result = [];
-    for (int i= 0; i<data.length; i++) {
-      result.add(LatLng(data[i][1].toDouble(), data[i][0].toDouble()) );
-    }
-    return result;
-  }
-
+  /// create a list of area from the stored json data
   static List<Area> areaListFromJson(var data) {
     List<Area> _result = [];
-    if(data != null) {
+    if (data != null) {
       for (int i = 0; i < data.length; i++) {
         _result.add(Area.fromJson(data[i]));
       }
@@ -59,11 +67,12 @@ class Area {
     return _result;
   }
 
-  static List<Area> areaListFromJsonTemp(var data, List<dynamic> coordinates) {
+  /// create a list of area from the API Data
+  static List<Area> areaListFromJsonWithAPIData(var data, String geoJson) {
     List<Area> _result = [];
-    if(data != null) {
+    if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        _result.add(Area.fromJsonTemp(data[i], coordinates));
+        _result.add(Area.fromJsonWithAPIData(data[i], geoJson));
       }
     }
     return _result;
