@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:latlong2/latlong.dart';
+
 import '../class/abstract_Place.dart';
 import '../class/class_AlertSwissPlace.dart';
+import '../class/class_ErrorLogger.dart';
 import '../class/class_Geocode.dart';
 import '../class/class_NinaPlace.dart';
 import '../main.dart';
@@ -12,7 +15,6 @@ import 'package:http/http.dart';
 
 //  @todo: move to geocode class?
 Future<void> geocodeHandler() async {
-
   try {
     final _data = await getPlaces();
 
@@ -27,11 +29,10 @@ Future<void> geocodeHandler() async {
       Place place = NinaPlace(
           name: _data["Daten"][i][0],
           geocode: Geocode(
-              geocodeNumber: _data["Daten"][i][4],
-              geocodeName: _data["Daten"][i][0],
-              longitude: _data["Daten"][i][2],
-              latitude: _data["Daten"][i][3],
-              PLZ: _data["Daten"][i][1]));
+              geocodeNumber: _data["Daten"][i][4].toString(),
+              geocodeName: _data["Daten"][i][0].toString(),
+              latLng: LatLng(_data["Daten"][i][3], _data["Daten"][i][2]),
+              PLZ: _data["Daten"][i][1].toString()));
 
       // we can not receive any warning for OT (Ortsteile)
       if (place.name.contains("OT")) continue;
@@ -46,12 +47,15 @@ Future<void> geocodeHandler() async {
     print("[geocodehandler] finish");
   } catch (e) {
     print("[geocodehandler] something went wrong: " + e.toString());
-    //@todo add error logger
+    ErrorLogger.writeErrorLog("geocodeHandler.dart",
+        "Error while getting geocode data", e.toString());
+    appState.error = true;
   }
 }
 
 /// Fetch places from sharedPrefs (cache) or server.
 /// Returns a JSON with an unparsed (!) list of Place(s) in field "daten".
+/// throws Exception if the resource could not reached
 Future<dynamic> getPlaces() async {
   const String _url =
       "https://raw.githubusercontent.com/nucleus-ffm/ARSForNina/main/ARSNinaMini.json";
@@ -63,10 +67,12 @@ Future<dynamic> getPlaces() async {
     print("[geocodeHandler] data already stored");
     return savedData;
   } else {
-    final Response response = await get(Uri.parse(_url)).timeout(userPreferences.networkTimeout);
+    final Response response =
+        await get(Uri.parse(_url)).timeout(userPreferences.networkTimeout);
 
-    if (response.statusCode != 200) return;
-    print("[geocodehandler] got data ");
+    if (response.statusCode != 200)
+      throw Exception("Resource did not return a 200 HTTP status code");
+    print("[geocodehandler] got data");
 
     final data = utf8.decode(response.bodyBytes);
     saveGeocodes(data);
