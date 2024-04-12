@@ -12,13 +12,13 @@ enum Category {
   Other; // Other events
 
   String toJson() => name;
-  static Category fromJson(String json) => values.byName(json);
+  // static Category fromJson(String json) => values.byName(json);
 
   static List<Category> categoryListFromJson(var data) {
     List<Category> _result = [];
     if(data != null) {
       for (int i = 0; i < data.length; i++) {
-        _result.add(Category.fromJson(data[i]));
+        _result.add(Category.fromString(data[i]));
       }
     }
     return _result;
