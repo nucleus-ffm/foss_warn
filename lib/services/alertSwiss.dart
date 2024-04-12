@@ -7,7 +7,6 @@ import '../class/abstract_Place.dart';
 import '../class/class_ErrorLogger.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
-import '../class/class_Geocode.dart';
 import 'listHandler.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
