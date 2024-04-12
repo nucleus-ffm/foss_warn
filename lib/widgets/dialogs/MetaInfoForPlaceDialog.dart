@@ -39,8 +39,8 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Nina-ARS: ${ninaPlace?.geocode.geocodeNumber}"),
-                      Text("Latitude: ${ninaPlace?.geocode.latitude}"),
-                      Text("Longitude: ${ninaPlace?.geocode.longitude}"),
+                      Text("Latitude: ${ninaPlace?.geocode.latLng.latitude}"),
+                      Text("Longitude: ${ninaPlace?.geocode.latLng.longitude}"),
                       Text("PLZ: ${ninaPlace?.geocode.PLZ}")
                     ],
                   )
