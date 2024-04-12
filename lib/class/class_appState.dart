@@ -1,7 +1,7 @@
 import '../enums/DataFetchStatus.dart';
 
 class AppState {
-  bool error = false; //if API call and parsing was successful
+  bool error = false; // true if API call and parsing was not successful
   bool mowasStatus = false;
   bool mowasParseStatus = false;
   bool katwarnStatus = false;
