@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../class/class_NotificationService.dart';
 import '../main.dart';
 import '../widgets/dialogs/legacyWarningDialog.dart';
+import 'listHandler.dart';
 
 /// checks if there is old data in SharedPreferences and if yes reset all settings
 Future<void> legacyHandler() async {
@@ -33,7 +34,21 @@ Future<void> legacyHandler() async {
     }
   } catch (e) {
     print("[legacyHandler] Error: ${e.toString()}");
+    //@todo write to logfile?
   }
+
+  // @todo check for version < 0.8.0 because of new structured alerts
+  if (userPreferences.previousInstalledVersionCode < 31) {
+    try {
+      allAvailablePlacesNames = [];
+      preferences.remove("geocodes");
+      //@todo migrate old places to new one. should be possible with the geocode
+    } catch (e) {
+      print("[legacyHandler] Error: ${e.toString()}");
+      //@todo write to logfile
+    }
+  }
+
 }
 
 /// shows a dialog with information if FOSSWarn had to reset all settings.
