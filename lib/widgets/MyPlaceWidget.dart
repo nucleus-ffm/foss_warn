@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../class/abstract_Place.dart';
 import 'dialogs/DeletePlaceDialog.dart';
 import '../views/MyPlaceDetailView.dart';
+import 'dialogs/MetaInfoForPlaceDialog.dart';
 
 class MyPlaceWidget extends StatelessWidget {
   final Place myPlace;
@@ -59,7 +60,14 @@ class MyPlaceWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.location_city),
+                  IconButton(onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MetaInfoForPlaceDialog(myPlace: myPlace);
+                      },
+                    );
+                  }, icon: Icon(Icons.location_city)),
                   SizedBox(
                     width: 20,
                     //width: (MediaQuery.of(context).size.width)-150,
