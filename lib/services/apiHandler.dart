@@ -142,7 +142,7 @@ Future<Response> getGeoJson(String id, String baseUrl) async {
 
 /// generate WarnMessage object
 WarnMessage? createWarning(
-    dynamic data, String provider, List<dynamic> coordinates) {
+    dynamic data, String provider, String geoJson) {
   /// generate empty list as placeholder
 
   //@todo how can this work??
@@ -156,8 +156,8 @@ WarnMessage? createWarning(
   }
 
   try {
-    return WarnMessage.fromJsonTemp(data, provider,
-        findPublisher(data["info"][0]["parameter"]), coordinates);
+    return WarnMessage.fromJsonWithAPIData(data, provider,
+        findPublisher(data["info"][0]["parameter"]), geoJson);
   } catch (e) {
     print(
         "[API Handler] Error while parsing warning: ${data["identifier"]} error: ${e.toString()}");
@@ -226,14 +226,14 @@ Future<List<WarnMessage>> parseNinaJsonData(
     // check if request was successfully
     if (responseDetails.statusCode == 200) {
       // load coordinates from tge geocode API
-      dynamic coordinatesRaw =
-          jsonDecode(utf8.decode((await getGeoJson(id, baseUrl)).bodyBytes));
+      dynamic geoJsonRaw =
+          utf8.decode((await getGeoJson(id, baseUrl)).bodyBytes);
 
-      List<dynamic> coordinates =
-          coordinatesRaw["features"][0]["geometry"]["coordinates"][0];
+      String geoJson = geoJsonRaw.toString();
+
       var warningDetails = jsonDecode(utf8.decode(responseDetails.bodyBytes));
       // create the new WarnMessage
-      WarnMessage? temp = createWarning(warningDetails, provider, coordinates);
+      WarnMessage? temp = createWarning(warningDetails, provider, geoJson);
       if (temp != null) {
         _tempWarnMessageList.add(temp);
         // check if new warnings isn't already in the list
@@ -339,12 +339,13 @@ Future<List<WarnMessage>> parseMapApiData(
     if (responseDetails.statusCode == 200) {
       // load coordinates from tge geocode API
       dynamic coordinatesRaw =
-          jsonDecode(utf8.decode((await getGeoJson(id, baseUrl)).bodyBytes));
-      List<dynamic> coordinates =
-          coordinatesRaw["features"][0]["geometry"]["coordinates"][0];
+          utf8.decode((await getGeoJson(id, baseUrl)).bodyBytes);
+      String geoJson = coordinatesRaw.toString();
+      /*List<dynamic> coordinates =
+          coordinatesRaw["features"][0]["geometry"]["coordinates"][0];*/
       var warningDetails = jsonDecode(utf8.decode(responseDetails.bodyBytes));
       // create the new WarnMessage
-      WarnMessage? temp = createWarning(warningDetails, provider, coordinates);
+      WarnMessage? temp = createWarning(warningDetails, provider, geoJson);
       if (temp != null) {
         result.add(temp);
       }
