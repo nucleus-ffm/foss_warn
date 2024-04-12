@@ -18,8 +18,8 @@ Future callAlertSwissAPI() async {
       "https://www.alert.swiss/content/alertswiss-internet/en/home/_jcr_content/polyalert.alertswiss_alerts.actual.json";
 
   try {
-    Response response; //response var for get request
-    var data; //var for response data
+    Response response; // response var for get request
+    var data; // var for response data
 
     List<WarnMessage> tempWarnMessageList = [];
     tempWarnMessageList.clear();
@@ -50,7 +50,7 @@ Future callAlertSwissAPI() async {
 
         for (WarnMessage msg in tempWarnMessageList) {
           for (Area a in msg.info[0].area) {
-              if (a.geocode.geocodeName == p.shortName) {
+              if (a.region != null && a.region == p.shortName) {
                 if (!p.warnings.any((w) => w.identifier == msg.identifier)) {
                   p.addWarningToList(msg);
                 }
@@ -63,7 +63,9 @@ Future callAlertSwissAPI() async {
     print("Something went wrong: " + e.toString());
     // write to logfile
     ErrorLogger.writeErrorLog(
-        "alertSwiss.dart", "Error while calling alertSwiss API}", e.toString());
+        "alertSwiss.dart", "Error while calling alertSwiss API}", e.toString()
+    );
+    appState.error = true;
   }
 }
 
@@ -84,15 +86,10 @@ WarnMessage? createWarning(var data) {
     List<Area> tempAreaList = [];
     for (int i = 0; i < data.length; i++) {
       tempAreaList.add(
-        Area(
+        Area.withRegion(
           areaDesc: data[i]["description"]["description"],
-          geocode:  Geocode(
-              geocodeName: data[i]["regions"][0]["region"],
-              geocodeNumber: "-1",
-              PLZ: -1,
-              longitude: "-1",
-              latitude: "-1" ),
-          polygon: data[i]["areas"][0]["polygons"][0]["coordinates"]
+          region: data[i]["regions"][0]["region"],
+          geoJson: "{}" //[GeoJsonFeature(type: "alertSwissPolygon", coordinates: [], properties: {} )],  //@todo parse data[i]["areas"][0]["polygons"][0]["coordinates"]
         ),
       );
     }
