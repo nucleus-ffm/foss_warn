@@ -9,34 +9,41 @@ import '../enums/Status.dart';
 import 'class_Area.dart';
 import 'class_Info.dart';
 
+/// WarnMessage class this data structure follows mostly the Common Alerting Protocol Version 1.2
+///
+/// See: http://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.html
+/// Properties:
+///   - identifier
+///   - publisher
+///   - sender (REQUIRED) The identifier  of the sender of the alert message
+///   - sent (REQUIRED) The time and date of the origination of the alert   message
+///   - status (REQUIRED) The code denoting the appropriate handling of the alert message
+///   - messageType (REQUIRED) The code denoting the nature of the alert message
+///   - source (OPTIONAL) The text identifying the source of the alert message
+///   - scope (REQUIRED) The code denoting the intended distribution of the alert message
+///   - restriction (CONDITIONAL) Used when <scope> value is "Restricted".
+///   - addresses (CONDITIONAL) Required when <scope> is “Private”, optional when <scope> isPublic” or “Restricted”.
+///   - code (OPTIONAL) Any user-defined flag or special code used to flag the alert message for special handling.
+///   - note (OPTIONAL) The message note is primarily intended for  use with <status> “Exercise” and<msgType> “Error”.
+///   - references (OPTIONAL)  The message note is primarily intended for use with <status> “Exercise” and <msgType> “Error”.
+///   - incidents (OPTIONAL) Used to collate multiple messages referring to different aspects of the same incident.
+///   - info  (OPTIONAL) The container for all component parts of the info sub-element of the alert message
 class WarnMessage {
   final String identifier;
   final String publisher;
-  final String
-      sender; // (REQUIRED) The identifier  of the sender of the alertmessage
-  final String
-      sent; // (REQUIRED) The time and date of the origination of the alert   message
-  final Status
-      status; // (REQUIRED) The code denoting the appropriate handling of the alert message
-  final MessageType
-      messageType; // (REQUIRED) The code denoting the nature of the alert message
-  final WarningSource
-      source; // (OPTIONAL) The text identifying the source of the alert message
-  final Scope
-      scope; // (REQUIRED) The code denoting the intended distribution ofthe alert message
-  String? restriction; // (CONDITIONAL) Used when <scope> value is "Restricted".
-  String?
-      addresses; // (CONDITIONAL) Required when <scope> is “Private”, optional when <scope> isPublic” or “Restricted”.
-  String?
-      code; // (OPTIONAL) Any user-defined flag or special code used to flag the alert message for special handling.
-  String?
-      note; // (OPTIONAL) The message note is primarily intended for  use with <status> “Exercise” and<msgType> “Error”.
-  References?
-      references; // (OPTIONAL)  The message note is primarily intended for use with <status> “Exercise” and <msgType> “Error”.
-  String?
-      incidents; // (OPTIONAL) Used to collate multiple messages referring to different aspects of the same incident.
-  final List<Info>
-      info; //  (OPTIONAL) The containerfor all component parts of the info sub-element of the alertmessage
+  final String sender;
+  final String sent;
+  final Status status;
+  final MessageType messageType;
+  final WarningSource source;
+  final Scope scope;
+  String? restriction;
+  String? addresses;
+  String? code;
+  String? note;
+  References? references;
+  String? incidents;
+  final List<Info> info;
 
   bool notified = false;
   bool read = false;
@@ -87,8 +94,8 @@ class WarnMessage {
   /// is used to create a new WarnMessage object with data from the API call.
   /// Note that the json structure is different from the structure we use to
   /// cache the warnings.
-  factory WarnMessage.fromJsonTemp(Map<String, dynamic> json, String provider,
-      String publisher, List<dynamic> coordinates) {
+  factory WarnMessage.fromJsonWithAPIData(Map<String, dynamic> json, String provider,
+      String publisher, String geoJson) {
     // print("Neue WarnMessage wird angelegt...");
     return WarnMessage(
         source: WarningSource.fromString(provider),
@@ -99,7 +106,7 @@ class WarnMessage {
         messageType: MessageType.fromJson(json["msgType"]),
         scope: Scope.fromJson(json["scope"]),
         publisher: publisher,
-        info: Info.infoListFromJsonTemp(json['info'], coordinates),
+        info: Info.infoListFromJsonWithAPIData(json['info'], geoJson),
         references: json['references'] != null
             ? References.fromString(json['references'])
             : null,
