@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
-import '../class/class_Geocode.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
@@ -13,28 +13,37 @@ import '../widgets/dialogs/MessageTypeExplanation.dart';
 import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {
+  final Place? _place;
   final WarnMessage _warnMessage;
-  const WarningWidget({Key? key, required WarnMessage warnMessage}) : _warnMessage = warnMessage, super(key: key);
+  const WarningWidget(
+      {Key? key, required WarnMessage warnMessage, Place? place})
+      : _warnMessage = warnMessage,
+        _place = place,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<String> geocodeNameList = [];
+    List<String> areaList = []; //@todo rename
+
     updatePrevView() {
       final updater = Provider.of<Update>(context, listen: false);
       updater.updateReadStatusInList();
     }
 
-    List<String> generateGeocodeList() {
-      List<String> tempList = [];
-      for (Area myArea in _warnMessage.areaList) {
-        for (Geocode myGeocode in myArea.geocodeList) {
-          tempList.add(myGeocode.geocodeName);
+    List<String> generateAreaList() {
+      List<String> result = [];
+      for (Area myArea in _warnMessage.info[0].area) {
+        // sometimes there is a long list of areas separated with ","
+        // we split them to only show the first one in the overview
+        List<String> listOfAreas = myArea.description.split(",");
+        for (int i = 0; i < listOfAreas.length; i++) {
+          result.add(listOfAreas[i]);
         }
       }
-      return tempList;
+      return result;
     }
 
-    geocodeNameList = generateGeocodeList();
+    areaList = generateAreaList();
 
     return Consumer<Update>(
       builder: (context, counter, child) => Card(
@@ -43,7 +52,10 @@ class WarningWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailScreen(warnMessage: _warnMessage)),
+                  builder: (context) => DetailScreen(
+                        warnMessage: _warnMessage,
+                        place: _place,
+                      )),
             ).then((value) => updatePrevView());
           },
           child: Padding(
@@ -55,7 +67,8 @@ class WarningWidget extends StatelessWidget {
                     ? IconButton(
                         onPressed: () {
                           _warnMessage.read = false;
-                          final updater = Provider.of<Update>(context, listen: false);
+                          final updater =
+                              Provider.of<Update>(context, listen: false);
                           updater.updateReadStatusInList();
                           // save places list to store new read state
                           saveMyPlacesList();
@@ -67,7 +80,8 @@ class WarningWidget extends StatelessWidget {
                     : IconButton(
                         onPressed: () {
                           _warnMessage.read = true;
-                          final updater = Provider.of<Update>(context, listen: false);
+                          final updater =
+                              Provider.of<Update>(context, listen: false);
                           updater.updateReadStatusInList();
                           // save places list to store new read state
                           saveMyPlacesList();
@@ -97,7 +111,8 @@ class WarningWidget extends StatelessWidget {
                               },
                               child: Text(
                                 translateWarningCategory(
-                                    _warnMessage.category, context),
+                                    _warnMessage.info[0].category[0].name,
+                                    context), //@todo display more then one category if available
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ),
@@ -119,13 +134,13 @@ class WarningWidget extends StatelessWidget {
                               },
                               child: Text(
                                 translateWarningType(
-                                    _warnMessage.messageType, context),
+                                    _warnMessage.messageType.name, context),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
                             ),
-                            color:
-                                chooseWarningTypeColor(_warnMessage.messageType),
+                            color: chooseWarningTypeColor(
+                                _warnMessage.messageType.name),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
@@ -135,21 +150,20 @@ class WarningWidget extends StatelessWidget {
                             child: SizedBox(
                               width: 100,
                               child: Text(
-                                geocodeNameList.length > 1
-                                    ? geocodeNameList.first +
+                                areaList.length > 1
+                                    ? areaList.first +
                                         " " +
-                                        AppLocalizations.of(context)
-                                            !.warning_widget_and +
+                                        AppLocalizations.of(context)!
+                                            .warning_widget_and +
                                         " " +
-                                        (geocodeNameList.length - 1)
-                                            .toString() +
+                                        (areaList.length - 1).toString() +
                                         " " +
-                                        AppLocalizations.of(context)
-                                            !.warning_widget_other
-                                    : geocodeNameList.isNotEmpty
-                                        ? geocodeNameList.first
-                                        : AppLocalizations.of(context)
-                                            !.warning_widget_unknown,
+                                        AppLocalizations.of(context)!
+                                            .warning_widget_other
+                                    : areaList.isNotEmpty
+                                        ? areaList.first
+                                        : AppLocalizations.of(context)!
+                                            .warning_widget_unknown,
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
@@ -160,7 +174,7 @@ class WarningWidget extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        _warnMessage.headline,
+                        _warnMessage.info[0].headline,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -193,8 +207,10 @@ class WarningWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              DetailScreen(warnMessage: _warnMessage)),
+                          builder: (context) => DetailScreen(
+                                warnMessage: _warnMessage,
+                                place: _place,
+                              )),
                     ).then((value) => updatePrevView());
                   },
                   icon: Icon(Icons.read_more),
