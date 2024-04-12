@@ -1,45 +1,44 @@
+import 'package:latlong2/latlong.dart';
+
 class Geocode {
   String _geocodeName;
   String _geocodeNumber;
   String _stateName = "";
-  String _latitude; // Breitengrad
-  String _longitude; // Längengrad
+  LatLng _latLng;
   String _PLZ;
 
-  Geocode({required String geocodeName, required String geocodeNumber, required latitude,
-    required longitude,
-    required PLZ})
+  Geocode(
+      {required String geocodeName,
+      required String geocodeNumber,
+      required latLng,
+      required PLZ})
       : _geocodeNumber = geocodeNumber,
         _geocodeName = geocodeName,
-        _latitude = latitude,
-        _longitude = longitude,
-        _PLZ = PLZ{
+        _latLng = latLng,
+        _PLZ = PLZ {
     _stateName = _extractStateNameFromGeocode();
   }
 
   String get geocodeNumber => _geocodeNumber;
   String get stateName => _stateName;
   String get geocodeName => _geocodeName;
-  String get longitude => _longitude;
-  String get latitude => _latitude;
+  LatLng get latLng => _latLng;
   String get PLZ => _PLZ;
 
   Geocode.fromJson(Map<String, dynamic> json)
       : _geocodeName = json['geocodeName'],
         _geocodeNumber = json['geocodeNumber'],
         _stateName = json['stateName'] ?? "-1",
-        _latitude = json['latitude'] ?? "-1",
-        _longitude = json['longitude'] ?? "-1",
+        _latLng = LatLng.fromJson(json['latLng']),
         _PLZ = json['PLZ'] ?? "-1";
 
   Map<String, dynamic> toJson() => {
-    'geocodeName': _geocodeName,
-    'geocodeNumber': _geocodeNumber,
-    'stateName': _stateName,
-    'latitude': _latitude,
-    'longitude': _longitude,
-    'PLZ': _PLZ
-  };
+        'geocodeName': _geocodeName,
+        'geocodeNumber': _geocodeNumber,
+        'stateName': _stateName,
+        'latLng': _latLng,
+        'PLZ': _PLZ
+      };
 
   String _extractStateNameFromGeocode() {
     if (_geocodeNumber.length < 2) return "error";
