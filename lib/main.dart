@@ -112,6 +112,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // set to false to prevent the widget from jumping after closing the keyboard
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text("FOSS Warn"),
           actions: [
