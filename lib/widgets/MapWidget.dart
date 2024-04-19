@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_geojson/flutter_map_geojson.dart';
+import 'package:foss_warn/class/class_ErrorLogger.dart';
 
 import '../class/abstract_Place.dart';
 import '../class/class_Area.dart';
@@ -27,15 +28,21 @@ class MapWidget extends StatefulWidget {
   //  default borderColor: 0xFFFB8C00
   static List<Polygon> createAllPolygons(List<Area> areas) {
     List<Polygon> result = [];
-    GeoJsonParser myGeoJson = GeoJsonParser(
-        defaultPolygonFillColor: Color(0xFFB01917).withOpacity(0.5),
-        defaultPolygonBorderColor: Color(0xFFFB8C00),
-        defaultPolylineStroke: 1);
-    for (Area area in areas) {
-      myGeoJson.parseGeoJsonAsString(area.geoJson);
-      result.addAll(myGeoJson.polygons);
+    try {
+      GeoJsonParser myGeoJson = GeoJsonParser(
+          defaultPolygonFillColor: Color(0xFFB01917).withOpacity(0.2),
+          defaultPolygonBorderColor: Color(0xFFFB8C00),
+          defaultPolylineStroke: 1);
+      for (Area area in areas) {
+        myGeoJson.parseGeoJsonAsString(area.geoJson);
+        result.addAll(myGeoJson.polygons);
+      }
+      return result;
+    } catch (e) {
+      ErrorLogger.writeErrorLog("MapWidget", "Error while parsing geoJson", e.toString());
+      appState.error = true;
+      return [];
     }
-    return result;
   }
 
   /// create polygon layer for my places alerts
