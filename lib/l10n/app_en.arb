@@ -456,5 +456,17 @@
   "warning_severity_explanation_dialog_extreme_description": "Extraordinary threat to life or property. May have a significant short-term impact on your health, property and/or public infrastructure.",
   "@warning_severity_explanation_dialog_extreme_description": {},
   "warning_severity_explanation_dialog_headline": "Severity",
-  "@warning_severity_explanation_dialog_headline": {}
+  "@warning_severity_explanation_dialog_headline": {},
+  "warning_severity_minor": "Minor",
+  "@warning_severity_minor": {},
+  "warning_severity_moderate": "Moderate",
+  "@warning_severity_moderate": {},
+  "severity": {
+    "severity.severe": "Severe",
+    "@severity.severe": {},
+    "severity.extreme": "Extreme",
+    "@severity.extreme": {},
+    "severity.unknown": "Unknown",
+    "@severity.unknown": {}
+  }
 }
