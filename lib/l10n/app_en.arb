@@ -461,4 +461,10 @@
   "@warning_severity_minor": {},
   "warning_severity_moderate": "Moderate",
   "@warning_severity_moderate": {},
+  "warning_severity_severe": "Severe",
+  "@warning_severity_severe": {},
+  "warning_severity_extreme": "Extreme",
+  "@warning_severity_extreme": {},
+  "warning_severity_unknown": "Unknown",
+  "@warning_severity_unknown": {}
 }
