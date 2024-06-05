@@ -22,7 +22,7 @@ import '../widgets/dialogs/WarningSeverityExplanation.dart';
 
 class DetailScreen extends StatefulWidget {
   final WarnMessage _warnMessage;
-  Place? _place;
+  final Place? _place;
   DetailScreen({Key? key, required WarnMessage warnMessage, Place? place})
       : _warnMessage = warnMessage,
         _place = place,
