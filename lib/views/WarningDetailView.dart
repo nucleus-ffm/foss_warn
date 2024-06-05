@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_NinaPlace.dart';
@@ -9,6 +10,7 @@ import 'package:latlong2/latlong.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
+import '../enums/Severity.dart';
 import '../main.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/urlLauncher.dart';
@@ -327,6 +329,44 @@ class _DetailScreenState extends State<DetailScreen> {
       return result;
     }
 
+    Widget createTagButton(Color color, String eventType, String info,
+        {Function()? action = null}) {
+      return Container(
+        margin: EdgeInsets.all(3),
+        padding: EdgeInsets.all(7),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+        ),
+        child: action != null
+            ? InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return action();
+                    },
+                  );
+                },
+                child: Text(
+                  eventType + ": " + info,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: userPreferences.warningFontSize),
+                ),
+              )
+            : Text(
+                eventType + ": " + info,
+                style: TextStyle(
+                  color: color.computeLuminance() > 0.5
+                      ? Colors.black
+                      : Colors.white,
+                  fontSize: userPreferences.warningFontSize,
+                ),
+              ),
+      );
+    }
+
     void shareWarning(
         BuildContext context, String shareText, String shareSubject) async {
       final box = context.findRenderObject() as RenderBox?;
@@ -340,6 +380,7 @@ class _DetailScreenState extends State<DetailScreen> {
         title: Text(widget._warnMessage.info[0].headline),
         actions: [
           IconButton(
+            //@todo refactor
             tooltip: AppLocalizations.of(context)!.warning_share,
             onPressed: () {
               final String shareText = widget._warnMessage.info[0].headline +
@@ -347,6 +388,17 @@ class _DetailScreenState extends State<DetailScreen> {
                   AppLocalizations.of(context)!.warning_from +
                   ": " +
                   formatSentDate(widget._warnMessage.sent) +
+                  "\n\n" +
+                  "Context information: \n" +
+                  AppLocalizations.of(context)!.warning_type +
+                  ": " +
+                  translateWarningType(
+                      widget._warnMessage.messageType.name, context) +
+                  "\n " +
+                  AppLocalizations.of(context)!.warning_severity +
+                  ": " +
+                  translateWarningCertainty(
+                      widget._warnMessage.info[0].severity.name) +
                   "\n\n" +
                   AppLocalizations.of(context)!.warning_region +
                   ": " +
@@ -461,184 +513,54 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
               Wrap(
                 children: [
-                  Container(
-                    margin: EdgeInsets.all(3),
-                    padding: EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.deepPurple,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.warning_event +
-                          ": " +
-                          translateWarningCategory(
-                              widget._warnMessage.info[0].event, context),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: userPreferences.warningFontSize),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(3),
-                    padding: EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: chooseWarningTypeColor(
-                          widget._warnMessage.messageType.name),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.warning_type +
-                          ": " +
-                          translateWarningType(
-                              widget._warnMessage.messageType.name, context),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: userPreferences.warningFontSize),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(3),
-                    padding: EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: chooseWarningSeverityColor(
-                          widget._warnMessage.info[0].severity.name),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return WarningSeverityExplanation();
-                          },
-                        );
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.warning_severity +
-                            ": " +
-                            translateWarningSeverity(
-                                widget._warnMessage.info[0].severity.name),
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: userPreferences.warningFontSize),
-                      ),
-                    ),
-                  ),
+                  createTagButton(
+                      Colors.deepPurple,
+                      AppLocalizations.of(context)!.warning_event,
+                      translateWarningCategory(
+                          widget._warnMessage.info[0].event, context)),
+                  createTagButton(
+                      chooseWarningTypeColor(widget
+                          ._warnMessage.messageType.name), //@todo besser machen
+                      AppLocalizations.of(context)!.warning_type,
+                      translateWarningType(
+                          widget._warnMessage.messageType.name, context)),
+                  createTagButton(
+                      Severity.getColorForSeverity(
+                          widget._warnMessage.info[0].severity),
+                      AppLocalizations.of(context)!.warning_severity,
+                      Severity.getLocalizationName(
+                          widget._warnMessage.info[0].severity, context),
+                      action: () => WarningSeverityExplanation()),
+                  // display more metadata button if enabled in the settings
                   userPreferences.showExtendedMetaData
                       ? Wrap(children: [
-                          Container(
-                            margin: EdgeInsets.all(3),
-                            padding: EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.green,
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.warning_urgency +
-                                  ": " +
-                                  translateWarningUrgency(
-                                      widget._warnMessage.info[0].urgency.name),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(3),
-                            padding: EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.blueGrey,
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.warning_certainty +
-                                  ": " +
-                                  translateWarningCertainty(widget
-                                      ._warnMessage.info[0].certainty.name),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(3),
-                            padding: EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.amber,
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.warning_scope +
-                                  ": " +
-                                  widget._warnMessage.scope.name,
-                              style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(3),
-                            padding: EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.lightBlue[200],
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.warning_identifier +
-                                  ": " +
-                                  widget._warnMessage.identifier,
-                              style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(3),
-                            padding: EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.orangeAccent,
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.warning_sender +
-                                  ": " +
-                                  widget._warnMessage.sender,
-                              style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(3),
-                            padding: EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.greenAccent,
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.warning_status +
-                                  ": " +
-                                  translateWarningStatus(
-                                      widget._warnMessage.status.name),
-                              style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          )
+                          createTagButton(
+                              Colors.green,
+                              AppLocalizations.of(context)!.warning_urgency,
+                              translateWarningUrgency(
+                                  widget._warnMessage.info[0].urgency.name)),
+                          createTagButton(
+                              Colors.blueGrey,
+                              AppLocalizations.of(context)!.warning_certainty,
+                              translateWarningCertainty(
+                                  widget._warnMessage.info[0].certainty.name)),
+                          createTagButton(
+                              Colors.amber,
+                              AppLocalizations.of(context)!.warning_scope,
+                              widget._warnMessage.scope.name),
+                          createTagButton(
+                              Colors.lightBlue[200]!,
+                              AppLocalizations.of(context)!.warning_identifier,
+                              widget._warnMessage.identifier),
+                          createTagButton(
+                              Colors.orangeAccent,
+                              AppLocalizations.of(context)!.warning_sender,
+                              widget._warnMessage.sender),
+                          createTagButton(
+                              Colors.tealAccent,
+                              AppLocalizations.of(context)!.warning_status,
+                              translateWarningStatus(
+                                  widget._warnMessage.status.name)),
                         ])
                       : SizedBox(),
                 ],
