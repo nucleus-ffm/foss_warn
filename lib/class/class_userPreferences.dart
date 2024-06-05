@@ -59,7 +59,7 @@ class UserPreferences {
   bool showAllWarnings = false;
   bool areWarningsFromCache = false;
 
-  String versionNumber = "0.7.0"; // shown in the about view
+  String versionNumber = "0.7.1"; // shown in the about view
 
   bool activateAlertSwiss = false;
   bool isFirstStart = true;
