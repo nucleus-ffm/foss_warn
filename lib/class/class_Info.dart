@@ -97,7 +97,7 @@ class Info {
       onset: json['onset'],
       expires: json['expires'],
       headline: json['headline'],
-      description: json['description'],
+      description: json['description'] ?? "", //@todo can also be null
       instruction: json['instruction'],
       area: Area.areaListFromJsonWithAPIData(json['area'], geoJson),
       contact: json['contact'],
