@@ -34,7 +34,6 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   bool _showMoreRegions = false;
-  bool _showMorePlaces = false;
 
   // @todo think about moving code to better place
   String replaceHTMLTags(String text) {
