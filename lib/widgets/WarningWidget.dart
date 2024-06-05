@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/class/class_ErrorLogger.dart';
 import 'package:provider/provider.dart';
 
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
+import '../main.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
@@ -49,14 +51,22 @@ class WarningWidget extends StatelessWidget {
       builder: (context, counter, child) => Card(
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DetailScreen(
-                        warnMessage: _warnMessage,
-                        place: _place,
-                      )),
-            ).then((value) => updatePrevView());
+            try {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailScreen(
+                          warnMessage: _warnMessage,
+                          place: _place,
+                        )),
+              ).then((value) => updatePrevView());
+            } catch (e) {
+              ErrorLogger.writeErrorLog(
+                  "WarningWidget.dart",
+                  "Error of Type: ${e.runtimeType} while displaying alert: ${_warnMessage.identifier}",
+                  e.toString());
+              appState.error = true;
+            }
           },
           child: Padding(
             padding: EdgeInsets.all(12),
