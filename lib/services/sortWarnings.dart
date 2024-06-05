@@ -3,6 +3,7 @@ import '../class/class_WarnMessage.dart';
 import '../enums/Severity.dart';
 import '../main.dart';
 
+// @todo write tests to verify
 void sortWarnings(List<WarnMessage> list) {
   if (userPreferences.sortWarningsBy == "severity") {
     list.sort((a, b) => Severity.getIndexFromSeverity(b.info[0].severity)
