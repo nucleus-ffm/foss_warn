@@ -29,15 +29,23 @@ Future<void> launchUrlInBrowser(String url) async {
 
 Future<void> makePhoneCall(String url) async {
   String phoneNumber = extractPhoneNumber(url);
-  Uri uri = Uri.parse("tel:$phoneNumber");
+  // do not try to open invalid phone number.
+  // It will cause in some random number
+  //@todo open alert dialog and ask user if the phone number is correct
+  if(phoneNumber != "invalid") {
+    Uri uri = Uri.parse("tel:$phoneNumber");
 
-  print("Extracted phone number: $phoneNumber");
+    print("Extracted phone number: $phoneNumber");
 
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw "Could not launch ${uri.toString()}";
+    }
   } else {
-    throw "Could not launch ${uri.toString()}";
+    print("Can not launch invalid phone number");
   }
+
 }
 
 String extractPhoneNumber(String text) {
