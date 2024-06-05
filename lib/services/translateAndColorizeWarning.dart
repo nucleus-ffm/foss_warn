@@ -113,40 +113,10 @@ Color chooseWarningTypeColor(String type) {
   }
 }
 
-/// get a fitting color by the severity of a warning message
-Color chooseWarningSeverityColor(String severity) {
-  switch (severity) {
-    case "Minor":
-      return Colors.blueAccent;
-    case "Moderate":
-      return Colors.orange;
-    case "Extreme":
-      return Colors.deepOrange;
-    case "Severe":
-      return Colors.red;
-    default:
-      return Colors.grey;
-  }
-}
 
-/// translate the severity of a warning message
-/// @todo: Add translations
-String translateWarningSeverity(String severity) {
-  switch (severity) {
-    case "minor":
-      return "Gering";
-    case "moderate":
-      return "Moderat";
-    case "extreme":
-      return "Extrem";
-    case "severe":
-      return "Schwer";
-    case "other":
-      return "Sonstiges";
-    default:
-      return severity;
-  }
-}
+
+
+
 
 /// translate the status of a warning message
 /// @todo: Add translations

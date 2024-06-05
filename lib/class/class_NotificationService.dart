@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:foss_warn/enums/Severity.dart';
 import 'package:foss_warn/services/translateAndColorizeWarning.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class NotificationService {
     return NotificationDetails(
         android: AndroidNotificationDetails(
           'de.nucleus.foss_warn.notifications_' + channel.trim().toLowerCase(),
-          "Warnstufe: " + translateWarningSeverity(channel),
+          "Warnstufe: " + Severity.translateWarningSeverity(channel), //@todo find solution to translate this
           groupKey: "FossWarnWarnings",
           category: AndroidNotificationCategory.message,
           priority: Priority.max,
