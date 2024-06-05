@@ -176,6 +176,7 @@ class WarnMessage {
         'instruction': instruction,
         'areaList': areaList,
         'contact': contact,
+        'web': web,
         'notified': notified,
         'read': read
       };
