@@ -27,14 +27,17 @@ Future<void> launchUrlInBrowser(String url) async {
 
 Future<void> makePhoneCall(String url) async {
   String phoneNumber = extractPhoneNumber(url);
-  Uri uri = Uri.parse("tel:$phoneNumber");
 
-  print("Extracted phone number: $phoneNumber");
+  if(phoneNumber != "invalid") {
+    Uri uri = Uri.parse("tel:$phoneNumber");
 
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri);
-  } else {
-    throw "Could not launch ${uri.toString()}";
+    print("Extracted phone number: $phoneNumber");
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw "Could not launch ${uri.toString()}";
+    }
   }
 }
 
