@@ -1,27 +1,36 @@
 import "package:url_launcher/url_launcher.dart";
 
-String extractWebAddress(String text) {
+String? extractWebAddress(String text) {
   if (text.startsWith("<a")) {
+    // extract address from HTML-formatted tag
     int beginIndex = text.indexOf("href=\"") + 6;
     int endIndex = text.indexOf("\"", beginIndex);
-    text= text.substring(beginIndex, endIndex);
+    text = text.substring(beginIndex, endIndex);
   }
 
-  final RegExp webAddressRegEx = RegExp(r"((http|https)://)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)");
+  final RegExp webAddressRegEx = RegExp(
+      r"((http|https)://)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)");
+
   final RegExpMatch? match = webAddressRegEx.firstMatch(text);
-  if(match != null && match.start == 0 && match.end == text.length) {
+  if (match != null && match.start == 0 && match.end == text.length) {
     return text;
   }
 
-  return "invalid";
+  return null;
 }
 
 Future<void> launchUrlInBrowser(String url) async {
-  Uri webAddress = Uri.parse(extractWebAddress(url));
-  if (await canLaunchUrl(webAddress)) {
-    await launchUrl(webAddress, mode: LaunchMode.externalApplication);
+  String? webAddress = extractWebAddress(url);
+
+  if (webAddress == null) {
+    return;
+  }
+
+  Uri webUri = Uri.parse(webAddress);
+  if (await canLaunchUrl(webUri)) {
+    await launchUrl(webUri, mode: LaunchMode.externalApplication);
   } else {
-    throw "Could not launch $webAddress";
+    throw "Could not launch ${webUri.toString()}";
   }
 }
 
