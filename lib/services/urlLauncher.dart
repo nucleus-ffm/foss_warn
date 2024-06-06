@@ -53,24 +53,28 @@ String? extractPhoneNumber(String text) {
       r"(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}");
 
   final RegExpMatch? match = phoneNumberRegex.firstMatch(text);
-  if (match != null && match.start == 0 && match.end == text.length) {
-    return text;
+  if (match != null && match.start != -1 && match.end != -1) {
+    return text.substring(match.start, match.end);
   }
 
   return null;
 }
 
-Future<void> makePhoneCall(String url) async {
+/// open the telephone app with the extracted phone number
+/// returns true if it was successful and
+/// false if there is no valid telephone number to launch
+Future<bool> makePhoneCall(String url) async {
   String? phoneNumber = extractPhoneNumber(url);
 
   if (phoneNumber == null) {
-    return;
+    return false;
   }
 
   Uri uri = Uri.parse("tel:$phoneNumber");
   print("Extracted phone number: $phoneNumber");
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
+    return true;
   } else {
     throw "Could not launch ${uri.toString()}";
   }
