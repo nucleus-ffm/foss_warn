@@ -218,7 +218,8 @@ class _DetailScreenState extends State<DetailScreen> {
     // save places List to store new read state
     saveMyPlacesList();
     // cancel the notification
-    NotificationService.cancelOneNotification(widget._warnMessage.identifier.hashCode);
+    NotificationService.cancelOneNotification(
+        widget._warnMessage.identifier.hashCode);
 
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];
@@ -861,8 +862,26 @@ class _DetailScreenState extends State<DetailScreen> {
                         Flexible(
                           fit: FlexFit.loose,
                           child: TextButton(
-                            onPressed: () =>
-                                makePhoneCall(widget._warnMessage.contact),
+                            onPressed: () async {
+                              bool success = await makePhoneCall(
+                                  widget._warnMessage.contact);
+                              // display error message in snackBar if
+                              // launch was not successful
+                              if (!success) {
+                                final snackBar = SnackBar(
+                                  content: const Text(
+                                    'Keine Telefonnummer gefunden',
+                                    //@todo translate
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  backgroundColor: Colors.red[100],
+                                );
+                                // Find the ScaffoldMessenger in the widget tree
+                                // and use it to show a SnackBar.
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            },
                             child: Text(
                               replaceHTMLTags(widget._warnMessage.contact),
                               style: TextStyle(
