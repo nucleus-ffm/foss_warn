@@ -29,7 +29,7 @@ class Geocode {
       : _geocodeName = json['geocodeName'],
         _geocodeNumber = json['geocodeNumber'],
         _stateName = json['stateName'] ?? "-1",
-        _latLng = LatLng.fromJson(json['latLng']),
+        _latLng = json['latLng'] != null ? LatLng.fromJson(json['latLng']):  LatLng(0.0, 0.0) ,
         _PLZ = json['PLZ'] ?? "-1";
 
   Map<String, dynamic> toJson() => {
