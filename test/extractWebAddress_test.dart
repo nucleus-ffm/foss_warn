@@ -93,8 +93,8 @@ void main() {
   test('test extractWebAddress with invalid address', () {
     final String url1 = "lorem ipsum";
     final String url2 = "https://ex ample .co m";
-    expect(extractWebAddress(url1), "invalid");
-    expect(extractWebAddress(url2), "invalid");
+    expect(extractWebAddress(url1), null);
+    expect(extractWebAddress(url2), null);
   });
 
   test('test extractWebAddress with html hyperlink tag', () {
@@ -102,8 +102,8 @@ void main() {
     final String url2 = "https://ex ample .co m";
     final String str1 = '<a href="$url1">Linktext</a>';
     final String str2 = '<a href="$url2">Linktext</a>';
-    expect(extractWebAddress(str1), "invalid");
-    expect(extractWebAddress(str2), "invalid");
+    expect(extractWebAddress(str1), null);
+    expect(extractWebAddress(str2), null);
   });
 
 }

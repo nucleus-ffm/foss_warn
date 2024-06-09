@@ -43,7 +43,7 @@ void main() {
   test('test extractPhoneNumber with invalid input', () {
     String text = "asdf 94 fahfgoahfafr  wer 13 sdfsf  sdf";
 
-    expect(extractPhoneNumber(text), "invalid");
+    expect(extractPhoneNumber(text), null);
   });
 
 }
