@@ -7,6 +7,9 @@ String? extractWebAddress(String text) {
     int endIndex = text.indexOf("\"", beginIndex);
     text = text.substring(beginIndex, endIndex);
   }
+  if(text.startsWith("www")) {
+    text = "http://"+ text;
+  }
 
   final RegExp webAddressRegEx = RegExp(
       r"((http|https)://)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)");
@@ -19,19 +22,44 @@ String? extractWebAddress(String text) {
   return null;
 }
 
-Future<void> launchUrlInBrowser(String url) async {
+Future<bool> launchUrlInBrowser(String url) async {
   String? webAddress = extractWebAddress(url);
 
   if (webAddress == null) {
-    return;
+    return false;
   }
 
   Uri webUri = Uri.parse(webAddress);
   if (await canLaunchUrl(webUri)) {
     await launchUrl(webUri, mode: LaunchMode.externalApplication);
   } else {
-    throw "Could not launch ${webUri.toString()}";
+    print("Could not launch ${webUri.toString()}");
+    return false;
   }
+  return true;
+}
+
+List<String?> extractAllPhoneNumbers(String text) {
+  // remove some chars to detect even weird formatted phone numbers
+  RegExp expToRemove = RegExp(r"[\s/-]");
+  text = text.replaceAll(expToRemove, "");
+
+  // @todo this regex can certainly be further improved
+  /*
+    * (+\d{1,3}\s?)? - This part recognizes an optional country code starting with a plus sign (+) followed by 1 to 3 digits and an optional space.
+    * ((\d{1,3})\s?)? - This part recognizes an optional prefix in parentheses, starting with an opening parenthesis "(", followed by 1 to 3 digits, a closing parenthesis ")" and an optional space.
+    * \d{1,4} - This part recognizes 1 to 4 digits for the main number.
+    * [\s.-]? - This part recognizes an optional space, a hyphen "-" or a period "." as a separator.
+    * \d{1,4} - This part recognizes 1 to 4 digits for the second number group.
+    * [\s.-]? - This part again recognizes an optional space, a hyphen "-" or a period "." as a separator.
+    * \d{1,9} - This part recognizes 1 to 9 digits for the third number group.
+     */
+  RegExp phoneNumberRegex = RegExp(
+      r"(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}");
+
+  List<String?> result = phoneNumberRegex.allMatches(text).map((e) => e.group(0)).toList();
+
+  return result;
 }
 
 String? extractPhoneNumber(String text) {
