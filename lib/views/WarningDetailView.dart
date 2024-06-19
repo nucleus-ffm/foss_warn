@@ -39,21 +39,44 @@ class _DetailScreenState extends State<DetailScreen> {
     return replacedText;
   }
 
-  String generateURL(String url) {
-    String correctURL = "";
-    if (url.startsWith('http')) {
-      correctURL = url;
-    } else if (url.startsWith("<a")) {
-      int beginURL = url.indexOf("\"") + 1;
-      int endURL = url.indexOf("\"", beginURL + 1);
-      correctURL = url.substring(beginURL, endURL);
-    } else {
-      int firstPoint = url.indexOf('.');
-      String domain = url.substring(firstPoint + 1, url.length);
-      correctURL = 'https://' + domain;
+  /// generate a TextSpan with tappable telephone numbers
+  List<TextSpan> generateContactBody(String text) {
+    List<TextSpan> result = [];
+    int pointer = 0;
+    List<String?> allPhoneNumbers = extractAllPhoneNumbers(text);
+
+    if (allPhoneNumbers.length == 0) {
+      result.add(TextSpan(text: text));
     }
-    print("correct URL: " + correctURL);
-    return correctURL;
+
+    for (int i = 0; i < allPhoneNumbers.length; i++) {
+      if (allPhoneNumbers[i] != null) {
+        int startPos = text.indexOf(allPhoneNumbers[i]!.substring(0, 2),
+            pointer);
+
+        int endPos = text.indexOf(
+                allPhoneNumbers[i]!.substring(allPhoneNumbers[i]!.length - 2,
+                    allPhoneNumbers[i]!.length),
+                pointer + allPhoneNumbers[i]!.length - 3) +
+            2;
+        if (startPos != -1 && endPos != -1) {
+          result.add(TextSpan(text: text.substring(pointer, startPos)));
+          result.add(TextSpan(
+              text: allPhoneNumbers[i]!,
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  // print("phone number tapped");
+                  makePhoneCall(allPhoneNumbers[i]!);
+                }));
+          pointer = endPos;
+        } else {
+          continue;
+        }
+      }
+    }
+
+    return result;
   }
 
   /// returns the given text as List of TextSpans with clickable links and
@@ -137,11 +160,12 @@ class _DetailScreenState extends State<DetailScreen> {
         print("startPos $startPos");
         if (startPos == -1) {
           returnList.add(TextSpan(
-              text: text.substring(pointer, text.length),
-              recognizer: TapGestureRecognizer()
+            text: text.substring(pointer, text.length),
+            /*recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   print("text tapped");
-                }));
+                }*/
+          ));
           pointer = text.length;
         } else {
           print("pointer: $pointer  startPos: $startPos");
@@ -855,40 +879,19 @@ class _DetailScreenState extends State<DetailScreen> {
               widget._warnMessage.contact != ""
                   ? Row(
                       children: [
-                        Icon(Icons.call),
+                        Icon(Icons.perm_contact_cal),
                         SizedBox(
-                          width: 5,
+                          width: 15,
                         ),
                         Flexible(
-                          fit: FlexFit.loose,
-                          child: TextButton(
-                            onPressed: () async {
-                              bool success = await makePhoneCall(
-                                  widget._warnMessage.contact);
-                              // display error message in snackBar if
-                              // launch was not successful
-                              if (!success) {
-                                final snackBar = SnackBar(
-                                  content: const Text(
-                                    'Keine Telefonnummer gefunden',
-                                    //@todo translate
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  backgroundColor: Colors.red[100],
-                                );
-                                // Find the ScaffoldMessenger in the widget tree
-                                // and use it to show a SnackBar.
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              }
-                            },
-                            child: Text(
-                              replaceHTMLTags(widget._warnMessage.contact),
-                              style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
+                          child: SelectableText.rich(
+                            TextSpan(
+                                children: generateContactBody(
+                                    replaceHTMLTags(widget._warnMessage.contact)),
+                                style: TextStyle(
+                                    fontSize: userPreferences.warningFontSize)),
                           ),
-                        )
+                        ),
                       ],
                     )
                   : SizedBox(),
@@ -902,10 +905,27 @@ class _DetailScreenState extends State<DetailScreen> {
                         Flexible(
                           fit: FlexFit.loose,
                           child: TextButton(
-                            onPressed: () =>
-                                launchUrlInBrowser(widget._warnMessage.web),
+                            onPressed: () async {
+                              bool success = await launchUrlInBrowser(
+                                  widget._warnMessage.web);
+
+                              if (!success) {
+                                final snackBar = SnackBar(
+                                  content: const Text(
+                                    'Kann URL nicht öffnen',
+                                    //@todo translate
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  backgroundColor: Colors.red[100],
+                                );
+                                // Find the ScaffoldMessenger in the widget tree
+                                // and use it to show a SnackBar.
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            },
                             child: Text(
-                              generateURL(widget._warnMessage.web),
+                              widget._warnMessage.web,
                               style: TextStyle(
                                   fontSize: userPreferences.warningFontSize),
                             ),
