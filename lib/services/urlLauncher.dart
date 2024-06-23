@@ -11,7 +11,7 @@ Uri? extractWebAddress(String text) {
   // if the url is an email address, try adding a mailto and launch this
   if(text.contains("@")) {
     if(!text.startsWith("mailto:")) {
-      text = "mailto://" + text;
+      text = "mailto:" + text;
     }
     return Uri.parse(text);
   }

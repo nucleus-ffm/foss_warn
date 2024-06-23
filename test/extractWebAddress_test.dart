@@ -122,17 +122,17 @@ void main() {
   });
 
   test('test extractWebAddress with email with protocol', () {
-    final String url1 = "mailto://mail@example.com";
-    final String url2 = "mailto://mail.mail@example.example.com";
+    final String url1 = "mailto:mail@example.com";
+    final String url2 = "mailto:mail.mail@example.example.com";
     expect(extractWebAddress(url1).toString(), url1);
     expect(extractWebAddress(url2).toString(), url2);
   });
 
   test('test extractWebAddress with email without protocol', () {
     final String url1 = "mail@example.com";
-    final String url1_exp =  "mailto://mail@example.com";
+    final String url1_exp =  "mailto:mail@example.com";
     final String url2 = "mail.mail@example.example.com";
-    final String url2_exp =  "mailto://mail.mail@example.example.com";
+    final String url2_exp =  "mailto:mail.mail@example.example.com";
     expect(extractWebAddress(url1).toString(), url1_exp);
     expect(extractWebAddress(url2).toString(), url2_exp);
   });
