@@ -1,14 +1,25 @@
 import "package:url_launcher/url_launcher.dart";
 
-String? extractWebAddress(String text) {
+Uri? extractWebAddress(String text) {
   if (text.startsWith("<a")) {
     // extract address from HTML-formatted tag
     int beginIndex = text.indexOf("href=\"") + 6;
     int endIndex = text.indexOf("\"", beginIndex);
     text = text.substring(beginIndex, endIndex);
   }
-  if(text.startsWith("www")) {
-    text = "http://"+ text;
+
+  // if the url is an email address, try adding a mailto and launch this
+  if(text.contains("@")) {
+    if(!text.startsWith("mailto:")) {
+      text = "mailto://" + text;
+    }
+    return Uri.parse(text);
+  }
+
+  // if the url does not have a protocol, we use http
+  // e.g. www.example.de -> http://www.example.de, example.de -> http://example.de
+  if (!(text.startsWith("http") || text.startsWith("https"))) {
+    text = "http://" + text;
   }
 
   final RegExp webAddressRegEx = RegExp(
@@ -16,20 +27,19 @@ String? extractWebAddress(String text) {
 
   final RegExpMatch? match = webAddressRegEx.firstMatch(text);
   if (match != null && match.start == 0 && match.end == text.length) {
-    return text;
+    return Uri.parse(text);
   }
 
   return null;
 }
 
 Future<bool> launchUrlInBrowser(String url) async {
-  String? webAddress = extractWebAddress(url);
+  Uri? webUri = extractWebAddress(url);
 
-  if (webAddress == null) {
+  if (webUri == null) {
     return false;
   }
 
-  Uri webUri = Uri.parse(webAddress);
   if (await canLaunchUrl(webUri)) {
     await launchUrl(webUri, mode: LaunchMode.externalApplication);
   } else {
@@ -57,7 +67,8 @@ List<String?> extractAllPhoneNumbers(String text) {
   RegExp phoneNumberRegex = RegExp(
       r"(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}");
 
-  List<String?> result = phoneNumberRegex.allMatches(text).map((e) => e.group(0)).toList();
+  List<String?> result =
+      phoneNumberRegex.allMatches(text).map((e) => e.group(0)).toList();
 
   return result;
 }
