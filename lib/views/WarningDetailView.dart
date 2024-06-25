@@ -42,37 +42,37 @@ class _DetailScreenState extends State<DetailScreen> {
   /// generate a TextSpan with tappable telephone numbers
   List<TextSpan> generateContactBody(String text) {
     List<TextSpan> result = [];
-    int pointer = 0;
     List<String?> allPhoneNumbers = extractAllPhoneNumbers(text);
 
     if (allPhoneNumbers.length == 0) {
       result.add(TextSpan(text: text));
+      return result;
     }
 
-    for (int i = 0; i < allPhoneNumbers.length; i++) {
-      if (allPhoneNumbers[i] != null) {
-        int startPos = text.indexOf(allPhoneNumbers[i]!.substring(0, 2),
-            pointer);
+    int pointer = 0;
+    for (String? phoneNumber in allPhoneNumbers) {
+      if (phoneNumber == null) {
+        continue;
+      }
 
-        int endPos = text.indexOf(
-                allPhoneNumbers[i]!.substring(allPhoneNumbers[i]!.length - 2,
-                    allPhoneNumbers[i]!.length),
-                pointer + allPhoneNumbers[i]!.length - 3) +
-            2;
-        if (startPos != -1 && endPos != -1) {
-          result.add(TextSpan(text: text.substring(pointer, startPos)));
-          result.add(TextSpan(
-              text: allPhoneNumbers[i]!,
-              style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  // print("phone number tapped");
-                  makePhoneCall(allPhoneNumbers[i]!);
-                }));
-          pointer = endPos;
-        } else {
-          continue;
-        }
+      int startPos = text.indexOf(phoneNumber.substring(0, 2), pointer);
+
+      int endPos = text.indexOf(
+              phoneNumber.substring(phoneNumber.length - 2, phoneNumber.length),
+              pointer + phoneNumber.length - 3) +
+          2;
+
+      if (startPos != -1 && endPos != -1) {
+        result.add(TextSpan(text: text.substring(pointer, startPos)));
+        result.add(TextSpan(
+            text: phoneNumber,
+            style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                // print("phone number tapped");
+                makePhoneCall(phoneNumber);
+              }));
+        pointer = endPos;
       }
     }
 
@@ -886,8 +886,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         Flexible(
                           child: SelectableText.rich(
                             TextSpan(
-                                children: generateContactBody(
-                                    replaceHTMLTags(widget._warnMessage.contact)),
+                                children: generateContactBody(replaceHTMLTags(
+                                    widget._warnMessage.contact)),
                                 style: TextStyle(
                                     fontSize: userPreferences.warningFontSize)),
                           ),
