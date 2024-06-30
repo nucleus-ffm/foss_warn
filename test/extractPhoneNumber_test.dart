@@ -45,5 +45,10 @@ void main() {
 
     expect(extractPhoneNumber(text), null);
   });
+  test('test extractPhoneNUmber with 110', () {
+    String text = "call 110";
+
+    expect(extractPhoneNumber(text), "110");
+  });
 
 }
