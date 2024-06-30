@@ -39,4 +39,5 @@ jobs:
           channel: 'stable'
 
       - run: flutter pub get
+      - run: flutter gen-l10n # generate localization
       - run: flutter test
