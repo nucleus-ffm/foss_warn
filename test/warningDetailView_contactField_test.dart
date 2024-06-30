@@ -45,7 +45,7 @@ void main() {
       "contact us: Hauptstraße 3562394 or per telephone 3562394";
 
   testWidget("text with PLZ and address + telephone number identically to the PLZ test",
-      contactFieldText_4, contactFieldExpectedText_4);
+      contactFieldText_5, contactFieldExpectedText_5);
 }
 
 /// create a widget with localizations (en)
