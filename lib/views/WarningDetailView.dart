@@ -55,15 +55,24 @@ class _DetailScreenState extends State<DetailScreen> {
         continue;
       }
 
+      // find the start position of the telephone number in the text
       int startPos = text.indexOf(phoneNumber.substring(0, 2), pointer);
 
+      //To find the end position of the telephone number in the text, we use
+      // the last 2 digits and search from the current pointer + the length of
+      // the telephone -3 to find the last 2 digits. We have to do it that way
+      // because the telephone numbers in the text can contain spaces. The
+      // extracted telephone numbers we have in allPhoneNumbers
+      // don't have spaces anymore
       int endPos = text.indexOf(
               phoneNumber.substring(phoneNumber.length - 2, phoneNumber.length),
               pointer + phoneNumber.length - 3) +
           2;
 
       if (startPos != -1 && endPos != -1) {
+        // add the text before the telephone number to a TextSpan
         result.add(TextSpan(text: text.substring(pointer, startPos)));
+        // add the clickable telephone number
         result.add(TextSpan(
             text: phoneNumber,
             style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
@@ -74,6 +83,11 @@ class _DetailScreenState extends State<DetailScreen> {
               }));
         pointer = endPos;
       }
+    }
+
+    // add remaining text after the last telephone number
+    if (pointer < text.length) {
+      result.add(TextSpan(text: text.substring(pointer, text.length)));
     }
 
     return result;
@@ -885,6 +899,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                         Flexible(
                           child: SelectableText.rich(
+                            // key used by unit test
+                            key: Key('contactFieldKey'),
                             TextSpan(
                                 children: generateContactBody(replaceHTMLTags(
                                     widget._warnMessage.contact)),
