@@ -62,6 +62,14 @@ void main() {
 
   testWidget("telephone number with repeating parts and spaces test",
       contactFieldText_7, contactFieldExpectedText_7);
+
+  String contactFieldText_8 =
+      "Testcall 0615-298-56b";
+  String contactFieldExpectedText_8 =
+      "Testcall 0615-298-56b";
+
+  testWidget("telephone number and one char",
+      contactFieldText_8, contactFieldExpectedText_8);
 }
 
 /// create a widget with localizations (en)
