@@ -41,56 +41,51 @@ class _DetailScreenState extends State<DetailScreen> {
 
   /// generate a TextSpan with tappable telephone numbers
   List<TextSpan> generateContactBody(String text) {
-    List<TextSpan> result = [];
-    List<String?> allPhoneNumbers = extractAllPhoneNumbers(text);
+    try {
+      List<TextSpan> result = [];
+      List<String?> allPhoneNumbers = extractAllPhoneNumbers(text);
 
-    if (allPhoneNumbers.length == 0) {
-      result.add(TextSpan(text: text));
+      if (allPhoneNumbers.length == 0) {
+        result.add(TextSpan(text: text));
+        return result;
+      }
+
+      int pointer = 0;
+      for (String? phoneNumber in allPhoneNumbers) {
+        if (phoneNumber == null) {
+          continue;
+        }
+
+        int startPos = text.indexOf(phoneNumber, pointer);
+        int endPos = startPos + phoneNumber.length;
+
+        if (startPos != -1 && endPos != -1) {
+          // add the text before the telephone number to a TextSpan
+          result.add(TextSpan(text: text.substring(pointer, startPos)));
+          // add the clickable telephone number
+          result.add(TextSpan(
+              text: phoneNumber,
+              style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  // print("phone number tapped");
+                  makePhoneCall(phoneNumber);
+                }));
+          pointer = endPos;
+        }
+      }
+
+      // add remaining text after the last telephone number
+      if (pointer < text.length) {
+        result.add(TextSpan(text: text.substring(pointer, text.length)));
+      }
+
       return result;
+    } catch (e) {
+      // return the plain text if the generation failed
+      print(e);
+      return [TextSpan(text: text)];
     }
-
-    int pointer = 0;
-    for (String? phoneNumber in allPhoneNumbers) {
-      if (phoneNumber == null) {
-        continue;
-      }
-
-      // find the start position of the telephone number in the text
-      int startPos = text.indexOf(phoneNumber.substring(0, 2), pointer);
-
-      //To find the end position of the telephone number in the text, we use
-      // the last 2 digits and search from the current pointer + the length of
-      // the telephone -3 to find the last 2 digits. We have to do it that way
-      // because the telephone numbers in the text can contain spaces. The
-      // extracted telephone numbers we have in allPhoneNumbers
-      // don't have spaces anymore
-      int endPos = text.indexOf(
-              phoneNumber.substring(phoneNumber.length - 2, phoneNumber.length),
-              pointer + phoneNumber.length - 3) +
-          2;
-
-      if (startPos != -1 && endPos != -1) {
-        // add the text before the telephone number to a TextSpan
-        result.add(TextSpan(text: text.substring(pointer, startPos)));
-        // add the clickable telephone number
-        result.add(TextSpan(
-            text: phoneNumber,
-            style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // print("phone number tapped");
-                makePhoneCall(phoneNumber);
-              }));
-        pointer = endPos;
-      }
-    }
-
-    // add remaining text after the last telephone number
-    if (pointer < text.length) {
-      result.add(TextSpan(text: text.substring(pointer, text.length)));
-    }
-
-    return result;
   }
 
   /// returns the given text as List of TextSpans with clickable links and
@@ -903,7 +898,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             key: Key('contactFieldKey'),
                             TextSpan(
                                 children: generateContactBody(replaceHTMLTags(
-                                    widget._warnMessage.contact)),
+                                    widget._warnMessage.contact
+                                )),
                                 style: TextStyle(
                                     fontSize: userPreferences.warningFontSize)),
                           ),
