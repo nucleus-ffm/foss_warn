@@ -57,22 +57,24 @@ class _DetailScreenState extends State<DetailScreen> {
         }
 
         int startPos = text.indexOf(phoneNumber, pointer);
+        if (startPos == -1) {
+          continue;
+        }
+
         int endPos = startPos + phoneNumber.length;
 
-        if (startPos != -1 && endPos != -1) {
-          // add the text before the telephone number to a TextSpan
-          result.add(TextSpan(text: text.substring(pointer, startPos)));
-          // add the clickable telephone number
-          result.add(TextSpan(
-              text: phoneNumber,
-              style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  // print("phone number tapped");
-                  makePhoneCall(phoneNumber);
-                }));
-          pointer = endPos;
-        }
+        // add the text before the telephone number to a TextSpan
+        result.add(TextSpan(text: text.substring(pointer, startPos)));
+        // add the clickable telephone number
+        result.add(TextSpan(
+            text: phoneNumber,
+            style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                // print("phone number tapped");
+                makePhoneCall(phoneNumber);
+              }));
+        pointer = endPos;
       }
 
       // add remaining text after the last telephone number
@@ -898,8 +900,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             key: Key('contactFieldKey'),
                             TextSpan(
                                 children: generateContactBody(replaceHTMLTags(
-                                    widget._warnMessage.contact
-                                )),
+                                    widget._warnMessage.contact)),
                                 style: TextStyle(
                                     fontSize: userPreferences.warningFontSize)),
                           ),
