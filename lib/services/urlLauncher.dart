@@ -54,13 +54,10 @@ Future<bool> launchUrlInBrowser(String url) async {
 }
 
 List<String?> extractAllPhoneNumbers(String text) {
-  // remove some chars to detect even weird formatted phone numbers
-
   // @todo this regex can certainly be further improved
   RegExp phoneNumberRegex = RegExp(
       r"([+0](( |( ?[/-] ?)?)\(?\d+\)?){6,30})"
   );
-
 
   return phoneNumberRegex
       .allMatches(text)
