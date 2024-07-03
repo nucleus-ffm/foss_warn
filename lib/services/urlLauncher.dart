@@ -55,21 +55,12 @@ Future<bool> launchUrlInBrowser(String url) async {
 
 List<String?> extractAllPhoneNumbers(String text) {
   // remove some chars to detect even weird formatted phone numbers
-  RegExp expToRemove = RegExp(r"[\s/-]");
-  text = text.replaceAll(expToRemove, "");
 
   // @todo this regex can certainly be further improved
-  /*
-    * (+\d{1,3}\s?)? - This part recognizes an optional country code starting with a plus sign (+) followed by 1 to 3 digits and an optional space.
-    * ((\d{1,3})\s?)? - This part recognizes an optional prefix in parentheses, starting with an opening parenthesis "(", followed by 1 to 3 digits, a closing parenthesis ")" and an optional space.
-    * \d{1,4} - This part recognizes 1 to 4 digits for the main number.
-    * [\s.-]? - This part recognizes an optional space, a hyphen "-" or a period "." as a separator.
-    * \d{1,4} - This part recognizes 1 to 4 digits for the second number group.
-    * [\s.-]? - This part again recognizes an optional space, a hyphen "-" or a period "." as a separator.
-    * \d{1,9} - This part recognizes 1 to 9 digits for the third number group.
-     */
   RegExp phoneNumberRegex = RegExp(
-      r"(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}");
+      r"([+0](( |( ?[/-] ?)?)\(?\d+\)?){6,30})"
+  );
+
 
   return phoneNumberRegex
       .allMatches(text)
