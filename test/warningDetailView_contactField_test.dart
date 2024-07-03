@@ -11,14 +11,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   String contactFieldText = "Test +49 123 567 call";
-  String contactFieldExpectedText = "Test +49123567 call";
+  String contactFieldExpectedText = "Test +49 123 567 call";
 
   testWidget("Simple text + telephone number test", contactFieldText,
       contactFieldExpectedText);
 
   String contactFieldText_2 = "Test +49 123 567 call +49987 6543 hello world";
   String contactFieldExpectedText_2 =
-      "Test +49123567 call +499876543 hello world";
+      "Test +49 123 567 call +49987 6543 hello world";
 
   testWidget("Simple text + 2 telephone number test", contactFieldText_2,
       contactFieldExpectedText_2);
@@ -26,7 +26,7 @@ void main() {
   String contactFieldText_3 =
       "contact us: Hauptstraße 35 62394 or per telephone 627351514";
   String contactFieldExpectedText_3 =
-      "contact us: Hauptstraße 3562394 or per telephone 627351514";
+      "contact us: Hauptstraße 35 62394 or per telephone 627351514";
 
   testWidget("text with PLZ and address + telephone number test",
       contactFieldText_3, contactFieldExpectedText_3);
@@ -34,7 +34,7 @@ void main() {
   String contactFieldText_4 =
       "contact us: Hauptstraße 35 62394 or per telephone 627351514 or 62778-51-514";
   String contactFieldExpectedText_4 =
-      "contact us: Hauptstraße 3562394 or per telephone 627351514 or 6277851514";
+      "contact us: Hauptstraße 35 62394 or per telephone 627351514 or 62778-51-514";
 
   testWidget("text with PLZ and address + 2 telephone number test",
       contactFieldText_4, contactFieldExpectedText_4);
@@ -42,10 +42,26 @@ void main() {
   String contactFieldText_5 =
       "contact us: Hauptstraße 35 62394 or per telephone 35-62394";
   String contactFieldExpectedText_5 =
-      "contact us: Hauptstraße 3562394 or per telephone 3562394";
+      "contact us: Hauptstraße 35 62394 or per telephone 35-62394";
 
   testWidget("text with PLZ and address + telephone number identically to the PLZ test",
       contactFieldText_5, contactFieldExpectedText_5);
+
+  String contactFieldText_6 =
+      "hallo World call\n06152787878";
+  String contactFieldExpectedText_6 =
+      "hallo World call\n06152787878";
+
+  testWidget("telephone number with repeating parts test",
+      contactFieldText_6, contactFieldExpectedText_6);
+
+  String contactFieldText_7 =
+      "Testcall 0615-298-56 56";
+  String contactFieldExpectedText_7 =
+      "Testcall 0615-298-56 56";
+
+  testWidget("telephone number with repeating parts and spaces test",
+      contactFieldText_7, contactFieldExpectedText_7);
 }
 
 /// create a widget with localizations (en)
