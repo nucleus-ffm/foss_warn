@@ -41,53 +41,47 @@ class _DetailScreenState extends State<DetailScreen> {
 
   /// generate a TextSpan with tappable telephone numbers
   List<TextSpan> generateContactBody(String text) {
-    try {
-      List<TextSpan> result = [];
-      List<String?> allPhoneNumbers = extractAllPhoneNumbers(text);
+    List<TextSpan> result = [];
+    List<String?> allPhoneNumbers = extractAllPhoneNumbers(text);
 
-      if (allPhoneNumbers.length == 0) {
-        result.add(TextSpan(text: text));
-        return result;
-      }
-
-      int pointer = 0;
-      for (String? phoneNumber in allPhoneNumbers) {
-        if (phoneNumber == null) {
-          continue;
-        }
-
-        int startPos = text.indexOf(phoneNumber, pointer);
-        if (startPos == -1) {
-          continue;
-        }
-
-        int endPos = startPos + phoneNumber.length;
-
-        // add the text before the telephone number to a TextSpan
-        result.add(TextSpan(text: text.substring(pointer, startPos)));
-        // add the clickable telephone number
-        result.add(TextSpan(
-            text: phoneNumber,
-            style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // print("phone number tapped");
-                makePhoneCall(phoneNumber);
-              }));
-        pointer = endPos;
-      }
-
-      // add remaining text after the last telephone number
-      if (pointer < text.length) {
-        result.add(TextSpan(text: text.substring(pointer, text.length)));
-      }
-
+    if (allPhoneNumbers.length == 0) {
+      result.add(TextSpan(text: text));
       return result;
-    } catch (e) {
-      // return the plain text if the generation failed
-      print(e);
-      return [TextSpan(text: text)];
     }
+
+    int pointer = 0;
+    for (String? phoneNumber in allPhoneNumbers) {
+      if (phoneNumber == null) {
+        continue;
+      }
+
+      int startPos = text.indexOf(phoneNumber, pointer);
+      if (startPos == -1) {
+        continue;
+      }
+
+      int endPos = startPos + phoneNumber.length;
+
+      // add the text before the telephone number to a TextSpan
+      result.add(TextSpan(text: text.substring(pointer, startPos)));
+      // add the clickable telephone number
+      result.add(TextSpan(
+          text: phoneNumber,
+          style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              // print("phone number tapped");
+              makePhoneCall(phoneNumber);
+            }));
+      pointer = endPos;
+    }
+
+    // add remaining text after the last telephone number
+    if (pointer < text.length) {
+      result.add(TextSpan(text: text.substring(pointer, text.length)));
+    }
+
+    return result;
   }
 
   /// returns the given text as List of TextSpans with clickable links and
