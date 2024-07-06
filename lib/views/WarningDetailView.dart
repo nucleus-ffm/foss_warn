@@ -191,6 +191,14 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      widget._warnMessage.read = true;
+    });
+    // save places List to store new read state
+    saveMyPlacesList();
+    // cancel the notification
+    NotificationService.cancelOneNotification(
+        widget._warnMessage.identifier.hashCode);
   }
 
   @override
@@ -240,15 +248,6 @@ class _DetailScreenState extends State<DetailScreen> {
       }
       return widgetList;
     }
-
-    setState(() {
-      widget._warnMessage.read = true;
-    });
-    // save places List to store new read state
-    saveMyPlacesList();
-    // cancel the notification
-    NotificationService.cancelOneNotification(
-        widget._warnMessage.identifier.hashCode);
 
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];
