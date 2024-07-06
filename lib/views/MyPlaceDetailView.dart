@@ -41,7 +41,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: _myPlace.warnings
-              .map((warning) => WarningWidget(warnMessage: warning))
+              .map((warning) => WarningWidget(warnMessage: warning, isMyPlaceWarning: true,))
               .toList(),
         ),
       ),
