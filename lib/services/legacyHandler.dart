@@ -11,10 +11,8 @@ Future<void> legacyHandler() async {
 
   try {
     // before version 0.6.0 we stored e.g. notificationGeneral as string and not as bool.
-    String? oldVersionIndicator =
-        preferences.getString("showStatusNotification");
-
-    if (oldVersionIndicator != null) {
+    Object? showStatusNotification = preferences.get("showStatusNotification");
+    if (showStatusNotification != null && !(showStatusNotification is bool)) {
       print("[legacyHandler] found old data - reset settings..");
 
       // reset all settings and data
@@ -28,7 +26,6 @@ Future<void> legacyHandler() async {
           title: "FOSS Warn needs your attention",
           body:
               "FOSS Warn has been updated to a new version and needs your attention",
-          payload: "",
           channel: "other");
     }
   } catch (e) {
