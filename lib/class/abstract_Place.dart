@@ -81,9 +81,7 @@ abstract class Place {
     warnMessage.notified = true;
 
     await NotificationService.showNotification(
-        // generate from the warning in the List the notification id
-        // because the warning identifier is no int, we have to generate a hash code
-        id: warnMessage.identifier.hashCode,
+        id: warnMessage.identifier.hashCode, // use hash code of the warning id to make it an int value
         title: "Neue Warnung für $_name",
         body: "${warnMessage.headline}",
         payload: _name,
