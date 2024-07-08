@@ -105,7 +105,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                           : SizedBox(),
                       ...allWarnMessageList
                           .map((warnMessage) =>
-                              WarningWidget(warnMessage: warnMessage))
+                              WarningWidget(warnMessage: warnMessage, isMyPlaceWarning: false))
                           .toList(),
                     ]))
                 // else load only the warnings for my place
@@ -120,7 +120,7 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                           ),
                           ...loadOnlyWarningsForMyPlaces()
                               .map((warnMessage) =>
-                                  WarningWidget(warnMessage: warnMessage))
+                                  WarningWidget(warnMessage: warnMessage, isMyPlaceWarning: true,))
                               .toList(),
                         ]),
                       )

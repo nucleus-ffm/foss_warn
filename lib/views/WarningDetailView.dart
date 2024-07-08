@@ -55,34 +55,25 @@ class _DetailScreenState extends State<DetailScreen> {
         continue;
       }
 
-      // find the start position of the telephone number in the text
-      int startPos = text.indexOf(phoneNumber.substring(0, 2), pointer);
-
-      //To find the end position of the telephone number in the text, we use
-      // the last 2 digits and search from the current pointer + the length of
-      // the telephone -3 to find the last 2 digits. We have to do it that way
-      // because the telephone numbers in the text can contain spaces. The
-      // extracted telephone numbers we have in allPhoneNumbers
-      // don't have spaces anymore
-      int endPos = text.indexOf(
-              phoneNumber.substring(phoneNumber.length - 2, phoneNumber.length),
-              pointer + phoneNumber.length - 3) +
-          2;
-
-      if (startPos != -1 && endPos != -1) {
-        // add the text before the telephone number to a TextSpan
-        result.add(TextSpan(text: text.substring(pointer, startPos)));
-        // add the clickable telephone number
-        result.add(TextSpan(
-            text: phoneNumber,
-            style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // print("phone number tapped");
-                makePhoneCall(phoneNumber);
-              }));
-        pointer = endPos;
+      int startPos = text.indexOf(phoneNumber, pointer);
+      if (startPos == -1) {
+        continue;
       }
+
+      int endPos = startPos + phoneNumber.length;
+
+      // add the text before the telephone number to a TextSpan
+      result.add(TextSpan(text: text.substring(pointer, startPos)));
+      // add the clickable telephone number
+      result.add(TextSpan(
+          text: phoneNumber,
+          style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              // print("phone number tapped");
+              makePhoneCall(phoneNumber);
+            }));
+      pointer = endPos;
     }
 
     // add remaining text after the last telephone number
@@ -200,6 +191,14 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      widget._warnMessage.read = true;
+    });
+    // save places List to store new read state
+    saveMyPlacesList();
+    // cancel the notification
+    NotificationService.cancelOneNotification(
+        widget._warnMessage.identifier.hashCode);
   }
 
   @override
@@ -249,15 +248,6 @@ class _DetailScreenState extends State<DetailScreen> {
       }
       return widgetList;
     }
-
-    setState(() {
-      widget._warnMessage.read = true;
-    });
-    // save places List to store new read state
-    saveMyPlacesList();
-    // cancel the notification
-    NotificationService.cancelOneNotification(
-        widget._warnMessage.identifier.hashCode);
 
     List<String> generateAreaDescList(int length) {
       List<String> tempList = [];

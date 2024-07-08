@@ -14,7 +14,14 @@ import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {
   final WarnMessage _warnMessage;
-  const WarningWidget({Key? key, required WarnMessage warnMessage}) : _warnMessage = warnMessage, super(key: key);
+  final bool _isMyPlaceWarning;
+  const WarningWidget(
+      {Key? key,
+      required WarnMessage warnMessage,
+      required bool isMyPlaceWarning})
+      : _warnMessage = warnMessage,
+        _isMyPlaceWarning = isMyPlaceWarning,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +50,8 @@ class WarningWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailScreen(warnMessage: _warnMessage)),
+                  builder: (context) =>
+                      DetailScreen(warnMessage: _warnMessage)),
             ).then((value) => updatePrevView());
           },
           child: Padding(
@@ -51,31 +59,7 @@ class WarningWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _warnMessage.read
-                    ? IconButton(
-                        onPressed: () {
-                          _warnMessage.read = false;
-                          final updater = Provider.of<Update>(context, listen: false);
-                          updater.updateReadStatusInList();
-                          // save places list to store new read state
-                          saveMyPlacesList();
-                        },
-                        icon: Icon(
-                          Icons.mark_chat_read,
-                          color: Colors.green,
-                        ))
-                    : IconButton(
-                        onPressed: () {
-                          _warnMessage.read = true;
-                          final updater = Provider.of<Update>(context, listen: false);
-                          updater.updateReadStatusInList();
-                          // save places list to store new read state
-                          saveMyPlacesList();
-                        },
-                        icon: Icon(
-                          Icons.warning_amber_outlined,
-                          color: Colors.red,
-                        )),
+                _buildReadStateButton(context),
                 SizedBox(
                   width: 5,
                 ),
@@ -124,8 +108,8 @@ class WarningWidget extends StatelessWidget {
                                     fontSize: 12, color: Colors.white),
                               ),
                             ),
-                            color:
-                                chooseWarningTypeColor(_warnMessage.messageType),
+                            color: chooseWarningTypeColor(
+                                _warnMessage.messageType),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
@@ -138,18 +122,18 @@ class WarningWidget extends StatelessWidget {
                                 geocodeNameList.length > 1
                                     ? geocodeNameList.first +
                                         " " +
-                                        AppLocalizations.of(context)
-                                            !.warning_widget_and +
+                                        AppLocalizations.of(context)!
+                                            .warning_widget_and +
                                         " " +
                                         (geocodeNameList.length - 1)
                                             .toString() +
                                         " " +
-                                        AppLocalizations.of(context)
-                                            !.warning_widget_other
+                                        AppLocalizations.of(context)!
+                                            .warning_widget_other
                                     : geocodeNameList.isNotEmpty
                                         ? geocodeNameList.first
-                                        : AppLocalizations.of(context)
-                                            !.warning_widget_unknown,
+                                        : AppLocalizations.of(context)!
+                                            .warning_widget_unknown,
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),
@@ -205,5 +189,48 @@ class WarningWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildReadStateButton(BuildContext context) {
+    // do not show a clickable red/green button for non-my-place warnings
+    // if _isMyPlaceWarning = true
+    // the read state of these warning is not saved anyways
+
+    if (!_isMyPlaceWarning) {
+      return IconButton(
+          onPressed: null,
+          icon: Icon(
+            Icons.warning_amber_outlined,
+            color: Colors.grey,
+          ));
+    }
+
+    if (_warnMessage.read) {
+      return IconButton(
+          onPressed: () {
+            _warnMessage.read = false;
+            final updater = Provider.of<Update>(context, listen: false);
+            updater.updateReadStatusInList();
+            // save places list to store new read state
+            saveMyPlacesList();
+          },
+          icon: Icon(
+            Icons.mark_chat_read,
+            color: Colors.green,
+          ));
+    } else {
+      return IconButton(
+          onPressed: () {
+            _warnMessage.read = true;
+            final updater = Provider.of<Update>(context, listen: false);
+            updater.updateReadStatusInList();
+            // save places list to store new read state
+            saveMyPlacesList();
+          },
+          icon: Icon(
+            Icons.warning_amber_outlined,
+            color: Colors.red,
+          ));
+    }
   }
 }
