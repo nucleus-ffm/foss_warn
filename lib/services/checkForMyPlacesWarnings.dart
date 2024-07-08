@@ -1,7 +1,6 @@
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/apiHandler.dart';
 import '../class/class_NotificationService.dart';
-import '../class/abstract_Place.dart';
 
 import 'listHandler.dart';
 import 'saveAndLoadSharedPreferences.dart';
