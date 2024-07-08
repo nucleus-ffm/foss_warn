@@ -61,35 +61,33 @@ abstract class Place {
 
   /// checks if there can be a notification for a warning in [_warnings]
   Future<void> sendNotificationForWarnings() async {
-    for (WarnMessage myWarnMessage in _warnings) {
-      print(myWarnMessage.headline);
-      //print("Read: " + myWarnMessage.read.toString()  + " notified " + myWarnMessage.notified.toString());
-      /*print("should notify? :" +
-          (_checkIfEventShouldBeNotified(
-                  myWarnMessage.source, myWarnMessage.severity))
-              .toString());c*/
-      //(!myWarnMessage.read && !myWarnMessage.notified) &&
+    await Future.wait(_warnings
+        .map((warnMessage) => _sendNotificationForWarning(warnMessage)));
+  }
 
-      if ((!myWarnMessage.read && !myWarnMessage.notified) &&
-          _checkIfEventShouldBeNotified(
-              myWarnMessage.source, myWarnMessage.severity)) {
-        // Alert is not already read or shown as notification
-        // set notified to true to avoid sending notification twice
-        myWarnMessage.notified = true;
+  Future<void> _sendNotificationForWarning(WarnMessage warnMessage) async {
+    print(warnMessage.headline);
 
-        await NotificationService.showNotification(
-            // generate from the warning in the List the notification id
-            // because the warning identifier is no int, we have to generate a hash code
-            id: myWarnMessage.identifier.hashCode,
-            title: "Neue Warnung für $_name",
-            body: "${myWarnMessage.headline}",
-            payload: _name,
-            channel: myWarnMessage.severity.name);
-      } else {
-        print("there is no warning or the warning is not in "
-            "the notificationSettingsImportance list");
-      }
+    bool shouldNotify =
+        _checkIfEventShouldBeNotified(warnMessage.source, warnMessage.severity);
+    if (!shouldNotify || warnMessage.read || warnMessage.notified) {
+      print(
+          "there is no warning or the warning is not in the notificationSettingsImportance list");
+      return;
     }
+
+    // Alert is not already read or shown as notification
+    // set notified to true to avoid sending notification twice
+    warnMessage.notified = true;
+
+    await NotificationService.showNotification(
+        // generate from the warning in the List the notification id
+        // because the warning identifier is no int, we have to generate a hash code
+        id: warnMessage.identifier.hashCode,
+        title: "Neue Warnung für $_name",
+        body: "${warnMessage.headline}",
+        payload: _name,
+        channel: warnMessage.severity.name);
   }
 
   /// set the read status from all warnings to true
@@ -97,7 +95,8 @@ abstract class Place {
   void markAllWarningsAsRead(BuildContext context) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
-      NotificationService.cancelOneNotification(myWarnMessage.identifier.hashCode);
+      NotificationService.cancelOneNotification(
+          myWarnMessage.identifier.hashCode);
     }
     final updater = Provider.of<Update>(context, listen: false);
     updater.updateReadStatusInList();
