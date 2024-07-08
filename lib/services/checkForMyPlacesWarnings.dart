@@ -30,11 +30,10 @@ Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
         channel: "other");
   }
 
-  for (Place myPlace in myPlaceList) {
-    // wait until every notification is send before saving the
-    // myPlacesList with the new notified status
-    await myPlace.sendNotificationForWarnings();
-  }
+  // wait until every notification is send before saving the
+  // myPlacesList with the new notified status
+  await Future.wait(myPlaceList.map((myPlace) => myPlace.sendNotificationForWarnings()));
+
   // save new notified status
   saveMyPlacesList();
   return _returnValue; //@todo remove return value?
