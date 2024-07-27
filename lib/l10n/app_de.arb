@@ -456,5 +456,15 @@
   "warning_severity_explanation_dialog_severe_description": "Erhebliche Bedrohung für Leben oder Eigentum. Kann ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur beeinträchtigen.",
   "@warning_severity_explanation_dialog_severe_description": {},
   "warning_severity_explanation_dialog_headline": "Schweregrad",
-  "@warning_severity_explanation_dialog_headline": {}
+  "@warning_severity_explanation_dialog_headline": {},
+  "warning_severity_minor": "Gering",
+  "@warning_severity_minor": {},
+  "warning_severity_moderate": "Moderat",
+  "@warning_severity_moderate": {},
+  "warning_severity_severe": "Schwer",
+  "@warning_severity_severe": {},
+  "warning_severity_extreme": "Extrem",
+  "@warning_severity_extreme": {},
+  "warning_severity_unknown": "Unbekannt",
+  "@warning_severity_unknown": {}
 }
