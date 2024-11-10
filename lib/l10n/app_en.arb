@@ -201,7 +201,7 @@
   "@about_sourcecode_subtitle": {},
   "privacy_headline": "Privacy",
   "@privacy_headline": {},
-  "privacy_main_text": "FOSS Warn does not send any information about its usage,\nbut only connects to warnung.bund.de at regular intervals\nto warnung.bund.de and downloads the latest warnings from there.\nFor the list of localities FOSS Warn loads once at first startup\na list from xrepository.de (operated by KoSIT).\n\nIn order to load only the relevant warnings, FOSS Warn uses\nuses an API where the selected location is sent as geocode.\nFor the operator of the API it is therefore visible, which locations\n(on county level) you have stored.\n\nFor the call, FOSS Warn transmits only the technically necessary data.\nFOSS Warn has no influence on the server-side processing.",
+  "privacy_main_text": "FOSS Warn does not send any information about its usage but only connects to warnung.bund.de at regular intervals and downloads the latest warnings. The locations you have saved (at district level) are visible to the operator of the API.\n\nFor the list of localities, FOSS Warn loads once at the first startup a list from the Github repository. This is only temporary and will be changed in the next version.\n\nFOSSWarn uses OpenStreetMap to display the area of an alert on a map.\n\nFOSS Warn transmits only the technically necessary data.\nFOSS Warn does not influence the server-side processing.",
   "@privacy_main_text": {},
   "privacy_link_to_privacy": "To the privacy policy of",
   "@privacy_link_to_privacy": {},
