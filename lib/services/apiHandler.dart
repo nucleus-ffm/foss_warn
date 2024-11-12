@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:foss_warn/class/class_ErrorLogger.dart';
+import 'package:foss_warn/class/class_FPASPlace.dart';
 import 'package:foss_warn/main.dart';
 
 import '../class/class_AlertSwissPlace.dart';
@@ -38,6 +39,10 @@ Future<void> callAPI() async {
             " aber AlertSwiss nicht als Quelle aktiviert \n";
       }
       continue;
+    }
+    // FPAS Place
+    else if (place is FPASPlace) {
+      await place.callAPI();
     }
     // it is a nina place
     else if (place is NinaPlace) {
@@ -86,6 +91,28 @@ Future<void> callAPI() async {
             e.toString());
       }
     }
+
+    // set flag for updated alerts
+    for (WarnMessage wm in place.warnings) {
+
+      if (wm.references != null) {
+        // the alert contains a reference, so it is an update of an previous alert
+        // we search for the alert and add it to the update thread
+
+        for (String id in wm.references!.identifier) {
+          // check all warnings for references
+          for (WarnMessage alWm in place.warnings) {
+            print(alWm.identifier);
+            if (alWm.identifier.compareTo(id) == 0) {
+              // set flag to true to hide the previous alert in the overview
+              alWm.hideWarningBecauseThereIsANewerVersion = true;//@todo move to better location
+              }
+            }
+          }
+      }
+    }
+
+
   }
   // update status notification if the user wants
   if (userPreferences.showStatusNotification) {
