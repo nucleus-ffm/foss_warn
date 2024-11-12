@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/class/class_alarmManager.dart';
+// import 'package:foss_warn/class/class_alarmManager.dart';
+import 'package:foss_warn/class/class_UnifiedPushHandler.dart';
 import 'package:foss_warn/class/class_userPreferences.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/legacyHandler.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/views/AboutView.dart';
 import 'package:foss_warn/views/mapView.dart';
+// import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:unifiedpush/unifiedpush.dart';
 
 import 'class/abstract_Place.dart';
 import 'class/class_appState.dart';
@@ -34,9 +37,9 @@ void main() async {
   await loadSettings();
 
   if (userPreferences.shouldNotifyGeneral) {
-    AlarmManager.callback();
-    AlarmManager().initialize();
-    AlarmManager().registerBackgroundTask();
+    // AlarmManager.callback(); //@todo disabled because of bug in unifiedPush
+    // AlarmManager().initialize();
+    // AlarmManager().registerBackgroundTask();
     print("Background notification enabled");
   } else {
     print("Background notification disabled due to user setting");
@@ -88,9 +91,22 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
+
+    // init unified push
+    UnifiedPush.initialize(
+      onNewEndpoint: UnifiedPushHandler
+          .onNewEndpoint, // takes (String endpoint, String instance) in args
+      onRegistrationFailed:
+          UnifiedPushHandler.onRegistrationFailed, // takes (String instance)
+      onUnregistered:
+          UnifiedPushHandler.onUnregistered, // takes (String instance)
+      onMessage: UnifiedPushHandler
+          .onMessage, // takes (Uint8List message, String instance) in args
+    );
+
     loadMyPlacesList();
     listenNotifications();
-    if (geocodeMap.isEmpty) { //@todo add to legacy handler
+    if (geocodeMap.isEmpty) {
       print("call geocode handler");
       geocodeHandler();
     }
@@ -189,9 +205,7 @@ class _HomeViewState extends State<HomeView> {
             NavigationDestination(
                 icon: Icon(Icons.place),
                 label: AppLocalizations.of(context)!.main_nav_bar_my_places),
-            NavigationDestination(
-                icon: Icon(Icons.map),
-                label: "Map")
+            NavigationDestination(icon: Icon(Icons.map), label: "Map")
           ],
           onDestinationSelected: (int index) {
             setState(() {
