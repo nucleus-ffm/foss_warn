@@ -105,6 +105,25 @@ class Info {
     );
   }
 
+  factory Info.fromJsonWithCAPData(Map<String, dynamic> json) {
+    return Info(
+      category: Category.categoryListFromJson(json['category']),
+      event: json['event'],
+      urgency: Urgency.fromJson(json['urgency']),
+      severity: Severity.fromJson(json['severity']),
+      certainty: Certainty.fromJson(json['certainty']),
+      effective: json['effective'],
+      onset: json['onset'],
+      expires: json['expires'],
+      headline: json['headline'],
+      description: json['description'] ?? "", //@todo can also be null
+      instruction: json['instruction'],
+      area: Area.areaListFromJsonWithCAPData(json['area']),
+      contact: json['contact'],
+      web: json['web'] ?? "",
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         'language': language,
         'event': event,
@@ -130,9 +149,16 @@ class Info {
   static List<Info> infoListFromJson(var data) {
     List<Info> _result = [];
     if (data != null) {
-      for (int i = 0; i < data.length; i++) {
-        _result.add(Info.fromJson(data[i]));
+      if(data is Map) {
+        // there is just one info section
+        _result.add(Info.fromJson(data as Map<String, dynamic>));
+      } else {
+        // there are multiple info sections
+        for (int i = 0; i < data.length; i++) {
+          _result.add(Info.fromJson(data[i]));
+        }
       }
+
     }
     return _result;
   }
@@ -143,6 +169,23 @@ class Info {
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
         _result.add(Info.fromJsonWithAPIData(data[i], geoJson));
+      }
+    }
+    return _result;
+  }
+
+  /// used for the FPAS data
+  static List<Info> infoListFromJsonWithCAPIData(var data) {
+    List<Info> _result = [];
+    if (data != null) {
+      if(data is Map<String, dynamic>) {
+        // just one entry
+        _result.add(Info.fromJsonWithCAPData(data));
+      } else {
+        // multiple entries
+        for (int i = 0; i < data.length; i++) {
+          _result.add(Info.fromJsonWithCAPData(data[i]));
+        }
       }
     }
     return _result;
