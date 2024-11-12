@@ -6,6 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_NinaPlace.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/widgets/MapWidget.dart';
+import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:latlong2/latlong.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
@@ -196,11 +197,18 @@ class _DetailScreenState extends State<DetailScreen> {
 
     CameraFit createInitCameraFit() {
       List<LatLng> polygonPoints =
-          widget._warnMessage.info.first.area.first.getListWithAllPolygons();
+          Area.getListWithAllPolygons(widget._warnMessage.info.first.area);
 
-      return CameraFit.bounds(
-          bounds: LatLngBounds.fromPoints(polygonPoints),
-          padding: EdgeInsets.all(30));
+      if(polygonPoints.isNotEmpty) {
+        return CameraFit.bounds(
+            bounds: LatLngBounds.fromPoints(polygonPoints),
+            padding: EdgeInsets.all(30));
+      } else {
+        return CameraFit.bounds(
+            // set the bounds to the northpol if we don't have any points
+            bounds: LatLngBounds.fromPoints([LatLng(90.0, 0.0)]),
+            padding: EdgeInsets.all(30));
+      }
     }
 
     return Container(
@@ -208,10 +216,10 @@ class _DetailScreenState extends State<DetailScreen> {
         child: MapWidget(
           mapController: mapController,
           initialCameraFit: createInitCameraFit(),
-          polygonLayers: [
+          polygonLayers: [ //@todo can be null
             PolygonLayer(
-                polygons: MapWidget.createAllPolygons(
-                    widget._warnMessage.info.first.area)),
+                polygons: Area.createListOfPolygonsForAreas(
+                    widget._warnMessage.info.first.area)) ,
           ],
           markerLayers: _calculatePlaceMarker() != null
               ? [
@@ -560,6 +568,11 @@ class _DetailScreenState extends State<DetailScreen> {
                               AppLocalizations.of(context)!.warning_status,
                               translateWarningStatus(
                                   widget._warnMessage.status.name)),
+                      createTagButton(
+                          Colors.purpleAccent,
+                          "Referenze",
+                          widget._warnMessage.references?.identifier.toString() ?? "None"
+                      ),
                         ])
                       : SizedBox(),
                 ],
