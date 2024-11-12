@@ -39,7 +39,7 @@ class ErrorLogger {
     } catch (e) {
       // If encountering an error, return 0
       print("Error while reading logfile: ${e.toString()}");
-      return "error";
+      return "Error. Can not read logfile.";
     }
   }
 
