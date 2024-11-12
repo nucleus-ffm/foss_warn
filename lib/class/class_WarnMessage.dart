@@ -48,6 +48,7 @@ class WarnMessage {
   bool notified = false;
   bool read = false;
   bool isUpdateOfAlreadyNotifiedWarning = false;
+  bool hideWarningBecauseThereIsANewerVersion = false; //@todo
 
   WarnMessage({
     required this.identifier,
@@ -58,16 +59,17 @@ class WarnMessage {
     required this.status,
     required this.messageType,
     required this.scope,
-    restriction,
-    addresses,
-    code,
-    note,
-    references,
-    incidents,
+    this.restriction,
+    this.addresses,
+    this.code,
+    this.note,
+    this.references,
+    this.incidents,
     required this.info,
     required this.notified,
     required this.read,
-    isUpdateOfAlreadyNotifiedWarning,
+    isUpdateOfAlreadyNotifiedWarning, //@todo
+    hideWarningBecauseThereIsANewerVersion
   });
 
   factory WarnMessage.fromJson(Map<String, dynamic> json) {
@@ -84,10 +86,11 @@ class WarnMessage {
       notified: json['notified'] ?? false, //@todo check
       read: json['read'] ?? false,
       references: json['references'] != null
-          ? References.fromString(json['references'])
+          ? References.fromJson(json['references'])
           : null,
       isUpdateOfAlreadyNotifiedWarning:
           json['isUpdateOfAlreadyNotifiedWarning'] ?? false,
+      hideWarningBecauseThereIsANewerVersion: json['hideWarningBecauseThereIsANewerVersion'] ?? false,
     );
   }
 
@@ -110,6 +113,26 @@ class WarnMessage {
         references: json['references'] != null
             ? References.fromString(json['references'])
             : null,
+        notified: false,
+        read: false);
+  }
+
+  /// is used to create a new WarnMessage object with data from the API call.
+  /// Note that the json structure is different from the structure we use to
+  /// cache the warnings.
+  factory WarnMessage.fromJsonFPAS(Map<String, dynamic> json) {
+    // print("Neue WarnMessage wird angelegt...");
+    return WarnMessage(
+        source: WarningSource.other, //@todo
+        identifier: json["identifier"] ?? "?",
+        sender: json["sender"] ?? "?",
+        sent: json["sent"] ?? "?",
+        status: Status.fromJson(json["status"]),
+        messageType: MessageType.fromJson(json["msgType"]),
+        scope: Scope.fromJson(json["scope"]),
+        publisher: "", //@todo
+        info: Info.infoListFromJsonWithCAPIData(json['info']),
+        references: json["references"] == null ? null: References.fromString(json['references']),
         notified: false,
         read: false);
   }
@@ -157,6 +180,7 @@ class WarnMessage {
         'read': read,
         'info': info,
         'references': references,
-        'isUpdateOfAlreadyNotifiedWarning': isUpdateOfAlreadyNotifiedWarning
+        'isUpdateOfAlreadyNotifiedWarning': isUpdateOfAlreadyNotifiedWarning,
+        'hideWarningBecauseThereIsANewerVersion': hideWarningBecauseThereIsANewerVersion
       };
 }
