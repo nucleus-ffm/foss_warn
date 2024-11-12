@@ -60,7 +60,8 @@ class UserPreferences {
   bool areWarningsFromCache = false;
 
   String versionNumber = "0.8.0"; // shown in the about view
-  int previousInstalledVersionCode = 31;  // @todo load from storage update version after legacy handler
+  int currentVersionCode = 32;
+  int previousInstalledVersionCode = -1;  // @todo load from storage update version after legacy handler
 
   bool activateAlertSwiss = false;
   bool isFirstStart = true;
@@ -90,4 +91,13 @@ class UserPreferences {
   0,  0,  1, 0, 0,
   0,  0,  0, 1, 0,
   ]);
+
+  // unified Push settings
+  String fossPublicAlertServerUrl = "http://10.0.2.2:8000"; //"http://127.0.0.1:8000";
+  String unifiedPushEndpoint = "";
+  bool unifiedPushRegistered = false;
+  String unifiedPushInstance = "FOSSWarn";
+  List<String> fossPublicAlertSubscriptionIdsToSubscribe = [];
+  String httpUserAgent = "de.nucleus.foss_warn";
+  String osmTileServerULR = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 }
