@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
+import 'package:foss_warn/views/AddMyPlaceWithMapView.dart';
 
 import '../class/class_alarmManager.dart';
 import '../class/abstract_Place.dart';
@@ -172,8 +174,10 @@ class _DevSettingsState extends State<DevSettings> {
                 subtitle: Text(AppLocalizations.of(context)!
                     .dev_settings_delete_warnings_text),
                 onTap: () {
-                  print("delete warnings ! not longer working");
-                  //warnMessageList.clear(); /@todo replace with new
+                  for(Place p in myPlaceList) {
+                    p.warnings.clear();
+                  }
+                  saveMyPlacesList();
                   final snackBar = SnackBar(
                     content: Text(
                       AppLocalizations.of(context)!.dev_settings_success,
@@ -246,6 +250,18 @@ class _DevSettingsState extends State<DevSettings> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => LogFileViewer()),
+                  );
+                },
+              ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title: Text("Feature preview: Add place with map"),
+                subtitle: Text("Shows the new dialog needed for FPAS"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddMyPlaceWithMapView()),
                   );
                 },
               ),
