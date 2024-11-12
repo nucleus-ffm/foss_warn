@@ -8,6 +8,7 @@ import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/ConnectionErrorWidget.dart';
+import 'AddMyPlaceView.dart';
 import 'AddMyPlaceWithMapView.dart';
 
 class MyPlaces extends StatefulWidget {
@@ -142,7 +143,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AddMyPlaceWithMapView()),
+                        builder: (context) => AddMyPlaceView()), //AddMyPlaceWithMapView
                   );
                 },
               ),
