@@ -9,6 +9,7 @@ import 'class_ErrorLogger.dart';
 /// ID 2: Status notification
 /// ID 3: No Places selected warning
 /// ID 4: legacy warning
+/// ID 5: subscription error
 class NotificationService {
   static final _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
