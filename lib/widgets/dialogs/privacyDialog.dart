@@ -19,7 +19,7 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(AppLocalizations.of(context)!.privacy_main_text),
+              Text(AppLocalizations.of(context)!.privacy_main_text.replaceAll("\\n", "\n")),
               SizedBox(
                 height: 10,
               ),
@@ -44,10 +44,24 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                     fit: FlexFit.loose,
                     child: TextButton(
                         onPressed: () => launchUrlInBrowser(
-                            'https://www.xrepository.de/cms/datenschutz.html'),
+                            'https://osmfoundation.org/wiki/Privacy_Policy'),
+                        child: Text(AppLocalizations.of(context)
+                        !.privacy_link_to_privacy +
+                            " Openstreetmap.org")),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.open_in_browser),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: TextButton(
+                        onPressed: () => launchUrlInBrowser(
+                            'https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement'),
                         child: Text(AppLocalizations.of(context)
                                 !.privacy_link_to_privacy +
-                            " xrepository.de")),
+                            " Github.com")),
                   ),
                 ],
               ),
