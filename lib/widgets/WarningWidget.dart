@@ -8,6 +8,7 @@ import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
 import '../main.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
+import '../views/AlertUpdateThreadView.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
 import '../services/translateAndColorizeWarning.dart';
@@ -16,11 +17,16 @@ import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {
   final Place? _place;
+  final List<WarnMessage>? _updateThread;
   final WarnMessage _warnMessage;
   const WarningWidget(
-      {Key? key, required WarnMessage warnMessage, Place? place})
+      {Key? key,
+      required WarnMessage warnMessage,
+      Place? place,
+      List<WarnMessage>? updateThread})
       : _warnMessage = warnMessage,
         _place = place,
+        _updateThread = updateThread,
         super(key: key);
 
   @override
@@ -205,26 +211,52 @@ class WarningWidget extends StatelessWidget {
                             Text(
                               _warnMessage.source.name.toUpperCase(),
                               style: TextStyle(fontSize: 12),
-                            )
+                            ),
                           ],
                         ),
                       )
                     ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailScreen(
-                                warnMessage: _warnMessage,
-                                place: _place,
-                              )),
-                    ).then((value) => updatePrevView());
-                  },
-                  icon: Icon(Icons.read_more),
-                )
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                    warnMessage: _warnMessage,
+                                    place: _place,
+                                  )),
+                        ).then((value) => updatePrevView());
+                      },
+                      icon: Icon(Icons.read_more),
+                    ),
+                    //_updateThread != null ? _updateThread!.length > 1 ? IconButton(onPressed: () {}, icon: Icon(Icons.account_tree)): SizedBox(): SizedBox(),
+                    (_updateThread != null && _updateThread!.length > 1)
+                        ? IconButton(
+                            tooltip:
+                                "show update thread of this alert", //@todo translate
+
+                            onPressed: () {
+                              print(_updateThread!.length);
+                              print(_updateThread);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AlertUpdateThreadView(
+                                          latestAlert: _updateThread![0],
+                                          previousNowUpdatedAlerts:
+                                              _updateThread!.sublist(
+                                                  1, _updateThread!.length),
+                                        )),
+                              );
+                            },
+                            icon: Icon(Icons.account_tree))
+                        : SizedBox(),
+                  ],
+                ),
               ],
             ),
           ),

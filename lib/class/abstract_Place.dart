@@ -37,8 +37,9 @@ abstract class Place {
   // also in the alreadyReadWarnings list
   bool checkIfAllWarningsAreRead() {
     for (WarnMessage myWarning in _warnings) {
-      if (!myWarning.read) {
-        // there is min. one warning not read
+      if (!myWarning.read && !myWarning.hideWarningBecauseThereIsANewerVersion) {
+        // there is min. one warning not read and which is not an update
+        print("found unread warning: ${myWarning.info.first.headline}");
         return false;
       }
     }
@@ -50,7 +51,7 @@ abstract class Place {
   /// return [true] if there is warning which no notification
   bool checkIfThereIsAWarningToNotify() {
     for (WarnMessage myWarning in _warnings) {
-      if (!myWarning.notified &&
+      if (!myWarning.notified && !myWarning.hideWarningBecauseThereIsANewerVersion &&
           _checkIfEventShouldBeNotified(
               myWarning.source, myWarning.info[0].severity)) {
         // there is min. one warning without notification
