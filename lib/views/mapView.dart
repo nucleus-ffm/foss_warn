@@ -3,7 +3,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_NinaPlace.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
 import 'package:foss_warn/widgets/MapWidget.dart';
+import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../class/abstract_Place.dart';
 import '../services/listHandler.dart';
@@ -16,7 +18,8 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
-  List<bool> _filters = List.generate(2, (index) => false);
+  Map<String, bool> filterChips = {"map_view_filter_chip_all_alerts": false, "map_view_filter_chip_my_alerts": true};
+
   final MapController mapController = MapController();
 
   List<ListTile> _createWarningOverviewForPlace(Place place) {
@@ -39,34 +42,45 @@ class _MapViewState extends State<MapView> {
     return result;
   }
 
+  String findLabelForChip(String key) {
+    switch (key) {
+      case "map_view_filter_chip_all_alerts":
+        return AppLocalizations.of(context)!.main_nav_bar_my_places;
+      case "map_view_filter_chip_my_alerts":
+        return AppLocalizations.of(context)!.main_nav_bar_all_warnings;
+    }
+    return "Error";
+  }
+
   Widget buildFilterButtons() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: ToggleButtons(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Alle Warnungen"),
+            padding: const EdgeInsets.only(left: 8),
+            child: Text("Filter by:", style: Theme.of(context).textTheme.bodyMedium),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Meine Warnungen"),
+          Row(
+            children: filterChips.entries.map((chip) => Padding(
+              padding: EdgeInsets.all(1),
+              child: FilterChip(
+                tooltip: "active filter: show xyz item", //@todo translate
+                label: Text(findLabelForChip(chip.key)), //@todo translate
+                backgroundColor: Colors.transparent,
+                shape: StadiumBorder(side: BorderSide()),
+                selected: chip.value,
+                onSelected: (bool value) {
+                  setState(() {
+                    filterChips.update(chip.key, (value) => !value);
+                  });
+                },
+              ),
+            )).toList(),
           ),
-          //Icon(Icons.accessibility),
         ],
-        isSelected: _filters,
-        color: Colors.green,
-        selectedColor: Theme.of(context).colorScheme.onPrimary,
-        renderBorder: false,
-        fillColor: Theme.of(context).colorScheme.primary,
-        onPressed: (int index) {
-          setState(
-            () {
-              _filters[index] = !_filters[index];
-            },
-          );
-        },
-      ),
+      )
     );
   }
 
@@ -127,39 +141,10 @@ class _MapViewState extends State<MapView> {
     return result;
   }
 
-  /// extract hex color value from string and return Color widget
-  /// accepts colors in format `#FB8C00`
-  /*
-  Color _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "90" + hexColor;
-    } else {
-      hexColor = "A0" + "FB8C00";
-    }
-    return Color(int.parse(hexColor, radix: 16));
-  }
-  */
-
-  /// create polygon layer for my places alerts
-  List<PolygonLayer> _createPolygonLayer() {
-    List<PolygonLayer> result = [];
-    for (Place p in myPlaceList) {
-      for (WarnMessage wm in p.warnings) {
-        result.add(
-          PolygonLayer(
-            polygons: MapWidget.createAllPolygons(wm.info.first.area),
-          ),
-        );
-      }
-    }
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MapWidget(
+      body: MapWidget( //vectorMapWidget
         initialCameraFit:
             CameraFit.coordinates(padding: EdgeInsets.all(30), coordinates: [
           LatLng(52.815, 7.009),
@@ -171,8 +156,8 @@ class _MapViewState extends State<MapView> {
         mapController: mapController,
         widgets: [buildFilterButtons()],
         polygonLayers: [
-          ..._filters[1] ? MapWidget.createPolygonLayer() : [],
-          ..._filters[0] ? MapWidget.createPolygonsForMapWarning() : [],
+          ...filterChips["map_view_filter_chip_all_alerts"]! ? MapWidget.createPolygonLayer() : [],
+          ...filterChips["map_view_filter_chip_my_alerts"]! ? MapWidget.createPolygonsForMapWarning() : [],
         ],
         markerLayers: [..._createMarkerLayer()],
       ),
