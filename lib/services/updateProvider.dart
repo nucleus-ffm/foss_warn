@@ -7,6 +7,7 @@ import 'listHandler.dart';
 class Update with ChangeNotifier {
   // delete preset
   Future<void> updateList(Place newPlace) async {
+    print("add new place: ${newPlace.name}");
     myPlaceList.add(newPlace);
     saveMyPlacesList();
     await callAPI();
