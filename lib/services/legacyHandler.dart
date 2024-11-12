@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/class/class_ErrorLogger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../class/class_NotificationService.dart';
 import '../main.dart';
 import '../widgets/dialogs/legacyWarningDialog.dart';
@@ -9,6 +9,7 @@ import 'listHandler.dart';
 /// checks if there is old data in SharedPreferences and if yes reset all settings
 Future<void> legacyHandler() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  bool successfullyUpdated = false;
 
   try {
     // before version 0.6.0 we stored e.g. notificationGeneral as string and not as bool.
@@ -38,17 +39,24 @@ Future<void> legacyHandler() async {
   }
 
   // @todo check for version < 0.8.0 because of new structured alerts
-  if (userPreferences.previousInstalledVersionCode < 31) {
+  if (userPreferences.previousInstalledVersionCode < 32) {
     try {
       allAvailablePlacesNames = [];
       preferences.remove("geocodes");
-      //@todo migrate old places to new one. should be possible with the geocode
+      // set flag to show migration dialog
+      preferences.setBool("hadToResetSettings", true);
+
+      successfullyUpdated = true;
     } catch (e) {
       print("[legacyHandler] Error: ${e.toString()}");
-      //@todo write to logfile
+      ErrorLogger.writeErrorLog("legacyhandler.dart", "migration from version < 32", e.toString());
     }
   }
 
+  if (successfullyUpdated) {
+    // update version code to current version
+    preferences.setInt("previousInstalledVersionCode", userPreferences.currentVersionCode);
+  }
 }
 
 /// shows a dialog with information if FOSSWarn had to reset all settings.
