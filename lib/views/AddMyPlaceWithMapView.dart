@@ -266,7 +266,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                   onSubmitted: (value) async {
                     if (value != "") {
                       LoadingScreen.instance()
-                          .show(context: context, text: "Searching..."); //@todo translate add_my_place_with_map_loading_screen_searching
+                          .show(context: context, text: AppLocalizations.of(context)!.add_my_place_with_map_loading_screen_searching);
                       try {
                         // request data from nominatim
                         searchResult = await requestNovatimData(
@@ -276,7 +276,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                         if (searchResult.isEmpty) {
                           LoadingScreen.instance().show(
                               context: context,
-                              text: "No results found. Please try it again"); // @todo translation  add_my_place_with_map_loading_screen_search_no_result_found
+                              text: AppLocalizations.of(context)!.add_my_place_with_map_loading_screen_search_no_result_found);
                           await Future.delayed(const Duration(seconds: 3));
                         }
                       } catch (e) {
@@ -286,7 +286,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                         LoadingScreen.instance().show(
                             context: context,
                             text:
-                                "Something went wrong. Please try it again later");
+                                "Something went wrong. Please try it again later"); //@todo
                         await Future.delayed(const Duration(seconds: 3));
                       }
                     }
@@ -401,7 +401,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                           Padding(
                             padding: const EdgeInsets.only(top: 8),
                             child: Text(
-                              "Wähle einen Radius", //@todo translation add_my_place_with_map_select_radius
+                              AppLocalizations.of(context)!.add_my_place_with_map_select_radius,
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
                           ),
@@ -437,7 +437,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
 
                                 // subscribe for new area and create new place
                                 // with the returned subscription id
-                                LoadingScreen.instance().show(context: context);
+                                LoadingScreen.instance().show(context: context, text:  AppLocalizations.of(context)!.loading_screen_loading);
                                 String subscriptionId = "";
                                 try {
                                   subscriptionId =
@@ -452,14 +452,14 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                                   LoadingScreen.instance().show(
                                       context: context,
                                       text:
-                                          "Something went wrong. Can not subscribe. Please try again later"); //@todo add translation add_my_place_with_map_loading_screen_subscription_error
+                                        AppLocalizations.of(context)!.add_my_place_with_map_loading_screen_subscription_error);
                                   await Future.delayed(
                                       const Duration(seconds: 5));
                                 }
                                 if (subscriptionId != "") {
                                   LoadingScreen.instance().show(
                                       context: context,
-                                      text: "successfully subscribed"); //@todo translation add_my_place_with_map_loading_screen_subscription_success
+                                      text: AppLocalizations.of(context)!.add_my_place_with_map_loading_screen_subscription_success);
                                   Place newPlace = FPASPlace(
                                       boundingBox: boundingBox,
                                       subscriptionId: subscriptionId,

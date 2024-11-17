@@ -26,7 +26,7 @@ Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   if (!userPreferences.isFirstStart && myPlaceList.isEmpty) {
     await NotificationService.showNotification(
         id: 3,
-        title: "Sie haben noch keine Orte hinterlegt", //notification_no_places_selected_title
+        title: "Sie haben noch keine Orte hinterlegt", //@todo translate, add context first, notification_no_places_selected_title
         body: "Bitte kontrolieren Sie Ihre Orte.", //notification_no_places_selected_body
         payload: "no places selected",
         channel: "other");
