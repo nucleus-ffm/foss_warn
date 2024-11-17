@@ -1,5 +1,5 @@
 {
-  "main_nav_bar_all_warnings": "Alle Meldungen",
+  "main_nav_bar_all_warnings": "Alle Warnungen",
   "@main_nav_bar_all_warnings": {},
   "main_nav_bar_my_places": "Meine Orte",
   "@main_nav_bar_my_places": {},
@@ -7,9 +7,9 @@
   "@main_dot_menu_settings": {},
   "main_dot_menu_about": "Über",
   "@main_dot_menu_about": {},
-  "main_app_bar_tooltip_mark_all_warnings_as_read": "Markiere Warnungen als gelesen",
+  "main_app_bar_tooltip_mark_all_warnings_as_read": "Warnungen als gelesen markieren",
   "@main_app_bar_tooltip_mark_all_warnings_as_read": {},
-  "main_app_bar_tooltip_show_menu": "Zeige Menü",
+  "main_app_bar_tooltip_show_menu": "Menü anzeigen",
   "@main_app_bar_tooltip_show_menu": {},
   "main_dialog_understand": "Verstanden",
   "@main_dialog_understand": {},
@@ -466,5 +466,13 @@
   "warning_severity_extreme": "Extrem",
   "@warning_severity_extreme": {},
   "warning_severity_unknown": "Unbekannt",
-  "@warning_severity_unknown": {}
+  "@warning_severity_unknown": {},
+  "meta_info_for_place_dialog_longitude": "Längengrad",
+  "@meta_info_for_place_dialog_longitude": {},
+  "main_app_bar_action_sort_tooltip": "Dialog zum Sortieren von Alarmen öffnen",
+  "@main_app_bar_action_sort_tooltip": {},
+  "meta_info_for_place_dialog_headline": "Ausführliche Informationen über",
+  "@meta_info_for_place_dialog_headline": {},
+  "meta_info_for_place_dialog_latitude": "Breitengrad",
+  "@meta_info_for_place_dialog_latitude": {}
 }
