@@ -506,5 +506,21 @@
   "my_places_view_add_new_place_button_tooltip": "Öffne neue Seite um einen Ort hinzuzufügen",
   "@my_places_view_add_new_place_button_tooltip": {},
   "warning_detail_view_map_center_map_button_tooltip": "Karte zentrieren",
-  "@warning_detail_view_map_center_map_button_tooltip": {}
+  "@warning_detail_view_map_center_map_button_tooltip": {},
+  "loading_screen_loading": "Laden",
+  "@loading_screen_loading": {},
+  "add_my_place_with_map_loading_screen_subscription_error": "Etwas ist schiefgelaufen. Kann Ort nicht abonnieren. Bitte versuchen Sie es später erneut.",
+  "@add_my_place_with_map_loading_screen_subscription_error": {},
+  "add_my_place_with_map_loading_screen_subscription_success": "Erfolgreich abonniert",
+  "@add_my_place_with_map_loading_screen_subscription_success": {},
+  "add_my_place_with_map_select_radius": "Wähle Radius",
+  "@add_my_place_with_map_select_radius": {},
+  "add_my_place_with_map_loading_screen_search_no_result_found": "Keine Ergebnisse gefunden. Bitte erneut probieren",
+  "@add_my_place_with_map_loading_screen_search_no_result_found": {},
+  "choose_theme_dialog_headline": "Wähle Farb-Thema",
+  "@choose_theme_dialog_headline": {},
+  "choose_theme_dialog_choose_accent_color": "Wähle Akzentfarbe",
+  "@choose_theme_dialog_choose_accent_color": {},
+  "add_my_place_with_map_loading_screen_searching": "suche…",
+  "@add_my_place_with_map_loading_screen_searching": {}
 }
