@@ -506,5 +506,21 @@
   "my_places_view_add_new_place_button_tooltip": "open new page to add a place",
   "@my_places_view_add_new_place_button_tooltip": {},
   "warning_detail_view_map_center_map_button_tooltip": "Center map",
-  "@warning_detail_view_map_center_map_button_tooltip": {}
+  "@warning_detail_view_map_center_map_button_tooltip": {},
+  "loading_screen_loading": "Loading",
+  "@loading_screen_loading": {},
+  "add_my_place_with_map_loading_screen_subscription_error": "Something went wrong. Can not subscribe. Please try again later.",
+  "@add_my_place_with_map_loading_screen_subscription_error": {},
+  "add_my_place_with_map_loading_screen_subscription_success": "successfully subscribed",
+  "@add_my_place_with_map_loading_screen_subscription_success": {},
+  "add_my_place_with_map_select_radius": "Select radius",
+  "@add_my_place_with_map_select_radius": {},
+  "add_my_place_with_map_loading_screen_searching": "searching…",
+  "@add_my_place_with_map_loading_screen_searching": {},
+  "add_my_place_with_map_loading_screen_search_no_result_found": "No results found. Please try again",
+  "@add_my_place_with_map_loading_screen_search_no_result_found": {},
+  "choose_theme_dialog_headline": "Select color theme",
+  "@choose_theme_dialog_headline": {},
+  "choose_theme_dialog_choose_accent_color": "Choose accent color",
+  "@choose_theme_dialog_choose_accent_color": {}
 }
