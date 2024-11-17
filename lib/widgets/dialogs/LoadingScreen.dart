@@ -11,7 +11,7 @@ class LoadingScreen {
 
   void show({
     required BuildContext context,
-    String text = "Loading",
+    String text = "Loading", //@todo translate loading_screen_loading
   }) {
     if (_controller?.update(text) ?? false) {
       return;

@@ -21,7 +21,7 @@ class _NoUPDistributorFoundDialogState
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              Text( //@todo translation
                   "FOSSWarn couldn't find any UnifiedPush distributor installed"
                   " on your device. To subscribe to an area, you must have one"
                   " installed, or you won't get any notification."
@@ -37,7 +37,7 @@ class _NoUPDistributorFoundDialogState
                     child: TextButton(
                         onPressed: () => launchUrlInBrowser(
                             'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor'),
-                        child: Text(
+                        child: Text( //@todo translation
                             "What is unifiedPush and how to install a distributor?")),
                   ),
                 ],
@@ -50,7 +50,7 @@ class _NoUPDistributorFoundDialogState
                     child: TextButton(
                         onPressed: () => launchUrlInBrowser(
                             'https://f-droid.org/de/packages/io.heckel.ntfy/'),
-                        child: Text("For the fast ones: ntfy on F-Droid")),
+                        child: Text("For the fast ones: ntfy on F-Droid")), //@todo translation
                   ),
                 ],
               ),
