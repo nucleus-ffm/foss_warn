@@ -18,7 +18,10 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
-  Map<String, bool> filterChips = {"map_view_filter_chip_my_alerts": true, "map_view_filter_chip_all_alerts": false};
+  Map<String, bool> filterChips = {
+    "map_view_filter_chip_my_alerts": true,
+    "map_view_filter_chip_all_alerts": false
+  };
 
   final MapController mapController = MapController();
 
@@ -34,7 +37,8 @@ class _MapViewState extends State<MapView> {
       result.add(
         ListTile(
           leading: Icon(Icons.check_circle),
-          title: Text("Es liegen keine Warnungen vor"), //@todo translate map_view_warning_overview_no_alerts
+          title: Text(AppLocalizations.of(context)!
+              .map_view_warning_overview_no_alerts),
         ),
       );
     }
@@ -53,45 +57,47 @@ class _MapViewState extends State<MapView> {
   }
 
   String findTooltipTranslation(String key, bool value) {
-    switch(value) {
+    switch (value) {
       case true:
-        return "select filter: hide ${findLabelForChip(key)}"; //  map_view_filter_chips_tooltip_select_filter map_view_filter_chips_tooltip_hide
+        return "${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_select_filter}: ${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_hide} ${findLabelForChip(key)}";
       case false:
-        return "select filter: show ${findLabelForChip(key)}"; // map_view_filter_chips_tooltip_show
+        return "${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_select_filter}: ${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_show} ${findLabelForChip(key)}";
     }
     return "Error";
   }
 
   Widget buildFilterButtons() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Text("Filter by:", style: Theme.of(context).textTheme.bodyMedium),
-          ),
-          Row(
-            children: filterChips.entries.map((chip) => Padding(
-              padding: EdgeInsets.all(1),
-              child: FilterChip(
-                tooltip: findTooltipTranslation(chip.key, chip.value), //@todo translate
-                label: Text(findLabelForChip(chip.key)),
-                backgroundColor: Colors.transparent,
-                shape: StadiumBorder(side: BorderSide()),
-                selected: chip.value,
-                onSelected: (bool value) {
-                  setState(() {
-                    filterChips.update(chip.key, (value) => !value);
-                  });
-                },
-              ),
-            )).toList(),
-          ),
-        ],
-      )
-    );
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text("Filter by:",
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ),
+            Row(
+              children: filterChips.entries
+                  .map((chip) => Padding(
+                        padding: EdgeInsets.all(1),
+                        child: FilterChip(
+                          tooltip: findTooltipTranslation(chip.key, chip.value),
+                          label: Text(findLabelForChip(chip.key)),
+                          backgroundColor: Colors.transparent,
+                          shape: StadiumBorder(side: BorderSide()),
+                          selected: chip.value,
+                          onSelected: (bool value) {
+                            setState(() {
+                              filterChips.update(chip.key, (value) => !value);
+                            });
+                          },
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ],
+        ));
   }
 
   List<MarkerLayer> _createMarkerLayer() {
@@ -154,7 +160,8 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MapWidget( //vectorMapWidget
+      body: MapWidget(
+        //vectorMapWidget
         initialCameraFit:
             CameraFit.coordinates(padding: EdgeInsets.all(30), coordinates: [
           LatLng(52.815, 7.009),
@@ -166,8 +173,12 @@ class _MapViewState extends State<MapView> {
         mapController: mapController,
         widgets: [buildFilterButtons()],
         polygonLayers: [
-          ...filterChips["map_view_filter_chip_my_alerts"]! ? MapWidget.createPolygonLayer() : [],
-          ...filterChips["map_view_filter_chip_all_alerts"]! ? MapWidget.createPolygonsForMapWarning() : [],
+          ...filterChips["map_view_filter_chip_my_alerts"]!
+              ? MapWidget.createPolygonLayer()
+              : [],
+          ...filterChips["map_view_filter_chip_all_alerts"]!
+              ? MapWidget.createPolygonsForMapWarning()
+              : [],
         ],
         markerLayers: [..._createMarkerLayer()],
       ),

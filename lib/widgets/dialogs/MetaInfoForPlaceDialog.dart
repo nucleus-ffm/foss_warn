@@ -53,7 +53,7 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
 
     return AlertDialog(
       title: Text(
-          "Detail info for ${widget.myPlace.name}"), //@todo translate meta_info_for_place_dialog_headline
+          "${AppLocalizations.of(context)!.meta_info_for_place_dialog_headline} ${widget.myPlace.name}"),
       content: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

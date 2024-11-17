@@ -483,7 +483,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                                     "Error_selectedPlaceName or selectedPlacePolygon is null");
                               }
                             },
-                            child: Text("Ort hinzufügen"), //@todo translation add_my_place_with_map_add_place_button
+                            child: Text(AppLocalizations.of(context)!.add_my_place_with_map_add_place_button),
                             style: TextButton.styleFrom(
                                 foregroundColor: Theme.of(context)
                                     .colorScheme

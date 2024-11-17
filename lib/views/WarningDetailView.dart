@@ -239,7 +239,7 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FloatingActionButton(
-                  tooltip: "center map", //@todo translate warning_detail_view_map_center_map_button_tooltip
+                  tooltip: AppLocalizations.of(context)!.warning_detail_view_map_center_map_button_tooltip,
                   onPressed: () {
                     mapController.fitCamera(createInitCameraFit());
                   },
@@ -405,7 +405,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   AppLocalizations.of(context)!.warning_severity +
                   ": " +
                   translateWarningCertainty(
-                      widget._warnMessage.info[0].severity.name) +
+                      widget._warnMessage.info[0].severity.name, context) +
                   "\n\n" +
                   AppLocalizations.of(context)!.warning_region +
                   ": " +
@@ -545,12 +545,12 @@ class _DetailScreenState extends State<DetailScreen> {
                               Colors.green,
                               AppLocalizations.of(context)!.warning_urgency,
                               translateWarningUrgency(
-                                  widget._warnMessage.info[0].urgency.name)),
+                                  widget._warnMessage.info[0].urgency.name, context)),
                           createTagButton(
                               Colors.blueGrey,
                               AppLocalizations.of(context)!.warning_certainty,
                               translateWarningCertainty(
-                                  widget._warnMessage.info[0].certainty.name)),
+                                  widget._warnMessage.info[0].certainty.name, context)),
                           createTagButton(
                               Colors.amber,
                               AppLocalizations.of(context)!.warning_scope,
@@ -567,7 +567,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               Colors.tealAccent,
                               AppLocalizations.of(context)!.warning_status,
                               translateWarningStatus(
-                                  widget._warnMessage.status.name)),
+                                  widget._warnMessage.status.name, context)),
                       createTagButton(
                           Colors.purpleAccent,
                           "Referenze",

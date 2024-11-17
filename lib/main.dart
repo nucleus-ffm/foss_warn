@@ -135,7 +135,7 @@ class _HomeViewState extends State<HomeView> {
           actions: [
             IconButton(
               icon: Icon(Icons.sort),
-              tooltip: "Open dialog to sort alerts", //@todo translate main_app_bar_action_sort_tooltip
+              tooltip: AppLocalizations.of(context)!.main_app_bar_action_sort_tooltip,
               onPressed: () {
                 showDialog(
                   context: context,
