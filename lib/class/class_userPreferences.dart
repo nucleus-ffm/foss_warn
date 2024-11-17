@@ -61,7 +61,7 @@ class UserPreferences {
 
   String versionNumber = "0.8.0"; // shown in the about view
   int currentVersionCode = 32;
-  int previousInstalledVersionCode = -1;  // @todo load from storage update version after legacy handler
+  int previousInstalledVersionCode = -1;
 
   bool activateAlertSwiss = false;
   bool isFirstStart = true;

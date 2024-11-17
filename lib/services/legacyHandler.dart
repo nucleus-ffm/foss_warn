@@ -38,8 +38,21 @@ Future<void> legacyHandler() async {
     //@todo write to logfile?
   }
 
+  int prevVersion = -1;
+  if(preferences.containsKey("previousInstalledVersionCode")) {
+    prevVersion = preferences.getInt("previousInstalledVersionCode")!;
+  } else {
+    if(preferences.containsKey("MyPlacesListAsJson")) {
+      prevVersion = userPreferences.previousInstalledVersionCode;
+    } else {
+      // new installation
+      prevVersion = userPreferences.currentVersionCode;
+      successfullyUpdated= true;
+    }
+  }
+
   // @todo check for version < 0.8.0 because of new structured alerts
-  if (userPreferences.previousInstalledVersionCode < 32) {
+  if (prevVersion < 32) {
     try {
       allAvailablePlacesNames = [];
       preferences.remove("geocodes");

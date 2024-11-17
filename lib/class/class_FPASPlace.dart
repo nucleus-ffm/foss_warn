@@ -75,8 +75,8 @@ class FPASPlace extends Place {
         urlOverview,
         headers: {
           "Content-Type": "application/json",
-          'user-agent': "fosswarn"
-        }, //@todo
+          'user-agent': userPreferences.httpUserAgent
+        }, //@todo check if that works as expected
         body: jsonEncode(
           {
             'subscription_id': subscriptionId,
@@ -134,6 +134,7 @@ class FPASPlace extends Place {
               warnMessage.info[0].severity.index) {
             return warnMessage.notified;
           }
+
           //@todo display warning, if original warning is older then 24h
         }
       }

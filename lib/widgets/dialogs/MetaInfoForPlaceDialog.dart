@@ -33,18 +33,18 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
       if (place is NinaPlace) {
         return [
           Text("Nina-ARS: ${ninaPlace?.geocode.geocodeNumber}"),
-          Text("Latitude: ${ninaPlace?.geocode.latLng.latitude}"),
-          Text("Longitude: ${ninaPlace?.geocode.latLng.longitude}"),
+          Text("Latitude: ${ninaPlace?.geocode.latLng.latitude}"), // meta_info_for_place_dialog_latitude
+          Text("Longitude: ${ninaPlace?.geocode.latLng.longitude}"), // meta_info_for_place_dialog_longitude
           Text("PLZ: ${ninaPlace?.geocode.PLZ}")];
       } else if (place is AlertSwissPlace) {
         return [Text("Shortname: ${alertSwissPlace?.shortName}")];
       } else if (place is FPASPlace) {
         return [
-          Text("Bounding box max: \n\t\tLng: ${fpasPlace!.boundingBox.max_latLng.longitude}  \n\t\tLat: ${fpasPlace!.boundingBox.max_latLng.latitude}"),
+          Text("Bounding box max: \n\t\tLng: ${fpasPlace!.boundingBox.max_latLng.longitude}  \n\t\tLat: ${fpasPlace!.boundingBox.max_latLng.latitude}"), // meta_info_for_place_dialog_bounding_box_max
           Text("\n"),
-          Text("Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.min_latLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.min_latLng.latitude}"),
+          Text("Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.min_latLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.min_latLng.latitude}"), // meta_info_for_place_dialog_bounding_box_min
           Text("\n"),
-          Text("SubscriptionID: ${fpasPlace.subscriptionId}"),
+          Text("SubscriptionID: ${fpasPlace.subscriptionId}"), //meta_info_for_place_dialog_subscription_id
         ];
       } else {
         return [];
@@ -53,7 +53,7 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
 
     return AlertDialog(
       title: Text(
-          "Meta information for ${widget.myPlace.name}"), //@todo translate
+          "Detail info for ${widget.myPlace.name}"), //@todo translate meta_info_for_place_dialog_headline
       content: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

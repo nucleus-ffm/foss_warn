@@ -237,7 +237,7 @@ class WarningWidget extends StatelessWidget {
                     (_updateThread != null && _updateThread!.length > 1)
                         ? IconButton(
                             tooltip:
-                                "show update thread of this alert", //@todo translate
+                                "show update thread of this alert", //@todo translate // warning_widget_update_thread_tooltip
 
                             onPressed: () {
                               print(_updateThread!.length);

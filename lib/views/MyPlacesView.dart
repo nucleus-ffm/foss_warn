@@ -138,7 +138,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
               right: 10,
               child: FloatingActionButton(
                 child: Icon(Icons.add),
-                tooltip: "open new page to add a place", //@todo translate
+                tooltip: "open new page to add a place", //@todo translate my_places_view_add_new_place_button_tooltip
                 onPressed: () {
                   Navigator.push(
                     context,

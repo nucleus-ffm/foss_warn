@@ -114,21 +114,17 @@ Color chooseWarningTypeColor(String type) {
 }
 
 
-
-
-
-
 /// translate the status of a warning message
 /// @todo: Add translations
 String translateWarningStatus(String status) =>
-    (status == "Actual") ? "real" : status;
+    (status == "Actual") ? "real" : status; //warning_status_actual
 
 /// translate the urgency of a warning message
 /// @todo: Add translations
 String translateWarningUrgency(String urgency) =>
-    (urgency == "Immediate") ? "unmittelbar" : urgency;
+    (urgency == "Immediate") ? "unmittelbar" : urgency; //warning_urgency_immediate
 
 /// translate the certainty of a warning message
 /// @todo: Add translations
 String translateWarningCertainty(String certainty) =>
-    (certainty == "Observed") ? "beobachtet" : certainty;
+    (certainty == "Observed") ? "beobachtet" : certainty; //warning_certainty_observed

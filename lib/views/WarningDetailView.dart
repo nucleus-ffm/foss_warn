@@ -35,6 +35,7 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   bool _showMoreRegions = false;
+  final MapController mapController = MapController();
 
   // @todo think about moving code to better place
   String replaceHTMLTags(String text) {
@@ -193,7 +194,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   /// create a camera to fix the polygon to the camera of the map
   Widget _createMapWidget(List<Area> area) {
-    final MapController mapController = MapController();
 
     CameraFit createInitCameraFit() {
       List<LatLng> polygonPoints =
@@ -239,7 +239,7 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FloatingActionButton(
-                  tooltip: "center map", //@todo translate
+                  tooltip: "center map", //@todo translate warning_detail_view_map_center_map_button_tooltip
                   onPressed: () {
                     mapController.fitCamera(createInitCameraFit());
                   },

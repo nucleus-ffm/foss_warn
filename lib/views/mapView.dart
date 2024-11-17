@@ -18,7 +18,7 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
-  Map<String, bool> filterChips = {"map_view_filter_chip_all_alerts": false, "map_view_filter_chip_my_alerts": true};
+  Map<String, bool> filterChips = {"map_view_filter_chip_my_alerts": true, "map_view_filter_chip_all_alerts": false};
 
   final MapController mapController = MapController();
 
@@ -34,7 +34,7 @@ class _MapViewState extends State<MapView> {
       result.add(
         ListTile(
           leading: Icon(Icons.check_circle),
-          title: Text("Es liegen keine Warnungen vor"), //@todo translate
+          title: Text("Es liegen keine Warnungen vor"), //@todo translate map_view_warning_overview_no_alerts
         ),
       );
     }
@@ -45,9 +45,19 @@ class _MapViewState extends State<MapView> {
   String findLabelForChip(String key) {
     switch (key) {
       case "map_view_filter_chip_all_alerts":
-        return AppLocalizations.of(context)!.main_nav_bar_my_places;
-      case "map_view_filter_chip_my_alerts":
         return AppLocalizations.of(context)!.main_nav_bar_all_warnings;
+      case "map_view_filter_chip_my_alerts":
+        return AppLocalizations.of(context)!.main_nav_bar_my_places;
+    }
+    return "Error";
+  }
+
+  String findTooltipTranslation(String key, bool value) {
+    switch(value) {
+      case true:
+        return "select filter: hide ${findLabelForChip(key)}"; //  map_view_filter_chips_tooltip_select_filter map_view_filter_chips_tooltip_hide
+      case false:
+        return "select filter: show ${findLabelForChip(key)}"; // map_view_filter_chips_tooltip_show
     }
     return "Error";
   }
@@ -66,8 +76,8 @@ class _MapViewState extends State<MapView> {
             children: filterChips.entries.map((chip) => Padding(
               padding: EdgeInsets.all(1),
               child: FilterChip(
-                tooltip: "active filter: show xyz item", //@todo translate
-                label: Text(findLabelForChip(chip.key)), //@todo translate
+                tooltip: findTooltipTranslation(chip.key, chip.value), //@todo translate
+                label: Text(findLabelForChip(chip.key)),
                 backgroundColor: Colors.transparent,
                 shape: StadiumBorder(side: BorderSide()),
                 selected: chip.value,
@@ -156,8 +166,8 @@ class _MapViewState extends State<MapView> {
         mapController: mapController,
         widgets: [buildFilterButtons()],
         polygonLayers: [
-          ...filterChips["map_view_filter_chip_all_alerts"]! ? MapWidget.createPolygonLayer() : [],
-          ...filterChips["map_view_filter_chip_my_alerts"]! ? MapWidget.createPolygonsForMapWarning() : [],
+          ...filterChips["map_view_filter_chip_my_alerts"]! ? MapWidget.createPolygonLayer() : [],
+          ...filterChips["map_view_filter_chip_all_alerts"]! ? MapWidget.createPolygonsForMapWarning() : [],
         ],
         markerLayers: [..._createMarkerLayer()],
       ),

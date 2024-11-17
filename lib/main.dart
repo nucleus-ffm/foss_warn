@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:foss_warn/class/class_alarmManager.dart';
-import 'package:foss_warn/class/class_UnifiedPushHandler.dart';
+import 'package:foss_warn/class/class_alarmManager.dart';
+//import 'package:foss_warn/class/class_UnifiedPushHandler.dart';
 import 'package:foss_warn/class/class_userPreferences.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/legacyHandler.dart';
@@ -37,9 +37,9 @@ void main() async {
   await loadSettings();
 
   if (userPreferences.shouldNotifyGeneral) {
-    // AlarmManager.callback(); //@todo disabled because of bug in unifiedPush
-    // AlarmManager().initialize();
-    // AlarmManager().registerBackgroundTask();
+    AlarmManager.callback();
+    AlarmManager().initialize();
+    AlarmManager().registerBackgroundTask();
     print("Background notification enabled");
   } else {
     print("Background notification disabled due to user setting");
@@ -93,7 +93,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
 
     // init unified push
-    UnifiedPush.initialize(
+    /*UnifiedPush.initialize(
       onNewEndpoint: UnifiedPushHandler
           .onNewEndpoint, // takes (String endpoint, String instance) in args
       onRegistrationFailed:
@@ -102,7 +102,7 @@ class _HomeViewState extends State<HomeView> {
           UnifiedPushHandler.onUnregistered, // takes (String instance)
       onMessage: UnifiedPushHandler
           .onMessage, // takes (Uint8List message, String instance) in args
-    );
+    ); */
 
     loadMyPlacesList();
     listenNotifications();
@@ -135,7 +135,7 @@ class _HomeViewState extends State<HomeView> {
           actions: [
             IconButton(
               icon: Icon(Icons.sort),
-              tooltip: "Open dialog to sort warnings", //@todo translate
+              tooltip: "Open dialog to sort alerts", //@todo translate main_app_bar_action_sort_tooltip
               onPressed: () {
                 showDialog(
                   context: context,

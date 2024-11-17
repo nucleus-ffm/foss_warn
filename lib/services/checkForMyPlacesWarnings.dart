@@ -1,3 +1,4 @@
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/apiHandler.dart';
 import '../class/class_NotificationService.dart';
 import '../class/abstract_Place.dart';
@@ -22,12 +23,12 @@ Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   // inform user if he hasn't add any places yet
   // @todo move to own timed function or find solution to not show a notification if the app is started the first time
   // @todo add translation
-  if (myPlaceList.isEmpty) {
+  if (!userPreferences.isFirstStart && myPlaceList.isEmpty) {
     await NotificationService.showNotification(
         id: 3,
-        title: "Sie haben noch keine Orte hinterlegt",
-        body: "Bitte kontrolieren Sie Ihre Orte.",
-        payload: "keine Orte hinterlegt",
+        title: "Sie haben noch keine Orte hinterlegt", //notification_no_places_selected_title
+        body: "Bitte kontrolieren Sie Ihre Orte.", //notification_no_places_selected_body
+        payload: "no places selected",
         channel: "other");
   }
 
