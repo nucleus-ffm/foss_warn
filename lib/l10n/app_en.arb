@@ -427,7 +427,7 @@
   "@warning_widget_unknown": {},
   "legacy_warning_dialog_title": "Version updated to",
   "@legacy_warning_dialog_title": {},
-  "legacy_warning_dialog_text": "FOSS Warn has been updated to a new version improving the internal structure of the app. The shift has caused all settings and your saved locations to be reset. Please check your settings and add back your wanted locations.\n\nWe apologize for any inconvenience.",
+  "legacy_warning_dialog_text": "FOSS Warn has been upgraded to its latest iteration, introducing several changes. One of them is a map view, which displays the area of an alert on a map.\nAs part of this update, FOSSWarn utilizes an updated list of places. Therefore, you have to migrate from old places to new ones. The process should automatically work if you press the `start auto migration` button. It will remove the old places and will try to add the same place from the new list. Some places may not be available anymore as the old list contains some nonvalid places. Please check if all your selected places are migrated successfully and add missing places manually.\n\nWe apologize for any inconvenience.",
   "@legacy_warning_dialog_text": {},
   "notification_settings_slidervalue_extreme": "extreme",
   "@notification_settings_slidervalue_extreme": {},
@@ -522,5 +522,9 @@
   "choose_theme_dialog_headline": "Select color theme",
   "@choose_theme_dialog_headline": {},
   "choose_theme_dialog_choose_accent_color": "Choose accent color",
-  "@choose_theme_dialog_choose_accent_color": {}
+  "@choose_theme_dialog_choose_accent_color": {},
+  "legacy_warning_dialog_migration_button": "start auto migration",
+  "@legacy_warning_dialog_migration_button": {},
+  "add_my_place_with_map_loading_screen_search_error": "Something went wrong. Please try it again later.",
+  "@add_my_place_with_map_loading_screen_search_error": {}
 }
