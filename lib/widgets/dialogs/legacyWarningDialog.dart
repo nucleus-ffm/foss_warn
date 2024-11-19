@@ -79,7 +79,7 @@ class _LegacyWarningDialogState extends State<LegacyWarningDialog> {
                 if (!foundPlace) {
                   LoadingScreen.instance().show(
                       context: context,
-                      text: "No replacement found for ${p.name}");
+                      text: "No replacement was found for ${p.name}");
                   await Future.delayed(const Duration(seconds: 2));
                 }
               }
@@ -95,7 +95,7 @@ class _LegacyWarningDialogState extends State<LegacyWarningDialog> {
               LoadingScreen.instance().show(
                   context: context,
                   text:
-                      "Oh no. Something went wrong. Can not automatic migrate you places. Please do that manually");
+                      "Oh no. Something went wrong. It can not automatically migrate your places. Please do that manually.");
               await Future.delayed(const Duration(seconds: 3));
               ErrorLogger.writeErrorLog(
                   "legacyWarningDialog", "migration process", e.toString());
