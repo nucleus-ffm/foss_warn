@@ -45,7 +45,7 @@ Future callAlertSwissAPI() async {
 
       // store warnings in places //@todo testing
       for (Place p in myPlaceList) {
-        if (!(p is AlertSwissPlace)) break;
+        if (!(p is AlertSwissPlace)) continue;
 
         for (WarnMessage msg in tempWarnMessageList) {
           for (Area a in msg.info[0].area) {

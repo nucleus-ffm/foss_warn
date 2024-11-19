@@ -22,7 +22,7 @@ class AlertSwissPlace extends Place {
   factory AlertSwissPlace.fromJson(Map<String, dynamic> json) {
 
     /// create new warnMessage objects from saved data
-    List<WarnMessage> createWarningList(String data ) { //List<dynamic> coordinates
+    List<WarnMessage> createWarningList(String data) {
       List<dynamic> _jsonData = jsonDecode(data);
       List<WarnMessage> result = [];
       for (int i = 0; i < _jsonData.length; i++) {

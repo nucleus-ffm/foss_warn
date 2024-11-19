@@ -104,7 +104,8 @@ class WarningWidget extends StatelessWidget {
                               },
                               child: Text(
                                 translateWarningCategory(
-                                    _warnMessage.info[0].category[0].name,
+                                    _warnMessage.info[0].category.length > 0 ?
+                                      _warnMessage.info[0].category[0].name : "",
                                     context), //@todo display more then one category if available
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),

@@ -240,44 +240,49 @@ class _DetailScreenState extends State<DetailScreen> {
       }
     }
 
-    return Container(
-        height: 200,
-        child: MapWidget(
-          mapController: mapController,
-          initialCameraFit: createInitCameraFit(),
-          polygonLayers: [ //@todo can be null
-            PolygonLayer(
-                polygons: Area.createListOfPolygonsForAreas(
-                    widget._warnMessage.info.first.area)) ,
-          ],
-          markerLayers: _calculatePlaceMarker() != null
-              ? [
-                  MarkerLayer(markers: [
-                    Marker(
-                        point: _calculatePlaceMarker()!,
-                        child: Icon(
-                          Icons.place,
-                          size: 40,
-                        ))
-                  ])
-                ]
-              : [],
-          widgets: [
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FloatingActionButton(
-                  tooltip: AppLocalizations.of(context)!.warning_detail_view_map_center_map_button_tooltip,
-                  onPressed: () {
-                    mapController.fitCamera(createInitCameraFit());
-                  },
-                  child: Icon(Icons.center_focus_strong),
+    try {
+      return Container(
+          height: 200,
+          child: MapWidget(
+            mapController: mapController,
+            initialCameraFit: createInitCameraFit(),
+            polygonLayers: [ //@todo can be null
+              PolygonLayer(
+                  polygons: Area.createListOfPolygonsForAreas(
+                      widget._warnMessage.info.first.area)),
+            ],
+            markerLayers: _calculatePlaceMarker() != null
+                ? [
+              MarkerLayer(markers: [
+                Marker(
+                    point: _calculatePlaceMarker()!,
+                    child: Icon(
+                      Icons.place,
+                      size: 40,
+                    ))
+              ])
+            ]
+                : [],
+            widgets: [
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FloatingActionButton(
+                    tooltip: AppLocalizations.of(context)!
+                        .warning_detail_view_map_center_map_button_tooltip,
+                    onPressed: () {
+                      mapController.fitCamera(createInitCameraFit());
+                    },
+                    child: Icon(Icons.center_focus_strong),
+                  ),
                 ),
-              ),
-            )
-          ],
-        ));
+              )
+            ],
+          ));
+    }catch (e) {
+      return Container(height: 200, child: Text("Errpr"),);
+    }
   }
 
   @override
@@ -671,7 +676,8 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 20,
               ),
-              _createMapWidget(widget._warnMessage.info.first.area),
+              widget._warnMessage.info.first.area.first.geoJson != "{}" ?
+                _createMapWidget(widget._warnMessage.info.first.area): SizedBox(),
               SizedBox(
                 height: 20,
               ),
