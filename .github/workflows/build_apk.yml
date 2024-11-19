@@ -51,19 +51,19 @@ jobs:
     - run: flutter test
     - run: flutter build apk # build fat APK 
     - run: flutter build apk --split-per-abi
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: FOSSWarn-general-release-apk
         path: build/app/outputs/flutter-apk/app-release.apk
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: FOSSWarn-armeabi-v7a-release-apk
         path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: FOSSWarn-arm64-v8a-release-apk
         path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: FOSSWarn-x86_64-release-apk
         path: build/app/outputs/flutter-apk/app-x86_64-release.apk
