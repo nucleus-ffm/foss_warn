@@ -105,7 +105,8 @@ class _LegacyWarningDialogState extends State<LegacyWarningDialog> {
             Navigator.of(context).pop();
           },
           child: Text(
-            "start auto migration",
+            AppLocalizations.of(context)!
+                .legacy_warning_dialog_migration_button,
           ),
         ),
       ],
