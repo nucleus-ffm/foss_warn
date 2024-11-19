@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foss_warn/class/class_ErrorLogger.dart';
 import 'package:foss_warn/main.dart';
+import 'package:provider/provider.dart';
+
+import '../../services/updateProvider.dart';
 
 class ErrorDialog extends StatefulWidget {
   const ErrorDialog({Key? key}) : super(key: key);
@@ -31,17 +34,17 @@ class _ErrorDialogState extends State<ErrorDialog> {
                   children: [
                     Text(
                       "FOSS Warn has noticed an error."
-                      " Please contact the developer and attach the following log:",
+                      " Please contact the developer and attach the following log:", //@todo translate
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Text(
                         "The log does not contain any privacy sensitive information beside maybe your selected place. "
-                        "FOSS Warn also does not send any log information to a server."),
+                        "FOSS Warn also does not send any log information to a server."), //@todo translate
                     SizedBox(
                       height: 5,
                     ),
                     Text(
-                      "What should I do now?",
+                      "What should I do now?", // @todo translate
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Text("write an E-Mail to: foss_warn@posteo.de"),
@@ -79,7 +82,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
                             });
                           },
                         ),
-                        Text("Do not show message again"),
+                        Text("hide error bar"), //@todo translate
                       ],
                     ),
                   ],
@@ -91,7 +94,7 @@ class _ErrorDialogState extends State<ErrorDialog> {
                     Clipboard.setData(ClipboardData(text: log));
                     final snackBar = SnackBar(
                       content: const Text(
-                        "Kopiert",
+                        "copied", //@todo translate
                         style: TextStyle(color: Colors.black),
                       ),
                       backgroundColor: Colors.green[100],
@@ -99,15 +102,17 @@ class _ErrorDialogState extends State<ErrorDialog> {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
-                  child: Text("Kopieren",
+                  child: Text("copy", //@todo translate
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary)),
                 ),
                 TextButton(
                   onPressed: () {
+                    final updater = Provider.of<Update>(context, listen: false);
+                    updater.updateView();;
                     Navigator.of(context).pop();
                   },
-                  child: Text("Schließen",
+                  child: Text("close",//@todo translate
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary)),
                 ),
