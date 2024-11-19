@@ -293,6 +293,11 @@ class _DetailScreenState extends State<DetailScreen> {
         widget._warnMessage.identifier.hashCode);
   }
 
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     /// returns a List of Buttons with links to embedded pictures
