@@ -24,12 +24,12 @@ class _AlertUpdateThreadViewState extends State<AlertUpdateThreadView> {
           child: Column(
             children: [
               Text("latest version of the alert"),
-              WarningWidget(warnMessage: widget.latestAlert),
+              WarningWidget(warnMessage: widget.latestAlert, isMyPlaceWarning: true),
               SizedBox(height: 10,),
               Text("previous updates of this alert"),
               SizedBox(height: 10,),
               ...widget.previousNowUpdatedAlerts.map((_element)
-              => WarningWidget(warnMessage: _element,)).toList(),
+              => WarningWidget(warnMessage: _element, isMyPlaceWarning: true,)).toList(),
             ],
           ),
         ),

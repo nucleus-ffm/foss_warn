@@ -839,7 +839,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             key: Key('contactFieldKey'),
                             TextSpan(
                                 children: generateContactBody(replaceHTMLTags(
-                                    widget._warnMessage.contact)),
+                                    widget._warnMessage.info[0].contact!)),
                                 style: TextStyle(
                                     fontSize: userPreferences.warningFontSize)),
                           ),
@@ -859,7 +859,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           child: TextButton(
                             onPressed: () async {
                               bool success = await launchUrlInBrowser(
-                                  widget._warnMessage.info[0].web);
+                                  widget._warnMessage.info[0].web!);
 
                               if (!success) {
                                 final snackBar = SnackBar(
@@ -877,7 +877,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               }
                             },
                             child: Text(
-                              widget._warnMessage.info[0].web,
+                              widget._warnMessage.info[0].web!,
                               style: TextStyle(
                                   fontSize: userPreferences.warningFontSize),
                             ),

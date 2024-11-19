@@ -73,7 +73,8 @@ class MyPlaceDetailScreen extends StatelessWidget {
           result.add(WarningWidget(
               warnMessage: listWarn[0],
               place: _myPlace,
-              updateThread: listWarn));
+              updateThread: listWarn,
+              isMyPlaceWarning: true));
         }
       }
       return result;
@@ -104,8 +105,7 @@ class MyPlaceDetailScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(children: buildWarningWidgets(generateListOfAlerts())
-        ),
+        child: Column(children: buildWarningWidgets(generateListOfAlerts())),
       ),
     );
   }
