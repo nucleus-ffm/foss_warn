@@ -253,6 +253,7 @@ class NotificationService {
     channelIds.add("de.nucleus.foss_warn.notifications_extreme");
     channelIds.add("de.nucleus.foss_warn.notifications_state");
     channelIds.add("de.nucleus.foss_warn.notifications_other");
+    channelIds.add("de.nucleus.foss_warn.notifications_update");
 
     print("[android notification channels]");
     List<AndroidNotificationChannel>? temp =
