@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/class/class_ErrorLogger.dart';
 import 'package:provider/provider.dart';
 
+import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
-import '../class/class_Geocode.dart';
+import '../main.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
+import '../views/AlertUpdateThreadView.dart';
 import '../views/WarningDetailView.dart';
 import '../services/updateProvider.dart';
 import '../services/translateAndColorizeWarning.dart';
@@ -13,46 +16,66 @@ import '../widgets/dialogs/MessageTypeExplanation.dart';
 import 'dialogs/CategoryExplanation.dart';
 
 class WarningWidget extends StatelessWidget {
+  final Place? _place;
+  final List<WarnMessage>? _updateThread;
   final WarnMessage _warnMessage;
   final bool _isMyPlaceWarning;
   const WarningWidget(
       {Key? key,
       required WarnMessage warnMessage,
-      required bool isMyPlaceWarning})
+      required bool isMyPlaceWarning,
+      Place? place,
+      List<WarnMessage>? updateThread})
       : _warnMessage = warnMessage,
+        _place = place,
+        _updateThread = updateThread,
         _isMyPlaceWarning = isMyPlaceWarning,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<String> geocodeNameList = [];
+    List<String> areaList = []; //@todo rename
+
     updatePrevView() {
       final updater = Provider.of<Update>(context, listen: false);
       updater.updateReadStatusInList();
     }
 
-    List<String> generateGeocodeList() {
-      List<String> tempList = [];
-      for (Area myArea in _warnMessage.areaList) {
-        for (Geocode myGeocode in myArea.geocodeList) {
-          tempList.add(myGeocode.geocodeName);
+    List<String> generateAreaList() {
+      List<String> result = [];
+      for (Area myArea in _warnMessage.info[0].area) {
+        // sometimes there is a long list of areas separated with ","
+        // we split them to only show the first one in the overview
+        List<String> listOfAreas = myArea.description.split(",");
+        for (int i = 0; i < listOfAreas.length; i++) {
+          result.add(listOfAreas[i]);
         }
       }
-      return tempList;
+      return result;
     }
 
-    geocodeNameList = generateGeocodeList();
+    areaList = generateAreaList();
 
     return Consumer<Update>(
       builder: (context, counter, child) => Card(
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      DetailScreen(warnMessage: _warnMessage)),
-            ).then((value) => updatePrevView());
+            try {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailScreen(
+                          warnMessage: _warnMessage,
+                          place: _place,
+                        )),
+              ).then((value) => updatePrevView());
+            } catch (e) {
+              ErrorLogger.writeErrorLog(
+                  "WarningWidget.dart",
+                  "Error of Type: ${e.runtimeType} while displaying alert: ${_warnMessage.identifier}",
+                  e.toString());
+              appState.error = true;
+            }
           },
           child: Padding(
             padding: EdgeInsets.all(12),
@@ -81,7 +104,9 @@ class WarningWidget extends StatelessWidget {
                               },
                               child: Text(
                                 translateWarningCategory(
-                                    _warnMessage.category, context),
+                                    _warnMessage.info[0].category.length > 0 ?
+                                      _warnMessage.info[0].category[0].name : "",
+                                    context), //@todo display more then one category if available
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
                             ),
@@ -103,13 +128,13 @@ class WarningWidget extends StatelessWidget {
                               },
                               child: Text(
                                 translateWarningType(
-                                    _warnMessage.messageType, context),
+                                    _warnMessage.messageType.name, context),
                                 style: TextStyle(
                                     fontSize: 12, color: Colors.white),
                               ),
                             ),
                             color: chooseWarningTypeColor(
-                                _warnMessage.messageType),
+                                _warnMessage.messageType.name),
                             padding: EdgeInsets.all(5),
                           ),
                           SizedBox(
@@ -119,19 +144,18 @@ class WarningWidget extends StatelessWidget {
                             child: SizedBox(
                               width: 100,
                               child: Text(
-                                geocodeNameList.length > 1
-                                    ? geocodeNameList.first +
+                                areaList.length > 1
+                                    ? areaList.first +
                                         " " +
                                         AppLocalizations.of(context)!
                                             .warning_widget_and +
                                         " " +
-                                        (geocodeNameList.length - 1)
-                                            .toString() +
+                                        (areaList.length - 1).toString() +
                                         " " +
                                         AppLocalizations.of(context)!
                                             .warning_widget_other
-                                    : geocodeNameList.isNotEmpty
-                                        ? geocodeNameList.first
+                                    : areaList.isNotEmpty
+                                        ? areaList.first
                                         : AppLocalizations.of(context)!
                                             .warning_widget_unknown,
                                 style: TextStyle(fontSize: 12),
@@ -144,7 +168,7 @@ class WarningWidget extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        _warnMessage.headline,
+                        _warnMessage.info[0].headline,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -165,24 +189,51 @@ class WarningWidget extends StatelessWidget {
                             Text(
                               _warnMessage.source.name.toUpperCase(),
                               style: TextStyle(fontSize: 12),
-                            )
+                            ),
                           ],
                         ),
                       )
                     ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              DetailScreen(warnMessage: _warnMessage)),
-                    ).then((value) => updatePrevView());
-                  },
-                  icon: Icon(Icons.read_more),
-                )
+                Column(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                    warnMessage: _warnMessage,
+                                    place: _place,
+                                  )),
+                        ).then((value) => updatePrevView());
+                      },
+                      icon: Icon(Icons.read_more),
+                    ),
+                    //_updateThread != null ? _updateThread!.length > 1 ? IconButton(onPressed: () {}, icon: Icon(Icons.account_tree)): SizedBox(): SizedBox(),
+                    (_updateThread != null && _updateThread!.length > 1)
+                        ? IconButton(
+                            tooltip:
+                            AppLocalizations.of(context)!.warning_widget_update_thread_tooltip,
+                            onPressed: () {
+                              print(_updateThread!.length);
+                              print(_updateThread);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AlertUpdateThreadView(
+                                          latestAlert: _updateThread![0],
+                                          previousNowUpdatedAlerts:
+                                              _updateThread!.sublist(
+                                                  1, _updateThread!.length),
+                                        )),
+                              );
+                            },
+                            icon: Icon(Icons.account_tree))
+                        : SizedBox(),
+                  ],
+                ),
               ],
             ),
           ),

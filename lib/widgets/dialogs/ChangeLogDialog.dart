@@ -14,7 +14,16 @@ class ChangeLogDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "0.7.1 (beta)",
+                "0.8.0 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* OSM Integration \n"
+                  "* die interne Datenstruktur ist jetzt vollständig CAP \n"
+                  "* Verbesserungen im Error Handling \n "
+                  "* Fehlende Tooltips ergänzt \n"
+                  "* Übersetzungen aktualisiert \n"
+                  "* Fehlerbehebungen \n"),
+              Text("0.7.1 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
               Text("* Fehlerbehebungen \n"),

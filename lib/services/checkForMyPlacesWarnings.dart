@@ -11,22 +11,25 @@ import 'saveAndLoadSharedPreferences.dart';
 Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   bool _returnValue = true;
   print("check for warnings");
-  // get data first
-  await callAPI();
   if (myPlaceList.isEmpty) {
     print("myPlaceList is empty - load list");
     await loadMyPlacesList();
   }
 
+  // get data first
+  await callAPI();
+
+
   // inform user if he hasn't add any places yet
   // @todo move to own timed function or find solution to not show a notification if the app is started the first time
   // @todo add translation
+
   if (myPlaceList.isEmpty && !userPreferences.isFirstStart) {
     await NotificationService.showNotification(
         id: 3,
-        title: "Sie haben noch keine Orte hinterlegt",
-        body: "Bitte kontrolieren Sie Ihre Orte.",
-        payload: "keine Orte hinterlegt",
+        title: "Sie haben noch keine Orte hinterlegt", //@todo translate, add context first, notification_no_places_selected_title
+        body: "Bitte kontrolieren Sie Ihre Orte.", //notification_no_places_selected_body
+        payload: "no places selected",
         channel: "other");
   }
 

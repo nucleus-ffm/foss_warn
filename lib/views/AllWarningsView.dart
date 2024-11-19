@@ -8,10 +8,8 @@ import '../widgets/ConnectionErrorWidget.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
 import '../main.dart';
-import '../services/getData.dart';
 import '../services/listHandler.dart';
 import '../widgets/WarningWidget.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
 import '../services/sortWarnings.dart';
 import '../services/updateProvider.dart';
 import '../widgets/noWarningsInList.dart';
@@ -45,15 +43,14 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     void loadData() async {
       print("[allWarningsView] Load Data");
       if (userPreferences.showAllWarnings) {
-        // call (old) api with all warnings
-        await getData(false);
+        // call api for the map warnings
+        await callMapAPI();
       } else {
         // call (new) api just for my places/ alert swiss
         await callAPI();
       }
       checkForMyPlacesWarnings(true);
-      sortWarnings(allWarnMessageList);
-      loadNotificationSettingsImportanceList();
+      sortWarnings(mapWarningsList);
       setState(() {
         print("loading finished");
         _loading = false;
@@ -93,17 +90,16 @@ class _AllWarningsViewState extends State<AllWarningsView> {
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: reloadData,
         child: myPlaceList.isNotEmpty // check if there is a place saved
-            ? userPreferences.showAllWarnings // if warnings that are not in MyPlaces shown
+            ? userPreferences
+                    .showAllWarnings // if warnings that are not in MyPlaces shown
                 ? SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(children: [
                       Container(
                         child: ConnectionError(),
                       ),
-                      allWarnMessageList.isEmpty
-                          ? NoWarningsInList()
-                          : SizedBox(),
-                      ...allWarnMessageList
+                      mapWarningsList.isEmpty ? NoWarningsInList() : SizedBox(),
+                      ...mapWarningsList
                           .map((warnMessage) =>
                               WarningWidget(warnMessage: warnMessage, isMyPlaceWarning: false))
                           .toList(),
@@ -139,8 +135,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                        AppLocalizations.of(context)
-                                            !.all_warnings_everything_ok,
+                                        AppLocalizations.of(context)!
+                                            .all_warnings_everything_ok,
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold)),
@@ -151,8 +147,8 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                           .colorScheme
                                           .secondary,
                                     ),
-                                    Text(AppLocalizations.of(context)
-                                        !.all_warnings_everything_ok_text),
+                                    Text(AppLocalizations.of(context)!
+                                        .all_warnings_everything_ok_text),
                                     SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
@@ -161,9 +157,12 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                                         });
                                       },
                                       child: Text(
-                                        AppLocalizations.of(context)
-                                            !.all_warnings_reload,
-                                        style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                                        AppLocalizations.of(context)!
+                                            .all_warnings_reload,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary),
                                       ),
                                       style: TextButton.styleFrom(
                                           backgroundColor: Theme.of(context)
@@ -197,13 +196,13 @@ class _AllWarningsViewState extends State<AllWarningsView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                                AppLocalizations.of(context)
-                                    !.all_warnings_no_places_chosen,
+                                AppLocalizations.of(context)!
+                                    .all_warnings_no_places_chosen,
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold)),
                             Text("\n"),
-                            Text(AppLocalizations.of(context)
-                                !.all_warnings_no_places_chosen_text),
+                            Text(AppLocalizations.of(context)!
+                                .all_warnings_no_places_chosen_text),
                           ],
                         ),
                       ),

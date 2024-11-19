@@ -1,7 +1,7 @@
 name: foss_warn
 description: Eine FOSS Umsetzung von NINA
 publish_to: 'none'
-version: 0.7.1+31
+version: 0.8.0+32
 
 environment:
   sdk: ">=2.17.0 <3.13.3"
@@ -12,15 +12,23 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   http: ^1.1.0
-  flutter_local_notifications: ^16.2.0
-  shared_preferences: ^2.2.2
-  shared_preferences_android: ^2.2.1
+  flutter_local_notifications: ^17.2.4
+  shared_preferences: ^2.3.3
+  shared_preferences_android: ^2.3.3
   provider: ^6.1.1
-  rxdart: ^0.27.7
-  url_launcher: ^6.2.2
-  share_plus: ^7.2.1
-  android_alarm_manager_plus: ^3.0.4
+  rxdart: ^0.28.0
+  url_launcher: ^6.3.1
+  share_plus: ^10.1.1
+  android_alarm_manager_plus: ^4.0.4
   intl: any # for localizations
+  unifiedpush: ^5.0.2
+  xml2json: ^6.2.5
+
+  # used by the map
+  flutter_map: ^7.0.2
+  flutter_map_geojson: ^1.0.5
+  vector_map_tiles: ^8.0.0
+  latlong2: ^0.9.0
 
   #icons_launcher: ^2.1.6
 

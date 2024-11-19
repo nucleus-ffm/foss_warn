@@ -113,52 +113,15 @@ Color chooseWarningTypeColor(String type) {
   }
 }
 
-/// get a fitting color by the severity of a warning message
-Color chooseWarningSeverityColor(String severity) {
-  switch (severity) {
-    case "Minor":
-      return Colors.blueAccent;
-    case "Moderate":
-      return Colors.orange;
-    case "Extreme":
-      return Colors.deepOrange;
-    case "Severe":
-      return Colors.red;
-    default:
-      return Colors.grey;
-  }
-}
-
-/// translate the severity of a warning message
-/// @todo: Add translations
-String translateWarningSeverity(String severity) {
-  switch (severity) {
-    case "minor":
-      return "Gering";
-    case "moderate":
-      return "Moderat";
-    case "extreme":
-      return "Extrem";
-    case "severe":
-      return "Schwer";
-    case "other":
-      return "Sonstiges";
-    default:
-      return severity;
-  }
-}
 
 /// translate the status of a warning message
-/// @todo: Add translations
-String translateWarningStatus(String status) =>
-    (status == "Actual") ? "real" : status;
+String translateWarningStatus(String status, BuildContext context) =>
+    (status == "Actual") ? AppLocalizations.of(context)!.warning_status_actual : status;
 
 /// translate the urgency of a warning message
-/// @todo: Add translations
-String translateWarningUrgency(String urgency) =>
-    (urgency == "Immediate") ? "unmittelbar" : urgency;
+String translateWarningUrgency(String urgency, BuildContext context) =>
+    (urgency == "Immediate") ? AppLocalizations.of(context)!.warning_urgency_immediate : urgency;
 
 /// translate the certainty of a warning message
-/// @todo: Add translations
-String translateWarningCertainty(String certainty) =>
-    (certainty == "Observed") ? "beobachtet" : certainty;
+String translateWarningCertainty(String certainty, BuildContext context) =>
+    (certainty == "Observed") ? AppLocalizations.of(context)!.warning_certainty_observed : certainty;

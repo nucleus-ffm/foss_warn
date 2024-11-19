@@ -4,9 +4,9 @@ import 'package:foss_warn/main.dart';
 
 import '../class/class_AlertSwissPlace.dart';
 import '../class/abstract_Place.dart';
+import '../class/class_ErrorLogger.dart';
 import '../class/class_WarnMessage.dart';
 import '../class/class_Area.dart';
-import '../class/class_Geocode.dart';
 import 'listHandler.dart';
 import 'saveAndLoadSharedPreferences.dart';
 
@@ -17,8 +17,8 @@ Future callAlertSwissAPI() async {
       "https://www.alert.swiss/content/alertswiss-internet/en/home/_jcr_content/polyalert.alertswiss_alerts.actual.json";
 
   try {
-    Response response; //response var for get request
-    var data; //var for response data
+    Response response; // response var for get request
+    var data; // var for response data
 
     List<WarnMessage> tempWarnMessageList = [];
     tempWarnMessageList.clear();
@@ -27,7 +27,8 @@ Future callAlertSwissAPI() async {
     await loadETags();
 
     // get overview if warnings exits for myplaces
-    response = await get(Uri.parse(url)).timeout(userPreferences.networkTimeout);
+    response =
+        await get(Uri.parse(url)).timeout(userPreferences.networkTimeout);
 
     // check if request was sucsessfully
     if (response.statusCode == 200) {
@@ -44,23 +45,26 @@ Future callAlertSwissAPI() async {
 
       // store warnings in places //@todo testing
       for (Place p in myPlaceList) {
-        if (!(p is AlertSwissPlace)) break;
+        if (!(p is AlertSwissPlace)) continue;
 
         for (WarnMessage msg in tempWarnMessageList) {
-          for (Area a in msg.areaList) {
-            for (Geocode g in a.geocodeList) {
-              if (g.geocodeName == p.shortName) {
+          for (Area a in msg.info[0].area) {
+              if (a.region != null && a.region == p.shortName) {
                 if (!p.warnings.any((w) => w.identifier == msg.identifier)) {
                   p.addWarningToList(msg);
                 }
               }
-            }
           }
         }
       }
     }
   } catch (e) {
     print("Something went wrong: " + e.toString());
+    // write to logfile
+    ErrorLogger.writeErrorLog(
+        "alertSwiss.dart", "Error while calling alertSwiss API}", e.toString()
+    );
+    appState.error = true;
   }
 }
 
@@ -81,13 +85,10 @@ WarnMessage? createWarning(var data) {
     List<Area> tempAreaList = [];
     for (int i = 0; i < data.length; i++) {
       tempAreaList.add(
-        Area(
+        Area.withRegion(
           areaDesc: data[i]["description"]["description"],
-          geocodeList: [
-            Geocode(
-                geocodeName: data[i]["regions"][0]["region"],
-                geocodeNumber: "-1"),
-          ],
+          region: data[i]["regions"][0]["region"],
+          geoJson: "{}" //[GeoJsonFeature(type: "alertSwissPolygon", coordinates: [], properties: {} )],  //@todo parse data[i]["areas"][0]["polygons"][0]["coordinates"]
         ),
       );
     }
@@ -108,6 +109,10 @@ WarnMessage? createWarning(var data) {
   } catch (e) {
     print(
         "something went wrong while paring alert swiss data: " + e.toString());
+    // write to logfile
+    ErrorLogger.writeErrorLog("alertSwiss.dart",
+        "something went wrong while paring alert swiss data", e.toString());
   }
+
   return null;
 }

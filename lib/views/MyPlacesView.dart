@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:foss_warn/services/apiHandler.dart';
-
 import 'package:provider/provider.dart';
 
 import '../widgets/MyPlaceWidget.dart';
-
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/ConnectionErrorWidget.dart';
 import 'AddMyPlaceView.dart';
+import 'AddMyPlaceWithMapView.dart';
 
 class MyPlaces extends StatefulWidget {
   const MyPlaces({Key? key}) : super(key: key);
@@ -105,21 +103,33 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                         ])),
                   )
                 : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        AppLocalizations.of(context)!.my_place_no_place_added,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      Container(
+                        child: ConnectionError(),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)
-                            !.my_place_no_place_added_text,
-                        textAlign: TextAlign.center,
+                      Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!
+                                    .my_place_no_place_added,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!
+                                    .my_place_no_place_added_text,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -128,10 +138,12 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
               right: 10,
               child: FloatingActionButton(
                 child: Icon(Icons.add),
+                tooltip: AppLocalizations.of(context)!.my_places_view_add_new_place_button_tooltip,
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AddMyPlaceView()),
+                    MaterialPageRoute(
+                        builder: (context) => AddMyPlaceView()), //AddMyPlaceWithMapView
                   );
                 },
               ),

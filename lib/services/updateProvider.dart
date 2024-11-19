@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:foss_warn/services/apiHandler.dart';
+import '../class/abstract_Place.dart';
 import '../services/saveAndLoadSharedPreferences.dart';
 import 'listHandler.dart';
 
 class Update with ChangeNotifier {
   // delete preset
-  Future<void> updateList(newPlace) async {
+  Future<void> updateList(Place newPlace) async {
+    print("add new place: ${newPlace.name}");
     myPlaceList.add(newPlace);
     saveMyPlacesList();
     await callAPI();

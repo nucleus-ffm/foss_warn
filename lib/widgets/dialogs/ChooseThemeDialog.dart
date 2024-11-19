@@ -155,7 +155,7 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Text("Select color theme "),
+      title: Text(AppLocalizations.of(context)!.choose_theme_dialog_headline),
       children: [
         SingleChildScrollView(
           child: Padding(
@@ -168,7 +168,7 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 ),
                 SizedBox(height: 10),
-                Text("Choose accent color:"),
+                Text(AppLocalizations.of(context)!.choose_theme_dialog_choose_accent_color),
                 SizedBox(height: 10),
                 Wrap(
                   children: [...generateAvailableThemes()],

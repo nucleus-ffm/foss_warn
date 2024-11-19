@@ -1,15 +1,29 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foss_warn/class/class_Area.dart';
 import 'package:foss_warn/class/class_Geocode.dart';
+import 'package:foss_warn/class/class_Info.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
 import 'package:foss_warn/enums/Certainty.dart';
+import 'package:foss_warn/enums/MessageType.dart';
+import 'package:foss_warn/enums/Scope.dart';
 import 'package:foss_warn/enums/Severity.dart';
+import 'package:foss_warn/enums/Category.dart' as cap_category;
+import 'package:foss_warn/enums/Status.dart';
+import 'package:foss_warn/enums/Urgency.dart';
 import 'package:foss_warn/enums/WarningSource.dart';
 import 'package:foss_warn/views/WarningDetailView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
+
+  // Overrides the test client for every test, so network call will work.
+  // @todo use mock API calls instead
+  setUpAll(() => HttpOverrides.global = null);
+
   String contactFieldText = "Test +49 123 567 call";
   String contactFieldExpectedText = "Test +49 123 567 call";
 
@@ -44,32 +58,28 @@ void main() {
   String contactFieldExpectedText_5 =
       "contact us: Hauptstraße 35 62394 or per telephone 35-62394";
 
-  testWidget("text with PLZ and address + telephone number identically to the PLZ test",
-      contactFieldText_5, contactFieldExpectedText_5);
+  testWidget(
+      "text with PLZ and address + telephone number identically to the PLZ test",
+      contactFieldText_5,
+      contactFieldExpectedText_5);
 
-  String contactFieldText_6 =
-      "hallo World call\n06152787878";
-  String contactFieldExpectedText_6 =
-      "hallo World call\n06152787878";
+  String contactFieldText_6 = "hallo World call\n06152787878";
+  String contactFieldExpectedText_6 = "hallo World call\n06152787878";
 
-  testWidget("telephone number with repeating parts test",
-      contactFieldText_6, contactFieldExpectedText_6);
+  testWidget("telephone number with repeating parts test", contactFieldText_6,
+      contactFieldExpectedText_6);
 
-  String contactFieldText_7 =
-      "Testcall 0615-298-56 56";
-  String contactFieldExpectedText_7 =
-      "Testcall 0615-298-56 56";
+  String contactFieldText_7 = "Testcall 0615-298-56 56";
+  String contactFieldExpectedText_7 = "Testcall 0615-298-56 56";
 
   testWidget("telephone number with repeating parts and spaces test",
       contactFieldText_7, contactFieldExpectedText_7);
 
-  String contactFieldText_8 =
-      "Testcall 0615-298-56b";
-  String contactFieldExpectedText_8 =
-      "Testcall 0615-298-56b";
+  String contactFieldText_8 = "Testcall 0615-298-56b";
+  String contactFieldExpectedText_8 = "Testcall 0615-298-56b";
 
-  testWidget("telephone number and one char",
-      contactFieldText_8, contactFieldExpectedText_8);
+  testWidget("telephone number and one char", contactFieldText_8,
+      contactFieldExpectedText_8);
 }
 
 /// create a widget with localizations (en)
@@ -83,8 +93,7 @@ Widget makeTestableWidget({required Widget myWidget}) {
           delegates: AppLocalizations.localizationsDelegates,
           locale: Locale('en'),
           child: myWidget,
-        )
-    ),
+        )),
   );
 }
 
@@ -93,10 +102,11 @@ void testWidget(String testCaseName, String contactFieldText,
     String contactFieldExpectedText) {
   WarnMessage wm = createDummyWarnMessage(contactFieldText);
   Widget testWidget =
-  makeTestableWidget(myWidget: DetailScreen(warnMessage: wm));
+      makeTestableWidget(myWidget: DetailScreen(warnMessage: wm));
 
   testWidgets(testCaseName, (tester) async {
     await tester.pumpWidget(testWidget);
+    await tester.pumpAndSettle();
     // search the contact field in the widget tree
     final contactField = find.byKey(Key("contactFieldKey"));
     expect(contactField, findsOneWidget);
@@ -124,23 +134,56 @@ WarnMessage createDummyWarnMessage(String contact) {
       source: WarningSource.other,
       sender: "FOSS Warn dummy sender",
       sent: "2023-03-09T11:05:04+01:00",
-      status: "testing",
-      messageType: "dummy",
-      scope: "dummy",
-      category: "dummy",
-      event: "dummy",
-      urgency: "dummy",
-      severity: Severity.minor,
-      certainty: Certainty.other,
-      headline: "FOSS Warn dummy alert",
-      description: "dummy description",
-      instruction: "dummy instruction",
-      areaList: [
-        Area(
-            areaDesc: "123",
-            geocodeList: [Geocode(geocodeName: "123", geocodeNumber: "123")]),
-      ],
-      contact: contact,
+      info: createDummyInfo(contact),
+      status: Status.Actual,
       notified: false,
-      read: false);
+      read: false,
+      messageType: MessageType.Alert,
+      scope: Scope.Public);
+}
+
+List<Info> createDummyInfo(String contact) {
+  return [
+    Info(
+      category: [cap_category.Category.Safety],
+      event: "Test Event",
+      urgency: Urgency.Immediate,
+      severity: Severity.Extreme,
+      certainty: Certainty.Observed,
+      headline: "Test alert for FOSSWarn",
+      description: "This is a test alert for FOSSWarn",
+      instruction: "Nothing to do",
+      contact: contact,
+      area: [
+        Area(
+          geoJson: '''
+                    {
+                      "type": "FeatureCollection",
+                      "features": [
+                        {
+                          "type": "Feature",
+                          "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [
+                              [
+                                [13.4050, 52.5200],
+                                [13.4500, 52.5200],
+                                [13.4500, 52.5300],
+                                [13.4050, 52.5300],
+                                [13.4050, 52.5200]
+                              ]
+                            ]
+                          },
+                          "properties": {
+                            "name": "Dummy Polygon in germany"
+                          }
+                        }
+                      ]
+                    }
+                    ''',
+          areaDesc: "123",
+        ),
+      ],
+    )
+  ];
 }

@@ -1,4 +1,5 @@
 import "package:url_launcher/url_launcher.dart";
+import "../class/class_ErrorLogger.dart";
 
 Uri? extractWebAddress(String text) {
   if (text.startsWith("<a")) {
@@ -35,6 +36,7 @@ Uri? extractWebAddress(String text) {
 
   return null;
 }
+
 
 Future<bool> launchUrlInBrowser(String url) async {
   Uri? webUri = extractWebAddress(url);
@@ -107,6 +109,11 @@ Future<bool> makePhoneCall(String url) async {
     await launchUrl(uri);
     return true;
   } else {
+    print("No valid phone number found: " + uri.toString());
+    ErrorLogger.writeErrorLog(
+        "urlLauncher.dart",
+        "No valid phone number found",
+        uri.toString());
     throw "Could not launch ${uri.toString()}";
   }
 }

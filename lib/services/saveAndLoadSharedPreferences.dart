@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:foss_warn/class/class_FPASPlace.dart';
 import 'package:foss_warn/class/class_notificationPreferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,9 @@ loadMyPlacesList() async {
         //@todo think about better solution
         // print("alert swiss place");
         myPlaceList.add(AlertSwissPlace.fromJson(data[i]));
+      } else if(data[i].toString().contains("subscriptionId")) {
+        // FPAS Place
+        myPlaceList.add(FPASPlace.fromJson(data[i]));
       }
     }
     print(myPlaceList);
@@ -104,6 +108,16 @@ saveSettings() async {
   preferences.setString("notificationSourceSettings",
       jsonEncode(userPreferences.notificationSourceSettings));
   preferences.setBool("activateAlertSwiss", userPreferences.activateAlertSwiss);
+  preferences.setString(
+      "fossPublicAlertServerUrl", userPreferences.fossPublicAlertServerUrl);
+  preferences.setString(
+      "unifiedPushEndpoint", userPreferences.unifiedPushEndpoint);
+  preferences.setBool(
+      "unifiedPushRegistered", userPreferences.unifiedPushRegistered);
+  preferences.setStringList("fossPublicAlertSubscriptionIdsToSubscribe",
+      userPreferences.fossPublicAlertSubscriptionIdsToSubscribe);
+  preferences.setInt("previousInstalledVersionCode",
+      userPreferences.previousInstalledVersionCode);
   print("Settings saved");
 }
 
@@ -236,6 +250,27 @@ loadSettings() async {
   if (preferences.containsKey("activateAlertSwiss")) {
     userPreferences.activateAlertSwiss =
         preferences.getBool("activateAlertSwiss")!;
+  }
+
+  if (preferences.containsKey("fossPublicAlertServerUrl")) {
+    userPreferences.fossPublicAlertServerUrl =
+        preferences.getString("fossPublicAlertServerUrl")!;
+  }
+  if (preferences.containsKey("unifiedPushEndpoint")) {
+    userPreferences.unifiedPushEndpoint =
+        preferences.getString("unifiedPushEndpoint")!;
+  }
+  if (preferences.containsKey("unifiedPushRegistered")) {
+    userPreferences.unifiedPushRegistered =
+        preferences.getBool("unifiedPushRegistered")!;
+  }
+  if (preferences.containsKey("fossPublicAlertSubscriptionIdsToSubscribe")) {
+    userPreferences.fossPublicAlertSubscriptionIdsToSubscribe =
+        preferences.getStringList("fossPublicAlertSubscriptionIdsToSubscribe")!;
+  }
+  if (preferences.containsKey("previousInstalledVersionCode")) {
+    userPreferences.previousInstalledVersionCode =
+    preferences.getInt("previousInstalledVersionCode")!;
   }
 }
 

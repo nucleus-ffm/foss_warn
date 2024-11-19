@@ -1,6 +1,10 @@
 enum Certainty {
-  observed,
-  other;
+  Observed, // Determined to have occurred or to be ongoing
+  Likely,   // Likely (p > ~50%)
+  Possible, // Possible but not likely (p <=  ~50%)
+  Unlikely, // Not expected to occur (p ~ 0)
+  Unknown,  // Certainty unknown
+  other;    // not part of CAP
 
   String toJson() => name;
   static Certainty fromJson(String json) => values.byName(json);

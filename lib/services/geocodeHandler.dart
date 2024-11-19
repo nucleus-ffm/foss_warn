@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:latlong2/latlong.dart';
+
 import '../class/abstract_Place.dart';
 import '../class/class_AlertSwissPlace.dart';
+import '../class/class_ErrorLogger.dart';
 import '../class/class_Geocode.dart';
 import '../class/class_NinaPlace.dart';
 import '../main.dart';
@@ -12,9 +15,6 @@ import 'package:http/http.dart';
 
 //  @todo: move to geocode class?
 Future<void> geocodeHandler() async {
-
-  print("[geocodehandler]");
-
   try {
     final _data = await getPlaces();
 
@@ -25,11 +25,14 @@ Future<void> geocodeHandler() async {
 
     allAvailablePlacesNames.clear();
 
-    for (int i = 0; i < _data["daten"].length; i++) {
+    for (int i = 0; i < _data["Daten"].length; i++) {
       Place place = NinaPlace(
-          name: _data["daten"][i][1],
-          geocode:
-              Geocode(geocodeNumber: _data["daten"][i][0], geocodeName: _data["daten"][i][1]));
+          name: _data["Daten"][i][0],
+          geocode: Geocode(
+              geocodeNumber: _data["Daten"][i][4].toString(),
+              geocodeName: _data["Daten"][i][0].toString(),
+              latLng: LatLng(_data["Daten"][i][3], _data["Daten"][i][2]),
+              PLZ: _data["Daten"][i][1].toString()));
 
       // we can not receive any warning for OT (Ortsteile)
       if (place.name.contains("OT")) continue;
@@ -44,26 +47,33 @@ Future<void> geocodeHandler() async {
     print("[geocodehandler] finish");
   } catch (e) {
     print("[geocodehandler] something went wrong: " + e.toString());
+    ErrorLogger.writeErrorLog("geocodeHandler.dart",
+        "Error while getting geocode data", e.toString());
+    appState.error = true;
   }
 }
 
 /// Fetch places from sharedPrefs (cache) or server.
 /// Returns a JSON with an unparsed (!) list of Place(s) in field "daten".
+/// throws Exception if the resource could not reached
 Future<dynamic> getPlaces() async {
   const String _url =
-      "https://www.xrepository.de/api/xrepository/urn:de:bund:destatis"
-      ":bevoelkerungsstatistik:schluessel:rs_2021-07-31/download/"
-      "Regionalschl_ssel_2021-07-31.json";
+      "https://raw.githubusercontent.com/nucleus-ffm/ARSForNina/main/ARSNinaMini.json";
 
   dynamic savedData = await loadGeocode();
 
-  if (savedData != null) {
+  // check if data is stored and the data contains a PLZ (new dataset)
+  if (savedData != null && savedData["Daten"][0][1] != null) {
     print("[geocodeHandler] data already stored");
     return savedData;
   } else {
-    final Response response = await get(Uri.parse(_url)).timeout(userPreferences.networkTimeout);
-    if (response.statusCode != 200) return;
-    print("[geocodehandler] got data ");
+    final Response response =
+        await get(Uri.parse(_url)).timeout(userPreferences.networkTimeout);
+
+    if (response.statusCode != 200)
+      throw Exception("Resource did not return a 200 HTTP status code");
+    print("[geocodehandler] got data");
+
     final data = utf8.decode(response.bodyBytes);
     saveGeocodes(data);
     return jsonDecode(data);
