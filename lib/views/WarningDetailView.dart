@@ -48,21 +48,49 @@ class _DetailScreenState extends State<DetailScreen> {
     return replacedText;
   }
 
-  String generateURL(String url) {
-    String correctURL = "";
-    if (url.startsWith('http')) {
-      correctURL = url;
-    } else if (url.startsWith("<a")) {
-      int beginURL = url.indexOf("\"") + 1;
-      int endURL = url.indexOf("\"", beginURL + 1);
-      correctURL = url.substring(beginURL, endURL);
-    } else {
-      int firstPoint = url.indexOf('.');
-      String domain = url.substring(firstPoint + 1, url.length);
-      correctURL = 'https://' + domain;
+  /// generate a TextSpan with tappable telephone numbers
+  List<TextSpan> generateContactBody(String text) {
+    List<TextSpan> result = [];
+    List<String?> allPhoneNumbers = extractAllPhoneNumbers(text);
+
+    if (allPhoneNumbers.length == 0) {
+      result.add(TextSpan(text: text));
+      return result;
     }
-    print("correct URL: " + correctURL);
-    return correctURL;
+
+    int pointer = 0;
+    for (String? phoneNumber in allPhoneNumbers) {
+      if (phoneNumber == null) {
+        continue;
+      }
+
+      int startPos = text.indexOf(phoneNumber, pointer);
+      if (startPos == -1) {
+        continue;
+      }
+
+      int endPos = startPos + phoneNumber.length;
+
+      // add the text before the telephone number to a TextSpan
+      result.add(TextSpan(text: text.substring(pointer, startPos)));
+      // add the clickable telephone number
+      result.add(TextSpan(
+          text: phoneNumber,
+          style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              // print("phone number tapped");
+              makePhoneCall(phoneNumber);
+            }));
+      pointer = endPos;
+    }
+
+    // add remaining text after the last telephone number
+    if (pointer < text.length) {
+      result.add(TextSpan(text: text.substring(pointer, text.length)));
+    }
+
+    return result;
   }
 
   /// returns the given text as List of TextSpans with clickable links and
@@ -146,11 +174,12 @@ class _DetailScreenState extends State<DetailScreen> {
         print("startPos $startPos");
         if (startPos == -1) {
           returnList.add(TextSpan(
-              text: text.substring(pointer, text.length),
-              recognizer: TapGestureRecognizer()
+            text: text.substring(pointer, text.length),
+            /*recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   print("text tapped");
-                }));
+                }*/
+          ));
           pointer = text.length;
         } else {
           print("pointer: $pointer  startPos: $startPos");
@@ -254,6 +283,14 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      widget._warnMessage.read = true;
+    });
+    // save places List to store new read state
+    saveMyPlacesList();
+    // cancel the notification
+    NotificationService.cancelOneNotification(
+        widget._warnMessage.identifier.hashCode);
   }
 
   @override
@@ -304,17 +341,6 @@ class _DetailScreenState extends State<DetailScreen> {
       return widgetList;
     }
 
-    setState(() {
-      widget._warnMessage.read = true;
-    });
-    // save places List to store new read state
-    saveMyPlacesList();
-    // cancel the notification
-    NotificationService.cancelOneNotification(
-        widget._warnMessage.identifier.hashCode);
-
-    /// returns a list of the first @length element of the region
-    /// returns the entire list for length = -1
     List<String> generateAreaDescList(int length) {
       List<String> result = [];
       int counter = 0;
@@ -803,23 +829,21 @@ class _DetailScreenState extends State<DetailScreen> {
               widget._warnMessage.info[0].contact != null
                   ? Row(
                       children: [
-                        Icon(Icons.call),
+                        Icon(Icons.perm_contact_cal),
                         SizedBox(
-                          width: 5,
+                          width: 15,
                         ),
                         Flexible(
-                          fit: FlexFit.loose,
-                          child: TextButton(
-                            onPressed: () => makePhoneCall(
-                                widget._warnMessage.info[0].contact!),
-                            child: Text(
-                              replaceHTMLTags(
-                                  widget._warnMessage.info[0].contact!),
-                              style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize),
-                            ),
+                          child: SelectableText.rich(
+                            // key used by unit test
+                            key: Key('contactFieldKey'),
+                            TextSpan(
+                                children: generateContactBody(replaceHTMLTags(
+                                    widget._warnMessage.contact)),
+                                style: TextStyle(
+                                    fontSize: userPreferences.warningFontSize)),
                           ),
-                        )
+                        ),
                       ],
                     )
                   : SizedBox(),
@@ -833,10 +857,27 @@ class _DetailScreenState extends State<DetailScreen> {
                         Flexible(
                           fit: FlexFit.loose,
                           child: TextButton(
-                            onPressed: () => launchUrlInBrowser(
-                                widget._warnMessage.info[0].web!),
+                            onPressed: () async {
+                              bool success = await launchUrlInBrowser(
+                                  widget._warnMessage.info[0].web);
+
+                              if (!success) {
+                                final snackBar = SnackBar(
+                                  content: const Text(
+                                    'Kann URL nicht öffnen',
+                                    //@todo translate
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  backgroundColor: Colors.red[100],
+                                );
+                                // Find the ScaffoldMessenger in the widget tree
+                                // and use it to show a SnackBar.
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            },
                             child: Text(
-                              generateURL(widget._warnMessage.info[0].web!),
+                              widget._warnMessage.info[0].web,
                               style: TextStyle(
                                   fontSize: userPreferences.warningFontSize),
                             ),

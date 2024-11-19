@@ -23,7 +23,8 @@ Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   // inform user if he hasn't add any places yet
   // @todo move to own timed function or find solution to not show a notification if the app is started the first time
   // @todo add translation
-  if (!userPreferences.isFirstStart && myPlaceList.isEmpty) {
+
+  if (myPlaceList.isEmpty && !userPreferences.isFirstStart) {
     await NotificationService.showNotification(
         id: 3,
         title: "Sie haben noch keine Orte hinterlegt", //@todo translate, add context first, notification_no_places_selected_title
@@ -33,7 +34,11 @@ Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   }
 
   for (Place myPlace in myPlaceList) {
-    myPlace.sendNotificationForWarnings();
+    // wait until every notification is send before saving the
+    // myPlacesList with the new notified status
+    await myPlace.sendNotificationForWarnings();
   }
+  // save new notified status
+  saveMyPlacesList();
   return _returnValue; //@todo remove return value?
 }

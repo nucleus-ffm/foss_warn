@@ -23,6 +23,10 @@ class ChangeLogDialog extends StatelessWidget {
                   "* Fehlende Tooltips ergänzt \n"
                   "* Übersetzungen aktualisiert \n"
                   "* Fehlerbehebungen \n"),
+              Text("0.7.1 (beta)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text("* Fehlerbehebungen \n"),
               Text(
                 "0.7.0 (beta)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

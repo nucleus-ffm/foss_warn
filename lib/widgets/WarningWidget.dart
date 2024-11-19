@@ -19,14 +19,17 @@ class WarningWidget extends StatelessWidget {
   final Place? _place;
   final List<WarnMessage>? _updateThread;
   final WarnMessage _warnMessage;
+  final bool _isMyPlaceWarning;
   const WarningWidget(
       {Key? key,
       required WarnMessage warnMessage,
+      required bool isMyPlaceWarning,
       Place? place,
       List<WarnMessage>? updateThread})
       : _warnMessage = warnMessage,
         _place = place,
         _updateThread = updateThread,
+        _isMyPlaceWarning = isMyPlaceWarning,
         super(key: key);
 
   @override
@@ -79,33 +82,7 @@ class WarningWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _warnMessage.read
-                    ? IconButton(
-                        onPressed: () {
-                          _warnMessage.read = false;
-                          final updater =
-                              Provider.of<Update>(context, listen: false);
-                          updater.updateReadStatusInList();
-                          // save places list to store new read state
-                          saveMyPlacesList();
-                        },
-                        icon: Icon(
-                          Icons.mark_chat_read,
-                          color: Colors.green,
-                        ))
-                    : IconButton(
-                        onPressed: () {
-                          _warnMessage.read = true;
-                          final updater =
-                              Provider.of<Update>(context, listen: false);
-                          updater.updateReadStatusInList();
-                          // save places list to store new read state
-                          saveMyPlacesList();
-                        },
-                        icon: Icon(
-                          Icons.warning_amber_outlined,
-                          color: Colors.red,
-                        )),
+                _buildReadStateButton(context),
                 SizedBox(
                   width: 5,
                 ),
@@ -262,5 +239,48 @@ class WarningWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildReadStateButton(BuildContext context) {
+    // do not show a clickable red/green button for non-my-place warnings
+    // if _isMyPlaceWarning = true
+    // the read state of these warning is not saved anyways
+
+    if (!_isMyPlaceWarning) {
+      return IconButton(
+          onPressed: null,
+          icon: Icon(
+            Icons.warning_amber_outlined,
+            color: Colors.grey,
+          ));
+    }
+
+    if (_warnMessage.read) {
+      return IconButton(
+          onPressed: () {
+            _warnMessage.read = false;
+            final updater = Provider.of<Update>(context, listen: false);
+            updater.updateReadStatusInList();
+            // save places list to store new read state
+            saveMyPlacesList();
+          },
+          icon: Icon(
+            Icons.mark_chat_read,
+            color: Colors.green,
+          ));
+    } else {
+      return IconButton(
+          onPressed: () {
+            _warnMessage.read = true;
+            final updater = Provider.of<Update>(context, listen: false);
+            updater.updateReadStatusInList();
+            // save places list to store new read state
+            saveMyPlacesList();
+          },
+          icon: Icon(
+            Icons.warning_amber_outlined,
+            color: Colors.red,
+          ));
+    }
   }
 }
