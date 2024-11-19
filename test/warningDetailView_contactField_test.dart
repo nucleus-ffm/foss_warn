@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foss_warn/class/class_Area.dart';
@@ -17,6 +19,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
+
+  // Overrides the test client for every test, so network call will work.
+  // @todo use mock API calls instead
+  setUpAll(() => HttpOverrides.global = null);
+
   String contactFieldText = "Test +49 123 567 call";
   String contactFieldExpectedText = "Test +49 123 567 call";
 
@@ -99,6 +106,7 @@ void testWidget(String testCaseName, String contactFieldText,
 
   testWidgets(testCaseName, (tester) async {
     await tester.pumpWidget(testWidget);
+    await tester.pumpAndSettle();
     // search the contact field in the widget tree
     final contactField = find.byKey(Key("contactFieldKey"));
     expect(contactField, findsOneWidget);
@@ -126,7 +134,7 @@ WarnMessage createDummyWarnMessage(String contact) {
       source: WarningSource.other,
       sender: "FOSS Warn dummy sender",
       sent: "2023-03-09T11:05:04+01:00",
-      info: createDummyInfo(),
+      info: createDummyInfo(contact),
       status: Status.Actual,
       notified: false,
       read: false,
@@ -134,7 +142,7 @@ WarnMessage createDummyWarnMessage(String contact) {
       scope: Scope.Public);
 }
 
-List<Info> createDummyInfo() {
+List<Info> createDummyInfo(String contact) {
   return [
     Info(
       category: [cap_category.Category.Safety],
@@ -145,6 +153,7 @@ List<Info> createDummyInfo() {
       headline: "Test alert for FOSSWarn",
       description: "This is a test alert for FOSSWarn",
       instruction: "Nothing to do",
+      contact: contact,
       area: [
         Area(
           geoJson: '''
