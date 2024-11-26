@@ -20,9 +20,8 @@ abstract class Place {
       required List<WarnMessage> warnings,
       required String eTag})
       : _warnings = warnings,
-        _name = name {
-    eTag = eTag;
-  }
+        _name = name,
+         eTag = eTag {}
 
   String get name => _name;
   int get countWarnings => this.warnings.length;
