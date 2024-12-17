@@ -192,11 +192,9 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
       ),
       body: Stack(
         children: [
-          Positioned(
+          Positioned.fill(
             top: 0,
             child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
                 child: MapWidget(
                   //vector
                   mapController: mapController,
@@ -226,7 +224,8 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                       });
                     },
                  */
-                )),
+                ),
+            ),
           ),
           Positioned(
             top: 0,
