@@ -44,6 +44,16 @@ class AboutView extends StatelessWidget {
               ),
             ),
           ),
+
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+            child: Center(
+              child: Text(
+                "This project is funded by NLnet.", //@todo translate
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
           Divider(),
           ListTile(
             leading: Icon(Icons.source_outlined),
