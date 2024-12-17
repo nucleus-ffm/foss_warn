@@ -1,7 +1,7 @@
 name: foss_warn
-description: Eine FOSS Umsetzung von NINA
+description: A FOSS client for the FOSS Public Alert Server
 publish_to: 'none'
-version: 0.8.1+33
+version: 1.0.0+33
 
 environment:
   sdk: ">=2.17.0 <3.13.3"
