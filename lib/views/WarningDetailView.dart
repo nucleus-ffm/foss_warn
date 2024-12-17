@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_NinaPlace.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
+import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/widgets/MapWidget.dart';
 import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:latlong2/latlong.dart';
@@ -291,6 +292,11 @@ class _DetailScreenState extends State<DetailScreen> {
     setState(() {
       widget._warnMessage.read = true;
     });
+
+    // @todo hacky solution see warningWidget L265 for more info
+    if(widget._place != null) {
+      myPlaceList.firstWhere((e) => e.name == widget._place!.name).warnings.firstWhere((e) => e.identifier == widget._warnMessage.identifier).read = widget._warnMessage.read;
+    }
     // save places List to store new read state
     saveMyPlacesList();
     // cancel the notification

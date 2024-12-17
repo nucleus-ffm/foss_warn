@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_ErrorLogger.dart';
+import 'package:foss_warn/services/listHandler.dart';
 import 'package:provider/provider.dart';
 
 import '../class/abstract_Place.dart';
@@ -104,8 +105,9 @@ class WarningWidget extends StatelessWidget {
                               },
                               child: Text(
                                 translateWarningCategory(
-                                    _warnMessage.info[0].category.length > 0 ?
-                                      _warnMessage.info[0].category[0].name : "",
+                                    _warnMessage.info[0].category.length > 0
+                                        ? _warnMessage.info[0].category[0].name
+                                        : "",
                                     context), //@todo display more then one category if available
                                 style: Theme.of(context).textTheme.displaySmall,
                               ),
@@ -214,8 +216,8 @@ class WarningWidget extends StatelessWidget {
                     //_updateThread != null ? _updateThread!.length > 1 ? IconButton(onPressed: () {}, icon: Icon(Icons.account_tree)): SizedBox(): SizedBox(),
                     (_updateThread != null && _updateThread!.length > 1)
                         ? IconButton(
-                            tooltip:
-                            AppLocalizations.of(context)!.warning_widget_update_thread_tooltip,
+                            tooltip: AppLocalizations.of(context)!
+                                .warning_widget_update_thread_tooltip,
                             onPressed: () {
                               print(_updateThread!.length);
                               print(_updateThread);
@@ -256,32 +258,29 @@ class WarningWidget extends StatelessWidget {
           ));
     }
 
-    if (_warnMessage.read) {
-      return IconButton(
-          onPressed: () {
-            _warnMessage.read = false;
-            final updater = Provider.of<Update>(context, listen: false);
-            updater.updateReadStatusInList();
-            // save places list to store new read state
-            saveMyPlacesList();
-          },
-          icon: Icon(
-            Icons.mark_chat_read,
-            color: Colors.green,
-          ));
-    } else {
-      return IconButton(
-          onPressed: () {
-            _warnMessage.read = true;
-            final updater = Provider.of<Update>(context, listen: false);
-            updater.updateReadStatusInList();
-            // save places list to store new read state
-            saveMyPlacesList();
-          },
-          icon: Icon(
-            Icons.warning_amber_outlined,
-            color: Colors.red,
-          ));
-    }
+    return IconButton(
+      onPressed: () async {
+        _warnMessage.read = !_warnMessage.read;
+        // @todo this fixes the issue with the not stored read state
+        // this is just a hacky solution to ensure the right data is in the
+        // myPlacesList. We should try to find a cleaner solution in the future
+        if(this._place != null) {
+          myPlaceList.firstWhere((e) => e.name == this._place!.name).warnings.firstWhere((e) => e.identifier == this._warnMessage.identifier).read = _warnMessage.read;
+        }
+        final updater = Provider.of<Update>(context, listen: false);
+        updater.updateReadStatusInList();
+        // save places list to store new read state
+        await saveMyPlacesList();
+      },
+      icon: _warnMessage.read
+          ? Icon(
+              Icons.mark_chat_read,
+              color: Colors.green,
+            )
+          : Icon(
+              Icons.warning_amber_outlined,
+              color: Colors.red,
+            ),
+    );
   }
 }
