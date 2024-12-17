@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/services/updateProvider.dart';
 import 'package:foss_warn/views/DevSettingsView.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../main.dart';
 import '../services/apiHandler.dart';
+import '../services/urlLauncher.dart';
 import '../widgets/dialogs/ChooseThemeDialog.dart';
 import 'NotificationSettingsView.dart';
 import 'WelcomeView.dart';
@@ -28,6 +33,8 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final TextEditingController frequencyController = new TextEditingController();
+  final TextEditingController fpasServerURLController = new TextEditingController();
+  bool _fpasServerURLError = false;
   final double _maxValueFrequencyOfAPICall = 999;
   final _platform = const MethodChannel("flutter.native/helper");
 
@@ -35,6 +42,7 @@ class _SettingsState extends State<Settings> {
   void initState() {
     frequencyController.text =
         userPreferences.frequencyOfAPICall.toInt().toString();
+    fpasServerURLController.text = userPreferences.fossPublicAlertServerUrl.toString();
 
     return super.initState();
   }
@@ -85,7 +93,7 @@ class _SettingsState extends State<Settings> {
                 );
               },
             ),
-            ListTile(
+            /*ListTile(
                 title: Text(AppLocalizations.of(context)!
                     .settings_show_status_notification_title),
                 subtitle: Text(AppLocalizations.of(context)!
@@ -220,6 +228,95 @@ class _SettingsState extends State<Settings> {
                 ],
               ),
             ) : SizedBox(),
+            */
+            Divider(
+              height: 50,
+              indent: 15.0,
+              endIndent: 15.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
+              child: Text(
+                "FOSS Public Alert Server" , //@todo translate
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
+            ),
+            ListTile(
+              title: TextField(
+                controller: fpasServerURLController,
+                decoration: InputDecoration(
+                  labelText: 'Enter FPAS Server URL',
+                  errorText: _fpasServerURLError ? "Invalid Server URL" : null,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _fpasServerURLError = false;
+                  });
+                },
+                onSubmitted: (newUrl) async {
+
+                  try {
+                    setState(() {
+                      _fpasServerURLError = false;
+                    });
+                    // print("parse FPAS url");
+                    print(newUrl);
+                    Uri newFPASsUri = Uri.parse(newUrl + "/sources/server_status");
+                    Response _response = await http.get(
+                      newFPASsUri,
+                      headers: {
+                        "Content-Type": "application/json",
+                        'user-agent': userPreferences.httpUserAgent
+                      },
+                    );
+                    if(_response.statusCode != 200) {
+                      throw Exception("FPAS Server not reachable");
+                    }
+                    dynamic _data = jsonDecode(utf8.decode(_response.bodyBytes));
+
+                    userPreferences.fossPublicAlertServerUrl = newUrl;
+                    userPreferences.fossPublicAlertServerVersion = _data["server_version"];
+                    userPreferences.fossPublicAlertServerOperator = _data["server_operator"];
+                    userPreferences.fossPublicAlertServerPrivacyNotice = _data["privacy_notice"];
+                    userPreferences.fossPublicAlertServerTermsOfService = _data["terms_of_service"];
+                    userPreferences.fossPublicAlertServerCongestionState = _data["congestion_state"];
+
+                    saveSettings();
+
+                  } catch (e) {
+                    print(e);
+                    setState(() {
+                      _fpasServerURLError = true;
+                    });
+                  }
+                },
+              ),
+            ),
+            userPreferences.fossPublicAlertServerOperator != "" ?
+            ListTile(
+              leading: Icon(Icons.account_balance),
+              title: Text("Server Operator: ${userPreferences.fossPublicAlertServerOperator}"),
+            )
+                : SizedBox(),
+            userPreferences.fossPublicAlertServerTermsOfService != "" ?
+            ListTile(
+              leading: Icon(Icons.open_in_new),
+              title: Text("Server Terms of Service"),
+              onTap: () {
+                launchUrlInBrowser(userPreferences.fossPublicAlertServerTermsOfService);
+              },
+            ): SizedBox(),
+            userPreferences.fossPublicAlertServerPrivacyNotice != "" ?
+            ListTile(
+              leading: Icon(Icons.open_in_new),
+              title: Text("Server Privacy"),
+              onTap: () {
+                launchUrlInBrowser(userPreferences.fossPublicAlertServerPrivacyNotice);
+              },
+            ): SizedBox(),
             Divider(
               height: 50,
               indent: 15.0,
@@ -283,7 +380,7 @@ class _SettingsState extends State<Settings> {
                 );
               },
             ),
-            ListTile(
+            /* ListTile(
               title: Text(AppLocalizations.of(context)!
                   .settings_display_all_warnings_title),
               subtitle: Text(AppLocalizations.of(context)!
@@ -298,7 +395,7 @@ class _SettingsState extends State<Settings> {
                     final updater = Provider.of<Update>(context, listen: false);
                     updater.updateView();
                   }),
-            ),
+            ), */
             ListTile(
               title: Text(AppLocalizations.of(context)!.settings_font_size),
               onTap: () {
@@ -336,7 +433,7 @@ class _SettingsState extends State<Settings> {
                     color: Theme.of(context).colorScheme.primary),
               ),
             ),
-            ListTile(
+            /* ListTile(
               title: Text(AppLocalizations.of(context)!.settings_alertSwiss),
               subtitle: Text(
                   (AppLocalizations.of(context)!.settings_alertSwiss_subtitle)),
@@ -349,7 +446,7 @@ class _SettingsState extends State<Settings> {
                   saveSettings();
                 },
               ),
-            ),
+            ), */
             ListTile(
               title: Text(
                   (AppLocalizations.of(context)!.settings_show_welcome_dialog)),
