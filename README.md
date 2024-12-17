@@ -30,16 +30,21 @@ Get emergency alerts from warnung.bund.de <br>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases/latest" alt="Github latest Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg"></a>
 </p>
 <hr>
-An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK. New with version 0.4.0 you can also receive emergency alerts from AlertSwiss (Alpha).
+
+An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK. New with version 0.4.0 you can also receive emergency alerts from AlertSwiss (Alpha). Starting with version 1.0.0, FOSSWarn will use the [FOSS Public Alert Server](https://invent.kde.org/webapps/foss-public-alert-server), a shared adventure of KDE and FOSSWarn, to receive alerts from over 270 cap alert feeds worldwide.
+
+## Funding
+*2024-10 until 2025-10*
+
+> This project was funded through the [NGI0 Core Fund](https://nlnet.nl/core), a fund established by [NLnet](https://nlnet.nl/) with financial support from the European Commission's [Next Generation Internet](https://ngi.eu/) programme, under the aegis of [DG Communications Networks, Content and Technology](https://commission.europa.eu/about-european-commission/departments-and-executive-agencies/communications-networks-content-and-technology_en) under grant agreement [No. 101092990](https://cordis.europa.eu/project/id/101092990).
+
+<img src="https://nlnet.nl/logo/banner.svg" width=160> &nbsp;&nbsp; <img src="https://nlnet.nl/image/logos/NGI0Core_tag.svg" width=160>
 
 ## Current state of development
-The app is currently in a BETA status. It works quite well, but be aware of the known problems.
+We are currently migrating to the FPAS server. Version 0.8.0 will be the last version with direct support for the BBK API; instead, FOSSWarn will completely migrate to FPAS and UnifiedPush notifications. This will be a breaking change.
 
 ## TODO
  - see [project board](https://github.com/nucleus-ffm/foss_warn/projects?type=classic)
-
-## Known problems
-- the layout could be improved for small devices
 
 ## FAQ
 <details>
