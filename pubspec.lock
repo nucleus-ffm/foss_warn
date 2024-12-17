@@ -457,10 +457,10 @@ packages:
     dependency: "direct main"
     description:
       name: shared_preferences_android
-      sha256: "3b9febd815c9ca29c9e3520d50ec32f49157711e143b7a4ca039eb87e8ade5ab"
+      sha256: "02a7d8a9ef346c9af715811b01fbd8e27845ad2c41148eefd31321471b41863d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3"
+    version: "2.4.0"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -469,7 +469,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.3"
-
   shared_preferences_linux:
     dependency: transitive
     description:
@@ -486,7 +485,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
-
   shared_preferences_web:
     dependency: transitive
     description:
