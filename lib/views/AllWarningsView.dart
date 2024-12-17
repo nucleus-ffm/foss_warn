@@ -32,6 +32,10 @@ class _AllWarningsViewState extends State<AllWarningsView> {
     }
   }
 
+  void dispose(){
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<void> reloadData() async {

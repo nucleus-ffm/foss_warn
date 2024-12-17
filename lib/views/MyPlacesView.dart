@@ -48,7 +48,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
 
   /// load data and call the API function
   load() async {
-    await loadMyPlacesList();
+    //await loadMyPlacesList(); //@todo should not be nessesary
     await callAPI();
     setState(() {
       _loading = false;

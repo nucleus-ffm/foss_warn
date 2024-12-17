@@ -3,9 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
 
 import '../class/abstract_Place.dart';
+import '../services/listHandler.dart';
 import '../services/sortWarnings.dart';
 import '../widgets/WarningWidget.dart';
 
+//@todo rename to MyPlacesDetailView
 class MyPlaceDetailScreen extends StatelessWidget {
   final Place _myPlace;
   const MyPlaceDetailScreen({Key? key, required Place myPlace})
@@ -87,6 +89,8 @@ class MyPlaceDetailScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               _myPlace.markAllWarningsAsRead(context);
+              //@todo just a quick fix for the read state problem. We have to rethink our memory management
+              myPlaceList.firstWhere((e) => e.name == _myPlace.name).markAllWarningsAsRead(context);
               final snackBar = SnackBar(
                 content: Text(
                   AppLocalizations.of(context)!
