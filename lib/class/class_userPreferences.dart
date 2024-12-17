@@ -19,7 +19,7 @@ class UserPreferences {
 
   bool shouldNotifyGeneral = true;
 
-  bool showStatusNotification = true;
+  bool showStatusNotification = false;
 
   @deprecated
   Map<String, bool> notificationEventsSettings = new Map();
@@ -94,6 +94,12 @@ class UserPreferences {
 
   // unified Push settings
   String fossPublicAlertServerUrl = "http://10.0.2.2:8000"; //"http://127.0.0.1:8000";
+  String fossPublicAlertServerVersion = "";
+  String fossPublicAlertServerOperator = "";
+  String fossPublicAlertServerPrivacyNotice = "";
+  String fossPublicAlertServerTermsOfService = "";
+  int fossPublicAlertServerCongestionState = -1;
+
   String unifiedPushEndpoint = "";
   bool unifiedPushRegistered = false;
   String unifiedPushInstance = "FOSSWarn";

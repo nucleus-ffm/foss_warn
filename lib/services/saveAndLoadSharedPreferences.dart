@@ -118,6 +118,16 @@ saveSettings() async {
       userPreferences.fossPublicAlertSubscriptionIdsToSubscribe);
   preferences.setInt("previousInstalledVersionCode",
       userPreferences.previousInstalledVersionCode);
+  preferences.setString("fossPublicAlertServerVersion",
+      userPreferences.fossPublicAlertServerVersion);
+  preferences.setString("fossPublicAlertServerOperator",
+      userPreferences.fossPublicAlertServerOperator);
+  preferences.setString("fossPublicAlertServerPrivacyNotice",
+      userPreferences.fossPublicAlertServerPrivacyNotice);
+  preferences.setString("fossPublicAlertServerTermsOfService",
+      userPreferences.fossPublicAlertServerTermsOfService);
+  preferences.setInt("fossPublicAlertServerCongestionState",
+      userPreferences.fossPublicAlertServerCongestionState);
   print("Settings saved");
 }
 
@@ -271,6 +281,26 @@ loadSettings() async {
   if (preferences.containsKey("previousInstalledVersionCode")) {
     userPreferences.previousInstalledVersionCode =
     preferences.getInt("previousInstalledVersionCode")!;
+  }
+  if (preferences.containsKey("fossPublicAlertServerVersion")) {
+    userPreferences.fossPublicAlertServerVersion =
+    preferences.getString("fossPublicAlertServerVersion")!;
+  }
+  if (preferences.containsKey("fossPublicAlertServerOperator")) {
+    userPreferences.fossPublicAlertServerOperator =
+    preferences.getString("fossPublicAlertServerOperator")!;
+  }
+  if (preferences.containsKey("fossPublicAlertServerPrivacyNotice")) {
+    userPreferences.fossPublicAlertServerPrivacyNotice =
+    preferences.getString("fossPublicAlertServerPrivacyNotice")!;
+  }
+  if (preferences.containsKey("fossPublicAlertServerTermsOfService")) {
+    userPreferences.fossPublicAlertServerTermsOfService =
+    preferences.getString("fossPublicAlertServerTermsOfService")!;
+  }
+  if (preferences.containsKey("fossPublicAlertServerCongestionState")) {
+    userPreferences.fossPublicAlertServerCongestionState =
+    preferences.getInt("fossPublicAlertServerCongestionState")!;
   }
 }
 
