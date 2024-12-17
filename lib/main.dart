@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/class/class_alarmManager.dart';
-//import 'package:foss_warn/class/class_UnifiedPushHandler.dart';
+//import 'package:foss_warn/class/class_alarmManager.dart';
+import 'package:foss_warn/class/class_UnifiedPushHandler.dart';
 import 'package:foss_warn/class/class_userPreferences.dart';
 import 'package:foss_warn/services/geocodeHandler.dart';
 import 'package:foss_warn/services/legacyHandler.dart';
@@ -36,14 +36,14 @@ void main() async {
   await NotificationService().init();
   await loadSettings();
 
-  if (userPreferences.shouldNotifyGeneral) {
+  /*if (userPreferences.shouldNotifyGeneral) {
     AlarmManager.callback();
     AlarmManager().initialize();
     AlarmManager().registerBackgroundTask();
     print("Background notification enabled");
   } else {
     print("Background notification disabled due to user setting");
-  }
+  }*/
 
   runApp(
     // rebuild widget on external data changes
@@ -93,7 +93,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
 
     // init unified push
-    /*UnifiedPush.initialize(
+    UnifiedPush.initialize(
       onNewEndpoint: UnifiedPushHandler
           .onNewEndpoint, // takes (String endpoint, String instance) in args
       onRegistrationFailed:
@@ -102,7 +102,7 @@ class _HomeViewState extends State<HomeView> {
           UnifiedPushHandler.onUnregistered, // takes (String instance)
       onMessage: UnifiedPushHandler
           .onMessage, // takes (Uint8List message, String instance) in args
-    ); */
+    );
 
     loadMyPlacesList();
     listenNotifications();
@@ -200,7 +200,7 @@ class _HomeViewState extends State<HomeView> {
         bottomNavigationBar: NavigationBar(
           destinations: <NavigationDestination>[
             NavigationDestination(
-                icon: Icon(Icons.add_alert),
+                icon: Icon(Icons.warning),
                 label: AppLocalizations.of(context)!.main_nav_bar_all_warnings),
             NavigationDestination(
                 icon: Icon(Icons.place),

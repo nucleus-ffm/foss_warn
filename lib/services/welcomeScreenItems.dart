@@ -21,6 +21,11 @@ List<WelcomeScreenItem> getWelcomeScreenItems(BuildContext context) {
         description: AppLocalizations.of(context)!.welcome_view_foss_warn_text,
         imagePath: "assets/app_icon/app_icon.png"),
     WelcomeScreenItem(
+        title: "FOSS Public Alert Server", //@todo translate
+        description: "This version is an alpha test version of FOSSWarn with FPAS support. "
+        "This version is not yet ready for production. Be aware of that. Some dialogs still need to be adapted. ",
+        imagePath: "assets/app_icon/app_icon.png"),
+    WelcomeScreenItem(
         title: AppLocalizations.of(context)!.welcome_view_important_headline,
         description: AppLocalizations.of(context)!.welcome_view_important_text,
         imagePath: "assets/paragraph.png",

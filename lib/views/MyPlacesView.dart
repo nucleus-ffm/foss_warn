@@ -143,7 +143,7 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AddMyPlaceView()), //AddMyPlaceWithMapView
+                        builder: (context) => AddMyPlaceWithMapView()), //AddMyPlaceView
                   );
                 },
               ),
