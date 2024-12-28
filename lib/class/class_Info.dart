@@ -115,7 +115,7 @@ class Info {
       effective: json['effective'],
       onset: json['onset'],
       expires: json['expires'],
-      headline: json['headline'],
+      headline: json['headline'] ?? "",
       description: json['description'] ?? "", //@todo can also be null
       instruction: json['instruction'],
       area: Area.areaListFromJsonWithCAPData(json['area']),
