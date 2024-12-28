@@ -2,18 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foss_warn/class/class_NotificationService.dart';
-import 'package:foss_warn/class/class_alarmManager.dart';
-import 'package:foss_warn/services/updateProvider.dart';
 import 'package:foss_warn/views/DevSettingsView.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:provider/provider.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../main.dart';
-import '../services/apiHandler.dart';
 import '../services/urlLauncher.dart';
 import '../widgets/dialogs/ChooseThemeDialog.dart';
 import 'NotificationSettingsView.dart';
