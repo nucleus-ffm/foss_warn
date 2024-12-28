@@ -277,13 +277,14 @@ class _SettingsState extends State<Settings> {
                     }
                     dynamic _data = jsonDecode(utf8.decode(_response.bodyBytes));
 
-                    userPreferences.fossPublicAlertServerUrl = newUrl;
-                    userPreferences.fossPublicAlertServerVersion = _data["server_version"];
-                    userPreferences.fossPublicAlertServerOperator = _data["server_operator"];
-                    userPreferences.fossPublicAlertServerPrivacyNotice = _data["privacy_notice"];
-                    userPreferences.fossPublicAlertServerTermsOfService = _data["terms_of_service"];
-                    userPreferences.fossPublicAlertServerCongestionState = _data["congestion_state"];
-
+                    setState(() {
+                      userPreferences.fossPublicAlertServerUrl = newUrl;
+                      userPreferences.fossPublicAlertServerVersion = _data["server_version"];
+                      userPreferences.fossPublicAlertServerOperator = _data["server_operator"];
+                      userPreferences.fossPublicAlertServerPrivacyNotice = _data["privacy_notice"];
+                      userPreferences.fossPublicAlertServerTermsOfService = _data["terms_of_service"];
+                      userPreferences.fossPublicAlertServerCongestionState = _data["congestion_state"];
+                    });
                     saveSettings();
 
                   } catch (e) {
