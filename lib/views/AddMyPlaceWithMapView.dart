@@ -18,9 +18,8 @@ import 'package:provider/provider.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_NotificationService.dart';
 import '../class/class_UnifiedPushHandler.dart';
-import '../services/listHandler.dart';
 import '../services/updateProvider.dart';
-import '../widgets/VectorMapWidget.dart';
+// import '../widgets/VectorMapWidget.dart';
 import '../widgets/dialogs/LoadingScreen.dart';
 
 class AddMyPlaceWithMapView extends StatefulWidget {

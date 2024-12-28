@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
-import 'package:foss_warn/views/AddMyPlaceWithMapView.dart';
 
 import '../class/class_alarmManager.dart';
 import '../class/abstract_Place.dart';
