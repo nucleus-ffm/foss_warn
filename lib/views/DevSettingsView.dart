@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/saveAndLoadSharedPreferences.dart';
 import 'package:foss_warn/views/AddMyPlaceWithMapView.dart';
 
 import '../class/class_alarmManager.dart';
 import '../class/abstract_Place.dart';
+import '../main.dart';
 import '../services/checkForMyPlacesWarnings.dart';
 import '../services/listHandler.dart';
 import '../services/alertSwiss.dart';
@@ -22,6 +24,19 @@ class DevSettings extends StatefulWidget {
 
 class _DevSettingsState extends State<DevSettings> {
   final EdgeInsets _settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+  final TextEditingController maxSizeOfSubscriptionBoundingBox = new TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    maxSizeOfSubscriptionBoundingBox.dispose();
+  }
+
+  @override
+  void initState(){
+    maxSizeOfSubscriptionBoundingBox.text = userPreferences.maxSizeOfSubscriptionBoundingBox.toString();
+    return super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -255,15 +270,44 @@ class _DevSettingsState extends State<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text("Feature preview: Add place with map"),
-                subtitle: Text("Shows the new dialog needed for FPAS"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddMyPlaceWithMapView()),
-                  );
-                },
+                title: Text("Max size of bounding box for a subscription"),
+                subtitle: Text("select the max size of bounding box for a subscription"),
+                trailing: SizedBox(
+                  width: 100,
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    controller: maxSizeOfSubscriptionBoundingBox,
+                    onChanged: (value) {
+                      if (value != "") {
+                        if (double.parse(value) > 1) {
+                          setState(() {
+                            userPreferences.maxSizeOfSubscriptionBoundingBox =
+                                int.parse(value);
+                          });
+                        }
+                      }
+                    },
+                    onTapOutside: (e) {
+                      // Check whether the text field is in focus,
+                      // because this method is executed every time
+                      // you tap somewhere in the settings, even
+                      // if the text field is not in focus at all
+                      if (FocusScope.of(context).isFirstFocus) {
+                        FocusScope.of(context).unfocus();
+                        saveSettings();
+                      }
+                    },
+                    onEditingComplete: () {
+                      FocusScope.of(context).unfocus();
+                      saveSettings();
+                    },
+                    decoration: InputDecoration(),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
               ),
             ],
           ),
