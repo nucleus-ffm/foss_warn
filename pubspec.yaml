@@ -1,7 +1,7 @@
 name: foss_warn
 description: A FOSS client for the FOSS Public Alert Server
 publish_to: 'none'
-version: 1.0.0+33
+version: 1.0.0+34
 
 environment:
   sdk: ">=2.17.0 <3.13.3"
