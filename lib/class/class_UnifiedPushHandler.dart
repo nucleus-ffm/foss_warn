@@ -70,13 +70,16 @@ class UnifiedPushHandler {
   static Future<void> setupUnifiedPush(BuildContext context) async {
     print("setup distributor");
     // Check if a distributor is already registered
-    if( await UnifiedPush.getDistributor() != "" && await UnifiedPush.getDistributor() != null) {
+    if (await UnifiedPush.getDistributor() != "" &&
+        await UnifiedPush.getDistributor() != null &&
+        userPreferences.unifiedPushRegistered) {
       // enpoint already setted up. Nothing to change
       return;
     } else if (await UnifiedPush.getDistributor() != null) {
       // Re-register in case something broke
       await UnifiedPush.registerApp(
-          userPreferences.unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
+          userPreferences
+              .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
           [
             featureAndroidBytesMessage
           ] // Optional String Array with required features
@@ -88,11 +91,11 @@ class UnifiedPushHandler {
       ] // Optionnal String Array with required features
           );
 
-      if(distributors.length == 0) {
+      if (distributors.length == 0) {
         // there is no distributor installed. Inform user about it
         await showDialog(
           context: context,
-          builder: (context) =>  NoUPDistributorFoundDialog(),
+          builder: (context) => NoUPDistributorFoundDialog(),
         );
         return;
       }
@@ -104,24 +107,33 @@ class UnifiedPushHandler {
       );
 
       // save the distributor
-      await UnifiedPush.saveDistributor(picked?? distributors.first);
+      await UnifiedPush.saveDistributor(picked ?? distributors.first);
       // register your app to the distributor
       await UnifiedPush.registerApp(
-          userPreferences.unifiedPushInstance, // optional String, to get multiple endpoints (one per instance)
+          userPreferences
+              .unifiedPushInstance, // optional String, to get multiple endpoints (one per instance)
           [
             featureAndroidBytesMessage
           ] // Optional String Array with required features
           );
     }
 
-    print("wait for registration state=${userPreferences.unifiedPushRegistered}");
+    print(
+        "wait for registration state=${userPreferences.unifiedPushRegistered}");
     // wait for the registration to finish
-    if(!userPreferences.unifiedPushRegistered) {
-      //@todo add timeout
-      await Future.doWhile(() => userPreferences.unifiedPushRegistered).timeout(Duration(seconds: 20), onTimeout: () {return;});
+    if (!userPreferences.unifiedPushRegistered) {
+      await Future.doWhile(() async {
+        await Future.delayed(Duration(microseconds: 1));
+        return !userPreferences.unifiedPushRegistered;
+      }).timeout(Duration(seconds: 20), onTimeout: () {
+        print("Timeout waiting for unifiedPushRegistered to be set to true.");
+        return true;
+
+        // await Future.doWhile(() => !userPreferences.unifiedPushRegistered).timeout(Duration(seconds: 20), onTimeout: () {return;});
+      });
     }
 
-    print("distributor setup done: mit ${await UnifiedPush.getDistributor()} und ${userPreferences.unifiedPushEndpoint}");
+    // print("distributor setup done: mit ${await UnifiedPush.getDistributor()} und ${userPreferences.unifiedPushEndpoint}");
   }
 
   /// register client for the given area
