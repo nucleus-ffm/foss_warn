@@ -106,4 +106,5 @@ class UserPreferences {
   List<String> fossPublicAlertSubscriptionIdsToSubscribe = [];
   String httpUserAgent = "de.nucleus.foss_warn";
   String osmTileServerULR = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+  int maxSizeOfSubscriptionBoundingBox = 20;
 }

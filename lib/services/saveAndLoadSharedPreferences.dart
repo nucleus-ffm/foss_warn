@@ -128,6 +128,8 @@ saveSettings() async {
       userPreferences.fossPublicAlertServerTermsOfService);
   preferences.setInt("fossPublicAlertServerCongestionState",
       userPreferences.fossPublicAlertServerCongestionState);
+  preferences.setInt("maxSizeOfSubscriptionBoundingBox",
+      userPreferences.maxSizeOfSubscriptionBoundingBox);
   print("Settings saved");
 }
 
@@ -301,6 +303,10 @@ loadSettings() async {
   if (preferences.containsKey("fossPublicAlertServerCongestionState")) {
     userPreferences.fossPublicAlertServerCongestionState =
     preferences.getInt("fossPublicAlertServerCongestionState")!;
+  }
+  if (preferences.containsKey("maxSizeOfSubscriptionBoundingBox")) {
+    userPreferences.maxSizeOfSubscriptionBoundingBox =
+    preferences.getInt("maxSizeOfSubscriptionBoundingBox")!;
   }
 }
 

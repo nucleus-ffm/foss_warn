@@ -45,7 +45,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
   late BoundingBox boundingBox;
   double placeRadius = 10; // radius of the polygon in km
   double radiusSliderMinValue = 1; // min radius of the slider
-  double radiusSliderMaxValue = 20; // max radio of the slider
+  double radiusSliderMaxValue = userPreferences.maxSizeOfSubscriptionBoundingBox.toDouble(); // max radio of the slider
   LatLng? currentPlaceLatLng; // the coordinates of the current selected place
   Place? currentPlaceToAdd; // the currently selected place
   int numberOfEdgesPolygon =
