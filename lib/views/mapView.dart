@@ -3,7 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_NinaPlace.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
 import 'package:foss_warn/widgets/MapWidget.dart';
-import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

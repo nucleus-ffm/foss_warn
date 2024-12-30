@@ -54,18 +54,6 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  /// extract hex color value from string and return Color widget
-  /// accepts colors in format `#FB8C00`
-  Color _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "90" + hexColor;
-    } else {
-      hexColor = "A0" + "FB8C00";
-    }
-    return Color(int.parse(hexColor, radix: 16));
-  }
-
   @override
   Widget build(BuildContext context) {
     return FlutterMap(

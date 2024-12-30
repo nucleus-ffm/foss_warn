@@ -44,7 +44,8 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
   late BoundingBox boundingBox;
   double placeRadius = 10; // radius of the polygon in km
   double radiusSliderMinValue = 1; // min radius of the slider
-  double radiusSliderMaxValue = userPreferences.maxSizeOfSubscriptionBoundingBox.toDouble(); // max radio of the slider
+  double radiusSliderMaxValue = userPreferences.maxSizeOfSubscriptionBoundingBox
+      .toDouble(); // max radio of the slider
   LatLng? currentPlaceLatLng; // the coordinates of the current selected place
   Place? currentPlaceToAdd; // the currently selected place
   int numberOfEdgesPolygon =
@@ -133,7 +134,6 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
         padding: EdgeInsets.all(cameraPadding)));
     // create polygon around place
     selectedPlacePolygon = Polygon(
-        isFilled: true,
         color: Theme.of(context)
             .colorScheme
             .secondary
@@ -148,7 +148,6 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
         padding: EdgeInsets.all(cameraPadding)));
     // create polygon around place
     selectedPlacePolygon = Polygon(
-        isFilled: true,
         color: Theme.of(context)
             .colorScheme
             .secondary
@@ -194,27 +193,27 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
           Positioned.fill(
             top: 0,
             child: Container(
-                child: MapWidget(
-                  //vector
-                  mapController: mapController,
-                  initialCameraFit: CameraFit.coordinates(
-                    padding: EdgeInsets.all(30),
-                    coordinates: [
-                      LatLng(52.815, 7.009),
-                      LatLng(53.264, 14.326),
-                      LatLng(48.236, 12.964),
-                      LatLng(48.704, 7.932),
-                      LatLng(51.096, 6.746)
-                    ],
-                  ),
-                  polygonLayers: [
-                    selectedPlacePolygon != null
-                        ? PolygonLayer(
-                            polygons: [selectedPlacePolygon!],
-                          )
-                        : PolygonLayer(polygons: [])
+              child: MapWidget(
+                //vector
+                mapController: mapController,
+                initialCameraFit: CameraFit.coordinates(
+                  padding: EdgeInsets.all(30),
+                  coordinates: [
+                    LatLng(52.815, 7.009),
+                    LatLng(53.264, 14.326),
+                    LatLng(48.236, 12.964),
+                    LatLng(48.704, 7.932),
+                    LatLng(51.096, 6.746)
                   ],
-                  /*
+                ),
+                polygonLayers: [
+                  selectedPlacePolygon != null
+                      ? PolygonLayer(
+                          polygons: [selectedPlacePolygon!],
+                        )
+                      : PolygonLayer(polygons: [])
+                ],
+                /*
                 onLongPress: (TapPosition tap, LatLng place) {
                       print("Place: ${place.longitude} ${place.latitude}");
                       setState(() {
@@ -223,7 +222,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                       });
                     },
                  */
-                ),
+              ),
             ),
           ),
           Positioned(
@@ -352,15 +351,6 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                                   currentPlaceLatLng = LatLng(
                                       double.parse(place["lat"]),
                                       double.parse(place["lon"]));
-
-                                  List<LatLng> selectedPlaceBoundingBox = [
-                                    LatLng(
-                                        double.parse(place["boundingbox"][0]),
-                                        double.parse(place["boundingbox"][2])),
-                                    LatLng(
-                                        double.parse(place["boundingbox"][1]),
-                                        double.parse(place["boundingbox"][3]))
-                                  ];
 
                                   _selectedPlaceName = place["name"];
                                   setState(() {
