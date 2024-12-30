@@ -334,7 +334,7 @@ packages:
     source: hosted
     version: "1.9.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: fec0d61223fba3154d87759e3cc27fe2c8dc498f6386c6d6fc80d1afdd1bf378
@@ -723,7 +723,7 @@ packages:
     source: hosted
     version: "2.0.0"
   vector_tile_renderer:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: vector_tile_renderer
       sha256: b58fa02b472ced87de00de2b4d5837576239bddb21b562481f25bde39bd117ae
@@ -787,5 +787,5 @@ packages:
     source: hosted
     version: "6.2.5"
 sdks:
-  dart: ">=3.5.0 <3.13.3"
+  dart: ">=3.5.4 <3.13.3"
   flutter: ">=3.24.0"
