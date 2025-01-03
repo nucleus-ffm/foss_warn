@@ -79,13 +79,13 @@ class _LegacyWarningDialogState extends State<LegacyWarningDialog> {
                 if (!foundPlace) {
                   LoadingScreen.instance().show(
                       context: context,
-                      text: "No replacement was found for ${p.name}");
+                      text: "No replacement was found for ${p.name}. Please add the place again manually.");
                   await Future.delayed(const Duration(seconds: 2));
                 }
               }
               // sve new list
               LoadingScreen.instance()
-                  .show(context: context, text: "Done. saving new places");
+                  .show(context: context, text: "Done.");
               tempList.clear();
               // save new list
               saveMyPlacesList();
