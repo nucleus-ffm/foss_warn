@@ -19,7 +19,9 @@ class NotificationService {
     return NotificationDetails(
         android: AndroidNotificationDetails(
           'de.nucleus.foss_warn.notifications_' + channel.trim().toLowerCase(),
-          "Warnstufe: " + Severity.translateWarningSeverity(channel), //@todo find solution to translate this
+          "Warnstufe: " +
+              Severity.translateWarningSeverity(
+                  channel), //@todo find solution to translate this
           groupKey: "FossWarnWarnings",
           category: AndroidNotificationCategory.message,
           priority: Priority.max,
@@ -197,8 +199,7 @@ class NotificationService {
             .createNotificationChannel(AndroidNotificationChannel(
           "de.nucleus.foss_warn.notifications_update",
           "Update",
-          description:
-          "Ein Update für eine bereits erhaltene Warnung.",
+          description: "Ein Update für eine bereits erhaltene Warnung.",
           groupId: "de.nucleus.foss_warn.notifications_emergency_information",
           importance: Importance.low,
         ));
@@ -222,10 +223,8 @@ class NotificationService {
         ));
       } catch (e) {
         print("Error while creating notification channels: " + e.toString());
-        ErrorLogger.writeErrorLog(
-            "class_NotificationService.dart",
-            "Error while creating notification channels",
-            e.toString());
+        ErrorLogger.writeErrorLog("class_NotificationService.dart",
+            "Error while creating notification channels", e.toString());
       }
     }
 
@@ -297,8 +296,8 @@ class NotificationService {
             ?.getActiveNotifications();
 
     if (activeNotifications!.length == 2 &&
-        activeNotifications
-            .any((element) => element.channelId == "de.nucleus.foss_warn.notifications_state")) {
+        activeNotifications.any((element) =>
+            element.channelId == "de.nucleus.foss_warn.notifications_state")) {
       if (activeNotifications[0].id == 0) {
         // summery notification has id 0
         cancelOneNotification(0);

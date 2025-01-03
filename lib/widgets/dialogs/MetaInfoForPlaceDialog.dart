@@ -24,27 +24,32 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
       ninaPlace = widget.myPlace as NinaPlace;
     } else if (widget.myPlace is AlertSwissPlace) {
       alertSwissPlace = widget.myPlace as AlertSwissPlace;
-    } else if (widget.myPlace is FPASPlace ){
+    } else if (widget.myPlace is FPASPlace) {
       fpasPlace = widget.myPlace as FPASPlace;
     }
-
 
     List<Text> generateMetaInfo(Place place) {
       if (place is NinaPlace) {
         return [
           Text("Nina-ARS: ${ninaPlace?.geocode.geocodeNumber}"),
-          Text("Latitude: ${ninaPlace?.geocode.latLng.latitude}"), // meta_info_for_place_dialog_latitude
-          Text("Longitude: ${ninaPlace?.geocode.latLng.longitude}"), // meta_info_for_place_dialog_longitude
-          Text("PLZ: ${ninaPlace?.geocode.PLZ}")];
+          Text(
+              "Latitude: ${ninaPlace?.geocode.latLng.latitude}"), // meta_info_for_place_dialog_latitude
+          Text(
+              "Longitude: ${ninaPlace?.geocode.latLng.longitude}"), // meta_info_for_place_dialog_longitude
+          Text("PLZ: ${ninaPlace?.geocode.PLZ}")
+        ];
       } else if (place is AlertSwissPlace) {
         return [Text("Shortname: ${alertSwissPlace?.shortName}")];
       } else if (place is FPASPlace) {
         return [
-          Text("Bounding box max: \n\t\tLng: ${fpasPlace!.boundingBox.max_latLng.longitude}  \n\t\tLat: ${fpasPlace!.boundingBox.max_latLng.latitude}"), // meta_info_for_place_dialog_bounding_box_max
+          Text(
+              "Bounding box max: \n\t\tLng: ${fpasPlace!.boundingBox.max_latLng.longitude}  \n\t\tLat: ${fpasPlace.boundingBox.max_latLng.latitude}"), // meta_info_for_place_dialog_bounding_box_max
           Text("\n"),
-          Text("Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.min_latLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.min_latLng.latitude}"), // meta_info_for_place_dialog_bounding_box_min
+          Text(
+              "Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.min_latLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.min_latLng.latitude}"), // meta_info_for_place_dialog_bounding_box_min
           Text("\n"),
-          Text("SubscriptionID: ${fpasPlace.subscriptionId}"), //meta_info_for_place_dialog_subscription_id
+          Text(
+              "SubscriptionID: ${fpasPlace.subscriptionId}"), //meta_info_for_place_dialog_subscription_id
         ];
       } else {
         return [];
@@ -56,10 +61,9 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
           "${AppLocalizations.of(context)!.meta_info_for_place_dialog_headline} ${widget.myPlace.name}"),
       content: Container(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: generateMetaInfo(widget.myPlace)
-        ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: generateMetaInfo(widget.myPlace)),
       ),
       actions: <Widget>[
         ElevatedButton(

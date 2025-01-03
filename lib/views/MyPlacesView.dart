@@ -6,9 +6,7 @@ import 'package:provider/provider.dart';
 import '../widgets/MyPlaceWidget.dart';
 import '../services/updateProvider.dart';
 import '../services/listHandler.dart';
-import '../services/saveAndLoadSharedPreferences.dart';
 import '../widgets/ConnectionErrorWidget.dart';
-import 'AddMyPlaceView.dart';
 import 'AddMyPlaceWithMapView.dart';
 
 class MyPlaces extends StatefulWidget {
@@ -138,12 +136,14 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
               right: 10,
               child: FloatingActionButton(
                 child: Icon(Icons.add),
-                tooltip: AppLocalizations.of(context)!.my_places_view_add_new_place_button_tooltip,
+                tooltip: AppLocalizations.of(context)!
+                    .my_places_view_add_new_place_button_tooltip,
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AddMyPlaceWithMapView()), //AddMyPlaceView
+                        builder: (context) =>
+                            AddMyPlaceWithMapView()), //AddMyPlaceView
                   );
                 },
               ),

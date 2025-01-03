@@ -15,7 +15,6 @@ class References {
     List<String> temp = references.split(',');
     return References(
         sender: temp[0], identifier: temp[1].split(' '), send: temp[2]);
-    ;
   }
 
   References.fromJson(Map<String, dynamic> json)

@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foss_warn/class/class_Area.dart';
-import 'package:foss_warn/class/class_Geocode.dart';
 import 'package:foss_warn/class/class_Info.dart';
 import 'package:foss_warn/class/class_WarnMessage.dart';
 import 'package:foss_warn/enums/Certainty.dart';
@@ -19,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
-
   // Overrides the test client for every test, so network call will work.
   // @todo use mock API calls instead
   setUpAll(() => HttpOverrides.global = null);

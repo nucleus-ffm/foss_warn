@@ -1,13 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_NinaPlace.dart';
 import 'package:foss_warn/class/class_NotificationService.dart';
 import 'package:foss_warn/services/listHandler.dart';
 import 'package:foss_warn/widgets/MapWidget.dart';
-import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:latlong2/latlong.dart';
 import '../class/abstract_Place.dart';
 import '../class/class_WarnMessage.dart';
@@ -224,12 +222,11 @@ class _DetailScreenState extends State<DetailScreen> {
 
   /// create a camera to fix the polygon to the camera of the map
   Widget _createMapWidget(List<Area> area) {
-
     CameraFit createInitCameraFit() {
       List<LatLng> polygonPoints =
           Area.getListWithAllPolygons(widget._warnMessage.info.first.area);
 
-      if(polygonPoints.isNotEmpty) {
+      if (polygonPoints.isNotEmpty) {
         return CameraFit.bounds(
             bounds: LatLngBounds.fromPoints(polygonPoints),
             padding: EdgeInsets.all(30));
@@ -247,22 +244,23 @@ class _DetailScreenState extends State<DetailScreen> {
           child: MapWidget(
             mapController: mapController,
             initialCameraFit: createInitCameraFit(),
-            polygonLayers: [ //@todo can be null
+            polygonLayers: [
+              //@todo can be null
               PolygonLayer(
                   polygons: Area.createListOfPolygonsForAreas(
                       widget._warnMessage.info.first.area)),
             ],
             markerLayers: _calculatePlaceMarker() != null
                 ? [
-              MarkerLayer(markers: [
-                Marker(
-                    point: _calculatePlaceMarker()!,
-                    child: Icon(
-                      Icons.place,
-                      size: 40,
-                    ))
-              ])
-            ]
+                    MarkerLayer(markers: [
+                      Marker(
+                          point: _calculatePlaceMarker()!,
+                          child: Icon(
+                            Icons.place,
+                            size: 40,
+                          ))
+                    ])
+                  ]
                 : [],
             widgets: [
               Align(
@@ -281,8 +279,11 @@ class _DetailScreenState extends State<DetailScreen> {
               )
             ],
           ));
-    }catch (e) {
-      return Container(height: 200, child: Text("Errpr"),);
+    } catch (e) {
+      return Container(
+        height: 200,
+        child: Text("Errpr"),
+      );
     }
   }
 
@@ -294,8 +295,12 @@ class _DetailScreenState extends State<DetailScreen> {
     });
 
     // @todo hacky solution see warningWidget L265 for more info
-    if(widget._place != null) {
-      myPlaceList.firstWhere((e) => e.name == widget._place!.name).warnings.firstWhere((e) => e.identifier == widget._warnMessage.identifier).read = widget._warnMessage.read;
+    if (widget._place != null) {
+      myPlaceList
+          .firstWhere((e) => e.name == widget._place!.name)
+          .warnings
+          .firstWhere((e) => e.identifier == widget._warnMessage.identifier)
+          .read = widget._warnMessage.read;
     }
     // save places List to store new read state
     saveMyPlacesList();
@@ -587,12 +592,14 @@ class _DetailScreenState extends State<DetailScreen> {
                               Colors.green,
                               AppLocalizations.of(context)!.warning_urgency,
                               translateWarningUrgency(
-                                  widget._warnMessage.info[0].urgency.name, context)),
+                                  widget._warnMessage.info[0].urgency.name,
+                                  context)),
                           createTagButton(
                               Colors.blueGrey,
                               AppLocalizations.of(context)!.warning_certainty,
                               translateWarningCertainty(
-                                  widget._warnMessage.info[0].certainty.name, context)),
+                                  widget._warnMessage.info[0].certainty.name,
+                                  context)),
                           createTagButton(
                               Colors.amber,
                               AppLocalizations.of(context)!.warning_scope,
@@ -610,11 +617,12 @@ class _DetailScreenState extends State<DetailScreen> {
                               AppLocalizations.of(context)!.warning_status,
                               translateWarningStatus(
                                   widget._warnMessage.status.name, context)),
-                      createTagButton(
-                          Colors.purpleAccent,
-                          "Referenze",
-                          widget._warnMessage.references?.identifier.toString() ?? "None"
-                      ),
+                          createTagButton(
+                              Colors.purpleAccent,
+                              "Referenze",
+                              widget._warnMessage.references?.identifier
+                                      .toString() ??
+                                  "None"),
                         ])
                       : SizedBox(),
                 ],
@@ -682,8 +690,9 @@ class _DetailScreenState extends State<DetailScreen> {
               SizedBox(
                 height: 20,
               ),
-              widget._warnMessage.info.first.area.first.geoJson != "{}" ?
-                _createMapWidget(widget._warnMessage.info.first.area): SizedBox(),
+              widget._warnMessage.info.first.area.first.geoJson != "{}"
+                  ? _createMapWidget(widget._warnMessage.info.first.area)
+                  : SizedBox(),
               SizedBox(
                 height: 20,
               ),

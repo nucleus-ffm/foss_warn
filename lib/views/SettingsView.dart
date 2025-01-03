@@ -28,16 +28,17 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final TextEditingController frequencyController = new TextEditingController();
-  final TextEditingController fpasServerURLController = new TextEditingController();
+  final TextEditingController fpasServerURLController =
+      new TextEditingController();
   bool _fpasServerURLError = false;
-  final double _maxValueFrequencyOfAPICall = 999;
   final _platform = const MethodChannel("flutter.native/helper");
 
   @override
   void initState() {
     frequencyController.text =
         userPreferences.frequencyOfAPICall.toInt().toString();
-    fpasServerURLController.text = userPreferences.fossPublicAlertServerUrl.toString();
+    fpasServerURLController.text =
+        userPreferences.fossPublicAlertServerUrl.toString();
 
     return super.initState();
   }
@@ -232,7 +233,7 @@ class _SettingsState extends State<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                "FOSS Public Alert Server" , //@todo translate
+                "FOSS Public Alert Server", //@todo translate
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -252,14 +253,14 @@ class _SettingsState extends State<Settings> {
                   });
                 },
                 onSubmitted: (newUrl) async {
-
                   try {
                     setState(() {
                       _fpasServerURLError = false;
                     });
                     // print("parse FPAS url");
                     print(newUrl);
-                    Uri newFPASsUri = Uri.parse(newUrl + "/sources/server_status");
+                    Uri newFPASsUri =
+                        Uri.parse(newUrl + "/sources/server_status");
                     Response _response = await http.get(
                       newFPASsUri,
                       headers: {
@@ -267,21 +268,26 @@ class _SettingsState extends State<Settings> {
                         'user-agent': userPreferences.httpUserAgent
                       },
                     );
-                    if(_response.statusCode != 200) {
+                    if (_response.statusCode != 200) {
                       throw Exception("FPAS Server not reachable");
                     }
-                    dynamic _data = jsonDecode(utf8.decode(_response.bodyBytes));
+                    dynamic _data =
+                        jsonDecode(utf8.decode(_response.bodyBytes));
 
                     setState(() {
                       userPreferences.fossPublicAlertServerUrl = newUrl;
-                      userPreferences.fossPublicAlertServerVersion = _data["server_version"];
-                      userPreferences.fossPublicAlertServerOperator = _data["server_operator"];
-                      userPreferences.fossPublicAlertServerPrivacyNotice = _data["privacy_notice"];
-                      userPreferences.fossPublicAlertServerTermsOfService = _data["terms_of_service"];
-                      userPreferences.fossPublicAlertServerCongestionState = _data["congestion_state"];
+                      userPreferences.fossPublicAlertServerVersion =
+                          _data["server_version"];
+                      userPreferences.fossPublicAlertServerOperator =
+                          _data["server_operator"];
+                      userPreferences.fossPublicAlertServerPrivacyNotice =
+                          _data["privacy_notice"];
+                      userPreferences.fossPublicAlertServerTermsOfService =
+                          _data["terms_of_service"];
+                      userPreferences.fossPublicAlertServerCongestionState =
+                          _data["congestion_state"];
                     });
                     saveSettings();
-
                   } catch (e) {
                     print(e);
                     setState(() {
@@ -291,28 +297,33 @@ class _SettingsState extends State<Settings> {
                 },
               ),
             ),
-            userPreferences.fossPublicAlertServerOperator != "" ?
-            ListTile(
-              leading: Icon(Icons.account_balance),
-              title: Text("Server Operator: ${userPreferences.fossPublicAlertServerOperator}"),
-            )
+            userPreferences.fossPublicAlertServerOperator != ""
+                ? ListTile(
+                    leading: Icon(Icons.account_balance),
+                    title: Text(
+                        "Server Operator: ${userPreferences.fossPublicAlertServerOperator}"),
+                  )
                 : SizedBox(),
-            userPreferences.fossPublicAlertServerTermsOfService != "" ?
-            ListTile(
-              leading: Icon(Icons.open_in_new),
-              title: Text("Server Terms of Service"),
-              onTap: () {
-                launchUrlInBrowser(userPreferences.fossPublicAlertServerTermsOfService);
-              },
-            ): SizedBox(),
-            userPreferences.fossPublicAlertServerPrivacyNotice != "" ?
-            ListTile(
-              leading: Icon(Icons.open_in_new),
-              title: Text("Server Privacy"),
-              onTap: () {
-                launchUrlInBrowser(userPreferences.fossPublicAlertServerPrivacyNotice);
-              },
-            ): SizedBox(),
+            userPreferences.fossPublicAlertServerTermsOfService != ""
+                ? ListTile(
+                    leading: Icon(Icons.open_in_new),
+                    title: Text("Server Terms of Service"),
+                    onTap: () {
+                      launchUrlInBrowser(
+                          userPreferences.fossPublicAlertServerTermsOfService);
+                    },
+                  )
+                : SizedBox(),
+            userPreferences.fossPublicAlertServerPrivacyNotice != ""
+                ? ListTile(
+                    leading: Icon(Icons.open_in_new),
+                    title: Text("Server Privacy"),
+                    onTap: () {
+                      launchUrlInBrowser(
+                          userPreferences.fossPublicAlertServerPrivacyNotice);
+                    },
+                  )
+                : SizedBox(),
             Divider(
               height: 50,
               indent: 15.0,

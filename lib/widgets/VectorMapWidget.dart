@@ -56,7 +56,6 @@ class vectorMapWidget extends StatefulWidget {
 
 class _vectorMapWidgetState extends State<vectorMapWidget> {
   Style? _style;
-  Object? _error;
 
   // alternates:
   //   Mapbox - mapbox://styles/mapbox/streets-v12?access_token={key}
@@ -67,15 +66,6 @@ class _vectorMapWidgetState extends State<vectorMapWidget> {
           // ignore: undefined_identifier
           logger: const Logger.console())
       .read();
-
-  Widget _statusText() => Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 8),
-      child: StreamBuilder(
-          stream: widget.mapController.mapEventStream,
-          builder: (context, snapshot) {
-            return Text(
-                'Zoom: ${widget.mapController.camera.zoom.toStringAsFixed(2)} Center: ${widget.mapController.camera.center.latitude.toStringAsFixed(4)},${widget.mapController.camera.center.longitude.toStringAsFixed(4)}');
-          }));
 
   @override
   void initState() {
@@ -91,7 +81,6 @@ class _vectorMapWidgetState extends State<vectorMapWidget> {
       print(e);
       // ignore: avoid_print
       print(stack);
-      _error = e;
     }
     setState(() {});
   }
@@ -106,7 +95,10 @@ class _vectorMapWidgetState extends State<vectorMapWidget> {
       mapController: widget.mapController,
       options: MapOptions(
         interactionOptions: const InteractionOptions(
-            flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag | InteractiveFlag.flingAnimation | InteractiveFlag.doubleTapZoom),
+            flags: InteractiveFlag.pinchZoom |
+                InteractiveFlag.drag |
+                InteractiveFlag.flingAnimation |
+                InteractiveFlag.doubleTapZoom),
         initialCameraFit: widget.initialCameraFit,
         //initialZoom: _style?.zoom ?? 10,
         maxZoom: 22,

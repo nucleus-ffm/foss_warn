@@ -8,19 +8,20 @@ class AlertSwissPlace extends Place {
 
   String get shortName => _shortName;
 
-  AlertSwissPlace({required String shortName, required String name, String eTag = ""})
-      : _shortName = shortName, super(name: name, warnings: [], eTag: eTag);
+  AlertSwissPlace(
+      {required String shortName, required String name, String eTag = ""})
+      : _shortName = shortName,
+        super(name: name, warnings: [], eTag: eTag);
 
   AlertSwissPlace.withWarnings(
       {required String shortName,
       required String name,
       required List<WarnMessage> warnings,
-      required eTag
-      })
-      : _shortName = shortName, super(name: name, warnings: warnings, eTag: eTag);
+      required eTag})
+      : _shortName = shortName,
+        super(name: name, warnings: warnings, eTag: eTag);
 
   factory AlertSwissPlace.fromJson(Map<String, dynamic> json) {
-
     /// create new warnMessage objects from saved data
     List<WarnMessage> createWarningList(String data) {
       List<dynamic> _jsonData = jsonDecode(data);
@@ -35,11 +36,13 @@ class AlertSwissPlace extends Place {
         name: json['name'] as String,
         shortName: json['shortName'] as String,
         warnings: createWarningList(json['warnings']),
-        eTag: ""
-    );
+        eTag: "");
   }
 
-  @override
-  Map<String, dynamic> toJson() =>
-      {'name': name, 'shortName': shortName, 'warnings': jsonEncode(warnings), 'eTag': eTag};
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'shortName': shortName,
+        'warnings': jsonEncode(warnings),
+        'eTag': eTag
+      };
 }
