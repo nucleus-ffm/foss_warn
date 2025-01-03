@@ -269,7 +269,7 @@ class Area {
       return result;
     } catch (e) {
       ErrorLogger.writeErrorLog(
-          "MapWidget", "Error while parsing geoJson", e.toString());
+          "class_Area.dart", "Error while parsing geoJson", e.toString());
       appState.error = true;
       return [];
     }

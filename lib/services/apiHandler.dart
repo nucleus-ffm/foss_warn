@@ -258,6 +258,15 @@ Future<List<WarnMessage>> parseNinaJsonData(
 
       String geoJson = geoJsonRaw.toString();
 
+      //@todo find a cleaner solution later
+      // geoJson from dwd can contain coordinates that are no doubles.
+      // This results in an error when we try to convert it to a geoJson object
+      // therefore, we replace every int coordinate with a double representation
+      // of it by just adding .0
+      geoJson = geoJson.replaceAllMapped(RegExp(r'\[\d+\,'), (Match m) => "[${m.group(0)?.replaceAll("[", "").replaceAll(",", "")}.0,");
+      geoJson = geoJson.replaceAllMapped(RegExp(r'\s\d+]'), (Match m) => "${m.group(0)?.replaceAll("]", "").replaceAll(",", "")}.0]");
+
+
       var warningDetails = jsonDecode(utf8.decode(responseDetails.bodyBytes));
       // create the new WarnMessage
       WarnMessage? temp = createWarning(warningDetails, provider, geoJson);

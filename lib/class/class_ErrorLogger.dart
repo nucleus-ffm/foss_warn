@@ -37,9 +37,9 @@ class ErrorLogger {
       // Read the file
       return await file.readAsString();
     } catch (e) {
-      // If encountering an error, return 0
+      // If encountering an error, then there is no log file yet
       print("Error while reading logfile: ${e.toString()}");
-      return "Error. Can not read logfile.";
+      return "No log to read.";
     }
   }
 
