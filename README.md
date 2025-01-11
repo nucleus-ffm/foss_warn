@@ -86,7 +86,7 @@ special thanks to:
 - Everyone who helped translate the app
 
 ## Contact
-You can email me at `foss-warn {ät} posteo {point} de`. You can also follow the project on Mastodon [@foss_warn@social.tchncs.de](https://social.tchncs.de/@foss_warn)
+You can email me at `foss-warn {ät} posteo {point} de`. You can also follow the project on Mastodon [@foss_warn@social.tchncs.de](https://social.tchncs.de/@foss_warn) or you can join our Matrix space ([#foss_warn:tchncs.de](https://matrix.to/#/#foss_warn:tchncs.de))
 
 ## Similar inoffical projects for other platforms
 * [**FediNINA (Fediverse)**](https://meta.prepedia.org/wiki/FediNINA) Project to bring NINA warnings into the Fediverse.
