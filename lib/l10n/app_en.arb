@@ -521,5 +521,17 @@
   "legacy_warning_dialog_migration_button": "start auto migration",
   "@legacy_warning_dialog_migration_button": {},
   "add_my_place_with_map_loading_screen_search_error": "Something went wrong. Please try it again later.",
-  "@add_my_place_with_map_loading_screen_search_error": {}
+  "@add_my_place_with_map_loading_screen_search_error": {},
+  "error_dialog_text_privacy": "The log does not contain any privacy sensitive information beside maybe your selected place. FOSS Warn also does not send any log information to a server.",
+  "@error_dialog_text_privacy": {},
+  "error_dialog_text_introduction": "FOSS Warn has noticed an error. If this error persists, please contact the developer and attach the following log:",
+  "@error_dialog_text_introduction": {},
+  "app_error_message": "Ups. Something went wrong. Please contact the developer",
+  "@app_error_message": {},
+  "error_dialog_headline": "Oh no - something went wrong :(",
+  "@error_dialog_headline": {},
+  "error_dialog_text_instructions_text": "- Check your internet connection\n- Check if the issue is persistent\n- write an E-Mail to: foss_warn@posteo.de\n- or open an Github Issue",
+  "@error_dialog_text_instructions_text": {},
+  "error_dialog_text_instructions_headline": "What should I do now?",
+  "@error_dialog_text_instructions_headline": {}
 }
