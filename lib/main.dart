@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 //import 'package:foss_warn/class/class_alarmManager.dart';
-import 'package:foss_warn/class/class_UnifiedPushHandler.dart';
-import 'package:foss_warn/class/class_userPreferences.dart';
-import 'package:foss_warn/services/geocodeHandler.dart';
-import 'package:foss_warn/services/legacyHandler.dart';
-import 'package:foss_warn/services/listHandler.dart';
-import 'package:foss_warn/views/AboutView.dart';
-import 'package:foss_warn/views/mapView.dart';
+import 'package:foss_warn/class/class_unified_push_handler.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/services/geocode_handler.dart';
+import 'package:foss_warn/services/legacy_handler.dart';
+import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/views/about_view.dart';
+import 'package:foss_warn/views/map_view.dart';
 // import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
-import 'class/abstract_Place.dart';
-import 'class/class_appState.dart';
-import 'views/MyPlacesView.dart';
-import 'views/SettingsView.dart';
-import 'views/AllWarningsView.dart';
-import 'views/WelcomeView.dart';
+import 'class/abstract_place.dart';
+import 'class/class_app_state.dart';
+import 'views/my_places_view.dart';
+import 'views/settings_view.dart';
+import 'views/all_warnings_view.dart';
+import 'views/welcome_view.dart';
 
-import 'class/class_NotificationService.dart';
+import 'class/class_notification_service.dart';
 
-import 'services/updateProvider.dart';
-import 'services/saveAndLoadSharedPreferences.dart';
+import 'services/update_provider.dart';
+import 'services/save_and_load_shared_preferences.dart';
 
-import 'widgets/dialogs/SortByDialog.dart';
+import 'widgets/dialogs/sort_by_dialog.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final AppState appState = AppState();
@@ -55,6 +55,8 @@ void main() async {
 }
 
 class FOSSWarn extends StatelessWidget {
+  const FOSSWarn({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -72,10 +74,10 @@ class FOSSWarn extends StatelessWidget {
 }
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
@@ -107,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
     loadMyPlacesList();
     listenNotifications();
     if (geocodeMap.isEmpty) {
-      print("call geocode handler");
+      debugPrint("call geocode handler");
       geocodeHandler();
     }
     //display information if the app had to be resetted
@@ -135,7 +137,8 @@ class _HomeViewState extends State<HomeView> {
           actions: [
             IconButton(
               icon: Icon(Icons.sort),
-              tooltip: AppLocalizations.of(context)!.main_app_bar_action_sort_tooltip,
+              tooltip: AppLocalizations.of(context)!
+                  .main_app_bar_action_sort_tooltip,
               onPressed: () {
                 showDialog(
                   context: context,
@@ -187,13 +190,13 @@ class _HomeViewState extends State<HomeView> {
                 },
                 itemBuilder: (context) => <PopupMenuEntry>[
                       PopupMenuItem(
+                          value: 0,
                           child: Text(AppLocalizations.of(context)!
-                              .main_dot_menu_settings),
-                          value: 0),
+                              .main_dot_menu_settings)),
                       PopupMenuItem(
+                          value: 1,
                           child: Text(AppLocalizations.of(context)!
-                              .main_dot_menu_about),
-                          value: 1)
+                              .main_dot_menu_about))
                     ])
           ],
         ),
