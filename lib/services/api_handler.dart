@@ -27,22 +27,13 @@ Future<void> callAPI() async {
 
   debugPrint("call API");
 
-  await loadSettings();
   await loadMyPlacesList();
 
   for (Place place in myPlaceList) {
     // if the place is for swiss skip this place
     // print(place.name);
-    if (place is AlertSwissPlace) {
-      if (!userPreferences.activateAlertSwiss) {
-        successfullyFetched = false;
-        error += "Sie haben einen AlertSwiss Ort hinzugefügt,"
-            " aber AlertSwiss nicht als Quelle aktiviert \n";
-      }
-      continue;
-    }
     // FPAS Place
-    else if (place is FPASPlace) {
+    if (place is FPASPlace) {
       await place.callAPI();
     }
     // it is a nina place
@@ -121,11 +112,6 @@ Future<void> callAPI() async {
     } else {
       sendStatusUpdateNotification(successfullyFetched);
     }
-  }
-
-  // call alert Swiss
-  if (userPreferences.activateAlertSwiss) {
-    await callAlertSwissAPI();
   }
 
   debugPrint("finished calling API");

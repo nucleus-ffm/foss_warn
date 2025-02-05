@@ -47,7 +47,6 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
         // Reload the full app for theme changes to reflect
         final updater = Provider.of<Update>(context, listen: false);
         updater.updateView();
-        saveSettings();
       },
       child: Text(
         selectTextForThemeMode(themeMode),
@@ -133,7 +132,6 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
           // Reload the full app for theme changes to reflect
           final updater = Provider.of<Update>(context, listen: false);
           updater.updateView();
-          saveSettings();
         },
         style: TextButton.styleFrom(
           minimumSize: Size(80, 80),

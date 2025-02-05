@@ -36,7 +36,6 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   setState(() {
                     userPreferences.warningFontSize = 12.0;
                   });
-                  saveSettings();
                   Navigator.of(context).pop();
                 },
               ),
@@ -56,7 +55,6 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   setState(() {
                     userPreferences.warningFontSize = 14.0;
                   });
-                  saveSettings();
                   Navigator.of(context).pop();
                 },
               ),
@@ -76,7 +74,6 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   setState(() {
                     userPreferences.warningFontSize = 16.0;
                   });
-                  saveSettings();
                   Navigator.of(context).pop();
                 },
               ),
@@ -96,7 +93,6 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   setState(() {
                     userPreferences.warningFontSize = 18.0;
                   });
-                  saveSettings();
                   Navigator.of(context).pop();
                 },
               ),

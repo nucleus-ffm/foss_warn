@@ -24,9 +24,6 @@ Future callAlertSwissAPI() async {
     List<WarnMessage> tempWarnMessageList = [];
     tempWarnMessageList.clear();
 
-    await loadSettings();
-    await loadETags();
-
     // get overview if warnings exits for myplaces
     response =
         await get(Uri.parse(url)).timeout(userPreferences.networkTimeout);

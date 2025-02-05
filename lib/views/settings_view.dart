@@ -285,7 +285,6 @@ class _SettingsState extends State<Settings> {
                       userPreferences.fossPublicAlertServerCongestionState =
                           data["congestion_state"];
                     });
-                    saveSettings();
                   } catch (e) {
                     debugPrint(e.toString());
                     setState(() {
@@ -353,7 +352,6 @@ class _SettingsState extends State<Settings> {
                   setState(() {
                     userPreferences.startScreen = newValue!;
                   });
-                  saveSettings();
                 },
                 items: [0, 1].map<DropdownMenuItem<int>>((value) {
                   return DropdownMenuItem<int>(
@@ -372,7 +370,6 @@ class _SettingsState extends State<Settings> {
                       setState(() {
                         userPreferences.showExtendedMetaData = value;
                       });
-                      saveSettings();
                     })),
             ListTile(
               title: Text(AppLocalizations.of(context)!.settings_color_schema),

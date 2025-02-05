@@ -43,8 +43,7 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
             if (widget.myPlace is FPASPlace) {
               debugPrint(
                   "unregister from server for place ${widget.myPlace.name}");
-              UnifiedPushHandler.unregisterForArea(
-                  (widget.myPlace as FPASPlace).subscriptionId);
+              (widget.myPlace as FPASPlace).unregisterForArea();
             }
 
             final updater = Provider.of<Update>(context, listen: false);

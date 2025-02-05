@@ -85,12 +85,7 @@ class _NotificationPreferencesListTileWidgetState
 
   @override
   Widget build(BuildContext context) {
-    if (widget.notificationPreferences.warningSource ==
-            WarningSource.alertSwiss &&
-        !userPreferences.activateAlertSwiss) {
-      return SizedBox();
-    } else {
-      return Column(
+    return Column(
         children: [
           Padding(
             padding: settingsTileListPadding,
@@ -116,7 +111,7 @@ class _NotificationPreferencesListTileWidgetState
                       setState(() {
                         widget.notificationPreferences.disabled = !value;
                       });
-                      saveSettings();
+
                     },
                   )
                 else
@@ -178,7 +173,6 @@ class _NotificationPreferencesListTileWidgetState
                               },
                               onChangeEnd: (value) {
                                 // save settings, after change is complete
-                                saveSettings();
                               },
                             ),
                           ),
@@ -213,4 +207,3 @@ class _NotificationPreferencesListTileWidgetState
       );
     }
   }
-}

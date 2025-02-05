@@ -30,11 +30,12 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final AppState appState = AppState();
 final UserPreferences userPreferences = UserPreferences();
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await legacyHandler();
   await NotificationService().init();
-  await loadSettings();
+  await userPreferences.init();
 
   /*if (userPreferences.shouldNotifyGeneral) {
     AlarmManager.callback();
