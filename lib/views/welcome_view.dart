@@ -75,7 +75,6 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                           setState(() {
                             userPreferences.showWelcomeScreen = false;
                           });
-                          saveSettings();
 
                           Navigator.pushReplacement(
                             context,

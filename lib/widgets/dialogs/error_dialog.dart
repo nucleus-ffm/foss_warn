@@ -28,25 +28,26 @@ class _ErrorDialogState extends State<ErrorDialog> {
             //print(log);
             return AlertDialog(
               title: Text("Oh no - something went wrong :("),
+              //@todo translate error_dialog_headline
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "FOSS Warn has noticed an error."
-                    " Please contact the developer and attach the following log:", //@todo translate
+                    " Please contact the developer and attach the following log:", //@todo translate error_dialog_text_introduction
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
                       "The log does not contain any privacy sensitive information beside maybe your selected place. "
-                      "FOSS Warn also does not send any log information to a server."), //@todo translate
+                      "FOSS Warn also does not send any log information to a server."), //@todo translate error_dialog_text_privacy
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "What should I do now?", // @todo translate
+                    "What should I do now?", // @todo translate error_dialog_text_instructions_headline
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text("write an E-Mail to: foss_warn@posteo.de"),
+                  Text("write an E-Mail to: foss_warn@posteo.de"), // @toto translate error_dialog_text_instructions_text
                   Text("or open an Github Issue"),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

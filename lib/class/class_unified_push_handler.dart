@@ -23,7 +23,6 @@ class UnifiedPushHandler {
     }
     userPreferences.unifiedPushRegistered = true;
     userPreferences.unifiedPushEndpoint = endpoint;
-    saveSettings();
   }
 
   static void onRegistrationFailed(String instance) {
@@ -37,7 +36,6 @@ class UnifiedPushHandler {
     debugPrint("unregister");
     userPreferences.unifiedPushEndpoint = "";
     userPreferences.unifiedPushRegistered = false;
-    saveSettings();
     // send unregister to server
     // @todo send unregister for each subscription
     /*http.post(
@@ -134,68 +132,6 @@ class UnifiedPushHandler {
         // await Future.doWhile(() => !userPreferences.unifiedPushRegistered).timeout(Duration(seconds: 20), onTimeout: () {return;});
       });
     }
-
     // print("distributor setup done: mit ${await UnifiedPush.getDistributor()} und ${userPreferences.unifiedPushEndpoint}");
-  }
-
-  /// register client for the given area
-  /// requires that unifiedPush is already setted up
-  /// and there is already an endpoint stored. Call setupUnifiedPush before.
-  static Future<String> registerForArea(
-      BuildContext? context, BoundingBox boundingBox) async {
-    debugPrint("register for area");
-
-    if (userPreferences.unifiedPushEndpoint == "") {
-      throw Exception("No UnifiedPush Endpoint is set up. Can not subscribe");
-    } else {
-      debugPrint(userPreferences.unifiedPushEndpoint);
-      // register for bounding box
-      Response response = await http.post(
-        Uri.parse(
-            "${userPreferences.fossPublicAlertServerUrl}/subscription/subscribe"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          'distributor_url': userPreferences.unifiedPushEndpoint,
-          'min_lat': boundingBox.minLatLng.latitude.toString(),
-          'max_lat': boundingBox.maxLatLng.latitude.toString(),
-          'min_lon': boundingBox.minLatLng.longitude.toString(),
-          'max_lon': boundingBox.maxLatLng.longitude.toString()
-        }),
-      );
-      if (response.statusCode == 200) {
-        // registration successfully, store subscription id
-        dynamic data = jsonDecode(utf8.decode(response.bodyBytes));
-        return data["id"];
-      } else {
-        throw Exception(
-            "UnifiedPush registration failed. Server returned status code ${response.statusCode} with body: ${response.body}");
-      }
-    }
-  }
-
-  /// unregister for push Notification for the given subscription ID
-  static Future<bool> unregisterForArea(String subscriptionId) async {
-    if (userPreferences.unifiedPushRegistered &&
-        userPreferences.unifiedPushEndpoint != "") {
-      Response response = await http.post(
-        Uri.parse(
-            "${userPreferences.fossPublicAlertServerUrl}/subscription/unsubscribe"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          'subscription_id': subscriptionId,
-        }),
-      );
-      if (response.statusCode == 200) {
-        // successfully unsubscribed
-        return true;
-      } else {
-        //@todo store subscription ID in prefs to unsubscribe later,
-        // if there is currently no internet connection
-        return false;
-      }
-    } else {
-      // can not unregister from server if the client is not registered
-      return false;
-    }
   }
 }
