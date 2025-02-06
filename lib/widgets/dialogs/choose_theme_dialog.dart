@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
-import 'package:provider/provider.dart';
 
 import '../../services/update_provider.dart';
 
-class ChooseThemeDialog extends StatefulWidget {
+class ChooseThemeDialog extends ConsumerStatefulWidget {
   const ChooseThemeDialog({super.key});
 
   @override
-  State<ChooseThemeDialog> createState() => _ChooseThemeDialogState();
+  ConsumerState<ChooseThemeDialog> createState() => _ChooseThemeDialogState();
 }
 
-class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
+class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   List<Widget> generateBrightnessButtons() {
     List<ThemeMode> themeModes = [
       ThemeMode.light,
@@ -28,6 +28,8 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
   }
 
   Widget generateBrightnessButton(ThemeMode themeMode) {
+    var updater = ref.read(updaterProvider);
+
     return TextButton(
       style: TextButton.styleFrom(
           padding: EdgeInsets.only(left: 10, right: 10),
@@ -45,7 +47,6 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
           userPreferences.selectedThemeMode = themeMode;
         });
         // Reload the full app for theme changes to reflect
-        final updater = Provider.of<Update>(context, listen: false);
         updater.updateView();
         saveSettings();
       },
@@ -115,6 +116,8 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
   }
 
   Widget generateColorButton(ThemeData theme) {
+    var updater = ref.read(updaterProvider);
+
     return Container(
       width: 90,
       padding: EdgeInsets.all(1),
@@ -131,7 +134,6 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
             }
           });
           // Reload the full app for theme changes to reflect
-          final updater = Provider.of<Update>(context, listen: false);
           updater.updateView();
           saveSettings();
         },

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
@@ -13,23 +14,22 @@ import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-import 'package:provider/provider.dart';
 
 import '../class/abstract_place.dart';
 import '../class/class_notification_service.dart';
 import '../class/class_unified_push_handler.dart';
 import '../services/update_provider.dart';
-// import '../widgets/VectorMapWidget.dart';
 import '../widgets/dialogs/loading_screen.dart';
 
-class AddMyPlaceWithMapView extends StatefulWidget {
+class AddMyPlaceWithMapView extends ConsumerStatefulWidget {
   const AddMyPlaceWithMapView({super.key});
 
   @override
-  State<AddMyPlaceWithMapView> createState() => _AddMyPlaceWithMapViewState();
+  ConsumerState<AddMyPlaceWithMapView> createState() =>
+      _AddMyPlaceWithMapViewState();
 }
 
-class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
+class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
   final MapController mapController = MapController();
   final TextEditingController textEditingController = TextEditingController();
   final FocusNode textInputFocus = FocusNode();
@@ -182,6 +182,8 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
 
   @override
   Widget build(BuildContext context) {
+    var updater = ref.read(updaterProvider);
+
     return Scaffold(
       // set to false to prevent jumping of the radiusSlider Widget
       resizeToAvoidBottomInset: false,
@@ -466,8 +468,6 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                                       name: _selectedPlaceName);
 
                                   setState(() {
-                                    final updater = Provider.of<Update>(context,
-                                        listen: false);
                                     updater.updateList(newPlace);
                                     // cancel warning of missing places (ID: 3)
                                     NotificationService.cancelOneNotification(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:foss_warn/class/class_alarmManager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/geocode_handler.dart';
@@ -7,8 +7,6 @@ import 'package:foss_warn/services/legacy_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/map_view.dart';
-// import 'package:foss_warn/widgets/VectorMapWidget.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
@@ -36,22 +34,7 @@ void main() async {
   await NotificationService().init();
   await loadSettings();
 
-  /*if (userPreferences.shouldNotifyGeneral) {
-    AlarmManager.callback();
-    AlarmManager().initialize();
-    AlarmManager().registerBackgroundTask();
-    print("Background notification enabled");
-  } else {
-    print("Background notification disabled due to user setting");
-  }*/
-
-  runApp(
-    // rebuild widget on external data changes
-    ChangeNotifierProvider(
-      create: (context) => Update(),
-      child: Consumer<Update>(builder: (context, counter, child) => FOSSWarn()),
-    ),
-  );
+  runApp(FOSSWarn());
 }
 
 class FOSSWarn extends StatelessWidget {
@@ -59,28 +42,30 @@ class FOSSWarn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FOSS Warn',
-      theme: userPreferences.selectedLightTheme,
-      darkTheme: userPreferences.selectedDarkTheme,
-      themeMode: userPreferences.selectedThemeMode,
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: userPreferences.showWelcomeScreen ? WelcomeView() : HomeView(),
+    return ProviderScope(
+      child: MaterialApp(
+        title: 'FOSS Warn',
+        theme: userPreferences.selectedLightTheme,
+        darkTheme: userPreferences.selectedDarkTheme,
+        themeMode: userPreferences.selectedThemeMode,
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: userPreferences.showWelcomeScreen ? WelcomeView() : HomeView(),
+      ),
     );
   }
 }
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> {
   int _selectedIndex = userPreferences.startScreen; // selected start view
 
   // list of views for the navigation bar
@@ -129,6 +114,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    var updater = ref.read(updaterProvider);
+
     return Scaffold(
         // set to false to prevent the widget from jumping after closing the keyboard
         resizeToAvoidBottomInset: false,
@@ -142,18 +129,15 @@ class _HomeViewState extends State<HomeView> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) {
-                    return SortByDialog();
-                  },
+                  builder: (BuildContext context) => SortByDialog(),
                 );
-                final updater = Provider.of<Update>(context, listen: false);
                 updater.updateReadStatusInList();
               },
             ),
             IconButton(
               onPressed: () {
                 for (Place p in myPlaceList) {
-                  p.markAllWarningsAsRead(context);
+                  p.markAllWarningsAsRead(ref);
                 }
                 final snackBar = SnackBar(
                   content: Text(

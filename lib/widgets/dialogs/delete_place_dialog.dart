@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import '../../class/abstract_place.dart';
 import '../../services/update_provider.dart';
-import 'package:provider/provider.dart';
 
-class DeletePlaceDialog extends StatefulWidget {
+class DeletePlaceDialog extends ConsumerStatefulWidget {
   final Place myPlace;
   const DeletePlaceDialog({super.key, required this.myPlace});
 
   @override
-  State<DeletePlaceDialog> createState() => _DeletePlaceDialogState();
+  ConsumerState<DeletePlaceDialog> createState() => _DeletePlaceDialogState();
 }
 
-class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
+class _DeletePlaceDialogState extends ConsumerState<DeletePlaceDialog> {
   @override
   Widget build(BuildContext context) {
+    var updater = ref.read(updaterProvider);
+
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.delete_place_headline),
       content: Column(
@@ -47,7 +49,6 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
                   (widget.myPlace as FPASPlace).subscriptionId);
             }
 
-            final updater = Provider.of<Update>(context, listen: false);
             updater.deletePlace(widget.myPlace);
             Navigator.of(context).pop();
           },

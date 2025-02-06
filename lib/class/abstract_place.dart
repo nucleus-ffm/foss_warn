@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_notification_preferences.dart';
 import 'package:foss_warn/enums/warning_source.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
-import 'package:provider/provider.dart';
 
 import '../enums/severity.dart';
 import '../main.dart';
@@ -110,13 +110,13 @@ abstract class Place {
 
   /// set the read status from all warnings to true
   /// @context to update view
-  void markAllWarningsAsRead(BuildContext context) {
+  void markAllWarningsAsRead(WidgetRef ref) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
       NotificationService.cancelOneNotification(
           myWarnMessage.identifier.hashCode);
     }
-    final updater = Provider.of<Update>(context, listen: false);
+    final updater = ref.read(updaterProvider);
     updater.updateReadStatusInList();
     saveMyPlacesList();
   }
@@ -124,12 +124,12 @@ abstract class Place {
   /// set the read and notified status from all warnings to false
   /// used for debug purpose
   /// [@context] to update view
-  void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
+  void resetReadAndNotificationStatusForAllWarnings(WidgetRef ref) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = false;
       myWarnMessage.notified = false;
     }
-    final updater = Provider.of<Update>(context, listen: false);
+    final updater = ref.read(updaterProvider);
     updater.updateReadStatusInList();
     saveMyPlacesList();
   }
