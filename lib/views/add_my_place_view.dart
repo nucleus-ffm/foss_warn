@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../class/class_notification_service.dart';
 import '../services/list_handler.dart';
 import '../services/update_provider.dart';
 
-class AddMyPlaceView extends StatefulWidget {
+class AddMyPlaceView extends ConsumerStatefulWidget {
   const AddMyPlaceView({super.key});
 
   @override
-  State<AddMyPlaceView> createState() => _AddMyPlaceViewState();
+  ConsumerState<AddMyPlaceView> createState() => _AddMyPlaceViewState();
 }
 
-class _AddMyPlaceViewState extends State<AddMyPlaceView> {
+class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
   List<Place> _allPlacesToShow = [];
 
   @override
   Widget build(BuildContext context) {
+    var updater = ref.read(updaterProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.add_new_place),
@@ -59,8 +61,6 @@ class _AddMyPlaceViewState extends State<AddMyPlaceView> {
                             style: Theme.of(context).textTheme.titleMedium),
                         onTap: () {
                           setState(() {
-                            final updater =
-                                Provider.of<Update>(context, listen: false);
                             updater.updateList(place);
                             // cancel warning of missing places (ID: 3)
                             NotificationService.cancelOneNotification(3);

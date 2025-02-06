@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/main.dart';
@@ -7,7 +8,6 @@ import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 import 'package:foss_warn/services/update_provider.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:xml2json/xml2json.dart';
 
 import 'class_error_logger.dart';
@@ -338,13 +338,13 @@ class Place {
 
   /// set the read status from all warnings to true
   /// @ref to update view
-  void markAllWarningsAsRead(BuildContext context) {
+  void markAllWarningsAsRead(WidgetRef ref) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
       NotificationService.cancelOneNotification(
           myWarnMessage.identifier.hashCode);
     }
-    final updater = Provider.of<Update>(context, listen: false);
+    final updater = ref.read(updaterProvider);
     updater.updateReadStatusInList();
     saveMyPlacesList();
   }
@@ -352,12 +352,12 @@ class Place {
   /// set the read and notified status from all warnings to false
   /// used for debug purpose
   /// [@ref] to update view
-  void resetReadAndNotificationStatusForAllWarnings(BuildContext context) {
+  void resetReadAndNotificationStatusForAllWarnings(WidgetRef ref) {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = false;
       myWarnMessage.notified = false;
     }
-    final updater = Provider.of<Update>(context, listen: false);
+    final updater = ref.read(updaterProvider);
     updater.updateReadStatusInList();
     saveMyPlacesList();
   }

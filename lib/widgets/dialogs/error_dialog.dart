@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/main.dart';
-import 'package:provider/provider.dart';
 
 import '../../services/update_provider.dart';
 
-class ErrorDialog extends StatefulWidget {
+class ErrorDialog extends ConsumerStatefulWidget {
   const ErrorDialog({super.key});
 
   @override
-  State<ErrorDialog> createState() => _ErrorDialogState();
+  ConsumerState<ErrorDialog> createState() => _ErrorDialogState();
 }
 
-class _ErrorDialogState extends State<ErrorDialog> {
+class _ErrorDialogState extends ConsumerState<ErrorDialog> {
   // used to scroll horizontal and vertical at the same time
   final ScrollController _horizontal = ScrollController(),
       _vertical = ScrollController();
   @override
   Widget build(BuildContext context) {
+    var updater = ref.read(updaterProvider);
+
     return FutureBuilder<String>(
       future: ErrorLogger.readLog(),
       builder: (context, snapshot) {
@@ -106,7 +108,6 @@ class _ErrorDialogState extends State<ErrorDialog> {
                 ),
                 TextButton(
                   onPressed: () {
-                    final updater = Provider.of<Update>(context, listen: false);
                     updater.updateView();
                     Navigator.of(context).pop();
                   },

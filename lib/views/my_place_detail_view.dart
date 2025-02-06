@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 
 import '../services/list_handler.dart';
@@ -8,13 +9,13 @@ import '../services/sort_warnings.dart';
 import '../widgets/warning_widget.dart';
 
 //@todo rename to MyPlacesDetailView
-class MyPlaceDetailScreen extends StatelessWidget {
+class MyPlaceDetailScreen extends ConsumerWidget {
   final Place _myPlace;
   const MyPlaceDetailScreen({super.key, required Place myPlace})
       : _myPlace = myPlace;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     sortWarnings(_myPlace.warnings); //@todo check if this works?
 
     /// generate a threaded list of alerts with updates of alert as thread
@@ -87,11 +88,11 @@ class MyPlaceDetailScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              _myPlace.markAllWarningsAsRead(context);
+              _myPlace.markAllWarningsAsRead(ref);
               //@todo just a quick fix for the read state problem. We have to rethink our memory management
               myPlaceList
                   .firstWhere((e) => e.name == _myPlace.name)
-                  .markAllWarningsAsRead(context);
+                  .markAllWarningsAsRead(ref);
               final snackBar = SnackBar(
                 content: Text(
                   AppLocalizations.of(context)!
