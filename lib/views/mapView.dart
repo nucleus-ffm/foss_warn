@@ -109,6 +109,7 @@ class _MapViewState extends State<MapView> {
             markers: [
               Marker(
                 point: p.geocode.latLng,
+                alignment: Alignment.topCenter,
                 child: InkWell(
                   child: Icon(
                     Icons.place,

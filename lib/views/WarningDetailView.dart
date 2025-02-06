@@ -257,6 +257,7 @@ class _DetailScreenState extends State<DetailScreen> {
               MarkerLayer(markers: [
                 Marker(
                     point: _calculatePlaceMarker()!,
+                    alignment: Alignment.topCenter,
                     child: Icon(
                       Icons.place,
                       size: 40,

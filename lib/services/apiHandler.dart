@@ -265,6 +265,7 @@ Future<List<WarnMessage>> parseNinaJsonData(
       // of it by just adding .0
       geoJson = geoJson.replaceAllMapped(RegExp(r'\[\d+\,'), (Match m) => "[${m.group(0)?.replaceAll("[", "").replaceAll(",", "")}.0,");
       geoJson = geoJson.replaceAllMapped(RegExp(r'\s\d+]'), (Match m) => "${m.group(0)?.replaceAll("]", "").replaceAll(",", "")}.0]");
+      geoJson = geoJson.replaceAllMapped(RegExp(r',\d+]'), (Match m) => ",${m.group(0)?.replaceAll("]", "").replaceAll(",", "")}.0]");
 
 
       var warningDetails = jsonDecode(utf8.decode(responseDetails.bodyBytes));
@@ -377,6 +378,12 @@ Future<List<WarnMessage>> parseMapApiData(
       dynamic coordinatesRaw =
           utf8.decode((await getGeoJson(id, baseUrl)).bodyBytes);
       String geoJson = coordinatesRaw.toString();
+
+      // ensure a valid geoJson format
+      geoJson = geoJson.replaceAllMapped(RegExp(r'\[\d+\,'), (Match m) => "[${m.group(0)?.replaceAll("[", "").replaceAll(",", "")}.0,");
+      geoJson = geoJson.replaceAllMapped(RegExp(r'\s\d+]'), (Match m) => "${m.group(0)?.replaceAll("]", "").replaceAll(",", "")}.0]");
+      geoJson = geoJson.replaceAllMapped(RegExp(r',\d+]'), (Match m) => ",${m.group(0)?.replaceAll("]", "").replaceAll(",", "")}.0]");
+
       /*List<dynamic> coordinates =
           coordinatesRaw["features"][0]["geometry"]["coordinates"][0];*/
       var warningDetails = jsonDecode(utf8.decode(responseDetails.bodyBytes));
