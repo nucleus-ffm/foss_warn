@@ -59,7 +59,7 @@ class UserPreferences {
   bool showAllWarnings = false;
   bool areWarningsFromCache = false;
 
-  String versionNumber = "0.8.0"; // shown in the about view
+  String versionNumber = "0.8.1"; // shown in the about view
   int currentVersionCode = 32;
   int previousInstalledVersionCode = -1;
 
