@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warning.dart';
 
 import '../class/abstract_place.dart';
 import '../class/class_warn_message.dart';
@@ -59,16 +60,18 @@ class WarningWidget extends ConsumerWidget {
 
     return Card(
       child: InkWell(
-        onTap: () {
+        onTap: () async {
+          ref.read(currentWarningProvider.notifier).state = ActiveWarning(
+            message: _warnMessage,
+            place: _place,
+          );
           try {
-            Navigator.push(
+            await Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => DetailScreen(
-                        warnMessage: _warnMessage,
-                        place: _place,
-                      )),
-            ).then((value) => updatePrevView());
+              MaterialPageRoute(builder: (context) => DetailScreen()),
+            );
+
+            updatePrevView();
           } catch (e) {
             ErrorLogger.writeErrorLog(
                 "WarningWidget.dart",
@@ -186,15 +189,20 @@ class WarningWidget extends ConsumerWidget {
               Column(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      var activeWarning = ActiveWarning(
+                        message: _warnMessage,
+                        place: _place,
+                      );
+                      ref.read(currentWarningProvider.notifier).state =
+                          activeWarning;
+
+                      await Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailScreen(
-                                  warnMessage: _warnMessage,
-                                  place: _place,
-                                )),
-                      ).then((value) => updatePrevView());
+                        MaterialPageRoute(builder: (context) => DetailScreen()),
+                      );
+
+                      updatePrevView();
                     },
                     icon: Icon(Icons.read_more),
                   ),

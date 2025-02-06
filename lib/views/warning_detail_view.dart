@@ -2,13 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_nina_place.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warning.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
-import '../class/abstract_place.dart';
-import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
 import '../enums/severity.dart';
 import '../main.dart';
@@ -20,19 +20,14 @@ import 'package:share_plus/share_plus.dart';
 
 import '../widgets/dialogs/warning_severity_explanation.dart';
 
-class DetailScreen extends StatefulWidget {
-  final WarnMessage _warnMessage;
-  final Place? _place;
-  const DetailScreen(
-      {super.key, required WarnMessage warnMessage, Place? place})
-      : _warnMessage = warnMessage,
-        _place = place;
+class DetailScreen extends ConsumerStatefulWidget {
+  const DetailScreen({super.key});
 
   @override
-  State<DetailScreen> createState() => _DetailScreenState();
+  ConsumerState<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
+class _DetailScreenState extends ConsumerState<DetailScreen> {
   bool _showMoreRegions = false;
   final MapController mapController = MapController();
 
@@ -211,20 +206,32 @@ class _DetailScreenState extends State<DetailScreen> {
   */
 
   LatLng? _calculatePlaceMarker() {
-    if (widget._place != null) {
-      if (widget._place is NinaPlace) {
-        NinaPlace ninaPlace = widget._place as NinaPlace;
-        return ninaPlace.geocode.latLng;
-      }
+    var activeWarning = ref.read(currentWarningProvider);
+
+    if (activeWarning == null) {
+      return null;
     }
+
+    if (activeWarning.place is NinaPlace) {
+      NinaPlace ninaPlace = activeWarning.place as NinaPlace;
+      return ninaPlace.geocode.latLng;
+    }
+
     return null;
   }
 
   /// create a camera to fix the polygon to the camera of the map
   Widget _createMapWidget(List<Area> area) {
+    var activeWarning = ref.read(currentWarningProvider);
+
+    if (activeWarning == null) {
+      return SizedBox
+          .shrink(); // TODO(PureTryOut): handle this situation better
+    }
+
     CameraFit createInitCameraFit() {
       List<LatLng> polygonPoints =
-          Area.getListWithAllPolygons(widget._warnMessage.info.first.area);
+          Area.getListWithAllPolygons(activeWarning.message.info.first.area);
 
       if (polygonPoints.isNotEmpty) {
         return CameraFit.bounds(
@@ -248,7 +255,7 @@ class _DetailScreenState extends State<DetailScreen> {
               //@todo can be null
               PolygonLayer(
                   polygons: Area.createListOfPolygonsForAreas(
-                      widget._warnMessage.info.first.area)),
+                      activeWarning.message.info.first.area)),
             ],
             markerLayers: _calculatePlaceMarker() != null
                 ? [
@@ -290,23 +297,31 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      widget._warnMessage.read = true;
-    });
+
+    var activeWarning = ref.read(currentWarningProvider);
+
+    if (activeWarning == null) {
+      return; // TODO(PureTryOut): handle this case better
+    }
+
+    activeWarning.message.read = true;
+    ref.read(currentWarningProvider.notifier).state = activeWarning;
+    setState(() {});
 
     // @todo hacky solution see warningWidget L265 for more info
-    if (widget._place != null) {
+    if (activeWarning.place != null) {
       myPlaceList
-          .firstWhere((e) => e.name == widget._place!.name)
+          .firstWhere((e) => e.name == activeWarning.place!.name)
           .warnings
-          .firstWhere((e) => e.identifier == widget._warnMessage.identifier)
-          .read = widget._warnMessage.read;
+          .firstWhere((e) => e.identifier == activeWarning.message.identifier)
+          .read = activeWarning.message.read;
     }
     // save places List to store new read state
     saveMyPlacesList();
     // cancel the notification
     NotificationService.cancelOneNotification(
-        widget._warnMessage.identifier.hashCode);
+      activeWarning.message.identifier.hashCode,
+    );
   }
 
   @override
@@ -318,6 +333,13 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    var activeWarning = ref.read(currentWarningProvider);
+    if (activeWarning == null) {
+      return SizedBox.shrink(); // TODO(PureTryOut): handle this case better
+    }
+
+    var warningMessage = activeWarning.message;
 
     /// returns a List of Buttons with links to embedded pictures
     List<Widget> generateAssets(String text) {
@@ -372,7 +394,7 @@ class _DetailScreenState extends State<DetailScreen> {
       if (length == -1) {
         addAll = true;
       }
-      for (Area myArea in widget._warnMessage.info[0].area) {
+      for (Area myArea in activeWarning.message.info[0].area) {
         List<String> splitDescription = myArea.description.split(",");
         for (int i = 0; i < splitDescription.length; i++) {
           if (counter <= length || addAll) {
@@ -434,15 +456,15 @@ class _DetailScreenState extends State<DetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget._warnMessage.info[0].headline),
+        title: Text(activeWarning.message.info[0].headline),
         actions: [
           IconButton(
             //@todo refactor
             tooltip: AppLocalizations.of(context)!.warning_share,
             onPressed: () {
               final String shareText =
-                  "${widget._warnMessage.info[0].headline}\n\n${AppLocalizations.of(context)!.warning_from}: ${formatSentDate(widget._warnMessage.sent)}\n\nContext information: \n${AppLocalizations.of(context)!.warning_type}: ${translateWarningType(widget._warnMessage.messageType.name, context)}\n ${AppLocalizations.of(context)!.warning_severity}: ${translateWarningCertainty(widget._warnMessage.info[0].severity.name, context)}\n\n${AppLocalizations.of(context)!.warning_region}: ${generateAreaDescList(-1).toString().substring(1, generateAreaDescList(-1).toString().length - 1)}\n\n${AppLocalizations.of(context)!.warning_description}:\n${replaceHTMLTags(widget._warnMessage.info[0].description)} \n\n${AppLocalizations.of(context)!.warning_recommended_action}:\n${replaceHTMLTags(widget._warnMessage.info[0].instruction ?? "n.a.")}\n\n${AppLocalizations.of(context)!.warning_source}:\n${widget._warnMessage.publisher}\n\n-- ${AppLocalizations.of(context)!.warning_shared_by_foss_warn} --";
-              final String shareSubject = widget._warnMessage.info[0].headline;
+                  "${warningMessage.info[0].headline}\n\n${AppLocalizations.of(context)!.warning_from}: ${formatSentDate(warningMessage.sent)}\n\nContext information: \n${AppLocalizations.of(context)!.warning_type}: ${translateWarningType(warningMessage.messageType.name, context)}\n ${AppLocalizations.of(context)!.warning_severity}: ${translateWarningCertainty(warningMessage.info[0].severity.name, context)}\n\n${AppLocalizations.of(context)!.warning_region}: ${generateAreaDescList(-1).toString().substring(1, generateAreaDescList(-1).toString().length - 1)}\n\n${AppLocalizations.of(context)!.warning_description}:\n${replaceHTMLTags(warningMessage.info[0].description)} \n\n${AppLocalizations.of(context)!.warning_recommended_action}:\n${replaceHTMLTags(warningMessage.info[0].instruction ?? "n.a.")}\n\n${AppLocalizations.of(context)!.warning_source}:\n${warningMessage.publisher}\n\n-- ${AppLocalizations.of(context)!.warning_shared_by_foss_warn} --";
+              final String shareSubject = warningMessage.info[0].headline;
               shareWarning(context, shareText, shareSubject);
             },
             icon: Icon(Icons.share),
@@ -456,60 +478,54 @@ class _DetailScreenState extends State<DetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget._warnMessage.info[0].headline,
+                warningMessage.info[0].headline,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               Text(
-                "${AppLocalizations.of(context)!.warning_from}: ${formatSentDate(widget._warnMessage.sent)}",
+                "${AppLocalizations.of(context)!.warning_from}: ${formatSentDate(warningMessage.sent)}",
                 style: TextStyle(
                     fontSize: userPreferences.warningFontSize,
                     fontWeight: FontWeight.bold),
               ),
-              widget._warnMessage.info[0].effective != null
+              warningMessage.info[0].effective != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 1),
                       child: Text(
-                        "${AppLocalizations.of(context)!.warning_effective} ${formatSentDate(widget._warnMessage.info[0].effective ?? "n.a.")}",
+                        "${AppLocalizations.of(context)!.warning_effective} ${formatSentDate(warningMessage.info[0].effective ?? "n.a.")}",
                         style: TextStyle(
                             fontSize: userPreferences.warningFontSize,
                             fontWeight: FontWeight.bold),
                       ),
                     )
                   : SizedBox(),
-              widget._warnMessage.info[0].onset != null
+              warningMessage.info[0].onset != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
-                        "${AppLocalizations.of(context)!.warning_onset} ${formatSentDate(widget._warnMessage.info[0].onset ?? "n.a.")}",
+                        "${AppLocalizations.of(context)!.warning_onset} ${formatSentDate(warningMessage.info[0].onset ?? "n.a.")}",
                         style: TextStyle(
                             fontSize: userPreferences.warningFontSize,
                             fontWeight: FontWeight.bold),
                       ),
                     )
                   : SizedBox(),
-              widget._warnMessage.info[0].expires != null
+              warningMessage.info[0].expires != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
-                        "${AppLocalizations.of(context)!.warning_expires} ${formatSentDate(widget._warnMessage.info[0].expires ?? "n.a.")}",
+                        "${AppLocalizations.of(context)!.warning_expires} ${formatSentDate(warningMessage.info[0].expires ?? "n.a.")}",
                         style: TextStyle(
                             fontSize: userPreferences.warningFontSize,
                             fontWeight: FontWeight.bold),
                       ),
                     )
                   : SizedBox(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Row(
                 children: [
                   Icon(Icons.tag),
-                  SizedBox(
-                    width: 5,
-                  ),
+                  SizedBox(width: 5),
                   Text(
                     AppLocalizations.of(context)!.warning_tags,
                     style: TextStyle(
@@ -518,28 +534,26 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 2,
-              ),
+              SizedBox(height: 2),
               Wrap(
                 children: [
                   createTagButton(
                       Colors.deepPurple,
                       AppLocalizations.of(context)!.warning_event,
                       translateWarningCategory(
-                          widget._warnMessage.info[0].event, context)),
+                          warningMessage.info[0].event, context)),
                   createTagButton(
-                      chooseWarningTypeColor(widget
-                          ._warnMessage.messageType.name), //@todo besser machen
+                      chooseWarningTypeColor(warningMessage
+                          .messageType.name), //@todo besser machen
                       AppLocalizations.of(context)!.warning_type,
                       translateWarningType(
-                          widget._warnMessage.messageType.name, context)),
+                          warningMessage.messageType.name, context)),
                   createTagButton(
                       Severity.getColorForSeverity(
-                          widget._warnMessage.info[0].severity),
+                          warningMessage.info[0].severity),
                       AppLocalizations.of(context)!.warning_severity,
                       Severity.getLocalizationName(
-                          widget._warnMessage.info[0].severity, context),
+                          warningMessage.info[0].severity, context),
                       action: () => WarningSeverityExplanation()),
                   // display more metadata button if enabled in the settings
                   userPreferences.showExtendedMetaData
@@ -548,50 +562,46 @@ class _DetailScreenState extends State<DetailScreen> {
                               Colors.green,
                               AppLocalizations.of(context)!.warning_urgency,
                               translateWarningUrgency(
-                                  widget._warnMessage.info[0].urgency.name,
+                                  warningMessage.info[0].urgency.name,
                                   context)),
                           createTagButton(
                               Colors.blueGrey,
                               AppLocalizations.of(context)!.warning_certainty,
                               translateWarningCertainty(
-                                  widget._warnMessage.info[0].certainty.name,
+                                  warningMessage.info[0].certainty.name,
                                   context)),
                           createTagButton(
                               Colors.amber,
                               AppLocalizations.of(context)!.warning_scope,
-                              widget._warnMessage.scope.name),
+                              warningMessage.scope.name),
                           createTagButton(
                               Colors.lightBlue[200]!,
                               AppLocalizations.of(context)!.warning_identifier,
-                              widget._warnMessage.identifier),
+                              warningMessage.identifier),
                           createTagButton(
                               Colors.orangeAccent,
                               AppLocalizations.of(context)!.warning_sender,
-                              widget._warnMessage.sender),
+                              warningMessage.sender),
                           createTagButton(
                               Colors.tealAccent,
                               AppLocalizations.of(context)!.warning_status,
                               translateWarningStatus(
-                                  widget._warnMessage.status.name, context)),
+                                  warningMessage.status.name, context)),
                           createTagButton(
                               Colors.purpleAccent,
                               "Referenze",
-                              widget._warnMessage.references?.identifier
+                              warningMessage.references?.identifier
                                       .toString() ??
                                   "None"),
                         ])
                       : SizedBox(),
                 ],
               ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Row(
                 children: [
                   Icon(Icons.map),
-                  SizedBox(
-                    width: 5,
-                  ),
+                  SizedBox(width: 5),
                   Text(
                     AppLocalizations.of(context)!.warning_region,
                     style: TextStyle(
@@ -600,9 +610,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 2,
-              ),
+              SizedBox(height: 2),
               _showMoreRegions
                   ? SelectableText(
                       generateAreaDescList(-1).toString().substring(
@@ -643,20 +651,14 @@ class _DetailScreenState extends State<DetailScreen> {
                       },
                     )
                   : SizedBox(),
-              SizedBox(
-                height: 20,
-              ),
-              widget._warnMessage.info.first.area.first.geoJson != "{}"
-                  ? _createMapWidget(widget._warnMessage.info.first.area)
+              SizedBox(height: 20),
+              warningMessage.info.first.area.first.geoJson != "{}"
+                  ? _createMapWidget(warningMessage.info.first.area)
                   : SizedBox(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Row(children: [
                 Icon(Icons.description),
-                SizedBox(
-                  width: 5,
-                ),
+                SizedBox(width: 5),
                 Text(
                   AppLocalizations.of(context)!.warning_description,
                   style: TextStyle(
@@ -664,28 +666,22 @@ class _DetailScreenState extends State<DetailScreen> {
                       fontSize: userPreferences.warningFontSize + 5),
                 ),
               ]),
-              SizedBox(
-                height: 2,
-              ),
+              SizedBox(height: 2),
               SelectableText.rich(
                 TextSpan(
                     children: generateDescriptionBody(
-                        widget._warnMessage.info[0].description),
+                        warningMessage.info[0].description),
                     style:
                         TextStyle(fontSize: userPreferences.warningFontSize)),
               ),
-              SizedBox(
-                height: 5,
-              ),
-              generateAssets(widget._warnMessage.info[0].description).isNotEmpty
+              SizedBox(height: 5),
+              generateAssets(warningMessage.info[0].description).isNotEmpty
                   ? Column(
                       children: [
                         Row(
                           children: [
                             Icon(Icons.image),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            SizedBox(width: 5),
                             Text(
                               "${AppLocalizations.of(context)!.warning_appendix}:",
                               style: TextStyle(
@@ -704,13 +700,13 @@ class _DetailScreenState extends State<DetailScreen> {
                             mainAxisSpacing: 10,
                             crossAxisCount: 4,
                             children: generateAssets(
-                                widget._warnMessage.info[0].description),
+                                warningMessage.info[0].description),
                           ),
                         ),
                       ],
                     )
                   : SizedBox(),
-              widget._warnMessage.info[0].instruction != null
+              warningMessage.info[0].instruction != null
                   ? Column(
                       children: [
                         SizedBox(
@@ -719,9 +715,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         Row(
                           children: [
                             Icon(Icons.shield_rounded),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            SizedBox(width: 5),
                             Text(
                               AppLocalizations.of(context)!
                                   .warning_recommended_action,
@@ -735,27 +729,21 @@ class _DetailScreenState extends State<DetailScreen> {
                       ],
                     )
                   : SizedBox(),
-              SizedBox(
-                height: 2,
-              ),
-              widget._warnMessage.info[0].instruction != null
+              SizedBox(height: 2),
+              warningMessage.info[0].instruction != null
                   ? SelectableText.rich(
                       TextSpan(
                           children: generateDescriptionBody(
-                              widget._warnMessage.info[0].instruction!),
+                              warningMessage.info[0].instruction!),
                           style: TextStyle(
                               fontSize: userPreferences.warningFontSize)),
                     )
                   : SizedBox(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Row(
                 children: [
                   Icon(Icons.info_outline),
-                  SizedBox(
-                    width: 5,
-                  ),
+                  SizedBox(width: 5),
                   Text(
                     AppLocalizations.of(context)!.warning_source,
                     style: TextStyle(
@@ -765,19 +753,15 @@ class _DetailScreenState extends State<DetailScreen> {
                 ],
               ),
               Text(
-                widget._warnMessage.publisher,
+                warningMessage.publisher,
                 style: TextStyle(fontSize: userPreferences.warningFontSize),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              widget._warnMessage.info[0].contact != null
+              SizedBox(height: 20),
+              warningMessage.info[0].contact != null
                   ? Row(
                       children: [
                         Icon(Icons.web),
-                        SizedBox(
-                          width: 5,
-                        ),
+                        SizedBox(width: 5),
                         Text(
                           AppLocalizations.of(context)!.warning_contact_website,
                           style: TextStyle(
@@ -786,13 +770,11 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ],
                     )
-                  : widget._warnMessage.info[0].web != ""
+                  : warningMessage.info[0].web != ""
                       ? Row(
                           children: [
                             Icon(Icons.web),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            SizedBox(width: 5),
                             Text(
                               "${AppLocalizations.of(context)!.warning_website}:",
                               style: TextStyle(
@@ -803,23 +785,19 @@ class _DetailScreenState extends State<DetailScreen> {
                           ],
                         )
                       : SizedBox(),
-              SizedBox(
-                height: 2,
-              ),
-              widget._warnMessage.info[0].contact != null
+              SizedBox(height: 2),
+              warningMessage.info[0].contact != null
                   ? Row(
                       children: [
                         Icon(Icons.perm_contact_cal),
-                        SizedBox(
-                          width: 15,
-                        ),
+                        SizedBox(width: 15),
                         Flexible(
                           child: SelectableText.rich(
                             // key used by unit test
                             key: Key('contactFieldKey'),
                             TextSpan(
                                 children: generateContactBody(replaceHTMLTags(
-                                    widget._warnMessage.info[0].contact!)),
+                                    warningMessage.info[0].contact!)),
                                 style: TextStyle(
                                     fontSize: userPreferences.warningFontSize)),
                           ),
@@ -827,19 +805,17 @@ class _DetailScreenState extends State<DetailScreen> {
                       ],
                     )
                   : SizedBox(),
-              widget._warnMessage.info[0].web != null
+              warningMessage.info[0].web != null
                   ? Row(
                       children: [
                         Icon(Icons.open_in_new),
-                        SizedBox(
-                          width: 5,
-                        ),
+                        SizedBox(width: 5),
                         Flexible(
                           fit: FlexFit.loose,
                           child: TextButton(
                             onPressed: () async {
                               bool success = await launchUrlInBrowser(
-                                  widget._warnMessage.info[0].web!);
+                                  warningMessage.info[0].web!);
 
                               if (!success) {
                                 final snackBar = SnackBar(
@@ -855,7 +831,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               }
                             },
                             child: Text(
-                              widget._warnMessage.info[0].web!,
+                              warningMessage.info[0].web!,
                               style: TextStyle(
                                   fontSize: userPreferences.warningFontSize),
                             ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foss_warn/class/class_area.dart';
 import 'package:foss_warn/class/class_info.dart';
@@ -12,6 +13,7 @@ import 'package:foss_warn/enums/category.dart' as cap_category;
 import 'package:foss_warn/enums/status.dart';
 import 'package:foss_warn/enums/urgency.dart';
 import 'package:foss_warn/enums/warning_source.dart';
+import 'package:foss_warn/services/warning.dart';
 import 'package:foss_warn/views/warning_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -98,8 +100,20 @@ Widget makeTestableWidget({required Widget myWidget}) {
 void testWidget(String testCaseName, String contactFieldText,
     String contactFieldExpectedText) {
   WarnMessage wm = createDummyWarnMessage(contactFieldText);
-  Widget testWidget =
-      makeTestableWidget(myWidget: DetailScreen(warnMessage: wm));
+  Widget testWidget = makeTestableWidget(
+    myWidget: ProviderScope(
+      overrides: [
+        currentWarningProvider.overrideWith(
+          (ref) => ActiveWarning(message: wm, place: null),
+        ),
+      ],
+      child: Consumer(
+        builder: (context, ref, child) {
+          return DetailScreen();
+        },
+      ),
+    ),
+  );
 
   testWidgets(testCaseName, (tester) async {
     await tester.pumpWidget(testWidget);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:foss_warn/main.dart';
 
 import '../class/abstract_place.dart';
 import '../class/class_area.dart';
 import '../class/class_warn_message.dart';
-import '../main.dart';
 import '../services/list_handler.dart';
 
 class MapWidget extends StatefulWidget {
