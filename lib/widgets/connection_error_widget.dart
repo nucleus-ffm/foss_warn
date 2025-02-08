@@ -10,28 +10,7 @@ class ConnectionError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (userPreferences.showAllWarnings &&
-        appState.dataFetchStatusOldAPI == DataFetchStatus.error) {
-      return Container(
-        padding: EdgeInsets.only(left: 10, bottom: 6, top: 6),
-        color: Colors.red,
-        child: Row(
-          children: [
-            Icon(
-              Icons.info,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              AppLocalizations.of(context)!.connection_error_no_internet,
-              style: Theme.of(context).textTheme.displaySmall,
-            )
-          ],
-        ),
-      );
-    } else if (userPreferences.areWarningsFromCache) {
+    if (userPreferences.areWarningsFromCache) {
       return Container(
         padding: EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
         //margin: EdgeInsets.only(bottom: 10),
@@ -82,6 +61,7 @@ class ConnectionError extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Text(
                     'Ups. Something went wrong. Please contact the developer',
+                    // @todo translate app_error_message
                     style: Theme.of(context).textTheme.displaySmall,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -438,7 +438,7 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                                 String subscriptionId = "";
                                 try {
                                   subscriptionId =
-                                      await UnifiedPushHandler.registerForArea(
+                                      await FPASPlace.registerForArea(
                                           context, boundingBox);
                                 } catch (e) {
                                   debugPrint("Error: ${e.toString()}");

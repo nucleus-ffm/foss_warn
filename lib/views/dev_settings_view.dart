@@ -293,12 +293,10 @@ class _DevSettingsState extends State<DevSettings> {
                       // if the text field is not in focus at all
                       if (FocusScope.of(context).isFirstFocus) {
                         FocusScope.of(context).unfocus();
-                        saveSettings();
                       }
                     },
                     onEditingComplete: () {
                       FocusScope.of(context).unfocus();
-                      saveSettings();
                     },
                     decoration: InputDecoration(),
                     style: Theme.of(context).textTheme.bodyMedium,

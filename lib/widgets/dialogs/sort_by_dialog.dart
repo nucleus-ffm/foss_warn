@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../enums/sorting_categories.dart';
 import '../../main.dart';
 import '../../services/save_and_load_shared_preferences.dart';
 
@@ -25,12 +26,14 @@ class _SortByDialogState extends State<SortByDialog> {
             child: Icon(Icons.date_range),
           ),
           selectedColor: Theme.of(context).colorScheme.primary,
-          selected: userPreferences.sortWarningsBy == "date" ? true : false,
+          selected: userPreferences.sortWarningsBy == SortingCategories.data
+              ? true
+              : false,
           onTap: () {
             setState(() {
-              userPreferences.sortWarningsBy = "date";
+              userPreferences.sortWarningsBy = SortingCategories.data;
             });
-            saveSettings();
+
             Navigator.of(context).pop();
           },
         ),
@@ -43,12 +46,13 @@ class _SortByDialogState extends State<SortByDialog> {
             child: Icon(Icons.warning),
           ),
           selectedColor: Theme.of(context).colorScheme.primary,
-          selected: userPreferences.sortWarningsBy == "severity" ? true : false,
+          selected: userPreferences.sortWarningsBy == SortingCategories.severity
+              ? true
+              : false,
           onTap: () {
             setState(() {
-              userPreferences.sortWarningsBy = "severity";
+              userPreferences.sortWarningsBy = SortingCategories.severity;
             });
-            saveSettings();
             Navigator.of(context).pop();
           },
         ),
@@ -61,12 +65,13 @@ class _SortByDialogState extends State<SortByDialog> {
             child: Icon(Icons.source),
           ),
           selectedColor: Theme.of(context).colorScheme.primary,
-          selected: userPreferences.sortWarningsBy == "source" ? true : false,
+          selected: userPreferences.sortWarningsBy == SortingCategories.source
+              ? true
+              : false,
           onTap: () {
             setState(() {
-              userPreferences.sortWarningsBy = "source";
+              userPreferences.sortWarningsBy = SortingCategories.source;
             });
-            saveSettings();
             Navigator.of(context).pop();
           },
         ),
