@@ -318,7 +318,7 @@
   "welcome_view_action_success": "Success",
   "welcome_view_my_places_headline": "My places",
   "@welcome_view_my_places_headline": {},
-  "welcome_view_my_places_text": "In the app, you have the option of storing locations for which you want to receive notifications. The matching to see if there are alerts for this location takes place locally. If your location is not listed, you can try your county or the next larger location. If you tap on a location for a long time, you can delete it again.",
+  "welcome_view_my_places_text": "To receive alerts, you have to subscribe to an area of interest. You can subscribe to any area in the world. In the subscription dialog, you will then see what alert sources are available for this region. We currently support around 100 countries. You will receive push notifications for every subscription. To unsubscribe, you can long-press the location and click on delete.",
   "@welcome_view_my_places_text": {},
   "welcome_view_warning_steps_headline": "Warning levels",
   "@welcome_view_warning_steps_headline": {},
@@ -533,5 +533,7 @@
   "error_dialog_text_instructions_text": "- Check your internet connection\n- Check if the issue is persistent\n- write an E-Mail to: foss_warn@posteo.de\n- or open an Github Issue",
   "@error_dialog_text_instructions_text": {},
   "error_dialog_text_instructions_headline": "What should I do now?",
-  "@error_dialog_text_instructions_headline": {}
+  "@error_dialog_text_instructions_headline": {},
+  "welcome_view_foss_public_alert_server": "FOSS Warn now uses the FOSS Public Alert Server as the backend. This allows us to deliver push notifications and support more areas worldwide. The FOSS Public Alert Server is developed by the FOSS Warn team in cooperation with KDE.",
+  "@welcome_view_foss_public_alert_server": {}
 }
