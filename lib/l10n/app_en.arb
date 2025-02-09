@@ -533,5 +533,11 @@
   "error_dialog_text_instructions_text": "- Check your internet connection\n- Check if the issue is persistent\n- write an E-Mail to: foss_warn@posteo.de\n- or open an Github Issue",
   "@error_dialog_text_instructions_text": {},
   "error_dialog_text_instructions_headline": "What should I do now?",
-  "@error_dialog_text_instructions_headline": {}
+  "@error_dialog_text_instructions_headline": {},
+  "welcome_view_foss_public_alert_server_headline": "FOSS Public Alert Server",
+  "@welcome_view_foss_public_alert_server_headline": {},
+  "welcome_view_notification_permission_headline": "FOSSWarn needs your permission to send you notifications in case there are alerts for your area. Press the button below to open the permission dialog.",
+  "@welcome_view_notification_permission_headline": {},
+  "welcome_view_foss_public_alert_server_text": "FOSS Warn now uses the FOSS Public Alert Server as the backend. This allows us to deliver push notifications and support more areas worldwide. The FOSS Public Alert Server is developed by the FOSS Warn team in cooperation with KDE.",
+  "@welcome_view_foss_public_alert_server_text": {}
 }
