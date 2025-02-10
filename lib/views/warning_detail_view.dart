@@ -2,12 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:foss_warn/class/class_nina_place.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
-import '../class/abstract_place.dart';
 import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
 import '../enums/severity.dart';
@@ -23,9 +22,11 @@ import '../widgets/dialogs/warning_severity_explanation.dart';
 class DetailScreen extends StatefulWidget {
   final WarnMessage _warnMessage;
   final Place? _place;
-  const DetailScreen(
-      {super.key, required WarnMessage warnMessage, Place? place})
-      : _warnMessage = warnMessage,
+  const DetailScreen({
+    required WarnMessage warnMessage,
+    Place? place,
+    super.key,
+  })  : _warnMessage = warnMessage,
         _place = place;
 
   @override
@@ -196,30 +197,6 @@ class _DetailScreenState extends State<DetailScreen> {
     return returnList;
   }
 
-  /// extract hex color value from string and return Color widget
-  /// accepts colors in format `#FB8C00`
-  /*
-  Color _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "90" + hexColor;
-    } else {
-      hexColor = "A0" + "FB8C00";
-    }
-    return Color(int.parse(hexColor, radix: 16));
-  }
-  */
-
-  LatLng? _calculatePlaceMarker() {
-    if (widget._place != null) {
-      if (widget._place is NinaPlace) {
-        NinaPlace ninaPlace = widget._place as NinaPlace;
-        return ninaPlace.geocode.latLng;
-      }
-    }
-    return null;
-  }
-
   /// create a camera to fix the polygon to the camera of the map
   Widget _createMapWidget(List<Area> area) {
     CameraFit createInitCameraFit() {
@@ -250,18 +227,6 @@ class _DetailScreenState extends State<DetailScreen> {
                   polygons: Area.createListOfPolygonsForAreas(
                       widget._warnMessage.info.first.area)),
             ],
-            markerLayers: _calculatePlaceMarker() != null
-                ? [
-                    MarkerLayer(markers: [
-                      Marker(
-                          point: _calculatePlaceMarker()!,
-                          child: Icon(
-                            Icons.place,
-                            size: 40,
-                          ))
-                    ])
-                  ]
-                : [],
             widgets: [
               Align(
                 alignment: Alignment.bottomLeft,

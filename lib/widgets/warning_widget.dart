@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:provider/provider.dart';
 
-import '../class/abstract_place.dart';
 import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
 import '../main.dart';
@@ -114,9 +114,7 @@ class WarningWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
+                          SizedBox(width: 10),
                           Container(
                             color: chooseWarningTypeColor(
                                 _warnMessage.messageType.name),
@@ -134,13 +132,13 @@ class WarningWidget extends StatelessWidget {
                                 translateWarningType(
                                     _warnMessage.messageType.name, context),
                                 style: TextStyle(
-                                    fontSize: 12, color: Colors.white),
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
+                          SizedBox(width: 10),
                           Expanded(
                             child: SizedBox(
                               width: 100,
@@ -157,17 +155,13 @@ class WarningWidget extends StatelessWidget {
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      SizedBox(height: 5),
                       Text(
                         _warnMessage.info[0].headline,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      SizedBox(height: 5),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -176,13 +170,7 @@ class WarningWidget extends StatelessWidget {
                               formatSentDate(_warnMessage.sent),
                               style: TextStyle(fontSize: 12),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              _warnMessage.source.name.toUpperCase(),
-                              style: TextStyle(fontSize: 12),
-                            ),
+                            SizedBox(width: 20),
                           ],
                         ),
                       )

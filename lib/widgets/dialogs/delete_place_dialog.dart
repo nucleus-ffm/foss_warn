@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
-import '../../class/abstract_place.dart';
 import '../../services/update_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -38,12 +37,10 @@ class _DeletePlaceDialogState extends State<DeletePlaceDialog> {
             //remove place from list and update view
             debugPrint("place deleted");
 
-            // If FPAS Place, unsubscribe from server
-            if (widget.myPlace is FPASPlace) {
-              debugPrint(
-                  "unregister from server for place ${widget.myPlace.name}");
-              (widget.myPlace as FPASPlace).unregisterForArea();
-            }
+            // Unsubscribe from server
+            debugPrint(
+                "unregister from server for place ${widget.myPlace.name}");
+            widget.myPlace.unregisterForArea();
 
             final updater = Provider.of<Update>(context, listen: false);
             updater.deletePlace(widget.myPlace);

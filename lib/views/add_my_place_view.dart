@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 
-import '../class/abstract_place.dart';
 import '../class/class_notification_service.dart';
 import '../services/list_handler.dart';
 import '../services/update_provider.dart';

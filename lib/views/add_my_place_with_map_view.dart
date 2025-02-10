@@ -15,7 +15,6 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
-import '../class/abstract_place.dart';
 import '../class/class_notification_service.dart';
 import '../class/class_unified_push_handler.dart';
 import '../services/update_provider.dart';
@@ -431,9 +430,10 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                                         .loading_screen_loading);
                                 String subscriptionId = "";
                                 try {
-                                  subscriptionId =
-                                      await FPASPlace.registerForArea(
-                                          context, boundingBox);
+                                  subscriptionId = await Place.registerForArea(
+                                    context,
+                                    boundingBox,
+                                  );
                                 } catch (e) {
                                   debugPrint("Error: ${e.toString()}");
                                   ErrorLogger.writeErrorLog(
@@ -454,10 +454,11 @@ class _AddMyPlaceWithMapViewState extends State<AddMyPlaceWithMapView> {
                                       context: context,
                                       text: AppLocalizations.of(context)!
                                           .add_my_place_with_map_loading_screen_subscription_success);
-                                  Place newPlace = FPASPlace(
-                                      boundingBox: boundingBox,
-                                      subscriptionId: subscriptionId,
-                                      name: _selectedPlaceName);
+                                  Place newPlace = Place(
+                                    boundingBox: boundingBox,
+                                    subscriptionId: subscriptionId,
+                                    name: _selectedPlaceName,
+                                  );
 
                                   setState(() {
                                     final updater = Provider.of<Update>(context,
