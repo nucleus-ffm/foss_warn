@@ -44,6 +44,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
     var theme = Theme.of(context);
 
     ref.watch(updaterProvider); // Just to rebuild on updates
+    var places = ref.watch(myPlacesProvider);
 
     Future<void> reloadData() async {
       setState(() {
@@ -53,11 +54,15 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
     void loadData() async {
       debugPrint("[allWarningsView] Load Data");
-      await callAPI(alertApi: ref.read(alertApiProvider));
+      var places = ref.read(myPlacesProvider);
+      await callAPI(
+        alertApi: ref.read(alertApiProvider),
+        places: places,
+      );
 
       checkForMyPlacesWarnings(
         alertApi: ref.read(alertApiProvider),
-        loadManually: true,
+        places: places,
       );
       sortWarnings(mapWarningsList);
       setState(() {
@@ -88,7 +93,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
     List<WarnMessage> loadOnlyWarningsForMyPlaces() {
       debugPrint("loadOnlyWarningsForMyPlaces");
       List<WarnMessage> warningsForMyPlaces = [];
-      for (Place p in myPlaceList) {
+      for (Place p in places) {
         warningsForMyPlaces.addAll(p.warnings);
       }
       return warningsForMyPlaces;
@@ -97,7 +102,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
     return RefreshIndicator(
       color: Theme.of(context).colorScheme.secondary,
       onRefresh: reloadData,
-      child: myPlaceList.isNotEmpty // check if there is a place saved
+      child: places.isNotEmpty // check if there is a place saved
           ? userPreferences
                   .showAllWarnings // if warnings that are not in MyPlaces shown
               ? SingleChildScrollView(

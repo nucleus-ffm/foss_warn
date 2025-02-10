@@ -5,7 +5,6 @@ import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/api_handler.dart';
 
 import '../widgets/my_place_widget.dart';
-import '../services/update_provider.dart';
 import '../services/list_handler.dart';
 import '../widgets/connection_error_widget.dart';
 import 'add_my_place_with_map_view.dart';
@@ -25,7 +24,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    if (myPlaceList.isEmpty) {
+    if (ref.read(myPlacesProvider).isEmpty) {
       _loading = true;
     }
   }
@@ -49,7 +48,10 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
   /// load data and call the API function
   load() async {
     //await loadMyPlacesList(); //@todo should not be nessesary
-    await callAPI(alertApi: ref.read(alertApiProvider));
+    await callAPI(
+      alertApi: ref.read(alertApiProvider),
+      places: ref.read(myPlacesProvider),
+    );
     setState(() {
       _loading = false;
     });
@@ -66,7 +68,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
   Widget build(BuildContext context) {
     var localizations = context.localizations;
 
-    ref.watch(updaterProvider); // Just to rebuild on updates
+    var places = ref.watch(myPlacesProvider);
 
     if (_loading == true) {
       load();
@@ -91,7 +93,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
         fit: StackFit.expand,
         children: [
           //check if myPlaceList is empty, if not show list else show text
-          myPlaceList.isNotEmpty
+          places.isNotEmpty
               ? SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Padding(
@@ -99,8 +101,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
                     child: Column(
                       children: [
                         const ConnectionError(),
-                        ...myPlaceList
-                            .map((place) => MyPlaceWidget(myPlace: place)),
+                        ...places.map((place) => MyPlaceWidget(myPlace: place)),
                       ],
                     ),
                   ),
@@ -143,7 +144,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
                   context,
                   MaterialPageRoute(
                     builder: (context) => const AddMyPlaceWithMapView(),
-                  ), //AddMyPlaceView
+                  ),
                 );
               },
               child: const Icon(Icons.add),

@@ -24,9 +24,9 @@ class MapWidget extends StatefulWidget {
   });
 
   /// create polygon layer for my places alerts
-  static List<PolygonLayer> createPolygonLayer() {
+  static List<PolygonLayer> createPolygonLayer(List<Place> places) {
     List<PolygonLayer> result = [];
-    for (Place p in myPlaceList) {
+    for (Place p in places) {
       for (WarnMessage wm in p.warnings) {
         result.add(
           PolygonLayer(

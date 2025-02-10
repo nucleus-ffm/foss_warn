@@ -19,6 +19,8 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     var localizations = context.localizations;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
+    var places = ref.watch(myPlacesProvider);
+
     sortWarnings(_myPlace.warnings); //@todo check if this works?
 
     /// generate a threaded list of alerts with updates of alert as thread
@@ -97,7 +99,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
             onPressed: () {
               _myPlace.markAllWarningsAsRead(ref);
               //@todo just a quick fix for the read state problem. We have to rethink our memory management
-              myPlaceList
+              places
                   .firstWhere((e) => e.name == _myPlace.name)
                   .markAllWarningsAsRead(ref);
               final snackBar = SnackBar(
