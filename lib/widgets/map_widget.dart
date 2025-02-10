@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 
-import '../class/abstract_place.dart';
 import '../class/class_area.dart';
 import '../class/class_warn_message.dart';
 import '../main.dart';

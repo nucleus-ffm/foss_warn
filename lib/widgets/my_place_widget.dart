@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 
-import '../class/abstract_place.dart';
 import 'dialogs/delete_place_dialog.dart';
 import '../views/my_place_detail_view.dart';
 import 'dialogs/meta_info_for_place_dialog.dart';

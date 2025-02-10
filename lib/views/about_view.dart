@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/widgets/dialogs/disclaimer_dialog.dart';
-import 'package:foss_warn/widgets/dialogs/warning_sources_dialog.dart';
 import '../main.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/missing_imprint_dialog.dart';
@@ -56,21 +55,6 @@ class AboutView extends StatelessWidget {
             ),
           ),
           Divider(),
-          ListTile(
-            leading: Icon(Icons.source_outlined),
-            title: Text(
-              AppLocalizations.of(context)!.about_source,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(AppLocalizations.of(context)!.about_source_subtitle,
-                style: Theme.of(context).textTheme.bodyLarge),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => WarningSourcesDialog(),
-              );
-            },
-          ),
           ListTile(
             leading: Icon(Icons.open_in_browser_outlined),
             title: Text(

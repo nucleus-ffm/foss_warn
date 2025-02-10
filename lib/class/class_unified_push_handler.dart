@@ -124,10 +124,7 @@ class UnifiedPushHandler {
         debugPrint(
             "Timeout waiting for unifiedPushRegistered to be set to true.");
         return;
-
-        // await Future.doWhile(() => !userPreferences.unifiedPushRegistered).timeout(Duration(seconds: 20), onTimeout: () {return;});
       });
     }
-    // print("distributor setup done: mit ${await UnifiedPush.getDistributor()} und ${userPreferences.unifiedPushEndpoint}");
   }
 }
