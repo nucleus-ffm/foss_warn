@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/welcome_screen_items.dart';
 import '../main.dart';
-import '../services/save_and_load_shared_preferences.dart';
 import '../widgets/dialogs/disclaimer_dialog.dart';
 import '../widgets/dialogs/privacy_dialog.dart';
 
@@ -251,7 +250,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 decoration: BoxDecoration(
                     color: _currentPage.round() == index
                         ? Color(0XFF256075)
-                        : Color(0XFF256075).withOpacity(0.2),
+                        : Color(0XFF256075).withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10.0)),
               )),
     );

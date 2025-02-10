@@ -19,7 +19,8 @@ class NotificationService {
     return NotificationDetails(
         android: AndroidNotificationDetails(
           'de.nucleus.foss_warn.notifications_${channel.trim().toLowerCase()}',
-          "Warnstufe: ${Severity.translateWarningSeverity(channel)}", //@todo find solution to translate this
+          // TODO(Nucleus): find solution to translate this
+          "Warnstufe: ${Severity.translateWarningSeverity(channel)}", // ignore: deprecated_member_use_from_same_package
           groupKey: "FossWarnWarnings",
           category: AndroidNotificationCategory.message,
           priority: Priority.max,

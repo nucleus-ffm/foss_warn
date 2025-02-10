@@ -57,9 +57,6 @@ enum Severity {
             .notification_settings_notify_by_extreme; //warning_severity_extreme
       case Severity.unknown:
         return "Unknown"; //warning_severity_unknown
-      //return AppLocalizations.of(context)!.notification_settings_notify_by_
-      default:
-        return severity.name;
     }
   }
 
@@ -75,8 +72,6 @@ enum Severity {
       case Severity.extreme:
         return Colors.red;
       case Severity.unknown:
-        return Colors.grey;
-      default:
         return Colors.grey;
     }
   }
