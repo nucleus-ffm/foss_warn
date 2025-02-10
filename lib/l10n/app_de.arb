@@ -496,5 +496,7 @@
   "legacy_warning_dialog_migration_button": "automatische Migration starten",
   "@legacy_warning_dialog_migration_button": {},
   "add_my_place_with_map_loading_screen_search_error": "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
-  "@add_my_place_with_map_loading_screen_search_error": {}
+  "@add_my_place_with_map_loading_screen_search_error": {},
+  "welcome_view_notification_permission_headline": "Berechtigung zur Benachrichtigung",
+  "@welcome_view_notification_permission_headline": {}
 }
