@@ -194,7 +194,7 @@ class UserPreferences {
   SortingCategories get sortWarningsBy {
     int? data = _preferences.getInt("sortWarningBy");
     if (data != null) {
-      return SortingCategories.values.elementAt(data!);
+      return SortingCategories.values.elementAt(data);
     } else {
       return _sortWarningsBy;
     }

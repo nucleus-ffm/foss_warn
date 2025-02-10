@@ -4,11 +4,9 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/main.dart';
 
-import '../class/class_alert_swiss_place.dart';
 import '../class/class_nina_place.dart';
 import '../class/class_warn_message.dart';
 import '../class/abstract_place.dart';
-import 'alert_swiss.dart';
 import 'list_handler.dart';
 import 'send_status_notification.dart';
 import 'save_and_load_shared_preferences.dart';

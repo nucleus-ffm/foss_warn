@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../main.dart';
-import '../../services/save_and_load_shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FontSizeDialog extends StatefulWidget {
