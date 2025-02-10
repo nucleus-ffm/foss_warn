@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:vector_tile_renderer/vector_tile_renderer.dart' hide TileLayer;
 
-import '../class/abstract_place.dart';
 import '../class/class_area.dart';
 import '../class/class_warn_message.dart';
 import '../services/list_handler.dart';

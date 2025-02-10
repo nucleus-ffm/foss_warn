@@ -3,7 +3,6 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../class/class_notification_service.dart';
 import '../main.dart';
-import '../widgets/dialogs/legacy_warning_dialog.dart';
 import 'list_handler.dart';
 
 /// checks if there is old data in SharedPreferences and if yes reset all settings
@@ -71,20 +70,5 @@ Future<void> legacyHandler() async {
     // update version code to current version
     preferences.setInt(
         "previousInstalledVersionCode", userPreferences.currentVersionCode);
-  }
-}
-
-/// shows a dialog with information if FOSSWarn had to reset all settings.
-Future<void> showMigrationDialog(BuildContext context) async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  bool? hadToResetSettings = preferences.getBool("hadToResetSettings");
-  if (hadToResetSettings != null && hadToResetSettings) {
-    await showDialog(
-      context: navigatorKey.currentContext!,
-      builder: (BuildContext context) {
-        return LegacyWarningDialog();
-      },
-    );
-    preferences.setBool("hadToResetSettings", false);
   }
 }

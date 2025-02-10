@@ -11,7 +11,6 @@ import 'class_douglas_peucker.dart';
 class Area {
   String description; // Kreisname or general description of the area
   String geoJson; // polygons of the area stored as pure json file
-  String? region; // only used by alert swiss
 
   Area({
     required String areaDesc,
@@ -21,20 +20,14 @@ class Area {
   Area.withRegion({
     required String areaDesc,
     required this.geoJson,
-    required this.region,
   }) : description = areaDesc;
 
   Area.fromJson(Map<String, dynamic> json)
       : description = json['areaDesc'],
-        geoJson = json['geoJson'] ?? "",
-        // @todo
-        region = json['region'] {
-    // print("Polygon is ${json["polygon"]}");
-  }
+        geoJson = json['geoJson'] ?? "";
 
   Area.fromJsonWithAPIData(Map<String, dynamic> json, this.geoJson)
-      : description = json['areaDesc'],
-        region = json['region'];
+      : description = json['areaDesc'];
 
   /*
   /// store color information about the polygons of the area
@@ -53,7 +46,7 @@ class Area {
   }*/
 
   Map<String, dynamic> toJson() =>
-      {'areaDesc': description, 'region': region, 'geoJson': geoJson};
+      {'areaDesc': description, 'geoJson': geoJson};
 
   /// create a list of area from the stored json data
   static List<Area> areaListFromJson(var data) {

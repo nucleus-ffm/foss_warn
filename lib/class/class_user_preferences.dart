@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart' as foundation;
 
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:foss_warn/themes/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../enums/severity.dart';
-import '../enums/warning_source.dart';
 import 'class_notification_preferences.dart';
 
 /// handle user preferences. The values written here are default values
@@ -51,43 +49,8 @@ class UserPreferences {
 
   // to save the user settings for which source
   // the user would like to be notified
-  final List<NotificationPreferences> _notificationSourceSettings =
-      _getDefaultValueForNotificationSourceSettings();
-
-  List<NotificationPreferences> get notificationSourceSettings {
-    List<dynamic> data =
-        jsonDecode(_preferences.getString("notificationSourceSettings")!);
-    if (data.isEmpty) {
-      List<NotificationPreferences> tempList = [];
-      for (int i = 0; i < data.length; i++) {
-        tempList.add(NotificationPreferences.fromJson(data[i]));
-      }
-      return tempList;
-    } else {
-      return _notificationSourceSettings;
-    }
-  }
-
-  set notificationSourceSettings(List<NotificationPreferences> entry) {
-    _preferences.setString("notificationSourceSettings", jsonEncode(entry));
-  }
-
-  static List<NotificationPreferences>
-      _getDefaultValueForNotificationSourceSettings() {
-    List<NotificationPreferences> temp = [];
-
-    for (WarningSource source in WarningSource.values) {
-      if (source == WarningSource.dwd || source == WarningSource.lhp) {
-        temp.add(NotificationPreferences(
-            warningSource: source, notificationLevel: Severity.severe));
-      } else {
-        temp.add(NotificationPreferences(
-            warningSource: source, notificationLevel: Severity.minor));
-      }
-    }
-
-    return temp;
-  }
+  NotificationPreferences notificationSourceSetting =
+      NotificationPreferences(notificationLevel: Severity.moderate);
 
   // if true show more tags in WarningDetailView
   final bool _showExtendedMetaData = false;

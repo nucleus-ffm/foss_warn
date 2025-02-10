@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 
 import '../class/class_alarm_manager.dart';
-import '../class/abstract_place.dart';
 import '../main.dart';
 import '../services/check_for_my_places_warnings.dart';
 import '../services/list_handler.dart';
-import '../services/alert_swiss.dart';
-import '../services/geocode_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 import 'log_file_viewer.dart';
@@ -120,50 +118,6 @@ class _DevSettingsState extends State<DevSettings> {
                   for (Place p in myPlaceList) {
                     p.resetReadAndNotificationStatusForAllWarnings(context);
                   }
-                  final snackBar = SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context)!.dev_settings_success,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)!
-                    .dev_settings_call_alert_swiss),
-                subtitle: Text(AppLocalizations.of(context)!
-                    .dev_settings_call_alert_swiss_text),
-                onTap: () {
-                  debugPrint("call swiss API");
-                  callAlertSwissAPI();
-                  final snackBar = SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context)!.dev_settings_success,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                },
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
-                title: Text(
-                    AppLocalizations.of(context)!.dev_settings_test_geocode),
-                subtitle: Text(AppLocalizations.of(context)!
-                    .dev_settings_test_geocode_text),
-                onTap: () {
-                  debugPrint("call geocodeHandler");
-                  geocodeHandler();
                   final snackBar = SnackBar(
                     content: Text(
                       AppLocalizations.of(context)!.dev_settings_success,

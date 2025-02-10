@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/api_handler.dart';
-import '../class/abstract_place.dart';
 import 'save_and_load_shared_preferences.dart';
 import 'list_handler.dart';
 

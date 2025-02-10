@@ -66,10 +66,10 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                 height: 10,
               ),
               // generate the settings tiles
-              ...userPreferences.notificationSourceSettings
-                  .map((element) => NotificationPreferencesListTileWidget(
-                        notificationPreferences: element,
-                      )),
+              NotificationPreferencesListTileWidget(
+                notificationPreferences:
+                    userPreferences.notificationSourceSetting,
+              ),
             ],
           ),
         ),

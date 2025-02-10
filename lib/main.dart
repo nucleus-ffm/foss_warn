@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-//import 'package:foss_warn/class/class_alarmManager.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
-import 'package:foss_warn/services/geocode_handler.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/map_view.dart';
-// import 'package:foss_warn/widgets/VectorMapWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
-import 'class/abstract_place.dart';
 import 'class/class_app_state.dart';
 import 'views/my_places_view.dart';
 import 'views/settings_view.dart';
@@ -35,15 +32,6 @@ void main() async {
   await legacyHandler();
   await NotificationService().init();
   await userPreferences.init();
-
-  /*if (userPreferences.shouldNotifyGeneral) {
-    AlarmManager.callback();
-    AlarmManager().initialize();
-    AlarmManager().registerBackgroundTask();
-    print("Background notification enabled");
-  } else {
-    print("Background notification disabled due to user setting");
-  }*/
 
   runApp(
     // rebuild widget on external data changes
@@ -108,12 +96,6 @@ class _HomeViewState extends State<HomeView> {
 
     loadMyPlacesList();
     listenNotifications();
-    if (geocodeMap.isEmpty) {
-      debugPrint("call geocode handler");
-      geocodeHandler();
-    }
-    //display information if the app had to be resetted
-    showMigrationDialog(context);
   }
 
   void listenNotifications() {

@@ -10,35 +10,19 @@ String formatSentDate(String dateAndTime) {
   String seconds, minutes, hours = "";
 
   try {
-    // check if alert swiss or NINA
-    if (dateAndTime.contains(",")) {
-      // format Alert Swiss
-      int comma = dateAndTime.indexOf(",");
-      int commaEnd = dateAndTime.indexOf(",", comma + 3);
-      String date = dateAndTime.substring(comma + 2, commaEnd);
-      day = date.substring(0, 2);
-      month = date.substring(3, 5);
-      year = date.substring(6, 10);
+    int space = dateAndTime.indexOf("T");
+    String date = dateAndTime.substring(0, space);
 
-      String time = dateAndTime.substring(commaEnd + 2);
-      hours = time.substring(0, 2);
-      minutes = time.substring(3, 5);
-      seconds = "00";
-    } else {
-      // format NINA
-      int space = dateAndTime.indexOf("T");
-      String date = dateAndTime.substring(0, space);
+    year = date.substring(0, 4);
+    month = date.substring(5, 7);
+    day = date.substring(8, 10);
 
-      year = date.substring(0, 4);
-      month = date.substring(5, 7);
-      day = date.substring(8, 10);
+    String time = dateAndTime.substring(space + 1, space + 9);
 
-      String time = dateAndTime.substring(space + 1, space + 9);
+    seconds = time.substring(time.length - 2, time.length);
+    minutes = time.substring(time.length - 5, time.length - 3);
+    hours = time.substring(0, 2);
 
-      seconds = time.substring(time.length - 2, time.length);
-      minutes = time.substring(time.length - 5, time.length - 3);
-      hours = time.substring(0, 2);
-    }
     // return formatted date and time
     String correctDate = "$day.$month.$year";
     String correctFormatTime = "$hours:$minutes:$seconds Uhr";

@@ -433,20 +433,6 @@ class _SettingsState extends State<Settings> {
                     color: Theme.of(context).colorScheme.primary),
               ),
             ),
-            /* ListTile(
-              title: Text(AppLocalizations.of(context)!.settings_alertSwiss),
-              subtitle: Text(
-                  (AppLocalizations.of(context)!.settings_alertSwiss_subtitle)),
-              trailing: Switch(
-                value: userPreferences.activateAlertSwiss,
-                onChanged: (value) {
-                  setState(() {
-                    userPreferences.activateAlertSwiss = value;
-                  });
-                  saveSettings();
-                },
-              ),
-            ), */
             ListTile(
               title: Text(
                   (AppLocalizations.of(context)!.settings_show_welcome_dialog)),

@@ -1,12 +1,7 @@
 import 'package:foss_warn/class/class_references.dart';
-import 'package:foss_warn/enums/certainty.dart';
-import 'package:foss_warn/enums/urgency.dart';
-import 'package:foss_warn/enums/warning_source.dart';
 import '../enums/message_type.dart';
 import '../enums/scope.dart';
-import '../enums/severity.dart';
 import '../enums/status.dart';
-import 'class_area.dart';
 import 'class_info.dart';
 
 /// WarnMessage class this data structure follows mostly the Common Alerting Protocol Version 1.2
@@ -35,7 +30,6 @@ class WarnMessage {
   final String sent;
   final Status status;
   final MessageType messageType;
-  final WarningSource source;
   final Scope scope;
   String? restriction;
   String? addresses;
@@ -50,32 +44,31 @@ class WarnMessage {
   bool isUpdateOfAlreadyNotifiedWarning = false;
   bool hideWarningBecauseThereIsANewerVersion = false; //@todo
 
-  WarnMessage(
-      {required this.identifier,
-      required this.publisher,
-      required this.source,
-      required this.sender,
-      required this.sent,
-      required this.status,
-      required this.messageType,
-      required this.scope,
-      this.restriction,
-      this.addresses,
-      this.code,
-      this.note,
-      this.references,
-      this.incidents,
-      required this.info,
-      required this.notified,
-      required this.read,
-      isUpdateOfAlreadyNotifiedWarning, //@todo
-      hideWarningBecauseThereIsANewerVersion});
+  WarnMessage({
+    required this.identifier,
+    required this.publisher,
+    required this.sender,
+    required this.sent,
+    required this.status,
+    required this.messageType,
+    required this.scope,
+    this.restriction,
+    this.addresses,
+    this.code,
+    this.note,
+    this.references,
+    this.incidents,
+    required this.info,
+    required this.notified,
+    required this.read,
+    isUpdateOfAlreadyNotifiedWarning, //@todo
+    hideWarningBecauseThereIsANewerVersion,
+  });
 
   factory WarnMessage.fromJson(Map<String, dynamic> json) {
     return WarnMessage(
       identifier: json['identifier'] ?? '?',
       publisher: json['publisher'] ?? "?",
-      source: WarningSource.fromString(json['source'].toString()),
       sender: json['sender'] ?? "?",
       sent: json['sent'] ?? "?",
       status: Status.fromJson(json['status']),
@@ -101,7 +94,6 @@ class WarnMessage {
       String provider, String publisher, String geoJson) {
     // print("Neue WarnMessage wird angelegt...");
     return WarnMessage(
-        source: WarningSource.fromString(provider),
         identifier: json["identifier"] ?? "?",
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
@@ -123,7 +115,6 @@ class WarnMessage {
   factory WarnMessage.fromJsonFPAS(Map<String, dynamic> json) {
     // print("Neue WarnMessage wird angelegt...");
     return WarnMessage(
-        source: WarningSource.other, //@todo
         identifier: json["identifier"] ?? "?",
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
@@ -139,40 +130,9 @@ class WarnMessage {
         read: false);
   }
 
-  /// is used to create a new WarnMessage object with data from the API call.
-  /// Note that the json structure is different from the structure we use to
-  /// cache the warnings.
-  factory WarnMessage.fromJsonAlertSwiss(Map<String, dynamic> json,
-      List<Area> areaList, String instructions, String license) {
-    return WarnMessage(
-        source: WarningSource.alertSwiss,
-        identifier: json["identifier"] ?? "?",
-        sender: json["sender"] ?? "?",
-        sent: json["sent"] ?? "?",
-        status: Status.actual, // missing for alert swiss
-        messageType: MessageType.alert, // missing
-        scope: Scope.public, // missing
-        publisher: license,
-        info: [
-          Info(
-              category: [],
-              event: json["event"] ?? "",
-              urgency: Urgency.unknown,
-              severity: Severity.fromString(json["severity"]),
-              certainty: Certainty.unknown,
-              headline: json["title"]["title"] ?? "?",
-              description: json["description"]["description"] ?? "",
-              instruction: instructions,
-              area: areaList)
-        ],
-        notified: false,
-        read: false);
-  }
-
   Map<String, dynamic> toJson() => {
         'identifier': identifier,
         'publisher': publisher,
-        'source': source,
         'sender': sender,
         'sent': sent,
         'status': status,
