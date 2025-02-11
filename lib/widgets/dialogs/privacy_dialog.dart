@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/main.dart';
 import '../../services/url_launcher.dart';
 
 class PrivacyDialog extends StatefulWidget {
@@ -31,19 +32,6 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   fit: FlexFit.loose,
                   child: TextButton(
                       onPressed: () => launchUrlInBrowser(
-                          'https://warnung.bund.de/datenschutz'),
-                      child: Text(
-                          "${AppLocalizations.of(context)!.privacy_link_to_privacy} Warnung.bund.de")),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(Icons.open_in_browser),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: TextButton(
-                      onPressed: () => launchUrlInBrowser(
                           'https://osmfoundation.org/wiki/Privacy_Policy'),
                       child: Text(
                           "${AppLocalizations.of(context)!.privacy_link_to_privacy} Openstreetmap.org")),
@@ -57,9 +45,9 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   fit: FlexFit.loose,
                   child: TextButton(
                       onPressed: () => launchUrlInBrowser(
-                          'https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement'),
+                          userPreferences.fossPublicAlertServerPrivacyNotice),
                       child: Text(
-                          "${AppLocalizations.of(context)!.privacy_link_to_privacy} Github.com")),
+                          "${AppLocalizations.of(context)!.privacy_link_to_privacy} the FOSS Public Alert Server")),
                 ),
               ],
             ),

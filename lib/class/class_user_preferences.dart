@@ -291,6 +291,7 @@ class UserPreferences {
   }
 
   // unified Push settings
+  // the server url can be overwritten by the user
   final String _fossPublicAlertServerUrl = "https://alerts.kde.org";
   String get fossPublicAlertServerUrl {
     String? data = _preferences.getString("fossPublicAlertServerUrl");
