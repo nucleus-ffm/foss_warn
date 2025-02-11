@@ -131,8 +131,8 @@ class NotificationService {
             macOS: null);
 
     final androidNotificationPlugin =
-        _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
+    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
     if (androidNotificationPlugin != null) {
       // Request notifications permission (Android 13+)
       await androidNotificationPlugin.requestNotificationsPermission();
@@ -240,6 +240,40 @@ class NotificationService {
             onDidReceiveNotificationResponse); //onSelectNotification
 
     cleanUpNotificationChannels();
+  }
+
+  /// Request notification permission on Android. This methode is currently
+  /// used in the welcome view. This should later be migrated into a cross
+  /// platform solution
+  Future<bool?> requestNotificationPermission() async{
+    final androidNotificationPlugin =
+    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    if (androidNotificationPlugin != null) {
+
+      // Request notifications permission (Android 13+)
+      return await androidNotificationPlugin.requestNotificationsPermission();
+    } else {
+      return null;
+    }
+  }
+
+  /// Request exact alarm permission on Android. This methode is currently
+  /// used in the welcome view. This should later be migrated into a cross
+  /// platform solution. This permission is currently not used for notifications
+  /// but will be necessary if the alarmManager plugin in combination with
+  /// the UnifiedPush plugin is working again. We should move the permission
+  /// handling later out of the notifications setup.
+  Future<bool?> requestExactAlarmPermission() async{
+    final androidNotificationPlugin =
+    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    if (androidNotificationPlugin != null) {
+      // Request schedule exact alarm permission (Android 14+)
+      return await androidNotificationPlugin.requestExactAlarmsPermission();
+    } else {
+      return null;
+    }
   }
 
   Future<void> cleanUpNotificationChannels() async {

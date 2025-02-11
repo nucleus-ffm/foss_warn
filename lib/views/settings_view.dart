@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foss_warn/views/dev_settings_view.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../class/class_fpas_place.dart';
 import '../main.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
@@ -243,7 +242,9 @@ class _SettingsState extends State<Settings> {
               title: TextField(
                 controller: fpasServerURLController,
                 decoration: InputDecoration(
+                  // @todo translate settings_foss_public_alert_server_enter_url_label_text
                   labelText: 'Enter FPAS Server URL',
+                  // settings_foss_public_alert_server_enter_url_error
                   errorText: _fpasServerURLError ? "Invalid Server URL" : null,
                 ),
                 onChanged: (value) {
@@ -253,37 +254,10 @@ class _SettingsState extends State<Settings> {
                 },
                 onSubmitted: (newUrl) async {
                   try {
+                    bool fetchSuccessful =
+                    await FPASPlace.fetchServerSettings(newUrl);
                     setState(() {
-                      _fpasServerURLError = false;
-                    });
-                    // print("parse FPAS url");
-                    debugPrint(newUrl);
-                    Uri newFPASsUri =
-                        Uri.parse("$newUrl/sources/server_status");
-                    Response response = await http.get(
-                      newFPASsUri,
-                      headers: {
-                        "Content-Type": "application/json",
-                        'user-agent': userPreferences.httpUserAgent
-                      },
-                    );
-                    if (response.statusCode != 200) {
-                      throw Exception("FPAS Server not reachable");
-                    }
-                    dynamic data = jsonDecode(utf8.decode(response.bodyBytes));
-
-                    setState(() {
-                      userPreferences.fossPublicAlertServerUrl = newUrl;
-                      userPreferences.fossPublicAlertServerVersion =
-                          data["server_version"];
-                      userPreferences.fossPublicAlertServerOperator =
-                          data["server_operator"];
-                      userPreferences.fossPublicAlertServerPrivacyNotice =
-                          data["privacy_notice"];
-                      userPreferences.fossPublicAlertServerTermsOfService =
-                          data["terms_of_service"];
-                      userPreferences.fossPublicAlertServerCongestionState =
-                          data["congestion_state"];
+                      _fpasServerURLError = !fetchSuccessful;
                     });
                   } catch (e) {
                     debugPrint(e.toString());

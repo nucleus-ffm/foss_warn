@@ -185,7 +185,6 @@ class UserPreferences {
     bool? data = _preferences.getBool("showWelcomeScreen");
     return data ?? _showWelcomeScreen;
   }
-
   set showWelcomeScreen(bool value) {
     _preferences.setBool("showWelcomeScreen", value);
   }
@@ -327,6 +326,9 @@ class UserPreferences {
   }
 
   // unified Push settings
+  // the default value is to allow to reset the server configuration
+  final String fossPublicAlertServerUrlDefault = "https://alerts.kde.org";
+  // the server url can be overwritten by the user
   final String _fossPublicAlertServerUrl = "https://alerts.kde.org";
   String get fossPublicAlertServerUrl {
     String? data = _preferences.getString("fossPublicAlertServerUrl");

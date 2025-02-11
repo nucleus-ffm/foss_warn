@@ -34,8 +34,14 @@ final UserPreferences userPreferences = UserPreferences();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await legacyHandler();
-  await NotificationService().init();
   await userPreferences.init();
+  if (!userPreferences.showWelcomeScreen) {
+    // do not ask for notification permission before the user finished the
+    // welcome dialog
+    await NotificationService().init();
+  }
+
+
 
   /*if (userPreferences.shouldNotifyGeneral) {
     AlarmManager.callback();
@@ -109,10 +115,12 @@ class _HomeViewState extends State<HomeView> {
 
     loadMyPlacesList();
     listenNotifications();
-    if (geocodeMap.isEmpty) {
+
+    /*if (geocodeMap.isEmpty) {
       debugPrint("call geocode handler");
       geocodeHandler();
-    }
+    }*/
+    
     //display information if the app had to be resetted
     showMigrationDialog(context);
   }

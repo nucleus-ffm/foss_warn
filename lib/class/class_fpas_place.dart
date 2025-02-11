@@ -247,4 +247,56 @@ class FPASPlace extends Place {
       }
     }
   }
+
+  /// Fetch the server settings from the given FPAS server. This sets in the
+  /// preferences the link to the privacy police, the terms of use and
+  /// the faps server url
+  ///
+  /// [newUrl] the url of the new FAPS server
+  ///
+  /// returns true if the data was successfully fetched,
+  /// returns false if the url is not a valid FPAS server url or something
+  /// else went wrong
+  static Future<bool> fetchServerSettings(String newUrl) async{
+    try {
+      debugPrint(newUrl);
+      Uri newFPASsUri =
+      Uri.parse("$newUrl/sources/server_status");
+      Response response = await http.get(
+        newFPASsUri,
+        headers: {
+          "Content-Type": "application/json",
+          'user-agent': userPreferences.httpUserAgent
+        },
+      );
+      if (response.statusCode != 200) {
+        throw Exception("FPAS Server not reachable");
+      }
+      dynamic data = jsonDecode(utf8.decode(response.bodyBytes));
+
+        userPreferences.fossPublicAlertServerUrl = newUrl;
+        userPreferences.fossPublicAlertServerVersion =
+        data["server_version"];
+        userPreferences.fossPublicAlertServerOperator =
+        data["server_operator"];
+        userPreferences.fossPublicAlertServerPrivacyNotice =
+        data["privacy_notice"];
+        userPreferences.fossPublicAlertServerTermsOfService =
+        data["terms_of_service"];
+        userPreferences.fossPublicAlertServerCongestionState =
+        data["congestion_state"];
+
+        // successfully fetched
+        return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      await ErrorLogger.writeErrorLog(
+          "class_fpas_place.dart",
+          "Something went wrong while trying to fetch FPAS server settings",
+          e.toString()
+      );
+      // fetch was not successful, display error message
+      return false;
+    }
+  }
 }
