@@ -557,5 +557,13 @@
   "settings_foss_public_alert_server_enter_url_error": "Invalid Server URL",
   "@settings_foss_public_alert_server_enter_url_error": {},
   "welcome_view_foss_public_alert_server_server_operator": "This server is operated by:",
-  "@welcome_view_foss_public_alert_server_server_operator": {}
+  "@welcome_view_foss_public_alert_server_server_operator": {},
+  "welcome_view_foss_public_alert_server_use_custom_server": "Use custom server",
+  "@welcome_view_foss_public_alert_server_use_custom_server": {},
+  "welcome_view_foss_public_alert_server_confirm_button": "Confirm",
+  "@welcome_view_foss_public_alert_server_confirm_button": {},
+  "welcome_view_foss_public_alert_server_confirm_success": "Confirmed",
+  "@welcome_view_foss_public_alert_server_confirm_success": {},
+  "welcome_view_foss_public_alert_server_use_default_server": "Use default server",
+  "@welcome_view_foss_public_alert_server_use_default_server": {}
 }
