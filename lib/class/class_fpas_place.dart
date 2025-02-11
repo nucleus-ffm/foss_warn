@@ -162,8 +162,7 @@ class FPASPlace extends Place {
       } else if (response.statusCode == 400) {
         // subscription timed out, register again
         try {
-          String newSubscriptionID =
-              await registerForArea(null, boundingBox);
+          String newSubscriptionID = await registerForArea(null, boundingBox);
           // update subscription id
           subscriptionId = newSubscriptionID;
         } catch (e) {
