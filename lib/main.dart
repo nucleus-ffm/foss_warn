@@ -30,8 +30,12 @@ final UserPreferences userPreferences = UserPreferences();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await legacyHandler();
-  await NotificationService().init();
   await userPreferences.init();
+  if (!userPreferences.showWelcomeScreen) {
+    // do not ask for notification permission before the user finished the
+    // welcome dialog
+    await NotificationService().init();
+  }
 
   runApp(FOSSWarn());
 }
