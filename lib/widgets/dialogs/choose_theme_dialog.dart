@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/main.dart';
-import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/update_provider.dart';
@@ -63,8 +62,6 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
         return AppLocalizations.of(context)!.settings_color_schema_dark;
       case ThemeMode.system:
         return AppLocalizations.of(context)!.settings_color_schema_auto;
-      default:
-        return "Error";
     }
   }
 
@@ -76,8 +73,6 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
         return Colors.black;
       case ThemeMode.system:
         return Colors.grey;
-      default:
-        return Colors.red;
     }
   }
 
@@ -89,8 +84,6 @@ class _ChooseThemeDialogState extends State<ChooseThemeDialog> {
         return Colors.white;
       case ThemeMode.system:
         return Colors.black;
-      default:
-        return Colors.red;
     }
   }
 

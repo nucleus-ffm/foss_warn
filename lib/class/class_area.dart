@@ -259,7 +259,7 @@ class Area {
     List<String> debugResult = [];
     try {
       GeoJsonParser myGeoJson = GeoJsonParser(
-          defaultPolygonFillColor: Color(0xFFB01917).withOpacity(0.2),
+          defaultPolygonFillColor: Color(0xFFB01917).withValues(alpha: 0.2),
           defaultPolygonBorderColor: Color(0xFFFB8C00),
           defaultPolylineStroke: 1);
       for (Area area in areas) {

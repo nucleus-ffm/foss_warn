@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:foss_warn/class/class_fpas_place.dart';
-import 'package:foss_warn/class/class_notification_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import '../class/class_alert_swiss_place.dart';
 import '../class/class_nina_place.dart';
 
 import 'list_handler.dart';
-import '../main.dart';
 
 // My Places
 saveMyPlacesList() async {

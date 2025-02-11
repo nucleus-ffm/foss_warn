@@ -47,7 +47,8 @@ class _ErrorDialogState extends State<ErrorDialog> {
                     "What should I do now?", // @todo translate error_dialog_text_instructions_headline
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text("write an E-Mail to: foss_warn@posteo.de"), // @toto translate error_dialog_text_instructions_text
+                  Text(
+                      "write an E-Mail to: foss_warn@posteo.de"), // @toto translate error_dialog_text_instructions_text
                   Text("or open an Github Issue"),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
