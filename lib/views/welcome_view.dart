@@ -82,7 +82,6 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                 child: isLastSlide
                     ? TextButton(
                         onPressed: () {
-
                           setState(() {
                             userPreferences.showWelcomeScreen = false;
                           });
@@ -167,7 +166,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
       // welcome_view_foss_public_alert_server_use_default_server
       0: "Use default server (${userPreferences.fossPublicAlertServerUrlDefault})",
       // welcome_view_foss_public_alert_server_use_custom_server
-      1: "Use custom server"  
+      1: "Use custom server"
     };
 
     switch (action) {
@@ -476,7 +475,7 @@ class _WelcomeViewState extends State<WelcomeView> with WidgetsBindingObserver {
                     child: Text(
                         // welcome_view_foss_public_alert_server_server_operator
                         "This server is operated by: "
-                            "${userPreferences.fossPublicAlertServerOperator}"),
+                        "${userPreferences.fossPublicAlertServerOperator}"),
                   )
                 : SizedBox(),
           ],

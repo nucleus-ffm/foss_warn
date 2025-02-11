@@ -161,8 +161,7 @@ class FPASPlace extends Place {
       } else if (response.statusCode == 400) {
         // subscription timed out, register again
         try {
-          String newSubscriptionID =
-              await registerForArea(null, boundingBox);
+          String newSubscriptionID = await registerForArea(null, boundingBox);
           // update subscription id
           subscriptionId = newSubscriptionID;
         } catch (e) {
@@ -256,11 +255,10 @@ class FPASPlace extends Place {
   /// returns true if the data was successfully fetched,
   /// returns false if the url is not a valid FPAS server url or something
   /// else went wrong
-  static Future<bool> fetchServerSettings(String newUrl) async{
+  static Future<bool> fetchServerSettings(String newUrl) async {
     try {
       debugPrint(newUrl);
-      Uri newFPASsUri =
-      Uri.parse("$newUrl/sources/server_status");
+      Uri newFPASsUri = Uri.parse("$newUrl/sources/server_status");
       Response response = await http.get(
         newFPASsUri,
         headers: {
@@ -273,27 +271,24 @@ class FPASPlace extends Place {
       }
       dynamic data = jsonDecode(utf8.decode(response.bodyBytes));
 
-        userPreferences.fossPublicAlertServerUrl = newUrl;
-        userPreferences.fossPublicAlertServerVersion =
-        data["server_version"];
-        userPreferences.fossPublicAlertServerOperator =
-        data["server_operator"];
-        userPreferences.fossPublicAlertServerPrivacyNotice =
-        data["privacy_notice"];
-        userPreferences.fossPublicAlertServerTermsOfService =
-        data["terms_of_service"];
-        userPreferences.fossPublicAlertServerCongestionState =
-        data["congestion_state"];
+      userPreferences.fossPublicAlertServerUrl = newUrl;
+      userPreferences.fossPublicAlertServerVersion = data["server_version"];
+      userPreferences.fossPublicAlertServerOperator = data["server_operator"];
+      userPreferences.fossPublicAlertServerPrivacyNotice =
+          data["privacy_notice"];
+      userPreferences.fossPublicAlertServerTermsOfService =
+          data["terms_of_service"];
+      userPreferences.fossPublicAlertServerCongestionState =
+          data["congestion_state"];
 
-        // successfully fetched
-        return true;
+      // successfully fetched
+      return true;
     } catch (e) {
       debugPrint(e.toString());
       await ErrorLogger.writeErrorLog(
           "class_fpas_place.dart",
           "Something went wrong while trying to fetch FPAS server settings",
-          e.toString()
-      );
+          e.toString());
       // fetch was not successful, display error message
       return false;
     }

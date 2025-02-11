@@ -28,7 +28,6 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final AppState appState = AppState();
 final UserPreferences userPreferences = UserPreferences();
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await legacyHandler();
@@ -38,8 +37,6 @@ void main() async {
     // welcome dialog
     await NotificationService().init();
   }
-
-
 
   /*if (userPreferences.shouldNotifyGeneral) {
     AlarmManager.callback();
@@ -118,7 +115,7 @@ class _HomeViewState extends State<HomeView> {
       debugPrint("call geocode handler");
       geocodeHandler();
     }*/
-    
+
     //display information if the app had to be resetted
     showMigrationDialog(context);
   }

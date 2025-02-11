@@ -251,7 +251,7 @@ class _SettingsState extends State<Settings> {
                 onSubmitted: (newUrl) async {
                   try {
                     bool fetchSuccessful =
-                    await FPASPlace.fetchServerSettings(newUrl);
+                        await FPASPlace.fetchServerSettings(newUrl);
                     setState(() {
                       _fpasServerURLError = !fetchSuccessful;
                     });
