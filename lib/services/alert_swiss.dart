@@ -9,7 +9,6 @@ import '../class/class_error_logger.dart';
 import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
 import 'list_handler.dart';
-import 'save_and_load_shared_preferences.dart';
 
 import 'package:http/http.dart';
 
