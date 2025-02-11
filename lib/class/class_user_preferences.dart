@@ -322,6 +322,7 @@ class UserPreferences {
     bool? data = _preferences.getBool("areWarningsFromCache");
     return data ?? _areWarningsFromCache;
   }
+
   set areWarningsFromCache(bool value) {
     _preferences.setBool("areWarningsFromCache", value);
   }
@@ -431,6 +432,7 @@ class UserPreferences {
     int? data = _preferences.getInt("maxSizeOfSubscriptionBoundingBox");
     return data ?? _maxSizeOfSubscriptionBoundingBox;
   }
+
   set maxSizeOfSubscriptionBoundingBox(int value) {
     _preferences.setInt("maxSizeOfSubscriptionBoundingBox", value);
   }

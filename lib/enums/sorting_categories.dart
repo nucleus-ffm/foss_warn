@@ -1,4 +1,3 @@
-
 enum SortingCategories {
   severity,
   data,
