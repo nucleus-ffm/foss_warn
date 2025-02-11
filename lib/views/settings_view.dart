@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foss_warn/views/dev_settings_view.dart';
@@ -12,8 +10,6 @@ import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 import 'notification_settings_view.dart';
 import 'welcome_view.dart';
-
-import '../services/save_and_load_shared_preferences.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';

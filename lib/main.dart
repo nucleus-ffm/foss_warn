@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:foss_warn/class/class_alarmManager.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
-import 'package:foss_warn/services/geocode_handler.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/views/about_view.dart';
