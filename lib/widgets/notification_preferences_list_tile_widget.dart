@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/enums/severity.dart';
-import 'package:foss_warn/main.dart';
 import '../class/class_notification_preferences.dart';
 import '../enums/warning_source.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../services/save_and_load_shared_preferences.dart';
 
 class NotificationPreferencesListTileWidget extends StatefulWidget {
   final NotificationPreferences notificationPreferences;
@@ -58,8 +55,6 @@ class _NotificationPreferencesListTileWidgetState
         return AppLocalizations.of(context)!.source_alertswiss_description;
       case WarningSource.other:
         return AppLocalizations.of(context)!.source_other_description;
-      default:
-        return "Error";
     }
   }
 

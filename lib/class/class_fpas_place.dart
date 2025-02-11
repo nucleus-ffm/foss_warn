@@ -10,7 +10,6 @@ import 'package:xml2json/xml2json.dart';
 import 'class_error_logger.dart';
 import 'class_notification_service.dart';
 import 'class_warn_message.dart';
-import 'class_unified_push_handler.dart';
 
 class FPASPlace extends Place {
   BoundingBox boundingBox;

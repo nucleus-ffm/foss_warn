@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../enums/sorting_categories.dart';
 import '../../main.dart';
-import '../../services/save_and_load_shared_preferences.dart';
 
 class SortByDialog extends StatefulWidget {
   const SortByDialog({super.key});

@@ -7,13 +7,9 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:unifiedpush/constants.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 import '../services/check_for_my_places_warnings.dart';
-import '../services/save_and_load_shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:foss_warn/main.dart';
 import '../widgets/dialogs/no_up_distributor_found_dialog.dart';
 import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
-import 'class_bounding_box.dart';
 
 class UnifiedPushHandler {
   static void onNewEndpoint(String endpoint, String instance) {
