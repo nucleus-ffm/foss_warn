@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 
 import '../class/class_alarm_manager.dart';
@@ -12,14 +13,14 @@ import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 import 'log_file_viewer.dart';
 
-class DevSettings extends StatefulWidget {
+class DevSettings extends ConsumerStatefulWidget {
   const DevSettings({super.key});
 
   @override
-  State<DevSettings> createState() => _DevSettingsState();
+  ConsumerState<DevSettings> createState() => _DevSettingsState();
 }
 
-class _DevSettingsState extends State<DevSettings> {
+class _DevSettingsState extends ConsumerState<DevSettings> {
   final EdgeInsets _settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
   final TextEditingController maxSizeOfSubscriptionBoundingBox =
       TextEditingController();
@@ -116,7 +117,7 @@ class _DevSettingsState extends State<DevSettings> {
                   debugPrint(
                       "reset read and notification status for all warnings");
                   for (Place p in myPlaceList) {
-                    p.resetReadAndNotificationStatusForAllWarnings(context);
+                    p.resetReadAndNotificationStatusForAllWarnings(ref);
                   }
                   final snackBar = SnackBar(
                     content: Text(

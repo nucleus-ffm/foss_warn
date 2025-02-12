@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/api_handler.dart';
-import 'package:provider/provider.dart';
 
 import '../widgets/my_place_widget.dart';
 import '../services/update_provider.dart';
@@ -9,14 +9,15 @@ import '../services/list_handler.dart';
 import '../widgets/connection_error_widget.dart';
 import 'add_my_place_with_map_view.dart';
 
-class MyPlaces extends StatefulWidget {
+class MyPlaces extends ConsumerStatefulWidget {
   const MyPlaces({super.key});
 
   @override
-  State<MyPlaces> createState() => _MyPlacesState();
+  ConsumerState<MyPlaces> createState() => _MyPlacesState();
 }
 
-class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
+class _MyPlacesState extends ConsumerState<MyPlaces>
+    with WidgetsBindingObserver {
   bool _loading = false;
 
   @override
@@ -62,6 +63,8 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(updaterProvider); // Just to rebuild on updates
+
     if (_loading == true) {
       load();
     }
@@ -78,73 +81,71 @@ class _MyPlacesState extends State<MyPlaces> with WidgetsBindingObserver {
       );
     }
 
-    return Consumer<Update>(
-      builder: (context, counter, child) => RefreshIndicator(
-        color: Theme.of(context).colorScheme.primary,
-        onRefresh: reloadData,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            //check if myPlaceList is empty, if not show list else show text
-            myPlaceList.isNotEmpty
-                ? SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: Padding(
-                        padding: const EdgeInsets.only(bottom: 65),
-                        child: Column(children: [
-                          ConnectionError(),
-                          ...myPlaceList
-                              .map((place) => MyPlaceWidget(myPlace: place)),
-                        ])),
-                  )
-                : Column(
-                    children: [
-                      ConnectionError(),
-                      Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!
-                                    .my_place_no_place_added,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!
-                                    .my_place_no_place_added_text,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+    return RefreshIndicator(
+      color: Theme.of(context).colorScheme.primary,
+      onRefresh: reloadData,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          //check if myPlaceList is empty, if not show list else show text
+          myPlaceList.isNotEmpty
+              ? SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                      padding: const EdgeInsets.only(bottom: 65),
+                      child: Column(children: [
+                        ConnectionError(),
+                        ...myPlaceList
+                            .map((place) => MyPlaceWidget(myPlace: place)),
+                      ])),
+                )
+              : Column(
+                  children: [
+                    ConnectionError(),
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!
+                                  .my_place_no_place_added,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              AppLocalizations.of(context)!
+                                  .my_place_no_place_added_text,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-            Positioned(
-              bottom: 10,
-              right: 10,
-              child: FloatingActionButton(
-                tooltip: AppLocalizations.of(context)!
-                    .my_places_view_add_new_place_button_tooltip,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            AddMyPlaceWithMapView()), //AddMyPlaceView
-                  );
-                },
-                child: Icon(Icons.add),
-              ),
+                    ),
+                  ],
+                ),
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: FloatingActionButton(
+              tooltip: AppLocalizations.of(context)!
+                  .my_places_view_add_new_place_button_tooltip,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddMyPlaceWithMapView()), //AddMyPlaceView
+                );
+              },
+              child: Icon(Icons.add),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
