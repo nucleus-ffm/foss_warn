@@ -301,6 +301,9 @@
       }
     }
   },
+  "welcome_view_permission_action": "Request permission",
+  "welcome_view_notification_permission_headline": "Notification Permission",
+  "welcome_view_notification_permission_text": "FOSSWarn needs your permission to send you notification in case there is an alert for your area. Press on the button below to open the permission dialog.",
   "welcome_view_important_headline": "Important",
   "@welcome_view_important_headline": {},
   "welcome_view_important_text": "Please read the disclaimer before use. By using the app, you agree to it.",

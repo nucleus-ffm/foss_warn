@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/fpas.dart';
+import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
 import 'package:foss_warn/views/introduction/slides/fpas_server_select.dart';
+import 'package:foss_warn/views/introduction/slides/notification_permission.dart';
 import 'package:foss_warn/views/introduction/slides/welcome.dart';
 
 class IntroductionView extends StatefulWidget {
@@ -17,6 +19,7 @@ class _IntroductionViewState extends State<IntroductionView> {
   final PageController pageController = PageController();
 
   ServerSettings? selectedServerSettings;
+  bool hasNotificationPermission = false;
 
   void onPageSwitch() {
     if (pageController.page == null) {
@@ -56,6 +59,15 @@ class _IntroductionViewState extends State<IntroductionView> {
           serverSettings.termsOfService;
     }
 
+    Future<void> onRequestNotificationPermissionPressed() async {
+      hasNotificationPermission =
+          await NotificationService().requestNotificationPermission() ?? false;
+
+      setState(() {});
+
+      await NotificationService().init();
+    }
+
     var introductionPages = [
       IntroductionWelcomeSlide(),
       IntroductionFPASServerSelectionSlide(
@@ -63,6 +75,10 @@ class _IntroductionViewState extends State<IntroductionView> {
         onServerSelected: onServerSelected,
       ),
       IntroductionDisclaimerSlide(),
+      IntroductionNotificationPermissionSlide(
+        hasPermission: hasNotificationPermission,
+        onPermissionChanged: onRequestNotificationPermissionPressed,
+      ),
     ];
 
     return SafeArea(
