@@ -9,7 +9,7 @@ import '../main.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 import 'notification_settings_view.dart';
-import 'welcome_view.dart';
+import 'introduction/introduction_view.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
@@ -409,10 +409,11 @@ class _SettingsState extends State<Settings> {
               title: Text(
                   (AppLocalizations.of(context)!.settings_show_welcome_dialog)),
               onTap: () {
+                // TODO(PureTryOut): replace for go_router
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => WelcomeView(),
+                    builder: (context) => IntroductionView(),
                   ),
                 );
               },
