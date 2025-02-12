@@ -7,6 +7,7 @@ import 'package:foss_warn/services/legacy_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/map_view.dart';
+import 'package:foss_warn/views/introduction/introduction_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
@@ -14,7 +15,6 @@ import 'class/class_app_state.dart';
 import 'views/my_places_view.dart';
 import 'views/settings_view.dart';
 import 'views/all_warnings_view.dart';
-import 'views/welcome_view.dart';
 
 import 'class/class_notification_service.dart';
 
@@ -55,7 +55,8 @@ class FOSSWarn extends StatelessWidget {
         navigatorKey: navigatorKey,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: userPreferences.showWelcomeScreen ? WelcomeView() : HomeView(),
+        home:
+            userPreferences.showWelcomeScreen ? IntroductionView() : HomeView(),
       ),
     );
   }
