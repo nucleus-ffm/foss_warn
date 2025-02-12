@@ -24,7 +24,7 @@ class IntroductionBaseSlide extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.contain,
               width: 220.0,
               height: 200.0,
               alignment: Alignment.bottomCenter,
