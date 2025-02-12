@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/fpas.dart';
+import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
 import 'package:foss_warn/views/introduction/slides/fpas_server_select.dart';
 import 'package:foss_warn/views/introduction/slides/welcome.dart';
 
@@ -61,6 +62,7 @@ class _IntroductionViewState extends State<IntroductionView> {
         selectedServerSettings: selectedServerSettings,
         onServerSelected: onServerSelected,
       ),
+      IntroductionDisclaimerSlide(),
     ];
 
     return SafeArea(
