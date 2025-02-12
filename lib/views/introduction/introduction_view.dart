@@ -5,6 +5,7 @@ import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/views/introduction/slides/alarm_permission.dart';
 import 'package:foss_warn/views/introduction/slides/battery_optimization.dart';
 import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
+import 'package:foss_warn/views/introduction/slides/finish.dart';
 import 'package:foss_warn/views/introduction/slides/fpas_server_select.dart';
 import 'package:foss_warn/views/introduction/slides/notification_permission.dart';
 import 'package:foss_warn/views/introduction/slides/places.dart';
@@ -80,6 +81,19 @@ class _IntroductionViewState extends State<IntroductionView> {
       setState(() {});
     }
 
+    Future<void> onFinishPressed() async {
+      userPreferences.showWelcomeScreen = false;
+      setState(() {});
+
+      // TODO(PureTryOut): replace for go_router
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => HomeView(),
+        ),
+      );
+    }
+
     var introductionPages = [
       IntroductionWelcomeSlide(),
       IntroductionFPASServerSelectionSlide(
@@ -98,6 +112,7 @@ class _IntroductionViewState extends State<IntroductionView> {
       IntroductionBatteryOptimizationSlide(),
       IntroductionPlacesSlide(),
       IntroductionWarningLevelsSlide(),
+      IntroductionFinishsSlide(onFinishPressed: onFinishPressed),
     ];
 
     return SafeArea(
@@ -111,10 +126,12 @@ class _IntroductionViewState extends State<IntroductionView> {
                   itemCount: introductionPages.length,
                   itemBuilder: (context, index) => introductionPages[index],
                 ),
-                _PageProgressDots(
-                  pageCount: introductionPages.length,
-                  currentPage: currentPage,
-                ),
+                if (currentPage != introductionPages.length - 1) ...[
+                  _PageProgressDots(
+                    pageCount: introductionPages.length,
+                    currentPage: currentPage,
+                  ),
+                ],
               ],
             ),
           ],
