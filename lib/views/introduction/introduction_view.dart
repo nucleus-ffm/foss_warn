@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/main.dart';
+import 'package:foss_warn/services/fpas.dart';
+import 'package:foss_warn/views/introduction/slides/fpas_server_select.dart';
 import 'package:foss_warn/views/introduction/slides/welcome.dart';
 
 class IntroductionView extends StatefulWidget {
@@ -11,6 +14,8 @@ class IntroductionView extends StatefulWidget {
 class _IntroductionViewState extends State<IntroductionView> {
   int currentPage = 0;
   final PageController pageController = PageController();
+
+  ServerSettings? selectedServerSettings;
 
   void onPageSwitch() {
     if (pageController.page == null) {
@@ -38,8 +43,24 @@ class _IntroductionViewState extends State<IntroductionView> {
 
   @override
   Widget build(BuildContext context) {
+    void onServerSelected(ServerSettings serverSettings) {
+      selectedServerSettings = serverSettings;
+      setState(() {});
+
+      userPreferences.fossPublicAlertServerUrl = serverSettings.url;
+      userPreferences.fossPublicAlertServerOperator = serverSettings.operator;
+      userPreferences.fossPublicAlertServerPrivacyNotice =
+          serverSettings.privacyNotice;
+      userPreferences.fossPublicAlertServerTermsOfService =
+          serverSettings.termsOfService;
+    }
+
     var introductionPages = [
       IntroductionWelcomeSlide(),
+      IntroductionFPASServerSelectionSlide(
+        selectedServerSettings: selectedServerSettings,
+        onServerSelected: onServerSelected,
+      ),
     ];
 
     return SafeArea(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/themes/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:foss_warn/constants.dart' as constants;
 
 import '../enums/severity.dart';
 import 'class_notification_preferences.dart';
@@ -291,12 +292,10 @@ class UserPreferences {
   }
 
   // unified Push settings
-  // the server url can be overwritten by the user
-  final String _fossPublicAlertServerUrl = "https://alerts.kde.org";
   String get fossPublicAlertServerUrl {
     String? data = _preferences.getString("fossPublicAlertServerUrl");
     if (foundation.kReleaseMode) {
-      return data ?? _fossPublicAlertServerUrl;
+      return data ?? constants.defaultFPASServerUrl;
     } else {
       // in DEBUG mode set to local server but also
       // allow to change the default server
@@ -306,16 +305,6 @@ class UserPreferences {
 
   set fossPublicAlertServerUrl(String newValue) {
     _preferences.setString("fossPublicAlertServerUrl", newValue);
-  }
-
-  final String _fossPublicAlertServerVersion = "";
-  String get fossPublicAlertServerVersion {
-    String? data = _preferences.getString("fossPublicAlertServerVersion");
-    return data ?? _fossPublicAlertServerVersion;
-  }
-
-  set fossPublicAlertServerVersion(String value) {
-    _preferences.setString(fossPublicAlertServerVersion, value);
   }
 
   final String _fossPublicAlertServerOperator = "";
@@ -347,16 +336,6 @@ class UserPreferences {
 
   set fossPublicAlertServerTermsOfService(String value) {
     _preferences.setString("fossPublicAlertServerTermsOfService", value);
-  }
-
-  final int _fossPublicAlertServerCongestionState = -1;
-  int get fossPublicAlertServerCongestionState {
-    int? data = _preferences.getInt("fossPublicAlertServerCongestionState");
-    return data ?? _fossPublicAlertServerCongestionState;
-  }
-
-  set fossPublicAlertServerCongestionState(int value) {
-    _preferences.setInt("fossPublicAlertServerCongestionState", value);
   }
 
   final String _unifiedPushEndpoint = "";

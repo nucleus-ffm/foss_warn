@@ -274,9 +274,33 @@
   "dev_settings_success": "done",
   "@dev_settings_success": {},
   "welcome_view_foss_warn_headline": "FOSS Warn",
-  "@welcome_view_foss_warn_headline": {},
   "welcome_view_foss_warn_text": "Glad you want to use FOSS Warn. Swipe to start the introduction.",
-  "@welcome_view_foss_warn_text": {},
+  "welcome_view_foss_server_selection_headline": "FOSS Public Alert Server",
+  "welcome_view_foss_server_selection_text": "This version is an alpha test version of FOSSWarn with FPAS support. This version is not yet ready for production.",
+  "welcome_view_foss_server_selection_select": "Select FPAS server instance",
+  "welcome_view_foss_server_selection_select_instance_helptext": "Why do I need to select a server?",
+  "welcome_view_foss_server_selection_option_default_title": "Use default server: {defaultServerURL}",
+  "@welcome_view_foss_server_selection_option_default_title": {
+    "placeholders": {
+      "defaultServerURL": {
+        "type": "String"
+      }
+    }
+  },
+  "welcome_view_foss_server_selection_option_custom_title": "Use custom server",
+  "welcome_view_foss_server_selection_save": "Confirm and load settings",
+  "welcome_view_foss_server_selection_saved": "Confirmed",
+  "welcome_view_foss_server_enter_url_label": "Enter FPAS server URL",
+  "welcome_view_foss_server_enter_url_validator_empty": "Please enter a URL",
+  "welcome_view_foss_server_enter_url_error": "Invalid server URL",
+  "welcome_view_foss_server_operator": "This server is operated by: {operator}",
+  "@welcome_view_foss_server_operator": {
+    "placeholders": {
+      "operator": {
+        "type": "String"
+      }
+    }
+  },
   "welcome_view_important_headline": "Important",
   "@welcome_view_important_headline": {},
   "welcome_view_important_text": "Please read the disclaimer before use. By using the app, you agree to it.",

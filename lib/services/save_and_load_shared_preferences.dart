@@ -106,16 +106,12 @@ Future<void> saveSettings() async {
       userPreferences.fossPublicAlertSubscriptionIdsToSubscribe);
   preferences.setInt("previousInstalledVersionCode",
       userPreferences.previousInstalledVersionCode);
-  preferences.setString("fossPublicAlertServerVersion",
-      userPreferences.fossPublicAlertServerVersion);
   preferences.setString("fossPublicAlertServerOperator",
       userPreferences.fossPublicAlertServerOperator);
   preferences.setString("fossPublicAlertServerPrivacyNotice",
       userPreferences.fossPublicAlertServerPrivacyNotice);
   preferences.setString("fossPublicAlertServerTermsOfService",
       userPreferences.fossPublicAlertServerTermsOfService);
-  preferences.setInt("fossPublicAlertServerCongestionState",
-      userPreferences.fossPublicAlertServerCongestionState);
   preferences.setInt("maxSizeOfSubscriptionBoundingBox",
       userPreferences.maxSizeOfSubscriptionBoundingBox);
   debugPrint("Settings saved");
@@ -226,10 +222,6 @@ Future<void> loadSettings() async {
     userPreferences.previousInstalledVersionCode =
         preferences.getInt("previousInstalledVersionCode")!;
   }
-  if (preferences.containsKey("fossPublicAlertServerVersion")) {
-    userPreferences.fossPublicAlertServerVersion =
-        preferences.getString("fossPublicAlertServerVersion")!;
-  }
   if (preferences.containsKey("fossPublicAlertServerOperator")) {
     userPreferences.fossPublicAlertServerOperator =
         preferences.getString("fossPublicAlertServerOperator")!;
@@ -241,10 +233,6 @@ Future<void> loadSettings() async {
   if (preferences.containsKey("fossPublicAlertServerTermsOfService")) {
     userPreferences.fossPublicAlertServerTermsOfService =
         preferences.getString("fossPublicAlertServerTermsOfService")!;
-  }
-  if (preferences.containsKey("fossPublicAlertServerCongestionState")) {
-    userPreferences.fossPublicAlertServerCongestionState =
-        preferences.getInt("fossPublicAlertServerCongestionState")!;
   }
   if (preferences.containsKey("maxSizeOfSubscriptionBoundingBox")) {
     userPreferences.maxSizeOfSubscriptionBoundingBox =
