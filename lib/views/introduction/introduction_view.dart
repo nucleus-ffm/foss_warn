@@ -3,6 +3,7 @@ import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/fpas.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/views/introduction/slides/alarm_permission.dart';
+import 'package:foss_warn/views/introduction/slides/battery_optimization.dart';
 import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
 import 'package:foss_warn/views/introduction/slides/fpas_server_select.dart';
 import 'package:foss_warn/views/introduction/slides/notification_permission.dart';
@@ -92,6 +93,7 @@ class _IntroductionViewState extends State<IntroductionView> {
         hasPermission: hasAlarmPermission,
         onPermissionChanged: onRequestAlarmPermissionPressed,
       ),
+      IntroductionBatteryOptimizationSlide(),
     ];
 
     return SafeArea(
