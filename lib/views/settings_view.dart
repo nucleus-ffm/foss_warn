@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foss_warn/services/fpas.dart';
 import 'package:foss_warn/views/dev_settings_view.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../class/class_fpas_place.dart';
 import '../main.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
@@ -250,10 +250,9 @@ class _SettingsState extends State<Settings> {
                 },
                 onSubmitted: (newUrl) async {
                   try {
-                    bool fetchSuccessful =
-                        await Place.fetchServerSettings(newUrl);
+                    await fetchFPASServerSettings(newUrl);
                     setState(() {
-                      _fpasServerURLError = !fetchSuccessful;
+                      _fpasServerURLError = false;
                     });
                   } catch (e) {
                     debugPrint(e.toString());
