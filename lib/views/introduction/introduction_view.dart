@@ -8,6 +8,7 @@ import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
 import 'package:foss_warn/views/introduction/slides/fpas_server_select.dart';
 import 'package:foss_warn/views/introduction/slides/notification_permission.dart';
 import 'package:foss_warn/views/introduction/slides/places.dart';
+import 'package:foss_warn/views/introduction/slides/warning_levels.dart';
 import 'package:foss_warn/views/introduction/slides/welcome.dart';
 
 class IntroductionView extends StatefulWidget {
@@ -96,6 +97,7 @@ class _IntroductionViewState extends State<IntroductionView> {
       ),
       IntroductionBatteryOptimizationSlide(),
       IntroductionPlacesSlide(),
+      IntroductionWarningLevelsSlide(),
     ];
 
     return SafeArea(
