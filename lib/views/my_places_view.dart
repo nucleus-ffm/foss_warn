@@ -61,7 +61,6 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
     setState(() {
       _loading = true;
     });
-    //await Future.delayed(Duration(seconds: 2));
   }
 
   @override

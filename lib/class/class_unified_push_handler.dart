@@ -49,7 +49,7 @@ class UnifiedPushHandler {
   }
 
   /// callback function to handle notification from unifiedPush
-  static Future<bool> onMessage({
+  static Future<void> onMessage({
     required AlertAPI alertApi,
     required Uint8List message,
     required String instance,
@@ -57,7 +57,7 @@ class UnifiedPushHandler {
   }) async {
     debugPrint("instance $instance");
     if (instance != userPreferences.unifiedPushInstance) {
-      return false;
+      return;
     }
     debugPrint("onNotification");
     var payload = utf8.decode(message);
@@ -70,7 +70,7 @@ class UnifiedPushHandler {
         places: myPlaces,
       );
     }
-    return true;
+    return;
   }
 
   /// register for push notifications

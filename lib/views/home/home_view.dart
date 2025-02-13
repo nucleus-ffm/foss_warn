@@ -6,7 +6,6 @@ import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
-import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 import 'package:foss_warn/services/update_provider.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/all_warnings_view.dart';
@@ -49,10 +48,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
         myPlaces: places,
       ),
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(myPlacesProvider.notifier).places = await loadMyPlacesList();
-    });
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
   }
@@ -135,7 +130,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             onPressed: onOpenSortDialog,
           ),
           IconButton(
-            onPressed: onMarkNotificationAsRead,
+            onPressed: places.isNotEmpty ? onMarkNotificationAsRead : null,
             icon: const Icon(Icons.mark_chat_read),
             tooltip:
                 localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
