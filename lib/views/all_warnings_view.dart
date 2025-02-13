@@ -62,6 +62,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
       checkForMyPlacesWarnings(
         alertApi: ref.read(alertApiProvider),
+        myPlacesService: ref.read(myPlacesProvider.notifier),
         places: places,
       );
       sortWarnings(mapWarningsList);

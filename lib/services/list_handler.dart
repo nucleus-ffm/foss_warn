@@ -40,22 +40,26 @@ final myPlacesProvider = StateNotifierProvider<MyPlacesService, List<Place>>(
 class MyPlacesService extends StateNotifier<List<Place>> {
   MyPlacesService(super.state);
 
-  void add(Place place) {
+  Future<void> add(Place place) async {
     var places = List<Place>.from(state); // We need a copy
     places.add(place);
+
+    await set(places);
+  }
+
+  Future<void> set(List<Place> places) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("MyPlacesListAsJson", jsonEncode(places));
+
+    if (!mounted) return;
     state = places;
   }
 
-  set places(List<Place> places) => state = places;
-
-  void remove(Place place) {
+  Future<void> remove(Place place) async {
     var places = List<Place>.from(state);
     places.remove(place);
-    state = places;
-  }
 
-  void clear() {
-    state = [];
+    await set(places);
   }
 
   List<Place> get places => state;

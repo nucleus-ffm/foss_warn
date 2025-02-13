@@ -8,11 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 // My Places
-Future<void> saveMyPlacesList(List<Place> places) async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("MyPlacesListAsJson", jsonEncode(places));
-}
-
+// TODO(PureTryOut): remove once everything uses cachedPlacesProvider
 Future<List<Place>> loadMyPlacesList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -31,26 +27,6 @@ Future<List<Place>> loadMyPlacesList() async {
   }
 
   return [];
-}
-
-Future<void> saveGeocodes(String jsonFile) async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  debugPrint("save geocodes");
-  preferences.setString("geocodes", jsonFile);
-}
-
-Future<dynamic> loadGeocode() async {
-  debugPrint("load geocodes from storage");
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  // preferences.remove("geocodes");
-  if (preferences.containsKey("geocodes")) {
-    debugPrint("we have some geocodes");
-    var result = preferences.getString("geocodes")!;
-    return jsonDecode(result);
-  } else {
-    debugPrint("geocodes are not saved");
-    return null;
-  }
 }
 
 /// load the time when the API could be called successfully the last time.

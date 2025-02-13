@@ -43,6 +43,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       onUnregistered: UnifiedPushHandler.onUnregistered,
       onMessage: (message, instance) => UnifiedPushHandler.onMessage(
         alertApi: ref.read(alertApiProvider),
+        myPlacesService: ref.read(myPlacesProvider.notifier),
         message: message,
         instance: instance,
         myPlaces: places,
