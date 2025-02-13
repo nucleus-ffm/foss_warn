@@ -12,7 +12,6 @@ import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
 import '../enums/severity.dart';
 import '../main.dart';
-import '../services/save_and_load_shared_preferences.dart';
 import '../services/url_launcher.dart';
 import '../services/translate_and_colorize_warning.dart';
 
@@ -290,10 +289,12 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
       warning.read = widget._warnMessage.read;
       place.warnings.updateEntry(warning);
       places.updateEntry(place);
-      ref.read(myPlacesProvider.notifier).places = places;
+
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await ref.read(myPlacesProvider.notifier).set(places);
+      });
     }
-    // save places List to store new read state
-    saveMyPlacesList(places);
+
     // cancel the notification
     NotificationService.cancelOneNotification(
       widget._warnMessage.identifier.hashCode,

@@ -6,11 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
 // My Places
-Future<void> saveMyPlacesList(List<Place> places) async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("MyPlacesListAsJson", jsonEncode(places));
-}
-
+// TODO(PureTryOut): remove once everything uses cachedPlacesProvider
 Future<List<Place>> loadMyPlacesList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
