@@ -37,6 +37,21 @@ class Place {
   })  : _name = name,
         _warnings = warnings;
 
+  Place copyWith({
+    String? name,
+    List<WarnMessage>? warnings,
+    String? eTag,
+    BoundingBox? boundingBox,
+    String? subscriptionId,
+  }) =>
+      Place(
+        name: name ?? _name,
+        warnings: warnings ?? _warnings,
+        eTag: eTag ?? this.eTag,
+        boundingBox: boundingBox ?? this.boundingBox,
+        subscriptionId: subscriptionId ?? this.subscriptionId,
+      );
+
   String get name => _name;
   int get countWarnings => warnings.length;
   List<WarnMessage> get warnings => _warnings;
