@@ -126,4 +126,14 @@ class WarnMessage {
         'hideWarningBecauseThereIsANewerVersion':
             hideWarningBecauseThereIsANewerVersion,
       };
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! WarnMessage) return false;
+
+    return other.identifier == identifier;
+  }
+
+  @override
+  int get hashCode => identifier.hashCode;
 }
