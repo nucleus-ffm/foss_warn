@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/main.dart';
@@ -17,6 +16,11 @@ import 'package:foss_warn/views/settings_view.dart';
 import 'package:foss_warn/widgets/dialogs/sort_by_dialog.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
+enum MainMenuItem {
+  settings,
+  about,
+}
+
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
@@ -25,14 +29,7 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-  int _selectedIndex = userPreferences.startScreen; // selected start view
-
-  // list of views for the navigation bar
-  final List<Widget> _pages = <Widget>[
-    const AllWarningsView(),
-    const MyPlaces(),
-    const MapView(),
-  ];
+  int selectedIndex = userPreferences.startScreen;
 
   @override
   void initState() {
@@ -42,36 +39,28 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     // init unified push
     UnifiedPush.initialize(
-      onNewEndpoint: UnifiedPushHandler
-          .onNewEndpoint, // takes (String endpoint, String instance) in args
-      onRegistrationFailed:
-          UnifiedPushHandler.onRegistrationFailed, // takes (String instance)
-      onUnregistered:
-          UnifiedPushHandler.onUnregistered, // takes (String instance)
+      onNewEndpoint: UnifiedPushHandler.onNewEndpoint,
+      onRegistrationFailed: UnifiedPushHandler.onRegistrationFailed,
+      onUnregistered: UnifiedPushHandler.onUnregistered,
       onMessage: (message, instance) => UnifiedPushHandler.onMessage(
         alertApi: ref.read(alertApiProvider),
         message: message,
         instance: instance,
         myPlaces: places,
-      ), // takes (Uint8List message, String instance) in args
+      ),
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(myPlacesProvider.notifier).places = await loadMyPlacesList();
     });
 
-    listenNotifications();
-  }
-
-  void listenNotifications() {
     NotificationService.onNotification.stream.listen(onClickedNotification);
   }
 
   void onClickedNotification(String? payload) {
-    //change view to "MyPlaces"
-    setState(() {
-      _selectedIndex = 1;
-    });
+    // Change view to "MyPlaces"
+    selectedIndex = 1;
+    setState(() {});
   }
 
   @override
@@ -82,6 +71,58 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var updater = ref.read(updaterProvider);
     var places = ref.watch(myPlacesProvider);
 
+    var body = switch (selectedIndex) {
+      1 => const MyPlacesView(),
+      2 => const MapView(),
+      _ => const AllWarningsView(),
+    };
+
+    void onDestinationSelected(int index) {
+      setState(() {
+        selectedIndex = index;
+      });
+    }
+
+    Future<void> onOpenSortDialog() async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => const SortByDialog(),
+      );
+      updater.updateReadStatusInList();
+    }
+
+    void onMarkNotificationAsRead() {
+      for (var place in places) {
+        place.markAllWarningsAsRead(ref);
+      }
+
+      final snackBar = SnackBar(
+        content: Text(
+          localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
+        ),
+      );
+
+      scaffoldMessenger.showSnackBar(snackBar);
+    }
+
+    Future<void> onPopupMenuPressed(MainMenuItem item) async {
+      // TODO(PureTryOut): replace for go_router
+      switch (item) {
+        case MainMenuItem.settings:
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Settings()),
+          );
+          break;
+        case MainMenuItem.about:
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AboutView()),
+          );
+          break;
+      }
+    }
+
     return Scaffold(
       // set to false to prevent the widget from jumping after closing the keyboard
       resizeToAvoidBottomInset: false,
@@ -91,57 +132,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
           IconButton(
             icon: const Icon(Icons.sort),
             tooltip: localizations.main_app_bar_action_sort_tooltip,
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => const SortByDialog(),
-              );
-              updater.updateReadStatusInList();
-            },
+            onPressed: onOpenSortDialog,
           ),
           IconButton(
-            onPressed: () {
-              for (Place p in places) {
-                p.markAllWarningsAsRead(ref);
-              }
-
-              final snackBar = SnackBar(
-                content: Text(
-                  localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
-                ),
-              );
-
-              scaffoldMessenger.showSnackBar(snackBar);
-            },
+            onPressed: onMarkNotificationAsRead,
             icon: const Icon(Icons.mark_chat_read),
             tooltip:
                 localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
           ),
-          PopupMenuButton(
+          PopupMenuButton<MainMenuItem>(
             icon: const Icon(Icons.more_vert),
-            onSelected: (result) {
-              switch (result) {
-                case 0:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Settings()),
-                  );
-                  break;
-                case 1:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AboutView()),
-                  );
-                  break;
-              }
-            },
-            itemBuilder: (context) => <PopupMenuEntry>[
+            onSelected: onPopupMenuPressed,
+            itemBuilder: (context) => <PopupMenuEntry<MainMenuItem>>[
               PopupMenuItem(
-                value: 0,
+                value: MainMenuItem.settings,
                 child: Text(localizations.main_dot_menu_settings),
               ),
               PopupMenuItem(
-                value: 1,
+                value: MainMenuItem.about,
                 child: Text(localizations.main_dot_menu_about),
               ),
             ],
@@ -158,19 +166,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
             icon: const Icon(Icons.place),
             label: localizations.main_nav_bar_my_places,
           ),
-          const NavigationDestination(
-            icon: Icon(Icons.map),
-            label: "Map",
+          NavigationDestination(
+            icon: const Icon(Icons.map),
+            label: localizations.main_nav_bar_map,
           ),
         ],
-        onDestinationSelected: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        selectedIndex: _selectedIndex,
+        onDestinationSelected: onDestinationSelected,
+        selectedIndex: selectedIndex,
       ),
-      body: _pages.elementAt(_selectedIndex),
+      body: body,
     );
   }
 }

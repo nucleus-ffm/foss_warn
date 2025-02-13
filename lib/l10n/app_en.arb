@@ -1,8 +1,7 @@
 {
   "main_nav_bar_all_warnings": "All warnings",
-  "@main_nav_bar_all_warnings": {},
   "main_nav_bar_my_places": "My places",
-  "@main_nav_bar_my_places": {},
+  "main_nav_bar_map": "Map",
   "main_dot_menu_settings": "Settings",
   "@main_dot_menu_settings": {},
   "main_dot_menu_about": "About",
