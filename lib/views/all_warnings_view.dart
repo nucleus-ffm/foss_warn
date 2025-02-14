@@ -49,13 +49,8 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
     void loadData() async {
       debugPrint("[allWarningsView] Load Data");
-      if (userPreferences.showAllWarnings) {
-        // call api for the map warnings
-        await callMapAPI();
-      } else {
-        // call (new) api just for my places/ alert swiss
-        await callAPI();
-      }
+      await callAPI();
+
       checkForMyPlacesWarnings(true);
       sortWarnings(mapWarningsList);
       setState(() {
