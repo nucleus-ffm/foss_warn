@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
+import 'package:foss_warn/services/api_handler.dart';
 
 import 'package:unifiedpush/constants.dart';
 import 'package:unifiedpush/unifiedpush.dart';
@@ -44,7 +45,11 @@ class UnifiedPushHandler {
   }
 
   /// callback function to handle notification from unifiedPush
-  static Future<bool> onMessage(Uint8List message, String instance) async {
+  static Future<bool> onMessage(
+    AlertAPI alertApi,
+    Uint8List message,
+    String instance,
+  ) async {
     debugPrint("instance $instance");
     if (instance != userPreferences.unifiedPushInstance) {
       return false;
@@ -55,7 +60,10 @@ class UnifiedPushHandler {
     if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) {
       // system message or debug
     } else {
-      checkForMyPlacesWarnings(true);
+      checkForMyPlacesWarnings(
+        alertApi: alertApi,
+        loadManually: true,
+      );
     }
     return true;
   }

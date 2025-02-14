@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foss_warn/services/fpas.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/views/dev_settings_view.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,14 +15,14 @@ import 'introduction/introduction_view.dart';
 import '../widgets/dialogs/font_size_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
 
-class Settings extends StatefulWidget {
+class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
 
   @override
-  State<Settings> createState() => _SettingsState();
+  ConsumerState<Settings> createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsState extends ConsumerState<Settings> {
   final TextEditingController frequencyController = TextEditingController();
   final TextEditingController fpasServerURLController = TextEditingController();
   bool _fpasServerURLError = false;
@@ -45,6 +46,8 @@ class _SettingsState extends State<Settings> {
       0: AppLocalizations.of(context)!.settings_start_view_all_warnings,
       1: AppLocalizations.of(context)!.settings_start_view_only_my_places,
     };
+
+    var alertApi = ref.read(alertApiProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -250,7 +253,8 @@ class _SettingsState extends State<Settings> {
                 },
                 onSubmitted: (newUrl) async {
                   try {
-                    var serverSettings = await fetchFPASServerSettings(newUrl);
+                    var serverSettings =
+                        await alertApi.fetchServerSettings(overrideUrl: newUrl);
                     userPreferences.fossPublicAlertServerUrl =
                         serverSettings.url;
                     userPreferences.fossPublicAlertServerOperator =

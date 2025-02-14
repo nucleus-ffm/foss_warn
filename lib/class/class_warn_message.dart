@@ -112,9 +112,7 @@ class WarnMessage {
   /// is used to create a new WarnMessage object with data from the API call.
   /// Note that the json structure is different from the structure we use to
   /// cache the warnings.
-  factory WarnMessage.fromJsonFPAS(Map<String, dynamic> json) {
-    // print("Neue WarnMessage wird angelegt...");
-    return WarnMessage(
+  factory WarnMessage.fromJsonFPAS(Map<String, dynamic> json) => WarnMessage(
         identifier: json["identifier"] ?? "?",
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
@@ -127,8 +125,8 @@ class WarnMessage {
             ? null
             : References.fromString(json['references']),
         notified: false,
-        read: false);
-  }
+        read: false,
+      );
 
   Map<String, dynamic> toJson() => {
         'identifier': identifier,

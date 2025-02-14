@@ -9,7 +9,10 @@ import 'save_and_load_shared_preferences.dart';
 
 /// check all warnings if one of them is of a myPlace and if yes send a notification <br>
 /// [true] if there are/is a warning - false if not <br>
-Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
+Future<bool> checkForMyPlacesWarnings({
+  required AlertAPI alertApi,
+  required bool loadManually,
+}) async {
   bool returnValue = true;
   debugPrint("check for warnings");
   if (myPlaceList.isEmpty) {
@@ -18,7 +21,7 @@ Future<bool> checkForMyPlacesWarnings(bool loadManually) async {
   }
 
   // get data first
-  await callAPI();
+  await callAPI(alertApi: alertApi);
 
   // inform user if he hasn't add any places yet
   // @todo move to own timed function or find solution to not show a notification if the app is started the first time

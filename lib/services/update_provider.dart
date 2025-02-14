@@ -9,11 +9,14 @@ final updaterProvider = Provider((ref) => Update());
 
 class Update with ChangeNotifier {
   // delete preset
-  Future<void> updateList(Place newPlace) async {
+  Future<void> updateList({
+    required AlertAPI alertApi,
+    required Place newPlace,
+  }) async {
     debugPrint("add new place: ${newPlace.name}");
     myPlaceList.add(newPlace);
     saveMyPlacesList();
-    await callAPI();
+    await callAPI(alertApi: alertApi);
     debugPrint("we have to rebuild the view");
     notifyListeners();
   }
