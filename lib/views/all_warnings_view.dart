@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/services/alert_api/fpas.dart';
 
 import '../services/api_handler.dart';
 import '../services/check_for_my_places_warnings.dart';
@@ -49,9 +50,12 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
     void loadData() async {
       debugPrint("[allWarningsView] Load Data");
-      await callAPI();
+      await callAPI(alertApi: ref.read(alertApiProvider));
 
-      checkForMyPlacesWarnings(true);
+      checkForMyPlacesWarnings(
+        alertApi: ref.read(alertApiProvider),
+        loadManually: true,
+      );
       sortWarnings(mapWarningsList);
       setState(() {
         debugPrint("loading finished");

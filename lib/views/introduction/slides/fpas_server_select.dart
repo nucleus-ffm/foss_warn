@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:foss_warn/services/fpas.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/url_launcher.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/views/introduction/widgets/base_slide.dart';
@@ -8,7 +10,7 @@ import 'package:foss_warn/views/introduction/widgets/base_slide.dart';
 final _fpasServerExplanationURL =
     'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-the-FOSS-Public-Alert-Server-and-why-do-I-have-to-select-a-server%3F';
 
-class IntroductionFPASServerSelectionSlide extends StatefulWidget {
+class IntroductionFPASServerSelectionSlide extends ConsumerStatefulWidget {
   const IntroductionFPASServerSelectionSlide({
     required this.selectedServerSettings,
     required this.onServerSelected,
@@ -19,12 +21,12 @@ class IntroductionFPASServerSelectionSlide extends StatefulWidget {
   final void Function(ServerSettings serverSettings) onServerSelected;
 
   @override
-  State<IntroductionFPASServerSelectionSlide> createState() =>
+  ConsumerState<IntroductionFPASServerSelectionSlide> createState() =>
       _IntroductionFPASServerSelectionSlideState();
 }
 
 class _IntroductionFPASServerSelectionSlideState
-    extends State<IntroductionFPASServerSelectionSlide> {
+    extends ConsumerState<IntroductionFPASServerSelectionSlide> {
   bool isCustomServerSelected = false;
   bool? isServerURLValid;
   bool serverSettingsConfirmed = false;
@@ -59,14 +61,13 @@ class _IntroductionFPASServerSelectionSlideState
     }
 
     Future<void> fetchServerSettings({String? newUrl}) async {
+      var url = newUrl ?? constants.defaultFPASServerUrl;
       ServerSettings? serverSettings;
       try {
-        serverSettings = await fetchFPASServerSettings(
-          newUrl ?? constants.defaultFPASServerUrl,
-        );
+        serverSettings = await ref
+            .read(alertApiProvider)
+            .fetchServerSettings(overrideUrl: url);
       } on UnreachableServerError {
-        serverSettings = null;
-      } on ConnectionError {
         serverSettings = null;
       } on ArgumentError {
         serverSettings = null;

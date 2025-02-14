@@ -381,7 +381,6 @@ class UserPreferences {
   }
 
   final String unifiedPushInstance = "FOSSWarn";
-  final String httpUserAgent = "de.nucleus.foss_warn";
   final String osmTileServerULR =
       "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 }

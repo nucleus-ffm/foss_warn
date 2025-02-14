@@ -9,7 +9,9 @@ import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_user_agent_http_client.dart';
+import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/main.dart';
+import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -153,7 +155,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
         "https://nominatim.openstreetmap.org/search?q=$requestString&format=json&featureType=city");
 
     UserAgentHttpClient client =
-        UserAgentHttpClient(userPreferences.httpUserAgent, http.Client());
+        UserAgentHttpClient(constants.httpUserAgent, http.Client());
 
     Response response = await client.get(
       requestURL,
@@ -176,6 +178,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
   @override
   Widget build(BuildContext context) {
     var updater = ref.read(updaterProvider);
+    var alertApi = ref.read(alertApiProvider);
 
     return Scaffold(
       // set to false to prevent jumping of the radiusSlider Widget
@@ -432,9 +435,10 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                         .loading_screen_loading);
                                 String subscriptionId = "";
                                 try {
-                                  subscriptionId = await Place.registerForArea(
-                                    context,
-                                    boundingBox,
+                                  subscriptionId = await alertApi.registerArea(
+                                    boundingBox: boundingBox,
+                                    unifiedPushEndpoint:
+                                        userPreferences.unifiedPushEndpoint,
                                   );
                                 } catch (e) {
                                   debugPrint("Error: ${e.toString()}");
@@ -463,7 +467,10 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   );
 
                                   setState(() {
-                                    updater.updateList(newPlace);
+                                    updater.updateList(
+                                      alertApi: ref.read(alertApiProvider),
+                                      newPlace: newPlace,
+                                    );
                                     // cancel warning of missing places (ID: 3)
                                     NotificationService.cancelOneNotification(
                                         3);
