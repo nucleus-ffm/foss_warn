@@ -1,7 +1,7 @@
 name: foss_warn
 description: A FOSS client for the FOSS Public Alert Server
 publish_to: 'none'
-version: 1.0.0+34
+version: 1.0.0+35
 
 environment:
   sdk: ">=3.5.4 <3.13.3"
@@ -18,7 +18,6 @@ dependencies:
   rxdart: ^0.28.0
   url_launcher: ^6.3.1
   share_plus: ^10.1.1
-  android_alarm_manager_plus: ^4.0.4
   intl: any # for localizations
   unifiedpush: ^5.0.2
   xml2json: ^6.2.5

@@ -6,7 +6,7 @@ enum MessageType {
   error; // Indicates rejection of the message(s) identified in <references>; explanation SHOULD appear in <note>
 
   String toJson() => name;
-  static MessageType fromJson(String json) => values.byName(json);
+  static MessageType fromJson(String json) => values.byName(json.toLowerCase());
 
   /// extract the severity from the string and return the corresponding enum
   static MessageType fromString(String messageType) {

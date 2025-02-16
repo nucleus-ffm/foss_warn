@@ -5,7 +5,6 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 
-import '../class/class_alarm_manager.dart';
 import '../main.dart';
 import '../services/check_for_my_places_warnings.dart';
 import '../services/list_handler.dart';
@@ -76,35 +75,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     // and use it to show a SnackBar.
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
-                },
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)!
-                    .dev_settings_restart_background_service),
-                subtitle: Text(AppLocalizations.of(context)!
-                    .dev_settings_restart_background_service_text),
-                onTap: () {
-                  debugPrint("restart background service");
-                  try {
-                    //delete all background tasks and create new one
-                    AlarmManager().cancelBackgroundTask();
-                    AlarmManager().registerBackgroundTask();
-                  } catch (e) {
-                    debugPrint(
-                        "Something went wrong while restart background task: $e");
-                  }
-                  final snackBar = SnackBar(
-                    content: Text(
-                      AppLocalizations.of(context)!.dev_settings_success,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
               ),
               ListTile(

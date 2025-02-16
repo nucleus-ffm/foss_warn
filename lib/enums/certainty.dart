@@ -7,7 +7,7 @@ enum Certainty {
   other; // not part of CAP
 
   String toJson() => name;
-  static Certainty fromJson(String json) => values.byName(json);
+  static Certainty fromJson(String json) => values.byName(json.toLowerCase());
 }
 
 /// extract the certainty from the string and return the corresponding enum

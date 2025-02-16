@@ -37,7 +37,7 @@ class ServerSettings {
 /// throws an exception if the url is not a valid FPAS server url or something
 /// else went wrong
 Future<ServerSettings> fetchFPASServerSettings(String url) async {
-  Uri fpasUri = Uri.parse("$url/sources/server_status");
+  Uri fpasUri = Uri.parse("$url/config/server_status");
   Response response;
   try {
     response = await http.get(

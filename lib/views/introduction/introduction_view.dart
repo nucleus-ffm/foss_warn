@@ -70,8 +70,6 @@ class _IntroductionViewState extends State<IntroductionView> {
           await NotificationService().requestNotificationPermission() ?? false;
 
       setState(() {});
-
-      await NotificationService().init();
     }
 
     Future<void> onRequestAlarmPermissionPressed() async {
@@ -79,6 +77,7 @@ class _IntroductionViewState extends State<IntroductionView> {
           await NotificationService().requestExactAlarmPermission() ?? false;
 
       setState(() {});
+      await NotificationService().init();
     }
 
     Future<void> onFinishPressed() async {

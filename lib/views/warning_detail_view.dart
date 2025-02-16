@@ -406,7 +406,7 @@ class _DetailScreenState extends State<DetailScreen> {
             tooltip: AppLocalizations.of(context)!.warning_share,
             onPressed: () {
               final String shareText =
-                  "${widget._warnMessage.info[0].headline}\n\n${AppLocalizations.of(context)!.warning_from}: ${formatSentDate(widget._warnMessage.sent)}\n\nContext information: \n${AppLocalizations.of(context)!.warning_type}: ${translateWarningType(widget._warnMessage.messageType.name, context)}\n ${AppLocalizations.of(context)!.warning_severity}: ${translateWarningCertainty(widget._warnMessage.info[0].severity.name, context)}\n\n${AppLocalizations.of(context)!.warning_region}: ${generateAreaDescList(-1).toString().substring(1, generateAreaDescList(-1).toString().length - 1)}\n\n${AppLocalizations.of(context)!.warning_description}:\n${replaceHTMLTags(widget._warnMessage.info[0].description)} \n\n${AppLocalizations.of(context)!.warning_recommended_action}:\n${replaceHTMLTags(widget._warnMessage.info[0].instruction ?? "n.a.")}\n\n${AppLocalizations.of(context)!.warning_source}:\n${widget._warnMessage.publisher}\n\n-- ${AppLocalizations.of(context)!.warning_shared_by_foss_warn} --";
+                  "${widget._warnMessage.info[0].headline}\n\n${AppLocalizations.of(context)!.warning_from}: ${formatSentDate(widget._warnMessage.sent)}\n\nContext information: \n${AppLocalizations.of(context)!.warning_type}: ${translateWarningType(widget._warnMessage.messageType, context)}\n ${AppLocalizations.of(context)!.warning_severity}: ${translateWarningCertainty(widget._warnMessage.info[0].severity.name, context)}\n\n${AppLocalizations.of(context)!.warning_region}: ${generateAreaDescList(-1).toString().substring(1, generateAreaDescList(-1).toString().length - 1)}\n\n${AppLocalizations.of(context)!.warning_description}:\n${replaceHTMLTags(widget._warnMessage.info[0].description)} \n\n${AppLocalizations.of(context)!.warning_recommended_action}:\n${replaceHTMLTags(widget._warnMessage.info[0].instruction ?? "n.a.")}\n\n${AppLocalizations.of(context)!.warning_source}:\n${widget._warnMessage.publisher}\n\n-- ${AppLocalizations.of(context)!.warning_shared_by_foss_warn} --";
               final String shareSubject = widget._warnMessage.info[0].headline;
               shareWarning(context, shareText, shareSubject);
             },
@@ -495,10 +495,10 @@ class _DetailScreenState extends State<DetailScreen> {
                           widget._warnMessage.info[0].event, context)),
                   createTagButton(
                       chooseWarningTypeColor(widget
-                          ._warnMessage.messageType.name), //@todo besser machen
+                          ._warnMessage.messageType), //@todo besser machen
                       AppLocalizations.of(context)!.warning_type,
                       translateWarningType(
-                          widget._warnMessage.messageType.name, context)),
+                          widget._warnMessage.messageType, context)),
                   createTagButton(
                       Severity.getColorForSeverity(
                           widget._warnMessage.info[0].severity),

@@ -84,20 +84,15 @@ class Place {
 
   Future<void> callAPI() async {
     try {
-      Uri urlOverview =
-          Uri.parse("${userPreferences.fossPublicAlertServerUrl}/alert/all");
+      Uri urlOverview = Uri.parse("${userPreferences.fossPublicAlertServerUrl}/"
+          "alert/all?subscription_id=$subscriptionId");
 
-      Response response = await http.post(
+      Response response = await http.get(
         urlOverview,
         headers: {
           "Content-Type": "application/json",
           'user-agent': userPreferences.httpUserAgent
         }, //@todo check if that works as expected
-        body: jsonEncode(
-          {
-            'subscription_id': subscriptionId,
-          },
-        ),
       );
       debugPrint(response.body);
       dynamic data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -117,7 +112,7 @@ class Place {
         String alertId = alert["alert"]["identifier"];
         // store only new warnings
         if (!_warnings.any((element) => element.identifier == alertId)) {
-          debugPrint(alert);
+          //debugPrint(alert);
           WarnMessage newAlert = WarnMessage.fromJsonFPAS(alert["alert"]);
           newAlert.isUpdateOfAlreadyNotifiedWarning =
               _checkIFAlertIsUpdate(newAlert);
@@ -245,7 +240,7 @@ class Place {
         body: jsonEncode({
           'token': userPreferences.unifiedPushEndpoint,
           'distributor_url': userPreferences.unifiedPushEndpoint,
-          'push_service': "UnifiedPush",
+          'push_service': "UNIFIED_PUSH",
           'min_lat': boundingBox.minLatLng.latitude.toString(),
           'max_lat': boundingBox.maxLatLng.latitude.toString(),
           'min_lon': boundingBox.minLatLng.longitude.toString(),

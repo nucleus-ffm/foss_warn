@@ -116,8 +116,8 @@ class WarningWidget extends ConsumerWidget {
                           width: 10,
                         ),
                         Container(
-                          color: chooseWarningTypeColor(
-                              _warnMessage.messageType.name),
+                          color:
+                              chooseWarningTypeColor(_warnMessage.messageType),
                           padding: EdgeInsets.all(5),
                           child: InkWell(
                             onTap: () {
@@ -130,7 +130,7 @@ class WarningWidget extends ConsumerWidget {
                             },
                             child: Text(
                               translateWarningType(
-                                  _warnMessage.messageType.name, context),
+                                  _warnMessage.messageType, context),
                               style:
                                   TextStyle(fontSize: 12, color: Colors.white),
                             ),
