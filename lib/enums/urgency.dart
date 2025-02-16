@@ -6,7 +6,7 @@ enum Urgency {
   unknown; // Urgency not known
 
   String toJson() => name;
-  static Urgency fromJson(String json) => values.byName(json);
+  static Urgency fromJson(String json) => values.byName(json.toLowerCase());
 
   /// extract the urgency from the string and return the corresponding enum
   static Urgency fromString(String urgency) {

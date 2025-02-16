@@ -178,7 +178,7 @@ class UserPreferences {
     _preferences.setBool("showAllWarnings", newValue);
   }
 
-  final String _versionNumber = "0.8.0"; // shown in the about view
+  final String _versionNumber = "1.0.0-alpha_1"; // shown in the about view
   String get versionNumber {
     return _versionNumber;
   }
@@ -330,7 +330,7 @@ class UserPreferences {
   final String _fossPublicAlertServerTermsOfService = "";
   String get fossPublicAlertServerTermsOfService {
     String? data =
-        _preferences.getString("_fossPublicAlertServerTermsOfService");
+        _preferences.getString("fossPublicAlertServerTermsOfService");
     return data ?? _fossPublicAlertServerTermsOfService;
   }
 

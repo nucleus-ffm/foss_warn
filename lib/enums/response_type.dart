@@ -10,7 +10,8 @@ enum ResponseType {
   none; // No action recommended
 
   String toJson() => name;
-  static ResponseType fromJson(String json) => values.byName(json);
+  static ResponseType fromJson(String json) =>
+      values.byName(json.toLowerCase());
 
   /// extract the severity from the string and return the corresponding enum
   static ResponseType fromString(String responseType) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/enums/message_type.dart';
 
 /// format the given date and time
 /// except dataAndTime in format: 2022-12-14T12:32:16+01:00
@@ -69,27 +70,27 @@ String translateWarningCategory(String category, BuildContext context) {
 }
 
 /// translate the type of a warning message
-String translateWarningType(String type, BuildContext context) {
+String translateWarningType(MessageType type, BuildContext context) {
   switch (type) {
-    case "Update":
+    case MessageType.update:
       return AppLocalizations.of(context)!.explanation_warning_level_update;
-    case "Cancel":
+    case MessageType.cancel:
       return AppLocalizations.of(context)!.explanation_warning_level_all_clear;
-    case "Alert":
+    case MessageType.alert:
       return AppLocalizations.of(context)!.explanation_warning_level_attention;
     default:
-      return type;
+      return type.name;
   }
 }
 
 /// get a fitting color by the type of a warning message
-Color chooseWarningTypeColor(String type) {
+Color chooseWarningTypeColor(MessageType type) {
   switch (type) {
-    case "Update":
+    case MessageType.update:
       return Colors.blueAccent;
-    case "Cancel":
+    case MessageType.cancel:
       return Colors.green;
-    case "Alert":
+    case MessageType.alert:
       return Colors.red;
     default:
       return Colors.orangeAccent;

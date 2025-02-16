@@ -4,7 +4,7 @@ enum Scope {
   private; // For dissemination only to specified addresses (see <addresses>, below)
 
   String toJson() => name;
-  static Scope fromJson(String json) => values.byName(json);
+  static Scope fromJson(String json) => values.byName(json.toLowerCase());
 
   /// extract the severity from the string and return the corresponding enum
   static Scope fromString(String value) {

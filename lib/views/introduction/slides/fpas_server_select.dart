@@ -64,7 +64,11 @@ class _IntroductionFPASServerSelectionSlideState
         serverSettings = await fetchFPASServerSettings(
           newUrl ?? constants.defaultFPASServerUrl,
         );
-      } on (UnreachableServerError, ConnectionError) {
+      } on UnreachableServerError {
+        serverSettings = null;
+      } on ConnectionError {
+        serverSettings = null;
+      } on ArgumentError {
         serverSettings = null;
       }
 
@@ -188,6 +192,9 @@ class _FPASServerSlideLayout extends StatelessWidget {
               );
             }).toList(),
           ),
+          SizedBox(
+            height: 10,
+          ),
 
           if (!isCustomServerSelected) ...[
             _DefaultServerSelection(
@@ -283,7 +290,6 @@ class _CustomServerSelection extends StatelessWidget {
                   return localizations
                       .welcome_view_foss_server_enter_url_validator_empty;
                 }
-
                 return null;
               },
               decoration: InputDecoration(
