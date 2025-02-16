@@ -250,7 +250,15 @@ class _SettingsState extends State<Settings> {
                 },
                 onSubmitted: (newUrl) async {
                   try {
-                    await fetchFPASServerSettings(newUrl);
+                    var serverSettings = await fetchFPASServerSettings(newUrl);
+                    userPreferences.fossPublicAlertServerUrl =
+                        serverSettings.url;
+                    userPreferences.fossPublicAlertServerOperator =
+                        serverSettings.operator;
+                    userPreferences.fossPublicAlertServerPrivacyNotice =
+                        serverSettings.privacyNotice;
+                    userPreferences.fossPublicAlertServerTermsOfService =
+                        serverSettings.termsOfService;
                     setState(() {
                       _fpasServerURLError = false;
                     });
