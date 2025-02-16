@@ -244,6 +244,7 @@ class Place {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           'token': userPreferences.unifiedPushEndpoint,
+          'distributor_url': userPreferences.unifiedPushEndpoint,
           'push_service': "UnifiedPush",
           'min_lat': boundingBox.minLatLng.latitude.toString(),
           'max_lat': boundingBox.maxLatLng.latitude.toString(),
