@@ -19,7 +19,8 @@ class IntroductionView extends StatefulWidget {
   State<IntroductionView> createState() => _IntroductionViewState();
 }
 
-class _IntroductionViewState extends State<IntroductionView> {
+class _IntroductionViewState extends State<IntroductionView>
+    with WidgetsBindingObserver {
   int currentPage = 0;
   final PageController pageController = PageController();
 
@@ -40,11 +41,15 @@ class _IntroductionViewState extends State<IntroductionView> {
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addObserver(this);
+
     pageController.addListener(onPageSwitch);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
     pageController.removeListener(onPageSwitch);
     pageController.dispose();
 
@@ -53,6 +58,14 @@ class _IntroductionViewState extends State<IntroductionView> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+
+    // TODO(PureTryOut): replace this for a fullproof solution to retrieve the keyboardOpen status
+    // This will work fine on Android for the most part, however insets being bigger than 0 doesn't necessarily mean it's the keyboard.
+    // The keyboard can also be floating in which case this will also report keyboardClosed, even though it's definitely open.
+    // We should probably use a native platform API to request the keyboard status from the platform.
+    var keyboardOpen = mediaQuery.viewInsets.bottom > 0;
+
     void onServerSelected(ServerSettings serverSettings) {
       selectedServerSettings = serverSettings;
       setState(() {});
@@ -126,7 +139,8 @@ class _IntroductionViewState extends State<IntroductionView> {
                   itemCount: introductionPages.length,
                   itemBuilder: (context, index) => introductionPages[index],
                 ),
-                if (currentPage != introductionPages.length - 1) ...[
+                if (currentPage != introductionPages.length - 1 &&
+                    !keyboardOpen) ...[
                   _PageProgressDots(
                     pageCount: introductionPages.length,
                     currentPage: currentPage,
