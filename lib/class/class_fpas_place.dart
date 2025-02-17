@@ -84,20 +84,15 @@ class Place {
 
   Future<void> callAPI() async {
     try {
-      Uri urlOverview =
-          Uri.parse("${userPreferences.fossPublicAlertServerUrl}/alert/all");
+      var url = Uri.parse(
+          "${userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId");
 
-      Response response = await http.post(
-        urlOverview,
+      var response = await http.get(
+        url,
         headers: {
           "Content-Type": "application/json",
           'user-agent': userPreferences.httpUserAgent
-        }, //@todo check if that works as expected
-        body: jsonEncode(
-          {
-            'subscription_id': subscriptionId,
-          },
-        ),
+        },
       );
       debugPrint(response.body);
       dynamic data = jsonDecode(utf8.decode(response.bodyBytes));
