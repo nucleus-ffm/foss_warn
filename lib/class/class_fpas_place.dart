@@ -158,14 +158,10 @@ class Place {
   Future<void> sendHeartbeatToFPAS() async {
     try {
       Uri heartbeatUrl = Uri.parse(
-          "${userPreferences.fossPublicAlertServerUrl}/subscription/heartbeat");
+          "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId");
 
-      Response response = await http.post(
+      Response response = await http.put(
         heartbeatUrl,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          'subscription_id': subscriptionId,
-        }),
       );
       if (response.statusCode == 200) {
         // heartbeat successful
@@ -199,13 +195,9 @@ class Place {
   Future<bool> unregisterForArea() async {
     if (userPreferences.unifiedPushRegistered &&
         userPreferences.unifiedPushEndpoint != "") {
-      Response response = await http.post(
+      Response response = await http.delete(
         Uri.parse(
-            "${userPreferences.fossPublicAlertServerUrl}/subscription/unsubscribe"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          'subscription_id': subscriptionId,
-        }),
+            "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId")
       );
       if (response.statusCode == 200) {
         // successfully unsubscribed
@@ -235,7 +227,7 @@ class Place {
       // register for bounding box
       Response response = await http.post(
         Uri.parse(
-            "${userPreferences.fossPublicAlertServerUrl}/subscription/subscribe"),
+            "${userPreferences.fossPublicAlertServerUrl}/subscription/"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           'token': userPreferences.unifiedPushEndpoint,
@@ -250,7 +242,7 @@ class Place {
       if (response.statusCode == 200) {
         // registration successfully, store subscription id
         dynamic data = jsonDecode(utf8.decode(response.bodyBytes));
-        return data["id"];
+        return data["subscription_id"];
       } else {
         throw Exception(
             "UnifiedPush registration failed. Server returned status code ${response.statusCode} with body: ${response.body}");
