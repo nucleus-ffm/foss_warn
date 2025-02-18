@@ -87,8 +87,9 @@ class UnifiedPushHandler {
     } else if (await UnifiedPush.getDistributor() != null) {
       // Re-register in case something broke
       await UnifiedPush.register(
-        userPreferences.unifiedPushInstance,
-        [featureAndroidBytesMessage],
+        instance: userPreferences.unifiedPushInstance,
+        features: [featureAndroidBytesMessage],
+        linuxDBusName: "de.nucleus.foss_warn",
       );
     } else {
       // Get a list of distributors that are available
@@ -115,8 +116,9 @@ class UnifiedPushHandler {
       await UnifiedPush.saveDistributor(picked ?? distributors.first);
       // register your app to the distributor
       await UnifiedPush.register(
-        userPreferences.unifiedPushInstance,
-        [featureAndroidBytesMessage],
+        instance: userPreferences.unifiedPushInstance,
+        features: [featureAndroidBytesMessage],
+        linuxDBusName: "de.nucleus.foss_warn",
       );
     }
 
