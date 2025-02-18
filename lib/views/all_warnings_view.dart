@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/services/alert_api/fpas.dart';
 
 import '../services/api_handler.dart';
 import '../services/check_for_my_places_warnings.dart';
@@ -24,18 +24,36 @@ class AllWarningsView extends ConsumerStatefulWidget {
 
 class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
   bool _loading = false;
+
   @override
   void initState() {
     super.initState();
     if (userPreferences.isFirstStart) {
-      _loading = true;
       userPreferences.isFirstStart = false;
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await loadData();
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<void> loadData() async {
+    _loading = true;
+    setState(() {});
+
+    var alertApi = ref.read(alertApiProvider);
+    await callAPI(alertApi: alertApi);
+
+    checkForMyPlacesWarnings(alertApi: alertApi);
+    sortWarnings(mapWarningsList);
+
+    _loading = false;
+    setState(() {});
   }
 
   @override
@@ -45,42 +63,8 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
     ref.watch(updaterProvider); // Just to rebuild on updates
 
-    Future<void> reloadData() async {
-      setState(() {
-        _loading = true;
-      });
-    }
-
-    void loadData() async {
-      debugPrint("[allWarningsView] Load Data");
-      await callAPI(alertApi: ref.read(alertApiProvider));
-
-      checkForMyPlacesWarnings(
-        alertApi: ref.read(alertApiProvider),
-        loadManually: true,
-      );
-      sortWarnings(mapWarningsList);
-      setState(() {
-        debugPrint("loading finished");
-        _loading = false;
-      });
-    }
-
-    if (_loading == true) {
-      loadData();
-    }
-    while (_loading) {
-      // show loading screen
-      return Center(
-        child: SizedBox(
-          height: 70,
-          width: 70,
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
-            strokeWidth: 4,
-          ),
-        ),
-      );
+    if (_loading) {
+      return const _LoadingIndicator();
     }
 
     /// check all warnings are return only a list with the warnings for
@@ -96,7 +80,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
     return RefreshIndicator(
       color: Theme.of(context).colorScheme.secondary,
-      onRefresh: reloadData,
+      onRefresh: loadData,
       child: myPlaceList.isNotEmpty // check if there is a place saved
           ? userPreferences
                   .showAllWarnings // if warnings that are not in MyPlaces shown
@@ -168,11 +152,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                                   ),
                                   const SizedBox(height: 10),
                                   TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _loading = true;
-                                      });
-                                    },
+                                    onPressed: loadData,
                                     style: TextButton.styleFrom(
                                       backgroundColor:
                                           theme.colorScheme.secondary,
@@ -226,6 +206,26 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                 ),
               ],
             ),
+    );
+  }
+}
+
+class _LoadingIndicator extends StatelessWidget {
+  const _LoadingIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
+    return Center(
+      child: SizedBox(
+        height: 70,
+        width: 70,
+        child: CircularProgressIndicator(
+          color: theme.colorScheme.secondary,
+          strokeWidth: 4,
+        ),
+      ),
     );
   }
 }

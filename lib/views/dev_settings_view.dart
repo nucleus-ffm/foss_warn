@@ -63,7 +63,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 onTap: () {
                   checkForMyPlacesWarnings(
                     alertApi: ref.read(alertApiProvider),
-                    loadManually: true,
                   );
                   bool thereIsNoWarning = true;
                   for (Place myPlace in myPlaceList) {

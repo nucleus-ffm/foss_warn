@@ -9,10 +9,7 @@ import 'save_and_load_shared_preferences.dart';
 
 /// check all warnings if one of them is of a myPlace and if yes send a notification <br>
 /// [true] if there are/is a warning - false if not <br>
-Future<bool> checkForMyPlacesWarnings({
-  required AlertAPI alertApi,
-  required bool loadManually,
-}) async {
+Future<bool> checkForMyPlacesWarnings({required AlertAPI alertApi}) async {
   bool returnValue = true;
   debugPrint("check for warnings");
   if (myPlaceList.isEmpty) {

@@ -63,10 +63,7 @@ class UnifiedPushHandler {
     if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) {
       // system message or debug
     } else {
-      checkForMyPlacesWarnings(
-        alertApi: alertApi,
-        loadManually: true,
-      );
+      checkForMyPlacesWarnings(alertApi: alertApi);
     }
     return true;
   }
