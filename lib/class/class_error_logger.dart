@@ -6,14 +6,16 @@ import 'dart:io';
 
 class ErrorLogger {
   static Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
+    var directory = await getApplicationSupportDirectory();
+    if (Platform.isAndroid) {
+      directory = await getApplicationDocumentsDirectory();
+    }
     return directory.path;
   }
 
   static Future<File> get _localFile async {
     final path = await _localPath;
     String errorLogPath = UserPreferences().errorLogPath;
-    // path /data/user/0/de.nucleus.foss_warn/app_flutter/errorLog.txt
     return File('$path/$errorLogPath');
   }
 

@@ -48,8 +48,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
         instance: instance,
         myPlaces: places,
       ),
+      linuxDBusName: "de.nucleus.foss_warn",
     );
-
     NotificationService.onNotification.stream.listen(onClickedNotification);
   }
 

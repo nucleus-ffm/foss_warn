@@ -4,7 +4,8 @@ publish_to: 'none'
 version: 1.0.0-alpha1+35
 
 environment:
-  sdk: ">=3.5.4 <3.13.3"
+  sdk: ">=3.6.2 <4.0.0"
+  flutter: ">=3.27.4"
 
 dependencies:
   flutter:
@@ -20,6 +21,11 @@ dependencies:
   share_plus: ^10.1.1
   intl: any # for localizations
   unifiedpush: ^6.0.0-rc2
+  unifiedpush_linux:
+    git:
+      url: https://codeberg.org/PureTryOut/flutter-connector.git
+      ref: feat/linux-desktop-support
+      path: unifiedpush_linux
   xml2json: ^6.2.5
 
   # used by the map
@@ -37,6 +43,28 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+
+dependency_overrides:
+  unifiedpush:
+    git:
+      url: https://codeberg.org/PureTryOut/flutter-connector.git
+      ref: feat/linux-desktop-support
+      path: unifiedpush
+  unifiedpush_platform_interface:
+    git:
+      url: https://codeberg.org/PureTryOut/flutter-connector.git
+      ref: feat/linux-desktop-support
+      path: unifiedpush_platform_interface
+  unifiedpush_android:
+    git:
+      url: https://codeberg.org/PureTryOut/flutter-connector.git
+      ref: feat/linux-desktop-support
+      path: unifiedpush_android
+  unifiedpush_linux:
+    git:
+      url: https://codeberg.org/PureTryOut/flutter-connector.git
+      ref: feat/linux-desktop-support
+      path: unifiedpush_linux
 
 icons_launcher:
   image_path: "assets/app_icon/app_icon.png"
