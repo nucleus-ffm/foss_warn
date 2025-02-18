@@ -63,6 +63,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         instance: instance,
         myPlaces: places,
       ),
+      linuxDBusName: "de.nucleus.foss_warn",
     );
 
     UnifiedPushHandler.setupUnifiedPush(context, ref);

@@ -30,21 +30,25 @@ Get emergency alerts from warnung.bund.de <br>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases/latest" alt="Github latest Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg"></a>
 </p>
 <hr>
-
-An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK. New with version 0.4.0 you can also receive emergency alerts from AlertSwiss (Alpha). Starting with version 1.0.0, FOSSWarn will use the [FOSS Public Alert Server](https://invent.kde.org/webapps/foss-public-alert-server), a shared adventure of KDE and FOSSWarn, to receive alerts from over 270 cap alert feeds worldwide.
-
-## Funding
-*2024-10 until 2025-10*
-
-> This project was funded through the [NGI0 Core Fund](https://nlnet.nl/core), a fund established by [NLnet](https://nlnet.nl/) with financial support from the European Commission's [Next Generation Internet](https://ngi.eu/) programme, under the aegis of [DG Communications Networks, Content and Technology](https://commission.europa.eu/about-european-commission/departments-and-executive-agencies/communications-networks-content-and-technology_en) under grant agreement [No. 101092990](https://cordis.europa.eu/project/id/101092990).
-
-<img src="https://nlnet.nl/logo/banner.svg" width=160> &nbsp;&nbsp; <img src="https://nlnet.nl/image/logos/NGI0Core_tag.svg" width=160>
+An unofficial open source application written in Flutter to get emergency alerts from https://warnung.bund.de/meldungen. This app has nothing to do with the official APP *Nina* from BBK. New with version 0.4.0 you can also receive emergency alerts from AlertSwiss (Alpha).
 
 ## Current state of development
-We are currently migrating to the FPAS server. Version 0.8.0 will be the last version with direct support for the BBK API; instead, FOSSWarn will completely migrate to FPAS and UnifiedPush notifications. This will be a breaking change.
+The app is currently in a BETA status. It works quite well, but be aware of the known problems.
 
 ## TODO
  - see [project board](https://github.com/users/nucleus-ffm/projects/4)
+
+## Known problems
+- the layout could be improved for small devices
+
+## Requirements
+
+When running the application on Linux, make sure you have the following installed:
+- `xdg-user-dirs`
+- A UnifiedPush provider, like KDE's KUnifiedPush
+
+Install the DBus service (`linux/de.nucleus.foss_warn.service`) file to `/usr/share/dbus-1/services/` to be able to retrieve background notifications.
+Edit the `Exec=` line where necessary.
 
 ## FAQ
 <details>
@@ -86,7 +90,7 @@ special thanks to:
 - Everyone who helped translate the app
 
 ## Contact
-You can email me at `foss-warn {ät} posteo {point} de`. You can also follow the project on Mastodon [@foss_warn@social.tchncs.de](https://social.tchncs.de/@foss_warn) or you can join our Matrix space ([#foss_warn:tchncs.de](https://matrix.to/#/#foss_warn:tchncs.de))
+You can email me at `foss-warn {ät} posteo {point} de`. You can also follow the project on Mastodon [@foss_warn@social.tchncs.de](https://social.tchncs.de/@foss_warn)
 
 ## Similar inoffical projects for other platforms
 * [**FediNINA (Fediverse)**](https://meta.prepedia.org/wiki/FediNINA) Project to bring NINA warnings into the Fediverse.

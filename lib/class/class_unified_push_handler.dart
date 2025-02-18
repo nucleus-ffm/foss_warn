@@ -29,14 +29,14 @@ class UnifiedPushHandler {
     }
   }
 
-  static void onRegistrationFailed(FailedReason failedReason, instance) {
+  static void onRegistrationFailed(FailedReason failedReason, String instance) {
     // @todo error handling
     ErrorLogger.writeErrorLog(
       "class_unifiedPushHandler",
       "UnifiedPush registration failed",
       failedReason.name,
     );
-    debugPrint("Registration failed");
+    debugPrint("Registration failed: ${failedReason.name}");
   }
 
   static void onUnregistered(String instance) {
@@ -127,10 +127,9 @@ class UnifiedPushHandler {
       // register UnifiedPush with same distributor url and token as
       // this is required by the unifiedPush plugin
       await UnifiedPush.register(
-        userPreferences
+        instance: userPreferences
             .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
-        [], // Optional String Array with required features
-        userPreferences.webPushVapidKey,
+        vapid: userPreferences.webPushVapidKey,
       );
     } else {
       // Get a list of distributors that are available
@@ -158,12 +157,17 @@ class UnifiedPushHandler {
       await UnifiedPush.saveDistributor(picked ?? distributors.first);
       // register your app to the distributor
       await UnifiedPush.register(
-        userPreferences
+        instance: userPreferences
             .unifiedPushInstance, // optional String, to get multiple endpoints (one per instance)
-        [], // Optional String Array with required features
-        userPreferences.webPushVapidKey,
+        vapid: userPreferences.webPushVapidKey,
       );
+      return;
     }
+
+    // register with the distributor
+    await UnifiedPush.register(
+      instance: userPreferences.unifiedPushInstance,
+    );
 
     debugPrint(
       "wait for registration state=${userPreferences.unifiedPushRegistered}",
