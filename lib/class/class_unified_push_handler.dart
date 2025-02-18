@@ -84,7 +84,9 @@ class UnifiedPushHandler {
         userPreferences.unifiedPushRegistered) {
       // enpoint already setted up. Nothing to change
       return;
-    } else if (await UnifiedPush.getDistributor() != null) {
+    }
+
+    if (await UnifiedPush.getDistributor() != null) {
       // Re-register in case something broke
       await UnifiedPush.register(
         instance: userPreferences.unifiedPushInstance,
@@ -117,8 +119,39 @@ class UnifiedPushHandler {
       await UnifiedPush.register(
         instance: userPreferences.unifiedPushInstance,
         features: [featureAndroidBytesMessage],
+        linuxDBusName: "de.nucleus.foss_warn",
       );
+      return;
     }
+
+    // Get a list of distributors that are available
+    List<String> distributors =
+        await UnifiedPush.getDistributors([featureAndroidBytesMessage]);
+
+    if (distributors.isEmpty) {
+      // There is no distributor installed. Inform the user about it
+      if (!context.mounted) return;
+      await showDialog(
+        context: context,
+        builder: (context) => const NoUPDistributorFoundDialog(),
+      );
+      return;
+    }
+
+    if (!context.mounted) return;
+    String? picked = await showDialog<String>(
+      context: context,
+      builder: selectUnifiedPushDistributorDialog(distributors),
+    );
+
+    // save the distributor
+    await UnifiedPush.saveDistributor(picked ?? distributors.first);
+    // register your app to the distributor
+    await UnifiedPush.register(
+      instance: userPreferences.unifiedPushInstance,
+      features: [featureAndroidBytesMessage],
+      linuxDBusName: "de.nucleus.foss_warn",
+    );
 
     debugPrint(
       "wait for registration state=${userPreferences.unifiedPushRegistered}",
