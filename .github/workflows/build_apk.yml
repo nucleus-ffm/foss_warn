@@ -44,7 +44,7 @@ jobs:
     
     - uses: subosito/flutter-action@v2
       with:
-        channel: ${{env.FLUTTER_CHANNEL}
+        channel: ${{env.FLUTTER_CHANNEL}}
         flutter-version: ${{env.FLUTTER_VERSION}}
         cache: true
         cache-key: "${{ runner.OS }}-flutter-install-cache"
