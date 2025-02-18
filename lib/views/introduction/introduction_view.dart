@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
@@ -11,6 +13,8 @@ import 'package:foss_warn/views/introduction/slides/notification_permission.dart
 import 'package:foss_warn/views/introduction/slides/places.dart';
 import 'package:foss_warn/views/introduction/slides/warning_levels.dart';
 import 'package:foss_warn/views/introduction/slides/welcome.dart';
+
+const int pageSwitchDurationInMilliseconds = 500;
 
 class IntroductionView extends StatefulWidget {
   const IntroductionView({
@@ -71,7 +75,7 @@ class _IntroductionViewState extends State<IntroductionView>
     // We should probably use a native platform API to request the keyboard status from the platform.
     var keyboardOpen = mediaQuery.viewInsets.bottom > 0;
 
-    void onServerSelected(ServerSettings serverSettings) {
+    Future<void> onServerSelected(ServerSettings serverSettings) async {
       selectedServerSettings = serverSettings;
       setState(() {});
 
@@ -81,6 +85,10 @@ class _IntroductionViewState extends State<IntroductionView>
           serverSettings.privacyNotice;
       userPreferences.fossPublicAlertServerTermsOfService =
           serverSettings.termsOfService;
+
+      if (Platform.isLinux) {
+        await NotificationService().init();
+      }
     }
 
     Future<void> onRequestNotificationPermissionPressed() async {
@@ -105,6 +113,24 @@ class _IntroductionViewState extends State<IntroductionView>
       widget.onFinished();
     }
 
+    void onPagePrevious() {
+      pageController.animateToPage(
+        currentPage - 1,
+        duration:
+            const Duration(milliseconds: pageSwitchDurationInMilliseconds),
+        curve: Curves.easeInOut,
+      );
+    }
+
+    void onPageNext() {
+      pageController.animateToPage(
+        currentPage + 1,
+        duration:
+            const Duration(milliseconds: pageSwitchDurationInMilliseconds),
+        curve: Curves.easeInOut,
+      );
+    }
+
     var introductionPages = [
       const IntroductionWelcomeSlide(),
       IntroductionFPASServerSelectionSlide(
@@ -112,15 +138,17 @@ class _IntroductionViewState extends State<IntroductionView>
         onServerSelected: onServerSelected,
       ),
       const IntroductionDisclaimerSlide(),
-      IntroductionNotificationPermissionSlide(
-        hasPermission: hasNotificationPermission,
-        onPermissionChanged: onRequestNotificationPermissionPressed,
-      ),
-      IntroductionAlarmPermissionSlide(
-        hasPermission: hasAlarmPermission,
-        onPermissionChanged: onRequestAlarmPermissionPressed,
-      ),
-      const IntroductionBatteryOptimizationSlide(),
+      if (Platform.isAndroid) ...[
+        IntroductionNotificationPermissionSlide(
+          hasPermission: hasNotificationPermission,
+          onPermissionChanged: onRequestNotificationPermissionPressed,
+        ),
+        IntroductionAlarmPermissionSlide(
+          hasPermission: hasAlarmPermission,
+          onPermissionChanged: onRequestAlarmPermissionPressed,
+        ),
+        const IntroductionBatteryOptimizationSlide(),
+      ],
       const IntroductionPlacesSlide(),
       const IntroductionWarningLevelsSlide(),
       IntroductionFinishsSlide(onFinishPressed: onFinishPressed),
@@ -132,10 +160,42 @@ class _IntroductionViewState extends State<IntroductionView>
           children: [
             Stack(
               children: [
-                PageView.builder(
-                  controller: pageController,
-                  itemCount: introductionPages.length,
-                  itemBuilder: (context, index) => introductionPages[index],
+                Row(
+                  children: [
+                    Visibility(
+                      maintainSize: true,
+                      maintainSemantics: true,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      // TODO(PureTryOut): check for screen sizes instead
+                      visible: !Platform.isAndroid && currentPage >= 1.0,
+                      child: TextButton(
+                        onPressed: onPagePrevious,
+                        child: const Text("Previous"),
+                      ),
+                    ),
+                    Expanded(
+                      child: PageView.builder(
+                        controller: pageController,
+                        itemCount: introductionPages.length,
+                        itemBuilder: (context, index) =>
+                            introductionPages[index],
+                      ),
+                    ),
+                    Visibility(
+                      maintainSize: true,
+                      maintainSemantics: true,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      // TODO(PureTryOut): check for screen sizes instead
+                      visible: !Platform.isAndroid &&
+                          currentPage < introductionPages.length - 1,
+                      child: TextButton(
+                        onPressed: onPageNext,
+                        child: const Text("Next"),
+                      ),
+                    ),
+                  ],
                 ),
                 if (currentPage != introductionPages.length - 1 &&
                     !keyboardOpen) ...[

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,7 +34,7 @@ class NotificationService {
         ledOffMs: 100,
         ledOnMs: 100,
       ),
-      iOS: const DarwinNotificationDetails(),
+      linux: const LinuxNotificationDetails(),
     );
   }
 
@@ -55,7 +57,7 @@ class NotificationService {
         styleInformation: BigTextStyleInformation(''),
         color: Colors.green, // makes the icon green,
       ),
-      iOS: DarwinNotificationDetails(),
+      linux: LinuxNotificationDetails(),
     );
   }
 
@@ -110,7 +112,7 @@ class NotificationService {
         ledOffMs: 100,
         ledOnMs: 100,
       ),
-      iOS: DarwinNotificationDetails(),
+      linux: LinuxNotificationDetails(),
     );
     await _flutterLocalNotificationsPlugin.show(
       0,
@@ -124,19 +126,15 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('notification_icon');
 
-    const DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
-      //onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    const LinuxInitializationSettings initializationSettingsLinux =
+        LinuxInitializationSettings(
+      defaultActionName: 'open',
     );
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-      macOS: null,
+      linux: initializationSettingsLinux,
     );
 
     final androidNotificationPlugin =
@@ -251,12 +249,15 @@ class NotificationService {
     }
 
     // when App is closed
-    final details = await _flutterLocalNotificationsPlugin
-        .getNotificationAppLaunchDetails();
-    if (details != null &&
-        details.notificationResponse != null &&
-        details.didNotificationLaunchApp) {
-      onNotification.add(details.notificationResponse!.payload);
+    // https://pub.dev/packages/flutter_local_notifications#linux-limitations
+    if (!Platform.isLinux) {
+      final details = await _flutterLocalNotificationsPlugin
+          .getNotificationAppLaunchDetails();
+      if (details != null &&
+          details.notificationResponse != null &&
+          details.didNotificationLaunchApp) {
+        onNotification.add(details.notificationResponse!.payload);
+      }
     }
 
     await _flutterLocalNotificationsPlugin.initialize(
@@ -264,7 +265,9 @@ class NotificationService {
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
     ); //onSelectNotification
 
-    cleanUpNotificationChannels();
+    if (Platform.isAndroid) {
+      cleanUpNotificationChannels();
+    }
   }
 
   /// Request notification permission on Android. This methode is currently

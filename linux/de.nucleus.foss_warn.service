@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=de.nucleus.foss_warn
+# https://wiki.gnome.org/HowDoI/DBusApplicationLaunching#GApplication_details
+Exec=/usr/bin/foss_warn --gapplication-service
