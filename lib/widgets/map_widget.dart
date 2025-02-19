@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/constants.dart' as constants;
 
 import '../class/class_area.dart';
 import '../class/class_warn_message.dart';
@@ -65,7 +66,7 @@ class _MapWidgetState extends State<MapWidget> {
       children: [
         TileLayer(
           urlTemplate: userPreferences.osmTileServerULR,
-          userAgentPackageName: userPreferences.httpUserAgent,
+          userAgentPackageName: constants.httpUserAgent,
           tileBuilder:
               (BuildContext context, Widget tileWidget, TileImage tile) {
             // there is not build in dark mode with the tiles form osm.org therefore we

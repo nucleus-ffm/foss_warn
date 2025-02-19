@@ -3,6 +3,7 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/views/about_view.dart';
@@ -91,8 +92,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
           UnifiedPushHandler.onRegistrationFailed, // takes (String instance)
       onUnregistered:
           UnifiedPushHandler.onUnregistered, // takes (String instance)
-      onMessage: UnifiedPushHandler
-          .onMessage, // takes (Uint8List message, String instance) in args
+      onMessage: (message, instance) => UnifiedPushHandler.onMessage(
+        ref.read(alertApiProvider),
+        message,
+        instance,
+      ), // takes (Uint8List message, String instance) in args
     );
 
     loadMyPlacesList();
