@@ -93,12 +93,12 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
           //check if myPlaceList is empty, if not show list else show text
           myPlaceList.isNotEmpty
               ? SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 65),
                     child: Column(
                       children: [
-                        ConnectionError(),
+                        const ConnectionError(),
                         ...myPlaceList
                             .map((place) => MyPlaceWidget(myPlace: place)),
                       ],
@@ -107,7 +107,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
                 )
               : Column(
                   children: [
-                    ConnectionError(),
+                    const ConnectionError(),
                     Expanded(
                       child: Center(
                         child: Column(
@@ -116,7 +116,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
                           children: [
                             Text(
                               localizations.my_place_no_place_added,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -142,11 +142,11 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddMyPlaceWithMapView(),
+                    builder: (context) => const AddMyPlaceWithMapView(),
                   ), //AddMyPlaceView
                 );
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
           ),
         ],

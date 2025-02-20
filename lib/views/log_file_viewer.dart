@@ -32,13 +32,13 @@ class _LogFileViewerState extends State<LogFileViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Log file Viewer"),
+        title: const Text("Log file Viewer"),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text("Here is the Logfile for FOSSWarn"),
+            const Text("Here is the Logfile for FOSSWarn"),
             FutureBuilder<String>(
               future: ErrorLogger.readLog(),
               builder: (context, snapshot) {
@@ -52,8 +52,8 @@ class _LogFileViewerState extends State<LogFileViewer> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Divider(),
                           ),
                           SizedBox(
@@ -123,10 +123,13 @@ class _LogFileViewerState extends State<LogFileViewer> {
                     debugPrint(
                       "Error getting system information: ${snapshot.error}",
                     );
-                    return Text("Error", style: TextStyle(color: Colors.red));
+                    return const Text(
+                      "Error",
+                      style: TextStyle(color: Colors.red),
+                    );
                   }
                 } else {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
               },
             ),

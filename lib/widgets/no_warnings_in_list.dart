@@ -26,7 +26,10 @@ class NoWarningsInList extends StatelessWidget {
                 children: [
                   Text(
                     localizations.all_warnings_nothing_to_show,
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Icon(
                     Icons.cloud,

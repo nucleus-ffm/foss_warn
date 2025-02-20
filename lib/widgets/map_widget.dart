@@ -62,7 +62,7 @@ class _MapWidgetState extends State<MapWidget> {
       mapController: widget.mapController,
       options: MapOptions(
         initialCameraFit: widget.initialCameraFit,
-        interactionOptions: InteractionOptions(
+        interactionOptions: const InteractionOptions(
           flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
         ),
       ),
@@ -91,7 +91,9 @@ class _MapWidgetState extends State<MapWidget> {
         ...widget.polygonLayers ?? [],
         ...widget.markerLayers ?? [],
         ...widget.widgets ?? [],
-        SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
+        const SimpleAttributionWidget(
+          source: Text('OpenStreetMap contributors'),
+        ),
       ],
     );
   }

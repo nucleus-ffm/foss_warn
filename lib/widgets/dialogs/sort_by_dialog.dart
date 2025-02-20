@@ -22,8 +22,8 @@ class _SortByDialogState extends State<SortByDialog> {
       children: [
         ListTile(
           title: Text(localizations.sorting_by_date),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
+          leading: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Icon(Icons.date_range),
           ),
           selectedColor: theme.colorScheme.primary,

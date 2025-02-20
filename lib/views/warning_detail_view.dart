@@ -131,7 +131,7 @@ class _DetailScreenState extends State<DetailScreen> {
           returnList.add(
             TextSpan(
               text: " $urlDescription ",
-              style: TextStyle(color: Colors.blue),
+              style: const TextStyle(color: Colors.blue),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   debugPrint("Link tapped");
@@ -161,7 +161,7 @@ class _DetailScreenState extends State<DetailScreen> {
             returnList.add(
               TextSpan(
                 text: " $urlDescription ",
-                style: TextStyle(color: Colors.blue),
+                style: const TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     launchEmail(url);
@@ -222,13 +222,13 @@ class _DetailScreenState extends State<DetailScreen> {
       if (polygonPoints.isNotEmpty) {
         return CameraFit.bounds(
           bounds: LatLngBounds.fromPoints(polygonPoints),
-          padding: EdgeInsets.all(30),
+          padding: const EdgeInsets.all(30),
         );
       } else {
         return CameraFit.bounds(
           // set the bounds to the northpol if we don't have any points
-          bounds: LatLngBounds.fromPoints([LatLng(90.0, 0.0)]),
-          padding: EdgeInsets.all(30),
+          bounds: LatLngBounds.fromPoints([const LatLng(90.0, 0.0)]),
+          padding: const EdgeInsets.all(30),
         );
       }
     }
@@ -258,7 +258,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   onPressed: () {
                     mapController.fitCamera(createInitCameraFit());
                   },
-                  child: Icon(Icons.center_focus_strong),
+                  child: const Icon(Icons.center_focus_strong),
                 ),
               ),
             ),
@@ -266,7 +266,7 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
       );
     } catch (e) {
-      return SizedBox(
+      return const SizedBox(
         height: 200,
         child: Text("Errpr"),
       );
@@ -337,7 +337,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   style: TextButton.styleFrom(backgroundColor: Colors.blue),
                   child: Text(
                     localizations.warning_open_picture_with_browser,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               );
@@ -383,8 +383,8 @@ class _DetailScreenState extends State<DetailScreen> {
       Function()? action,
     }) {
       return Container(
-        margin: EdgeInsets.all(3),
-        padding: EdgeInsets.all(7),
+        margin: const EdgeInsets.all(3),
+        padding: const EdgeInsets.all(7),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: color,
@@ -445,7 +445,7 @@ class _DetailScreenState extends State<DetailScreen> {
               final String shareSubject = widget._warnMessage.info[0].headline;
               shareWarning(context, shareText, shareSubject);
             },
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
           ),
         ],
       ),
@@ -478,7 +478,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               widget._warnMessage.info[0].onset != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
@@ -490,7 +490,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               widget._warnMessage.info[0].expires != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
@@ -502,11 +502,11 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.tag),
+                  const Icon(Icons.tag),
                   const SizedBox(width: 5),
                   Text(
                     localizations.warning_tags,
@@ -547,7 +547,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       widget._warnMessage.info[0].severity,
                       context,
                     ),
-                    action: () => WarningSeverityExplanation(),
+                    action: () => const WarningSeverityExplanation(),
                   ),
                   // display more metadata button if enabled in the settings
                   userPreferences.showExtendedMetaData
@@ -601,7 +601,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                           ],
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ],
               ),
               const SizedBox(height: 20),
@@ -643,14 +643,14 @@ class _DetailScreenState extends State<DetailScreen> {
                       child: _showMoreRegions
                           ? Text(
                               localizations.warning_show_less,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.red,
                               ),
                             )
                           : Text(
                               localizations.warning_show_more,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green,
                               ),
@@ -667,7 +667,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         );
                       },
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               const SizedBox(height: 20),
               widget._warnMessage.info.first.area.first.geoJson != "{}"
                   ? _createMapWidget(widget._warnMessage.info.first.area)
@@ -701,7 +701,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.image),
+                            const Icon(Icons.image),
                             const SizedBox(width: 5),
                             Text(
                               "${localizations.warning_appendix}:",
@@ -727,14 +727,14 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ],
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               widget._warnMessage.info[0].instruction != null
                   ? Column(
                       children: [
                         const SizedBox(height: 20),
                         Row(
                           children: [
-                            Icon(Icons.shield_rounded),
+                            const Icon(Icons.shield_rounded),
                             const SizedBox(width: 5),
                             Text(
                               localizations.warning_recommended_action,
@@ -747,7 +747,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ],
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               const SizedBox(height: 2),
               widget._warnMessage.info[0].instruction != null
                   ? SelectableText.rich(
@@ -760,11 +760,11 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Icon(Icons.info_outline),
+                  const Icon(Icons.info_outline),
                   const SizedBox(width: 5),
                   Text(
                     localizations.warning_source,
@@ -818,7 +818,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         Flexible(
                           child: SelectableText.rich(
                             // key used by unit test
-                            key: Key('contactFieldKey'),
+                            key: const Key('contactFieldKey'),
                             TextSpan(
                               children: generateContactBody(
                                 replaceHTMLTags(

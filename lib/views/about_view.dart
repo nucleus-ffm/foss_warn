@@ -20,17 +20,17 @@ class AboutView extends StatelessWidget {
         title: Text(localizations.about_headline),
       ),
       body: ListView(
-        padding: EdgeInsets.only(top: 10, bottom: 20),
+        padding: const EdgeInsets.only(top: 10, bottom: 20),
         children: [
           Container(
-            decoration: BoxDecoration(shape: BoxShape.circle),
-            child: Image(
+            decoration: const BoxDecoration(shape: BoxShape.circle),
+            child: const Image(
               height: 180,
               image: AssetImage('assets/app_icon/app_icon.png'),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10, top: 5),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10, top: 5),
             child: Center(
               child: Text(
                 "FOSS Warn",
@@ -47,8 +47,8 @@ class AboutView extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10, left: 10, right: 10),
             child: Center(
               child: Text(
                 "This project is funded by NLnet.", //@todo translate
@@ -56,12 +56,12 @@ class AboutView extends StatelessWidget {
               ),
             ),
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.open_in_browser_outlined),
+            leading: const Icon(Icons.open_in_browser_outlined),
             title: Text(
               (localizations.about_official_source),
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               "https://warnung.bund.de/meldungen",
@@ -71,10 +71,10 @@ class AboutView extends StatelessWidget {
                 launchUrlInBrowser('https://warnung.bund.de/meldungen'),
           ),
           ListTile(
-            leading: Icon(Icons.perm_identity_outlined),
+            leading: const Icon(Icons.perm_identity_outlined),
             title: Text(
               localizations.about_author,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               "Nucleus",
@@ -83,10 +83,10 @@ class AboutView extends StatelessWidget {
             onTap: () => launchUrlInBrowser('https://github.com/nucleus-ffm'),
           ),
           ListTile(
-            leading: Icon(Icons.mail_outline),
+            leading: const Icon(Icons.mail_outline),
             title: Text(
               localizations.about_contact,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               "foss-warn@posteo.de",
@@ -95,10 +95,10 @@ class AboutView extends StatelessWidget {
             onTap: () => launchEmail('mailto:foss-warn@posteo.de'),
           ),
           ListTile(
-            leading: Icon(Icons.account_balance_outlined),
+            leading: const Icon(Icons.account_balance_outlined),
             title: Text(
               localizations.about_imprint,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               localizations.about_imprint_subtitle,
@@ -107,15 +107,15 @@ class AboutView extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => MissingImprintDialog(),
+                builder: (context) => const MissingImprintDialog(),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.privacy_tip_outlined),
+            leading: const Icon(Icons.privacy_tip_outlined),
             title: Text(
               localizations.about_privacy,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               localizations.about_privacy_subtitle,
@@ -124,15 +124,15 @@ class AboutView extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => PrivacyDialog(),
+                builder: (context) => const PrivacyDialog(),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.article_outlined),
+            leading: const Icon(Icons.article_outlined),
             title: Text(
               localizations.about_disclaimer,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               localizations.about_disclaimer_subtitle,
@@ -141,15 +141,15 @@ class AboutView extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => DisclaimerDialog(),
+                builder: (context) => const DisclaimerDialog(),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.star_outline),
+            leading: const Icon(Icons.star_outline),
             title: Text(
               localizations.about_version,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               "${userPreferences.versionNumber} (beta)",
@@ -158,15 +158,15 @@ class AboutView extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => ChangeLogDialog(),
+                builder: (context) => const ChangeLogDialog(),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.info_outline),
+            leading: const Icon(Icons.info_outline),
             title: Text(
               localizations.about_licence,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               "GPL v3.0",
@@ -174,10 +174,10 @@ class AboutView extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.business_center_outlined),
+            leading: const Icon(Icons.business_center_outlined),
             title: Text(
               localizations.about_other_license,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               localizations.about_other_license_subtitle,
@@ -186,15 +186,15 @@ class AboutView extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LicensePage()),
+                MaterialPageRoute(builder: (context) => const LicensePage()),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.group_outlined),
+            leading: const Icon(Icons.group_outlined),
             title: Text(
               localizations.about_contributors,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               localizations.about_contributors_subtitle,
@@ -205,10 +205,10 @@ class AboutView extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.code_outlined),
+            leading: const Icon(Icons.code_outlined),
             title: Text(
               localizations.about_sourcecode,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               localizations.about_sourcecode_subtitle,

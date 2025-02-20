@@ -61,7 +61,7 @@ class _SettingsState extends ConsumerState<Settings> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 left: indentOfCategoriesTitles,
                 top: indentOfCategoriesTitles,
               ),
@@ -84,12 +84,12 @@ class _SettingsState extends ConsumerState<Settings> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => NotificationSettingsView(),
+                    builder: (context) => const NotificationSettingsView(),
                   ),
                 );
               },
             ),
-            Divider(
+            const Divider(
               height: 50,
               indent: 15.0,
               endIndent: 15.0,
@@ -145,35 +145,35 @@ class _SettingsState extends ConsumerState<Settings> {
             ),
             userPreferences.fossPublicAlertServerOperator != ""
                 ? ListTile(
-                    leading: Icon(Icons.account_balance),
+                    leading: const Icon(Icons.account_balance),
                     title: Text(
                       "Server Operator: ${userPreferences.fossPublicAlertServerOperator}",
                     ),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             userPreferences.fossPublicAlertServerTermsOfService != ""
                 ? ListTile(
-                    leading: Icon(Icons.open_in_new),
-                    title: Text("Server Terms of Service"),
+                    leading: const Icon(Icons.open_in_new),
+                    title: const Text("Server Terms of Service"),
                     onTap: () {
                       launchUrlInBrowser(
                         userPreferences.fossPublicAlertServerTermsOfService,
                       );
                     },
                   )
-                : SizedBox(),
+                : const SizedBox(),
             userPreferences.fossPublicAlertServerPrivacyNotice != ""
                 ? ListTile(
-                    leading: Icon(Icons.open_in_new),
-                    title: Text("Server Privacy"),
+                    leading: const Icon(Icons.open_in_new),
+                    title: const Text("Server Privacy"),
                     onTap: () {
                       launchUrlInBrowser(
                         userPreferences.fossPublicAlertServerPrivacyNotice,
                       );
                     },
                   )
-                : SizedBox(),
-            Divider(
+                : const SizedBox(),
+            const Divider(
               height: 50,
               indent: 15.0,
               endIndent: 15.0,
@@ -231,7 +231,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return ChooseThemeDialog();
+                    return const ChooseThemeDialog();
                   },
                 );
               },
@@ -242,7 +242,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return FontSizeDialog();
+                    return const FontSizeDialog();
                   },
                 );
               },
@@ -253,12 +253,12 @@ class _SettingsState extends ConsumerState<Settings> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return SortByDialog();
+                    return const SortByDialog();
                   },
                 );
               },
             ),
-            Divider(
+            const Divider(
               height: 50,
               indent: 15.0,
               endIndent: 15.0,
@@ -281,7 +281,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => IntroductionView(),
+                    builder: (context) => const IntroductionView(),
                   ),
                 );
               },
@@ -291,7 +291,7 @@ class _SettingsState extends ConsumerState<Settings> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DevSettings()),
+                  MaterialPageRoute(builder: (context) => const DevSettings()),
                 );
               },
             ),

@@ -29,7 +29,7 @@ enum Severity {
   }
 
   static double getIndexFromSeverity(Severity notificationLevel) {
-    final severities = Severity.values;
+    const severities = Severity.values;
     for (int i = 0; i < severities.length; i++) {
       if (severities[i] == notificationLevel) {
         return i.toDouble();

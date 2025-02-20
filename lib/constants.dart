@@ -1,2 +1,2 @@
-final String defaultFPASServerUrl = "https://alerts.kde.org";
-final String httpUserAgent = "de.nucleus.foss_warn";
+const String defaultFPASServerUrl = "https://alerts.kde.org";
+const String httpUserAgent = "de.nucleus.foss_warn";

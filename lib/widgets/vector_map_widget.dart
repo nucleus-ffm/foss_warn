@@ -118,7 +118,9 @@ class _VectorMapWidgetState extends State<VectorMapWidget> {
         ...widget.polygonLayers ?? [],
         ...widget.markerLayers ?? [],
         ...widget.widgets ?? [],
-        SimpleAttributionWidget(source: Text('OpenStreetMap contributors')),
+        const SimpleAttributionWidget(
+          source: Text('OpenStreetMap contributors'),
+        ),
       ],
     );
   }

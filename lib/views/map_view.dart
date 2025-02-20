@@ -57,12 +57,12 @@ class _MapViewState extends State<MapView> {
             children: filterChips.entries
                 .map(
                   (chip) => Padding(
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                     child: FilterChip(
                       tooltip: findTooltipTranslation(chip.key, chip.value),
                       label: Text(findLabelForChip(chip.key)),
                       backgroundColor: Colors.transparent,
-                      shape: StadiumBorder(side: BorderSide()),
+                      shape: const StadiumBorder(side: BorderSide()),
                       selected: chip.value,
                       onSelected: (bool value) {
                         setState(() {
@@ -84,7 +84,7 @@ class _MapViewState extends State<MapView> {
     return Scaffold(
       body: MapWidget(
         //vectorMapWidget
-        initialCameraFit: CameraFit.coordinates(
+        initialCameraFit: const CameraFit.coordinates(
           padding: EdgeInsets.all(30),
           coordinates: [
             LatLng(52.815, 7.009),

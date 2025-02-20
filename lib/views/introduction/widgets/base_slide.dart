@@ -31,7 +31,7 @@ class IntroductionBaseSlide extends StatelessWidget {
             ),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 29.0,
                 fontWeight: FontWeight.w300,
                 height: 2.0,
@@ -39,7 +39,7 @@ class IntroductionBaseSlide extends StatelessWidget {
             ),
             Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
                 letterSpacing: 1.2,
                 fontSize: 16.0,

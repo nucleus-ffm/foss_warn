@@ -7,7 +7,7 @@ import 'package:foss_warn/services/url_launcher.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/views/introduction/widgets/base_slide.dart';
 
-final _fpasServerExplanationURL =
+const _fpasServerExplanationURL =
     'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-the-FOSS-Public-Alert-Server-and-why-do-I-have-to-select-a-server%3F';
 
 class IntroductionFPASServerSelectionSlide extends ConsumerStatefulWidget {
@@ -148,12 +148,12 @@ class _FPASServerSlideLayout extends StatelessWidget {
         children: [
           Text(
             localizations.welcome_view_foss_server_selection_select,
-            style: TextStyle(fontSize: 17),
+            style: const TextStyle(fontSize: 17),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.open_in_browser),
+              const Icon(Icons.open_in_browser),
               Flexible(
                 fit: FlexFit.loose,
                 child: TextButton(
@@ -193,7 +193,7 @@ class _FPASServerSlideLayout extends StatelessWidget {
               );
             }).toList(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -213,7 +213,7 @@ class _FPASServerSlideLayout extends StatelessWidget {
 
           if (serverSettings != null) ...[
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text(
                 localizations.welcome_view_foss_server_operator(
                   serverSettings!.operator,

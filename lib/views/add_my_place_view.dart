@@ -58,7 +58,7 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
                     .map(
                       (place) => ListTile(
                         visualDensity:
-                            VisualDensity(horizontal: 0, vertical: -4),
+                            const VisualDensity(horizontal: 0, vertical: -4),
                         title: Text(
                           place.name,
                           style: theme.textTheme.titleMedium,

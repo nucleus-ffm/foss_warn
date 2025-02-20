@@ -5,7 +5,7 @@ final greenLightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
   colorSchemeSeed: Colors.green,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -21,7 +21,7 @@ final orangeLightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
   colorSchemeSeed: Colors.orange,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -37,7 +37,7 @@ final purpleLightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
   colorSchemeSeed: Colors.purple,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -53,7 +53,7 @@ final blueLightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
   colorSchemeSeed: Colors.blue[500],
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -69,7 +69,7 @@ final yellowLightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
   colorSchemeSeed: Colors.yellow,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -85,7 +85,7 @@ final indigoLightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
   colorSchemeSeed: Colors.indigo,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -104,7 +104,7 @@ final greenDarkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.green[900],
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -121,7 +121,7 @@ final orangeDarkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.orange[900],
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -137,7 +137,7 @@ final purpleDarkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.purple[900],
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -153,7 +153,7 @@ final yellowDarkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.yellow,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -169,7 +169,7 @@ final blueDarkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.blue,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,
@@ -185,7 +185,7 @@ final greyDarkTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.grey,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
       fontSize: 18,

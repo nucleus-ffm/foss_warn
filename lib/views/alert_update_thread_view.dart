@@ -26,16 +26,16 @@ class _AlertUpdateThreadViewState extends State<AlertUpdateThreadView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text("latest version of the alert"),
+            const Text("latest version of the alert"),
             WarningWidget(
               warnMessage: widget.latestAlert,
               isMyPlaceWarning: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text("previous updates of this alert"),
-            SizedBox(
+            const Text("previous updates of this alert"),
+            const SizedBox(
               height: 10,
             ),
             ...widget.previousNowUpdatedAlerts.map(

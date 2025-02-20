@@ -21,7 +21,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
             final String data = snapshot.data!;
             debugPrint(data);
             return AlertDialog(
-              title: Text("Systeminformationen"),
+              title: const Text("Systeminformationen"),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -66,10 +66,10 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
             );
           } else {
             debugPrint("Error getting system information: ${snapshot.error}");
-            return Text("Error", style: TextStyle(color: Colors.red));
+            return const Text("Error", style: TextStyle(color: Colors.red));
           }
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );

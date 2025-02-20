@@ -5,8 +5,8 @@ selectUnifiedPushDistributorDialog(List<String> distributors) {
     return SimpleDialog(
       title: const Text('Select push distributor'),
       children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
+        const Padding(
+          padding: EdgeInsets.all(12.0),
           child: Text(
             "Please select the UnifiedPush distributor which FOSSWarn should use.",
           ),

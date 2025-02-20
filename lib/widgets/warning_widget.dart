@@ -82,12 +82,12 @@ class WarningWidget extends ConsumerWidget {
           }
         },
         child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildReadStateButton(ref),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,13 +96,13 @@ class WarningWidget extends ConsumerWidget {
                       children: [
                         Container(
                           color: Colors.indigo,
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           child: InkWell(
                             onTap: () {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return CategoryExplanation();
+                                  return const CategoryExplanation();
                                 },
                               );
                             },
@@ -117,19 +117,19 @@ class WarningWidget extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Container(
                           color:
                               chooseWarningTypeColor(_warnMessage.messageType),
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           child: InkWell(
                             onTap: () {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return MessageTypeExplanation();
+                                  return const MessageTypeExplanation();
                                 },
                               );
                             },
@@ -138,12 +138,14 @@ class WarningWidget extends ConsumerWidget {
                                 _warnMessage.messageType,
                                 context,
                               ),
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
@@ -155,7 +157,7 @@ class WarningWidget extends ConsumerWidget {
                                   : areaList.isNotEmpty
                                       ? areaList.first
                                       : localizations.warning_widget_unknown,
-                              style: TextStyle(fontSize: 12),
+                              style: const TextStyle(fontSize: 12),
                             ),
                           ),
                         ),
@@ -164,8 +166,10 @@ class WarningWidget extends ConsumerWidget {
                     const SizedBox(height: 5),
                     Text(
                       _warnMessage.info[0].headline,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 5),
                     SingleChildScrollView(
@@ -174,7 +178,7 @@ class WarningWidget extends ConsumerWidget {
                         children: [
                           Text(
                             formatSentDate(_warnMessage.sent),
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           ),
                           const SizedBox(width: 20),
                         ],
@@ -197,7 +201,7 @@ class WarningWidget extends ConsumerWidget {
                         ),
                       ).then((value) => updatePrevView());
                     },
-                    icon: Icon(Icons.read_more),
+                    icon: const Icon(Icons.read_more),
                   ),
                   (_updateThread != null && _updateThread.length > 1)
                       ? IconButton(
@@ -217,7 +221,7 @@ class WarningWidget extends ConsumerWidget {
                               ),
                             );
                           },
-                          icon: Icon(Icons.account_tree),
+                          icon: const Icon(Icons.account_tree),
                         )
                       : const SizedBox(),
                 ],
@@ -237,7 +241,7 @@ class WarningWidget extends ConsumerWidget {
     // the read state of these warning is not saved anyways
 
     if (!_isMyPlaceWarning) {
-      return IconButton(
+      return const IconButton(
         onPressed: null,
         icon: Icon(
           Icons.warning_amber_outlined,
@@ -264,11 +268,11 @@ class WarningWidget extends ConsumerWidget {
         await saveMyPlacesList();
       },
       icon: _warnMessage.read
-          ? Icon(
+          ? const Icon(
               Icons.mark_chat_read,
               color: Colors.green,
             )
-          : Icon(
+          : const Icon(
               Icons.warning_amber_outlined,
               color: Colors.red,
             ),

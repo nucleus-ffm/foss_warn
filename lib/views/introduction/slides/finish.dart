@@ -22,7 +22,7 @@ class IntroductionFinishsSlide extends StatelessWidget {
       footer: Align(
         alignment: Alignment.bottomCenter,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 70.0),
+          padding: const EdgeInsets.symmetric(vertical: 70.0),
           child: TextButton(
             onPressed: onFinishPressed,
             style: TextButton.styleFrom(

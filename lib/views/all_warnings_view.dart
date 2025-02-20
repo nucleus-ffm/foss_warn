@@ -101,11 +101,13 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
           ? userPreferences
                   .showAllWarnings // if warnings that are not in MyPlaces shown
               ? SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: [
-                      ConnectionError(),
-                      mapWarningsList.isEmpty ? NoWarningsInList() : SizedBox(),
+                      const ConnectionError(),
+                      mapWarningsList.isEmpty
+                          ? const NoWarningsInList()
+                          : const SizedBox(),
                       ...mapWarningsList.map(
                         (warnMessage) => WarningWidget(
                           warnMessage: warnMessage,
@@ -119,11 +121,11 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
               : loadOnlyWarningsForMyPlaces() //
                       .isNotEmpty // check if there are warnings for myPlaces
                   ? SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          ConnectionError(),
+                          const ConnectionError(),
                           ...loadOnlyWarningsForMyPlaces().map(
                             (warnMessage) => WarningWidget(
                               warnMessage: warnMessage,
@@ -149,7 +151,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                                 children: [
                                   Text(
                                     localizations.all_warnings_everything_ok,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -164,7 +166,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                                     localizations
                                         .all_warnings_everything_ok_text,
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   TextButton(
                                     onPressed: () {
                                       setState(() {
@@ -193,7 +195,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
+                const Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ConnectionError(),
@@ -208,12 +210,12 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                         children: [
                           Text(
                             localizations.all_warnings_no_places_chosen,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text("\n"),
+                          const Text("\n"),
                           Text(
                             localizations.all_warnings_no_places_chosen_text,
                           ),

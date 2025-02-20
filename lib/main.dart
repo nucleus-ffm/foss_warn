@@ -39,7 +39,7 @@ void main() async {
     await NotificationService().init();
   }
 
-  runApp(FOSSWarn());
+  runApp(const FOSSWarn());
 }
 
 class FOSSWarn extends StatelessWidget {
@@ -57,8 +57,9 @@ class FOSSWarn extends StatelessWidget {
         navigatorKey: navigatorKey,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home:
-            userPreferences.showWelcomeScreen ? IntroductionView() : HomeView(),
+        home: userPreferences.showWelcomeScreen
+            ? const IntroductionView()
+            : const HomeView(),
       ),
     );
   }
@@ -76,9 +77,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   // list of views for the navigation bar
   final List<Widget> _pages = <Widget>[
-    AllWarningsView(),
-    MyPlaces(),
-    MapView(),
+    const AllWarningsView(),
+    const MyPlaces(),
+    const MapView(),
   ];
 
   @override
@@ -125,15 +126,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
       // set to false to prevent the widget from jumping after closing the keyboard
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("FOSS Warn"),
+        title: const Text("FOSS Warn"),
         actions: [
           IconButton(
-            icon: Icon(Icons.sort),
+            icon: const Icon(Icons.sort),
             tooltip: localizations.main_app_bar_action_sort_tooltip,
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (BuildContext context) => SortByDialog(),
+                builder: (BuildContext context) => const SortByDialog(),
               );
               updater.updateReadStatusInList();
             },
@@ -153,24 +154,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
               // and use it to show a SnackBar.
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
-            icon: Icon(Icons.mark_chat_read),
+            icon: const Icon(Icons.mark_chat_read),
             tooltip:
                 localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
           ),
           PopupMenuButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onSelected: (result) {
               switch (result) {
                 case 0:
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Settings()),
+                    MaterialPageRoute(builder: (context) => const Settings()),
                   );
                   break;
                 case 1:
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AboutView()),
+                    MaterialPageRoute(builder: (context) => const AboutView()),
                   );
                   break;
               }
@@ -191,14 +192,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
       bottomNavigationBar: NavigationBar(
         destinations: <NavigationDestination>[
           NavigationDestination(
-            icon: Icon(Icons.warning),
+            icon: const Icon(Icons.warning),
             label: localizations.main_nav_bar_all_warnings,
           ),
           NavigationDestination(
-            icon: Icon(Icons.place),
+            icon: const Icon(Icons.place),
             label: localizations.main_nav_bar_my_places,
           ),
-          NavigationDestination(icon: Icon(Icons.map), label: "Map"),
+          const NavigationDestination(icon: Icon(Icons.map), label: "Map"),
         ],
         onDestinationSelected: (int index) {
           setState(() {

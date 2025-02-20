@@ -25,7 +25,7 @@ class IntroductionAlarmPermissionSlide extends StatelessWidget {
       footer: Column(
         children: [
           if (hasPermission) ...[
-            IntroductionCheckmark(),
+            const IntroductionCheckmark(),
           ] else ...[
             TextButton(
               style: TextButton.styleFrom(

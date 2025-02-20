@@ -101,7 +101,7 @@ class UnifiedPushHandler {
         if (!context.mounted) return;
         await showDialog(
           context: context,
-          builder: (context) => NoUPDistributorFoundDialog(),
+          builder: (context) => const NoUPDistributorFoundDialog(),
         );
         return;
       }
@@ -130,10 +130,10 @@ class UnifiedPushHandler {
     // wait for the registration to finish
     if (!userPreferences.unifiedPushRegistered) {
       await Future.doWhile(() async {
-        await Future.delayed(Duration(microseconds: 1));
+        await Future.delayed(const Duration(microseconds: 1));
         return !userPreferences.unifiedPushRegistered;
       }).timeout(
-        Duration(seconds: 20),
+        const Duration(seconds: 20),
         onTimeout: () {
           debugPrint(
             "Timeout waiting for unifiedPushRegistered to be set to true.",

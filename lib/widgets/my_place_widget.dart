@@ -52,7 +52,7 @@ class MyPlaceWidget extends StatelessWidget {
           }
         },
         child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -68,7 +68,7 @@ class MyPlaceWidget extends StatelessWidget {
                         },
                       );
                     },
-                    icon: Icon(Icons.location_city),
+                    icon: const Icon(Icons.location_city),
                   ),
                   const SizedBox(width: 20),
                   SizedBox(
@@ -82,7 +82,7 @@ class MyPlaceWidget extends StatelessWidget {
                         Flexible(
                           child: Text(
                             myPlace.name,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -103,8 +103,8 @@ class MyPlaceWidget extends StatelessWidget {
                         style: TextButton.styleFrom(
                           backgroundColor: theme.colorScheme.secondary,
                           foregroundColor: theme.colorScheme.onSecondary,
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(15),
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(15),
                         ),
                         onPressed: () {},
                         child: Icon(
@@ -116,8 +116,8 @@ class MyPlaceWidget extends StatelessWidget {
                         ? TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.grey,
-                              shape: CircleBorder(),
-                              padding: EdgeInsets.all(15),
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(15),
                             ),
                             onPressed: () {
                               Navigator.push(
@@ -128,7 +128,7 @@ class MyPlaceWidget extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.mark_chat_read,
                               color: Colors.white,
                             ),
@@ -136,8 +136,8 @@ class MyPlaceWidget extends StatelessWidget {
                         : TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.red,
-                              shape: CircleBorder(),
-                              padding: EdgeInsets.all(15),
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(15),
                             ),
                             onPressed: () {
                               Navigator.push(
@@ -148,7 +148,7 @@ class MyPlaceWidget extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.warning,
                               color: Colors.white,
                             ),

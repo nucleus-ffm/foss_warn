@@ -18,7 +18,8 @@ class NotificationPreferencesListTileWidget extends StatefulWidget {
 
 class _NotificationPreferencesListTileWidgetState
     extends State<NotificationPreferencesListTileWidget> {
-  final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+  final EdgeInsets settingsTileListPadding =
+      const EdgeInsets.fromLTRB(25, 2, 25, 2);
 
   // return the label for the given value
   String getLabelForWarningSeverity(double sliderValue) {
@@ -46,7 +47,7 @@ class _NotificationPreferencesListTileWidgetState
       children: [
         Padding(
           padding: settingsTileListPadding,
-          child: Divider(),
+          child: const Divider(),
         ),
         ListTile(
           contentPadding: settingsTileListPadding,
@@ -60,7 +61,7 @@ class _NotificationPreferencesListTileWidgetState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.notifications_active,
                         color: Colors.red,
                       ),
@@ -95,7 +96,7 @@ class _NotificationPreferencesListTileWidgetState
                           },
                         ),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.notifications,
                         color: Colors.orangeAccent,
                       ),

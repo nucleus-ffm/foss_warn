@@ -26,7 +26,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ListTile(
                 title: Text(
                   localizations.font_size_small,
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 ),
                 leading: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -45,7 +45,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ListTile(
                 title: Text(
                   localizations.font_size_normal,
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 ),
                 leading: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -65,7 +65,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ListTile(
                 title: Text(
                   localizations.font_size_big,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 leading: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -85,7 +85,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
               ListTile(
                 title: Text(
                   localizations.font_size_very_big,
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
                 leading: const Padding(
                   padding: EdgeInsets.all(8.0),

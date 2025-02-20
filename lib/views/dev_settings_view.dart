@@ -21,7 +21,8 @@ class DevSettings extends ConsumerStatefulWidget {
 }
 
 class _DevSettingsState extends ConsumerState<DevSettings> {
-  final EdgeInsets _settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+  final EdgeInsets _settingsTileListPadding =
+      const EdgeInsets.fromLTRB(25, 2, 25, 2);
   final TextEditingController maxSizeOfSubscriptionBoundingBox =
       TextEditingController();
 
@@ -101,7 +102,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   final snackBar = SnackBar(
                     content: Text(
                       localizations.dev_settings_success,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
                   );
@@ -121,7 +122,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   final snackBar = SnackBar(
                     content: Text(
                       localizations.dev_settings_success,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
                   );
@@ -131,8 +132,10 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text("Systeminformationen zur Fehlerbehebung sammeln"),
-                subtitle: Text(
+                title: const Text(
+                  "Systeminformationen zur Fehlerbehebung sammeln",
+                ),
+                subtitle: const Text(
                   "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet.",
                 ),
                 onTap: () {
@@ -140,7 +143,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) =>
-                        SystemInformationDialog(),
+                        const SystemInformationDialog(),
                   );
 
                   final snackBar = SnackBar(
@@ -156,13 +159,14 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text("Zeige Fehlermeldungen an"),
-                subtitle: Text("Zeigt einen Dialog zu Fehlermeldungen an"),
+                title: const Text("Zeige Fehlermeldungen an"),
+                subtitle:
+                    const Text("Zeigt einen Dialog zu Fehlermeldungen an"),
                 onTap: () {
                   debugPrint("Lade Fehlermeldungen");
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) => ErrorDialog(),
+                    builder: (BuildContext context) => const ErrorDialog(),
                   );
 
                   final snackBar = SnackBar(
@@ -178,20 +182,24 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text("Übersicht über Fehlermeldungen"),
-                subtitle:
-                    Text("Führt zu einer Seite mit den Fehlermeldungen an"),
+                title: const Text("Übersicht über Fehlermeldungen"),
+                subtitle: const Text(
+                  "Führt zu einer Seite mit den Fehlermeldungen an",
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LogFileViewer()),
+                    MaterialPageRoute(
+                      builder: (context) => const LogFileViewer(),
+                    ),
                   );
                 },
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text("Max size of bounding box for a subscription"),
-                subtitle: Text(
+                title:
+                    const Text("Max size of bounding box for a subscription"),
+                subtitle: const Text(
                   "select the max size of bounding box for a subscription",
                 ),
                 trailing: SizedBox(
@@ -224,7 +232,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     onEditingComplete: () {
                       focusScope.unfocus();
                     },
-                    decoration: InputDecoration(),
+                    decoration: const InputDecoration(),
                     style: theme.textTheme.bodyMedium,
                   ),
                 ),

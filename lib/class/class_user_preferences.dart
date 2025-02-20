@@ -212,7 +212,7 @@ class UserPreferences {
     _preferences.setBool("isFirstStart", newValue);
   }
 
-  final Duration networkTimeout = Duration(seconds: 8);
+  final Duration networkTimeout = const Duration(seconds: 8);
 
   final List<ThemeData> availableLightThemes = [
     greenLightTheme,
@@ -236,7 +236,7 @@ class UserPreferences {
 
   /// Dark mode colors for the map.
   /// invert(100%), hue-rotate(180deg), brightness(95%), contrast(90%)
-  final ColorFilter mapDarkMode = ColorFilter.matrix(<double>[
+  final ColorFilter mapDarkMode = const ColorFilter.matrix(<double>[
     -0.574,
     -1.43,
     -0.144,
@@ -261,7 +261,7 @@ class UserPreferences {
 
   /// Light mode for the map
   /// original colors from OSM
-  final ColorFilter mapLightMode = ColorFilter.matrix(<double>[
+  final ColorFilter mapLightMode = const ColorFilter.matrix(<double>[
     1,
     0,
     0,

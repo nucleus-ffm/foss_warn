@@ -14,16 +14,16 @@ class ConnectionError extends StatelessWidget {
 
     if (userPreferences.areWarningsFromCache) {
       return Container(
-        padding: EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
         //margin: EdgeInsets.only(bottom: 10),
         color: Colors.orange,
         child: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.info,
               color: Colors.white,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Flexible(
@@ -44,14 +44,15 @@ class ConnectionError extends StatelessWidget {
       return InkWell(
         onTap: () => showDialog(
           context: context,
-          builder: (BuildContext context) => ErrorDialog(),
+          builder: (BuildContext context) => const ErrorDialog(),
         ),
         child: Container(
-          padding: EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
           color: theme.colorScheme.error,
           child: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.error,
                 color: Colors.white,
               ),

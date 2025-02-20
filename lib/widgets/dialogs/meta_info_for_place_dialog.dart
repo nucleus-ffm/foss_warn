@@ -23,11 +23,11 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
         Text(
           "Bounding box max: \n\t\tLng: ${fpasPlace.boundingBox.maxLatLng.longitude}  \n\t\tLat: ${fpasPlace.boundingBox.maxLatLng.latitude}",
         ), // meta_info_for_place_dialog_bounding_box_max
-        Text("\n"),
+        const Text("\n"),
         Text(
           "Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.minLatLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.minLatLng.latitude}",
         ), // meta_info_for_place_dialog_bounding_box_min
-        Text("\n"),
+        const Text("\n"),
         Text(
           "SubscriptionID: ${fpasPlace.subscriptionId}",
         ), //meta_info_for_place_dialog_subscription_id

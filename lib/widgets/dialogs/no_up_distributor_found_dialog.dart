@@ -18,29 +18,29 @@ class _NoUPDistributorFoundDialogState
     var navigator = Navigator.of(context);
 
     return AlertDialog(
-      title: Text("No push distributor found"),
+      title: const Text("No push distributor found"),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(//@todo translation
+            const Text(//@todo translation
                 "FOSSWarn couldn't find any UnifiedPush distributor installed"
                 " on your device. To subscribe to an area, you must have one"
                 " installed, or you won't get any notification."
                 " Please install a distributor and retry the subscription."),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               children: [
-                Icon(Icons.open_in_browser),
+                const Icon(Icons.open_in_browser),
                 Flexible(
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
                       'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor',
                     ),
-                    child: Text(
+                    child: const Text(
                       //@todo translation
                       "What is unifiedPush and how to install a distributor?",
                     ),
@@ -50,14 +50,14 @@ class _NoUPDistributorFoundDialogState
             ),
             Row(
               children: [
-                Icon(Icons.open_in_browser),
+                const Icon(Icons.open_in_browser),
                 Flexible(
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
                       'https://f-droid.org/de/packages/io.heckel.ntfy/',
                     ),
-                    child: Text("For the fast ones: ntfy on F-Droid"),
+                    child: const Text("For the fast ones: ntfy on F-Droid"),
                   ), //@todo translation
                 ),
               ],
