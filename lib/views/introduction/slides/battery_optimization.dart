@@ -7,7 +7,7 @@ import 'package:foss_warn/views/introduction/widgets/checkmark.dart';
 /// invoke android platform specific method to check if battery optimization
 /// is currently enabled
 Future<bool> _isBatteryOptimizationEnabled() async {
-  final platformMethodChannel = const MethodChannel("flutter.native/helper");
+  const platformMethodChannel = MethodChannel("flutter.native/helper");
 
   try {
     return await platformMethodChannel
@@ -58,8 +58,7 @@ class _IntroductionBatteryOptimizationSlideState
     var theme = Theme.of(context);
 
     Future<void> onShowBatteryOptimizationDialogPressed() async {
-      final platformMethodChannel =
-          const MethodChannel("flutter.native/helper");
+      const platformMethodChannel = MethodChannel("flutter.native/helper");
 
       await platformMethodChannel
           .invokeMethod("showIgnoreBatteryOptimizationDialog");

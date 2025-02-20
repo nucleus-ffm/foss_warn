@@ -10,14 +10,14 @@ class IntroductionCheckmark extends StatelessWidget {
 
     return Column(
       children: [
-        Icon(
+        const Icon(
           Icons.check,
           size: 56,
           color: Colors.green,
         ),
         Text(
           localizations.welcome_view_action_success,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.grey,
             letterSpacing: 1.2,
             fontSize: 16.0,

@@ -221,7 +221,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
             child: MapWidget(
               //vector
               mapController: mapController,
-              initialCameraFit: CameraFit.coordinates(
+              initialCameraFit: const CameraFit.coordinates(
                 padding: EdgeInsets.all(30),
                 coordinates: [
                   LatLng(52.815, 7.009),
@@ -236,7 +236,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                     ? PolygonLayer(
                         polygons: [selectedPlacePolygon!],
                       )
-                    : PolygonLayer(polygons: []),
+                    : const PolygonLayer(polygons: []),
               ],
             ),
           ),
@@ -256,7 +256,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                   decoration: InputDecoration(
                     fillColor: theme.colorScheme.secondaryContainer,
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
+                      icon: const Icon(Icons.clear),
                       onPressed: () {
                         textEditingController.clear();
                         setState(() {
@@ -345,13 +345,13 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                     : 300,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(12),
                       bottomRight: Radius.circular(12),
                     ),
                     color: theme.colorScheme.secondaryContainer,
                   ),
-                  margin: EdgeInsets.only(left: 8, right: 8),
+                  margin: const EdgeInsets.only(left: 8, right: 8),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -360,7 +360,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                             (place) => Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: ListTile(
-                                leading: Icon(Icons.place),
+                                leading: const Icon(Icons.place),
                                 title: Text(
                                   place["display_name"],
                                   style: theme.textTheme.titleMedium,
@@ -405,7 +405,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(12),
                         bottomRight: Radius.circular(12),
                       ),

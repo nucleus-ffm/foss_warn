@@ -108,7 +108,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
 
               scaffoldMessenger.showSnackBar(snackBar);
             },
-            icon: Icon(Icons.mark_chat_read),
+            icon: const Icon(Icons.mark_chat_read),
             tooltip:
                 localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
           ),

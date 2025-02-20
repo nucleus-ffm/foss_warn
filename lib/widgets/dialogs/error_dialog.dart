@@ -29,7 +29,7 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
             final String log = snapshot.data!;
             //print(log);
             return AlertDialog(
-              title: Text("Oh no - something went wrong :("),
+              title: const Text("Oh no - something went wrong :("),
               //@todo translate error_dialog_headline
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,22 +39,22 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                     " Please contact the developer and attach the following log:", //@todo translate error_dialog_text_introduction
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text(
+                  const Text(
                       "The log does not contain any privacy sensitive information beside maybe your selected place. "
                       "FOSS Warn also does not send any log information to a server."), //@todo translate error_dialog_text_privacy
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(
                     "What should I do now?", // @todo translate error_dialog_text_instructions_headline
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text(
+                  const Text(
                     "write an E-Mail to: foss_warn@posteo.de",
                   ), // @toto translate error_dialog_text_instructions_text
-                  Text("or open an Github Issue"),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Text("or open an Github Issue"),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Divider(),
                   ),
                   Expanded(
@@ -84,7 +84,7 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                           });
                         },
                       ),
-                      Text("hide error bar"), //@todo translate
+                      const Text("hide error bar"), //@todo translate
                     ],
                   ),
                 ],
@@ -126,10 +126,10 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
             );
           } else {
             debugPrint("Error getting system information: ${snapshot.error}");
-            return Text("Error", style: TextStyle(color: Colors.red));
+            return const Text("Error", style: TextStyle(color: Colors.red));
           }
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );

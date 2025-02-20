@@ -101,18 +101,18 @@ class _IntroductionViewState extends State<IntroductionView>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => HomeView(),
+          builder: (BuildContext context) => const HomeView(),
         ),
       );
     }
 
     var introductionPages = [
-      IntroductionWelcomeSlide(),
+      const IntroductionWelcomeSlide(),
       IntroductionFPASServerSelectionSlide(
         selectedServerSettings: selectedServerSettings,
         onServerSelected: onServerSelected,
       ),
-      IntroductionDisclaimerSlide(),
+      const IntroductionDisclaimerSlide(),
       IntroductionNotificationPermissionSlide(
         hasPermission: hasNotificationPermission,
         onPermissionChanged: onRequestNotificationPermissionPressed,
@@ -121,9 +121,9 @@ class _IntroductionViewState extends State<IntroductionView>
         hasPermission: hasAlarmPermission,
         onPermissionChanged: onRequestAlarmPermissionPressed,
       ),
-      IntroductionBatteryOptimizationSlide(),
-      IntroductionPlacesSlide(),
-      IntroductionWarningLevelsSlide(),
+      const IntroductionBatteryOptimizationSlide(),
+      const IntroductionPlacesSlide(),
+      const IntroductionWarningLevelsSlide(),
       IntroductionFinishsSlide(onFinishPressed: onFinishPressed),
     ];
 
@@ -170,8 +170,8 @@ class _PageProgressDots extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        margin: EdgeInsets.only(top: 70.0),
-        padding: EdgeInsets.symmetric(vertical: 40.0),
+        margin: const EdgeInsets.only(top: 70.0),
+        padding: const EdgeInsets.symmetric(vertical: 40.0),
         child: Visibility(
           // hide the step indicator if the keyboard is open
           visible: mediaQuery.viewInsets.bottom == 0 ? true : false,
@@ -180,13 +180,13 @@ class _PageProgressDots extends StatelessWidget {
             children: List.generate(
               pageCount,
               (index) => Container(
-                margin: EdgeInsets.symmetric(horizontal: 3.0),
+                margin: const EdgeInsets.symmetric(horizontal: 3.0),
                 height: 10.0,
                 width: 10.0,
                 decoration: BoxDecoration(
                   color: currentPage == index
-                      ? Color(0XFF256075)
-                      : Color(0XFF256075).withOpacity(0.2),
+                      ? const Color(0XFF256075)
+                      : const Color(0XFF256075).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),

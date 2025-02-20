@@ -30,40 +30,40 @@ class _WarningSeverityExplanationState
               children: <TextSpan>[
                 TextSpan(
                   text: localizations.notification_settings_slidervalue_extreme,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                TextSpan(text: '\n'),
+                const TextSpan(text: '\n'),
                 TextSpan(
                   text: localizations
                       .warning_severity_explanation_dialog_extreme_description,
                 ),
-                TextSpan(text: '\n\n'),
+                const TextSpan(text: '\n\n'),
                 TextSpan(
                   text: localizations.notification_settings_slidervalue_severe,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                TextSpan(text: '\n'),
+                const TextSpan(text: '\n'),
                 TextSpan(
                   text: localizations
                       .warning_severity_explanation_dialog_severe_description,
                 ),
-                TextSpan(text: '\n\n'),
+                const TextSpan(text: '\n\n'),
                 TextSpan(
                   text:
                       localizations.notification_settings_slidervalue_moderate,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                TextSpan(text: '\n'),
+                const TextSpan(text: '\n'),
                 TextSpan(
                   text: localizations
                       .warning_severity_explanation_dialog_moderate_description,
                 ),
-                TextSpan(text: '\n\n'),
+                const TextSpan(text: '\n\n'),
                 TextSpan(
                   text: localizations.notification_settings_slidervalue_minor,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                TextSpan(text: '\n'),
+                const TextSpan(text: '\n'),
                 TextSpan(
                   text: localizations
                       .warning_severity_explanation_dialog_minor_description,

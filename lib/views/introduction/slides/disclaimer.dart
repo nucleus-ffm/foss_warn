@@ -15,14 +15,14 @@ class IntroductionDisclaimerSlide extends StatelessWidget {
     void onShowDisclaimerPressed() {
       showDialog(
         context: context,
-        builder: (BuildContext context) => DisclaimerDialog(),
+        builder: (BuildContext context) => const DisclaimerDialog(),
       );
     }
 
     void onShowPrivacyPressed() {
       showDialog(
         context: context,
-        builder: (BuildContext context) => PrivacyDialog(),
+        builder: (BuildContext context) => const PrivacyDialog(),
       );
     }
 

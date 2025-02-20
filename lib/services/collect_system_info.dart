@@ -11,7 +11,7 @@ Future<String> collectSystemInfo() async {
 }
 
 Future<bool> _isBatteryOptimizationEnabled() async {
-  final platform = const MethodChannel('flutter.native/helper');
+  const platform = MethodChannel('flutter.native/helper');
   try {
     return await platform.invokeMethod("isBatteryOptimizationEnabled");
   } on PlatformException catch (e) {

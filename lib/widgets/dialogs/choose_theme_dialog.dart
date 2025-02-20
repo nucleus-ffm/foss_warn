@@ -31,10 +31,10 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
 
     return TextButton(
       style: TextButton.styleFrom(
-        padding: EdgeInsets.only(left: 10, right: 10),
+        padding: const EdgeInsets.only(left: 10, right: 10),
         backgroundColor: selectBackgroundColor(themeMode),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           side: BorderSide(
             // change border color if theme is currently selected
             color: (userPreferences.selectedThemeMode == themeMode)
@@ -119,7 +119,7 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
 
     return Container(
       width: 90,
-      padding: EdgeInsets.all(1),
+      padding: const EdgeInsets.all(1),
       child: TextButton(
         onPressed: () {
           setState(() {
@@ -135,7 +135,7 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
           updater.updateView();
         },
         style: TextButton.styleFrom(
-          minimumSize: Size(80, 80),
+          minimumSize: const Size(80, 80),
           backgroundColor: theme.colorScheme.primary,
           shape: CircleBorder(
             side: BorderSide(
@@ -148,7 +148,7 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
             ),
           ),
         ),
-        child: SizedBox(),
+        child: const SizedBox(),
       ),
     );
   }

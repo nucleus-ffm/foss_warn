@@ -14,7 +14,8 @@ class NotificationSettingsView extends StatefulWidget {
 }
 
 class _NotificationSettingsViewState extends State<NotificationSettingsView> {
-  final EdgeInsets settingsTileListPadding = EdgeInsets.fromLTRB(25, 2, 25, 2);
+  final EdgeInsets settingsTileListPadding =
+      const EdgeInsets.fromLTRB(25, 2, 25, 2);
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +44,13 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return WarningSeverityExplanation();
+                        return const WarningSeverityExplanation();
                       },
                     );
                   },
                   child: Row(
                     children: [
-                      Icon(Icons.info),
+                      const Icon(Icons.info),
                       const SizedBox(width: 10),
                       Text(
                         localizations

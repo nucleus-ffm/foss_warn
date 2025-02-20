@@ -6,8 +6,8 @@ class ChangeLogDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Änderungsprotokoll'),
-      content: SingleChildScrollView(
+      title: const Text('Änderungsprotokoll'),
+      content: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

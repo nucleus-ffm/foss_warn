@@ -26,18 +26,18 @@ class NotificationService {
         priority: Priority.max,
 
         // enable multiline notification
-        styleInformation: BigTextStyleInformation(''),
+        styleInformation: const BigTextStyleInformation(''),
         color: Colors.red, // makes the icon red,
         ledColor: Colors.red,
         ledOffMs: 100,
         ledOnMs: 100,
       ),
-      iOS: DarwinNotificationDetails(),
+      iOS: const DarwinNotificationDetails(),
     );
   }
 
   static Future _statusNotificationsDetails() async {
-    return NotificationDetails(
+    return const NotificationDetails(
       android: AndroidNotificationDetails(
         'de.nucleus.foss_warn.notifications_state',
         'Statusanzeige',
@@ -93,7 +93,7 @@ class NotificationService {
   }
 
   static void showGroupNotification() async {
-    NotificationDetails notificationDetails = NotificationDetails(
+    NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
         'foss_warn', 'Benachrichtigungen',
         channelDescription: 'FOSS Warn Benachrichtigungen',
@@ -121,10 +121,10 @@ class NotificationService {
   }
 
   Future<void> init() async {
-    final AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('notification_icon');
 
-    final DarwinInitializationSettings initializationSettingsIOS =
+    const DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
@@ -132,7 +132,7 @@ class NotificationService {
       //onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
 
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
@@ -152,7 +152,7 @@ class NotificationService {
       // init the different notifications channels
       try {
         await androidNotificationPlugin.createNotificationChannelGroup(
-          AndroidNotificationChannelGroup(
+          const AndroidNotificationChannelGroup(
             "de.nucleus.foss_warn.notifications_emergency_information",
             "Gefahreninformationen",
             description: "Benachrichtigungen zu Gefahrenmeldungen",
@@ -160,7 +160,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannelGroup(
-          AndroidNotificationChannelGroup(
+          const AndroidNotificationChannelGroup(
             "de.nucleus.foss_warn.notifications_other",
             "Sonstiges",
             description: "Sonstige Benachrichtigungen",
@@ -168,7 +168,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannel(
-          AndroidNotificationChannel(
+          const AndroidNotificationChannel(
             "de.nucleus.foss_warn.notifications_minor",
             "Warnstufe: Gering",
             description:
@@ -179,7 +179,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannel(
-          AndroidNotificationChannel(
+          const AndroidNotificationChannel(
             "de.nucleus.foss_warn.notifications_moderate",
             "Warnstufe: Moderat",
             description:
@@ -190,7 +190,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannel(
-          AndroidNotificationChannel(
+          const AndroidNotificationChannel(
             "de.nucleus.foss_warn.notifications_severe",
             "Warnstufe: Schwer",
             description:
@@ -201,7 +201,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannel(
-          AndroidNotificationChannel(
+          const AndroidNotificationChannel(
             "de.nucleus.foss_warn.notifications_extreme",
             "Warnstufe: Extrem",
             description:
@@ -212,7 +212,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannel(
-          AndroidNotificationChannel(
+          const AndroidNotificationChannel(
             "de.nucleus.foss_warn.notifications_update",
             "Update",
             description: "Ein Update für eine bereits erhaltene Warnung.",
@@ -222,7 +222,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannel(
-          AndroidNotificationChannel(
+          const AndroidNotificationChannel(
             "de.nucleus.foss_warn.notifications_state",
             "Statusanzeige",
             description: "Zeit den aktuellen Status der Hintergrundupdates an.",
@@ -232,7 +232,7 @@ class NotificationService {
         );
 
         await androidNotificationPlugin.createNotificationChannel(
-          AndroidNotificationChannel(
+          const AndroidNotificationChannel(
             "de.nucleus.foss_warn.notifications_other",
             "Sonstiges",
             description: "Sonstige Benachrichtigungen",
