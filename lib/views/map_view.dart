@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapView extends StatefulWidget {
   const MapView({super.key});
@@ -20,24 +20,30 @@ class _MapViewState extends State<MapView> {
   final MapController mapController = MapController();
 
   String findLabelForChip(String key) {
+    var localizations = context.localizations;
+
     switch (key) {
       case "map_view_filter_chip_all_alerts":
-        return AppLocalizations.of(context)!.main_nav_bar_all_warnings;
+        return localizations.main_nav_bar_all_warnings;
       case "map_view_filter_chip_my_alerts":
-        return AppLocalizations.of(context)!.main_nav_bar_my_places;
+        return localizations.main_nav_bar_my_places;
     }
     return "Error";
   }
 
   String findTooltipTranslation(String key, bool value) {
+    var localizations = context.localizations;
+
     if (value) {
-      return "${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_select_filter}: ${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_hide} ${findLabelForChip(key)}";
+      return "${localizations.map_view_filter_chips_tooltip_select_filter}: ${localizations.map_view_filter_chips_tooltip_hide} ${findLabelForChip(key)}";
     }
 
-    return "${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_select_filter}: ${AppLocalizations.of(context)!.map_view_filter_chips_tooltip_show} ${findLabelForChip(key)}";
+    return "${localizations.map_view_filter_chips_tooltip_select_filter}: ${localizations.map_view_filter_chips_tooltip_show} ${findLabelForChip(key)}";
   }
 
   Widget buildFilterButtons() {
+    var theme = Theme.of(context);
+
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -45,8 +51,7 @@ class _MapViewState extends State<MapView> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 8),
-              child: Text("Filter by:",
-                  style: Theme.of(context).textTheme.bodyMedium),
+              child: Text("Filter by:", style: theme.textTheme.bodyMedium),
             ),
             Row(
               children: filterChips.entries

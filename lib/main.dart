@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/views/about_view.dart';
@@ -116,6 +117,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+
     var updater = ref.read(updaterProvider);
 
     return Scaffold(
@@ -126,8 +129,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           actions: [
             IconButton(
               icon: Icon(Icons.sort),
-              tooltip: AppLocalizations.of(context)!
-                  .main_app_bar_action_sort_tooltip,
+              tooltip: localizations.main_app_bar_action_sort_tooltip,
               onPressed: () {
                 showDialog(
                   context: context,
@@ -143,7 +145,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 }
                 final snackBar = SnackBar(
                   content: Text(
-                    AppLocalizations.of(context)!
+                    localizations
                         .main_app_bar_tooltip_mark_all_warnings_as_read,
                   ),
                 );
@@ -153,8 +155,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: Icon(Icons.mark_chat_read),
-              tooltip: AppLocalizations.of(context)!
-                  .main_app_bar_tooltip_mark_all_warnings_as_read,
+              tooltip:
+                  localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),
@@ -177,12 +179,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 itemBuilder: (context) => <PopupMenuEntry>[
                       PopupMenuItem(
                           value: 0,
-                          child: Text(AppLocalizations.of(context)!
-                              .main_dot_menu_settings)),
+                          child: Text(localizations.main_dot_menu_settings)),
                       PopupMenuItem(
                           value: 1,
-                          child: Text(AppLocalizations.of(context)!
-                              .main_dot_menu_about))
+                          child: Text(localizations.main_dot_menu_about))
                     ])
           ],
         ),
@@ -190,10 +190,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
           destinations: <NavigationDestination>[
             NavigationDestination(
                 icon: Icon(Icons.warning),
-                label: AppLocalizations.of(context)!.main_nav_bar_all_warnings),
+                label: localizations.main_nav_bar_all_warnings),
             NavigationDestination(
                 icon: Icon(Icons.place),
-                label: AppLocalizations.of(context)!.main_nav_bar_my_places),
+                label: localizations.main_nav_bar_my_places),
             NavigationDestination(icon: Icon(Icons.map), label: "Map")
           ],
           onDestinationSelected: (int index) {

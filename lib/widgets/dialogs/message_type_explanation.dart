@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 class MessageTypeExplanation extends StatefulWidget {
   const MessageTypeExplanation({super.key});
@@ -11,40 +11,44 @@ class MessageTypeExplanation extends StatefulWidget {
 class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var defaultTextStyle = DefaultTextStyle.of(context);
+    var navigator = Navigator.of(context);
+
     return AlertDialog(
-      title: Text(
-          AppLocalizations.of(context)!.explanation_warning_level_headline),
+      title: Text(localizations.explanation_warning_level_headline),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           RichText(
             text: TextSpan(
-              style: DefaultTextStyle.of(context).style,
+              style: defaultTextStyle.style,
               children: <TextSpan>[
                 TextSpan(
-                    text:
-                        "${AppLocalizations.of(context)!.explanation_warning_level_attention}: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                  text:
+                      "${localizations.explanation_warning_level_attention}: ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 TextSpan(
-                    text: AppLocalizations.of(context)!
-                        .explanation_warning_level_attention_text),
+                  text: localizations.explanation_warning_level_attention_text,
+                ),
+                TextSpan(text: '\n\n'),
+                TextSpan(
+                  text: "${localizations.explanation_warning_level_update}: ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: localizations.explanation_warning_level_update_text,
+                ),
                 TextSpan(text: '\n\n'),
                 TextSpan(
                     text:
-                        "${AppLocalizations.of(context)!.explanation_warning_level_update}: ",
+                        "${localizations.explanation_warning_level_all_clear}: ",
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(
-                    text: AppLocalizations.of(context)!
-                        .explanation_warning_level_update_text),
-                TextSpan(text: '\n\n'),
-                TextSpan(
-                    text:
-                        "${AppLocalizations.of(context)!.explanation_warning_level_all_clear}: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(
-                    text: AppLocalizations.of(context)!
-                        .explanation_warning_level_all_clear_text),
+                  text: localizations.explanation_warning_level_all_clear_text,
+                ),
               ],
             ),
           ),
@@ -52,10 +56,8 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(AppLocalizations.of(context)!.main_dialog_close),
+          onPressed: () => navigator.pop(),
+          child: Text(localizations.main_dialog_close),
         ),
       ],
     );

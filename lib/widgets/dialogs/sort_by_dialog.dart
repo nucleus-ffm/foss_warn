@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 import '../../enums/sorting_categories.dart';
 import '../../main.dart';
 
@@ -13,18 +13,20 @@ class SortByDialog extends StatefulWidget {
 class _SortByDialogState extends State<SortByDialog> {
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var theme = Theme.of(context);
+    var navigator = Navigator.of(context);
+
     return SimpleDialog(
-      title: Text(AppLocalizations.of(context)!.sorting_headline),
+      title: Text(localizations.sorting_headline),
       children: [
         ListTile(
-          title: Text(
-            AppLocalizations.of(context)!.sorting_by_date,
-          ),
+          title: Text(localizations.sorting_by_date),
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Icon(Icons.date_range),
           ),
-          selectedColor: Theme.of(context).colorScheme.primary,
+          selectedColor: theme.colorScheme.primary,
           selected: userPreferences.sortWarningsBy == SortingCategories.data
               ? true
               : false,
@@ -33,18 +35,16 @@ class _SortByDialogState extends State<SortByDialog> {
               userPreferences.sortWarningsBy = SortingCategories.data;
             });
 
-            Navigator.of(context).pop();
+            navigator.pop();
           },
         ),
         ListTile(
-          title: Text(
-            AppLocalizations.of(context)!.sorting_by_warning_level,
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
+          title: Text(localizations.sorting_by_warning_level),
+          leading: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Icon(Icons.warning),
           ),
-          selectedColor: Theme.of(context).colorScheme.primary,
+          selectedColor: theme.colorScheme.primary,
           selected: userPreferences.sortWarningsBy == SortingCategories.severity
               ? true
               : false,
@@ -52,18 +52,17 @@ class _SortByDialogState extends State<SortByDialog> {
             setState(() {
               userPreferences.sortWarningsBy = SortingCategories.severity;
             });
-            Navigator.of(context).pop();
+
+            navigator.pop();
           },
         ),
         ListTile(
-          title: Text(
-            AppLocalizations.of(context)!.sorting_by_source,
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
+          title: Text(localizations.sorting_by_source),
+          leading: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Icon(Icons.source),
           ),
-          selectedColor: Theme.of(context).colorScheme.primary,
+          selectedColor: theme.colorScheme.primary,
           selected: userPreferences.sortWarningsBy == SortingCategories.source
               ? true
               : false,
@@ -71,7 +70,8 @@ class _SortByDialogState extends State<SortByDialog> {
             setState(() {
               userPreferences.sortWarningsBy = SortingCategories.source;
             });
-            Navigator.of(context).pop();
+
+            navigator.pop();
           },
         ),
       ],

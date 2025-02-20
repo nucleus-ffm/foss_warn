@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 import '../services/list_handler.dart';
 import '../services/sort_warnings.dart';
@@ -16,6 +16,9 @@ class MyPlaceDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var localizations = context.localizations;
+    var scaffoldMessenger = ScaffoldMessenger.of(context);
+
     sortWarnings(_myPlace.warnings); //@todo check if this works?
 
     /// generate a threaded list of alerts with updates of alert as thread
@@ -95,18 +98,15 @@ class MyPlaceDetailScreen extends ConsumerWidget {
                   .markAllWarningsAsRead(ref);
               final snackBar = SnackBar(
                 content: Text(
-                  AppLocalizations.of(context)!
-                      .main_app_bar_tooltip_mark_all_warnings_as_read,
+                  localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
                 ),
               );
 
-              // Find the ScaffoldMessenger in the widget tree
-              // and use it to show a SnackBar.
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              scaffoldMessenger.showSnackBar(snackBar);
             },
             icon: Icon(Icons.mark_chat_read),
-            tooltip: AppLocalizations.of(context)!
-                .main_app_bar_tooltip_mark_all_warnings_as_read,
+            tooltip:
+                localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
           )
         ],
       ),

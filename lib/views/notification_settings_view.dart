@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/notification_preferences_list_tile_widget.dart';
 import 'package:foss_warn/widgets/dialogs/warning_severity_explanation.dart';
 
@@ -18,10 +18,11 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(AppLocalizations.of(context)!.notification_settings_headline),
+        title: Text(localizations.notification_settings_headline),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -29,17 +30,12 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Container(
                 padding: settingsTileListPadding,
-                child: Text(AppLocalizations.of(context)!
-                    .notification_settings_description), //
+                child: Text(localizations.notification_settings_description),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Container(
                 padding: settingsTileListPadding,
                 child: TextButton(
@@ -54,17 +50,15 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                     child: Row(
                       children: [
                         Icon(Icons.info),
-                        SizedBox(
-                          width: 10,
+                        const SizedBox(width: 10),
+                        Text(
+                          localizations
+                              .notification_settings_open_severity_explanation,
                         ),
-                        Text(AppLocalizations.of(context)!
-                            .notification_settings_open_severity_explanation), //
                       ],
                     )),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               // generate the settings tiles
               NotificationPreferencesListTileWidget(
                 notificationPreferences:

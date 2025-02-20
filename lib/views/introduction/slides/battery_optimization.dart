@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/views/introduction/widgets/base_slide.dart';
 import 'package:foss_warn/views/introduction/widgets/checkmark.dart';
 
@@ -54,7 +54,7 @@ class _IntroductionBatteryOptimizationSlideState
 
   @override
   Widget build(BuildContext context) {
-    var localizations = AppLocalizations.of(context)!;
+    var localizations = context.localizations;
     var theme = Theme.of(context);
 
     Future<void> onShowBatteryOptimizationDialogPressed() async {

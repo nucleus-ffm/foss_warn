@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 class DisclaimerDialog extends StatefulWidget {
   const DisclaimerDialog({super.key});
@@ -11,24 +11,23 @@ class DisclaimerDialog extends StatefulWidget {
 class _DisclaimerDialogState extends State<DisclaimerDialog> {
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var navigator = Navigator.of(context);
+
     return AlertDialog(
-      title: Text(AppLocalizations.of(context)!.disclaimer_headline),
+      title: Text(localizations.disclaimer_headline),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(AppLocalizations.of(context)!.disclaimer_text),
+            Text(localizations.disclaimer_text),
           ],
         ),
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            AppLocalizations.of(context)!.main_dialog_understand,
-          ),
+          onPressed: () => navigator.pop(),
+          child: Text(localizations.main_dialog_understand),
         ),
       ],
     );

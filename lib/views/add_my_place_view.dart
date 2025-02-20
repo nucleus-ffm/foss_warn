@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 import '../class/class_notification_service.dart';
 import '../services/list_handler.dart';
@@ -20,23 +20,26 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var theme = Theme.of(context);
+    var navigator = Navigator.of(context);
+
     var updater = ref.read(updaterProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.add_new_place),
+        title: Text(localizations.add_new_place),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
         child: Column(
           children: [
             TextField(
-              cursorColor: Theme.of(context).colorScheme.secondary,
+              cursorColor: theme.colorScheme.secondary,
               autofocus: true,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: theme.textTheme.titleMedium,
               decoration: InputDecoration(
-                labelText:
-                    AppLocalizations.of(context)!.add_new_place_place_name,
+                labelText: localizations.add_new_place_place_name,
               ),
               onChanged: (text) {
                 text = text.toLowerCase();
@@ -48,9 +51,7 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
                 });
               },
             ),
-            SizedBox(
-              height: 15,
-            ),
+            const SizedBox(height: 15),
             Flexible(
               child: ListView(
                 children: _allPlacesToShow
@@ -59,7 +60,7 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
                         visualDensity:
                             VisualDensity(horizontal: 0, vertical: -4),
                         title: Text(place.name,
-                            style: Theme.of(context).textTheme.titleMedium),
+                            style: theme.textTheme.titleMedium),
                         onTap: () {
                           setState(() {
                             updater.updateList(
@@ -68,7 +69,7 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
                             );
                             // cancel warning of missing places (ID: 3)
                             NotificationService.cancelOneNotification(3);
-                            Navigator.of(context).pop();
+                            navigator.pop();
                           });
                         },
                       ),

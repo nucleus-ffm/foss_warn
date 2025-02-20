@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 enum Severity {
   extreme, // Extraordinary threat to life or property
@@ -42,18 +42,20 @@ enum Severity {
 
   /// translate the severity of a warning message
   static String getLocalizationName(Severity severity, BuildContext context) {
+    var localizations = context.localizations;
+
     switch (severity) {
       case Severity.minor:
-        return AppLocalizations.of(context)!
+        return localizations
             .notification_settings_notify_by_minor; //@todo use warning_severity_minor
       case Severity.moderate:
-        return AppLocalizations.of(context)!
+        return localizations
             .notification_settings_notify_by_moderate; //@todo use warning_severity_moderate
       case Severity.severe:
-        return AppLocalizations.of(context)!
+        return localizations
             .notification_settings_notify_by_severe; // warning_severity_severe
       case Severity.extreme:
-        return AppLocalizations.of(context)!
+        return localizations
             .notification_settings_notify_by_extreme; //warning_severity_extreme
       case Severity.unknown:
         return "Unknown"; //warning_severity_unknown

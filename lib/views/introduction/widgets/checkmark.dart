@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 class IntroductionCheckmark extends StatelessWidget {
   const IntroductionCheckmark({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var localizations = AppLocalizations.of(context)!;
+    var localizations = context.localizations;
 
     return Column(
       children: [

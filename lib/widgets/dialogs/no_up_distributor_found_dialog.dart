@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 import '../../services/url_launcher.dart';
 
 class NoUPDistributorFoundDialog extends StatefulWidget {
@@ -14,6 +14,9 @@ class _NoUPDistributorFoundDialogState
     extends State<NoUPDistributorFoundDialog> {
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var navigator = Navigator.of(context);
+
     return AlertDialog(
       title: Text("No push distributor found"),
       content: SingleChildScrollView(
@@ -34,10 +37,11 @@ class _NoUPDistributorFoundDialogState
                 Flexible(
                   fit: FlexFit.loose,
                   child: TextButton(
-                      onPressed: () => launchUrlInBrowser(
-                          'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor'),
-                      child: Text(//@todo translation
-                          "What is unifiedPush and how to install a distributor?")),
+                    onPressed: () => launchUrlInBrowser(
+                        'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor'),
+                    child: Text(//@todo translation
+                        "What is unifiedPush and how to install a distributor?"),
+                  ),
                 ),
               ],
             ),
@@ -47,10 +51,10 @@ class _NoUPDistributorFoundDialogState
                 Flexible(
                   fit: FlexFit.loose,
                   child: TextButton(
-                      onPressed: () => launchUrlInBrowser(
-                          'https://f-droid.org/de/packages/io.heckel.ntfy/'),
-                      child: Text(
-                          "For the fast ones: ntfy on F-Droid")), //@todo translation
+                    onPressed: () => launchUrlInBrowser(
+                        'https://f-droid.org/de/packages/io.heckel.ntfy/'),
+                    child: Text("For the fast ones: ntfy on F-Droid"),
+                  ), //@todo translation
                 ),
               ],
             ),
@@ -59,12 +63,8 @@ class _NoUPDistributorFoundDialogState
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            AppLocalizations.of(context)!.main_dialog_understand,
-          ),
+          onPressed: () => navigator.pop(),
+          child: Text(localizations.main_dialog_understand),
         ),
       ],
     );

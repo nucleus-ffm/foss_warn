@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/enums/message_type.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 /// format the given date and time
 /// except dataAndTime in format: 2022-12-14T12:32:16+01:00
@@ -38,32 +38,34 @@ String formatSentDate(String dateAndTime) {
 
 /// translate the category of a warning message
 String translateWarningCategory(String category, BuildContext context) {
+  var localizations = context.localizations;
+
   switch (category) {
     case "Health":
     case "Contaminated drinking water":
     case "Pollution de l’eau potable":
-      return AppLocalizations.of(context)!.explanation_health;
+      return localizations.explanation_health;
     case "Infra":
-      return AppLocalizations.of(context)!.explanation_infrastructure;
+      return localizations.explanation_infrastructure;
     case "Fire":
     case "Forest fire":
     case "Safety precautions Forest fires":
-      return AppLocalizations.of(context)!.explanation_fire;
+      return localizations.explanation_fire;
     case "CBRNE":
-      return AppLocalizations.of(context)!.explanation_CBRNE;
+      return localizations.explanation_CBRNE;
     case "Other":
     case "Other incident":
-      return AppLocalizations.of(context)!.explanation_other;
+      return localizations.explanation_other;
     case "Safety":
-      return AppLocalizations.of(context)!.explanation_safety;
+      return localizations.explanation_safety;
     case "Security":
-      return AppLocalizations.of(context)!.explanation_safety;
+      return localizations.explanation_safety;
     case "Met":
-      return AppLocalizations.of(context)!.explanation_weather;
+      return localizations.explanation_weather;
     case "Env":
     case "Drought":
     case "Geo":
-      return AppLocalizations.of(context)!.explanation_environment;
+      return localizations.explanation_environment;
     default:
       return category;
   }
@@ -71,13 +73,15 @@ String translateWarningCategory(String category, BuildContext context) {
 
 /// translate the type of a warning message
 String translateWarningType(MessageType type, BuildContext context) {
+  var localizations = context.localizations;
+
   switch (type) {
     case MessageType.update:
-      return AppLocalizations.of(context)!.explanation_warning_level_update;
+      return localizations.explanation_warning_level_update;
     case MessageType.cancel:
-      return AppLocalizations.of(context)!.explanation_warning_level_all_clear;
+      return localizations.explanation_warning_level_all_clear;
     case MessageType.alert:
-      return AppLocalizations.of(context)!.explanation_warning_level_attention;
+      return localizations.explanation_warning_level_attention;
     default:
       return type.name;
   }
@@ -98,19 +102,23 @@ Color chooseWarningTypeColor(MessageType type) {
 }
 
 /// translate the status of a warning message
-String translateWarningStatus(String status, BuildContext context) =>
-    (status == "Actual")
-        ? AppLocalizations.of(context)!.warning_status_actual
-        : status;
+String translateWarningStatus(String status, BuildContext context) {
+  var localizations = context.localizations;
+  return (status == "Actual") ? localizations.warning_status_actual : status;
+}
 
 /// translate the urgency of a warning message
-String translateWarningUrgency(String urgency, BuildContext context) =>
-    (urgency == "Immediate")
-        ? AppLocalizations.of(context)!.warning_urgency_immediate
-        : urgency;
+String translateWarningUrgency(String urgency, BuildContext context) {
+  var localizations = context.localizations;
+  return (urgency == "Immediate")
+      ? localizations.warning_urgency_immediate
+      : urgency;
+}
 
 /// translate the certainty of a warning message
-String translateWarningCertainty(String certainty, BuildContext context) =>
-    (certainty == "Observed")
-        ? AppLocalizations.of(context)!.warning_certainty_observed
-        : certainty;
+String translateWarningCertainty(String certainty, BuildContext context) {
+  var localizations = context.localizations;
+  return (certainty == "Observed")
+      ? localizations.warning_certainty_observed
+      : certainty;
+}
