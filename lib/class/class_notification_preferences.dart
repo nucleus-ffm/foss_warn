@@ -12,8 +12,9 @@ class NotificationPreferences {
 
   factory NotificationPreferences.fromJson(Map<String, dynamic> json) {
     return NotificationPreferences(
-        disabled: json['disabled'],
-        notificationLevel: Severity.fromJson(json['notificationLevel']));
+      disabled: json['disabled'],
+      notificationLevel: Severity.fromJson(json['notificationLevel']),
+    );
   }
 
   Map<String, dynamic> toJson() => {

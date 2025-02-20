@@ -62,14 +62,16 @@ class _SettingsState extends ConsumerState<Settings> {
           children: [
             Padding(
               padding: EdgeInsets.only(
-                  left: indentOfCategoriesTitles,
-                  top: indentOfCategoriesTitles),
+                left: indentOfCategoriesTitles,
+                top: indentOfCategoriesTitles,
+              ),
               child: Text(
                 localizations.settings_notification,
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.primary),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
               ),
             ),
             ListTile(
@@ -82,7 +84,8 @@ class _SettingsState extends ConsumerState<Settings> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => NotificationSettingsView()),
+                    builder: (context) => NotificationSettingsView(),
+                  ),
                 );
               },
             ),
@@ -144,7 +147,8 @@ class _SettingsState extends ConsumerState<Settings> {
                 ? ListTile(
                     leading: Icon(Icons.account_balance),
                     title: Text(
-                        "Server Operator: ${userPreferences.fossPublicAlertServerOperator}"),
+                      "Server Operator: ${userPreferences.fossPublicAlertServerOperator}",
+                    ),
                   )
                 : SizedBox(),
             userPreferences.fossPublicAlertServerTermsOfService != ""
@@ -153,7 +157,8 @@ class _SettingsState extends ConsumerState<Settings> {
                     title: Text("Server Terms of Service"),
                     onTap: () {
                       launchUrlInBrowser(
-                          userPreferences.fossPublicAlertServerTermsOfService);
+                        userPreferences.fossPublicAlertServerTermsOfService,
+                      );
                     },
                   )
                 : SizedBox(),
@@ -163,7 +168,8 @@ class _SettingsState extends ConsumerState<Settings> {
                     title: Text("Server Privacy"),
                     onTap: () {
                       launchUrlInBrowser(
-                          userPreferences.fossPublicAlertServerPrivacyNotice);
+                        userPreferences.fossPublicAlertServerPrivacyNotice,
+                      );
                     },
                   )
                 : SizedBox(),
@@ -177,9 +183,10 @@ class _SettingsState extends ConsumerState<Settings> {
               child: Text(
                 localizations.settings_display,
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
             ListTile(
@@ -208,14 +215,16 @@ class _SettingsState extends ConsumerState<Settings> {
               ),
             ),
             ListTile(
-                title: Text(localizations.settings_show_extended_metadata),
-                trailing: Switch(
-                    value: userPreferences.showExtendedMetaData,
-                    onChanged: (value) {
-                      setState(() {
-                        userPreferences.showExtendedMetaData = value;
-                      });
-                    })),
+              title: Text(localizations.settings_show_extended_metadata),
+              trailing: Switch(
+                value: userPreferences.showExtendedMetaData,
+                onChanged: (value) {
+                  setState(() {
+                    userPreferences.showExtendedMetaData = value;
+                  });
+                },
+              ),
+            ),
             ListTile(
               title: Text(localizations.settings_color_schema),
               onTap: () {
@@ -259,9 +268,10 @@ class _SettingsState extends ConsumerState<Settings> {
               child: Text(
                 localizations.settings_extended_settings,
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
             ListTile(

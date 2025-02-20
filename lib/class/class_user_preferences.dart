@@ -106,7 +106,9 @@ class UserPreferences {
 
   set selectedLightTheme(ThemeData newTheme) {
     _preferences.setInt(
-        "selectedLightTheme", availableLightThemes.indexOf(newTheme));
+      "selectedLightTheme",
+      availableLightThemes.indexOf(newTheme),
+    );
   }
 
   final ThemeData _selectedDarkTheme = greenDarkTheme;
@@ -121,7 +123,9 @@ class UserPreferences {
 
   set selectedDarkTheme(ThemeData newTheme) {
     _preferences.setInt(
-        "selectedDarkTheme", availableDarkThemes.indexOf(newTheme));
+      "selectedDarkTheme",
+      availableDarkThemes.indexOf(newTheme),
+    );
   }
 
   final int _startScreen = 0;
@@ -216,7 +220,7 @@ class UserPreferences {
     purpleLightTheme,
     blueLightTheme,
     yellowLightTheme,
-    indigoLightTheme
+    indigoLightTheme,
   ];
   final List<ThemeData> availableDarkThemes = [
     greenDarkTheme,
@@ -224,7 +228,7 @@ class UserPreferences {
     purpleDarkTheme,
     yellowDarkTheme,
     blueDarkTheme,
-    greyDarkTheme
+    greyDarkTheme,
   ];
 
   /// the path and filename where the error log is saved
@@ -367,7 +371,9 @@ class UserPreferences {
 
   set fossPublicAlertSubscriptionIdsToSubscribe(List<String> value) {
     _preferences.setStringList(
-        "fossPublicAlertSubscriptionIdsToSubscribe", value);
+      "fossPublicAlertSubscriptionIdsToSubscribe",
+      value,
+    );
   }
 
   final int _maxSizeOfSubscriptionBoundingBox = 20;

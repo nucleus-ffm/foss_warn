@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 class DouglasPeucker {
   static List<List<double>> simplify(
-      List<List<double>> coordinates, double tolerance) {
+    List<List<double>> coordinates,
+    double tolerance,
+  ) {
     // if there are only 2 coordinates, there is nothing to do
     if (coordinates.length <= 2) {
       return coordinates;
@@ -18,7 +20,10 @@ class DouglasPeucker {
 
     for (int i = 0; i < coordinates.length - 1; i++) {
       double distance = getSquareSegmentDistance(
-          coordinates[i], coordinates[first], coordinates[last]);
+        coordinates[i],
+        coordinates[first],
+        coordinates[last],
+      );
       if (distance > distanceMax) {
         index = i;
         distanceMax = distance;
@@ -28,7 +33,8 @@ class DouglasPeucker {
 
     if (distanceMax > tolerance) {
       debugPrint(
-          "[douglas peucker] max distance is greater then the tolerance $tolerance");
+        "[douglas peucker] max distance is greater then the tolerance $tolerance",
+      );
       List<List<double>> firstHalf =
           simplify(coordinates.sublist(0, index), tolerance);
       List<List<double>> secondHalf =
@@ -54,7 +60,10 @@ class DouglasPeucker {
   }
 
   static getSquareSegmentDistance(
-      List<double> p, List<double> p1, List<double> p2) {
+    List<double> p,
+    List<double> p1,
+    List<double> p2,
+  ) {
     var x = p1.first;
     var y = p1.last;
     var dx = p2.first - x;

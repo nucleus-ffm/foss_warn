@@ -59,8 +59,10 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
                       (place) => ListTile(
                         visualDensity:
                             VisualDensity(horizontal: 0, vertical: -4),
-                        title: Text(place.name,
-                            style: theme.textTheme.titleMedium),
+                        title: Text(
+                          place.name,
+                          style: theme.textTheme.titleMedium,
+                        ),
                         onTap: () {
                           setState(() {
                             updater.updateList(

@@ -111,7 +111,8 @@ class Area {
   ///      ]
   ///    }
   static Map<String, dynamic> _convertCAPGeoInfoToGeoJson(
-      Map<String, dynamic> data) {
+    Map<String, dynamic> data,
+  ) {
     Map<String, dynamic> featureCollection = {};
     featureCollection.putIfAbsent("type", () => "FeatureCollection");
 
@@ -252,9 +253,10 @@ class Area {
     List<String> debugResult = [];
     try {
       GeoJsonParser myGeoJson = GeoJsonParser(
-          defaultPolygonFillColor: Color(0xFFB01917).withValues(alpha: 0.2),
-          defaultPolygonBorderColor: Color(0xFFFB8C00),
-          defaultPolylineStroke: 1);
+        defaultPolygonFillColor: Color(0xFFB01917).withOpacity(0.2),
+        defaultPolygonBorderColor: Color(0xFFFB8C00),
+        defaultPolylineStroke: 1,
+      );
       for (Area area in areas) {
         myGeoJson.parseGeoJsonAsString(area.geoJson);
         debugResult.add(area.geoJson);
@@ -263,7 +265,10 @@ class Area {
       return result;
     } catch (e) {
       ErrorLogger.writeErrorLog(
-          "class_Area.dart", "Error while parsing geoJson", e.toString());
+        "MapWidget",
+        "Error while parsing geoJson",
+        e.toString(),
+      );
       appState.error = true;
       return [];
     }

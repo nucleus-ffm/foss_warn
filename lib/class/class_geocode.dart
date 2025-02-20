@@ -39,7 +39,7 @@ class Geocode {
         'geocodeNumber': _geocodeNumber,
         'stateName': _stateName,
         'latLng': _latLng,
-        'PLZ': _plz
+        'PLZ': _plz,
       };
 
   String _extractStateNameFromGeocode() {

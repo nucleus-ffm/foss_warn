@@ -45,7 +45,10 @@ class ErrorLogger {
   }
 
   static _generateLogContent(
-      String fileContext, String errorContext, String errorMessage) {
+    String fileContext,
+    String errorContext,
+    String errorMessage,
+  ) {
     return "${DateTime.now().toString()} | FileContext: $fileContext |  ErrorContext: $errorContext | ErrorMessage: $errorMessage \n";
   }
 
@@ -53,13 +56,17 @@ class ErrorLogger {
   /// errorContext: In which context the error occur. e.g. json parsing in class xy
   /// errorMessage: the Message to log e.g. the thrown exception
   static writeErrorLog(
-      String fileContext, String errorContext, String errorMessage) async {
+    String fileContext,
+    String errorContext,
+    String errorMessage,
+  ) async {
     try {
       final file = await _localFile;
       // print(errorMessage);
       file.writeAsString(
-          _generateLogContent(fileContext, errorContext, errorMessage),
-          mode: FileMode.append);
+        _generateLogContent(fileContext, errorContext, errorMessage),
+        mode: FileMode.append,
+      );
     } catch (e) {
       debugPrint("Error while writing error log ${e.toString()}");
     }

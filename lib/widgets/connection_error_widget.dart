@@ -35,7 +35,7 @@ class ConnectionError extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-            )
+            ),
           ],
         ),
       );
@@ -66,7 +66,7 @@ class ConnectionError extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

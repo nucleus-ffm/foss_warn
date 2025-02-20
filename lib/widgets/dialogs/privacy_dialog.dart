@@ -33,9 +33,11 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
-                        'https://osmfoundation.org/wiki/Privacy_Policy'),
+                      'https://osmfoundation.org/wiki/Privacy_Policy',
+                    ),
                     child: Text(
-                        "${localizations.privacy_link_to_privacy} Openstreetmap.org"),
+                      "${localizations.privacy_link_to_privacy} Openstreetmap.org",
+                    ),
                   ),
                 ),
               ],
@@ -47,9 +49,11 @@ class _PrivacyDialogState extends State<PrivacyDialog> {
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
-                        userPreferences.fossPublicAlertServerPrivacyNotice),
+                      userPreferences.fossPublicAlertServerPrivacyNotice,
+                    ),
                     child: Text(
-                        "${localizations.privacy_link_to_privacy} the FOSS Public Alert Server"),
+                      "${localizations.privacy_link_to_privacy} the FOSS Public Alert Server",
+                    ),
                   ),
                 ),
               ],

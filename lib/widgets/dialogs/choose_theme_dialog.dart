@@ -17,7 +17,7 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
     List<ThemeMode> themeModes = [
       ThemeMode.light,
       ThemeMode.dark,
-      ThemeMode.system
+      ThemeMode.system,
     ];
     List<Widget> result = [];
     for (ThemeMode tm in themeModes) {
@@ -31,16 +31,19 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
 
     return TextButton(
       style: TextButton.styleFrom(
-          padding: EdgeInsets.only(left: 10, right: 10),
-          backgroundColor: selectBackgroundColor(themeMode),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              side: BorderSide(
-                  // change border color if theme is currently selected
-                  color: (userPreferences.selectedThemeMode == themeMode)
-                      ? Colors.green
-                      : Colors.transparent,
-                  width: 5))),
+        padding: EdgeInsets.only(left: 10, right: 10),
+        backgroundColor: selectBackgroundColor(themeMode),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          side: BorderSide(
+            // change border color if theme is currently selected
+            color: (userPreferences.selectedThemeMode == themeMode)
+                ? Colors.green
+                : Colors.transparent,
+            width: 5,
+          ),
+        ),
+      ),
       onPressed: () {
         setState(() {
           userPreferences.selectedThemeMode = themeMode;
@@ -135,13 +138,15 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
           minimumSize: Size(80, 80),
           backgroundColor: theme.colorScheme.primary,
           shape: CircleBorder(
-              side: BorderSide(
-                  // change border color if theme is currently selected
-                  color: (userPreferences.selectedLightTheme == theme ||
-                          userPreferences.selectedDarkTheme == theme)
-                      ? Colors.green
-                      : Colors.transparent,
-                  width: 5)),
+            side: BorderSide(
+              // change border color if theme is currently selected
+              color: (userPreferences.selectedLightTheme == theme ||
+                      userPreferences.selectedDarkTheme == theme)
+                  ? Colors.green
+                  : Colors.transparent,
+              width: 5,
+            ),
+          ),
         ),
         child: SizedBox(),
       ),

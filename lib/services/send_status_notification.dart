@@ -23,7 +23,8 @@ sendStatusUpdateNotification(bool success, [String? error]) async {
     debugPrint("minutes: $minute");
     debugPrint("add hour: $hourToAdd");
     debugPrint(
-        "Min + next ${now.minute + userPreferences.frequencyOfAPICall.toInt()}");
+      "Min + next ${now.minute + userPreferences.frequencyOfAPICall.toInt()}",
+    );
 
     if (hour >= 24) {
       hour -= 24;

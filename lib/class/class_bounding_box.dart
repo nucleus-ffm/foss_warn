@@ -16,10 +16,15 @@ class BoundingBox {
     /// create new warnMessage objects from saved data
 
     return BoundingBox(
-        minLatLng: LatLng(json['min_latLng']['coordinates'][0],
-            json['min_latLng']['coordinates'][1]), //@todo
-        maxLatLng: LatLng(json['max_latLng']['coordinates'][0],
-            json['max_latLng']['coordinates'][1]));
+      minLatLng: LatLng(
+        json['min_latLng']['coordinates'][0],
+        json['min_latLng']['coordinates'][1],
+      ), //@todo
+      maxLatLng: LatLng(
+        json['max_latLng']['coordinates'][0],
+        json['max_latLng']['coordinates'][1],
+      ),
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -30,8 +35,11 @@ class BoundingBox {
       };
     } catch (e) {
       debugPrint("Error BoundingBox to json: $e");
-      ErrorLogger.writeErrorLog("class_BoundingBox.dart",
-          "Can not serialize BoundingBox", e.toString());
+      ErrorLogger.writeErrorLog(
+        "class_BoundingBox.dart",
+        "Can not serialize BoundingBox",
+        e.toString(),
+      );
       return {};
     }
   }

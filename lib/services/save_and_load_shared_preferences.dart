@@ -72,48 +72,80 @@ Future<void> saveLastBackgroundUpdateTime(String time) async {
 Future<void> saveSettings() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setBool(
-      "notificationGeneral", userPreferences.shouldNotifyGeneral);
+    "notificationGeneral",
+    userPreferences.shouldNotifyGeneral,
+  );
   preferences.setInt("startScreen", userPreferences.startScreen);
   preferences.setBool(
-      "showExtendedMetaData", userPreferences.showExtendedMetaData);
+    "showExtendedMetaData",
+    userPreferences.showExtendedMetaData,
+  );
   preferences.setDouble("warningFontSize", userPreferences.warningFontSize);
   preferences.setBool("showWelcomeScreen", userPreferences.showWelcomeScreen);
   preferences.setString(
-      "sortWarningsBy", userPreferences.sortWarningsBy.toString());
+    "sortWarningsBy",
+    userPreferences.sortWarningsBy.toString(),
+  );
   preferences.setBool(
-      "showStatusNotification", userPreferences.showStatusNotification);
+    "showStatusNotification",
+    userPreferences.showStatusNotification,
+  );
   preferences.setInt("frequencyOfAPICall", userPreferences.frequencyOfAPICall);
   preferences.setString(
-      "selectedThemeMode", userPreferences.selectedThemeMode.toString());
+    "selectedThemeMode",
+    userPreferences.selectedThemeMode.toString(),
+  );
   preferences.setInt(
-      "selectedLightTheme",
-      userPreferences.availableLightThemes
-          .indexOf(userPreferences.selectedLightTheme));
+    "selectedLightTheme",
+    userPreferences.availableLightThemes
+        .indexOf(userPreferences.selectedLightTheme),
+  );
   preferences.setInt(
-      "selectedDarkTheme",
-      userPreferences.availableDarkThemes
-          .indexOf(userPreferences.selectedDarkTheme));
+    "selectedDarkTheme",
+    userPreferences.availableDarkThemes
+        .indexOf(userPreferences.selectedDarkTheme),
+  );
   preferences.setBool("showAllWarnings", userPreferences.showAllWarnings);
-  preferences.setString("notificationSourceSettings",
-      jsonEncode(userPreferences.notificationSourceSetting));
   preferences.setString(
-      "fossPublicAlertServerUrl", userPreferences.fossPublicAlertServerUrl);
+    "notificationSourceSettings",
+    jsonEncode(userPreferences.notificationSourceSetting),
+  );
   preferences.setString(
-      "unifiedPushEndpoint", userPreferences.unifiedPushEndpoint);
+    "fossPublicAlertServerUrl",
+    userPreferences.fossPublicAlertServerUrl,
+  );
+  preferences.setString(
+    "unifiedPushEndpoint",
+    userPreferences.unifiedPushEndpoint,
+  );
   preferences.setBool(
-      "unifiedPushRegistered", userPreferences.unifiedPushRegistered);
-  preferences.setStringList("fossPublicAlertSubscriptionIdsToSubscribe",
-      userPreferences.fossPublicAlertSubscriptionIdsToSubscribe);
-  preferences.setInt("previousInstalledVersionCode",
-      userPreferences.previousInstalledVersionCode);
-  preferences.setString("fossPublicAlertServerOperator",
-      userPreferences.fossPublicAlertServerOperator);
-  preferences.setString("fossPublicAlertServerPrivacyNotice",
-      userPreferences.fossPublicAlertServerPrivacyNotice);
-  preferences.setString("fossPublicAlertServerTermsOfService",
-      userPreferences.fossPublicAlertServerTermsOfService);
-  preferences.setInt("maxSizeOfSubscriptionBoundingBox",
-      userPreferences.maxSizeOfSubscriptionBoundingBox);
+    "unifiedPushRegistered",
+    userPreferences.unifiedPushRegistered,
+  );
+  preferences.setStringList(
+    "fossPublicAlertSubscriptionIdsToSubscribe",
+    userPreferences.fossPublicAlertSubscriptionIdsToSubscribe,
+  );
+  preferences.setInt(
+    "previousInstalledVersionCode",
+    userPreferences.previousInstalledVersionCode,
+  );
+  preferences.setString(
+    "fossPublicAlertServerOperator",
+    userPreferences.fossPublicAlertServerOperator,
+  );
+  preferences.setString(
+    "fossPublicAlertServerPrivacyNotice",
+    userPreferences.fossPublicAlertServerPrivacyNotice,
+  );
+  preferences.setString(
+    "fossPublicAlertServerTermsOfService",
+    userPreferences.fossPublicAlertServerTermsOfService,
+  );
+  preferences.setInt(
+    "maxSizeOfSubscriptionBoundingBox",
+    userPreferences.maxSizeOfSubscriptionBoundingBox,
+  );
   debugPrint("Settings saved");
 }
 

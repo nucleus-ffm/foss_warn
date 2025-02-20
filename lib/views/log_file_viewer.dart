@@ -16,11 +16,16 @@ class _LogFileViewerState extends State<LogFileViewer> {
       _vertical = ScrollController();
 
   void shareText(
-      BuildContext context, String shareText, String shareSubject) async {
+    BuildContext context,
+    String shareText,
+    String shareSubject,
+  ) async {
     final box = context.findRenderObject() as RenderBox?;
-    await Share.share(shareText,
-        subject: shareSubject,
-        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+    await Share.share(
+      shareText,
+      subject: shareSubject,
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
   }
 
   @override
@@ -75,18 +80,22 @@ class _LogFileViewerState extends State<LogFileViewer> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  shareText(context, log,
-                                      "Errorlog shared from FOSSWarn");
+                                  shareText(
+                                    context,
+                                    log,
+                                    "Errorlog shared from FOSSWarn",
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                ),
                                 child: Text(
                                   "Teilen",
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary),
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
                                 ),
                               ),
                               ElevatedButton(
@@ -94,14 +103,15 @@ class _LogFileViewerState extends State<LogFileViewer> {
                                   ErrorLogger.deleteLog();
                                 },
                                 style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.error),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.error,
+                                ),
                                 child: Text(
                                   "Löschen",
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onError),
+                                    color:
+                                        Theme.of(context).colorScheme.onError,
+                                  ),
                                 ),
                               ),
                             ],
@@ -111,7 +121,8 @@ class _LogFileViewerState extends State<LogFileViewer> {
                     );
                   } else {
                     debugPrint(
-                        "Error getting system information: ${snapshot.error}");
+                      "Error getting system information: ${snapshot.error}",
+                    );
                     return Text("Error", style: TextStyle(color: Colors.red));
                   }
                 } else {

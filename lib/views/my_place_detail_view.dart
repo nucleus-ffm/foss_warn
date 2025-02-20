@@ -68,18 +68,22 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     /// build the list of warnings widgets. The first element of the threaded list is used
     /// and the remaining alerts are added as updateThread to the WarningWidget
     List<WarningWidget> buildWarningWidgets(
-        List<List<WarnMessage>> listOfWarnings) {
+      List<List<WarnMessage>> listOfWarnings,
+    ) {
       List<WarningWidget> result = [];
 
       for (List<WarnMessage> listWarn in listOfWarnings) {
         // do not show alerts for which there is a newer version of it
         // these alerts a only shown in the update thread
         if (!listWarn[0].hideWarningBecauseThereIsANewerVersion) {
-          result.add(WarningWidget(
+          result.add(
+            WarningWidget(
               warnMessage: listWarn[0],
               place: _myPlace,
               updateThread: listWarn,
-              isMyPlaceWarning: true));
+              isMyPlaceWarning: true,
+            ),
+          );
         }
       }
       return result;
@@ -107,7 +111,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
             icon: Icon(Icons.mark_chat_read),
             tooltip:
                 localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(

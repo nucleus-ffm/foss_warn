@@ -21,13 +21,16 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
     List<Text> generateMetaInfo(Place place) {
       return [
         Text(
-            "Bounding box max: \n\t\tLng: ${fpasPlace.boundingBox.maxLatLng.longitude}  \n\t\tLat: ${fpasPlace.boundingBox.maxLatLng.latitude}"), // meta_info_for_place_dialog_bounding_box_max
+          "Bounding box max: \n\t\tLng: ${fpasPlace.boundingBox.maxLatLng.longitude}  \n\t\tLat: ${fpasPlace.boundingBox.maxLatLng.latitude}",
+        ), // meta_info_for_place_dialog_bounding_box_max
         Text("\n"),
         Text(
-            "Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.minLatLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.minLatLng.latitude}"), // meta_info_for_place_dialog_bounding_box_min
+          "Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.minLatLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.minLatLng.latitude}",
+        ), // meta_info_for_place_dialog_bounding_box_min
         Text("\n"),
         Text(
-            "SubscriptionID: ${fpasPlace.subscriptionId}"), //meta_info_for_place_dialog_subscription_id
+          "SubscriptionID: ${fpasPlace.subscriptionId}",
+        ), //meta_info_for_place_dialog_subscription_id
       ];
     }
 
@@ -36,13 +39,15 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
         "${localizations.meta_info_for_place_dialog_headline} ${widget.myPlace.name}",
       ),
       content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: generateMetaInfo(widget.myPlace)),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: generateMetaInfo(widget.myPlace),
+      ),
       actions: <Widget>[
         ElevatedButton(
-            onPressed: () => navigator.pop(),
-            child: Text(localizations.main_dialog_close)),
+          onPressed: () => navigator.pop(),
+          child: Text(localizations.main_dialog_close),
+        ),
       ],
     );
   }

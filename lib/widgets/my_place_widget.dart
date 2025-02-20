@@ -46,7 +46,8 @@ class MyPlaceWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MyPlaceDetailScreen(myPlace: myPlace)),
+                builder: (context) => MyPlaceDetailScreen(myPlace: myPlace),
+              ),
             );
           }
         },
@@ -59,15 +60,16 @@ class MyPlaceWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return MetaInfoForPlaceDialog(myPlace: myPlace);
-                          },
-                        );
-                      },
-                      icon: Icon(Icons.location_city)),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return MetaInfoForPlaceDialog(myPlace: myPlace);
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.location_city),
+                  ),
                   const SizedBox(width: 20),
                   SizedBox(
                     height: 60,
@@ -99,27 +101,31 @@ class MyPlaceWidget extends StatelessWidget {
                         0 //check the number of warnings and display check or warning
                     ? TextButton(
                         style: TextButton.styleFrom(
-                            backgroundColor: theme.colorScheme.secondary,
-                            foregroundColor: theme.colorScheme.onSecondary,
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.all(15)),
+                          backgroundColor: theme.colorScheme.secondary,
+                          foregroundColor: theme.colorScheme.onSecondary,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(15),
+                        ),
                         onPressed: () {},
                         child: Icon(
                           Icons.check,
                           color: theme.colorScheme.onSecondary,
-                        ))
+                        ),
+                      )
                     : myPlace.checkIfAllWarningsAreRead()
                         ? TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: Colors.grey,
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(15)),
+                              backgroundColor: Colors.grey,
+                              shape: CircleBorder(),
+                              padding: EdgeInsets.all(15),
+                            ),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        MyPlaceDetailScreen(myPlace: myPlace)),
+                                  builder: (context) =>
+                                      MyPlaceDetailScreen(myPlace: myPlace),
+                                ),
                               );
                             },
                             child: Icon(
@@ -129,15 +135,17 @@ class MyPlaceWidget extends StatelessWidget {
                           )
                         : TextButton(
                             style: TextButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                shape: CircleBorder(),
-                                padding: EdgeInsets.all(15)),
+                              backgroundColor: Colors.red,
+                              shape: CircleBorder(),
+                              padding: EdgeInsets.all(15),
+                            ),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        MyPlaceDetailScreen(myPlace: myPlace)),
+                                  builder: (context) =>
+                                      MyPlaceDetailScreen(myPlace: myPlace),
+                                ),
                               );
                             },
                             child: Icon(

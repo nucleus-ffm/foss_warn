@@ -29,13 +29,14 @@ Future<bool> checkForMyPlacesWarnings({
 
   if (myPlaceList.isEmpty && !userPreferences.isFirstStart) {
     await NotificationService.showNotification(
-        id: 3,
-        title:
-            "Sie haben noch keine Orte hinterlegt", //@todo translate, add context first, notification_no_places_selected_title
-        body:
-            "Bitte kontrolieren Sie Ihre Orte.", //notification_no_places_selected_body
-        payload: "no places selected",
-        channel: "other");
+      id: 3,
+      title:
+          "Sie haben noch keine Orte hinterlegt", //@todo translate, add context first, notification_no_places_selected_title
+      body:
+          "Bitte kontrolieren Sie Ihre Orte.", //notification_no_places_selected_body
+      payload: "no places selected",
+      channel: "other",
+    );
   }
 
   for (Place myPlace in myPlaceList) {

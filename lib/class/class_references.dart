@@ -4,8 +4,11 @@ class References {
   final List<String> identifier;
   final String send;
 
-  References(
-      {required this.sender, required this.identifier, required this.send});
+  References({
+    required this.sender,
+    required this.identifier,
+    required this.send,
+  });
 
   /// create References object by extracting the data
   /// from a String in format "<sender>,<identifier>,<sent>"
@@ -14,7 +17,10 @@ class References {
     // if more then one alert is referred, the identifiers are separated by spaces
     List<String> temp = references.split(',');
     return References(
-        sender: temp[0], identifier: temp[1].split(' '), send: temp[2]);
+      sender: temp[0],
+      identifier: temp[1].split(' '),
+      send: temp[2],
+    );
   }
 
   References.fromJson(Map<String, dynamic> json)

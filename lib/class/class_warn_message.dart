@@ -90,23 +90,28 @@ class WarnMessage {
   /// is used to create a new WarnMessage object with data from the API call.
   /// Note that the json structure is different from the structure we use to
   /// cache the warnings.
-  factory WarnMessage.fromJsonWithAPIData(Map<String, dynamic> json,
-      String provider, String publisher, String geoJson) {
+  factory WarnMessage.fromJsonWithAPIData(
+    Map<String, dynamic> json,
+    String provider,
+    String publisher,
+    String geoJson,
+  ) {
     // print("Neue WarnMessage wird angelegt...");
     return WarnMessage(
-        identifier: json["identifier"] ?? "?",
-        sender: json["sender"] ?? "?",
-        sent: json["sent"] ?? "?",
-        status: Status.fromJson(json["status"]),
-        messageType: MessageType.fromJson(json["msgType"]),
-        scope: Scope.fromJson(json["scope"]),
-        publisher: publisher,
-        info: Info.infoListFromJsonWithAPIData(json['info'], geoJson),
-        references: json['references'] != null
-            ? References.fromString(json['references'])
-            : null,
-        notified: false,
-        read: false);
+      identifier: json["identifier"] ?? "?",
+      sender: json["sender"] ?? "?",
+      sent: json["sent"] ?? "?",
+      status: Status.fromJson(json["status"]),
+      messageType: MessageType.fromJson(json["msgType"]),
+      scope: Scope.fromJson(json["scope"]),
+      publisher: publisher,
+      info: Info.infoListFromJsonWithAPIData(json['info'], geoJson),
+      references: json['references'] != null
+          ? References.fromString(json['references'])
+          : null,
+      notified: false,
+      read: false,
+    );
   }
 
   /// is used to create a new WarnMessage object with data from the API call.
@@ -142,6 +147,6 @@ class WarnMessage {
         'references': references,
         'isUpdateOfAlreadyNotifiedWarning': isUpdateOfAlreadyNotifiedWarning,
         'hideWarningBecauseThereIsANewerVersion':
-            hideWarningBecauseThereIsANewerVersion
+            hideWarningBecauseThereIsANewerVersion,
       };
 }

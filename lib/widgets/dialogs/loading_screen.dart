@@ -62,8 +62,10 @@ class LoadingScreen {
                       stream: textController.stream,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return Text(snapshot.requireData.toString(),
-                              style: Theme.of(context).textTheme.bodyMedium);
+                          return Text(
+                            snapshot.requireData.toString(),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          );
                         } else {
                           return Container();
                         }

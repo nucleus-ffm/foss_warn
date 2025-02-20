@@ -44,15 +44,17 @@ class DeletePlaceDialog extends ConsumerWidget {
       ),
       actions: <Widget>[
         ElevatedButton(
-            onPressed: () => navigator.pop(),
-            child: Text(localizations.delete_place_cancel)),
+          onPressed: () => navigator.pop(),
+          child: Text(localizations.delete_place_cancel),
+        ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colorScheme.error,
-              foregroundColor: theme.colorScheme.onError),
+            backgroundColor: theme.colorScheme.error,
+            foregroundColor: theme.colorScheme.onError,
+          ),
           onPressed: onDeletePlacePressed,
           child: Text(localizations.delete_place_delete),
-        )
+        ),
       ],
     );
   }

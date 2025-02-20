@@ -14,13 +14,14 @@ class MapWidget extends StatefulWidget {
   final List<Widget>? widgets;
   final MapController mapController;
   final CameraFit initialCameraFit;
-  const MapWidget(
-      {super.key,
-      this.polygonLayers,
-      this.markerLayers,
-      this.widgets,
-      required this.mapController,
-      required this.initialCameraFit});
+  const MapWidget({
+    super.key,
+    this.polygonLayers,
+    this.markerLayers,
+    this.widgets,
+    required this.mapController,
+    required this.initialCameraFit,
+  });
 
   /// create polygon layer for my places alerts
   static List<PolygonLayer> createPolygonLayer() {
@@ -60,9 +61,11 @@ class _MapWidgetState extends State<MapWidget> {
     return FlutterMap(
       mapController: widget.mapController,
       options: MapOptions(
-          initialCameraFit: widget.initialCameraFit,
-          interactionOptions: InteractionOptions(
-              flags: InteractiveFlag.all & ~InteractiveFlag.rotate)),
+        initialCameraFit: widget.initialCameraFit,
+        interactionOptions: InteractionOptions(
+          flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+        ),
+      ),
       children: [
         TileLayer(
           urlTemplate: userPreferences.osmTileServerULR,
@@ -76,10 +79,13 @@ class _MapWidgetState extends State<MapWidget> {
                         MediaQuery.of(context).platformBrightness ==
                             Brightness.dark)
                 ? ColorFiltered(
-                    colorFilter: userPreferences.mapDarkMode, child: tileWidget)
+                    colorFilter: userPreferences.mapDarkMode,
+                    child: tileWidget,
+                  )
                 : ColorFiltered(
                     colorFilter: userPreferences.mapLightMode,
-                    child: tileWidget);
+                    child: tileWidget,
+                  );
           },
         ),
         ...widget.polygonLayers ?? [],

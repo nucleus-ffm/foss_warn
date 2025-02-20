@@ -38,9 +38,12 @@ class _NoUPDistributorFoundDialogState
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
-                        'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor'),
-                    child: Text(//@todo translation
-                        "What is unifiedPush and how to install a distributor?"),
+                      'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor',
+                    ),
+                    child: Text(
+                      //@todo translation
+                      "What is unifiedPush and how to install a distributor?",
+                    ),
                   ),
                 ),
               ],
@@ -52,7 +55,8 @@ class _NoUPDistributorFoundDialogState
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
-                        'https://f-droid.org/de/packages/io.heckel.ntfy/'),
+                      'https://f-droid.org/de/packages/io.heckel.ntfy/',
+                    ),
                     child: Text("For the fast ones: ntfy on F-Droid"),
                   ), //@todo translation
                 ),

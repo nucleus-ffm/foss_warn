@@ -14,13 +14,14 @@ class VectorMapWidget extends StatefulWidget {
   final List<Widget>? widgets;
   final MapController mapController;
   final CameraFit initialCameraFit;
-  const VectorMapWidget(
-      {super.key,
-      this.polygonLayers,
-      this.markerLayers,
-      this.widgets,
-      required this.mapController,
-      required this.initialCameraFit});
+  const VectorMapWidget({
+    super.key,
+    this.polygonLayers,
+    this.markerLayers,
+    this.widgets,
+    required this.mapController,
+    required this.initialCameraFit,
+  });
 
   @override
   State<VectorMapWidget> createState() => _VectorMapWidgetState();
@@ -62,10 +63,10 @@ class _VectorMapWidgetState extends State<VectorMapWidget> {
   //   Maptiler - https://api.maptiler.com/maps/outdoor/style.json?key={key}
   //   Stadia Maps - https://tiles.stadiamaps.com/styles/outdoors.json?api_key={key}
   Future<Style> _readStyle() => StyleReader(
-          uri: 'https://tileserver.gnome.org/styles/basic-preview/style.json',
-          // ignore: undefined_identifier
-          logger: const Logger.console())
-      .read();
+        uri: 'https://tileserver.gnome.org/styles/basic-preview/style.json',
+        // ignore: undefined_identifier
+        logger: const Logger.console(),
+      ).read();
 
   @override
   void initState() {
@@ -95,10 +96,11 @@ class _VectorMapWidgetState extends State<VectorMapWidget> {
       mapController: widget.mapController,
       options: MapOptions(
         interactionOptions: const InteractionOptions(
-            flags: InteractiveFlag.pinchZoom |
-                InteractiveFlag.drag |
-                InteractiveFlag.flingAnimation |
-                InteractiveFlag.doubleTapZoom),
+          flags: InteractiveFlag.pinchZoom |
+              InteractiveFlag.drag |
+              InteractiveFlag.flingAnimation |
+              InteractiveFlag.doubleTapZoom,
+        ),
         initialCameraFit: widget.initialCameraFit,
         //initialZoom: _style?.zoom ?? 10,
         maxZoom: 22,
@@ -106,12 +108,13 @@ class _VectorMapWidgetState extends State<VectorMapWidget> {
       ),
       children: [
         VectorTileLayer(
-            tileProviders: _style!.providers,
-            theme: _style!.theme,
-            sprites: _style!.sprites,
-            maximumZoom: 22,
-            tileOffset: TileOffset.mapbox,
-            layerMode: VectorTileLayerMode.vector),
+          tileProviders: _style!.providers,
+          theme: _style!.theme,
+          sprites: _style!.sprites,
+          maximumZoom: 22,
+          tileOffset: TileOffset.mapbox,
+          layerMode: VectorTileLayerMode.vector,
+        ),
         ...widget.polygonLayers ?? [],
         ...widget.markerLayers ?? [],
         ...widget.widgets ?? [],
