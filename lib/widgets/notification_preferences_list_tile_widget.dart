@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/enums/severity.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 import '../class/class_notification_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationPreferencesListTileWidget extends StatefulWidget {
   final NotificationPreferences notificationPreferences;
@@ -20,19 +20,17 @@ class _NotificationPreferencesListTileWidgetState
 
   // return the label for the given value
   String getLabelForWarningSeverity(double sliderValue) {
+    var localizations = context.localizations;
+
     switch (sliderValue.toInt()) {
       case 0:
-        return AppLocalizations.of(context)!
-            .notification_settings_notify_by_extreme;
+        return localizations.notification_settings_notify_by_extreme;
       case 1:
-        return AppLocalizations.of(context)!
-            .notification_settings_notify_by_severe;
+        return localizations.notification_settings_notify_by_severe;
       case 2:
-        return AppLocalizations.of(context)!
-            .notification_settings_notify_by_moderate;
+        return localizations.notification_settings_notify_by_moderate;
       case 3:
-        return AppLocalizations.of(context)!
-            .notification_settings_notify_by_minor;
+        return localizations.notification_settings_notify_by_minor;
       default:
         return "Error";
     }
@@ -40,6 +38,8 @@ class _NotificationPreferencesListTileWidgetState
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+
     return Column(
       children: [
         Padding(
@@ -101,14 +101,21 @@ class _NotificationPreferencesListTileWidgetState
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(AppLocalizations.of(context)!
-                            .notification_settings_slidervalue_extreme),
-                        Text(AppLocalizations.of(context)!
-                            .notification_settings_slidervalue_severe),
-                        Text(AppLocalizations.of(context)!
-                            .notification_settings_slidervalue_moderate),
-                        Text(AppLocalizations.of(context)!
-                            .notification_settings_slidervalue_minor),
+                        Text(
+                          localizations
+                              .notification_settings_slidervalue_extreme,
+                        ),
+                        Text(
+                          localizations
+                              .notification_settings_slidervalue_severe,
+                        ),
+                        Text(
+                          localizations
+                              .notification_settings_slidervalue_moderate,
+                        ),
+                        Text(
+                          localizations.notification_settings_slidervalue_minor,
+                        ),
                       ],
                     ),
                   )

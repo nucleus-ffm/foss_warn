@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../main.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/main.dart';
 
 class FontSizeDialog extends StatefulWidget {
   const FontSizeDialog({super.key});
@@ -12,8 +12,12 @@ class FontSizeDialog extends StatefulWidget {
 class _FontSizeDialogState extends State<FontSizeDialog> {
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var theme = Theme.of(context);
+    var navigator = Navigator.of(context);
+
     return SimpleDialog(
-      title: Text(AppLocalizations.of(context)!.font_size_headline),
+      title: Text(localizations.font_size_headline),
       children: [
         SingleChildScrollView(
           child: Column(
@@ -21,78 +25,81 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
             children: [
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context)!.font_size_small,
+                  localizations.font_size_small,
                   style: TextStyle(fontSize: 12),
                 ),
-                leading: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                leading: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.abc),
                 ),
-                selectedColor: Theme.of(context).colorScheme.primary,
+                selectedColor: theme.colorScheme.primary,
                 selected:
                     userPreferences.warningFontSize == 12.0 ? true : false,
                 onTap: () {
                   setState(() {
                     userPreferences.warningFontSize = 12.0;
                   });
-                  Navigator.of(context).pop();
+                  navigator.pop();
                 },
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context)!.font_size_normal,
+                  localizations.font_size_normal,
                   style: TextStyle(fontSize: 14),
                 ),
-                leading: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                leading: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.abc),
                 ),
-                selectedColor: Theme.of(context).colorScheme.primary,
+                selectedColor: theme.colorScheme.primary,
                 selected:
                     userPreferences.warningFontSize == 14.0 ? true : false,
                 onTap: () {
                   setState(() {
                     userPreferences.warningFontSize = 14.0;
                   });
-                  Navigator.of(context).pop();
+
+                  navigator.pop();
                 },
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context)!.font_size_big,
+                  localizations.font_size_big,
                   style: TextStyle(fontSize: 16),
                 ),
-                leading: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                leading: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.abc),
                 ),
-                selectedColor: Theme.of(context).colorScheme.primary,
+                selectedColor: theme.colorScheme.primary,
                 selected:
                     userPreferences.warningFontSize == 16.0 ? true : false,
                 onTap: () {
                   setState(() {
                     userPreferences.warningFontSize = 16.0;
                   });
-                  Navigator.of(context).pop();
+
+                  navigator.pop();
                 },
               ),
               ListTile(
                 title: Text(
-                  AppLocalizations.of(context)!.font_size_very_big,
+                  localizations.font_size_very_big,
                   style: TextStyle(fontSize: 18),
                 ),
-                leading: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                leading: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Icon(Icons.abc),
                 ),
-                selectedColor: Theme.of(context).colorScheme.secondary,
+                selectedColor: theme.colorScheme.secondary,
                 selected:
                     userPreferences.warningFontSize == 18.0 ? true : false,
                 onTap: () {
                   setState(() {
                     userPreferences.warningFontSize = 18.0;
                   });
-                  Navigator.of(context).pop();
+
+                  navigator.pop();
                 },
               ),
             ],

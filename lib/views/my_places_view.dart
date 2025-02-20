@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/api_handler.dart';
 
 import '../widgets/my_place_widget.dart';
@@ -64,6 +64,8 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+
     ref.watch(updaterProvider); // Just to rebuild on updates
 
     if (_loading == true) {
@@ -110,17 +112,15 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!
-                                  .my_place_no_place_added,
+                              localizations.my_place_no_place_added,
                               style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
                             Text(
-                              AppLocalizations.of(context)!
-                                  .my_place_no_place_added_text,
+                              localizations.my_place_no_place_added_text,
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -133,8 +133,8 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
             bottom: 10,
             right: 10,
             child: FloatingActionButton(
-              tooltip: AppLocalizations.of(context)!
-                  .my_places_view_add_new_place_button_tooltip,
+              tooltip:
+                  localizations.my_places_view_add_new_place_button_tooltip,
               onPressed: () {
                 Navigator.push(
                   context,

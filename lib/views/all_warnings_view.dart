@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 import '../services/api_handler.dart';
 import '../services/check_for_my_places_warnings.dart';
@@ -40,6 +40,9 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var theme = Theme.of(context);
+
     ref.watch(updaterProvider); // Just to rebuild on updates
 
     Future<void> reloadData() async {
@@ -134,18 +137,19 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                      AppLocalizations.of(context)!
-                                          .all_warnings_everything_ok,
-                                      style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold)),
+                                    localizations.all_warnings_everything_ok,
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   Icon(
                                     Icons.check_circle_rounded,
                                     size: 200,
                                     color:
                                         Theme.of(context).colorScheme.secondary,
                                   ),
-                                  Text(AppLocalizations.of(context)!
+                                  Text(localizations
                                       .all_warnings_everything_ok_text),
                                   SizedBox(height: 10),
                                   TextButton(
@@ -155,16 +159,14 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                                       });
                                     },
                                     style: TextButton.styleFrom(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                      backgroundColor:
+                                          theme.colorScheme.secondary,
+                                    ),
                                     child: Text(
-                                      AppLocalizations.of(context)!
-                                          .all_warnings_reload,
+                                      localizations.all_warnings_reload,
                                       style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondary),
+                                        color: theme.colorScheme.onSecondary,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -192,13 +194,16 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                              AppLocalizations.of(context)!
-                                  .all_warnings_no_places_chosen,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                            localizations.all_warnings_no_places_chosen,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Text("\n"),
-                          Text(AppLocalizations.of(context)!
-                              .all_warnings_no_places_chosen_text),
+                          Text(
+                            localizations.all_warnings_no_places_chosen_text,
+                          ),
                         ],
                       ),
                     ),

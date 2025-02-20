@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 class MetaInfoForPlaceDialog extends StatefulWidget {
   final Place myPlace;
@@ -13,6 +13,9 @@ class MetaInfoForPlaceDialog extends StatefulWidget {
 class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var navigator = Navigator.of(context);
+
     var fpasPlace = widget.myPlace;
 
     List<Text> generateMetaInfo(Place place) {
@@ -30,17 +33,16 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
 
     return AlertDialog(
       title: Text(
-          "${AppLocalizations.of(context)!.meta_info_for_place_dialog_headline} ${widget.myPlace.name}"),
+        "${localizations.meta_info_for_place_dialog_headline} ${widget.myPlace.name}",
+      ),
       content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: generateMetaInfo(widget.myPlace)),
       actions: <Widget>[
         ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(AppLocalizations.of(context)!.main_dialog_close)),
+            onPressed: () => navigator.pop(),
+            child: Text(localizations.main_dialog_close)),
       ],
     );
   }

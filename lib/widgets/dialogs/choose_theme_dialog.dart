@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 
 import '../../services/update_provider.dart';
@@ -56,13 +56,15 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   }
 
   String selectTextForThemeMode(ThemeMode themeMode) {
+    var localizations = context.localizations;
+
     switch (themeMode) {
       case ThemeMode.light:
-        return AppLocalizations.of(context)!.settings_color_schema_light;
+        return localizations.settings_color_schema_light;
       case ThemeMode.dark:
-        return AppLocalizations.of(context)!.settings_color_schema_dark;
+        return localizations.settings_color_schema_dark;
       case ThemeMode.system:
-        return AppLocalizations.of(context)!.settings_color_schema_auto;
+        return localizations.settings_color_schema_auto;
     }
   }
 
@@ -108,6 +110,8 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   }
 
   Widget generateColorButton(ThemeData theme) {
+    var mediaQuery = MediaQuery.of(context);
+
     var updater = ref.read(updaterProvider);
 
     return Container(
@@ -118,8 +122,7 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
           setState(() {
             if (userPreferences.selectedThemeMode == ThemeMode.light ||
                 (userPreferences.selectedThemeMode == ThemeMode.system &&
-                    MediaQuery.of(context).platformBrightness ==
-                        Brightness.light)) {
+                    mediaQuery.platformBrightness == Brightness.light)) {
               userPreferences.selectedLightTheme = theme;
             } else {
               userPreferences.selectedDarkTheme = theme;
@@ -147,8 +150,9 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
     return SimpleDialog(
-      title: Text(AppLocalizations.of(context)!.choose_theme_dialog_headline),
+      title: Text(localizations.choose_theme_dialog_headline),
       children: [
         SingleChildScrollView(
           child: Padding(
@@ -160,10 +164,9 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: generateBrightnessButtons(),
                 ),
-                SizedBox(height: 10),
-                Text(AppLocalizations.of(context)!
-                    .choose_theme_dialog_choose_accent_color),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
+                Text(localizations.choose_theme_dialog_choose_accent_color),
+                const SizedBox(height: 10),
                 Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 10,

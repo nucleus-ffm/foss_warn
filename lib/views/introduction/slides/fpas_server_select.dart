@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/url_launcher.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/views/introduction/widgets/base_slide.dart';
@@ -137,7 +137,7 @@ class _FPASServerSlideLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var localizations = AppLocalizations.of(context)!;
+    var localizations = context.localizations;
     var theme = Theme.of(context);
 
     return IntroductionBaseSlide(
@@ -238,7 +238,7 @@ class _DefaultServerSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var localizations = AppLocalizations.of(context)!;
+    var localizations = context.localizations;
     var theme = Theme.of(context);
 
     return Column(
@@ -277,7 +277,7 @@ class _CustomServerSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var localizations = AppLocalizations.of(context)!;
+    var localizations = context.localizations;
 
     return Form(
       key: formKey,

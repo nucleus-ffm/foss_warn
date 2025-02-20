@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/views/introduction/widgets/base_slide.dart';
 
 class IntroductionPlacesSlide extends StatelessWidget {
@@ -7,7 +7,7 @@ class IntroductionPlacesSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var localizations = AppLocalizations.of(context)!;
+    var localizations = context.localizations;
 
     return IntroductionBaseSlide(
       imagePath: "assets/location.png",

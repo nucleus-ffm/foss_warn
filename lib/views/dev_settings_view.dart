@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 
 import '../main.dart';
@@ -40,9 +40,14 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var theme = Theme.of(context);
+    var scaffoldMessenger = ScaffoldMessenger.of(context);
+    var focusScope = FocusScope.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.dev_settings_headline),
+        title: Text(localizations.dev_settings_headline),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,10 +56,9 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
             children: [
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text(AppLocalizations.of(context)!
-                    .dev_settings_test_notification),
-                subtitle: Text(AppLocalizations.of(context)!
-                    .dev_settings_test_notification_text),
+                title: Text(localizations.dev_settings_test_notification),
+                subtitle:
+                    Text(localizations.dev_settings_test_notification_text),
                 onTap: () {
                   checkForMyPlacesWarnings(
                     alertApi: ref.read(alertApiProvider),
@@ -75,18 +79,16 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                       backgroundColor: Colors.green[100],
                     );
 
-                    // Find the ScaffoldMessenger in the widget tree
-                    // and use it to show a SnackBar.
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    scaffoldMessenger.showSnackBar(snackBar);
                   }
                 },
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(
-                    "${AppLocalizations.of(context)!.dev_settings_delete_list_of_read_warnings} & \n${AppLocalizations.of(context)!.dev_settings_delete_notification_list}"),
+                    "${localizations.dev_settings_delete_list_of_read_warnings} & \n${localizations.dev_settings_delete_notification_list}"),
                 subtitle: Text(
-                    "${AppLocalizations.of(context)!.dev_settings_delete_list_of_read_warnings_text} & \n${AppLocalizations.of(context)!.dev_settings_delete_notification_list_text}"),
+                    "${localizations.dev_settings_delete_list_of_read_warnings_text} & \n${localizations.dev_settings_delete_notification_list_text}"),
                 onTap: () {
                   debugPrint(
                       "reset read and notification status for all warnings");
@@ -95,23 +97,19 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   }
                   final snackBar = SnackBar(
                     content: Text(
-                      AppLocalizations.of(context)!.dev_settings_success,
+                      localizations.dev_settings_success,
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
                   );
 
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  scaffoldMessenger.showSnackBar(snackBar);
                 },
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text(
-                    AppLocalizations.of(context)!.dev_settings_delete_warnings),
-                subtitle: Text(AppLocalizations.of(context)!
-                    .dev_settings_delete_warnings_text),
+                title: Text(localizations.dev_settings_delete_warnings),
+                subtitle: Text(localizations.dev_settings_delete_warnings_text),
                 onTap: () {
                   for (Place p in myPlaceList) {
                     p.warnings.clear();
@@ -119,15 +117,13 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   saveMyPlacesList();
                   final snackBar = SnackBar(
                     content: Text(
-                      AppLocalizations.of(context)!.dev_settings_success,
+                      localizations.dev_settings_success,
                       style: TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
                   );
 
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  scaffoldMessenger.showSnackBar(snackBar);
                 },
               ),
               ListTile(
@@ -151,9 +147,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     backgroundColor: Colors.green[100],
                   );
 
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  scaffoldMessenger.showSnackBar(snackBar);
                 },
               ),
               ListTile(
@@ -175,9 +169,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     backgroundColor: Colors.green[100],
                   );
 
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  scaffoldMessenger.showSnackBar(snackBar);
                 },
               ),
               ListTile(
@@ -220,15 +212,15 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                       // because this method is executed every time
                       // you tap somewhere in the settings, even
                       // if the text field is not in focus at all
-                      if (FocusScope.of(context).isFirstFocus) {
-                        FocusScope.of(context).unfocus();
+                      if (focusScope.isFirstFocus) {
+                        focusScope.unfocus();
                       }
                     },
                     onEditingComplete: () {
-                      FocusScope.of(context).unfocus();
+                      focusScope.unfocus();
                     },
                     decoration: InputDecoration(),
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ),
               ),

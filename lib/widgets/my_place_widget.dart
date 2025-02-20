@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 import 'dialogs/delete_place_dialog.dart';
 import '../views/my_place_detail_view.dart';
@@ -11,20 +11,25 @@ class MyPlaceWidget extends StatelessWidget {
   const MyPlaceWidget({super.key, required this.myPlace});
 
   String checkForWarnings(BuildContext context) {
+    var localizations = context.localizations;
+
     debugPrint("[MyPlaceWidget] check for warnings");
     if (myPlace.countWarnings > 0) {
       if (myPlace.countWarnings > 1) {
-        return "${AppLocalizations.of(context)!.my_place_there_are} ${myPlace.countWarnings} ${AppLocalizations.of(context)!.my_place_warnings_more_then_one}";
+        return "${localizations.my_place_there_are} ${myPlace.countWarnings} ${localizations.my_place_warnings_more_then_one}";
       } else {
-        return "${AppLocalizations.of(context)!.my_place_there_are} ${myPlace.countWarnings} ${AppLocalizations.of(context)!.my_place_warnings_only_one}";
+        return "${localizations.my_place_there_are} ${myPlace.countWarnings} ${localizations.my_place_warnings_only_one}";
       }
     } else {
-      return AppLocalizations.of(context)!.my_places_no_warning_found;
+      return localizations.my_places_no_warning_found;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var mediaQuery = MediaQuery.of(context);
+
     return Card(
       child: InkWell(
         onLongPress: () {
@@ -63,14 +68,10 @@ class MyPlaceWidget extends StatelessWidget {
                         );
                       },
                       icon: Icon(Icons.location_city)),
-                  SizedBox(
-                    width: 20,
-                    //width: (MediaQuery.of(context).size.width)-150,
-                  ),
+                  const SizedBox(width: 20),
                   SizedBox(
                     height: 60,
-                    //width: 200,
-                    width: (MediaQuery.of(context).size.width) * 0.6,
+                    width: mediaQuery.size.width * 0.6,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -80,7 +81,9 @@ class MyPlaceWidget extends StatelessWidget {
                           child: Text(
                             myPlace.name,
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                             softWrap: false,
                             overflow: TextOverflow.fade,
                           ),
@@ -96,16 +99,14 @@ class MyPlaceWidget extends StatelessWidget {
                         0 //check the number of warnings and display check or warning
                     ? TextButton(
                         style: TextButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.secondary,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onSecondary,
+                            backgroundColor: theme.colorScheme.secondary,
+                            foregroundColor: theme.colorScheme.onSecondary,
                             shape: CircleBorder(),
                             padding: EdgeInsets.all(15)),
                         onPressed: () {},
                         child: Icon(
                           Icons.check,
-                          color: Theme.of(context).colorScheme.onSecondary,
+                          color: theme.colorScheme.onSecondary,
                         ))
                     : myPlace.checkIfAllWarningsAreRead()
                         ? TextButton(

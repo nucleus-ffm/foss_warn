@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 class NoWarningsInList extends StatelessWidget {
   const NoWarningsInList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var theme = Theme.of(context);
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.8,
       child: Column(
@@ -22,18 +25,16 @@ class NoWarningsInList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                      AppLocalizations.of(context)!
-                          .all_warnings_nothing_to_show,
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                    localizations.all_warnings_nothing_to_show,
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
                   Icon(
                     Icons.cloud,
                     size: 200,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: theme.colorScheme.primary,
                   ),
-                  Text(AppLocalizations.of(context)!
-                      .all_warnings_nothing_to_show_text),
-                  SizedBox(height: 10),
+                  Text(localizations.all_warnings_nothing_to_show_text),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),

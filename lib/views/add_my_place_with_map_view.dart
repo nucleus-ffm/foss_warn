@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
@@ -10,6 +9,7 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_user_agent_http_client.dart';
 import 'package:foss_warn/constants.dart' as constants;
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
@@ -177,6 +177,10 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = context.localizations;
+    var theme = Theme.of(context);
+    var mediaQuery = MediaQuery.of(context);
+
     var updater = ref.read(updaterProvider);
     var alertApi = ref.read(alertApiProvider);
 
@@ -184,7 +188,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
       // set to false to prevent jumping of the radiusSlider Widget
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.add_new_place),
+        title: Text(localizations.add_new_place),
       ),
       body: Stack(
         children: [
@@ -210,32 +214,23 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                       )
                     : PolygonLayer(polygons: [])
               ],
-              /*
-              onLongPress: (TapPosition tap, LatLng place) {
-                    print("Place: ${place.longitude} ${place.latitude}");
-                    setState(() {
-                      currentPlaceLatLng = place;
-                      createPolygon();
-                    });
-                  },
-               */
             ),
           ),
           Positioned(
             top: 0,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width,
+              width: mediaQuery.size.width,
               height: 80,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   focusNode: textInputFocus,
                   controller: textEditingController,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
+                  cursorColor: theme.colorScheme.secondary,
                   autofocus: true,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium,
                   decoration: InputDecoration(
-                    fillColor: Theme.of(context).colorScheme.secondaryContainer,
+                    fillColor: theme.colorScheme.secondaryContainer,
                     suffixIcon: IconButton(
                       icon: Icon(Icons.clear),
                       onPressed: () {
@@ -247,8 +242,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                       },
                     ),
                     filled: true,
-                    labelText:
-                        AppLocalizations.of(context)!.add_new_place_place_name,
+                    labelText: localizations.add_new_place_place_name,
                   ),
                   onTap: () {
                     setState(() {
@@ -259,9 +253,10 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                   onSubmitted: (value) async {
                     if (value != "") {
                       LoadingScreen.instance().show(
-                          context: context,
-                          text: AppLocalizations.of(context)!
-                              .add_my_place_with_map_loading_screen_searching);
+                        context: context,
+                        text: localizations
+                            .add_my_place_with_map_loading_screen_searching,
+                      );
                       try {
                         // request data from nominatim
                         searchResult = await requestNovatimData(
@@ -272,9 +267,10 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                           if (!context.mounted) return;
 
                           LoadingScreen.instance().show(
-                              context: context,
-                              text: AppLocalizations.of(context)!
-                                  .add_my_place_with_map_loading_screen_search_no_result_found);
+                            context: context,
+                            text: localizations
+                                .add_my_place_with_map_loading_screen_search_no_result_found,
+                          );
                           await Future.delayed(const Duration(seconds: 3));
                         }
                       } catch (e) {
@@ -284,7 +280,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                         if (!context.mounted) return;
                         LoadingScreen.instance().show(
                             context: context,
-                            text: AppLocalizations.of(context)!
+                            text: localizations
                                 .add_my_place_with_map_loading_screen_search_error);
                         await Future.delayed(const Duration(seconds: 3));
                       }
@@ -314,7 +310,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
             child: Visibility(
               visible: _showSearchResultList,
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: mediaQuery.size.width,
                 height: searchResult.length * 70 < 300
                     ? searchResult.length * 70
                     : 300,
@@ -323,7 +319,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(12),
                           bottomRight: Radius.circular(12)),
-                      color: Theme.of(context).colorScheme.secondaryContainer),
+                      color: theme.colorScheme.secondaryContainer),
                   margin: EdgeInsets.only(left: 8, right: 8),
                   child: SingleChildScrollView(
                     child: Column(
@@ -334,14 +330,11 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: ListTile(
                                 leading: Icon(Icons.place),
-                                //visualDensity:
-                                //VisualDensity(horizontal: 0, vertical: -4),
-                                title: Text(place["display_name"],
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium),
+                                title: Text(
+                                  place["display_name"],
+                                  style: theme.textTheme.titleMedium,
+                                ),
                                 onTap: () {
-                                  //currentPlaceToAdd = place;
                                   setState(() {
                                     textEditingController.text =
                                         place["display_name"];
@@ -358,7 +351,6 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                     _showRadiusSlider = true;
                                     _showSearchResultList = false;
                                     createPolygon();
-                                    //createBoundingBoxPolygon(selectedPlaceBoundingBox); //@todo
                                   });
                                 },
                               ),
@@ -376,7 +368,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
               child: Visibility(
                 visible: _showRadiusSlider,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                  width: mediaQuery.size.width,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -384,16 +376,14 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(12),
                               bottomRight: Radius.circular(12)),
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer),
+                          color: theme.colorScheme.secondaryContainer),
                       child: Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(top: 8),
                             child: Text(
-                              AppLocalizations.of(context)!
-                                  .add_my_place_with_map_select_radius,
-                              style: Theme.of(context).textTheme.labelLarge,
+                              localizations.add_my_place_with_map_select_radius,
+                              style: theme.textTheme.labelLarge,
                             ),
                           ),
                           Padding(
@@ -431,8 +421,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                 if (!context.mounted) return;
                                 LoadingScreen.instance().show(
                                     context: context,
-                                    text: AppLocalizations.of(context)!
-                                        .loading_screen_loading);
+                                    text: localizations.loading_screen_loading);
                                 String subscriptionId = "";
                                 try {
                                   subscriptionId = await alertApi.registerArea(
@@ -449,7 +438,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   if (!context.mounted) return;
                                   LoadingScreen.instance().show(
                                       context: context,
-                                      text: AppLocalizations.of(context)!
+                                      text: localizations
                                           .add_my_place_with_map_loading_screen_subscription_error);
                                   await Future.delayed(
                                       const Duration(seconds: 5));
@@ -458,7 +447,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   if (!context.mounted) return;
                                   LoadingScreen.instance().show(
                                       context: context,
-                                      text: AppLocalizations.of(context)!
+                                      text: localizations
                                           .add_my_place_with_map_loading_screen_subscription_success);
                                   Place newPlace = Place(
                                     boundingBox: boundingBox,
@@ -489,12 +478,12 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                 foregroundColor: Theme.of(context)
                                     .colorScheme
                                     .onSecondaryContainer),
-                            child: Text(AppLocalizations.of(context)!
-                                .add_my_place_with_map_add_place_button),
+                            child: Text(
+                              localizations
+                                  .add_my_place_with_map_add_place_button,
+                            ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          )
+                          const SizedBox(height: 10)
                         ],
                       ),
                     ),

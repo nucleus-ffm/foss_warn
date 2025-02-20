@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/translate_and_colorize_warning.dart';
@@ -9,7 +10,6 @@ import 'package:foss_warn/views/alert_update_thread_view.dart';
 import 'package:foss_warn/views/warning_detail_view.dart';
 import 'package:foss_warn/widgets/dialogs/category_explanation.dart';
 import 'package:foss_warn/widgets/dialogs/message_type_explanation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
@@ -34,6 +34,8 @@ class WarningWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var localizations = context.localizations;
+
     var updater = ref.watch(updaterProvider);
 
     List<String> areaList = []; //@todo rename
@@ -144,24 +146,23 @@ class WarningWidget extends ConsumerWidget {
                             width: 100,
                             child: Text(
                               areaList.length > 1
-                                  ? "${areaList.first} ${AppLocalizations.of(context)!.warning_widget_and} ${areaList.length - 1} ${AppLocalizations.of(context)!.warning_widget_other}"
+                                  ? "${areaList.first} ${localizations.warning_widget_and} ${areaList.length - 1} ${localizations.warning_widget_other}"
                                   : areaList.isNotEmpty
                                       ? areaList.first
-                                      : AppLocalizations.of(context)!
-                                          .warning_widget_unknown,
+                                      : localizations.warning_widget_unknown,
                               style: TextStyle(fontSize: 12),
                             ),
                           ),
                         )
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       _warnMessage.info[0].headline,
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -170,7 +171,7 @@ class WarningWidget extends ConsumerWidget {
                             formatSentDate(_warnMessage.sent),
                             style: TextStyle(fontSize: 12),
                           ),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 20),
                         ],
                       ),
                     )
@@ -194,7 +195,7 @@ class WarningWidget extends ConsumerWidget {
                   ),
                   (_updateThread != null && _updateThread.length > 1)
                       ? IconButton(
-                          tooltip: AppLocalizations.of(context)!
+                          tooltip: localizations
                               .warning_widget_update_thread_tooltip,
                           onPressed: () {
                             debugPrint("${_updateThread.length}");
@@ -210,7 +211,7 @@ class WarningWidget extends ConsumerWidget {
                             );
                           },
                           icon: Icon(Icons.account_tree))
-                      : SizedBox(),
+                      : const SizedBox(),
                 ],
               ),
             ],
