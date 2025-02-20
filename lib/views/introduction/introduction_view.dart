@@ -186,7 +186,7 @@ class _PageProgressDots extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: currentPage == index
                       ? Color(0XFF256075)
-                      : Color(0XFF256075).withValues(alpha: 0.2),
+                      : Color(0XFF256075).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),

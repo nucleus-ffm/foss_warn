@@ -22,12 +22,13 @@ class FPASApi implements AlertAPI {
   @override
   Future<ServerSettings> fetchServerSettings({String? overrideUrl}) async {
     var url = Uri.parse(
-        "${overrideUrl ?? userPreferences.fossPublicAlertServerUrl}/config/server_status");
+      "${overrideUrl ?? userPreferences.fossPublicAlertServerUrl}/config/server_status",
+    );
     var response = await http.get(
       url,
       headers: {
         "Content-Type": "application/json",
-        'user-agent': constants.httpUserAgent
+        'user-agent': constants.httpUserAgent,
       },
     );
 
@@ -50,7 +51,8 @@ class FPASApi implements AlertAPI {
   @override
   Future<List<String>> getAlerts({required String subscriptionId}) async {
     var url = Uri.parse(
-        "${userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId");
+      "${userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId",
+    );
 
     var response = await http.get(
       url,
@@ -88,7 +90,8 @@ class FPASApi implements AlertAPI {
   @override
   Future<void> sendHeartbeat({required String subscriptionId}) async {
     var url = Uri.parse(
-        "${userPreferences.fossPublicAlertServerUrl}/subscription?subscription_id=$subscriptionId");
+      "${userPreferences.fossPublicAlertServerUrl}/subscription?subscription_id=$subscriptionId",
+    );
 
     var response = await http.put(
       url,
@@ -123,7 +126,7 @@ class FPASApi implements AlertAPI {
         'min_lat': boundingBox.minLatLng.latitude.toString(),
         'max_lat': boundingBox.maxLatLng.latitude.toString(),
         'min_lon': boundingBox.minLatLng.longitude.toString(),
-        'max_lon': boundingBox.maxLatLng.longitude.toString()
+        'max_lon': boundingBox.maxLatLng.longitude.toString(),
       }),
     );
 
@@ -138,7 +141,8 @@ class FPASApi implements AlertAPI {
   @override
   Future<void> unregisterArea({required String subscriptionId}) async {
     var url = Uri.parse(
-        "${userPreferences.fossPublicAlertServerUrl}/subscription?subscription_id=$subscriptionId");
+      "${userPreferences.fossPublicAlertServerUrl}/subscription?subscription_id=$subscriptionId",
+    );
 
     var response = await http.delete(
       url,

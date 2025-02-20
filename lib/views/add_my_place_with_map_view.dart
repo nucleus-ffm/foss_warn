@@ -60,7 +60,10 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
   /// use the Haversine formula to calculate the distance on the earth surface
   /// see https://en.wikipedia.org/wiki/Haversine_formula
   List<LatLng> calculatePolygonCoordinates(
-      LatLng center, double radius, int numberOfEdges) {
+    LatLng center,
+    double radius,
+    int numberOfEdges,
+  ) {
     const earthRadius = 6371; // Radius of the earth in km
 
     List<LatLng> polygonPoints = [];
@@ -72,11 +75,15 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     for (int i = 1; i < numberOfEdges + 1; i++) {
       double angle = i * angleIncrement;
 
-      double lat2Rad = asin(sin(lat1Rad) * cos(radius / earthRadius) +
-          cos(lat1Rad) * sin(radius / earthRadius) * cos(angle));
+      double lat2Rad = asin(
+        sin(lat1Rad) * cos(radius / earthRadius) +
+            cos(lat1Rad) * sin(radius / earthRadius) * cos(angle),
+      );
       double lon2Rad = lon1Rad +
-          atan2(sin(angle) * sin(radius / earthRadius) * cos(lat1Rad),
-              cos(radius / earthRadius) - sin(lat1Rad) * sin(lat2Rad));
+          atan2(
+            sin(angle) * sin(radius / earthRadius) * cos(lat1Rad),
+            cos(radius / earthRadius) - sin(lat1Rad) * sin(lat2Rad),
+          );
 
       double lat2 = radiansToDegrees(lat2Rad);
       double lon2 = radiansToDegrees(lon2Rad);
@@ -89,7 +96,10 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
 
   /// calculate a bounding box on the map with the Haversine formula
   List<LatLng> calculateSquareCoordinates(
-      LatLng center, double radius, int numEdge) {
+    LatLng center,
+    double radius,
+    int numEdge,
+  ) {
     double earthRadius = 6371; // Earth's radius in km
 
     double lat = center.latitude;
@@ -108,7 +118,9 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     LatLng southEast = LatLng(south, east);
 
     boundingBox = BoundingBox(
-        minLatLng: LatLng(north, west), maxLatLng: LatLng(south, east));
+      minLatLng: LatLng(north, west),
+      maxLatLng: LatLng(south, east),
+    );
 
     return [northWest, southWest, southEast, northEast];
   }
@@ -127,32 +139,44 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
         currentPlaceLatLng!, placeRadius, numberOfEdgesPolygon);*/
 
     List<LatLng> circlePolygonPoints = calculateSquareCoordinates(
-        currentPlaceLatLng!, placeRadius, numberOfEdgesPolygon);
+      currentPlaceLatLng!,
+      placeRadius,
+      numberOfEdgesPolygon,
+    );
 
     // move the camera to perfect fit the polygon
-    mapController.fitCamera(CameraFit.bounds(
+    mapController.fitCamera(
+      CameraFit.bounds(
         bounds: LatLngBounds.fromPoints(circlePolygonPoints),
-        padding: EdgeInsets.all(cameraPadding)));
+        padding: EdgeInsets.all(cameraPadding),
+      ),
+    );
     // create polygon around place
     selectedPlacePolygon = Polygon(
-        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
-        points: circlePolygonPoints);
+      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+      points: circlePolygonPoints,
+    );
   }
 
   void createBoundingBoxPolygon(List<LatLng> points) {
     // move the camera to perfect fit the polygon
-    mapController.fitCamera(CameraFit.bounds(
+    mapController.fitCamera(
+      CameraFit.bounds(
         bounds: LatLngBounds.fromPoints(points),
-        padding: EdgeInsets.all(cameraPadding)));
+        padding: EdgeInsets.all(cameraPadding),
+      ),
+    );
     // create polygon around place
     selectedPlacePolygon = Polygon(
-        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
-        points: points);
+      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+      points: points,
+    );
   }
 
   Future<List<dynamic>> requestNovatimData(String requestString) async {
     Uri requestURL = Uri.parse(
-        "https://nominatim.openstreetmap.org/search?q=$requestString&format=json&featureType=city");
+      "https://nominatim.openstreetmap.org/search?q=$requestString&format=json&featureType=city",
+    );
 
     UserAgentHttpClient client =
         UserAgentHttpClient(constants.httpUserAgent, http.Client());
@@ -204,7 +228,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                   LatLng(53.264, 14.326),
                   LatLng(48.236, 12.964),
                   LatLng(48.704, 7.932),
-                  LatLng(51.096, 6.746)
+                  LatLng(51.096, 6.746),
                 ],
               ),
               polygonLayers: [
@@ -212,7 +236,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                     ? PolygonLayer(
                         polygons: [selectedPlacePolygon!],
                       )
-                    : PolygonLayer(polygons: [])
+                    : PolygonLayer(polygons: []),
               ],
             ),
           ),
@@ -260,7 +284,8 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                       try {
                         // request data from nominatim
                         searchResult = await requestNovatimData(
-                            textEditingController.text);
+                          textEditingController.text,
+                        );
 
                         // show error if there is no result
                         if (searchResult.isEmpty) {
@@ -275,13 +300,17 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                         }
                       } catch (e) {
                         debugPrint("Novatim search failed: ${e.toString()}");
-                        ErrorLogger.writeErrorLog("AddMyPlaceWithMapView.dart",
-                            "Error while requesting NovatimData", e.toString());
+                        ErrorLogger.writeErrorLog(
+                          "AddMyPlaceWithMapView.dart",
+                          "Error while requesting NovatimData",
+                          e.toString(),
+                        );
                         if (!context.mounted) return;
                         LoadingScreen.instance().show(
-                            context: context,
-                            text: localizations
-                                .add_my_place_with_map_loading_screen_search_error);
+                          context: context,
+                          text: localizations
+                              .add_my_place_with_map_loading_screen_search_error,
+                        );
                         await Future.delayed(const Duration(seconds: 3));
                       }
                     }
@@ -316,10 +345,12 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                     : 300,
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(12),
-                          bottomRight: Radius.circular(12)),
-                      color: theme.colorScheme.secondaryContainer),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                    color: theme.colorScheme.secondaryContainer,
+                  ),
                   margin: EdgeInsets.only(left: 8, right: 8),
                   child: SingleChildScrollView(
                     child: Column(
@@ -341,8 +372,9 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   });
 
                                   currentPlaceLatLng = LatLng(
-                                      double.parse(place["lat"]),
-                                      double.parse(place["lon"]));
+                                    double.parse(place["lat"]),
+                                    double.parse(place["lon"]),
+                                  );
 
                                   _selectedPlaceName = place["name"];
                                   setState(() {
@@ -364,132 +396,145 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
             ),
           ),
           Positioned(
-              bottom: 0,
-              child: Visibility(
-                visible: _showRadiusSlider,
-                child: SizedBox(
-                  width: mediaQuery.size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12)),
-                          color: theme.colorScheme.secondaryContainer),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              localizations.add_my_place_with_map_select_radius,
-                              style: theme.textTheme.labelLarge,
-                            ),
+            bottom: 0,
+            child: Visibility(
+              visible: _showRadiusSlider,
+              child: SizedBox(
+                width: mediaQuery.size.width,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      ),
+                      color: theme.colorScheme.secondaryContainer,
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            localizations.add_my_place_with_map_select_radius,
+                            style: theme.textTheme.labelLarge,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Slider(
-                                    min: radiusSliderMinValue,
-                                    max: radiusSliderMaxValue,
-                                    value: placeRadius,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        placeRadius = value;
-                                        // calcualte the a polygon around the current place
-                                        createPolygon();
-                                      });
-                                    },
-                                  ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Slider(
+                                  min: radiusSliderMinValue,
+                                  max: radiusSliderMaxValue,
+                                  value: placeRadius,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      placeRadius = value;
+                                      // calcualte the a polygon around the current place
+                                      createPolygon();
+                                    });
+                                  },
                                 ),
-                                Text("${placeRadius.toInt()} km")
-                              ],
-                            ),
+                              ),
+                              Text("${placeRadius.toInt()} km"),
+                            ],
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              if (_selectedPlaceName != "" &&
-                                  selectedPlacePolygon != null) {
-                                // setup unifiedPush
-                                await UnifiedPushHandler.setupUnifiedPush(
-                                    context);
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            if (_selectedPlaceName != "" &&
+                                selectedPlacePolygon != null) {
+                              // setup unifiedPush
+                              await UnifiedPushHandler.setupUnifiedPush(
+                                context,
+                              );
 
-                                // subscribe for new area and create new place
-                                // with the returned subscription id
+                              // subscribe for new area and create new place
+                              // with the returned subscription id
+                              if (!context.mounted) return;
+                              LoadingScreen.instance().show(
+                                context: context,
+                                text: localizations.loading_screen_loading,
+                              );
+                              String subscriptionId = "";
+                              try {
+                                subscriptionId = await alertApi.registerArea(
+                                  boundingBox: boundingBox,
+                                  unifiedPushEndpoint:
+                                      userPreferences.unifiedPushEndpoint,
+                                );
+                              } catch (e) {
+                                debugPrint("Error: ${e.toString()}");
+                                ErrorLogger.writeErrorLog(
+                                  "AddMyPlaceWithMapView",
+                                  "add place button",
+                                  e.toString(),
+                                );
                                 if (!context.mounted) return;
                                 LoadingScreen.instance().show(
-                                    context: context,
-                                    text: localizations.loading_screen_loading);
-                                String subscriptionId = "";
-                                try {
-                                  subscriptionId = await alertApi.registerArea(
-                                    boundingBox: boundingBox,
-                                    unifiedPushEndpoint:
-                                        userPreferences.unifiedPushEndpoint,
-                                  );
-                                } catch (e) {
-                                  debugPrint("Error: ${e.toString()}");
-                                  ErrorLogger.writeErrorLog(
-                                      "AddMyPlaceWithMapView",
-                                      "add place button",
-                                      e.toString());
-                                  if (!context.mounted) return;
-                                  LoadingScreen.instance().show(
-                                      context: context,
-                                      text: localizations
-                                          .add_my_place_with_map_loading_screen_subscription_error);
-                                  await Future.delayed(
-                                      const Duration(seconds: 5));
-                                }
-                                if (subscriptionId != "") {
-                                  if (!context.mounted) return;
-                                  LoadingScreen.instance().show(
-                                      context: context,
-                                      text: localizations
-                                          .add_my_place_with_map_loading_screen_subscription_success);
-                                  Place newPlace = Place(
-                                    boundingBox: boundingBox,
-                                    subscriptionId: subscriptionId,
-                                    name: _selectedPlaceName,
-                                  );
-
-                                  setState(() {
-                                    updater.updateList(
-                                      alertApi: ref.read(alertApiProvider),
-                                      newPlace: newPlace,
-                                    );
-                                    // cancel warning of missing places (ID: 3)
-                                    NotificationService.cancelOneNotification(
-                                        3);
-                                    Navigator.of(context).pop();
-                                  });
-                                }
+                                  context: context,
+                                  text: localizations
+                                      .add_my_place_with_map_loading_screen_subscription_error,
+                                );
                                 await Future.delayed(
-                                    const Duration(seconds: 1));
-                                LoadingScreen.instance().hide();
-                              } else {
-                                debugPrint(
-                                    "Error_selectedPlaceName or selectedPlacePolygon is null");
+                                  const Duration(seconds: 5),
+                                );
                               }
-                            },
-                            style: TextButton.styleFrom(
-                                foregroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer),
-                            child: Text(
-                              localizations
-                                  .add_my_place_with_map_add_place_button,
-                            ),
+                              if (subscriptionId != "") {
+                                if (!context.mounted) return;
+                                LoadingScreen.instance().show(
+                                  context: context,
+                                  text: localizations
+                                      .add_my_place_with_map_loading_screen_subscription_success,
+                                );
+                                Place newPlace = Place(
+                                  boundingBox: boundingBox,
+                                  subscriptionId: subscriptionId,
+                                  name: _selectedPlaceName,
+                                );
+
+                                setState(() {
+                                  updater.updateList(
+                                    alertApi: ref.read(alertApiProvider),
+                                    newPlace: newPlace,
+                                  );
+                                  // cancel warning of missing places (ID: 3)
+                                  NotificationService.cancelOneNotification(
+                                    3,
+                                  );
+                                  Navigator.of(context).pop();
+                                });
+                              }
+                              await Future.delayed(
+                                const Duration(seconds: 1),
+                              );
+                              LoadingScreen.instance().hide();
+                            } else {
+                              debugPrint(
+                                "Error_selectedPlaceName or selectedPlacePolygon is null",
+                              );
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
                           ),
-                          const SizedBox(height: 10)
-                        ],
-                      ),
+                          child: Text(
+                            localizations
+                                .add_my_place_with_map_add_place_button,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
                     ),
                   ),
                 ),
-              ))
+              ),
+            ),
+          ),
         ],
       ),
     );

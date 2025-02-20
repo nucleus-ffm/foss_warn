@@ -74,14 +74,17 @@ class _DetailScreenState extends State<DetailScreen> {
       // add the text before the telephone number to a TextSpan
       result.add(TextSpan(text: text.substring(pointer, startPos)));
       // add the clickable telephone number
-      result.add(TextSpan(
+      result.add(
+        TextSpan(
           text: phoneNumber,
           style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               // print("phone number tapped");
               makePhoneCall(phoneNumber);
-            }));
+            },
+        ),
+      );
       pointer = endPos;
     }
 
@@ -125,14 +128,17 @@ class _DetailScreenState extends State<DetailScreen> {
           }
 
           // generate TextSpan with clickable link
-          returnList.add(TextSpan(
+          returnList.add(
+            TextSpan(
               text: " $urlDescription ",
               style: TextStyle(color: Colors.blue),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   debugPrint("Link tapped");
                   launchUrlInBrowser(url);
-                }));
+                },
+            ),
+          );
           pointer = endPos;
         } else {
           // maybe it is an E-Mail?
@@ -152,13 +158,16 @@ class _DetailScreenState extends State<DetailScreen> {
             }
 
             // generate TextSpan with clickable link
-            returnList.add(TextSpan(
+            returnList.add(
+              TextSpan(
                 text: " $urlDescription ",
                 style: TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     launchEmail(url);
-                  }));
+                  },
+              ),
+            );
             pointer = endPos;
           }
         }
@@ -173,22 +182,27 @@ class _DetailScreenState extends State<DetailScreen> {
         }
         debugPrint("startPos $startPos");
         if (startPos == -1) {
-          returnList.add(TextSpan(
-            text: text.substring(pointer, text.length),
-            /*recognizer: TapGestureRecognizer()
+          returnList.add(
+            TextSpan(
+              text: text.substring(pointer, text.length),
+              /*recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   print("text tapped");
                 }*/
-          ));
+            ),
+          );
           pointer = text.length;
         } else {
           debugPrint("pointer: $pointer  startPos: $startPos");
-          returnList.add(TextSpan(
+          returnList.add(
+            TextSpan(
               text: text.substring(pointer, startPos),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   debugPrint("text tapped");
-                }));
+                },
+            ),
+          );
           pointer = startPos - 1;
         }
       }
@@ -207,45 +221,50 @@ class _DetailScreenState extends State<DetailScreen> {
 
       if (polygonPoints.isNotEmpty) {
         return CameraFit.bounds(
-            bounds: LatLngBounds.fromPoints(polygonPoints),
-            padding: EdgeInsets.all(30));
+          bounds: LatLngBounds.fromPoints(polygonPoints),
+          padding: EdgeInsets.all(30),
+        );
       } else {
         return CameraFit.bounds(
-            // set the bounds to the northpol if we don't have any points
-            bounds: LatLngBounds.fromPoints([LatLng(90.0, 0.0)]),
-            padding: EdgeInsets.all(30));
+          // set the bounds to the northpol if we don't have any points
+          bounds: LatLngBounds.fromPoints([LatLng(90.0, 0.0)]),
+          padding: EdgeInsets.all(30),
+        );
       }
     }
 
     try {
       return SizedBox(
-          height: 200,
-          child: MapWidget(
-            mapController: mapController,
-            initialCameraFit: createInitCameraFit(),
-            polygonLayers: [
-              //@todo can be null
-              PolygonLayer(
-                  polygons: Area.createListOfPolygonsForAreas(
-                      widget._warnMessage.info.first.area)),
-            ],
-            widgets: [
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FloatingActionButton(
-                    tooltip: localizations
-                        .warning_detail_view_map_center_map_button_tooltip,
-                    onPressed: () {
-                      mapController.fitCamera(createInitCameraFit());
-                    },
-                    child: Icon(Icons.center_focus_strong),
-                  ),
+        height: 200,
+        child: MapWidget(
+          mapController: mapController,
+          initialCameraFit: createInitCameraFit(),
+          polygonLayers: [
+            //@todo can be null
+            PolygonLayer(
+              polygons: Area.createListOfPolygonsForAreas(
+                widget._warnMessage.info.first.area,
+              ),
+            ),
+          ],
+          widgets: [
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton(
+                  tooltip: localizations
+                      .warning_detail_view_map_center_map_button_tooltip,
+                  onPressed: () {
+                    mapController.fitCamera(createInitCameraFit());
+                  },
+                  child: Icon(Icons.center_focus_strong),
                 ),
-              )
-            ],
-          ));
+              ),
+            ),
+          ],
+        ),
+      );
     } catch (e) {
       return SizedBox(
         height: 200,
@@ -273,7 +292,8 @@ class _DetailScreenState extends State<DetailScreen> {
     saveMyPlacesList();
     // cancel the notification
     NotificationService.cancelOneNotification(
-        widget._warnMessage.identifier.hashCode);
+      widget._warnMessage.identifier.hashCode,
+    );
   }
 
   @override
@@ -309,7 +329,8 @@ class _DetailScreenState extends State<DetailScreen> {
               debugPrint("URL is: $url");
               pointer = endPosition;
 
-              widgetList.add(TextButton(
+              widgetList.add(
+                TextButton(
                   onPressed: () {
                     launchUrlInBrowser(url);
                   },
@@ -317,7 +338,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   child: Text(
                     localizations.warning_open_picture_with_browser,
                     style: TextStyle(color: Colors.white),
-                  )));
+                  ),
+                ),
+              );
             } else {
               searching = false;
             }
@@ -353,8 +376,12 @@ class _DetailScreenState extends State<DetailScreen> {
       return result;
     }
 
-    Widget createTagButton(Color color, String eventType, String info,
-        {Function()? action}) {
+    Widget createTagButton(
+      Color color,
+      String eventType,
+      String info, {
+      Function()? action,
+    }) {
       return Container(
         margin: EdgeInsets.all(3),
         padding: EdgeInsets.all(7),
@@ -375,8 +402,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 child: Text(
                   "$eventType: $info",
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: userPreferences.warningFontSize),
+                    color: Colors.white,
+                    fontSize: userPreferences.warningFontSize,
+                  ),
                 ),
               )
             : Text(
@@ -392,11 +420,16 @@ class _DetailScreenState extends State<DetailScreen> {
     }
 
     void shareWarning(
-        BuildContext context, String shareText, String shareSubject) async {
+      BuildContext context,
+      String shareText,
+      String shareSubject,
+    ) async {
       final box = context.findRenderObject() as RenderBox?;
-      await Share.share(shareText,
-          subject: shareSubject,
-          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+      await Share.share(
+        shareText,
+        subject: shareSubject,
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      );
     }
 
     return Scaffold(
@@ -430,8 +463,9 @@ class _DetailScreenState extends State<DetailScreen> {
               Text(
                 "${localizations.warning_from}: ${formatSentDate(widget._warnMessage.sent)}",
                 style: TextStyle(
-                    fontSize: userPreferences.warningFontSize,
-                    fontWeight: FontWeight.bold),
+                  fontSize: userPreferences.warningFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               widget._warnMessage.info[0].effective != null
                   ? Padding(
@@ -487,68 +521,86 @@ class _DetailScreenState extends State<DetailScreen> {
               Wrap(
                 children: [
                   createTagButton(
-                      Colors.deepPurple,
-                      localizations.warning_event,
-                      translateWarningCategory(
-                          widget._warnMessage.info[0].event, context)),
+                    Colors.deepPurple,
+                    localizations.warning_event,
+                    translateWarningCategory(
+                      widget._warnMessage.info[0].event,
+                      context,
+                    ),
+                  ),
                   createTagButton(
-                      chooseWarningTypeColor(widget
-                          ._warnMessage.messageType), //@todo besser machen
-                      localizations.warning_type,
-                      translateWarningType(
-                          widget._warnMessage.messageType, context)),
+                    chooseWarningTypeColor(
+                      widget._warnMessage.messageType,
+                    ), //@todo besser machen
+                    localizations.warning_type,
+                    translateWarningType(
+                      widget._warnMessage.messageType,
+                      context,
+                    ),
+                  ),
                   createTagButton(
-                      Severity.getColorForSeverity(
-                          widget._warnMessage.info[0].severity),
-                      localizations.warning_severity,
-                      Severity.getLocalizationName(
-                          widget._warnMessage.info[0].severity, context),
-                      action: () => WarningSeverityExplanation()),
+                    Severity.getColorForSeverity(
+                      widget._warnMessage.info[0].severity,
+                    ),
+                    localizations.warning_severity,
+                    Severity.getLocalizationName(
+                      widget._warnMessage.info[0].severity,
+                      context,
+                    ),
+                    action: () => WarningSeverityExplanation(),
+                  ),
                   // display more metadata button if enabled in the settings
                   userPreferences.showExtendedMetaData
-                      ? Wrap(children: [
-                          createTagButton(
-                            Colors.green,
-                            localizations.warning_urgency,
-                            translateWarningUrgency(
+                      ? Wrap(
+                          children: [
+                            createTagButton(
+                              Colors.green,
+                              localizations.warning_urgency,
+                              translateWarningUrgency(
                                 widget._warnMessage.info[0].urgency.name,
-                                context),
-                          ),
-                          createTagButton(
-                            Colors.blueGrey,
-                            localizations.warning_certainty,
-                            translateWarningCertainty(
+                                context,
+                              ),
+                            ),
+                            createTagButton(
+                              Colors.blueGrey,
+                              localizations.warning_certainty,
+                              translateWarningCertainty(
                                 widget._warnMessage.info[0].certainty.name,
-                                context),
-                          ),
-                          createTagButton(
-                            Colors.amber,
-                            localizations.warning_scope,
-                            widget._warnMessage.scope.name,
-                          ),
-                          createTagButton(
-                            Colors.lightBlue[200]!,
-                            localizations.warning_identifier,
-                            widget._warnMessage.identifier,
-                          ),
-                          createTagButton(
-                            Colors.orangeAccent,
-                            localizations.warning_sender,
-                            widget._warnMessage.sender,
-                          ),
-                          createTagButton(
-                            Colors.tealAccent,
-                            localizations.warning_status,
-                            translateWarningStatus(
-                                widget._warnMessage.status.name, context),
-                          ),
-                          createTagButton(
+                                context,
+                              ),
+                            ),
+                            createTagButton(
+                              Colors.amber,
+                              localizations.warning_scope,
+                              widget._warnMessage.scope.name,
+                            ),
+                            createTagButton(
+                              Colors.lightBlue[200]!,
+                              localizations.warning_identifier,
+                              widget._warnMessage.identifier,
+                            ),
+                            createTagButton(
+                              Colors.orangeAccent,
+                              localizations.warning_sender,
+                              widget._warnMessage.sender,
+                            ),
+                            createTagButton(
+                              Colors.tealAccent,
+                              localizations.warning_status,
+                              translateWarningStatus(
+                                widget._warnMessage.status.name,
+                                context,
+                              ),
+                            ),
+                            createTagButton(
                               Colors.purpleAccent,
                               "Referenze",
                               widget._warnMessage.references?.identifier
                                       .toString() ??
-                                  "None"),
-                        ])
+                                  "None",
+                            ),
+                          ],
+                        )
                       : SizedBox(),
                 ],
               ),
@@ -570,14 +622,18 @@ class _DetailScreenState extends State<DetailScreen> {
               _showMoreRegions
                   ? SelectableText(
                       generateAreaDescList(-1).toString().substring(
-                          1, generateAreaDescList(-1).toString().length - 1),
+                            1,
+                            generateAreaDescList(-1).toString().length - 1,
+                          ),
                       style: TextStyle(
                         fontSize: userPreferences.warningFontSize,
                       ),
                     )
                   : SelectableText(
                       generateAreaDescList(10).toString().substring(
-                          1, generateAreaDescList(10).toString().length - 1),
+                            1,
+                            generateAreaDescList(10).toString().length - 1,
+                          ),
                       style: TextStyle(
                         fontSize: userPreferences.warningFontSize,
                       ),
@@ -595,8 +651,9 @@ class _DetailScreenState extends State<DetailScreen> {
                           : Text(
                               localizations.warning_show_more,
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                              ),
                             ),
                       onTap: () {
                         setState(
@@ -616,22 +673,25 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? _createMapWidget(widget._warnMessage.info.first.area)
                   : const SizedBox(),
               const SizedBox(height: 20),
-              Row(children: [
-                const Icon(Icons.description),
-                const SizedBox(width: 5),
-                Text(
-                  localizations.warning_description,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: userPreferences.warningFontSize + 5,
+              Row(
+                children: [
+                  const Icon(Icons.description),
+                  const SizedBox(width: 5),
+                  Text(
+                    localizations.warning_description,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: userPreferences.warningFontSize + 5,
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
               const SizedBox(height: 2),
               SelectableText.rich(
                 TextSpan(
                   children: generateDescriptionBody(
-                      widget._warnMessage.info[0].description),
+                    widget._warnMessage.info[0].description,
+                  ),
                   style: TextStyle(fontSize: userPreferences.warningFontSize),
                 ),
               ),
@@ -661,7 +721,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             mainAxisSpacing: 10,
                             crossAxisCount: 4,
                             children: generateAssets(
-                                widget._warnMessage.info[0].description),
+                              widget._warnMessage.info[0].description,
+                            ),
                           ),
                         ),
                       ],
@@ -692,9 +753,11 @@ class _DetailScreenState extends State<DetailScreen> {
                   ? SelectableText.rich(
                       TextSpan(
                         children: generateDescriptionBody(
-                            widget._warnMessage.info[0].instruction!),
+                          widget._warnMessage.info[0].instruction!,
+                        ),
                         style: TextStyle(
-                            fontSize: userPreferences.warningFontSize),
+                          fontSize: userPreferences.warningFontSize,
+                        ),
                       ),
                     )
                   : SizedBox(),
@@ -709,7 +772,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       fontWeight: FontWeight.bold,
                       fontSize: userPreferences.warningFontSize + 5,
                     ),
-                  )
+                  ),
                 ],
               ),
               Text(
@@ -757,10 +820,14 @@ class _DetailScreenState extends State<DetailScreen> {
                             // key used by unit test
                             key: Key('contactFieldKey'),
                             TextSpan(
-                              children: generateContactBody(replaceHTMLTags(
-                                  widget._warnMessage.info[0].contact!)),
+                              children: generateContactBody(
+                                replaceHTMLTags(
+                                  widget._warnMessage.info[0].contact!,
+                                ),
+                              ),
                               style: TextStyle(
-                                  fontSize: userPreferences.warningFontSize),
+                                fontSize: userPreferences.warningFontSize,
+                              ),
                             ),
                           ),
                         ),
@@ -777,7 +844,8 @@ class _DetailScreenState extends State<DetailScreen> {
                           child: TextButton(
                             onPressed: () async {
                               bool success = await launchUrlInBrowser(
-                                  widget._warnMessage.info[0].web!);
+                                widget._warnMessage.info[0].web!,
+                              );
 
                               if (!success) {
                                 final snackBar = SnackBar(
@@ -799,7 +867,7 @@ class _DetailScreenState extends State<DetailScreen> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     )
                   : const SizedBox(),

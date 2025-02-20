@@ -196,13 +196,15 @@ class ChangeLogDialog extends StatelessWidget {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Text(
-                "* Eine stille Status-Benachrichtigung informiert jetzt über die letzte und nächste Aktualisierung\n* Beim ersten Start erscheint jetzt ein Willkommensdialog\n* Quellenangabe bei DWD Meldungen gefixt \n* In der Warnübersicht wird jetzt das Quellesystem der Meldung angezeigt\n* Die Warnmeldungen können jetzt sortiert werden \n* Fehlerbehebung und kleine Verbesserungen \n* Einstellungen leicht umgestaltet \n* Die Schriftgröße der Meldungen kann jetzt angepasst werden \n* Es gibt jetzt einen Updatechecker \n* In Meldungen eingebettete Bilder können jetzt im Browser geöffnet werden \n* Links in den Warn-Texten sind jetzt klickbar \n"),
+              "* Eine stille Status-Benachrichtigung informiert jetzt über die letzte und nächste Aktualisierung\n* Beim ersten Start erscheint jetzt ein Willkommensdialog\n* Quellenangabe bei DWD Meldungen gefixt \n* In der Warnübersicht wird jetzt das Quellesystem der Meldung angezeigt\n* Die Warnmeldungen können jetzt sortiert werden \n* Fehlerbehebung und kleine Verbesserungen \n* Einstellungen leicht umgestaltet \n* Die Schriftgröße der Meldungen kann jetzt angepasst werden \n* Es gibt jetzt einen Updatechecker \n* In Meldungen eingebettete Bilder können jetzt im Browser geöffnet werden \n* Links in den Warn-Texten sind jetzt klickbar \n",
+            ),
             Text(
               "0.1.13 (beta)",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Text(
-                "* Bei Meldungen wird nun auch der Herausgeber der Warnung angezeigt\n* unwichtige Tags können jetzt ausgeblendet werden\n* Warnungen können jetzt geteilt werden \n* Warnungen können jetzt auch mit einem Tip auf die Warnung geöffnet werden\n* Der Zeilenabstand bei der Liste der verfügbaren Orte wurde verringert \n"),
+              "* Bei Meldungen wird nun auch der Herausgeber der Warnung angezeigt\n* unwichtige Tags können jetzt ausgeblendet werden\n* Warnungen können jetzt geteilt werden \n* Warnungen können jetzt auch mit einem Tip auf die Warnung geöffnet werden\n* Der Zeilenabstand bei der Liste der verfügbaren Orte wurde verringert \n",
+            ),
             Text(
               "0.1.12 (beta)",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -249,9 +251,11 @@ class ChangeLogDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('schließen',
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
-        )
+          child: Text(
+            'schließen',
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+          ),
+        ),
       ],
     );
   }

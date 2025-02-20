@@ -14,7 +14,7 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   Map<String, bool> filterChips = {
     "map_view_filter_chip_my_alerts": true,
-    "map_view_filter_chip_all_alerts": false
+    "map_view_filter_chip_all_alerts": false,
   };
 
   final MapController mapController = MapController();
@@ -45,35 +45,38 @@ class _MapViewState extends State<MapView> {
     var theme = Theme.of(context);
 
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Text("Filter by:", style: theme.textTheme.bodyMedium),
-            ),
-            Row(
-              children: filterChips.entries
-                  .map((chip) => Padding(
-                        padding: EdgeInsets.all(1),
-                        child: FilterChip(
-                          tooltip: findTooltipTranslation(chip.key, chip.value),
-                          label: Text(findLabelForChip(chip.key)),
-                          backgroundColor: Colors.transparent,
-                          shape: StadiumBorder(side: BorderSide()),
-                          selected: chip.value,
-                          onSelected: (bool value) {
-                            setState(() {
-                              filterChips.update(chip.key, (value) => !value);
-                            });
-                          },
-                        ),
-                      ))
-                  .toList(),
-            ),
-          ],
-        ));
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text("Filter by:", style: theme.textTheme.bodyMedium),
+          ),
+          Row(
+            children: filterChips.entries
+                .map(
+                  (chip) => Padding(
+                    padding: EdgeInsets.all(1),
+                    child: FilterChip(
+                      tooltip: findTooltipTranslation(chip.key, chip.value),
+                      label: Text(findLabelForChip(chip.key)),
+                      backgroundColor: Colors.transparent,
+                      shape: StadiumBorder(side: BorderSide()),
+                      selected: chip.value,
+                      onSelected: (bool value) {
+                        setState(() {
+                          filterChips.update(chip.key, (value) => !value);
+                        });
+                      },
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -81,14 +84,16 @@ class _MapViewState extends State<MapView> {
     return Scaffold(
       body: MapWidget(
         //vectorMapWidget
-        initialCameraFit:
-            CameraFit.coordinates(padding: EdgeInsets.all(30), coordinates: [
-          LatLng(52.815, 7.009),
-          LatLng(53.264, 14.326),
-          LatLng(48.236, 12.964),
-          LatLng(48.704, 7.932),
-          LatLng(51.096, 6.746)
-        ]),
+        initialCameraFit: CameraFit.coordinates(
+          padding: EdgeInsets.all(30),
+          coordinates: [
+            LatLng(52.815, 7.009),
+            LatLng(53.264, 14.326),
+            LatLng(48.236, 12.964),
+            LatLng(48.704, 7.932),
+            LatLng(51.096, 6.746),
+          ],
+        ),
         mapController: mapController,
         widgets: [buildFilterButtons()],
         polygonLayers: [

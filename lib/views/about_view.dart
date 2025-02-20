@@ -23,11 +23,12 @@ class AboutView extends StatelessWidget {
         padding: EdgeInsets.only(top: 10, bottom: 20),
         children: [
           Container(
-              decoration: BoxDecoration(shape: BoxShape.circle),
-              child: Image(
-                height: 180,
-                image: AssetImage('assets/app_icon/app_icon.png'),
-              )),
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: Image(
+              height: 180,
+              image: AssetImage('assets/app_icon/app_icon.png'),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(bottom: 10, top: 5),
             child: Center(
@@ -62,8 +63,10 @@ class AboutView extends StatelessWidget {
               (localizations.about_official_source),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text("https://warnung.bund.de/meldungen",
-                style: theme.textTheme.bodyLarge),
+            subtitle: Text(
+              "https://warnung.bund.de/meldungen",
+              style: theme.textTheme.bodyLarge,
+            ),
             onTap: () =>
                 launchUrlInBrowser('https://warnung.bund.de/meldungen'),
           ),
@@ -188,17 +191,19 @@ class AboutView extends StatelessWidget {
             },
           ),
           ListTile(
-              leading: Icon(Icons.group_outlined),
-              title: Text(
-                localizations.about_contributors,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                localizations.about_contributors_subtitle,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              onTap: () => launchUrlInBrowser(
-                  'https://github.com/nucleus-ffm/foss_warn/blob/main/README.md#contributors')),
+            leading: Icon(Icons.group_outlined),
+            title: Text(
+              localizations.about_contributors,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              localizations.about_contributors_subtitle,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            onTap: () => launchUrlInBrowser(
+              'https://github.com/nucleus-ffm/foss_warn/blob/main/README.md#contributors',
+            ),
+          ),
           ListTile(
             leading: Icon(Icons.code_outlined),
             title: Text(

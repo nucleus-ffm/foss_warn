@@ -25,12 +25,13 @@ Future<void> legacyHandler() async {
       preferences.setBool("showWelcomeScreen", false);
       // show notification to get the users attention
       await NotificationService.showNotification(
-          id: 4,
-          title: "FOSS Warn needs your attention",
-          body:
-              "FOSS Warn has been updated to a new version and needs your attention",
-          payload: "",
-          channel: "other");
+        id: 4,
+        title: "FOSS Warn needs your attention",
+        body:
+            "FOSS Warn has been updated to a new version and needs your attention",
+        payload: "",
+        channel: "other",
+      );
     }
   } catch (e) {
     debugPrint("[legacyHandler] Error: ${e.toString()}");
@@ -62,13 +63,18 @@ Future<void> legacyHandler() async {
     } catch (e) {
       debugPrint("[legacyHandler] Error: ${e.toString()}");
       ErrorLogger.writeErrorLog(
-          "legacyhandler.dart", "migration from version < 32", e.toString());
+        "legacyhandler.dart",
+        "migration from version < 32",
+        e.toString(),
+      );
     }
   }
 
   if (successfullyUpdated) {
     // update version code to current version
     preferences.setInt(
-        "previousInstalledVersionCode", userPreferences.currentVersionCode);
+      "previousInstalledVersionCode",
+      userPreferences.currentVersionCode,
+    );
   }
 }

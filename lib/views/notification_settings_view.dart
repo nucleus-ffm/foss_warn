@@ -39,24 +39,25 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
               Container(
                 padding: settingsTileListPadding,
                 child: TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return WarningSeverityExplanation();
-                        },
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.info),
-                        const SizedBox(width: 10),
-                        Text(
-                          localizations
-                              .notification_settings_open_severity_explanation,
-                        ),
-                      ],
-                    )),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return WarningSeverityExplanation();
+                      },
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.info),
+                      const SizedBox(width: 10),
+                      Text(
+                        localizations
+                            .notification_settings_open_severity_explanation,
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               // generate the settings tiles

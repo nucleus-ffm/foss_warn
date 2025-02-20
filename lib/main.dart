@@ -78,7 +78,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   final List<Widget> _pages = <Widget>[
     AllWarningsView(),
     MyPlaces(),
-    MapView()
+    MapView(),
   ];
 
   @override
@@ -122,87 +122,92 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var updater = ref.read(updaterProvider);
 
     return Scaffold(
-        // set to false to prevent the widget from jumping after closing the keyboard
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text("FOSS Warn"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.sort),
-              tooltip: localizations.main_app_bar_action_sort_tooltip,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => SortByDialog(),
-                );
-                updater.updateReadStatusInList();
-              },
-            ),
-            IconButton(
-              onPressed: () {
-                for (Place p in myPlaceList) {
-                  p.markAllWarningsAsRead(ref);
-                }
-                final snackBar = SnackBar(
-                  content: Text(
-                    localizations
-                        .main_app_bar_tooltip_mark_all_warnings_as_read,
-                  ),
-                );
-
-                // Find the ScaffoldMessenger in the widget tree
-                // and use it to show a SnackBar.
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              icon: Icon(Icons.mark_chat_read),
-              tooltip:
+      // set to false to prevent the widget from jumping after closing the keyboard
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text("FOSS Warn"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.sort),
+            tooltip: localizations.main_app_bar_action_sort_tooltip,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => SortByDialog(),
+              );
+              updater.updateReadStatusInList();
+            },
+          ),
+          IconButton(
+            onPressed: () {
+              for (Place p in myPlaceList) {
+                p.markAllWarningsAsRead(ref);
+              }
+              final snackBar = SnackBar(
+                content: Text(
                   localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
-            ),
-            PopupMenuButton(
-                icon: Icon(Icons.more_vert),
-                onSelected: (result) {
-                  switch (result) {
-                    case 0:
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Settings()),
-                      );
-                      break;
-                    case 1:
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AboutView()),
-                      );
-                      break;
-                  }
-                },
-                itemBuilder: (context) => <PopupMenuEntry>[
-                      PopupMenuItem(
-                          value: 0,
-                          child: Text(localizations.main_dot_menu_settings)),
-                      PopupMenuItem(
-                          value: 1,
-                          child: Text(localizations.main_dot_menu_about))
-                    ])
-          ],
-        ),
-        bottomNavigationBar: NavigationBar(
-          destinations: <NavigationDestination>[
-            NavigationDestination(
-                icon: Icon(Icons.warning),
-                label: localizations.main_nav_bar_all_warnings),
-            NavigationDestination(
-                icon: Icon(Icons.place),
-                label: localizations.main_nav_bar_my_places),
-            NavigationDestination(icon: Icon(Icons.map), label: "Map")
-          ],
-          onDestinationSelected: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          selectedIndex: _selectedIndex,
-        ),
-        body: _pages.elementAt(_selectedIndex));
+                ),
+              );
+
+              // Find the ScaffoldMessenger in the widget tree
+              // and use it to show a SnackBar.
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
+            icon: Icon(Icons.mark_chat_read),
+            tooltip:
+                localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
+          ),
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            onSelected: (result) {
+              switch (result) {
+                case 0:
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Settings()),
+                  );
+                  break;
+                case 1:
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AboutView()),
+                  );
+                  break;
+              }
+            },
+            itemBuilder: (context) => <PopupMenuEntry>[
+              PopupMenuItem(
+                value: 0,
+                child: Text(localizations.main_dot_menu_settings),
+              ),
+              PopupMenuItem(
+                value: 1,
+                child: Text(localizations.main_dot_menu_about),
+              ),
+            ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: NavigationBar(
+        destinations: <NavigationDestination>[
+          NavigationDestination(
+            icon: Icon(Icons.warning),
+            label: localizations.main_nav_bar_all_warnings,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.place),
+            label: localizations.main_nav_bar_my_places,
+          ),
+          NavigationDestination(icon: Icon(Icons.map), label: "Map"),
+        ],
+        onDestinationSelected: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        selectedIndex: _selectedIndex,
+      ),
+      body: _pages.elementAt(_selectedIndex),
+    );
   }
 }

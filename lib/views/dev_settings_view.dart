@@ -86,12 +86,15 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(
-                    "${localizations.dev_settings_delete_list_of_read_warnings} & \n${localizations.dev_settings_delete_notification_list}"),
+                  "${localizations.dev_settings_delete_list_of_read_warnings} & \n${localizations.dev_settings_delete_notification_list}",
+                ),
                 subtitle: Text(
-                    "${localizations.dev_settings_delete_list_of_read_warnings_text} & \n${localizations.dev_settings_delete_notification_list_text}"),
+                  "${localizations.dev_settings_delete_list_of_read_warnings_text} & \n${localizations.dev_settings_delete_notification_list_text}",
+                ),
                 onTap: () {
                   debugPrint(
-                      "reset read and notification status for all warnings");
+                    "reset read and notification status for all warnings",
+                  );
                   for (Place p in myPlaceList) {
                     p.resetReadAndNotificationStatusForAllWarnings(ref);
                   }
@@ -130,7 +133,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 contentPadding: _settingsTileListPadding,
                 title: Text("Systeminformationen zur Fehlerbehebung sammeln"),
                 subtitle: Text(
-                    "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet."),
+                  "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet.",
+                ),
                 onTap: () {
                   debugPrint("Systeminformationen sammeln");
                   showDialog(
@@ -188,13 +192,14 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 contentPadding: _settingsTileListPadding,
                 title: Text("Max size of bounding box for a subscription"),
                 subtitle: Text(
-                    "select the max size of bounding box for a subscription"),
+                  "select the max size of bounding box for a subscription",
+                ),
                 trailing: SizedBox(
                   width: 100,
                   child: TextField(
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
+                      FilteringTextInputFormatter.digitsOnly,
                     ],
                     controller: maxSizeOfSubscriptionBoundingBox,
                     onChanged: (value) {

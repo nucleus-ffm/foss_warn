@@ -6,10 +6,11 @@ import '../widgets/warning_widget.dart';
 class AlertUpdateThreadView extends StatefulWidget {
   final WarnMessage latestAlert;
   final List<WarnMessage> previousNowUpdatedAlerts;
-  const AlertUpdateThreadView(
-      {super.key,
-      required this.latestAlert,
-      required this.previousNowUpdatedAlerts});
+  const AlertUpdateThreadView({
+    super.key,
+    required this.latestAlert,
+    required this.previousNowUpdatedAlerts,
+  });
 
   @override
   State<AlertUpdateThreadView> createState() => _AlertUpdateThreadViewState();
@@ -27,7 +28,9 @@ class _AlertUpdateThreadViewState extends State<AlertUpdateThreadView> {
           children: [
             Text("latest version of the alert"),
             WarningWidget(
-                warnMessage: widget.latestAlert, isMyPlaceWarning: true),
+              warnMessage: widget.latestAlert,
+              isMyPlaceWarning: true,
+            ),
             SizedBox(
               height: 10,
             ),
@@ -35,10 +38,12 @@ class _AlertUpdateThreadViewState extends State<AlertUpdateThreadView> {
             SizedBox(
               height: 10,
             ),
-            ...widget.previousNowUpdatedAlerts.map((element) => WarningWidget(
-                  warnMessage: element,
-                  isMyPlaceWarning: true,
-                )),
+            ...widget.previousNowUpdatedAlerts.map(
+              (element) => WarningWidget(
+                warnMessage: element,
+                isMyPlaceWarning: true,
+              ),
+            ),
           ],
         ),
       ),

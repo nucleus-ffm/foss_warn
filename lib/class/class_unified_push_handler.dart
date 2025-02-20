@@ -25,7 +25,10 @@ class UnifiedPushHandler {
   static void onRegistrationFailed(String instance) {
     // @todo error handling
     ErrorLogger.writeErrorLog(
-        "class_unifiedPushHandler", "UnifiedPush registration failed", "");
+      "class_unifiedPushHandler",
+      "UnifiedPush registration failed",
+      "",
+    );
     debugPrint("Registration failed");
   }
 
@@ -83,13 +86,13 @@ class UnifiedPushHandler {
           userPreferences
               .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
           [
-            featureAndroidBytesMessage
+            featureAndroidBytesMessage,
           ] // Optional String Array with required features
           );
     } else {
       // Get a list of distributors that are available
       List<String> distributors = await UnifiedPush.getDistributors([
-        featureAndroidBytesMessage
+        featureAndroidBytesMessage,
       ] // Optionnal String Array with required features
           );
 
@@ -116,23 +119,28 @@ class UnifiedPushHandler {
           userPreferences
               .unifiedPushInstance, // optional String, to get multiple endpoints (one per instance)
           [
-            featureAndroidBytesMessage
+            featureAndroidBytesMessage,
           ] // Optional String Array with required features
           );
     }
 
     debugPrint(
-        "wait for registration state=${userPreferences.unifiedPushRegistered}");
+      "wait for registration state=${userPreferences.unifiedPushRegistered}",
+    );
     // wait for the registration to finish
     if (!userPreferences.unifiedPushRegistered) {
       await Future.doWhile(() async {
         await Future.delayed(Duration(microseconds: 1));
         return !userPreferences.unifiedPushRegistered;
-      }).timeout(Duration(seconds: 20), onTimeout: () {
-        debugPrint(
-            "Timeout waiting for unifiedPushRegistered to be set to true.");
-        return;
-      });
+      }).timeout(
+        Duration(seconds: 20),
+        onTimeout: () {
+          debugPrint(
+            "Timeout waiting for unifiedPushRegistered to be set to true.",
+          );
+          return;
+        },
+      );
     }
   }
 }

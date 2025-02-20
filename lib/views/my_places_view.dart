@@ -95,12 +95,15 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
               ? SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Padding(
-                      padding: const EdgeInsets.only(bottom: 65),
-                      child: Column(children: [
+                    padding: const EdgeInsets.only(bottom: 65),
+                    child: Column(
+                      children: [
                         ConnectionError(),
                         ...myPlaceList
                             .map((place) => MyPlaceWidget(myPlace: place)),
-                      ])),
+                      ],
+                    ),
+                  ),
                 )
               : Column(
                   children: [
@@ -139,8 +142,8 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          AddMyPlaceWithMapView()), //AddMyPlaceView
+                    builder: (context) => AddMyPlaceWithMapView(),
+                  ), //AddMyPlaceView
                 );
               },
               child: Icon(Icons.add),

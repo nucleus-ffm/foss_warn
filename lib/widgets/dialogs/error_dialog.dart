@@ -50,7 +50,8 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                      "write an E-Mail to: foss_warn@posteo.de"), // @toto translate error_dialog_text_instructions_text
+                    "write an E-Mail to: foss_warn@posteo.de",
+                  ), // @toto translate error_dialog_text_instructions_text
                   Text("or open an Github Issue"),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -102,18 +103,24 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
-                  child: Text("copy", //@todo translate
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary)),
+                  child: Text(
+                    "copy", //@todo translate
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
                     updater.updateView();
                     Navigator.of(context).pop();
                   },
-                  child: Text("close", //@todo translate
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary)),
+                  child: Text(
+                    "close", //@todo translate
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
                 ),
               ],
             );

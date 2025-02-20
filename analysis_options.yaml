@@ -12,6 +12,7 @@ include: package:flutter_lints/flutter.yaml
 linter:
   rules:
     prefer_single_quotes: false
+    require_trailing_commas: true
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

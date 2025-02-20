@@ -6,8 +6,10 @@ import '../class/class_notification_preferences.dart';
 
 class NotificationPreferencesListTileWidget extends StatefulWidget {
   final NotificationPreferences notificationPreferences;
-  const NotificationPreferencesListTileWidget(
-      {super.key, required this.notificationPreferences});
+  const NotificationPreferencesListTileWidget({
+    super.key,
+    required this.notificationPreferences,
+  });
 
   @override
   State<NotificationPreferencesListTileWidget> createState() =>
@@ -65,13 +67,16 @@ class _NotificationPreferencesListTileWidgetState
                       Flexible(
                         child: Slider(
                           label: getLabelForWarningSeverity(
-                              Severity.getIndexFromSeverity(widget
-                                  .notificationPreferences.notificationLevel)),
+                            Severity.getIndexFromSeverity(
+                              widget.notificationPreferences.notificationLevel,
+                            ),
+                          ),
                           divisions: 3,
                           min: 0,
                           max: 3,
                           value: Severity.getIndexFromSeverity(
-                              widget.notificationPreferences.notificationLevel),
+                            widget.notificationPreferences.notificationLevel,
+                          ),
                           onChanged: (value) {
                             setState(
                               () {
@@ -118,7 +123,7 @@ class _NotificationPreferencesListTileWidgetState
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ],

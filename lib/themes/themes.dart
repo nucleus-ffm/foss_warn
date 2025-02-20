@@ -8,7 +8,10 @@ final greenLightTheme = ThemeData(
   textTheme: TextTheme(
     displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
     displayMedium: TextStyle(
-        fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
@@ -19,11 +22,15 @@ final orangeLightTheme = ThemeData(
   brightness: Brightness.light,
   colorSchemeSeed: Colors.orange,
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final purpleLightTheme = ThemeData(
@@ -31,11 +38,15 @@ final purpleLightTheme = ThemeData(
   brightness: Brightness.light,
   colorSchemeSeed: Colors.purple,
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final blueLightTheme = ThemeData(
@@ -43,11 +54,15 @@ final blueLightTheme = ThemeData(
   brightness: Brightness.light,
   colorSchemeSeed: Colors.blue[500],
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final yellowLightTheme = ThemeData(
@@ -55,11 +70,15 @@ final yellowLightTheme = ThemeData(
   brightness: Brightness.light,
   colorSchemeSeed: Colors.yellow,
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final indigoLightTheme = ThemeData(
@@ -67,11 +86,15 @@ final indigoLightTheme = ThemeData(
   brightness: Brightness.light,
   colorSchemeSeed: Colors.indigo,
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 // ---------- dark theme ------------//
@@ -82,11 +105,15 @@ final greenDarkTheme = ThemeData(
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.green[900],
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 // original green theme but dark
@@ -95,11 +122,15 @@ final orangeDarkTheme = ThemeData(
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.orange[900],
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final purpleDarkTheme = ThemeData(
@@ -107,11 +138,15 @@ final purpleDarkTheme = ThemeData(
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.purple[900],
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final yellowDarkTheme = ThemeData(
@@ -119,11 +154,15 @@ final yellowDarkTheme = ThemeData(
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.yellow,
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final blueDarkTheme = ThemeData(
@@ -131,11 +170,15 @@ final blueDarkTheme = ThemeData(
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.blue,
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );
 
 final greyDarkTheme = ThemeData(
@@ -143,9 +186,13 @@ final greyDarkTheme = ThemeData(
   brightness: Brightness.dark,
   colorSchemeSeed: Colors.grey,
   textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(
-          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
-      displaySmall: TextStyle(fontSize: 14.0, color: Colors.white)),
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
 );

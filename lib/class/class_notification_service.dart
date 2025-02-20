@@ -17,44 +17,46 @@ class NotificationService {
 
   static Future _notificationsDetails(String channel) async {
     return NotificationDetails(
-        android: AndroidNotificationDetails(
-          'de.nucleus.foss_warn.notifications_${channel.trim().toLowerCase()}',
-          // TODO(Nucleus): find solution to translate this
-          "Warnstufe: ${Severity.translateWarningSeverity(channel)}", // ignore: deprecated_member_use_from_same_package
-          groupKey: "FossWarnWarnings",
-          category: AndroidNotificationCategory.message,
-          priority: Priority.max,
+      android: AndroidNotificationDetails(
+        'de.nucleus.foss_warn.notifications_${channel.trim().toLowerCase()}',
+        // TODO(Nucleus): find solution to translate this
+        "Warnstufe: ${Severity.translateWarningSeverity(channel)}", // ignore: deprecated_member_use_from_same_package
+        groupKey: "FossWarnWarnings",
+        category: AndroidNotificationCategory.message,
+        priority: Priority.max,
 
-          // enable multiline notification
-          styleInformation: BigTextStyleInformation(''),
-          color: Colors.red, // makes the icon red,
-          ledColor: Colors.red,
-          ledOffMs: 100,
-          ledOnMs: 100,
-        ),
-        iOS: DarwinNotificationDetails());
+        // enable multiline notification
+        styleInformation: BigTextStyleInformation(''),
+        color: Colors.red, // makes the icon red,
+        ledColor: Colors.red,
+        ledOffMs: 100,
+        ledOnMs: 100,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
   }
 
   static Future _statusNotificationsDetails() async {
     return NotificationDetails(
-        android: AndroidNotificationDetails(
-          'de.nucleus.foss_warn.notifications_state',
-          'Statusanzeige',
-          channelDescription: 'Status der Hintergrund Updates',
-          groupKey: "FossWarnService",
-          category: AndroidNotificationCategory.service,
-          importance: Importance.low,
-          priority: Priority.min,
-          playSound: false,
-          channelShowBadge: false,
-          ongoing: true, // to prevent canceling
+      android: AndroidNotificationDetails(
+        'de.nucleus.foss_warn.notifications_state',
+        'Statusanzeige',
+        channelDescription: 'Status der Hintergrund Updates',
+        groupKey: "FossWarnService",
+        category: AndroidNotificationCategory.service,
+        importance: Importance.low,
+        priority: Priority.min,
+        playSound: false,
+        channelShowBadge: false,
+        ongoing: true, // to prevent canceling
 
-          //@TODO: show an other icon for status notification
-          //enable multiline notification
-          styleInformation: BigTextStyleInformation(''),
-          color: Colors.green, // makes the icon green,
-        ),
-        iOS: DarwinNotificationDetails());
+        //@TODO: show an other icon for status notification
+        //enable multiline notification
+        styleInformation: BigTextStyleInformation(''),
+        color: Colors.green, // makes the icon green,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
   }
 
   // show a notification // with named parameters
@@ -92,25 +94,30 @@ class NotificationService {
 
   static void showGroupNotification() async {
     NotificationDetails notificationDetails = NotificationDetails(
-        android: AndroidNotificationDetails(
-          'foss_warn', 'Benachrichtigungen',
-          channelDescription: 'FOSS Warn Benachrichtigungen',
-          groupKey: "FossWarnWarnings",
-          setAsGroupSummary: true,
-          importance: Importance.max,
-          priority: Priority.max,
-          playSound: false,
+      android: AndroidNotificationDetails(
+        'foss_warn', 'Benachrichtigungen',
+        channelDescription: 'FOSS Warn Benachrichtigungen',
+        groupKey: "FossWarnWarnings",
+        setAsGroupSummary: true,
+        importance: Importance.max,
+        priority: Priority.max,
+        playSound: false,
 
-          //enable multiline notification
-          styleInformation: BigTextStyleInformation(''),
-          color: Colors.red, // makes the icon red,
-          ledColor: Colors.red,
-          ledOffMs: 100,
-          ledOnMs: 100,
-        ),
-        iOS: DarwinNotificationDetails());
-    await _flutterLocalNotificationsPlugin.show(0, "Warnungen",
-        "Es gibt für mehrere Orte Warnungen", notificationDetails);
+        //enable multiline notification
+        styleInformation: BigTextStyleInformation(''),
+        color: Colors.red, // makes the icon red,
+        ledColor: Colors.red,
+        ledOffMs: 100,
+        ledOnMs: 100,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      "Warnungen",
+      "Es gibt für mehrere Orte Warnungen",
+      notificationDetails,
+    );
   }
 
   Future<void> init() async {
@@ -127,9 +134,10 @@ class NotificationService {
 
     final InitializationSettings initializationSettings =
         InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: null);
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+      macOS: null,
+    );
 
     final androidNotificationPlugin =
         _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
@@ -144,86 +152,101 @@ class NotificationService {
       // init the different notifications channels
       try {
         await androidNotificationPlugin.createNotificationChannelGroup(
-            AndroidNotificationChannelGroup(
-                "de.nucleus.foss_warn.notifications_emergency_information",
-                "Gefahreninformationen",
-                description: "Benachrichtigungen zu Gefahrenmeldungen"));
+          AndroidNotificationChannelGroup(
+            "de.nucleus.foss_warn.notifications_emergency_information",
+            "Gefahreninformationen",
+            description: "Benachrichtigungen zu Gefahrenmeldungen",
+          ),
+        );
 
         await androidNotificationPlugin.createNotificationChannelGroup(
-            AndroidNotificationChannelGroup(
-                "de.nucleus.foss_warn.notifications_other", "Sonstiges",
-                description: "Sonstige Benachrichtigungen"));
+          AndroidNotificationChannelGroup(
+            "de.nucleus.foss_warn.notifications_other",
+            "Sonstiges",
+            description: "Sonstige Benachrichtigungen",
+          ),
+        );
 
-        await androidNotificationPlugin
-            .createNotificationChannel(AndroidNotificationChannel(
-          "de.nucleus.foss_warn.notifications_minor",
-          "Warnstufe: Gering",
-          description:
-              "Warnung vor einer Beeinträchtigung des normalen Tagesablaufs.",
-          groupId: "de.nucleus.foss_warn.notifications_emergency_information",
-          importance: Importance.max,
-        ));
+        await androidNotificationPlugin.createNotificationChannel(
+          AndroidNotificationChannel(
+            "de.nucleus.foss_warn.notifications_minor",
+            "Warnstufe: Gering",
+            description:
+                "Warnung vor einer Beeinträchtigung des normalen Tagesablaufs.",
+            groupId: "de.nucleus.foss_warn.notifications_emergency_information",
+            importance: Importance.max,
+          ),
+        );
 
-        await androidNotificationPlugin
-            .createNotificationChannel(AndroidNotificationChannel(
-          "de.nucleus.foss_warn.notifications_moderate",
-          "Warnstufe: Moderat",
-          description:
-              "Eine Warnung vor einer starken Beeinträchtigung des normalen Tagesablaufs.",
-          groupId: "de.nucleus.foss_warn.notifications_emergency_information",
-          importance: Importance.max,
-        ));
+        await androidNotificationPlugin.createNotificationChannel(
+          AndroidNotificationChannel(
+            "de.nucleus.foss_warn.notifications_moderate",
+            "Warnstufe: Moderat",
+            description:
+                "Eine Warnung vor einer starken Beeinträchtigung des normalen Tagesablaufs.",
+            groupId: "de.nucleus.foss_warn.notifications_emergency_information",
+            importance: Importance.max,
+          ),
+        );
 
-        await androidNotificationPlugin
-            .createNotificationChannel(AndroidNotificationChannel(
-          "de.nucleus.foss_warn.notifications_severe",
-          "Warnstufe: Schwer",
-          description:
-              "Eine Warnung vor einer Gefahr, die ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur beeinträchtigen kann.",
-          groupId: "de.nucleus.foss_warn.notifications_emergency_information",
-          importance: Importance.max,
-        ));
+        await androidNotificationPlugin.createNotificationChannel(
+          AndroidNotificationChannel(
+            "de.nucleus.foss_warn.notifications_severe",
+            "Warnstufe: Schwer",
+            description:
+                "Eine Warnung vor einer Gefahr, die ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur beeinträchtigen kann.",
+            groupId: "de.nucleus.foss_warn.notifications_emergency_information",
+            importance: Importance.max,
+          ),
+        );
 
-        await androidNotificationPlugin
-            .createNotificationChannel(AndroidNotificationChannel(
-          "de.nucleus.foss_warn.notifications_extreme",
-          "Warnstufe: Extrem",
-          description:
-              "Eine Warnung vor einer Gefahr, die sich kurzfristig signifikant auf ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur auswirken kann.",
-          groupId: "de.nucleus.foss_warn.notifications_emergency_information",
-          importance: Importance.max,
-        ));
+        await androidNotificationPlugin.createNotificationChannel(
+          AndroidNotificationChannel(
+            "de.nucleus.foss_warn.notifications_extreme",
+            "Warnstufe: Extrem",
+            description:
+                "Eine Warnung vor einer Gefahr, die sich kurzfristig signifikant auf ihre Gesundheit, ihr Eigentum und/oder öffentliche Infrastruktur auswirken kann.",
+            groupId: "de.nucleus.foss_warn.notifications_emergency_information",
+            importance: Importance.max,
+          ),
+        );
 
-        await androidNotificationPlugin
-            .createNotificationChannel(AndroidNotificationChannel(
-          "de.nucleus.foss_warn.notifications_update",
-          "Update",
-          description: "Ein Update für eine bereits erhaltene Warnung.",
-          groupId: "de.nucleus.foss_warn.notifications_emergency_information",
-          importance: Importance.low,
-        ));
+        await androidNotificationPlugin.createNotificationChannel(
+          AndroidNotificationChannel(
+            "de.nucleus.foss_warn.notifications_update",
+            "Update",
+            description: "Ein Update für eine bereits erhaltene Warnung.",
+            groupId: "de.nucleus.foss_warn.notifications_emergency_information",
+            importance: Importance.low,
+          ),
+        );
 
-        await androidNotificationPlugin
-            .createNotificationChannel(AndroidNotificationChannel(
-          "de.nucleus.foss_warn.notifications_state",
-          "Statusanzeige",
-          description: "Zeit den aktuellen Status der Hintergrundupdates an.",
-          groupId: "de.nucleus.foss_warn.notifications_other",
-          importance: Importance.low,
-        ));
+        await androidNotificationPlugin.createNotificationChannel(
+          AndroidNotificationChannel(
+            "de.nucleus.foss_warn.notifications_state",
+            "Statusanzeige",
+            description: "Zeit den aktuellen Status der Hintergrundupdates an.",
+            groupId: "de.nucleus.foss_warn.notifications_other",
+            importance: Importance.low,
+          ),
+        );
 
-        await androidNotificationPlugin
-            .createNotificationChannel(AndroidNotificationChannel(
-          "de.nucleus.foss_warn.notifications_other",
-          "Sonstiges",
-          description: "Sonstige Benachrichtigungen",
-          groupId: "de.nucleus.foss_warn.notifications_other",
-          importance: Importance.defaultImportance,
-        ));
+        await androidNotificationPlugin.createNotificationChannel(
+          AndroidNotificationChannel(
+            "de.nucleus.foss_warn.notifications_other",
+            "Sonstiges",
+            description: "Sonstige Benachrichtigungen",
+            groupId: "de.nucleus.foss_warn.notifications_other",
+            importance: Importance.defaultImportance,
+          ),
+        );
       } catch (e) {
         debugPrint("Error while creating notification channels: $e");
-        ErrorLogger.writeErrorLog("class_NotificationService.dart",
-            "Error while creating notification channels", e.toString());
+        ErrorLogger.writeErrorLog(
+          "class_NotificationService.dart",
+          "Error while creating notification channels",
+          e.toString(),
+        );
       }
     }
 
@@ -236,9 +259,10 @@ class NotificationService {
       onNotification.add(details.notificationResponse!.payload);
     }
 
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            onDidReceiveNotificationResponse); //onSelectNotification
+    await _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+    ); //onSelectNotification
 
     cleanUpNotificationChannels();
   }
@@ -308,7 +332,8 @@ class NotificationService {
   }
 
   Future onDidReceiveNotificationResponse(
-      NotificationResponse? notificationResponse) async {
+    NotificationResponse? notificationResponse,
+  ) async {
     debugPrint("Notification clicked");
     debugPrint(notificationResponse?.payload);
     onNotification.add(notificationResponse?.payload);
@@ -328,8 +353,10 @@ class NotificationService {
             ?.getActiveNotifications();
 
     if (activeNotifications!.length == 2 &&
-        activeNotifications.any((element) =>
-            element.channelId == "de.nucleus.foss_warn.notifications_state")) {
+        activeNotifications.any(
+          (element) =>
+              element.channelId == "de.nucleus.foss_warn.notifications_state",
+        )) {
       if (activeNotifications[0].id == 0) {
         // summery notification has id 0
         cancelOneNotification(0);

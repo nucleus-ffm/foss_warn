@@ -102,25 +102,36 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                   .showAllWarnings // if warnings that are not in MyPlaces shown
               ? SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
-                  child: Column(children: [
-                    ConnectionError(),
-                    mapWarningsList.isEmpty ? NoWarningsInList() : SizedBox(),
-                    ...mapWarningsList.map((warnMessage) => WarningWidget(
-                        warnMessage: warnMessage, isMyPlaceWarning: false)),
-                  ]))
+                  child: Column(
+                    children: [
+                      ConnectionError(),
+                      mapWarningsList.isEmpty ? NoWarningsInList() : SizedBox(),
+                      ...mapWarningsList.map(
+                        (warnMessage) => WarningWidget(
+                          warnMessage: warnMessage,
+                          isMyPlaceWarning: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               // else load only the warnings for my place
               : loadOnlyWarningsForMyPlaces() //
                       .isNotEmpty // check if there are warnings for myPlaces
                   ? SingleChildScrollView(
                       physics: AlwaysScrollableScrollPhysics(),
-                      child: Column(mainAxisSize: MainAxisSize.max, children: [
-                        ConnectionError(),
-                        ...loadOnlyWarningsForMyPlaces()
-                            .map((warnMessage) => WarningWidget(
-                                  warnMessage: warnMessage,
-                                  isMyPlaceWarning: true,
-                                )),
-                      ]),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          ConnectionError(),
+                          ...loadOnlyWarningsForMyPlaces().map(
+                            (warnMessage) => WarningWidget(
+                              warnMessage: warnMessage,
+                              isMyPlaceWarning: true,
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : Column(
                       // else show a screen with
@@ -149,8 +160,10 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                                     color:
                                         Theme.of(context).colorScheme.secondary,
                                   ),
-                                  Text(localizations
-                                      .all_warnings_everything_ok_text),
+                                  Text(
+                                    localizations
+                                        .all_warnings_everything_ok_text,
+                                  ),
                                   SizedBox(height: 10),
                                   TextButton(
                                     onPressed: () {
@@ -168,7 +181,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                                         color: theme.colorScheme.onSecondary,
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -208,7 +221,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
     );

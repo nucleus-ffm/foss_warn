@@ -142,7 +142,7 @@ class Info {
         'instruction': instruction,
         'area': area,
         'contact': contact,
-        'web': web
+        'web': web,
       };
 
   /// create a list of Info elements from the json [data]

@@ -43,9 +43,10 @@ class _MessageTypeExplanationState extends State<MessageTypeExplanation> {
                 ),
                 TextSpan(text: '\n\n'),
                 TextSpan(
-                    text:
-                        "${localizations.explanation_warning_level_all_clear}: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                  text:
+                      "${localizations.explanation_warning_level_all_clear}: ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 TextSpan(
                   text: localizations.explanation_warning_level_all_clear_text,
                 ),

@@ -69,12 +69,15 @@ class Place {
         'boundingBox': boundingBox,
         'subscriptionId': subscriptionId,
         'warnings': jsonEncode(_warnings),
-        'eTag': eTag
+        'eTag': eTag,
       };
     } catch (e) {
       debugPrint("Error FPASPlace to json: $e");
       ErrorLogger.writeErrorLog(
-          "class_FPASPlace.dart", "Can not serialize FPASPlace", e.toString());
+        "class_FPASPlace.dart",
+        "Can not serialize FPASPlace",
+        e.toString(),
+      );
       return {};
     }
   }
@@ -127,25 +130,27 @@ class Place {
         myWarnMessage.notified = true;
 
         await NotificationService.showNotification(
-            // generate from the warning in the List the notification id
-            // because the warning identifier is no int, we have to generate a hash code
-            id: myWarnMessage.identifier.hashCode,
-            title: "Neue Warnung für $_name",
-            body: myWarnMessage.info[0].headline,
-            payload: _name,
-            channel: myWarnMessage.info[0].severity.name);
+          // generate from the warning in the List the notification id
+          // because the warning identifier is no int, we have to generate a hash code
+          id: myWarnMessage.identifier.hashCode,
+          title: "Neue Warnung für $_name",
+          body: myWarnMessage.info[0].headline,
+          payload: _name,
+          channel: myWarnMessage.info[0].severity.name,
+        );
       } else if (myWarnMessage.isUpdateOfAlreadyNotifiedWarning &&
           !myWarnMessage.notified &&
           !myWarnMessage.read) {
         myWarnMessage.notified = true;
         await await NotificationService.showNotification(
-            // generate from the warning in the List the notification id
-            // because the warning identifier is no int, we have to generate a hash code
-            id: myWarnMessage.identifier.hashCode,
-            title: "Update einer Warnung für $_name",
-            body: myWarnMessage.info[0].headline,
-            payload: _name,
-            channel: "de.nucleus.foss_warn.notifications_update");
+          // generate from the warning in the List the notification id
+          // because the warning identifier is no int, we have to generate a hash code
+          id: myWarnMessage.identifier.hashCode,
+          title: "Update einer Warnung für $_name",
+          body: myWarnMessage.info[0].headline,
+          payload: _name,
+          channel: "de.nucleus.foss_warn.notifications_update",
+        );
       } else {
         debugPrint("there is no warning or the warning is not in "
             "the notificationSettingsImportance list");
@@ -159,7 +164,8 @@ class Place {
     for (WarnMessage myWarnMessage in _warnings) {
       myWarnMessage.read = true;
       NotificationService.cancelOneNotification(
-          myWarnMessage.identifier.hashCode);
+        myWarnMessage.identifier.hashCode,
+      );
     }
     final updater = ref.read(updaterProvider);
     updater.updateReadStatusInList();
@@ -192,6 +198,7 @@ class Place {
   /// Minor (3)        | Moderate (2)         | 2 >= 3 => false
   bool _checkIfEventShouldBeNotified(Severity severity) =>
       Severity.getIndexFromSeverity(
-          userPreferences.notificationSourceSetting.notificationLevel) >=
+        userPreferences.notificationSourceSetting.notificationLevel,
+      ) >=
       Severity.getIndexFromSeverity(severity);
 }

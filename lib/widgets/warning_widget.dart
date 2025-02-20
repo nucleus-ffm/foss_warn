@@ -21,13 +21,13 @@ class WarningWidget extends ConsumerWidget {
   final List<WarnMessage>? _updateThread;
   final WarnMessage _warnMessage;
   final bool _isMyPlaceWarning;
-  const WarningWidget(
-      {super.key,
-      required WarnMessage warnMessage,
-      required bool isMyPlaceWarning,
-      Place? place,
-      List<WarnMessage>? updateThread})
-      : _warnMessage = warnMessage,
+  const WarningWidget({
+    super.key,
+    required WarnMessage warnMessage,
+    required bool isMyPlaceWarning,
+    Place? place,
+    List<WarnMessage>? updateThread,
+  })  : _warnMessage = warnMessage,
         _place = place,
         _updateThread = updateThread,
         _isMyPlaceWarning = isMyPlaceWarning;
@@ -66,16 +66,18 @@ class WarningWidget extends ConsumerWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailScreen(
-                        warnMessage: _warnMessage,
-                        place: _place,
-                      )),
+                builder: (context) => DetailScreen(
+                  warnMessage: _warnMessage,
+                  place: _place,
+                ),
+              ),
             ).then((value) => updatePrevView());
           } catch (e) {
             ErrorLogger.writeErrorLog(
-                "WarningWidget.dart",
-                "Error of Type: ${e.runtimeType} while displaying alert: ${_warnMessage.identifier}",
-                e.toString());
+              "WarningWidget.dart",
+              "Error of Type: ${e.runtimeType} while displaying alert: ${_warnMessage.identifier}",
+              e.toString(),
+            );
             appState.error = true;
           }
         },
@@ -106,10 +108,11 @@ class WarningWidget extends ConsumerWidget {
                             },
                             child: Text(
                               translateWarningCategory(
-                                  _warnMessage.info[0].category.isNotEmpty
-                                      ? _warnMessage.info[0].category[0].name
-                                      : "",
-                                  context), //@todo display more then one category if available
+                                _warnMessage.info[0].category.isNotEmpty
+                                    ? _warnMessage.info[0].category[0].name
+                                    : "",
+                                context,
+                              ), //@todo display more then one category if available
                               style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ),
@@ -132,7 +135,9 @@ class WarningWidget extends ConsumerWidget {
                             },
                             child: Text(
                               translateWarningType(
-                                  _warnMessage.messageType, context),
+                                _warnMessage.messageType,
+                                context,
+                              ),
                               style:
                                   TextStyle(fontSize: 12, color: Colors.white),
                             ),
@@ -153,7 +158,7 @@ class WarningWidget extends ConsumerWidget {
                               style: TextStyle(fontSize: 12),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     const SizedBox(height: 5),
@@ -174,7 +179,7 @@ class WarningWidget extends ConsumerWidget {
                           const SizedBox(width: 20),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -185,10 +190,11 @@ class WarningWidget extends ConsumerWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailScreen(
-                                  warnMessage: _warnMessage,
-                                  place: _place,
-                                )),
+                          builder: (context) => DetailScreen(
+                            warnMessage: _warnMessage,
+                            place: _place,
+                          ),
+                        ),
                       ).then((value) => updatePrevView());
                     },
                     icon: Icon(Icons.read_more),
@@ -203,14 +209,16 @@ class WarningWidget extends ConsumerWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AlertUpdateThreadView(
-                                        latestAlert: _updateThread[0],
-                                        previousNowUpdatedAlerts: _updateThread
-                                            .sublist(1, _updateThread.length),
-                                      )),
+                                builder: (context) => AlertUpdateThreadView(
+                                  latestAlert: _updateThread[0],
+                                  previousNowUpdatedAlerts: _updateThread
+                                      .sublist(1, _updateThread.length),
+                                ),
+                              ),
                             );
                           },
-                          icon: Icon(Icons.account_tree))
+                          icon: Icon(Icons.account_tree),
+                        )
                       : const SizedBox(),
                 ],
               ),
@@ -230,11 +238,12 @@ class WarningWidget extends ConsumerWidget {
 
     if (!_isMyPlaceWarning) {
       return IconButton(
-          onPressed: null,
-          icon: Icon(
-            Icons.warning_amber_outlined,
-            color: Colors.grey,
-          ));
+        onPressed: null,
+        icon: Icon(
+          Icons.warning_amber_outlined,
+          color: Colors.grey,
+        ),
+      );
     }
 
     return IconButton(
