@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/list_handler.dart';
@@ -19,7 +20,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../widgets/dialogs/warning_severity_explanation.dart';
 
-class DetailScreen extends StatefulWidget {
+class DetailScreen extends ConsumerStatefulWidget {
   final WarnMessage _warnMessage;
   final Place? _place;
   const DetailScreen({
@@ -30,10 +31,10 @@ class DetailScreen extends StatefulWidget {
         _place = place;
 
   @override
-  State<DetailScreen> createState() => _DetailScreenState();
+  ConsumerState<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
+class _DetailScreenState extends ConsumerState<DetailScreen> {
   bool _showMoreRegions = false;
   final MapController mapController = MapController();
 
@@ -281,15 +282,18 @@ class _DetailScreenState extends State<DetailScreen> {
     });
 
     // @todo hacky solution see warningWidget L265 for more info
+    var places = ref.read(myPlacesProvider);
     if (widget._place != null) {
-      myPlaceList
-          .firstWhere((e) => e.name == widget._place!.name)
-          .warnings
-          .firstWhere((e) => e.identifier == widget._warnMessage.identifier)
-          .read = widget._warnMessage.read;
+      var place = places.firstWhere((e) => e.name == widget._place!.name);
+      var warning = place.warnings
+          .firstWhere((e) => e.identifier == widget._warnMessage.identifier);
+      warning.read = widget._warnMessage.read;
+      place.warnings.updateEntry(warning);
+      places.updateEntry(place);
+      ref.read(myPlacesProvider.notifier).places = places;
     }
     // save places List to store new read state
-    saveMyPlacesList();
+    saveMyPlacesList(places);
     // cancel the notification
     NotificationService.cancelOneNotification(
       widget._warnMessage.identifier.hashCode,

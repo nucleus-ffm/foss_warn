@@ -4,12 +4,14 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/main.dart';
 
 import '../class/class_warn_message.dart';
-import 'list_handler.dart';
 import 'send_status_notification.dart';
 import 'save_and_load_shared_preferences.dart';
 
 /// call the FPAS api and load for myPlaces the warnings
-Future<void> callAPI({required AlertAPI alertApi}) async {
+Future<void> callAPI({
+  required AlertAPI alertApi,
+  required List<Place> places,
+}) async {
   bool successfullyFetched = true;
   String error = "";
   List<WarnMessage> tempWarnMessageList = [];
@@ -20,7 +22,7 @@ Future<void> callAPI({required AlertAPI alertApi}) async {
   await loadMyPlacesList();
 
   var placesWithWarningsList = <Place>[];
-  for (Place place in myPlaceList) {
+  for (Place place in places) {
     var alertIds =
         await alertApi.getAlerts(subscriptionId: place.subscriptionId);
     var warnings = await Future.wait([
@@ -66,7 +68,6 @@ Future<void> callAPI({required AlertAPI alertApi}) async {
     }
   }
 
-  myPlaceList = placesWithWarningsList;
   // update status notification if the user wants
   if (userPreferences.showStatusNotification) {
     if (error != "") {

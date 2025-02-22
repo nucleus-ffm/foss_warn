@@ -235,6 +235,7 @@ class WarningWidget extends ConsumerWidget {
 
   Widget _buildReadStateButton(WidgetRef ref) {
     var updater = ref.read(updaterProvider);
+    var places = ref.watch(myPlacesProvider);
 
     // do not show a clickable red/green button for non-my-place warnings
     // if _isMyPlaceWarning = true
@@ -257,15 +258,15 @@ class WarningWidget extends ConsumerWidget {
         // this is just a hacky solution to ensure the right data is in the
         // myPlacesList. We should try to find a cleaner solution in the future
         if (_place != null) {
-          myPlaceList
-              .firstWhere((e) => e.name == _place.name)
-              .warnings
-              .firstWhere((e) => e.identifier == _warnMessage.identifier)
-              .read = _warnMessage.read;
+          var place = places.firstWhere((e) => e.name == _place.name);
+          var warning = place.warnings
+              .firstWhere((e) => e.identifier == _warnMessage.identifier);
+          warning.read = _warnMessage.read;
+          place.warnings.updateEntry(warning);
         }
         updater.updateReadStatusInList();
         // save places list to store new read state
-        await saveMyPlacesList();
+        await saveMyPlacesList(places);
       },
       icon: _warnMessage.read
           ? const Icon(

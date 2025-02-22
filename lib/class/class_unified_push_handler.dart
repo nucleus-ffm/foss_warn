@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/services/api_handler.dart';
+import 'package:foss_warn/class/class_fpas_place.dart';
 
 import 'package:unifiedpush/constants.dart';
 import 'package:unifiedpush/unifiedpush.dart';
@@ -48,11 +49,12 @@ class UnifiedPushHandler {
   }
 
   /// callback function to handle notification from unifiedPush
-  static Future<bool> onMessage(
-    AlertAPI alertApi,
-    Uint8List message,
-    String instance,
-  ) async {
+  static Future<bool> onMessage({
+    required AlertAPI alertApi,
+    required Uint8List message,
+    required String instance,
+    required List<Place> myPlaces,
+  }) async {
     debugPrint("instance $instance");
     if (instance != userPreferences.unifiedPushInstance) {
       return false;
@@ -65,7 +67,7 @@ class UnifiedPushHandler {
     } else {
       checkForMyPlacesWarnings(
         alertApi: alertApi,
-        loadManually: true,
+        places: myPlaces,
       );
     }
     return true;

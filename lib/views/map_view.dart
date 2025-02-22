@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapView extends StatefulWidget {
+class MapView extends ConsumerStatefulWidget {
   const MapView({super.key});
 
   @override
-  State<MapView> createState() => _MapViewState();
+  ConsumerState<MapView> createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> {
+class _MapViewState extends ConsumerState<MapView> {
   Map<String, bool> filterChips = {
     "map_view_filter_chip_my_alerts": true,
     "map_view_filter_chip_all_alerts": false,
@@ -81,6 +83,8 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
+    var places = ref.watch(myPlacesProvider);
+
     return Scaffold(
       body: MapWidget(
         //vectorMapWidget
@@ -98,7 +102,7 @@ class _MapViewState extends State<MapView> {
         widgets: [buildFilterButtons()],
         polygonLayers: [
           ...filterChips["map_view_filter_chip_my_alerts"]!
-              ? MapWidget.createPolygonLayer()
+              ? MapWidget.createPolygonLayer(places)
               : [],
           ...filterChips["map_view_filter_chip_all_alerts"]!
               ? MapWidget.createPolygonsForMapWarning()

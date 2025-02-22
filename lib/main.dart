@@ -86,6 +86,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     super.initState();
 
+    var places = ref.read(myPlacesProvider);
+
     // init unified push
     UnifiedPush.initialize(
       onNewEndpoint: UnifiedPushHandler
@@ -95,13 +97,17 @@ class _HomeViewState extends ConsumerState<HomeView> {
       onUnregistered:
           UnifiedPushHandler.onUnregistered, // takes (String instance)
       onMessage: (message, instance) => UnifiedPushHandler.onMessage(
-        ref.read(alertApiProvider),
-        message,
-        instance,
+        alertApi: ref.read(alertApiProvider),
+        message: message,
+        instance: instance,
+        myPlaces: places,
       ), // takes (Uint8List message, String instance) in args
     );
 
-    loadMyPlacesList();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      ref.read(myPlacesProvider.notifier).places = await loadMyPlacesList();
+    });
+
     listenNotifications();
   }
 
@@ -121,6 +127,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var localizations = context.localizations;
 
     var updater = ref.read(updaterProvider);
+    var places = ref.watch(myPlacesProvider);
 
     return Scaffold(
       // set to false to prevent the widget from jumping after closing the keyboard
@@ -130,7 +137,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
         actions: [
           IconButton(
             icon: const Icon(Icons.sort),
-            tooltip: localizations.main_app_bar_action_sort_tooltip,
+            tooltip:
+                AppLocalizations.of(context)!.main_app_bar_action_sort_tooltip,
             onPressed: () {
               showDialog(
                 context: context,
@@ -141,12 +149,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ),
           IconButton(
             onPressed: () {
-              for (Place p in myPlaceList) {
+              for (Place p in places) {
                 p.markAllWarningsAsRead(ref);
               }
+
               final snackBar = SnackBar(
                 content: Text(
-                  localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
+                  AppLocalizations.of(context)!
+                      .main_app_bar_tooltip_mark_all_warnings_as_read,
                 ),
               );
 

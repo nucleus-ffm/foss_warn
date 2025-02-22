@@ -7,28 +7,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 
-import 'list_handler.dart';
-
 // My Places
-saveMyPlacesList() async {
+Future<void> saveMyPlacesList(List<Place> places) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("MyPlacesListAsJson", jsonEncode(myPlaceList));
+  preferences.setString("MyPlacesListAsJson", jsonEncode(places));
 }
 
-loadMyPlacesList() async {
+Future<List<Place>> loadMyPlacesList() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
 
   if (preferences.containsKey("MyPlacesListAsJson")) {
     List<dynamic> data =
         jsonDecode(preferences.getString("MyPlacesListAsJson")!);
-    myPlaceList.clear();
+
+    List<Place> newPlaces = [];
     for (int i = 0; i < data.length; i++) {
       debugPrint(data[i].toString());
       // FPAS Place
-      myPlaceList.add(Place.fromJson(data[i]));
+      newPlaces.add(Place.fromJson(data[i]));
     }
-    debugPrint(myPlaceList.toString());
+
+    return newPlaces;
   }
+
+  return [];
 }
 
 saveGeocodes(String jsonFile) async {
