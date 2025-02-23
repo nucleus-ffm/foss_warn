@@ -26,25 +26,6 @@ class Area {
       : description = json['areaDesc'],
         geoJson = json['geoJson'] ?? "";
 
-  Area.fromJsonWithAPIData(Map<String, dynamic> json, this.geoJson)
-      : description = json['areaDesc'];
-
-  /*
-  /// store color information about the polygons of the area
-  static   Map<String, dynamic> _geoJsonProperties(dynamic data) {
-    return {
-      'warnId': data['warnId'],
-      'areaId': data['areaId'],
-      'strokeColor': data['strokeColor'],
-      'strokeOpacity': data['strokeOpacity'],
-      'strokeWeight': data['strokeWeight'],
-      'fillColor': data['fillColor'],
-      'fillOpacity': data['fillOpacity'],
-      'zIndex': data['zIndex'],
-    };
-  }
-  }*/
-
   Map<String, dynamic> toJson() =>
       {'areaDesc': description, 'geoJson': geoJson};
 
@@ -54,17 +35,6 @@ class Area {
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
         result.add(Area.fromJson(data[i]));
-      }
-    }
-    return result;
-  }
-
-  /// create a list of area from the API Data
-  static List<Area> areaListFromJsonWithAPIData(var data, String geoJson) {
-    List<Area> result = [];
-    if (data != null) {
-      for (int i = 0; i < data.length; i++) {
-        result.add(Area.fromJsonWithAPIData(data[i], geoJson));
       }
     }
     return result;
