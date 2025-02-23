@@ -40,7 +40,7 @@ class WarningWidget extends ConsumerWidget {
 
     List<String> areaList = []; //@todo rename
 
-    updatePrevView() {
+    void updatePrevView() {
       updater.updateReadStatusInList();
     }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-selectUnifiedPushDistributorDialog(List<String> distributors) {
+Widget Function(BuildContext) selectUnifiedPushDistributorDialog(
+  List<String> distributors,
+) {
   return (BuildContext context) {
     return SimpleDialog(
       title: const Text('Select push distributor'),

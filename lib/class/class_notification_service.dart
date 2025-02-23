@@ -342,7 +342,7 @@ class NotificationService {
   }
 
   /// cancel one notification with the given id
-  static cancelOneNotification(id) async {
+  static Future<void> cancelOneNotification(id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
 
     // cancel summery notification if it is the last one
@@ -365,7 +365,7 @@ class NotificationService {
   }
 
   /// cancel all notifications
-  static cancelAllNotification() async {
+  static Future<void> cancelAllNotification() async {
     await _flutterLocalNotificationsPlugin.cancelAll();
   }
 }

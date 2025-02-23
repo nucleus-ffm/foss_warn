@@ -33,7 +33,7 @@ Future<List<Place>> loadMyPlacesList() async {
   return [];
 }
 
-saveGeocodes(String jsonFile) async {
+Future<void> saveGeocodes(String jsonFile) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   debugPrint("save geocodes");
   preferences.setString("geocodes", jsonFile);

@@ -53,13 +53,13 @@ class DouglasPeucker {
     }
   }
 
-  static getSquareDistance(List<double> point1, List<double> point2) {
+  static double getSquareDistance(List<double> point1, List<double> point2) {
     final double dx = point1[0] - point2[0];
     final double dy = point2[0] - point2[0];
-    return pow(dx, 2) + pow(dy, 2);
+    return pow(dx, 2) + pow(dy, 2) as double;
   }
 
-  static getSquareSegmentDistance(
+  static double getSquareSegmentDistance(
     List<double> p,
     List<double> p1,
     List<double> p2,
