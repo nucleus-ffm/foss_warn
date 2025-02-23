@@ -52,7 +52,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
       });
     }
 
-    void loadData() async {
+    Future<void> loadData() async {
       debugPrint("[allWarningsView] Load Data");
       var places = ref.read(myPlacesProvider);
       await callAPI(

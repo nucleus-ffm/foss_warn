@@ -423,7 +423,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
       );
     }
 
-    void shareWarning(
+    Future<void> shareWarning(
       BuildContext context,
       String shareText,
       String shareSubject,

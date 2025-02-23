@@ -74,7 +74,7 @@ class _VectorMapWidgetState extends State<VectorMapWidget> {
     _initStyle();
   }
 
-  void _initStyle() async {
+  Future<void> _initStyle() async {
     try {
       _style = await _readStyle();
     } catch (e, stack) {

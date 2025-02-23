@@ -42,7 +42,7 @@ class _IntroductionBatteryOptimizationSlideState
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (!mounted) return;
 
     if (state == AppLifecycleState.resumed) {

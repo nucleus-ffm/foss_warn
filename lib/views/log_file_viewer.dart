@@ -15,7 +15,7 @@ class _LogFileViewerState extends State<LogFileViewer> {
   final ScrollController _horizontal = ScrollController(),
       _vertical = ScrollController();
 
-  void shareText(
+  Future<void> shareText(
     BuildContext context,
     String shareText,
     String shareSubject,
