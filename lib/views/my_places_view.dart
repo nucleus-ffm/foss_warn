@@ -46,7 +46,7 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
   }
 
   /// load data and call the API function
-  load() async {
+  Future<void> load() async {
     //await loadMyPlacesList(); //@todo should not be nessesary
     await callAPI(
       alertApi: ref.read(alertApiProvider),

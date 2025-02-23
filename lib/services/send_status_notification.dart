@@ -4,7 +4,7 @@ import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 import '../main.dart';
 import '../class/class_notification_service.dart';
 
-sendStatusUpdateNotification(bool success, [String? error]) async {
+Future<void> sendStatusUpdateNotification(bool success, [String? error]) async {
   String lastUpdate = await loadLastBackgroundUpdateTime();
   DateTime now = DateTime.now();
   int hour = now.hour;

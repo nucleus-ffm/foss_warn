@@ -44,7 +44,7 @@ class ErrorLogger {
     }
   }
 
-  static _generateLogContent(
+  static String _generateLogContent(
     String fileContext,
     String errorContext,
     String errorMessage,
@@ -55,7 +55,7 @@ class ErrorLogger {
   /// write error to logfile
   /// errorContext: In which context the error occur. e.g. json parsing in class xy
   /// errorMessage: the Message to log e.g. the thrown exception
-  static writeErrorLog(
+  static Future<void> writeErrorLog(
     String fileContext,
     String errorContext,
     String errorMessage,

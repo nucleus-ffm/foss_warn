@@ -13,6 +13,7 @@ linter:
   rules:
     prefer_single_quotes: false
     require_trailing_commas: true
+    always_declare_return_types: true
 
     # const
     prefer_const_constructors: true
