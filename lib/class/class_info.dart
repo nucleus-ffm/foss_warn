@@ -86,25 +86,6 @@ class Info {
     );
   }
 
-  factory Info.fromJsonWithAPIData(Map<String, dynamic> json, String geoJson) {
-    return Info(
-      category: Category.categoryListFromJson(json['category']),
-      event: json['event'],
-      urgency: Urgency.fromJson(json['urgency']),
-      severity: Severity.fromJson(json['severity']),
-      certainty: Certainty.fromJson(json['certainty']),
-      effective: json['effective'],
-      onset: json['onset'],
-      expires: json['expires'],
-      headline: json['headline'],
-      description: json['description'] ?? "", //@todo can also be null
-      instruction: json['instruction'],
-      area: Area.areaListFromJsonWithAPIData(json['area'], geoJson),
-      contact: json['contact'],
-      web: json['web'] ?? "",
-    );
-  }
-
   factory Info.fromJsonWithCAPData(Map<String, dynamic> json) {
     return Info(
       category: Category.categoryListFromJson(json['category']),
@@ -157,17 +138,6 @@ class Info {
         for (int i = 0; i < data.length; i++) {
           result.add(Info.fromJson(data[i]));
         }
-      }
-    }
-    return result;
-  }
-
-  /// used for the API calls
-  static List<Info> infoListFromJsonWithAPIData(var data, String geoJson) {
-    List<Info> result = [];
-    if (data != null) {
-      for (int i = 0; i < data.length; i++) {
-        result.add(Info.fromJsonWithAPIData(data[i], geoJson));
       }
     }
     return result;
