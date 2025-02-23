@@ -127,7 +127,7 @@ class Info {
       };
 
   /// create a list of Info elements from the json [data]
-  static List<Info> infoListFromJson(var data) {
+  static List<Info> infoListFromJson(List<Map<String, dynamic>>? data) {
     List<Info> result = [];
     if (data != null) {
       if (data is Map) {
@@ -144,7 +144,7 @@ class Info {
   }
 
   /// used for the FPAS data
-  static List<Info> infoListFromJsonWithCAPIData(var data) {
+  static List<Info> infoListFromJsonWithCAPIData(dynamic data) {
     List<Info> result = [];
     if (data != null) {
       if (data is Map<String, dynamic>) {
@@ -152,7 +152,8 @@ class Info {
         result.add(Info.fromJsonWithCAPData(data));
       } else {
         // multiple entries
-        for (int i = 0; i < data.length; i++) {
+        var listData = data as List<Map<String, dynamic>>;
+        for (int i = 0; i < listData.length; i++) {
           result.add(Info.fromJsonWithCAPData(data[i]));
         }
       }

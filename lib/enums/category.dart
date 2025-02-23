@@ -14,7 +14,7 @@ enum Category {
   String toJson() => name;
   // static Category fromJson(String json) => values.byName(json);
 
-  static List<Category> categoryListFromJson(var data) {
+  static List<Category> categoryListFromJson(List<String>? data) {
     List<Category> result = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
