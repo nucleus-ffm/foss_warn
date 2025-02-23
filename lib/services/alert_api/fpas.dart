@@ -90,7 +90,7 @@ class FPASApi implements AlertAPI {
   @override
   Future<void> sendHeartbeat({required String subscriptionId}) async {
     var url = Uri.parse(
-      "${userPreferences.fossPublicAlertServerUrl}/subscription?subscription_id=$subscriptionId",
+      "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
 
     var response = await http.put(
@@ -112,7 +112,7 @@ class FPASApi implements AlertAPI {
     required String unifiedPushEndpoint,
   }) async {
     var url =
-        Uri.parse("${userPreferences.fossPublicAlertServerUrl}/subscription");
+        Uri.parse("${userPreferences.fossPublicAlertServerUrl}/subscription/");
 
     var response = await http.post(
       url,
@@ -141,7 +141,7 @@ class FPASApi implements AlertAPI {
   @override
   Future<void> unregisterArea({required String subscriptionId}) async {
     var url = Uri.parse(
-      "${userPreferences.fossPublicAlertServerUrl}/subscription?subscription_id=$subscriptionId",
+      "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
 
     var response = await http.delete(
