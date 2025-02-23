@@ -15,6 +15,7 @@ linter:
     require_trailing_commas: true
     always_declare_return_types: true
     avoid_void_async: true
+    avoid_dynamic_calls: true
 
     # const
     prefer_const_constructors: true

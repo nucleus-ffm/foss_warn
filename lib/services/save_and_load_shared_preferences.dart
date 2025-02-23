@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:foss_warn/class/class_fpas_place.dart';
-import 'package:foss_warn/class/class_notification_preferences.dart';
-import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

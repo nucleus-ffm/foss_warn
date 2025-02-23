@@ -26,11 +26,13 @@ class Area {
       : description = json['areaDesc'],
         geoJson = json['geoJson'] ?? "";
 
-  Map<String, dynamic> toJson() =>
-      {'areaDesc': description, 'geoJson': geoJson};
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'areaDesc': description,
+        'geoJson': geoJson,
+      };
 
   /// create a list of area from the stored json data
-  static List<Area> areaListFromJson(var data) {
+  static List<Area> areaListFromJson(List<Map<String, dynamic>>? data) {
     List<Area> result = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
@@ -42,26 +44,18 @@ class Area {
 
   /// create a list of area from CAP Data
   /// converts the CAP geo information into geo json data
-  static List<Area> areaListFromJsonWithCAPData(var data) {
+  static List<Area> areaListFromJsonWithCAPData(
+    List<Map<String, dynamic>>? data,
+  ) {
     List<Area> result = [];
     if (data != null) {
-      // check if data is a list of data or just one entry
-      // is just one Area
-      if (data is Map<String, dynamic>) {
-        // there is just one entry
-        Map<String, dynamic> capToGeoJson = _convertCAPGeoInfoToGeoJson(data);
+      // there a multiple entries => multiple areas
+      for (int i = 0; i < data.length; i++) {
+        Map<String, dynamic> capToGeoJson =
+            _convertCAPGeoInfoToGeoJson(data[i]);
 
-        data.putIfAbsent("geoJson", () => jsonEncode(capToGeoJson));
-        result.add(Area.fromJson(data));
-      } else {
-        // there a multiple entries => multiple areas
-        for (int i = 0; i < data.length; i++) {
-          Map<String, dynamic> capToGeoJson =
-              _convertCAPGeoInfoToGeoJson(data[i]);
-
-          data[i].putIfAbsent("geoJson", () => jsonEncode(capToGeoJson));
-          result.add(Area.fromJson(data[i]));
-        }
+        data[i].putIfAbsent("geoJson", () => jsonEncode(capToGeoJson));
+        result.add(Area.fromJson(data[i]));
       }
     }
     return result;
@@ -96,6 +90,7 @@ class Area {
       Map<String, dynamic> polygonFeature = {};
 
       if (data["polygon"] is List) {
+        var polygons = data["poloygon"] as List<String>;
         // the data contain more then one polygon. So we build a multipolygon
 
         // multiple polygons
@@ -107,9 +102,9 @@ class Area {
         List<String> latLng = [];
         List<String> coordinates = [];
 
-        for (int i = 0; i < data["polygon"].length; i += 1) {
+        for (int i = 0; i < polygons.length; i += 1) {
           coordinates.clear();
-          coordinates = (data["polygon"][i]).split(" ");
+          coordinates = polygons[i].split(" ");
           List<List<List<double>>> oneRowCoordinatesOuterList = [];
           List<List<double>> oneRowCoordinates = [];
 

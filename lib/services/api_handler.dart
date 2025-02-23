@@ -38,24 +38,15 @@ Future<void> callAPI({
       );
     }
 
-    var updatedPlace = Place.withWarnings(
-      boundingBox: place.boundingBox,
-      subscriptionId: place.subscriptionId,
-      name: place.name,
-      warnings: warnings,
-      eTag: place.eTag,
-    );
-    placesWithWarningsList.add(updatedPlace);
-
     // set flag for updated alerts
-    for (WarnMessage wm in updatedPlace.warnings) {
+    for (WarnMessage wm in warnings) {
       if (wm.references != null) {
         // the alert contains a reference, so it is an update of an previous alert
         // we search for the alert and add it to the update thread
 
         for (String id in wm.references!.identifier) {
           // check all warnings for references
-          for (WarnMessage alWm in updatedPlace.warnings) {
+          for (WarnMessage alWm in warnings) {
             debugPrint(alWm.identifier);
             if (alWm.identifier.compareTo(id) == 0) {
               // set flag to true to hide the previous alert in the overview
@@ -66,6 +57,15 @@ Future<void> callAPI({
         }
       }
     }
+
+    var updatedPlace = Place.withWarnings(
+      boundingBox: place.boundingBox,
+      subscriptionId: place.subscriptionId,
+      name: place.name,
+      warnings: warnings,
+      eTag: place.eTag,
+    );
+    placesWithWarningsList.add(updatedPlace);
   }
 
   // update status notification if the user wants

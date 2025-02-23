@@ -22,6 +22,62 @@ import '../class/class_unified_push_handler.dart';
 import '../services/update_provider.dart';
 import '../widgets/dialogs/loading_screen.dart';
 
+class NovatimResponse {
+  const NovatimResponse({
+    required this.placeId,
+    required this.license,
+    required this.osmType,
+    required this.osmId,
+    required this.latitude,
+    required this.longitude,
+    required this.locationClass,
+    required this.type,
+    required this.placeRank,
+    required this.importance,
+    required this.addressType,
+    required this.name,
+    required this.displayName,
+    required this.boundingBox,
+  });
+
+  factory NovatimResponse.fromJson(Map<String, dynamic> json) =>
+      NovatimResponse(
+        placeId: json["place_id"],
+        license: json["licence"],
+        osmType: json["osm_type"],
+        osmId: json["osm_id"],
+        latitude: double.parse(json["lat"]),
+        longitude: double.parse(json["lon"]),
+        locationClass: json["class"],
+        type: json["type"],
+        placeRank: json["place_rank"],
+        importance: json["importance"],
+        addressType: json["addresstype"],
+        name: json["name"],
+        displayName: json["display_name"],
+        boundingBox: [
+          for (var bound in json["boundingbox"]) ...[
+            double.parse(bound),
+          ],
+        ],
+      );
+
+  final int placeId;
+  final String license;
+  final String osmType;
+  final int osmId;
+  final double latitude;
+  final double longitude;
+  final String locationClass;
+  final String type;
+  final int placeRank;
+  final double importance;
+  final String addressType;
+  final String name;
+  final String displayName;
+  final List<double> boundingBox;
+}
+
 class AddMyPlaceWithMapView extends ConsumerStatefulWidget {
   const AddMyPlaceWithMapView({super.key});
 
@@ -38,7 +94,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
   //List<Place> _allPlacesToShow = [];
   bool _showSearchResultList = false;
   bool _showRadiusSlider = false;
-  List<dynamic> searchResult = [];
+  List<NovatimResponse> searchResult = [];
   String _selectedPlaceName = "";
 
   Polygon? selectedPlacePolygon; // the polygon around the selected place
@@ -173,7 +229,9 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     );
   }
 
-  Future<List<dynamic>> requestNovatimData(String requestString) async {
+  Future<List<NovatimResponse>> requestNovatimData(
+    String requestString,
+  ) async {
     Uri requestURL = Uri.parse(
       "https://nominatim.openstreetmap.org/search?q=$requestString&format=json&featureType=city",
     );
@@ -185,9 +243,13 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
       requestURL,
       headers: {"Content-Type": "application/json"},
     );
-    List<dynamic> searchData = jsonDecode(utf8.decode(response.bodyBytes));
-    debugPrint(searchData.toString());
-    return searchData;
+    var searchData =
+        jsonDecode(utf8.decode(response.bodyBytes)) as List<dynamic>;
+    return List.from([
+      for (var searchResult in searchData) ...[
+        NovatimResponse.fromJson(searchResult),
+      ],
+    ]);
   }
 
   @override
@@ -362,21 +424,21 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                               child: ListTile(
                                 leading: const Icon(Icons.place),
                                 title: Text(
-                                  place["display_name"],
+                                  place.displayName,
                                   style: theme.textTheme.titleMedium,
                                 ),
                                 onTap: () {
                                   setState(() {
                                     textEditingController.text =
-                                        place["display_name"];
+                                        place.displayName;
                                   });
 
                                   currentPlaceLatLng = LatLng(
-                                    double.parse(place["lat"]),
-                                    double.parse(place["lon"]),
+                                    place.latitude,
+                                    place.longitude,
                                   );
 
-                                  _selectedPlaceName = place["name"];
+                                  _selectedPlaceName = place.name;
                                   setState(() {
                                     FocusScope.of(context)
                                         .unfocus(); // hide keyboard

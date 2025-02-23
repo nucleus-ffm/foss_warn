@@ -27,7 +27,7 @@ class References {
       : sender = json['sender'],
         identifier = (json['identifier'] as List<dynamic>)
             .map((e) => e.toString())
-            .toList(), //json['identifier'].map((e) => e.toString()).toList(),
+            .toList(),
         send = json['send'];
 
   Map<String, dynamic> toJson() => {

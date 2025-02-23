@@ -46,12 +46,14 @@ class Place {
   factory Place.fromJson(Map<String, dynamic> json) {
     /// create new warnMessage objects from saved data
     List<WarnMessage> createWarningList(String data) {
-      List<dynamic> jsonData = jsonDecode(data);
-      List<WarnMessage> result = [];
-      for (int i = 0; i < jsonData.length; i++) {
-        result.add(WarnMessage.fromJson(jsonData[i]));
-      }
-      return result;
+      var parsedJson = jsonDecode(data);
+      return List.from(
+        [
+          for (var warning in parsedJson) ...[
+            WarnMessage.fromJson(warning),
+          ],
+        ],
+      );
     }
 
     return Place.withWarnings(
