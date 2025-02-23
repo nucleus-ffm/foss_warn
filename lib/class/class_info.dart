@@ -69,7 +69,9 @@ class Info {
 
   factory Info.fromJson(Map<String, dynamic> json) {
     return Info(
-      category: Category.categoryListFromJson(json['category']),
+      category: Category.categoryListFromJson(
+        (json['category'] as List).map((e) => e as String).toList(),
+      ),
       event: json['event'],
       urgency: Urgency.fromJson(json['urgency']),
       severity: Severity.fromJson(json['severity']),
@@ -80,15 +82,34 @@ class Info {
       headline: json['headline'],
       description: json['description'],
       instruction: json['instruction'],
-      area: Area.areaListFromJson(json['area']),
+      area: Area.areaListFromJson(
+        (json['area'] as List).map((e) => e as Map<String, dynamic>).toList(),
+      ),
       contact: json['contact'] ?? "",
       web: json['web'] ?? "",
     );
   }
 
   factory Info.fromJsonWithCAPData(Map<String, dynamic> json) {
+    var categories = <Category>[];
+    if (json['category'] is List) {
+      categories =
+          Category.categoryListFromJson(List<String>.from(json['category']));
+    } else {
+      categories = [Category.fromString(json['category'])];
+    }
+
+    var areas = <Area>[];
+    if (json['area'] is List) {
+      areas = Area.areaListFromJsonWithCAPData(
+        json['area'] as List<Map<String, dynamic>>,
+      );
+    } else {
+      areas = [Area.fromJson(json['area'])];
+    }
+
     return Info(
-      category: Category.categoryListFromJson(json['category']),
+      category: categories,
       event: json['event'],
       urgency: Urgency.fromJson(json['urgency']),
       severity: Severity.fromJson(json['severity']),
@@ -99,7 +120,7 @@ class Info {
       headline: json['headline'] ?? "",
       description: json['description'] ?? "", //@todo can also be null
       instruction: json['instruction'],
-      area: Area.areaListFromJsonWithCAPData(json['area']),
+      area: areas,
       contact: json['contact'],
       web: json['web'] ?? "",
     );
@@ -152,9 +173,9 @@ class Info {
         result.add(Info.fromJsonWithCAPData(data));
       } else {
         // multiple entries
-        var listData = data as List<Map<String, dynamic>>;
+        var listData = List<Map<String, dynamic>>.from(data);
         for (int i = 0; i < listData.length; i++) {
-          result.add(Info.fromJsonWithCAPData(data[i]));
+          result.add(Info.fromJsonWithCAPData(listData[i]));
         }
       }
     }

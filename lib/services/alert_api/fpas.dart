@@ -82,7 +82,7 @@ class FPASApi implements AlertAPI {
     xml2jsonTransformer.parse(utf8.decode(response.bodyBytes));
 
     var json = xml2jsonTransformer.toParker();
-    Map<String, dynamic> alert = jsonDecode(json);
+    var alert = jsonDecode(json) as Map<String, dynamic>;
 
     return WarnMessage.fromJsonFPAS(alert["alert"]);
   }

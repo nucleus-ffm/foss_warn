@@ -13,18 +13,20 @@ class BoundingBox {
   });
 
   factory BoundingBox.fromJson(Map<String, dynamic> json) {
-    /// create new warnMessage objects from saved data
-    var minLatitude = json['min_latLng'] as Map<String, List<double>>;
-    var maxLatitude = json['max_latLng'] as Map<String, List<double>>;
+    var minLatLng = (json['min_latLng'] as Map<String, dynamic>)
+        .map((key, value) => MapEntry(key, value as List<dynamic>));
+    var maxLatLng = (json['min_latLng'] as Map<String, dynamic>)
+        .map((key, value) => MapEntry(key, value as List<dynamic>));
 
+    /// create new warnMessage objects from saved data
     return BoundingBox(
       minLatLng: LatLng(
-        minLatitude['coordinates']![0],
-        minLatitude['coordinates']![1],
+        minLatLng['coordinates']![0],
+        minLatLng['coordinates']![1],
       ), //@todo
       maxLatLng: LatLng(
-        maxLatitude['coordinates']![0],
-        maxLatitude['coordinates']![1],
+        maxLatLng['coordinates']![0],
+        maxLatLng['coordinates']![1],
       ),
     );
   }

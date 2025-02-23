@@ -74,7 +74,11 @@ class WarnMessage {
       status: Status.fromJson(json['status']),
       messageType: MessageType.fromJson(json['messageType']),
       scope: Scope.fromJson(json['scope']),
-      info: Info.infoListFromJson(json['info']),
+      info: Info.infoListFromJson(
+        (json['info'] as List<dynamic>)
+            .map((e) => e as Map<String, dynamic>)
+            .toList(),
+      ),
       notified: json['notified'] ?? false, //@todo check
       read: json['read'] ?? false,
       references: json['references'] != null
