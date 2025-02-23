@@ -14,6 +14,7 @@ linter:
     prefer_single_quotes: false
     require_trailing_commas: true
     always_declare_return_types: true
+    avoid_void_async: true
 
     # const
     prefer_const_constructors: true

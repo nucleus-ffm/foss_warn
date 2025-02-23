@@ -92,7 +92,7 @@ class NotificationService {
     );
   }
 
-  static void showGroupNotification() async {
+  static Future<void> showGroupNotification() async {
     NotificationDetails notificationDetails = const NotificationDetails(
       android: AndroidNotificationDetails(
         'foss_warn', 'Benachrichtigungen',
