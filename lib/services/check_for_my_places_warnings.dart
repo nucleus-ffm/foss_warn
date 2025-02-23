@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
-import '../class/class_notification_service.dart';
 
 /// check all warnings if one of them is of a myPlace and if yes send a notification <br>
 /// [true] if there are/is a warning - false if not <br>
