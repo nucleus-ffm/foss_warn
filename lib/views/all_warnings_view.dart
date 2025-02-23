@@ -62,6 +62,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
 
       checkForMyPlacesWarnings(
         alertApi: ref.read(alertApiProvider),
+        myPlacesService: ref.read(myPlacesProvider.notifier),
         places: places,
       );
       sortWarnings(mapWarningsList);
@@ -81,7 +82,7 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
           height: 70,
           width: 70,
           child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
+            color: theme.colorScheme.secondary,
             strokeWidth: 4,
           ),
         ),
@@ -99,138 +100,139 @@ class _AllWarningsViewState extends ConsumerState<AllWarningsView> {
       return warningsForMyPlaces;
     }
 
-    return RefreshIndicator(
-      color: Theme.of(context).colorScheme.secondary,
-      onRefresh: reloadData,
-      child: places.isNotEmpty // check if there is a place saved
-          ? userPreferences
-                  .showAllWarnings // if warnings that are not in MyPlaces shown
-              ? SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    children: [
-                      const ConnectionError(),
-                      mapWarningsList.isEmpty
-                          ? const NoWarningsInList()
-                          : const SizedBox(),
-                      ...mapWarningsList.map(
-                        (warnMessage) => WarningWidget(
-                          warnMessage: warnMessage,
-                          isMyPlaceWarning: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              // else load only the warnings for my place
-              : loadOnlyWarningsForMyPlaces() //
-                      .isNotEmpty // check if there are warnings for myPlaces
-                  ? SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          const ConnectionError(),
-                          ...loadOnlyWarningsForMyPlaces().map(
-                            (warnMessage) => WarningWidget(
-                              warnMessage: warnMessage,
-                              isMyPlaceWarning: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Column(
-                      // else show a screen with
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+    return Scaffold(
+      body: RefreshIndicator(
+        color: theme.colorScheme.secondary,
+        onRefresh: reloadData,
+        child: places.isNotEmpty // check if there is a place saved
+            ? userPreferences
+                    .showAllWarnings // if warnings that are not in MyPlaces shown
+                ? SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    localizations.all_warnings_everything_ok,
-                                    style: const TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.check_circle_rounded,
-                                    size: 200,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  Text(
-                                    localizations
-                                        .all_warnings_everything_ok_text,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _loading = true;
-                                      });
-                                    },
-                                    style: TextButton.styleFrom(
-                                      backgroundColor:
-                                          theme.colorScheme.secondary,
-                                    ),
-                                    child: Text(
-                                      localizations.all_warnings_reload,
-                                      style: TextStyle(
-                                        color: theme.colorScheme.onSecondary,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        const ConnectionError(),
+                        mapWarningsList.isEmpty
+                            ? const NoWarningsInList()
+                            : const SizedBox(),
+                        ...mapWarningsList.map(
+                          (warnMessage) => WarningWidget(
+                            warnMessage: warnMessage,
+                            isMyPlaceWarning: false,
                           ),
                         ),
                       ],
-                    )
-          : Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ConnectionError(),
-                  ],
-                ),
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
+                    ),
+                  )
+                // else load only the warnings for my place
+                : loadOnlyWarningsForMyPlaces() //
+                        .isNotEmpty // check if there are warnings for myPlaces
+                    ? SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            const ConnectionError(),
+                            ...loadOnlyWarningsForMyPlaces().map(
+                              (warnMessage) => WarningWidget(
+                                warnMessage: warnMessage,
+                                isMyPlaceWarning: true,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Column(
+                        // else show a screen with
+                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            localizations.all_warnings_no_places_chosen,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      localizations.all_warnings_everything_ok,
+                                      style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.check_circle_rounded,
+                                      size: 200,
+                                      color: theme.colorScheme.secondary,
+                                    ),
+                                    Text(
+                                      localizations
+                                          .all_warnings_everything_ok_text,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _loading = true;
+                                        });
+                                      },
+                                      style: TextButton.styleFrom(
+                                        backgroundColor:
+                                            theme.colorScheme.secondary,
+                                      ),
+                                      child: Text(
+                                        localizations.all_warnings_reload,
+                                        style: TextStyle(
+                                          color: theme.colorScheme.onSecondary,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                          const Text("\n"),
-                          Text(
-                            localizations.all_warnings_no_places_chosen_text,
-                          ),
                         ],
+                      )
+            : Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ConnectionError(),
+                    ],
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              localizations.all_warnings_no_places_chosen,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text("\n"),
+                            Text(
+                              localizations.all_warnings_no_places_chosen_text,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+      ),
     );
   }
 }

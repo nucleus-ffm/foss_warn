@@ -3,7 +3,6 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
-import 'save_and_load_shared_preferences.dart';
 
 final updaterProvider = Provider(
   (ref) => Update(
@@ -24,7 +23,6 @@ class Update with ChangeNotifier {
     debugPrint("add new place: ${newPlace.name}");
 
     myPlacesService.add(newPlace);
-    saveMyPlacesList(myPlacesService.places);
 
     await callAPI(
       alertApi: alertApi,
@@ -41,11 +39,8 @@ class Update with ChangeNotifier {
 
   /// remove the given place from the List,
   /// save the updated list and update the view
-  void deletePlace(place) {
-    myPlacesService.remove(place);
-
-    saveMyPlacesList(myPlacesService.places);
-    debugPrint("place removed");
+  Future<void> deletePlace(place) async {
+    await myPlacesService.remove(place);
     notifyListeners();
   }
 

@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/main.dart';
-import 'package:foss_warn/services/list_handler.dart';
-import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 import 'package:foss_warn/services/update_provider.dart';
 
 import 'class_error_logger.dart';
@@ -172,7 +170,6 @@ class Place {
     }
     final updater = ref.read(updaterProvider);
     updater.updateReadStatusInList();
-    saveMyPlacesList(ref.read(myPlacesProvider));
   }
 
   /// set the read and notified status from all warnings to false
@@ -185,7 +182,6 @@ class Place {
     }
     final updater = ref.read(updaterProvider);
     updater.updateReadStatusInList();
-    saveMyPlacesList(ref.read(myPlacesProvider));
   }
 
   /// Return [true] if the user wants a notification - [false] if not.

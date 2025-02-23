@@ -9,14 +9,14 @@ import '../services/list_handler.dart';
 import '../widgets/connection_error_widget.dart';
 import 'add_my_place_with_map_view.dart';
 
-class MyPlaces extends ConsumerStatefulWidget {
-  const MyPlaces({super.key});
+class MyPlacesView extends ConsumerStatefulWidget {
+  const MyPlacesView({super.key});
 
   @override
-  ConsumerState<MyPlaces> createState() => _MyPlacesState();
+  ConsumerState<MyPlacesView> createState() => _MyPlacesState();
 }
 
-class _MyPlacesState extends ConsumerState<MyPlaces>
+class _MyPlacesState extends ConsumerState<MyPlacesView>
     with WidgetsBindingObserver {
   bool _loading = false;
 
@@ -61,7 +61,6 @@ class _MyPlacesState extends ConsumerState<MyPlaces>
     setState(() {
       _loading = true;
     });
-    //await Future.delayed(Duration(seconds: 2));
   }
 
   @override

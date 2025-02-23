@@ -2,22 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/api_handler.dart';
+import 'package:foss_warn/services/list_handler.dart';
 import '../class/class_notification_service.dart';
-
-import 'save_and_load_shared_preferences.dart';
 
 /// check all warnings if one of them is of a myPlace and if yes send a notification <br>
 /// [true] if there are/is a warning - false if not <br>
 Future<bool> checkForMyPlacesWarnings({
   required AlertAPI alertApi,
+  required MyPlacesService myPlacesService,
   required List<Place> places,
 }) async {
   bool returnValue = true;
   debugPrint("check for warnings");
-  if (places.isEmpty) {
-    debugPrint("myPlaceList is empty - load list");
-    await loadMyPlacesList();
-  }
 
   // get data first
   await callAPI(
@@ -47,6 +43,6 @@ Future<bool> checkForMyPlacesWarnings({
     await myPlace.sendNotificationForWarnings();
   }
   // save new notified status
-  saveMyPlacesList(places);
+  await myPlacesService.set(places);
   return returnValue; //@todo remove return value?
 }

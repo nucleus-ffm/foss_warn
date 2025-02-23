@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/services/api_handler.dart';
+import 'package:foss_warn/views/home/home_view.dart';
 import 'package:foss_warn/views/introduction/slides/alarm_permission.dart';
 import 'package:foss_warn/views/introduction/slides/battery_optimization.dart';
 import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
