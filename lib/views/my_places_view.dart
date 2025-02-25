@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/api_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 import '../widgets/my_place_widget.dart';
 import '../services/list_handler.dart';
@@ -50,6 +51,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
     //await loadMyPlacesList(); //@todo should not be nessesary
     await callAPI(
       alertApi: ref.read(alertApiProvider),
+      warningService: ref.read(warningsProvider.notifier),
       places: ref.read(myPlacesProvider),
     );
     setState(() {
@@ -100,7 +102,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
                     child: Column(
                       children: [
                         const ConnectionError(),
-                        ...places.map((place) => MyPlaceWidget(myPlace: place)),
+                        ...places.map((place) => MyPlaceWidget(place: place)),
                       ],
                     ),
                   ),

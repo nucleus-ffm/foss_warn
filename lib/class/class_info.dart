@@ -102,7 +102,9 @@ class Info {
     var areas = <Area>[];
     if (json['area'] is List) {
       areas = Area.areaListFromJsonWithCAPData(
-        json['area'] as List<Map<String, dynamic>>,
+        (json['area'] as List)
+            .map((area) => area as Map<String, dynamic>)
+            .toList(),
       );
     } else {
       areas = [Area.fromJson(json['area'])];

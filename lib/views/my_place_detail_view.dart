@@ -3,9 +3,8 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/services/warnings.dart';
 
-import '../services/list_handler.dart';
-import '../services/sort_warnings.dart';
 import '../widgets/warning_widget.dart';
 
 //@todo rename to MyPlacesDetailView
@@ -19,9 +18,15 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     var localizations = context.localizations;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
-    var places = ref.watch(myPlacesProvider);
+    var warnings = ref.watch(
+      warningsProvider.select(
+        (warnings) => warnings.where(
+          (warning) => warning.placeSubscriptionId == _myPlace.subscriptionId,
+        ),
+      ),
+    );
 
-    sortWarnings(_myPlace.warnings); //@todo check if this works?
+    var warningService = ref.read(warningsProvider.notifier);
 
     /// generate a threaded list of alerts with updates of alert as thread
     /// the returned data has the structure:
@@ -29,7 +34,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     List<List<WarnMessage>> generateListOfAlerts() {
       List<List<WarnMessage>> result = [];
 
-      for (WarnMessage wm in _myPlace.warnings) {
+      for (var wm in warnings) {
         List<WarnMessage> oneUpdateThread = [];
 
         if (wm.references != null) {
@@ -40,7 +45,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
               .add(wm); // add the newest alert as first element of the thread
           for (String id in wm.references!.identifier) {
             // check all warnings for references
-            for (WarnMessage alWm in _myPlace.warnings) {
+            for (var alWm in warnings) {
               debugPrint(alWm.identifier);
               if (alWm.identifier.compareTo(id) == 0) {
                 //print("found referenced alert: ${alWm.identifier}");
@@ -97,11 +102,8 @@ class MyPlaceDetailScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              _myPlace.markAllWarningsAsRead(ref);
-              //@todo just a quick fix for the read state problem. We have to rethink our memory management
-              places
-                  .firstWhere((e) => e.name == _myPlace.name)
-                  .markAllWarningsAsRead(ref);
+              warningService.markAllWarningsAsRead();
+
               final snackBar = SnackBar(
                 content: Text(
                   localizations.main_app_bar_tooltip_mark_all_warnings_as_read,

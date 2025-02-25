@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/constants.dart' as constants;
 
 import '../class/class_area.dart';
@@ -24,16 +23,14 @@ class MapWidget extends StatefulWidget {
   });
 
   /// create polygon layer for my places alerts
-  static List<PolygonLayer> createPolygonLayer(List<Place> places) {
+  static List<PolygonLayer> createPolygonLayer(List<WarnMessage> warnings) {
     List<PolygonLayer> result = [];
-    for (Place p in places) {
-      for (WarnMessage wm in p.warnings) {
-        result.add(
-          PolygonLayer(
-            polygons: Area.createListOfPolygonsForAreas(wm.info.first.area),
-          ),
-        );
-      }
+    for (var warning in warnings) {
+      result.add(
+        PolygonLayer(
+          polygons: Area.createListOfPolygonsForAreas(warning.info.first.area),
+        ),
+      );
     }
     return result;
   }

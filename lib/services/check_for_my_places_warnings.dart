@@ -4,12 +4,14 @@ import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 /// check all warnings if one of them is of a myPlace and if yes send a notification <br>
 /// [true] if there are/is a warning - false if not <br>
 Future<bool> checkForMyPlacesWarnings({
   required AlertAPI alertApi,
   required MyPlacesService myPlacesService,
+  required WarningService warningService,
   required List<Place> places,
 }) async {
   bool returnValue = true;
@@ -18,6 +20,7 @@ Future<bool> checkForMyPlacesWarnings({
   // get data first
   await callAPI(
     alertApi: alertApi,
+    warningService: warningService,
     places: places,
   );
 
@@ -37,12 +40,7 @@ Future<bool> checkForMyPlacesWarnings({
     );
   }
 
-  for (Place myPlace in places) {
-    // wait until every notification is send before saving the
-    // myPlacesList with the new notified status
-    await myPlace.sendNotificationForWarnings();
-  }
-  // save new notified status
-  await myPlacesService.set(places);
+  await warningService.sendNotificationForWarnings();
+
   return returnValue; //@todo remove return value?
 }
