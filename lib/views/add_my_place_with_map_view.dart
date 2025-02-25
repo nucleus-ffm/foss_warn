@@ -12,6 +12,7 @@ import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -560,6 +561,8 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                 setState(() {
                                   updater.updateList(
                                     alertApi: ref.read(alertApiProvider),
+                                    warningService:
+                                        ref.read(warningsProvider.notifier),
                                     newPlace: newPlace,
                                   );
                                   // cancel warning of missing places (ID: 3)

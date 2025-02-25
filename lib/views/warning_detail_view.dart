@@ -1,14 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
-import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
 import '../enums/severity.dart';
 import '../main.dart';
@@ -20,14 +18,12 @@ import 'package:share_plus/share_plus.dart';
 import '../widgets/dialogs/warning_severity_explanation.dart';
 
 class DetailScreen extends ConsumerStatefulWidget {
-  final WarnMessage _warnMessage;
-  final Place? _place;
+  final String warningIdentifier;
+
   const DetailScreen({
-    required WarnMessage warnMessage,
-    Place? place,
+    required this.warningIdentifier,
     super.key,
-  })  : _warnMessage = warnMessage,
-        _place = place;
+  });
 
   @override
   ConsumerState<DetailScreen> createState() => _DetailScreenState();
@@ -214,10 +210,17 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   /// create a camera to fix the polygon to the camera of the map
   Widget _createMapWidget(List<Area> area) {
     var localizations = context.localizations;
+    var warning = ref.watch(
+      warningsProvider.select(
+        (value) => value.firstWhere(
+          (element) => element.identifier == widget.warningIdentifier,
+        ),
+      ),
+    );
 
     CameraFit createInitCameraFit() {
       List<LatLng> polygonPoints =
-          Area.getListWithAllPolygons(widget._warnMessage.info.first.area);
+          Area.getListWithAllPolygons(warning.info.first.area);
 
       if (polygonPoints.isNotEmpty) {
         return CameraFit.bounds(
@@ -242,9 +245,8 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
           polygonLayers: [
             //@todo can be null
             PolygonLayer(
-              polygons: Area.createListOfPolygonsForAreas(
-                widget._warnMessage.info.first.area,
-              ),
+              polygons:
+                  Area.createListOfPolygonsForAreas(warning.info.first.area),
             ),
           ],
           widgets: [
@@ -276,29 +278,20 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      widget._warnMessage.read = true;
+
+    var warning = ref.read(warningsProvider).firstWhere(
+          (element) => element.identifier == widget.warningIdentifier,
+        );
+    ref
+        .read(warningsProvider.notifier)
+        .updateWarning(warning.copyWith(read: true));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // cancel the notification
+      await NotificationService.cancelOneNotification(
+        warning.identifier.hashCode,
+      );
     });
-
-    // @todo hacky solution see warningWidget L265 for more info
-    var places = ref.read(myPlacesProvider);
-    if (widget._place != null) {
-      var place = places.firstWhere((e) => e.name == widget._place!.name);
-      var warning = place.warnings
-          .firstWhere((e) => e.identifier == widget._warnMessage.identifier);
-      warning.read = widget._warnMessage.read;
-      place.warnings.updateEntry(warning);
-      places.updateEntry(place);
-
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await ref.read(myPlacesProvider.notifier).set(places);
-      });
-    }
-
-    // cancel the notification
-    NotificationService.cancelOneNotification(
-      widget._warnMessage.identifier.hashCode,
-    );
   }
 
   @override
@@ -311,6 +304,14 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   Widget build(BuildContext context) {
     var localizations = context.localizations;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    var warning = ref.watch(
+      warningsProvider.select(
+        (value) => value.firstWhere(
+          (element) => element.identifier == widget.warningIdentifier,
+        ),
+      ),
+    );
 
     /// returns a List of Buttons with links to embedded pictures
     List<Widget> generateAssets(String text) {
@@ -367,7 +368,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
       if (length == -1) {
         addAll = true;
       }
-      for (Area myArea in widget._warnMessage.info[0].area) {
+      for (Area myArea in warning.info[0].area) {
         List<String> splitDescription = myArea.description.split(",");
         for (int i = 0; i < splitDescription.length; i++) {
           if (counter <= length || addAll) {
@@ -439,15 +440,15 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget._warnMessage.info[0].headline),
+        title: Text(warning.info[0].headline),
         actions: [
           IconButton(
             //@todo refactor
             tooltip: localizations.warning_share,
             onPressed: () {
               final String shareText =
-                  "${widget._warnMessage.info[0].headline}\n\n${localizations.warning_from}: ${formatSentDate(widget._warnMessage.sent)}\n\nContext information: \n${localizations.warning_type}: ${translateWarningType(widget._warnMessage.messageType, context)}\n ${localizations.warning_severity}: ${translateWarningCertainty(widget._warnMessage.info[0].severity.name, context)}\n\n${localizations.warning_region}: ${generateAreaDescList(-1).toString().substring(1, generateAreaDescList(-1).toString().length - 1)}\n\n${localizations.warning_description}:\n${replaceHTMLTags(widget._warnMessage.info[0].description)} \n\n${localizations.warning_recommended_action}:\n${replaceHTMLTags(widget._warnMessage.info[0].instruction ?? "n.a.")}\n\n${localizations.warning_source}:\n${widget._warnMessage.publisher}\n\n-- ${localizations.warning_shared_by_foss_warn} --";
-              final String shareSubject = widget._warnMessage.info[0].headline;
+                  "${warning.info[0].headline}\n\n${localizations.warning_from}: ${formatSentDate(warning.sent)}\n\nContext information: \n${localizations.warning_type}: ${translateWarningType(warning.messageType, context)}\n ${localizations.warning_severity}: ${translateWarningCertainty(warning.info[0].severity.name, context)}\n\n${localizations.warning_region}: ${generateAreaDescList(-1).toString().substring(1, generateAreaDescList(-1).toString().length - 1)}\n\n${localizations.warning_description}:\n${replaceHTMLTags(warning.info[0].description)} \n\n${localizations.warning_recommended_action}:\n${replaceHTMLTags(warning.info[0].instruction ?? "n.a.")}\n\n${localizations.warning_source}:\n${warning.publisher}\n\n-- ${localizations.warning_shared_by_foss_warn} --";
+              final String shareSubject = warning.info[0].headline;
               shareWarning(context, shareText, shareSubject);
             },
             icon: const Icon(Icons.share),
@@ -461,22 +462,22 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget._warnMessage.info[0].headline,
+                warning.info[0].headline,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               const SizedBox(height: 10),
               Text(
-                "${localizations.warning_from}: ${formatSentDate(widget._warnMessage.sent)}",
+                "${localizations.warning_from}: ${formatSentDate(warning.sent)}",
                 style: TextStyle(
                   fontSize: userPreferences.warningFontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              widget._warnMessage.info[0].effective != null
+              warning.info[0].effective != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 1),
                       child: Text(
-                        "${localizations.warning_effective} ${formatSentDate(widget._warnMessage.info[0].effective ?? "n.a.")}",
+                        "${localizations.warning_effective} ${formatSentDate(warning.info[0].effective ?? "n.a.")}",
                         style: TextStyle(
                           fontSize: userPreferences.warningFontSize,
                           fontWeight: FontWeight.bold,
@@ -484,11 +485,11 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                       ),
                     )
                   : const SizedBox(),
-              widget._warnMessage.info[0].onset != null
+              warning.info[0].onset != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
-                        "${localizations.warning_onset} ${formatSentDate(widget._warnMessage.info[0].onset ?? "n.a.")}",
+                        "${localizations.warning_onset} ${formatSentDate(warning.info[0].onset ?? "n.a.")}",
                         style: TextStyle(
                           fontSize: userPreferences.warningFontSize,
                           fontWeight: FontWeight.bold,
@@ -496,11 +497,11 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                       ),
                     )
                   : const SizedBox(),
-              widget._warnMessage.info[0].expires != null
+              warning.info[0].expires != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 1, bottom: 1),
                       child: Text(
-                        "${localizations.warning_expires} ${formatSentDate(widget._warnMessage.info[0].expires ?? "n.a.")}",
+                        "${localizations.warning_expires} ${formatSentDate(warning.info[0].expires ?? "n.a.")}",
                         style: TextStyle(
                           fontSize: userPreferences.warningFontSize,
                           fontWeight: FontWeight.bold,
@@ -529,27 +530,25 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                     Colors.deepPurple,
                     localizations.warning_event,
                     translateWarningCategory(
-                      widget._warnMessage.info[0].event,
+                      warning.info[0].event,
                       context,
                     ),
                   ),
                   createTagButton(
                     chooseWarningTypeColor(
-                      widget._warnMessage.messageType,
+                      warning.messageType,
                     ), //@todo besser machen
                     localizations.warning_type,
                     translateWarningType(
-                      widget._warnMessage.messageType,
+                      warning.messageType,
                       context,
                     ),
                   ),
                   createTagButton(
-                    Severity.getColorForSeverity(
-                      widget._warnMessage.info[0].severity,
-                    ),
+                    Severity.getColorForSeverity(warning.info[0].severity),
                     localizations.warning_severity,
                     Severity.getLocalizationName(
-                      widget._warnMessage.info[0].severity,
+                      warning.info[0].severity,
                       context,
                     ),
                     action: () => const WarningSeverityExplanation(),
@@ -562,7 +561,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                               Colors.green,
                               localizations.warning_urgency,
                               translateWarningUrgency(
-                                widget._warnMessage.info[0].urgency.name,
+                                warning.info[0].urgency.name,
                                 context,
                               ),
                             ),
@@ -570,38 +569,37 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                               Colors.blueGrey,
                               localizations.warning_certainty,
                               translateWarningCertainty(
-                                widget._warnMessage.info[0].certainty.name,
+                                warning.info[0].certainty.name,
                                 context,
                               ),
                             ),
                             createTagButton(
                               Colors.amber,
                               localizations.warning_scope,
-                              widget._warnMessage.scope.name,
+                              warning.scope.name,
                             ),
                             createTagButton(
                               Colors.lightBlue[200]!,
                               localizations.warning_identifier,
-                              widget._warnMessage.identifier,
+                              warning.identifier,
                             ),
                             createTagButton(
                               Colors.orangeAccent,
                               localizations.warning_sender,
-                              widget._warnMessage.sender,
+                              warning.sender,
                             ),
                             createTagButton(
                               Colors.tealAccent,
                               localizations.warning_status,
                               translateWarningStatus(
-                                widget._warnMessage.status.name,
+                                warning.status.name,
                                 context,
                               ),
                             ),
                             createTagButton(
                               Colors.purpleAccent,
                               "Referenze",
-                              widget._warnMessage.references?.identifier
-                                      .toString() ??
+                              warning.references?.identifier.toString() ??
                                   "None",
                             ),
                           ],
@@ -674,8 +672,8 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                     )
                   : const SizedBox(),
               const SizedBox(height: 20),
-              widget._warnMessage.info.first.area.first.geoJson != "{}"
-                  ? _createMapWidget(widget._warnMessage.info.first.area)
+              warning.info.first.area.first.geoJson != "{}"
+                  ? _createMapWidget(warning.info.first.area)
                   : const SizedBox(),
               const SizedBox(height: 20),
               Row(
@@ -694,14 +692,13 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
               const SizedBox(height: 2),
               SelectableText.rich(
                 TextSpan(
-                  children: generateDescriptionBody(
-                    widget._warnMessage.info[0].description,
-                  ),
+                  children:
+                      generateDescriptionBody(warning.info[0].description),
                   style: TextStyle(fontSize: userPreferences.warningFontSize),
                 ),
               ),
               const SizedBox(height: 5),
-              generateAssets(widget._warnMessage.info[0].description).isNotEmpty
+              generateAssets(warning.info[0].description).isNotEmpty
                   ? Column(
                       children: [
                         Row(
@@ -725,15 +722,14 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                             crossAxisCount: 4,
-                            children: generateAssets(
-                              widget._warnMessage.info[0].description,
-                            ),
+                            children:
+                                generateAssets(warning.info[0].description),
                           ),
                         ),
                       ],
                     )
                   : const SizedBox(),
-              widget._warnMessage.info[0].instruction != null
+              warning.info[0].instruction != null
                   ? Column(
                       children: [
                         const SizedBox(height: 20),
@@ -754,11 +750,11 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                     )
                   : const SizedBox(),
               const SizedBox(height: 2),
-              widget._warnMessage.info[0].instruction != null
+              warning.info[0].instruction != null
                   ? SelectableText.rich(
                       TextSpan(
                         children: generateDescriptionBody(
-                          widget._warnMessage.info[0].instruction!,
+                          warning.info[0].instruction!,
                         ),
                         style: TextStyle(
                           fontSize: userPreferences.warningFontSize,
@@ -781,11 +777,11 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 ],
               ),
               Text(
-                widget._warnMessage.publisher,
+                warning.publisher,
                 style: TextStyle(fontSize: userPreferences.warningFontSize),
               ),
               const SizedBox(height: 20),
-              widget._warnMessage.info[0].contact != null
+              warning.info[0].contact != null
                   ? Row(
                       children: [
                         const Icon(Icons.web),
@@ -799,7 +795,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                         ),
                       ],
                     )
-                  : widget._warnMessage.info[0].web != ""
+                  : warning.info[0].web != ""
                       ? Row(
                           children: [
                             const Icon(Icons.web),
@@ -815,7 +811,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                         )
                       : const SizedBox(),
               const SizedBox(height: 2),
-              widget._warnMessage.info[0].contact != null
+              warning.info[0].contact != null
                   ? Row(
                       children: [
                         const Icon(Icons.perm_contact_cal),
@@ -826,9 +822,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                             key: const Key('contactFieldKey'),
                             TextSpan(
                               children: generateContactBody(
-                                replaceHTMLTags(
-                                  widget._warnMessage.info[0].contact!,
-                                ),
+                                replaceHTMLTags(warning.info[0].contact!),
                               ),
                               style: TextStyle(
                                 fontSize: userPreferences.warningFontSize,
@@ -839,7 +833,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                       ],
                     )
                   : const SizedBox(),
-              widget._warnMessage.info[0].web != null
+              warning.info[0].web != null
                   ? Row(
                       children: [
                         const Icon(Icons.open_in_new),
@@ -849,7 +843,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                           child: TextButton(
                             onPressed: () async {
                               bool success = await launchUrlInBrowser(
-                                widget._warnMessage.info[0].web!,
+                                warning.info[0].web!,
                               );
 
                               if (!success) {
@@ -866,7 +860,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                               }
                             },
                             child: Text(
-                              widget._warnMessage.info[0].web!,
+                              warning.info[0].web!,
                               style: TextStyle(
                                 fontSize: userPreferences.warningFontSize,
                               ),

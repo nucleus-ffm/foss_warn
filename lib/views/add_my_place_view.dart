@@ -3,6 +3,7 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 import '../class/class_notification_service.dart';
 import '../services/list_handler.dart';
@@ -67,6 +68,8 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
                           setState(() {
                             updater.updateList(
                               alertApi: ref.read(alertApiProvider),
+                              warningService:
+                                  ref.read(warningsProvider.notifier),
                               newPlace: place,
                             );
                             // cancel warning of missing places (ID: 3)

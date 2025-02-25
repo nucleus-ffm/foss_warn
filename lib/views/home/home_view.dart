@@ -7,6 +7,7 @@ import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/update_provider.dart';
+import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/warnings_view.dart';
 import 'package:foss_warn/views/map_view.dart';
@@ -44,6 +45,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       onMessage: (message, instance) => UnifiedPushHandler.onMessage(
         alertApi: ref.read(alertApiProvider),
         myPlacesService: ref.read(myPlacesProvider.notifier),
+        warningService: ref.read(warningsProvider.notifier),
         message: message,
         instance: instance,
         myPlaces: places,
@@ -88,9 +90,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     }
 
     void onMarkNotificationAsRead() {
-      for (var place in places) {
-        place.markAllWarningsAsRead(ref);
-      }
+      ref.read(warningsProvider.notifier).markAllWarningsAsRead();
 
       final snackBar = SnackBar(
         content: Text(

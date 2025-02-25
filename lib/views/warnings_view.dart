@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/check_for_my_places_warnings.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/connection_error_widget.dart';
 import 'package:foss_warn/widgets/warning_widget.dart';
 
@@ -18,13 +19,14 @@ class WarningsView extends ConsumerWidget {
     var myPlacesService = ref.read(myPlacesProvider.notifier);
 
     var places = ref.watch(myPlacesProvider);
-    var isAnyPlaceWithWarning =
-        places.any((place) => place.warnings.isNotEmpty);
+    var warnings = ref.watch(warningsProvider);
+    var isAnyPlaceWithWarning = warnings.isNotEmpty;
 
     Future<void> onRefresh() async {
       await checkForMyPlacesWarnings(
         alertApi: alertApi,
         myPlacesService: myPlacesService,
+        warningService: ref.read(warningsProvider.notifier),
         places: places,
       );
     }
@@ -50,7 +52,10 @@ class WarningsView extends ConsumerWidget {
           children: [
             const ConnectionError(),
             for (var place in places) ...[
-              for (var warning in place.warnings) ...[
+              for (var warning in warnings.where(
+                (warning) =>
+                    warning.placeSubscriptionId == place.subscriptionId,
+              )) ...[
                 WarningWidget(
                   place: place,
                   warnMessage: warning,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -83,7 +83,7 @@ class _MapViewState extends ConsumerState<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    var places = ref.watch(myPlacesProvider);
+    var warnings = ref.watch(warningsProvider);
 
     return Scaffold(
       body: MapWidget(
@@ -102,7 +102,7 @@ class _MapViewState extends ConsumerState<MapView> {
         widgets: [buildFilterButtons()],
         polygonLayers: [
           ...filterChips["map_view_filter_chip_my_alerts"]!
-              ? MapWidget.createPolygonLayer(places)
+              ? MapWidget.createPolygonLayer(warnings)
               : [],
           ...filterChips["map_view_filter_chip_all_alerts"]!
               ? MapWidget.createPolygonsForMapWarning()
