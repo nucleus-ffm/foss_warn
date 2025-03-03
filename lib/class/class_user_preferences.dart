@@ -376,7 +376,8 @@ class UserPreferences {
     _preferences.setInt("maxSizeOfSubscriptionBoundingBox", value);
   }
 
-  final String unifiedPushInstance = "FOSSWarn";
+  final String unifiedPushInstance = "de.nucleus.foss_warn";
+  final String httpUserAgent = "de.nucleus.foss_warn";
   final String osmTileServerULR =
       "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 }

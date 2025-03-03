@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/constants.dart';
 
-import 'package:unifiedpush/constants.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 import '../services/check_for_my_places_warnings.dart';
 import 'package:foss_warn/main.dart';
@@ -15,23 +14,23 @@ import '../widgets/dialogs/no_up_distributor_found_dialog.dart';
 import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
 
 class UnifiedPushHandler {
-  static void onNewEndpoint(String endpoint, String instance) {
+  static void onNewEndpoint(PushEndpoint endpoint, String instance) {
     debugPrint("new Entpoint:$endpoint");
     if (instance != userPreferences.unifiedPushInstance) {
       return;
     }
     userPreferences.unifiedPushRegistered = true;
-    userPreferences.unifiedPushEndpoint = endpoint;
+    userPreferences.unifiedPushEndpoint = endpoint.url;
   }
 
-  static void onRegistrationFailed(String instance) {
+  static void onRegistrationFailed(FailedReason failedReason, String instance) {
     // @todo error handling
     ErrorLogger.writeErrorLog(
       "class_unifiedPushHandler",
-      "UnifiedPush registration failed",
-      "",
+      "UnifiedPush registration failed: ",
+      failedReason.name,
     );
-    debugPrint("Registration failed");
+    debugPrint("Registration failed: ${failedReason.name}");
   }
 
   static void onUnregistered(String instance) {
@@ -53,16 +52,16 @@ class UnifiedPushHandler {
   static Future<void> onMessage({
     required AlertAPI alertApi,
     required MyPlacesService myPlacesService,
-    required Uint8List message,
-    required String instance,
     required List<Place> myPlaces,
+    required PushMessage message,
+    required String instance,
   }) async {
     debugPrint("instance $instance");
     if (instance != userPreferences.unifiedPushInstance) {
       return;
     }
     debugPrint("onNotification");
-    var payload = utf8.decode(message);
+    var payload = utf8.decode(message.content);
     debugPrint("message: $payload");
     if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) {
       // system message or debug
@@ -87,19 +86,15 @@ class UnifiedPushHandler {
       return;
     } else if (await UnifiedPush.getDistributor() != null) {
       // Re-register in case something broke
-      await UnifiedPush.registerApp(
-          userPreferences
-              .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
-          [
-            featureAndroidBytesMessage,
-          ] // Optional String Array with required features
-          );
+      await UnifiedPush.register(
+        instance: userPreferences.unifiedPushInstance,
+        features: [featureAndroidBytesMessage],
+        linuxDBusName: "de.nucleus.foss_warn",
+      );
     } else {
       // Get a list of distributors that are available
-      List<String> distributors = await UnifiedPush.getDistributors([
-        featureAndroidBytesMessage,
-      ] // Optionnal String Array with required features
-          );
+      List<String> distributors =
+          await UnifiedPush.getDistributors([featureAndroidBytesMessage]);
 
       if (distributors.isEmpty) {
         // there is no distributor installed. Inform user about it
@@ -120,13 +115,11 @@ class UnifiedPushHandler {
       // save the distributor
       await UnifiedPush.saveDistributor(picked ?? distributors.first);
       // register your app to the distributor
-      await UnifiedPush.registerApp(
-          userPreferences
-              .unifiedPushInstance, // optional String, to get multiple endpoints (one per instance)
-          [
-            featureAndroidBytesMessage,
-          ] // Optional String Array with required features
-          );
+      await UnifiedPush.register(
+        instance: userPreferences.unifiedPushInstance,
+        features: [featureAndroidBytesMessage],
+        linuxDBusName: "de.nucleus.foss_warn",
+      );
     }
 
     debugPrint(
