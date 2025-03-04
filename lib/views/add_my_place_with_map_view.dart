@@ -210,7 +210,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     );
     // create polygon around place
     selectedPlacePolygon = Polygon(
-      color: Theme.of(context).colorScheme.secondary.withValues(alpha: .5),
+      color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
       points: circlePolygonPoints,
     );
   }
