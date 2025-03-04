@@ -110,8 +110,22 @@ class PlaceSubscriptionError implements Exception {}
 /// Thrown when the server indicates something went wrong while unregistering
 class UnregisterAreaError implements Exception {}
 
+// Thrown if the server response indicates that the subscription is invalid or deleted on serverside
+class InvalidSubscriptionError implements Exception {}
+
 /// Thrown when the server indicates something went wrong while registering
-class RegisterAreaError implements Exception {}
+class RegisterAreaError implements Exception {
+  final String message;
+  RegisterAreaError({required this.message});
+
+  @override
+  String toString() {
+    return "RegisterAreaError: $message";
+  }
+}
+
+/// Thrown when the server indicates something went wrong while fetching the vapid key
+class VapidKeyException implements Exception {}
 
 class ServerSettings {
   final String url;
@@ -120,6 +134,7 @@ class ServerSettings {
   final String privacyNotice;
   final String termsOfService;
   final int congestionState;
+  final Map<String, dynamic> supportedPushServices;
 
   ServerSettings({
     required this.url,
@@ -128,6 +143,7 @@ class ServerSettings {
     required this.privacyNotice,
     required this.termsOfService,
     required this.congestionState,
+    required this.supportedPushServices,
   });
 }
 
@@ -142,6 +158,13 @@ abstract class AlertAPI {
   /// Throws an exception if the url is not a valid FPAS server url or something
   /// else went wrong
   Future<ServerSettings> fetchServerSettings({String overrideUrl});
+
+  /// fetch the for webpush needed vapid key from the server
+  ///
+  /// returns the vapid key as String if it was successfully fetched
+  ///
+  /// Throws an exception if something went wrong
+  Future<String> fetchVapidKeyForWebPush();
 
   /// Get all alerts for a given place.
   /// Make sure you have registered to the area before you retrieve alerts for it.
