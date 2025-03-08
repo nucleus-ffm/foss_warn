@@ -6,6 +6,7 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 import 'package:unifiedpush/constants.dart';
 import 'package:unifiedpush/unifiedpush.dart';
@@ -53,6 +54,7 @@ class UnifiedPushHandler {
   static Future<void> onMessage({
     required AlertAPI alertApi,
     required MyPlacesService myPlacesService,
+    required WarningService warningService,
     required Uint8List message,
     required String instance,
     required List<Place> myPlaces,
@@ -70,6 +72,7 @@ class UnifiedPushHandler {
       checkForMyPlacesWarnings(
         alertApi: alertApi,
         myPlacesService: myPlacesService,
+        warningService: warningService,
         places: myPlaces,
       );
     }

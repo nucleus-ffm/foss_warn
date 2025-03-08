@@ -3,6 +3,7 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 final updaterProvider = Provider(
   (ref) => Update(
@@ -18,6 +19,7 @@ class Update with ChangeNotifier {
   // delete preset
   Future<void> updateList({
     required AlertAPI alertApi,
+    required WarningService warningService,
     required Place newPlace,
   }) async {
     debugPrint("add new place: ${newPlace.name}");
@@ -26,6 +28,7 @@ class Update with ChangeNotifier {
 
     await callAPI(
       alertApi: alertApi,
+      warningService: warningService,
       places: myPlacesService.places,
     );
     debugPrint("we have to rebuild the view");

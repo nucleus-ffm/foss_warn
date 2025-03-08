@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/main.dart';
+import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 import '../class/class_warn_message.dart';
 import 'send_status_notification.dart';
@@ -10,6 +12,7 @@ import 'save_and_load_shared_preferences.dart';
 /// call the FPAS api and load for myPlaces the warnings
 Future<void> callAPI({
   required AlertAPI alertApi,
+  required WarningService warningService,
   required List<Place> places,
 }) async {
   bool successfullyFetched = true;
@@ -21,51 +24,47 @@ Future<void> callAPI({
 
   await loadMyPlacesList();
 
-  var placesWithWarningsList = <Place>[];
   for (Place place in places) {
     var alertIds =
         await alertApi.getAlerts(subscriptionId: place.subscriptionId);
     var warnings = await Future.wait([
       for (var alertId in alertIds) ...[
-        alertApi.getAlertDetail(alertId: alertId),
+        alertApi.getAlertDetail(
+          alertId: alertId,
+          placeSubscriptionId: place.subscriptionId,
+        ),
       ],
     ]);
 
+    var updatedWarnings = <WarnMessage>[];
     for (var warning in warnings) {
-      warning.isUpdateOfAlreadyNotifiedWarning = _isAlertAnUpdate(
-        existingWarnings: warnings,
-        newAlert: warning,
+      updatedWarnings.add(
+        warning.copyWith(
+          isUpdateOfAlreadyNotifiedWarning: _isAlertAnUpdate(
+            existingWarnings: warnings,
+            newWarning: warning,
+          ),
+        ),
       );
     }
 
     // set flag for updated alerts
-    for (WarnMessage wm in warnings) {
-      if (wm.references != null) {
-        // the alert contains a reference, so it is an update of an previous alert
-        // we search for the alert and add it to the update thread
+    for (var warning in updatedWarnings) {
+      if (warning.references == null) continue;
 
-        for (String id in wm.references!.identifier) {
-          // check all warnings for references
-          for (WarnMessage alWm in warnings) {
-            debugPrint(alWm.identifier);
-            if (alWm.identifier.compareTo(id) == 0) {
-              // set flag to true to hide the previous alert in the overview
-              alWm.hideWarningBecauseThereIsANewerVersion =
-                  true; //@todo move to better location
-            }
-          }
-        }
+      // the alert contains a reference, so it is an update of an previous alert
+      for (var referenceId in warning.references!.identifier) {
+        // check all warnings for references
+        var alWm =
+            warnings.firstWhere((element) => element.identifier == referenceId);
+        warnings.updateEntry(
+          alWm.copyWith(hideWarningBecauseThereIsANewerVersion: true),
+        );
       }
     }
 
-    var updatedPlace = Place.withWarnings(
-      boundingBox: place.boundingBox,
-      subscriptionId: place.subscriptionId,
-      name: place.name,
-      warnings: warnings,
-      eTag: place.eTag,
-    );
-    placesWithWarningsList.add(updatedPlace);
+    // Update the state
+    warningService.set(updatedWarnings);
   }
 
   // update status notification if the user wants
@@ -76,27 +75,25 @@ Future<void> callAPI({
       sendStatusUpdateNotification(successfullyFetched);
     }
   }
-
-  debugPrint("finished calling API");
 }
 
 /// Check if the given alert is an update of a previous alert.
 /// Returns the notified status of the original alert if the severity hasn't increased
 bool _isAlertAnUpdate({
   required List<WarnMessage> existingWarnings,
-  required WarnMessage newAlert,
+  required WarnMessage newWarning,
 }) {
   // check if there is a referenced warning
-  if (newAlert.references != null) {
+  if (newWarning.references != null) {
     // check if one of the referenced alerts is already in the warnings list
-    for (WarnMessage warnMessage in existingWarnings) {
-      if (newAlert.references!.identifier
-          .any((identifier) => warnMessage.identifier == identifier)) {
+    for (var warning in existingWarnings) {
+      if (newWarning.references!.identifier
+          .any((identifier) => warning.identifier == identifier)) {
         // if there is a referenced alert, used the same value for notified.
         // use the notified value of the referenced warning, but only if the severity is still the same or lesser
-        if (newAlert.info[0].severity.index >=
-            warnMessage.info[0].severity.index) {
-          return warnMessage.notified;
+        if (newWarning.info[0].severity.index >=
+            warning.info[0].severity.index) {
+          return warning.notified;
         }
       }
     }
@@ -155,9 +152,13 @@ abstract class AlertAPI {
 
   /// Get detail of an alert.
   /// [alertId] is the ID of an alert to retrieve details for.
+  /// [placeSubscriptionId] is the ID of the place subscription this alert belongs too.
   ///
   /// Returns a [WarnMessage] containing the detail of the alert.
-  Future<WarnMessage> getAlertDetail({required String alertId});
+  Future<WarnMessage> getAlertDetail({
+    required String alertId,
+    required String placeSubscriptionId,
+  });
 
   /// Send a heartbeat to the FPAS Server once a day to prevent the given subscription to be deleted.
   /// [subscriptionId] is the ID of the subscription to send a heartbeat for.

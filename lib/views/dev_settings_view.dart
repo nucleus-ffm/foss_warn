@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 import '../main.dart';
 import '../services/check_for_my_places_warnings.dart';
@@ -46,6 +46,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
     var focusScope = FocusScope.of(context);
 
     var places = ref.watch(myPlacesProvider);
+    var warningService = ref.read(warningsProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,14 +66,12 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   checkForMyPlacesWarnings(
                     alertApi: ref.read(alertApiProvider),
                     myPlacesService: ref.read(myPlacesProvider.notifier),
+                    warningService: ref.read(warningsProvider.notifier),
                     places: places,
                   );
-                  bool thereIsNoWarning = true;
-                  for (Place myPlace in places) {
-                    //check if there are warning and if it they are important enough
-                    thereIsNoWarning =
-                        !(myPlace.checkIfThereIsAWarningToNotify());
-                  }
+
+                  bool thereIsNoWarning =
+                      !ref.read(warningsProvider.notifier).hasWarningToNotify();
                   if (thereIsNoWarning) {
                     final snackBar = SnackBar(
                       content: const Text(
@@ -95,12 +94,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   "${localizations.dev_settings_delete_list_of_read_warnings_text} & \n${localizations.dev_settings_delete_notification_list_text}",
                 ),
                 onTap: () {
-                  debugPrint(
-                    "reset read and notification status for all warnings",
-                  );
-                  for (Place p in places) {
-                    p.resetReadAndNotificationStatusForAllWarnings(ref);
-                  }
+                  warningService.resetReadAndNotificationStatusForAllWarnings();
+
                   final snackBar = SnackBar(
                     content: Text(
                       localizations.dev_settings_success,
@@ -117,8 +112,10 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 title: Text(localizations.dev_settings_delete_warnings),
                 subtitle: Text(localizations.dev_settings_delete_warnings_text),
                 onTap: () async {
-                  for (Place p in places) {
-                    p.warnings.clear();
+                  for (var places in places) {
+                    ref
+                        .read(warningsProvider.notifier)
+                        .clearWarningsForPlace(places);
                   }
 
                   await ref.read(myPlacesProvider.notifier).set(places);

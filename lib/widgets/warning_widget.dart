@@ -4,8 +4,8 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
-import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/translate_and_colorize_warning.dart';
+import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/views/alert_update_thread_view.dart';
 import 'package:foss_warn/views/warning_detail_view.dart';
 import 'package:foss_warn/widgets/dialogs/category_explanation.dart';
@@ -16,7 +16,6 @@ import '../class/class_area.dart';
 import '../services/update_provider.dart';
 
 class WarningWidget extends ConsumerWidget {
-  final Place? _place;
   final List<WarnMessage>? _updateThread;
   final WarnMessage _warnMessage;
   final bool _isMyPlaceWarning;
@@ -27,7 +26,6 @@ class WarningWidget extends ConsumerWidget {
     Place? place,
     List<WarnMessage>? updateThread,
   })  : _warnMessage = warnMessage,
-        _place = place,
         _updateThread = updateThread,
         _isMyPlaceWarning = isMyPlaceWarning;
 
@@ -65,10 +63,8 @@ class WarningWidget extends ConsumerWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetailScreen(
-                  warnMessage: _warnMessage,
-                  place: _place,
-                ),
+                builder: (context) =>
+                    DetailScreen(warningIdentifier: _warnMessage.identifier),
               ),
             ).then((value) => updatePrevView());
           } catch (e) {
@@ -194,8 +190,7 @@ class WarningWidget extends ConsumerWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailScreen(
-                            warnMessage: _warnMessage,
-                            place: _place,
+                            warningIdentifier: _warnMessage.identifier,
                           ),
                         ),
                       ).then((value) => updatePrevView());
@@ -233,9 +228,6 @@ class WarningWidget extends ConsumerWidget {
   }
 
   Widget _buildReadStateButton(WidgetRef ref) {
-    var updater = ref.read(updaterProvider);
-    var places = ref.watch(myPlacesProvider);
-
     // do not show a clickable red/green button for non-my-place warnings
     // if _isMyPlaceWarning = true
     // the read state of these warning is not saved anyways
@@ -252,20 +244,9 @@ class WarningWidget extends ConsumerWidget {
 
     return IconButton(
       onPressed: () async {
-        _warnMessage.read = !_warnMessage.read;
-        // @todo this fixes the issue with the not stored read state
-        // this is just a hacky solution to ensure the right data is in the
-        // myPlacesList. We should try to find a cleaner solution in the future
-        if (_place != null) {
-          var place = places.firstWhere((e) => e.name == _place.name);
-          var warning = place.warnings
-              .firstWhere((e) => e.identifier == _warnMessage.identifier);
-          warning.read = _warnMessage.read;
-          place.warnings.updateEntry(warning);
-        }
-        updater.updateReadStatusInList();
-        // save places list to store new read state
-        await ref.read(myPlacesProvider.notifier).set(places);
+        ref
+            .read(warningsProvider.notifier)
+            .updateWarning(_warnMessage.copyWith(read: !_warnMessage.read));
       },
       icon: _warnMessage.read
           ? const Icon(

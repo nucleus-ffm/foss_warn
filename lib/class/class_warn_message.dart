@@ -25,77 +25,120 @@ import 'class_info.dart';
 ///   - info  (OPTIONAL) The container for all component parts of the info sub-element of the alert message
 class WarnMessage {
   final String identifier;
+  final String placeSubscriptionId;
   final String publisher;
   final String sender;
   final String sent;
   final Status status;
   final MessageType messageType;
   final Scope scope;
-  String? restriction;
-  String? addresses;
-  String? code;
-  String? note;
-  References? references;
-  String? incidents;
+  final String? restriction;
+  final String? addresses;
+  final String? code;
+  final String? note;
+  final References? references;
+  final String? incidents;
   final List<Info> info;
 
-  bool notified = false;
-  bool read = false;
-  bool isUpdateOfAlreadyNotifiedWarning = false;
-  bool hideWarningBecauseThereIsANewerVersion = false; //@todo
+  final bool notified;
+  final bool read;
+  final bool isUpdateOfAlreadyNotifiedWarning;
+  final bool hideWarningBecauseThereIsANewerVersion;
 
   WarnMessage({
     required this.identifier,
+    required this.placeSubscriptionId,
     required this.publisher,
     required this.sender,
     required this.sent,
     required this.status,
     required this.messageType,
     required this.scope,
+    required this.info,
     this.restriction,
     this.addresses,
     this.code,
     this.note,
     this.references,
     this.incidents,
-    required this.info,
-    required this.notified,
-    required this.read,
-    isUpdateOfAlreadyNotifiedWarning, //@todo
-    hideWarningBecauseThereIsANewerVersion,
+    this.notified = false,
+    this.read = false,
+    this.isUpdateOfAlreadyNotifiedWarning = false,
+    this.hideWarningBecauseThereIsANewerVersion = false,
   });
 
-  factory WarnMessage.fromJson(Map<String, dynamic> json) {
-    return WarnMessage(
-      identifier: json['identifier'] ?? '?',
-      publisher: json['publisher'] ?? "?",
-      sender: json['sender'] ?? "?",
-      sent: json['sent'] ?? "?",
-      status: Status.fromJson(json['status']),
-      messageType: MessageType.fromJson(json['messageType']),
-      scope: Scope.fromJson(json['scope']),
-      info: Info.infoListFromJson(
-        (json['info'] as List<dynamic>)
-            .map((e) => e as Map<String, dynamic>)
-            .toList(),
-      ),
-      notified: json['notified'] ?? false, //@todo check
-      read: json['read'] ?? false,
-      references: json['references'] != null
-          ? References.fromJson(json['references'])
-          : null,
-      isUpdateOfAlreadyNotifiedWarning:
-          json['isUpdateOfAlreadyNotifiedWarning'] ?? false,
-      hideWarningBecauseThereIsANewerVersion:
-          json['hideWarningBecauseThereIsANewerVersion'] ?? false,
-    );
-  }
+  WarnMessage copyWith({
+    String? identifier,
+    String? publisher,
+    String? sender,
+    String? sent,
+    Status? status,
+    MessageType? messageType,
+    Scope? scope,
+    List<Info>? info,
+    bool? notified,
+    bool? read,
+    bool? isUpdateOfAlreadyNotifiedWarning,
+    bool? hideWarningBecauseThereIsANewerVersion,
+  }) =>
+      WarnMessage(
+        identifier: identifier ?? this.identifier,
+        placeSubscriptionId: placeSubscriptionId,
+        publisher: publisher ?? this.publisher,
+        sender: sender ?? this.sender,
+        sent: sent ?? this.sent,
+        status: status ?? this.status,
+        messageType: messageType ?? this.messageType,
+        scope: scope ?? this.scope,
+        info: info ?? this.info,
+        notified: notified ?? this.notified,
+        read: read ?? this.read,
+        isUpdateOfAlreadyNotifiedWarning: isUpdateOfAlreadyNotifiedWarning ??
+            this.isUpdateOfAlreadyNotifiedWarning,
+        hideWarningBecauseThereIsANewerVersion:
+            hideWarningBecauseThereIsANewerVersion ??
+                this.hideWarningBecauseThereIsANewerVersion,
+      );
+
+  factory WarnMessage.fromJson(
+    Map<String, dynamic> json, {
+    required String placeSubscriptionId,
+  }) =>
+      WarnMessage(
+        identifier: json['identifier'] ?? '?',
+        placeSubscriptionId: placeSubscriptionId,
+        publisher: json['publisher'] ?? "?",
+        sender: json['sender'] ?? "?",
+        sent: json['sent'] ?? "?",
+        status: Status.fromJson(json['status']),
+        messageType: MessageType.fromJson(json['messageType']),
+        scope: Scope.fromJson(json['scope']),
+        info: Info.infoListFromJson(
+          (json['info'] as List<dynamic>)
+              .map((e) => e as Map<String, dynamic>)
+              .toList(),
+        ),
+        notified: json['notified'] ?? false, //@todo check
+        read: json['read'] ?? false,
+        references: json['references'] != null
+            ? References.fromJson(json['references'])
+            : null,
+        isUpdateOfAlreadyNotifiedWarning:
+            json['isUpdateOfAlreadyNotifiedWarning'] ?? false,
+        hideWarningBecauseThereIsANewerVersion:
+            json['hideWarningBecauseThereIsANewerVersion'] ?? false,
+      );
 
   /// is used to create a new WarnMessage object with data from the API call.
   /// Note that the json structure is different from the structure we use to
   /// cache the warnings.
-  factory WarnMessage.fromJsonFPAS(Map<String, dynamic> json) => WarnMessage(
+  factory WarnMessage.fromJsonFPAS(
+    Map<String, dynamic> json, {
+    required String placeSubscriptionId,
+  }) =>
+      WarnMessage(
         identifier: json["identifier"] ?? "?",
+        placeSubscriptionId: placeSubscriptionId,
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
         status: Status.fromJson(json["status"]),

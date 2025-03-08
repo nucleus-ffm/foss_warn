@@ -1,34 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 import 'dialogs/delete_place_dialog.dart';
 import '../views/my_place_detail_view.dart';
 import 'dialogs/meta_info_for_place_dialog.dart';
 
-class MyPlaceWidget extends StatelessWidget {
-  final Place myPlace;
-  const MyPlaceWidget({super.key, required this.myPlace});
+class MyPlaceWidget extends ConsumerWidget {
+  final Place place;
 
-  String checkForWarnings(BuildContext context) {
-    var localizations = context.localizations;
-
-    debugPrint("[MyPlaceWidget] check for warnings");
-    if (myPlace.countWarnings > 0) {
-      if (myPlace.countWarnings > 1) {
-        return "${localizations.my_place_there_are} ${myPlace.countWarnings} ${localizations.my_place_warnings_more_then_one}";
-      } else {
-        return "${localizations.my_place_there_are} ${myPlace.countWarnings} ${localizations.my_place_warnings_only_one}";
-      }
-    } else {
-      return localizations.my_places_no_warning_found;
-    }
-  }
+  const MyPlaceWidget({
+    required this.place,
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
+
+    var warnings = ref.watch(
+      warningsProvider.select(
+        (value) => value.where(
+          (warning) => warning.placeSubscriptionId == place.subscriptionId,
+        ),
+      ),
+    );
+
+    String checkForWarnings() {
+      var localizations = context.localizations;
+
+      if (warnings.isNotEmpty) {
+        if (warnings.length > 1) {
+          return "${localizations.my_place_there_are} ${warnings.length} ${localizations.my_place_warnings_more_then_one}";
+        } else {
+          return "${localizations.my_place_there_are} ${warnings.length} ${localizations.my_place_warnings_only_one}";
+        }
+      } else {
+        return localizations.my_places_no_warning_found;
+      }
+    }
 
     return Card(
       child: InkWell(
@@ -37,16 +50,16 @@ class MyPlaceWidget extends StatelessWidget {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return DeletePlaceDialog(myPlace: myPlace);
+              return DeletePlaceDialog(myPlace: place);
             },
           );
         },
         onTap: () {
-          if (myPlace.countWarnings != 0) {
+          if (warnings.isNotEmpty) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MyPlaceDetailScreen(myPlace: myPlace),
+                builder: (context) => MyPlaceDetailScreen(myPlace: place),
               ),
             );
           }
@@ -64,7 +77,7 @@ class MyPlaceWidget extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return MetaInfoForPlaceDialog(myPlace: myPlace);
+                          return MetaInfoForPlaceDialog(myPlace: place);
                         },
                       );
                     },
@@ -81,7 +94,7 @@ class MyPlaceWidget extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            myPlace.name,
+                            place.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -90,15 +103,15 @@ class MyPlaceWidget extends StatelessWidget {
                             overflow: TextOverflow.fade,
                           ),
                         ),
-                        Flexible(child: Text(checkForWarnings(context))),
+                        Flexible(child: Text(checkForWarnings())),
                       ],
                     ),
                   ),
                 ],
               ),
+              //check the number of warnings and display check or warning
               Flexible(
-                child: myPlace.countWarnings ==
-                        0 //check the number of warnings and display check or warning
+                child: warnings.isEmpty
                     ? TextButton(
                         style: TextButton.styleFrom(
                           backgroundColor: theme.colorScheme.secondary,
@@ -112,7 +125,7 @@ class MyPlaceWidget extends StatelessWidget {
                           color: theme.colorScheme.onSecondary,
                         ),
                       )
-                    : myPlace.checkIfAllWarningsAreRead()
+                    : !warnings.any((warning) => !warning.read)
                         ? TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.grey,
@@ -124,7 +137,7 @@ class MyPlaceWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      MyPlaceDetailScreen(myPlace: myPlace),
+                                      MyPlaceDetailScreen(myPlace: place),
                                 ),
                               );
                             },
@@ -144,7 +157,7 @@ class MyPlaceWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      MyPlaceDetailScreen(myPlace: myPlace),
+                                      MyPlaceDetailScreen(myPlace: place),
                                 ),
                               );
                             },
