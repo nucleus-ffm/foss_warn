@@ -127,10 +127,10 @@ class UnifiedPushHandler {
       // register UnifiedPush with same distributor url and token as
       // this is required by the unifiedPush plugin
       await UnifiedPush.register(
-          userPreferences
-              .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
-          [], // Optional String Array with required features
-          userPreferences.webPushVapidKey,
+        userPreferences
+            .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
+        [], // Optional String Array with required features
+        userPreferences.webPushVapidKey,
       );
     } else {
       // Get a list of distributors that are available
