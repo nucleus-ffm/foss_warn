@@ -352,7 +352,8 @@ class UserPreferences {
     _preferences.setBool("unifiedPushRegistered", value);
   }
 
-  final List<String> _fossPublicAlertSubscriptionIdsToSubscribe = [];
+  final List<String> _fossPublicAlertSubscriptionIdsToSubscribe =
+      []; //@TODO(nucleus): there is the "server" missing in the name
   List<String> get fossPublicAlertSubscriptionIdsToSubscribe {
     List<String>? data =
         _preferences.getStringList("fossPublicAlertSubscriptionIdsToSubscribe");
@@ -379,4 +380,43 @@ class UserPreferences {
   final String unifiedPushInstance = "FOSSWarn";
   final String osmTileServerULR =
       "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+  String? get webPushVapidKey {
+    String? data = _preferences.getString("webPushVapidKey");
+    return data;
+  }
+
+  set webPushVapidKey(String? value) {
+    if (value == null) {
+      _preferences.remove("webPushVapidKey");
+    } else {
+      _preferences.setString("webPushVapidKey", value);
+    }
+  }
+
+  String? get webPushAuthKey {
+    String? data = _preferences.getString("webPushAuthKey");
+    return data;
+  }
+
+  set webPushAuthKey(String? value) {
+    if (value == null) {
+      _preferences.remove("webPushAuthKey");
+    } else {
+      _preferences.setString("webPushAuthKey", value);
+    }
+  }
+
+  String? get webPushPublicKey {
+    String? data = _preferences.getString("webPushPublicKey");
+    return data;
+  }
+
+  set webPushPublicKey(String? value) {
+    if (value == null) {
+      _preferences.remove("webPushPublicKey");
+    } else {
+      _preferences.setString("webPushPublicKey", value);
+    }
+  }
 }

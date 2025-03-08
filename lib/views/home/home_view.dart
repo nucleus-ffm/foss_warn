@@ -50,6 +50,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
       ),
     );
 
+    UnifiedPushHandler.setupUnifiedPush(context, ref);
+
     NotificationService.onNotification.stream.listen(onClickedNotification);
   }
 

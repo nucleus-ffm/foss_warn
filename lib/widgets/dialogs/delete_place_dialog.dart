@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/services/api_handler.dart';
 import '../../services/update_provider.dart';
 
 class DeletePlaceDialog extends ConsumerWidget {
@@ -24,9 +26,17 @@ class DeletePlaceDialog extends ConsumerWidget {
 
       // Unsubscribe from server
       debugPrint("unregister from server for place ${myPlace.name}");
-      await alertApi.unregisterArea(
-        subscriptionId: myPlace.subscriptionId,
-      );
+      try {
+        await alertApi.unregisterArea(
+          subscriptionId: myPlace.subscriptionId,
+        );
+      } on UnregisterAreaError {
+        ErrorLogger.writeErrorLog(
+          "delete_place.dart",
+          "onDeletePlacePressed",
+          "Failed to delete subscription",
+        );
+      }
 
       updater.deletePlace(myPlace);
 

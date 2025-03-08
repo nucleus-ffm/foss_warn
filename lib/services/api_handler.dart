@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/main.dart';
 
@@ -23,49 +24,60 @@ Future<void> callAPI({
 
   var placesWithWarningsList = <Place>[];
   for (Place place in places) {
-    var alertIds =
-        await alertApi.getAlerts(subscriptionId: place.subscriptionId);
-    var warnings = await Future.wait([
-      for (var alertId in alertIds) ...[
-        alertApi.getAlertDetail(alertId: alertId),
-      ],
-    ]);
+    try {
+      var alertIds =
+          await alertApi.getAlerts(subscriptionId: place.subscriptionId);
+      var warnings = await Future.wait([
+        for (var alertId in alertIds) ...[
+          alertApi.getAlertDetail(alertId: alertId),
+        ],
+      ]);
 
-    for (var warning in warnings) {
-      warning.isUpdateOfAlreadyNotifiedWarning = _isAlertAnUpdate(
-        existingWarnings: warnings,
-        newAlert: warning,
-      );
-    }
+      for (var warning in warnings) {
+        warning.isUpdateOfAlreadyNotifiedWarning = _isAlertAnUpdate(
+          existingWarnings: warnings,
+          newAlert: warning,
+        );
+      }
 
-    // set flag for updated alerts
-    for (WarnMessage wm in warnings) {
-      if (wm.references != null) {
-        // the alert contains a reference, so it is an update of an previous alert
-        // we search for the alert and add it to the update thread
+      // set flag for updated alerts
+      for (WarnMessage wm in warnings) {
+        if (wm.references != null) {
+          // the alert contains a reference, so it is an update of an previous alert
+          // we search for the alert and add it to the update thread
 
-        for (String id in wm.references!.identifier) {
-          // check all warnings for references
-          for (WarnMessage alWm in warnings) {
-            debugPrint(alWm.identifier);
-            if (alWm.identifier.compareTo(id) == 0) {
-              // set flag to true to hide the previous alert in the overview
-              alWm.hideWarningBecauseThereIsANewerVersion =
-                  true; //@todo move to better location
+          for (String id in wm.references!.identifier) {
+            // check all warnings for references
+            for (WarnMessage alWm in warnings) {
+              debugPrint(alWm.identifier);
+              if (alWm.identifier.compareTo(id) == 0) {
+                // set flag to true to hide the previous alert in the overview
+                alWm.hideWarningBecauseThereIsANewerVersion =
+                    true; //@todo move to better location
+              }
             }
           }
         }
       }
-    }
 
-    var updatedPlace = Place.withWarnings(
-      boundingBox: place.boundingBox,
-      subscriptionId: place.subscriptionId,
-      name: place.name,
-      warnings: warnings,
-      eTag: place.eTag,
-    );
-    placesWithWarningsList.add(updatedPlace);
+      var updatedPlace = Place.withWarnings(
+        boundingBox: place.boundingBox,
+        subscriptionId: place.subscriptionId,
+        name: place.name,
+        warnings: warnings,
+        eTag: place.eTag,
+      );
+      placesWithWarningsList.add(updatedPlace);
+    } on InvalidSubscriptionError {
+      //@TODO(Nucleus): show alert to user or automatically resubscribe to area
+      continue;
+    } catch (e) {
+      ErrorLogger.writeErrorLog(
+        "api_handler.dart",
+        "callAPI",
+        "Failed to call api because of: $e",
+      );
+    }
   }
 
   // update status notification if the user wants
@@ -113,8 +125,22 @@ class PlaceSubscriptionError implements Exception {}
 /// Thrown when the server indicates something went wrong while unregistering
 class UnregisterAreaError implements Exception {}
 
+// Thrown if the server response indicates that the subscription is invalid or deleted on serverside
+class InvalidSubscriptionError implements Exception {}
+
 /// Thrown when the server indicates something went wrong while registering
-class RegisterAreaError implements Exception {}
+class RegisterAreaError implements Exception {
+  final String message;
+  RegisterAreaError({required this.message});
+
+  @override
+  String toString() {
+    return "RegisterAreaError: $message";
+  }
+}
+
+/// Thrown when the server indicates something went wrong while fetching the vapid key
+class VapidKeyException implements Exception {}
 
 class ServerSettings {
   final String url;
@@ -123,6 +149,7 @@ class ServerSettings {
   final String privacyNotice;
   final String termsOfService;
   final int congestionState;
+  final Map<String, dynamic> supportedPushServices;
 
   ServerSettings({
     required this.url,
@@ -131,6 +158,7 @@ class ServerSettings {
     required this.privacyNotice,
     required this.termsOfService,
     required this.congestionState,
+    required this.supportedPushServices,
   });
 }
 
@@ -145,6 +173,13 @@ abstract class AlertAPI {
   /// Throws an exception if the url is not a valid FPAS server url or something
   /// else went wrong
   Future<ServerSettings> fetchServerSettings({String overrideUrl});
+
+  /// fetch the for webpush needed vapid key from the server
+  ///
+  /// returns the vapid key as String if it was successfully fetched
+  ///
+  /// Throws an exception if something went wrong
+  Future<String> fetchVapidKeyForWebPush();
 
   /// Get all alerts for a given place.
   /// Make sure you have registered to the area before you retrieve alerts for it.
