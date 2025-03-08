@@ -17,7 +17,7 @@ import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
 
 class UnifiedPushHandler {
   static void onNewEndpoint(PushEndpoint endpoint, String instance) {
-    debugPrint("new Entpoint:${endpoint.url}");
+    debugPrint("new Endpoint:${endpoint.url}");
     if (instance != userPreferences.unifiedPushInstance) {
       return;
     }
@@ -96,7 +96,9 @@ class UnifiedPushHandler {
   /// register for push notifications and keep registration up to date
   /// This methode needs to called at every app startup
   static Future<void> setupUnifiedPush(
-      BuildContext context, WidgetRef ref) async {
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     // fetch fresh server config to check which push services are supported
     AlertAPI alertAPI = ref.read(alertApiProvider);
     ServerSettings serverSettings = await alertAPI.fetchServerSettings();
@@ -112,8 +114,11 @@ class UnifiedPushHandler {
             await alertAPI.fetchVapidKeyForWebPush();
       } on VapidKeyException {
         isEncryptedUnifiedPushSupported = false;
-        ErrorLogger.writeErrorLog("class_unified_push_handler.dart",
-            "setup unifiedPush", "Failed to fetch VAPID key for webpush");
+        ErrorLogger.writeErrorLog(
+          "class_unified_push_handler.dart",
+          "setup unifiedPush",
+          "Failed to fetch VAPID key for webpush",
+        );
       }
     }
 
@@ -125,7 +130,8 @@ class UnifiedPushHandler {
           userPreferences
               .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
           [], // Optional String Array with required features
-          userPreferences.webPushVapidKey);
+          userPreferences.webPushVapidKey,
+      );
     } else {
       // Get a list of distributors that are available
       List<String> distributors = await UnifiedPush.getDistributors([
