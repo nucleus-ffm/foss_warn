@@ -73,7 +73,10 @@ Future<void> callAPI({
       continue;
     } catch (e) {
       ErrorLogger.writeErrorLog(
-          "api_handler.dart", "callAPI", "Failed to call api because of: $e");
+        "api_handler.dart",
+        "callAPI",
+        "Failed to call api because of: $e",
+      );
     }
   }
 
