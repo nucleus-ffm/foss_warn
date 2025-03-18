@@ -44,7 +44,7 @@ An unofficial open source application written in Flutter to get emergency alerts
 We are currently migrating to the FPAS server. Version 0.8.0 will be the last version with direct support for the BBK API; instead, FOSSWarn will completely migrate to FPAS and UnifiedPush notifications. This will be a breaking change.
 
 ## TODO
- - see [project board](https://github.com/nucleus-ffm/foss_warn/projects?type=classic)
+ - see [project board](https://github.com/users/nucleus-ffm/projects/4)
 
 ## FAQ
 <details>
@@ -96,12 +96,12 @@ You can email me at `foss-warn {ät} posteo {point} de`. You can also follow the
 * [**Nina-FOSS**](https://github.com/SailReal/nina-foss) Similar to FOSS Warn, but written with Java
 
 ## Screenshots
-[<img src="fastlane/metadata/android/de-DE/images/phoneScreenshots/shot_1.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_1.png)
-[<img src="fastlane/metadata/android/de-DE/images/phoneScreenshots/shot_2.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_2.png)
-[<img src="fastlane/metadata/android/de-DE/images/phoneScreenshots/shot_3.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_3.png)
-[<img src="fastlane/metadata/android/de-DE/images/phoneScreenshots/shot_4.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_4.png)
-[<img src="fastlane/metadata/android/de-DE/images/phoneScreenshots/shot_5.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_5.png)
-[<img src="fastlane/metadata/android/de-DE/images/phoneScreenshots/shot_6.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_6.png)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_1.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_1.png)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_2.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_2.png)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_3.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_3.png)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_4.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_4.png)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_5.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_5.png)
+[<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_6.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_6.png)
 
 
 ## Haftungsausschluss 
