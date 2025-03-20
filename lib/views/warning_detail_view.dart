@@ -279,14 +279,14 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   void initState() {
     super.initState();
 
-    var warning = ref.read(warningsProvider).firstWhere(
-          (element) => element.identifier == widget.warningIdentifier,
-        );
-    ref
-        .read(warningsProvider.notifier)
-        .updateWarning(warning.copyWith(read: true));
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var warning = ref.read(warningsProvider).firstWhere(
+            (element) => element.identifier == widget.warningIdentifier,
+          );
+      ref
+          .read(warningsProvider.notifier)
+          .updateWarning(warning.copyWith(read: true));
+
       // cancel the notification
       await NotificationService.cancelOneNotification(
         warning.identifier.hashCode,

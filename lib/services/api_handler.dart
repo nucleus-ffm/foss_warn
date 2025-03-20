@@ -24,6 +24,7 @@ Future<void> callAPI({
 
   await loadMyPlacesList();
 
+  var updatedWarnings = <WarnMessage>[];
   for (Place place in places) {
     var alertIds =
         await alertApi.getAlerts(subscriptionId: place.subscriptionId);
@@ -36,7 +37,6 @@ Future<void> callAPI({
       ],
     ]);
 
-    var updatedWarnings = <WarnMessage>[];
     for (var warning in warnings) {
       updatedWarnings.add(
         warning.copyWith(
@@ -62,10 +62,10 @@ Future<void> callAPI({
         );
       }
     }
-
-    // Update the state
-    warningService.set(updatedWarnings);
   }
+
+  // Update the state
+  warningService.set(updatedWarnings);
 
   // update status notification if the user wants
   if (userPreferences.showStatusNotification) {
