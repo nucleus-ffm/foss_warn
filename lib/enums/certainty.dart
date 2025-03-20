@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:foss_warn/extensions/context.dart';
+
 enum Certainty {
   observed, // Determined to have occurred or to be ongoing
   likely, // Likely (p > ~50%)
@@ -8,6 +11,19 @@ enum Certainty {
 
   String toJson() => name;
   static Certainty fromJson(String json) => values.byName(json.toLowerCase());
+
+  String getLocalizedName(BuildContext context) {
+    var localizations = context.localizations;
+
+    return switch (this) {
+      observed => localizations.warning_certainty_observed,
+      likely => localizations.warning_certainty_likely,
+      possible => localizations.warning_certainty_possible,
+      unlikely => localizations.warning_certainty_unlikely,
+      unknown => localizations.warning_certainty_unknown,
+      other => localizations.warning_certainty_other,
+    };
+  }
 }
 
 /// extract the certainty from the string and return the corresponding enum

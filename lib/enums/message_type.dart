@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:foss_warn/extensions/context.dart';
+
 enum MessageType {
   alert, // Initial information requiring attention by targeted recipients
   update, // Updates and supercedes the earlier message(s) identified in <references>
@@ -16,5 +19,17 @@ enum MessageType {
       }
     }
     return MessageType.alert; //@todo what should be the default value?
+  }
+
+  String getLocalizedName(BuildContext context) {
+    var localizations = context.localizations;
+
+    return switch (this) {
+      alert => localizations.explanation_warning_level_attention,
+      update => localizations.explanation_warning_level_update,
+      cancel => localizations.explanation_warning_level_all_clear,
+      ack => localizations.explanation_warning_level_ack,
+      error => localizations.explanation_warning_level_error,
+    };
   }
 }

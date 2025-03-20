@@ -71,22 +71,6 @@ String translateWarningCategory(String category, BuildContext context) {
   }
 }
 
-/// translate the type of a warning message
-String translateWarningType(MessageType type, BuildContext context) {
-  var localizations = context.localizations;
-
-  switch (type) {
-    case MessageType.update:
-      return localizations.explanation_warning_level_update;
-    case MessageType.cancel:
-      return localizations.explanation_warning_level_all_clear;
-    case MessageType.alert:
-      return localizations.explanation_warning_level_attention;
-    default:
-      return type.name;
-  }
-}
-
 /// get a fitting color by the type of a warning message
 Color chooseWarningTypeColor(MessageType type) {
   switch (type) {
@@ -99,26 +83,4 @@ Color chooseWarningTypeColor(MessageType type) {
     default:
       return Colors.orangeAccent;
   }
-}
-
-/// translate the status of a warning message
-String translateWarningStatus(String status, BuildContext context) {
-  var localizations = context.localizations;
-  return (status == "Actual") ? localizations.warning_status_actual : status;
-}
-
-/// translate the urgency of a warning message
-String translateWarningUrgency(String urgency, BuildContext context) {
-  var localizations = context.localizations;
-  return (urgency == "Immediate")
-      ? localizations.warning_urgency_immediate
-      : urgency;
-}
-
-/// translate the certainty of a warning message
-String translateWarningCertainty(String certainty, BuildContext context) {
-  var localizations = context.localizations;
-  return (certainty == "Observed")
-      ? localizations.warning_certainty_observed
-      : certainty;
 }
