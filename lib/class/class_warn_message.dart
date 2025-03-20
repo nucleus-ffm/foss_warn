@@ -24,6 +24,7 @@ import 'class_info.dart';
 ///   - incidents (OPTIONAL) Used to collate multiple messages referring to different aspects of the same incident.
 ///   - info  (OPTIONAL) The container for all component parts of the info sub-element of the alert message
 class WarnMessage {
+  final String fpasId;
   final String identifier;
   final String placeSubscriptionId;
   final String publisher;
@@ -46,6 +47,7 @@ class WarnMessage {
   final bool hideWarningBecauseThereIsANewerVersion;
 
   WarnMessage({
+    required this.fpasId,
     required this.identifier,
     required this.placeSubscriptionId,
     required this.publisher,
@@ -82,6 +84,7 @@ class WarnMessage {
     bool? hideWarningBecauseThereIsANewerVersion,
   }) =>
       WarnMessage(
+        fpasId: fpasId,
         identifier: identifier ?? this.identifier,
         placeSubscriptionId: placeSubscriptionId,
         publisher: publisher ?? this.publisher,
@@ -102,41 +105,11 @@ class WarnMessage {
 
   factory WarnMessage.fromJson(
     Map<String, dynamic> json, {
+    required String fpasId,
     required String placeSubscriptionId,
   }) =>
       WarnMessage(
-        identifier: json['identifier'] ?? '?',
-        placeSubscriptionId: placeSubscriptionId,
-        publisher: json['publisher'] ?? "?",
-        sender: json['sender'] ?? "?",
-        sent: json['sent'] ?? "?",
-        status: Status.fromJson(json['status']),
-        messageType: MessageType.fromJson(json['messageType']),
-        scope: Scope.fromJson(json['scope']),
-        info: Info.infoListFromJson(
-          (json['info'] as List<dynamic>)
-              .map((e) => e as Map<String, dynamic>)
-              .toList(),
-        ),
-        notified: json['notified'] ?? false, //@todo check
-        read: json['read'] ?? false,
-        references: json['references'] != null
-            ? References.fromJson(json['references'])
-            : null,
-        isUpdateOfAlreadyNotifiedWarning:
-            json['isUpdateOfAlreadyNotifiedWarning'] ?? false,
-        hideWarningBecauseThereIsANewerVersion:
-            json['hideWarningBecauseThereIsANewerVersion'] ?? false,
-      );
-
-  /// is used to create a new WarnMessage object with data from the API call.
-  /// Note that the json structure is different from the structure we use to
-  /// cache the warnings.
-  factory WarnMessage.fromJsonFPAS(
-    Map<String, dynamic> json, {
-    required String placeSubscriptionId,
-  }) =>
-      WarnMessage(
+        fpasId: fpasId,
         identifier: json["identifier"] ?? "?",
         placeSubscriptionId: placeSubscriptionId,
         sender: json["sender"] ?? "?",
@@ -154,6 +127,7 @@ class WarnMessage {
       );
 
   Map<String, dynamic> toJson() => {
+        'fpasId': fpasId,
         'identifier': identifier,
         'publisher': publisher,
         'sender': sender,
