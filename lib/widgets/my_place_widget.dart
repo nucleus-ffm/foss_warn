@@ -22,9 +22,9 @@ class MyPlaceWidget extends ConsumerWidget {
     var mediaQuery = MediaQuery.of(context);
 
     var warnings = ref.watch(
-      warningsProvider.select(
-        (value) => value.where(
-          (warning) => warning.placeSubscriptionId == place.subscriptionId,
+      alertsProvider.select(
+        (alerts) => alerts.where(
+          (alert) => alert.placeSubscriptionId == place.subscriptionId,
         ),
       ),
     );

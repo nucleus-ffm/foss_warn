@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/services/warnings.dart';
 
 import '../class/class_notification_service.dart';
 import '../services/list_handler.dart';
-import '../services/update_provider.dart';
 
 class AddMyPlaceView extends ConsumerStatefulWidget {
   const AddMyPlaceView({super.key});
@@ -24,8 +21,6 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
     var localizations = context.localizations;
     var theme = Theme.of(context);
     var navigator = Navigator.of(context);
-
-    var updater = ref.read(updaterProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -66,12 +61,8 @@ class _AddMyPlaceViewState extends ConsumerState<AddMyPlaceView> {
                         ),
                         onTap: () {
                           setState(() {
-                            updater.updateList(
-                              alertApi: ref.read(alertApiProvider),
-                              warningService:
-                                  ref.read(warningsProvider.notifier),
-                              newPlace: place,
-                            );
+                            ref.read(myPlacesProvider.notifier).add(place);
+
                             // cancel warning of missing places (ID: 3)
                             NotificationService.cancelOneNotification(3);
                             navigator.pop();
