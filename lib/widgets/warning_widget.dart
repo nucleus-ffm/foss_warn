@@ -102,12 +102,10 @@ class WarningWidget extends ConsumerWidget {
                               );
                             },
                             child: Text(
-                              translateWarningCategory(
-                                _warnMessage.info[0].category.isNotEmpty
-                                    ? _warnMessage.info[0].category[0].name
-                                    : "",
-                                context,
-                              ), //@todo display more then one category if available
+                              _warnMessage.info[0].category.isNotEmpty
+                                  ? _warnMessage.info[0].category[0]
+                                      .getLocalizedName(context)
+                                  : "", //@todo display more then one category if available
                               style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ),
@@ -116,8 +114,7 @@ class WarningWidget extends ConsumerWidget {
                           width: 10,
                         ),
                         Container(
-                          color:
-                              chooseWarningTypeColor(_warnMessage.messageType),
+                          color: _warnMessage.messageType.color,
                           padding: const EdgeInsets.all(5),
                           child: InkWell(
                             onTap: () {
@@ -129,10 +126,8 @@ class WarningWidget extends ConsumerWidget {
                               );
                             },
                             child: Text(
-                              translateWarningType(
-                                _warnMessage.messageType,
-                                context,
-                              ),
+                              _warnMessage.messageType
+                                  .getLocalizedName(context),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.white,
@@ -140,9 +135,7 @@ class WarningWidget extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: SizedBox(
                             width: 100,

@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:foss_warn/extensions/context.dart';
+
 enum Scope {
   public, // For general dissemination to unrestricted audiences
   restricted, // For dissemination only to users with a known operational requirement (see <restriction>, below)
@@ -14,5 +17,15 @@ enum Scope {
       }
     }
     return Scope.public; //@todo what should be the default value?
+  }
+
+  String getLocalizedName(BuildContext context) {
+    var localizations = context.localizations;
+
+    return switch (this) {
+      public => localizations.warning_scope_public,
+      restricted => localizations.warning_scope_restricted,
+      private => localizations.warning_scope_private,
+    };
   }
 }
