@@ -41,25 +41,16 @@ enum Severity {
   }
 
   /// translate the severity of a warning message
-  static String getLocalizationName(Severity severity, BuildContext context) {
+  String getLocalizedName(BuildContext context) {
     var localizations = context.localizations;
 
-    switch (severity) {
-      case Severity.minor:
-        return localizations
-            .notification_settings_notify_by_minor; //@todo use warning_severity_minor
-      case Severity.moderate:
-        return localizations
-            .notification_settings_notify_by_moderate; //@todo use warning_severity_moderate
-      case Severity.severe:
-        return localizations
-            .notification_settings_notify_by_severe; // warning_severity_severe
-      case Severity.extreme:
-        return localizations
-            .notification_settings_notify_by_extreme; //warning_severity_extreme
-      case Severity.unknown:
-        return "Unknown"; //warning_severity_unknown
-    }
+    return switch (this) {
+      minor => localizations.warning_severity_minor,
+      moderate => localizations.warning_severity_moderate,
+      severe => localizations.warning_severity_severe,
+      extreme => localizations.warning_severity_extreme,
+      unknown => localizations.warning_severity_unknown,
+    };
   }
 
   /// get a fitting color by the severity of a warning message

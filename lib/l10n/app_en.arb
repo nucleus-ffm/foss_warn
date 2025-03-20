@@ -91,8 +91,23 @@
   "@settings_dev_settings": {},
   "warning_tags": "Tags",
   "@warning_tags": {},
-  "warning_from": "Message from",
-  "@warning_from": {},
+  "warning_from_title": "Message from",
+  "warning_region_title": "Region",
+  "warning_type_title": "Type",
+  "warning_severity_title": "Severity",
+  "warning_description_title": "Description",
+  "warning_recommended_action_title": "Recommended action",
+  "warning_source_title": "Source",
+  "warning_from": "Message from: {datetime}",
+  "@warning_from": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_context_information": "Context information:",
+  "@warning_context_information": {},
   "warning_effective": "Effective",
   "@warning_effective": {},
   "warning_onset": "Onset",
@@ -105,12 +120,24 @@
   "@warning_shared_by_foss_warn": {},
   "warning_open_picture_with_browser": "Open picture with browser",
   "@warning_open_picture_with_browser": {},
-  "warning_type": "Type",
-  "@warning_type": {},
+  "warning_type": "Type:\n{warningType}",
+  "@warning_type": {
+    "placeholders": {
+      "warningType": {
+        "type": "String"
+      }
+    }
+  },
   "warning_event": "Event",
   "@warning_event": {},
-  "warning_severity": "Severity",
-  "@warning_severity": {},
+  "warning_severity": "Severity:\n{severity}",
+  "@warning_severity": {
+    "placeholders": {
+      "severity": {
+        "type": "String"
+      }
+    }
+  },
   "warning_urgency": "Urgency",
   "@warning_urgency": {},
   "warning_certainty": "Certainty",
@@ -129,18 +156,42 @@
   "@warning_show_less": {},
   "warning_appendix": "Appendix",
   "@warning_appendix": {},
-  "warning_region": "Region",
-  "@warning_region": {},
+  "warning_region": "Region\n{region}",
+  "@warning_region": {
+    "placeholders": {
+      "region": {
+        "type": "String"
+      }
+    }
+  },
   "warning_places": "Places",
   "@warning_places": {},
-  "warning_description": "Description",
-  "@warning_description": {},
-  "warning_recommended_action": "Recommended Action",
-  "@warning_recommended_action": {},
-  "warning_source": "Source",
-  "@warning_source": {},
-  "warning_contact_website": "Contact & Website",
-  "@warning_contact_website": {},
+  "warning_description": "Description\n{description}",
+  "@warning_description": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_recommended_action": "Recommended action\n{recommendedAction}",
+  "@warning_recommended_action": {
+    "placeholders": {
+      "recommendedAction": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_source": "Source\n{source}",
+  "@warning_source": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_contact": "Contact",
+  "@warning_contact": {},
   "warning_website": "Website",
   "@warning_website": {},
   "add_new_place_place_name": "Add a new place",
@@ -380,6 +431,8 @@
   "explanation_other": "Other",
   "@explanation_other": {},
   "explanation_other_text": "Information with other messages",
+  "explanation_transport": "Transport",
+  "explanation_rescue": "Rescue",
   "@explanation_other_text": {},
   "delete_place_headline": "Delete place?",
   "@delete_place_headline": {},
@@ -405,6 +458,8 @@
   "@explanation_warning_level_all_clear": {},
   "explanation_warning_level_all_clear_text": "All-clear for a previous message. Most of the time the warning is now lifted.",
   "@explanation_warning_level_all_clear_text": {},
+  "explanation_warning_level_ack": "Acknowledged",
+  "explanation_warning_level_error": "Error",
   "my_place_there_are": "There are",
   "@my_place_there_are": {},
   "my_place_warnings_more_then_one": "warnings",
@@ -479,12 +534,28 @@
   "@notification_no_places_selected_title": {},
   "warning_status_actual": "actual",
   "@warning_status_actual": {},
+  "warning_status_exercise": "excercise",
+  "warning_status_system": "system",
+  "warning_status_test": "test",
+  "warning_status_draft": "draft",
   "warning_urgency_immediate": "immediate",
   "@warning_urgency_immediate": {},
+  "warning_urgency_expected": "expected",
+  "warning_urgency_future": "future",
+  "warning_urgency_past": "past",
+  "warning_urgency_unknown": "unknown",
   "add_my_place_with_map_add_place_button": "Add place",
   "@add_my_place_with_map_add_place_button": {},
   "warning_certainty_observed": "observed",
   "@warning_certainty_observed": {},
+  "warning_certainty_likely": "likely",
+  "warning_certainty_possible": "possible",
+  "warning_certainty_unlikely": "unlikely",
+  "warning_certainty_unknown": "unknown",
+  "warning_certainty_other": "other",
+  "warning_scope_public": "Public",
+  "warning_scope_restricted": "Restricted",
+  "warning_scope_private": "Private",
   "map_view_warning_overview_no_alerts": "There are no alerts",
   "@map_view_warning_overview_no_alerts": {},
   "map_view_filter_chips_tooltip_show": "show",
@@ -560,5 +631,10 @@
   "welcome_view_foss_public_alert_server_confirm_success": "Confirmed",
   "@welcome_view_foss_public_alert_server_confirm_success": {},
   "welcome_view_foss_public_alert_server_use_default_server": "Use default server",
-  "@welcome_view_foss_public_alert_server_use_default_server": {}
+  "@welcome_view_foss_public_alert_server_use_default_server": {},
+  "alert_publisher_unknown": "Unknown",
+  "@alert_publisher_unknown": {
+    "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
+  },
+  "failed_to_open_url": "Failed to open URL"
 }
