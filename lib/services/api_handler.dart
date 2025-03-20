@@ -1,118 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
-import 'package:foss_warn/class/class_error_logger.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
-import 'package:foss_warn/main.dart';
-import 'package:foss_warn/services/list_handler.dart';
-import 'package:foss_warn/services/warnings.dart';
 
 import '../class/class_warn_message.dart';
-import 'send_status_notification.dart';
-import 'save_and_load_shared_preferences.dart';
-
-/// call the FPAS api and load for myPlaces the warnings
-Future<void> callAPI({
-  required AlertAPI alertApi,
-  required WarningService warningService,
-  required List<Place> places,
-}) async {
-  bool successfullyFetched = true;
-  String error = "";
-  List<WarnMessage> tempWarnMessageList = [];
-  tempWarnMessageList.clear();
-
-  debugPrint("call API");
-
-  await loadMyPlacesList();
-
-  var updatedWarnings = <WarnMessage>[];
-  for (Place place in places) {
-    List<String> alertIds = [];
-    try {
-      alertIds = await alertApi.getAlerts(subscriptionId: place.subscriptionId);
-    } on InvalidSubscriptionError {
-      //@TODO(Nucleus) handle invalid subscription
-      continue;
-    } on UndefinedServerError catch (e) {
-      ErrorLogger.writeErrorLog(
-        "api_handler.dart",
-        "callAPI",
-        "Failed to call api because of: $e",
-      );
-      // inform user about error
-      appState.error = true;
-    }
-    List<WarnMessage> warnings = await Future.wait([
-      for (String alertId in alertIds) ...[
-        alertApi.getAlertDetail(
-          alertId: alertId,
-          placeSubscriptionId: place.subscriptionId,
-        ),
-      ],
-    ]);
-
-    for (WarnMessage warning in warnings) {
-      updatedWarnings.add(
-        warning.copyWith(
-          isUpdateOfAlreadyNotifiedWarning: _isAlertAnUpdate(
-            existingWarnings: warnings,
-            newWarning: warning,
-          ),
-        ),
-      );
-    }
-
-    // set flag for updated alerts
-    for (var warning in updatedWarnings) {
-      if (warning.references == null) continue;
-
-      // the alert contains a reference, so it is an update of an previous alert
-      for (var referenceId in warning.references!.identifier) {
-        // check all warnings for references
-        var alWm =
-            warnings.firstWhere((element) => element.identifier == referenceId);
-        warnings.updateEntry(
-          alWm.copyWith(hideWarningBecauseThereIsANewerVersion: true),
-        );
-      }
-    }
-  }
-  // Update the state
-  warningService.set(updatedWarnings);
-
-  // update status notification if the user wants
-  if (userPreferences.showStatusNotification) {
-    if (error != "") {
-      sendStatusUpdateNotification(successfullyFetched, error);
-    } else {
-      sendStatusUpdateNotification(successfullyFetched);
-    }
-  }
-}
-
-/// Check if the given alert is an update of a previous alert.
-/// Returns the notified status of the original alert if the severity hasn't increased
-bool _isAlertAnUpdate({
-  required List<WarnMessage> existingWarnings,
-  required WarnMessage newWarning,
-}) {
-  // check if there is a referenced warning
-  if (newWarning.references != null) {
-    // check if one of the referenced alerts is already in the warnings list
-    for (var warning in existingWarnings) {
-      if (newWarning.references!.identifier
-          .any((identifier) => warning.identifier == identifier)) {
-        // if there is a referenced alert, used the same value for notified.
-        // use the notified value of the referenced warning, but only if the severity is still the same or lesser
-        if (newWarning.info[0].severity.index >=
-            warning.info[0].severity.index) {
-          return warning.notified;
-        }
-      }
-    }
-  }
-  return false;
-}
 
 /// Indicates the server was unable to be reached
 class UnreachableServerError implements Exception {}
@@ -137,6 +25,8 @@ class UnregisterAreaError implements Exception {}
 
 // Thrown when the server response indicates that the subscription is invalid or deleted
 class InvalidSubscriptionError implements Exception {}
+
+typedef AlertApiResult = ({String subscriptionId, String alertId});
 
 /// Thrown when the server indicates something went wrong while registering
 class RegisterAreaError implements Exception {
@@ -201,7 +91,7 @@ abstract class AlertAPI {
   /// Throws an [InvalidSubscriptionError] if the subscription is not valid
   ///
   /// Throws an [UndefinedServerError] if the server responded in an unexpected way
-  Future<List<String>> getAlerts({required String subscriptionId});
+  Future<List<AlertApiResult>> getAlerts({required String subscriptionId});
 
   /// Get detail of an alert.
   /// [alertId] is the ID of an alert to retrieve details for.

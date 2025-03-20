@@ -4,7 +4,7 @@ import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/api_handler.dart';
-import '../../services/update_provider.dart';
+import 'package:foss_warn/services/list_handler.dart';
 
 class DeletePlaceDialog extends ConsumerWidget {
   final Place myPlace;
@@ -16,7 +16,6 @@ class DeletePlaceDialog extends ConsumerWidget {
     var theme = Theme.of(context);
     var navigator = Navigator.of(context);
 
-    var updater = ref.read(updaterProvider);
     var alertApi = ref.read(alertApiProvider);
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
@@ -29,7 +28,6 @@ class DeletePlaceDialog extends ConsumerWidget {
         await alertApi.unregisterArea(
           subscriptionId: myPlace.subscriptionId,
         );
-        updater.deletePlace(myPlace);
       } on UnregisterAreaError {
         // we currently can not unsubscribe - show a snack bar to inform the
         // user to check their internet connection
@@ -40,9 +38,9 @@ class DeletePlaceDialog extends ConsumerWidget {
           ),
           backgroundColor: theme.colorScheme.errorContainer,
         );
-
         scaffoldMessenger.showSnackBar(snackBar);
       }
+      ref.read(myPlacesProvider.notifier).remove(myPlace);
 
       if (!context.mounted) return;
       navigator.pop();

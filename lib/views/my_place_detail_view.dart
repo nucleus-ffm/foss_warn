@@ -34,14 +34,12 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     );
 
     var warnings = ref.watch(
-      warningsProvider.select(
+      alertsProvider.select(
         (warnings) => warnings.where(
           (warning) => warning.placeSubscriptionId == place.subscriptionId,
         ),
       ),
     );
-
-    var warningService = ref.read(warningsProvider.notifier);
 
     /// generate a threaded list of alerts with updates of alert as thread
     /// the returned data has the structure:
@@ -119,7 +117,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              warningService.markAllWarningsAsRead();
+              markAllWarningsAsRead(ref);
 
               final snackBar = SnackBar(
                 content: Text(

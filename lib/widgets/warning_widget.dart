@@ -49,6 +49,40 @@ class WarningWidget extends ConsumerWidget {
       return result;
     }
 
+    Widget buildReadStateButton() {
+      // do not show a clickable red/green button for non-my-place warnings
+      // if _isMyPlaceWarning = true
+      // the read state of these warning is not saved anyways
+
+      if (!_isMyPlaceWarning) {
+        return const IconButton(
+          onPressed: null,
+          icon: Icon(
+            Icons.warning_amber_outlined,
+            color: Colors.grey,
+          ),
+        );
+      }
+
+      return IconButton(
+        onPressed: () async {
+          var alertsService = ref.read(processedAlertsProvider.notifier);
+          alertsService
+              .updateAlert(_warnMessage.copyWith(read: !_warnMessage.read));
+          ref.invalidate(alertsFutureProvider);
+        },
+        icon: _warnMessage.read
+            ? const Icon(
+                Icons.mark_chat_read,
+                color: Colors.green,
+              )
+            : const Icon(
+                Icons.warning_amber_outlined,
+                color: Colors.red,
+              ),
+      );
+    }
+
     areaList = generateAreaList();
 
     return Card(
@@ -59,7 +93,7 @@ class WarningWidget extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildReadStateButton(ref),
+              buildReadStateButton(),
               const SizedBox(width: 5),
               Expanded(
                 child: Column(
@@ -184,39 +218,6 @@ class WarningWidget extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildReadStateButton(WidgetRef ref) {
-    // do not show a clickable red/green button for non-my-place warnings
-    // if _isMyPlaceWarning = true
-    // the read state of these warning is not saved anyways
-
-    if (!_isMyPlaceWarning) {
-      return const IconButton(
-        onPressed: null,
-        icon: Icon(
-          Icons.warning_amber_outlined,
-          color: Colors.grey,
-        ),
-      );
-    }
-
-    return IconButton(
-      onPressed: () async {
-        ref
-            .read(warningsProvider.notifier)
-            .updateWarning(_warnMessage.copyWith(read: !_warnMessage.read));
-      },
-      icon: _warnMessage.read
-          ? const Icon(
-              Icons.mark_chat_read,
-              color: Colors.green,
-            )
-          : const Icon(
-              Icons.warning_amber_outlined,
-              color: Colors.red,
-            ),
     );
   }
 }

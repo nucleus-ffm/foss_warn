@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 
-import '../../services/update_provider.dart';
-
 class ChooseThemeDialog extends ConsumerStatefulWidget {
   const ChooseThemeDialog({super.key});
 
@@ -27,8 +25,6 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   }
 
   Widget generateBrightnessButton(ThemeMode themeMode) {
-    var updater = ref.read(updaterProvider);
-
     return TextButton(
       style: TextButton.styleFrom(
         padding: const EdgeInsets.only(left: 10, right: 10),
@@ -48,8 +44,6 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
         setState(() {
           userPreferences.selectedThemeMode = themeMode;
         });
-        // Reload the full app for theme changes to reflect
-        updater.updateView();
       },
       child: Text(
         selectTextForThemeMode(themeMode),
@@ -115,8 +109,6 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   Widget generateColorButton(ThemeData theme) {
     var mediaQuery = MediaQuery.of(context);
 
-    var updater = ref.read(updaterProvider);
-
     return Container(
       width: 90,
       padding: const EdgeInsets.all(1),
@@ -131,8 +123,6 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
               userPreferences.selectedDarkTheme = theme;
             }
           });
-          // Reload the full app for theme changes to reflect
-          updater.updateView();
         },
         style: TextButton.styleFrom(
           minimumSize: const Size(80, 80),

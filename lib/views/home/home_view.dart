@@ -6,7 +6,6 @@ import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
-import 'package:foss_warn/services/update_provider.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/views/warnings_view.dart';
 import 'package:foss_warn/views/map_view.dart';
@@ -48,20 +47,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     super.initState();
 
-    var places = ref.read(myPlacesProvider);
-
     // init unified push
     UnifiedPush.initialize(
       onNewEndpoint: UnifiedPushHandler.onNewEndpoint,
       onRegistrationFailed: UnifiedPushHandler.onRegistrationFailed,
       onUnregistered: UnifiedPushHandler.onUnregistered,
       onMessage: (message, instance) => UnifiedPushHandler.onMessage(
-        alertApi: ref.read(alertApiProvider),
-        myPlacesService: ref.read(myPlacesProvider.notifier),
-        warningService: ref.read(warningsProvider.notifier),
         message: message,
         instance: instance,
-        myPlaces: places,
+        ref: ref,
+        alertApi: ref.read(alertApiProvider),
+        myPlacesService: ref.read(myPlacesProvider.notifier),
+        warningService: ref.read(processedAlertsProvider.notifier),
       ),
       linuxDBusName: "de.nucleus.foss_warn",
     );
@@ -82,7 +79,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var localizations = AppLocalizations.of(context)!;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
-    var updater = ref.read(updaterProvider);
     var places = ref.watch(myPlacesProvider);
 
     var body = switch (selectedIndex) {
@@ -108,11 +104,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
         context: context,
         builder: (BuildContext context) => const SortByDialog(),
       );
-      updater.updateReadStatusInList();
     }
 
     void onMarkNotificationAsRead() {
-      ref.read(warningsProvider.notifier).markAllWarningsAsRead();
+      markAllWarningsAsRead(ref);
 
       final snackBar = SnackBar(
         content: Text(
