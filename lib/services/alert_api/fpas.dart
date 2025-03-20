@@ -62,6 +62,10 @@ class FPASApi implements AlertAPI {
       },
     );
 
+    if (response.statusCode != 200) {
+      throw UnreachableServerError();
+    }
+
     return List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
@@ -80,6 +84,10 @@ class FPASApi implements AlertAPI {
         'User-Agent': constants.httpUserAgent,
       },
     );
+
+    if (response.statusCode != 200) {
+      throw UnreachableServerError();
+    }
 
     var xml2jsonTransformer = Xml2Json();
     xml2jsonTransformer.parse(utf8.decode(response.bodyBytes));
