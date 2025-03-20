@@ -21,6 +21,10 @@
   "@all_warnings_no_places_chosen": {},
   "all_warnings_no_places_chosen_text": "Please press the plus to add a place",
   "@all_warnings_no_places_chosen_text": {},
+  "all_warnings_failed_to_fetch_alerts": "Failed to fetch alerts",
+  "@all_warnings_failed_to_fetch_alerts": {
+    "description": "Main message shown when retrieving alerts failed"
+  },
   "all_warnings_nothing_to_show": "Nothing to see here",
   "@all_warnings_nothing_to_show": {},
   "all_warnings_nothing_to_show_text": "FOSS Warn has nothing to show here",
@@ -312,10 +316,6 @@
   "@dev_settings_load_cached_warnings": {},
   "dev_settings_load_cached_warnings_text": "Loads the cached messages",
   "@dev_settings_load_cached_warnings_text": {},
-  "dev_settings_delete_warnings": "Delete warnings",
-  "@dev_settings_delete_warnings": {},
-  "dev_settings_delete_warnings_text": "Clears the list with warnings",
-  "@dev_settings_delete_warnings_text": {},
   "dev_settings_success": "done",
   "@dev_settings_success": {},
   "welcome_view_foss_warn_headline": "FOSS Warn",

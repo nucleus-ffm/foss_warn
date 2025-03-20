@@ -12,7 +12,7 @@ import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
-import 'package:foss_warn/services/warnings.dart';
+import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +20,6 @@ import 'package:latlong2/latlong.dart';
 
 import '../class/class_notification_service.dart';
 import '../class/class_unified_push_handler.dart';
-import '../services/update_provider.dart';
 import '../widgets/dialogs/loading_screen.dart';
 
 class NovatimResponse {
@@ -273,7 +272,6 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
 
-    var updater = ref.read(updaterProvider);
     var alertApi = ref.read(alertApiProvider);
 
     return Scaffold(
@@ -564,19 +562,15 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   name: _selectedPlaceName,
                                 );
 
-                                setState(() {
-                                  updater.updateList(
-                                    alertApi: ref.read(alertApiProvider),
-                                    warningService:
-                                        ref.read(warningsProvider.notifier),
-                                    newPlace: newPlace,
-                                  );
-                                  // cancel warning of missing places (ID: 3)
-                                  NotificationService.cancelOneNotification(
-                                    3,
-                                  );
-                                  widget.onPlaceAdded();
-                                });
+                                ref
+                                    .read(myPlacesProvider.notifier)
+                                    .add(newPlace);
+
+                                // cancel warning of missing places (ID: 3)
+                                NotificationService.cancelOneNotification(
+                                  3,
+                                );
+                                widget.onPlaceAdded();
                               }
                               await Future.delayed(
                                 const Duration(seconds: 1),

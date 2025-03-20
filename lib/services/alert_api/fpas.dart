@@ -51,7 +51,9 @@ class FPASApi implements AlertAPI {
   }
 
   @override
-  Future<List<String>> getAlerts({required String subscriptionId}) async {
+  Future<List<AlertApiResult>> getAlerts({
+    required String subscriptionId,
+  }) async {
     var url = Uri.parse(
       "${userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId",
     );
@@ -76,7 +78,10 @@ class FPASApi implements AlertAPI {
         );
     }
 
-    return List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
+    var alerts = List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
+    return alerts
+        .map((e) => (subscriptionId: subscriptionId, alertId: e))
+        .toList();
   }
 
   @override
@@ -111,8 +116,9 @@ class FPASApi implements AlertAPI {
     var json = xml2jsonTransformer.toParker();
     var alert = jsonDecode(json) as Map<String, dynamic>;
 
-    return WarnMessage.fromJsonFPAS(
+    return WarnMessage.fromJson(
       alert["alert"],
+      fpasId: alertId,
       placeSubscriptionId: placeSubscriptionId,
     );
   }

@@ -5,8 +5,6 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 
-import '../../services/update_provider.dart';
-
 class ErrorDialog extends ConsumerStatefulWidget {
   const ErrorDialog({super.key});
 
@@ -20,7 +18,6 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
       _vertical = ScrollController();
   @override
   Widget build(BuildContext context) {
-    var updater = ref.read(updaterProvider);
     var localization = context.localizations;
 
     return FutureBuilder<String>(
@@ -110,7 +107,6 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                 ),
                 TextButton(
                   onPressed: () {
-                    updater.updateView();
                     Navigator.of(context).pop();
                   },
                   child: Text(

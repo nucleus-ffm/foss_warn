@@ -233,12 +233,9 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var warning = ref.read(warningsProvider).firstWhere(
-            (element) => element.identifier == widget.warningIdentifier,
+      var warning = ref.read(alertsProvider).firstWhere(
+            (alert) => alert.identifier == widget.warningIdentifier,
           );
-      ref
-          .read(warningsProvider.notifier)
-          .updateWarning(warning.copyWith(read: true));
 
       // cancel the notification
       await NotificationService.cancelOneNotification(
@@ -259,7 +256,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     var localizations = context.localizations;
 
     WarnMessage warning = ref.watch(
-      warningsProvider.select(
+      alertsProvider.select(
         (value) => value.firstWhere(
           (element) => element.identifier == widget.warningIdentifier,
         ),

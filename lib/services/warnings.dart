@@ -5,20 +5,88 @@ import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/main.dart';
+import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/update_loop.dart';
 
-final warningsProvider =
+class AlertRetrievalError implements Exception {}
+
+// TODO(PureTryOut): cache retrieved alerts on disk rather than just in memory
+final processedAlertsProvider =
     StateNotifierProvider<WarningService, List<WarnMessage>>(
-  (ref) => WarningService(places: ref.watch(myPlacesProvider)),
+  (ref) {
+    return WarningService(places: ref.watch(myPlacesProvider));
+  },
 );
 
-class WarningService extends StateNotifier<List<WarnMessage>> {
-  WarningService({required this.places}) : super([]);
+/// Fetches alerts for all subscriptions.
+/// Any new alerts will be fetched completely, any we already know about
+/// will be retrieved from cache instead.
+final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
+  var alertApi = ref.watch(alertApiProvider);
+  var places = ref.watch(myPlacesProvider);
 
-  final List<Place> places;
+  if (places.isEmpty) return [];
 
-  List<WarnMessage> _sortWarnings(List<WarnMessage> warnings) {
-    List<WarnMessage> sortedWarnings = List<WarnMessage>.of(warnings);
+  // Fetch all available alerts
+  List<AlertApiResult> retrievedAlerts;
+  try {
+    var alertsForPlaces = await Future.wait([
+      for (var place in places) ...[
+        alertApi.getAlerts(subscriptionId: place.subscriptionId),
+      ],
+    ]);
+    // Combine alerts for the individual places into a single list
+    retrievedAlerts =
+        alertsForPlaces.reduce((value, element) => value + element);
+  } on Exception {
+    throw AlertRetrievalError();
+  }
+
+  var previouslyCachedAlerts = ref.read(processedAlertsProvider);
+  if (retrievedAlerts.isEmpty) {
+    return previouslyCachedAlerts;
+  }
+
+  // Determine which alerts we don't already know about
+  var newAlerts = <AlertApiResult>[];
+  for (var alert in retrievedAlerts) {
+    if (!previouslyCachedAlerts
+        .any((oldAlert) => oldAlert.fpasId == alert.alertId)) {
+      newAlerts.add(alert);
+    }
+  }
+
+  // Only get detail for new results
+  var newAlertsDetails = await Future.wait([
+    for (var alert in newAlerts) ...[
+      alertApi.getAlertDetail(
+        alertId: alert.alertId,
+        placeSubscriptionId: alert.subscriptionId,
+      ),
+    ],
+  ]);
+
+  return newAlertsDetails + previouslyCachedAlerts;
+});
+
+/// Provides a complete list of all warnings for subscribed places.
+///
+/// It polls for new alerts and merges the result with any locally processed/modified alerts.
+/// Any processing off alerts has to be done through [processedAlertsProvider].
+final alertsProvider = Provider<List<WarnMessage>>((ref) {
+  ref.listen(tickingChangeProvider(50), (_, event) {
+    ref.invalidate(alertsFutureProvider);
+  });
+
+  var alertsSnapshot = ref.watch(alertsFutureProvider);
+
+  if (!alertsSnapshot.hasValue) return [];
+  var alerts = alertsSnapshot.requireValue;
+
+  List<WarnMessage> sortWarnings(List<WarnMessage> warnings) {
+    var sortedWarnings = List<WarnMessage>.of(warnings);
 
     if (userPreferences.sortWarningsBy == SortingCategories.severity) {
       sortedWarnings.sort(
@@ -32,12 +100,78 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
     return sortedWarnings;
   }
 
-  void set(List<WarnMessage> warnings) {
-    if (!mounted) return;
-    state = _sortWarnings(warnings);
+  /// Check if the given alert is an update of a previous alert.
+  /// Returns the notified status of the original alert if the severity hasn't increased
+  bool isAlertAnUpdate({
+    required List<WarnMessage> existingWarnings,
+    required WarnMessage newWarning,
+  }) {
+    // check if there is a referenced warning
+    if (newWarning.references != null) {
+      // check if one of the referenced alerts is already in the warnings list
+      for (var warning in existingWarnings) {
+        if (newWarning.references!.identifier
+            .any((identifier) => warning.identifier == identifier)) {
+          // if there is a referenced alert, used the same value for notified.
+          // use the notified value of the referenced warning, but only if the severity is still the same or lesser
+          if (newWarning.info[0].severity.index >=
+              warning.info[0].severity.index) {
+            return warning.notified;
+          }
+        }
+      }
+    }
+    return false;
   }
 
-  bool hasWarningToNotify() => state.any(
+  // Determine which alert is an update of a previous one
+  var updatedWarnings = <WarnMessage>[];
+  for (var alert in alerts) {
+    updatedWarnings.add(
+      alert.copyWith(
+        isUpdateOfAlreadyNotifiedWarning: isAlertAnUpdate(
+          existingWarnings: alerts,
+          newWarning: alert,
+        ),
+      ),
+    );
+  }
+  for (var warning in updatedWarnings) {
+    if (warning.references == null) continue;
+
+    // The alert contains a reference, so it is an update of an previous alert
+    for (var referenceId in warning.references!.identifier) {
+      // Check all alerts for references
+      var alWm = alerts.firstWhere((alert) => alert.identifier == referenceId);
+      alerts.updateEntry(
+        alWm.copyWith(hideWarningBecauseThereIsANewerVersion: true),
+      );
+    }
+  }
+
+  return sortWarnings(alerts);
+});
+
+/// set the read status from all warnings to true
+/// @ref to update view
+void markAllWarningsAsRead(WidgetRef ref) {
+  var alerts = ref.read(alertsProvider);
+
+  for (var alert in alerts) {
+    ref
+        .read(processedAlertsProvider.notifier)
+        .updateAlert(alert.copyWith(read: true));
+  }
+}
+
+class WarningService extends StateNotifier<List<WarnMessage>> {
+  WarningService({required this.places}) : super(<WarnMessage>[]);
+
+  final List<Place> places;
+
+  bool hasWarningToNotify() =>
+      state.isNotEmpty &&
+      state.any(
         (element) =>
             !element.notified &&
             !element.hideWarningBecauseThereIsANewerVersion &&
@@ -46,20 +180,17 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
             ),
       );
 
-  void clearWarningsForPlace(Place place) {
-    state = _sortWarnings(
-      List<WarnMessage>.from(
-        state.where(
-          (element) => element.placeSubscriptionId != place.subscriptionId,
-        ),
-      ),
-    );
-  }
+  void updateAlert(WarnMessage alert) {
+    var alerts = List<WarnMessage>.from(state);
 
-  void updateWarning(WarnMessage warning) {
-    List<WarnMessage> warnings = List<WarnMessage>.from(state);
-    warnings = warnings.updateEntry(warning);
-    state = _sortWarnings(warnings);
+    if (alerts.contains(alert)) {
+      alerts.updateEntry(alert);
+    } else {
+      // New from polling
+      alerts.add(alert);
+    }
+
+    state = alerts;
   }
 
   /// checks if there can be a notification for a warning in [_warnings]
@@ -101,20 +232,6 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
       // Alert is not already read or shown as notification
       // set notified to true to avoid sending notification twice
       updatedWarnings.add(warning.copyWith(notified: true));
-
-      state = updatedWarnings;
-    }
-  }
-
-  /// set the read status from all warnings to true
-  /// @ref to update view
-  void markAllWarningsAsRead() {
-    var updatedWarnings = <WarnMessage>[];
-
-    for (var warning in state) {
-      NotificationService.cancelOneNotification(warning.identifier.hashCode);
-
-      updatedWarnings.add(warning.copyWith(read: true));
     }
 
     state = updatedWarnings;
@@ -124,11 +241,14 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
   /// used for debug purpose
   /// [@ref] to update view
   void resetReadAndNotificationStatusForAllWarnings() {
-    var updatedWarnings = <WarnMessage>[];
-
-    for (var warning in state) {
-      updatedWarnings.add(warning.copyWith(read: false, notified: false));
-    }
+    state = [
+      for (var alert in state) ...[
+        alert.copyWith(
+          read: false,
+          notified: false,
+        ),
+      ],
+    ];
   }
 
   /// Return [true] if the user wants a notification - [false] if not.

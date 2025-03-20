@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/services/api_handler.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import 'package:unifiedpush/unifiedpush.dart';
 import '../services/alert_api/fpas.dart';
-import '../services/check_for_my_places_warnings.dart';
 import 'package:foss_warn/main.dart';
 import '../widgets/dialogs/no_up_distributor_found_dialog.dart';
 import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
@@ -61,36 +59,16 @@ class UnifiedPushHandler {
     required PushMessage message,
     required WarningService warningService,
     required String instance,
-    required List<Place> myPlaces,
+    required WidgetRef ref,
   }) async {
-    debugPrint("instance $instance");
-    if (instance != userPreferences.unifiedPushInstance) {
-      return;
-    }
-    debugPrint("onNotification");
-    // check if the message is successfully decrypted and add log error if not
-    // if the message is not successfully decrypted check for myPlaceWarnings
-    // anyway
-    if (!message.decrypted) {
-      ErrorLogger.writeErrorLog(
-        "class_unified_push_handler.dart",
-        "error while handling onMessage",
-        "Message is not decrypted",
-      );
-    }
+    if (instance != userPreferences.unifiedPushInstance) return;
+
     var payload = utf8.decode(message.content);
-    debugPrint("message: $payload");
-    if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) {
-      // system message or debug
-    } else {
-      checkForMyPlacesWarnings(
-        alertApi: alertApi,
-        myPlacesService: myPlacesService,
-        warningService: warningService,
-        places: myPlaces,
-      );
-    }
-    return;
+    debugPrint("Received a notification. Message: $payload");
+
+    if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) return;
+
+    ref.invalidate(alertsFutureProvider);
   }
 
   /// register for push notifications and keep registration up to date

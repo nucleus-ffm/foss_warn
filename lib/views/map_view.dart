@@ -83,7 +83,7 @@ class _MapViewState extends ConsumerState<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    var warnings = ref.watch(warningsProvider);
+    var alerts = ref.watch(alertsProvider);
 
     return Scaffold(
       body: MapWidget(
@@ -102,7 +102,7 @@ class _MapViewState extends ConsumerState<MapView> {
         widgets: [buildFilterButtons()],
         polygonLayers: [
           ...filterChips["map_view_filter_chip_my_alerts"]!
-              ? MapWidget.createPolygonLayer(warnings)
+              ? MapWidget.createPolygonLayer(alerts)
               : [],
           ...filterChips["map_view_filter_chip_all_alerts"]!
               ? MapWidget.createPolygonsForMapWarning()
