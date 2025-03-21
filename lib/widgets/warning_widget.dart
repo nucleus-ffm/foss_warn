@@ -129,10 +129,8 @@ class WarningWidget extends ConsumerWidget {
                               );
                             },
                             child: Text(
-                              translateWarningType(
-                                _warnMessage.messageType,
-                                context,
-                              ),
+                              _warnMessage.messageType
+                                  .getLocalizedName(context),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.white,
@@ -140,9 +138,7 @@ class WarningWidget extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: SizedBox(
                             width: 100,
