@@ -327,6 +327,8 @@
   "@welcome_view_end_button": {},
   "connection_error_no_internet": "No server connection",
   "@connection_error_no_internet": {},
+  "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
+  "@connection_error_no_internet": {},
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
