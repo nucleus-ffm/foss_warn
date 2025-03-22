@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
@@ -69,7 +70,10 @@ class FPASApi implements AlertAPI {
       case 400:
         throw InvalidSubscriptionError();
       default:
-        throw UnreachableServerError();
+        throw UndefinedServerError(
+          statusCode: response.statusCode,
+          message: response.body,
+        );
     }
 
     return List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -167,8 +171,8 @@ class FPASApi implements AlertAPI {
 
     if (response.statusCode != 200) {
       throw RegisterAreaError(
-        message: "server responded with status code "
-            "${response.statusCode} and body ${response.body}",
+        statusCode: response.statusCode,
+        message: response.body,
       );
     }
 
@@ -182,15 +186,23 @@ class FPASApi implements AlertAPI {
       "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
 
-    var response = await http.delete(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        'User-Agent': constants.httpUserAgent,
-      },
-    );
-
-    if (response.statusCode != 200) {
+    try {
+      var response = await http.delete(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          'User-Agent': constants.httpUserAgent,
+        },
+      );
+      switch (response.statusCode) {
+        case 200: // successfully unsubscribed
+          break;
+        case 400: // invalid subscription id. Subscriptions was already deleted
+          break;
+        default:
+          throw UnregisterAreaError();
+      }
+    } on SocketException {
       throw UnregisterAreaError();
     }
   }
