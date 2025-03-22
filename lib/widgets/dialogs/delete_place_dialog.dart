@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
@@ -19,10 +18,10 @@ class DeletePlaceDialog extends ConsumerWidget {
 
     var updater = ref.read(updaterProvider);
     var alertApi = ref.read(alertApiProvider);
+    var scaffoldMessenger = ScaffoldMessenger.of(context);
 
     Future<void> onDeletePlacePressed() async {
-      //remove place from list and update view
-      debugPrint("place deleted");
+      // remove place from list and update view
 
       // Unsubscribe from server
       debugPrint("unregister from server for place ${myPlace.name}");
@@ -30,15 +29,20 @@ class DeletePlaceDialog extends ConsumerWidget {
         await alertApi.unregisterArea(
           subscriptionId: myPlace.subscriptionId,
         );
+        updater.deletePlace(myPlace);
       } on UnregisterAreaError {
-        ErrorLogger.writeErrorLog(
-          "delete_place.dart",
-          "onDeletePlacePressed",
-          "Failed to delete subscription",
+        // we currently can not unsubscribe - show a snack bar to inform the
+        // user to check their internet connection
+        final snackBar = SnackBar(
+          content: Text(
+            localizations.delete_place_error,
+            style: TextStyle(color: theme.colorScheme.onErrorContainer),
+          ),
+          backgroundColor: theme.colorScheme.errorContainer,
         );
-      }
 
-      updater.deletePlace(myPlace);
+        scaffoldMessenger.showSnackBar(snackBar);
+      }
 
       if (!context.mounted) return;
       navigator.pop();

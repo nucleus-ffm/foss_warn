@@ -94,7 +94,7 @@ class UnifiedPushHandler {
   }
 
   /// register for push notifications and keep registration up to date
-  /// This methode needs to called at every app startup
+  /// This method needs to called at every app startup
   static Future<void> setupUnifiedPush(
     BuildContext context,
     WidgetRef ref,
@@ -134,10 +134,9 @@ class UnifiedPushHandler {
       );
     } else {
       // Get a list of distributors that are available
-      List<String> distributors = await UnifiedPush.getDistributors([
-        //featureAndroidBytesMessage,
-      ] // Optionnal String Array with required features
-          );
+      List<String> distributors = await UnifiedPush.getDistributors(
+        [], // Optional String Array with required features
+      );
 
       if (distributors.isEmpty) {
         // there is no distributor installed. Inform user about it
