@@ -134,9 +134,6 @@ class _SettingsState extends ConsumerState<Settings> {
                     setState(() {
                       _fpasServerURLError = false;
                     });
-                    // fetch and store vapid key needed for webpush subscriptions
-                    userPreferences.webPushVapidKey =
-                        await alertApi.fetchVapidKeyForWebPush();
                   } catch (e) {
                     debugPrint(e.toString());
                     setState(() {
