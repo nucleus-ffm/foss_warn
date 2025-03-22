@@ -391,6 +391,8 @@
   "@delete_place_delete": {},
   "delete_place_cancel": "Cancel",
   "@delete_place_cancel": {},
+  "delete_place_error": "Can not remove place. Please check your internet connection.",
+  "@delete_place_error": {},
   "explanation_warning_level_headline": "Warning levels",
   "@explanation_warning_level_headline": {},
   "explanation_warning_level_attention": "Attention",
