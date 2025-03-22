@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/list_handler.dart';
@@ -25,10 +26,24 @@ Future<void> callAPI({
   await loadMyPlacesList();
 
   for (Place place in places) {
-    var alertIds =
-        await alertApi.getAlerts(subscriptionId: place.subscriptionId);
+    List<String> alertIds = [];
+    try {
+      alertIds =
+      await alertApi.getAlerts(subscriptionId: place.subscriptionId);
+    } on InvalidSubscriptionError {
+      //@TODO(Nucleus) handle invalid subscription
+      continue;
+    } on UndefinedServerError catch (e) {
+      ErrorLogger.writeErrorLog(
+        "api_handler.dart",
+        "callAPI",
+        "Failed to call api because of: $e",
+      );
+      // inform user about error
+      appState.error = true;
+    }
     var warnings = await Future.wait([
-      for (var alertId in alertIds) ...[
+      for (String alertId in alertIds) ...[
         alertApi.getAlertDetail(
           alertId: alertId,
           placeSubscriptionId: place.subscriptionId,
@@ -104,19 +119,32 @@ bool _isAlertAnUpdate({
 /// Indicates the server was unable to be reached
 class UnreachableServerError implements Exception {}
 
+/// Indicates the server answered in an unexpected way with an error message
+class UndefinedServerError implements Exception {
+  final int statusCode;
+  final String message;
+  UndefinedServerError({required this.message, required this.statusCode});
+
+  @override
+  String toString() {
+    return "UndefinedServerError: status code: $statusCode, message: $message";
+  }
+}
+
 /// Indicates the subscription for a given place has ran out and needs to be registered again
 class PlaceSubscriptionError implements Exception {}
 
 /// Thrown when the server indicates something went wrong while unregistering
 class UnregisterAreaError implements Exception {}
 
-// Thrown if the server response indicates that the subscription is invalid or deleted on serverside
+// Thrown when the server response indicates that the subscription is invalid or deleted
 class InvalidSubscriptionError implements Exception {}
 
 /// Thrown when the server indicates something went wrong while registering
 class RegisterAreaError implements Exception {
+  final int statusCode;
   final String message;
-  RegisterAreaError({required this.message});
+  RegisterAreaError({required this.statusCode, required this.message});
 
   @override
   String toString() {
@@ -159,11 +187,11 @@ abstract class AlertAPI {
   /// else went wrong
   Future<ServerSettings> fetchServerSettings({String overrideUrl});
 
-  /// fetch the for webpush needed vapid key from the server
+  /// Fetch the for WebPush needed vapid key from the server
   ///
-  /// returns the vapid key as String if it was successfully fetched
+  /// Returns the vapid key as String if it was successfully fetched
   ///
-  /// Throws an exception if something went wrong
+  /// Throws an VapidKeyException if something went wrong
   Future<String> fetchVapidKeyForWebPush();
 
   /// Get all alerts for a given place.
@@ -171,6 +199,10 @@ abstract class AlertAPI {
   /// [subscriptionId] is the subscription to get alerts for.
   ///
   /// Returns a list of alert ID's.
+  ///
+  /// Throws an [InvalidSubscriptionError] if the subscription is not valid
+  ///
+  /// Throws an [UndefinedServerError] if the server responded in an unexpected way
   Future<List<String>> getAlerts({required String subscriptionId});
 
   /// Get detail of an alert.
@@ -194,6 +226,8 @@ abstract class AlertAPI {
   /// [boundingBox] is the area to register to receive alerts for.
   ///
   /// Returns a [String] containing the subscription ID
+  ///
+  /// Throws an [RegisterAreaError] if the registration was not successful
   Future<String> registerArea({
     required BoundingBox boundingBox,
     required String unifiedPushEndpoint,
