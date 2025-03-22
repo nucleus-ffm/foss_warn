@@ -218,7 +218,7 @@ class Area {
     List<String> debugResult = [];
     try {
       GeoJsonParser myGeoJson = GeoJsonParser(
-        defaultPolygonFillColor: const Color(0xFFB01917).withValues(alpha: .2),
+        defaultPolygonFillColor: const Color(0xFFB01917).withValues(alpha: 0.2),
         defaultPolygonBorderColor: const Color(0xFFFB8C00),
         defaultPolylineStroke: 1,
       );
