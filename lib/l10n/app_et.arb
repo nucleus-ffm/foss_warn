@@ -1,1 +1,24 @@
-{}
+{
+  "main_nav_bar_my_places": "Minu kohad",
+  "@main_nav_bar_my_places": {},
+  "main_app_bar_tooltip_show_menu": "näita menüüd",
+  "@main_app_bar_tooltip_show_menu": {},
+  "all_warnings_no_places_chosen": "Ühtegi kohta pole valitud",
+  "@all_warnings_no_places_chosen": {},
+  "main_nav_bar_map": "Kaart",
+  "@main_nav_bar_map": {},
+  "main_dot_menu_settings": "Seadistused",
+  "@main_dot_menu_settings": {},
+  "main_dot_menu_about": "Rakenduse teave",
+  "@main_dot_menu_about": {},
+  "main_dialog_understand": "selge, sain aru",
+  "@main_dialog_understand": {},
+  "main_dialog_save": "Salvesta",
+  "@main_dialog_save": {},
+  "main_nav_bar_all_warnings": "Kõik hoiatused",
+  "@main_nav_bar_all_warnings": {},
+  "main_app_bar_tooltip_mark_all_warnings_as_read": "märgi hoiatused loetuks",
+  "@main_app_bar_tooltip_mark_all_warnings_as_read": {},
+  "main_dialog_close": "Sulge",
+  "@main_dialog_close": {}
+}
