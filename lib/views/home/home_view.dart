@@ -8,11 +8,9 @@ import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/update_provider.dart';
 import 'package:foss_warn/services/warnings.dart';
-import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/warnings_view.dart';
 import 'package:foss_warn/views/map_view.dart';
 import 'package:foss_warn/views/my_places_view.dart';
-import 'package:foss_warn/views/settings_view.dart';
 import 'package:foss_warn/widgets/dialogs/sort_by_dialog.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
@@ -22,7 +20,22 @@ enum MainMenuItem {
 }
 
 class HomeView extends ConsumerStatefulWidget {
-  const HomeView({super.key});
+  const HomeView({
+    required this.onAddPlacePressed,
+    required this.onPlacePressed,
+    required this.onAlertPressed,
+    required this.onAlertUpdateThreadPressed,
+    required this.onSettingsPressed,
+    required this.onAboutPressed,
+    super.key,
+  });
+
+  final VoidCallback onAddPlacePressed;
+  final void Function(String placeSubscriptionId) onPlacePressed;
+  final void Function(String alertId) onAlertPressed;
+  final VoidCallback onAlertUpdateThreadPressed;
+  final VoidCallback onSettingsPressed;
+  final VoidCallback onAboutPressed;
 
   @override
   ConsumerState<HomeView> createState() => _HomeViewState();
@@ -72,9 +85,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var places = ref.watch(myPlacesProvider);
 
     var body = switch (selectedIndex) {
-      1 => const MyPlacesView(),
+      1 => MyPlacesView(
+          onAddPlacePressed: widget.onAddPlacePressed,
+          onPlacePressed: widget.onPlacePressed,
+        ),
       2 => const MapView(),
-      _ => const WarningsView(),
+      _ => WarningsView(
+          onAlertPressed: widget.onAlertPressed,
+          onAlertUpdateThreadPressed: widget.onAlertUpdateThreadPressed,
+        ),
     };
 
     void onDestinationSelected(int index) {
@@ -104,19 +123,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
     }
 
     Future<void> onPopupMenuPressed(MainMenuItem item) async {
-      // TODO(PureTryOut): replace for go_router
       switch (item) {
         case MainMenuItem.settings:
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Settings()),
-          );
+          widget.onSettingsPressed();
           break;
         case MainMenuItem.about:
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AboutView()),
-          );
+          widget.onAboutPressed();
           break;
       }
     }

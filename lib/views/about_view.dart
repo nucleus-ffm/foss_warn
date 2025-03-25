@@ -8,7 +8,12 @@ import '../widgets/dialogs/privacy_dialog.dart';
 import '../widgets/dialogs/change_log_dialog.dart';
 
 class AboutView extends StatelessWidget {
-  const AboutView({super.key});
+  const AboutView({
+    required this.onShowLicensePressed,
+    super.key,
+  });
+
+  final VoidCallback onShowLicensePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -183,12 +188,7 @@ class AboutView extends StatelessWidget {
               localizations.about_other_license_subtitle,
               style: theme.textTheme.bodyLarge,
             ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LicensePage()),
-              );
-            },
+            onTap: onShowLicensePressed,
           ),
           ListTile(
             leading: const Icon(Icons.group_outlined),

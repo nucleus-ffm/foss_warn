@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/routes.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
-import 'package:foss_warn/views/introduction/introduction_view.dart';
-import 'package:foss_warn/views/home/home_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'class/class_app_state.dart';
@@ -23,28 +22,27 @@ void main() async {
     await NotificationService().init();
   }
 
-  runApp(const FOSSWarn());
+  runApp(
+    const ProviderScope(child: FOSSWarn()),
+  );
 }
 
-class FOSSWarn extends StatelessWidget {
+class FOSSWarn extends ConsumerWidget {
   const FOSSWarn({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        title: 'FOSS Warn',
-        theme: userPreferences.selectedLightTheme,
-        darkTheme: userPreferences.selectedDarkTheme,
-        themeMode: userPreferences.selectedThemeMode,
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: userPreferences.showWelcomeScreen
-            ? const IntroductionView()
-            : const HomeView(),
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    var routes = ref.read(routesProvider);
+
+    return MaterialApp.router(
+      title: 'FOSS Warn',
+      theme: userPreferences.selectedLightTheme,
+      darkTheme: userPreferences.selectedDarkTheme,
+      themeMode: userPreferences.selectedThemeMode,
+      debugShowCheckedModeBanner: false,
+      routerConfig: routes,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

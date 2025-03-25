@@ -1,45 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/translate_and_colorize_warning.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/views/alert_update_thread_view.dart';
-import 'package:foss_warn/views/warning_detail_view.dart';
 import 'package:foss_warn/widgets/dialogs/category_explanation.dart';
 import 'package:foss_warn/widgets/dialogs/message_type_explanation.dart';
 
 import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
-import '../services/update_provider.dart';
 
 class WarningWidget extends ConsumerWidget {
-  final List<WarnMessage>? _updateThread;
-  final WarnMessage _warnMessage;
-  final bool _isMyPlaceWarning;
   const WarningWidget({
-    super.key,
     required WarnMessage warnMessage,
     required bool isMyPlaceWarning,
+    required this.onAlertPressed,
+    required this.onAlertUpdateThreadPressed,
     Place? place,
     List<WarnMessage>? updateThread,
+    super.key,
   })  : _warnMessage = warnMessage,
         _updateThread = updateThread,
         _isMyPlaceWarning = isMyPlaceWarning;
+
+  final void Function(String id) onAlertPressed;
+  final void Function() onAlertUpdateThreadPressed;
+  final List<WarnMessage>? _updateThread;
+  final WarnMessage _warnMessage;
+  final bool _isMyPlaceWarning;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
 
-    var updater = ref.watch(updaterProvider);
-
     List<String> areaList = []; //@todo rename
-
-    void updatePrevView() {
-      updater.updateReadStatusInList();
-    }
 
     List<String> generateAreaList() {
       List<String> result = [];
@@ -58,24 +53,7 @@ class WarningWidget extends ConsumerWidget {
 
     return Card(
       child: InkWell(
-        onTap: () {
-          try {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    DetailScreen(warningIdentifier: _warnMessage.identifier),
-              ),
-            ).then((value) => updatePrevView());
-          } catch (e) {
-            ErrorLogger.writeErrorLog(
-              "WarningWidget.dart",
-              "Error of Type: ${e.runtimeType} while displaying alert: ${_warnMessage.identifier}",
-              e.toString(),
-            );
-            appState.error = true;
-          }
-        },
+        onTap: () => onAlertPressed(_warnMessage.identifier),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -110,9 +88,7 @@ class WarningWidget extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
                         Container(
                           color: _warnMessage.messageType.color,
                           padding: const EdgeInsets.all(5),
@@ -178,16 +154,7 @@ class WarningWidget extends ConsumerWidget {
               Column(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailScreen(
-                            warningIdentifier: _warnMessage.identifier,
-                          ),
-                        ),
-                      ).then((value) => updatePrevView());
-                    },
+                    onPressed: () => onAlertPressed(_warnMessage.identifier),
                     icon: const Icon(Icons.read_more),
                   ),
                   (_updateThread != null && _updateThread.length > 1)
@@ -195,18 +162,18 @@ class WarningWidget extends ConsumerWidget {
                           tooltip: localizations
                               .warning_widget_update_thread_tooltip,
                           onPressed: () {
-                            debugPrint("${_updateThread.length}");
-                            debugPrint("$_updateThread");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AlertUpdateThreadView(
-                                  latestAlert: _updateThread[0],
-                                  previousNowUpdatedAlerts: _updateThread
-                                      .sublist(1, _updateThread.length),
-                                ),
+                            ref
+                                .read(
+                                  alertUpdateThreadViewModelProvider.notifier,
+                                )
+                                .state = AlertUpdateThreadViewModel(
+                              latestAlert: _updateThread[0],
+                              previousNowUpdatedAlerts: _updateThread.sublist(
+                                1,
+                                _updateThread.length,
                               ),
                             );
+                            onAlertUpdateThreadPressed();
                           },
                           icon: const Icon(Icons.account_tree),
                         )
