@@ -1,27 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../widgets/warning_widget.dart';
 
 //@todo rename to MyPlacesDetailView
 class MyPlaceDetailScreen extends ConsumerWidget {
-  final Place _myPlace;
-  const MyPlaceDetailScreen({super.key, required Place myPlace})
-      : _myPlace = myPlace;
+  const MyPlaceDetailScreen({
+    required this.placeSubscriptionId,
+    required this.onAlertPressed,
+    required this.onAlertUpdateThreadPressed,
+    super.key,
+  });
+
+  final String placeSubscriptionId;
+  final void Function(String alertId) onAlertPressed;
+  final void Function() onAlertUpdateThreadPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
+    var place = ref.read(
+      myPlacesProvider.select(
+        (value) => value.firstWhere(
+          (element) => element.subscriptionId == placeSubscriptionId,
+        ),
+      ),
+    );
+
     var warnings = ref.watch(
       warningsProvider.select(
         (warnings) => warnings.where(
-          (warning) => warning.placeSubscriptionId == _myPlace.subscriptionId,
+          (warning) => warning.placeSubscriptionId == place.subscriptionId,
         ),
       ),
     );
@@ -85,8 +100,10 @@ class MyPlaceDetailScreen extends ConsumerWidget {
         if (!listWarn[0].hideWarningBecauseThereIsANewerVersion) {
           result.add(
             WarningWidget(
+              onAlertPressed: onAlertPressed,
+              onAlertUpdateThreadPressed: onAlertUpdateThreadPressed,
               warnMessage: listWarn[0],
-              place: _myPlace,
+              place: place,
               updateThread: listWarn,
               isMyPlaceWarning: true,
             ),
@@ -98,7 +115,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_myPlace.name),
+        title: Text(place.name),
         actions: [
           IconButton(
             onPressed: () {

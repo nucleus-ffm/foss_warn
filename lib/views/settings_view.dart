@@ -3,19 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/views/dev_settings_view.dart';
 
 import '../main.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
-import 'notification_settings_view.dart';
-import 'introduction/introduction_view.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
 
 class Settings extends ConsumerStatefulWidget {
-  const Settings({super.key});
+  const Settings({
+    required this.onNotificationSettingsPressed,
+    required this.onIntroductionPressed,
+    required this.onDevSettingsPressed,
+    super.key,
+  });
+
+  final VoidCallback onNotificationSettingsPressed;
+  final VoidCallback onIntroductionPressed;
+  final VoidCallback onDevSettingsPressed;
 
   @override
   ConsumerState<Settings> createState() => _SettingsState();
@@ -80,14 +86,7 @@ class _SettingsState extends ConsumerState<Settings> {
             ),
             ListTile(
               title: Text(localizations.settings_app_notification_settings),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NotificationSettingsView(),
-                  ),
-                );
-              },
+              onTap: widget.onNotificationSettingsPressed,
             ),
             const Divider(
               height: 50,
@@ -276,24 +275,11 @@ class _SettingsState extends ConsumerState<Settings> {
             ),
             ListTile(
               title: Text((localizations.settings_show_welcome_dialog)),
-              onTap: () {
-                // TODO(PureTryOut): replace for go_router
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const IntroductionView(),
-                  ),
-                );
-              },
+              onTap: widget.onIntroductionPressed,
             ),
             ListTile(
               title: Text(localizations.settings_dev_settings),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const DevSettings()),
-                );
-              },
+              onTap: widget.onDevSettingsPressed,
             ),
           ],
         ),
