@@ -9,7 +9,14 @@ import 'package:foss_warn/widgets/connection_error_widget.dart';
 import 'package:foss_warn/widgets/warning_widget.dart';
 
 class WarningsView extends ConsumerWidget {
-  const WarningsView({super.key});
+  const WarningsView({
+    required this.onAlertPressed,
+    required this.onAlertUpdateThreadPressed,
+    super.key,
+  });
+
+  final void Function(String alertId) onAlertPressed;
+  final VoidCallback onAlertUpdateThreadPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,6 +64,8 @@ class WarningsView extends ConsumerWidget {
                     warning.placeSubscriptionId == place.subscriptionId,
               )) ...[
                 WarningWidget(
+                  onAlertPressed: onAlertPressed,
+                  onAlertUpdateThreadPressed: onAlertUpdateThreadPressed,
                   place: place,
                   warnMessage: warning,
                   isMyPlaceWarning: true,

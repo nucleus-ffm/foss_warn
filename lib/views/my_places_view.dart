@@ -8,10 +8,16 @@ import 'package:foss_warn/services/warnings.dart';
 import '../widgets/my_place_widget.dart';
 import '../services/list_handler.dart';
 import '../widgets/connection_error_widget.dart';
-import 'add_my_place_with_map_view.dart';
 
 class MyPlacesView extends ConsumerStatefulWidget {
-  const MyPlacesView({super.key});
+  const MyPlacesView({
+    required this.onAddPlacePressed,
+    required this.onPlacePressed,
+    super.key,
+  });
+
+  final VoidCallback onAddPlacePressed;
+  final void Function(String placeSubscriptionId) onPlacePressed;
 
   @override
   ConsumerState<MyPlacesView> createState() => _MyPlacesState();
@@ -102,7 +108,12 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
                     child: Column(
                       children: [
                         const ConnectionError(),
-                        ...places.map((place) => MyPlaceWidget(place: place)),
+                        ...places.map(
+                          (place) => MyPlaceWidget(
+                            place: place,
+                            onPressed: widget.onPlacePressed,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -140,14 +151,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
             child: FloatingActionButton(
               tooltip:
                   localizations.my_places_view_add_new_place_button_tooltip,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddMyPlaceWithMapView(),
-                  ),
-                );
-              },
+              onPressed: widget.onAddPlacePressed,
               child: const Icon(Icons.add),
             ),
           ),

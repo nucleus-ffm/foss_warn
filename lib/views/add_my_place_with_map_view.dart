@@ -80,7 +80,12 @@ class NovatimResponse {
 }
 
 class AddMyPlaceWithMapView extends ConsumerStatefulWidget {
-  const AddMyPlaceWithMapView({super.key});
+  const AddMyPlaceWithMapView({
+    required this.onPlaceAdded,
+    super.key,
+  });
+
+  final VoidCallback onPlaceAdded;
 
   @override
   ConsumerState<AddMyPlaceWithMapView> createState() =>
@@ -570,7 +575,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   NotificationService.cancelOneNotification(
                                     3,
                                   );
-                                  Navigator.of(context).pop();
+                                  widget.onPlaceAdded();
                                 });
                               }
                               await Future.delayed(
