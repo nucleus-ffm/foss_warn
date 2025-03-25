@@ -5,16 +5,17 @@ import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import 'dialogs/delete_place_dialog.dart';
-import '../views/my_place_detail_view.dart';
 import 'dialogs/meta_info_for_place_dialog.dart';
 
 class MyPlaceWidget extends ConsumerWidget {
-  final Place place;
-
   const MyPlaceWidget({
     required this.place,
+    required this.onPressed,
     super.key,
   });
+
+  final Place place;
+  final void Function(String placeSubscriptionId) onPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,12 +57,7 @@ class MyPlaceWidget extends ConsumerWidget {
         },
         onTap: () {
           if (warnings.isNotEmpty) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MyPlaceDetailScreen(myPlace: place),
-              ),
-            );
+            onPressed(place.subscriptionId);
           }
         },
         child: Padding(
@@ -132,15 +128,7 @@ class MyPlaceWidget extends ConsumerWidget {
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(15),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      MyPlaceDetailScreen(myPlace: place),
-                                ),
-                              );
-                            },
+                            onPressed: () => onPressed(place.subscriptionId),
                             child: const Icon(
                               Icons.mark_chat_read,
                               color: Colors.white,
@@ -152,15 +140,7 @@ class MyPlaceWidget extends ConsumerWidget {
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(15),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      MyPlaceDetailScreen(myPlace: place),
-                                ),
-                              );
-                            },
+                            onPressed: () => onPressed(place.subscriptionId),
                             child: const Icon(
                               Icons.warning,
                               color: Colors.white,
