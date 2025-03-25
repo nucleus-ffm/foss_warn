@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/services/api_handler.dart';
-import 'package:foss_warn/views/home/home_view.dart';
 import 'package:foss_warn/views/introduction/slides/alarm_permission.dart';
 import 'package:foss_warn/views/introduction/slides/battery_optimization.dart';
 import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
@@ -14,7 +13,12 @@ import 'package:foss_warn/views/introduction/slides/warning_levels.dart';
 import 'package:foss_warn/views/introduction/slides/welcome.dart';
 
 class IntroductionView extends StatefulWidget {
-  const IntroductionView({super.key});
+  const IntroductionView({
+    required this.onFinished,
+    super.key,
+  });
+
+  final VoidCallback onFinished;
 
   @override
   State<IntroductionView> createState() => _IntroductionViewState();
@@ -98,13 +102,7 @@ class _IntroductionViewState extends State<IntroductionView>
       userPreferences.showWelcomeScreen = false;
       setState(() {});
 
-      // TODO(PureTryOut): replace for go_router
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => const HomeView(),
-        ),
-      );
+      widget.onFinished();
     }
 
     var introductionPages = [

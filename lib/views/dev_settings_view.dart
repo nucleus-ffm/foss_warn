@@ -10,10 +10,14 @@ import '../services/check_for_my_places_warnings.dart';
 import '../services/list_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
-import 'log_file_viewer.dart';
 
 class DevSettings extends ConsumerStatefulWidget {
-  const DevSettings({super.key});
+  const DevSettings({
+    required this.onShowLogFilePressed,
+    super.key,
+  });
+
+  final VoidCallback onShowLogFilePressed;
 
   @override
   ConsumerState<DevSettings> createState() => _DevSettingsState();
@@ -188,14 +192,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 subtitle: const Text(
                   "Führt zu einer Seite mit den Fehlermeldungen an",
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LogFileViewer(),
-                    ),
-                  );
-                },
+                onTap: widget.onShowLogFilePressed,
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
