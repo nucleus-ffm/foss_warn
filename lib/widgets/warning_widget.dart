@@ -13,7 +13,6 @@ import 'package:foss_warn/widgets/dialogs/message_type_explanation.dart';
 
 import '../class/class_warn_message.dart';
 import '../class/class_area.dart';
-import '../services/update_provider.dart';
 
 class WarningWidget extends ConsumerWidget {
   final List<WarnMessage>? _updateThread;
@@ -33,13 +32,7 @@ class WarningWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
 
-    var updater = ref.watch(updaterProvider);
-
     List<String> areaList = []; //@todo rename
-
-    void updatePrevView() {
-      updater.updateReadStatusInList();
-    }
 
     List<String> generateAreaList() {
       List<String> result = [];
@@ -66,7 +59,7 @@ class WarningWidget extends ConsumerWidget {
                 builder: (context) =>
                     DetailScreen(warningIdentifier: _warnMessage.identifier),
               ),
-            ).then((value) => updatePrevView());
+            );
           } catch (e) {
             ErrorLogger.writeErrorLog(
               "WarningWidget.dart",
@@ -140,9 +133,7 @@ class WarningWidget extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: SizedBox(
                             width: 100,
@@ -193,7 +184,7 @@ class WarningWidget extends ConsumerWidget {
                             warningIdentifier: _warnMessage.identifier,
                           ),
                         ),
-                      ).then((value) => updatePrevView());
+                      );
                     },
                     icon: const Icon(Icons.read_more),
                   ),
@@ -244,9 +235,9 @@ class WarningWidget extends ConsumerWidget {
 
     return IconButton(
       onPressed: () async {
-        ref
-            .read(warningsProvider.notifier)
-            .updateWarning(_warnMessage.copyWith(read: !_warnMessage.read));
+        var alertsService = ref.read(processedAlertsProvider.notifier);
+        alertsService
+            .updateAlert(_warnMessage.copyWith(read: !_warnMessage.read));
       },
       icon: _warnMessage.read
           ? const Icon(

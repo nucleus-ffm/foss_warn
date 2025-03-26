@@ -211,9 +211,9 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   Widget _createMapWidget(List<Area> area) {
     var localizations = context.localizations;
     var warning = ref.watch(
-      warningsProvider.select(
-        (value) => value.firstWhere(
-          (element) => element.identifier == widget.warningIdentifier,
+      alertsProvider.select(
+        (alerts) => alerts.firstWhere(
+          (alert) => alert.identifier == widget.warningIdentifier,
         ),
       ),
     );
@@ -279,14 +279,11 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   void initState() {
     super.initState();
 
-    var warning = ref.read(warningsProvider).firstWhere(
-          (element) => element.identifier == widget.warningIdentifier,
-        );
-    ref
-        .read(warningsProvider.notifier)
-        .updateWarning(warning.copyWith(read: true));
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var warning = ref.read(alertsProvider).firstWhere(
+            (alert) => alert.identifier == widget.warningIdentifier,
+          );
+
       // cancel the notification
       await NotificationService.cancelOneNotification(
         warning.identifier.hashCode,
@@ -306,9 +303,9 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
     var warning = ref.watch(
-      warningsProvider.select(
-        (value) => value.firstWhere(
-          (element) => element.identifier == widget.warningIdentifier,
+      alertsProvider.select(
+        (alerts) => alerts.firstWhere(
+          (alert) => alert.identifier == widget.warningIdentifier,
         ),
       ),
     );

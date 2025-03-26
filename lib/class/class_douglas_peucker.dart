@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-
 class DouglasPeucker {
   static List<List<double>> simplify(
     List<List<double>> coordinates,
@@ -29,12 +27,8 @@ class DouglasPeucker {
         distanceMax = distance;
       }
     }
-    debugPrint("[douglas peucker] max distance=$distanceMax");
 
     if (distanceMax > tolerance) {
-      debugPrint(
-        "[douglas peucker] max distance is greater then the tolerance $tolerance",
-      );
       List<List<double>> firstHalf =
           simplify(coordinates.sublist(0, index), tolerance);
       List<List<double>> secondHalf =
@@ -42,10 +36,8 @@ class DouglasPeucker {
       List<List<double>> result = [];
 
       result = firstHalf.sublist(0, firstHalf.length - 1) + secondHalf;
-      debugPrint("[douglas peucker] $result");
       return result;
     } else {
-      debugPrint("[douglas peucker] distance is smaller than the tolerance");
       List<List<double>> result = [];
       result.add(coordinates.first);
       result.add(coordinates.last);

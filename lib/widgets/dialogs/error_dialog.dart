@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/main.dart';
 
-import '../../services/update_provider.dart';
-
 class ErrorDialog extends ConsumerStatefulWidget {
   const ErrorDialog({super.key});
 
@@ -19,8 +17,6 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
       _vertical = ScrollController();
   @override
   Widget build(BuildContext context) {
-    var updater = ref.read(updaterProvider);
-
     return FutureBuilder<String>(
       future: ErrorLogger.readLog(),
       builder: (context, snapshot) {
@@ -112,7 +108,6 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                 ),
                 TextButton(
                   onPressed: () {
-                    updater.updateView();
                     Navigator.of(context).pop();
                   },
                   child: Text(

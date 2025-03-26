@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../main.dart';
-import '../services/check_for_my_places_warnings.dart';
-import '../services/list_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 import 'log_file_viewer.dart';
@@ -45,8 +42,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
     var focusScope = FocusScope.of(context);
 
-    var places = ref.watch(myPlacesProvider);
-    var warningService = ref.read(warningsProvider.notifier);
+    var warningService = ref.read(processedAlertsProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -63,15 +59,9 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 subtitle:
                     Text(localizations.dev_settings_test_notification_text),
                 onTap: () {
-                  checkForMyPlacesWarnings(
-                    alertApi: ref.read(alertApiProvider),
-                    myPlacesService: ref.read(myPlacesProvider.notifier),
-                    warningService: ref.read(warningsProvider.notifier),
-                    places: places,
-                  );
-
-                  bool thereIsNoWarning =
-                      !ref.read(warningsProvider.notifier).hasWarningToNotify();
+                  bool thereIsNoWarning = !ref
+                      .read(processedAlertsProvider.notifier)
+                      .hasWarningToNotify();
                   if (thereIsNoWarning) {
                     final snackBar = SnackBar(
                       content: const Text(
@@ -96,31 +86,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 onTap: () {
                   warningService.resetReadAndNotificationStatusForAllWarnings();
 
-                  final snackBar = SnackBar(
-                    content: Text(
-                      localizations.dev_settings_success,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  scaffoldMessenger.showSnackBar(snackBar);
-                },
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
-                title: Text(localizations.dev_settings_delete_warnings),
-                subtitle: Text(localizations.dev_settings_delete_warnings_text),
-                onTap: () async {
-                  for (var places in places) {
-                    ref
-                        .read(warningsProvider.notifier)
-                        .clearWarningsForPlace(places);
-                  }
-
-                  await ref.read(myPlacesProvider.notifier).set(places);
-
-                  if (!context.mounted) return;
                   final snackBar = SnackBar(
                     content: Text(
                       localizations.dev_settings_success,

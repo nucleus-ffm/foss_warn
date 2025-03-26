@@ -19,14 +19,14 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
     var warnings = ref.watch(
-      warningsProvider.select(
-        (warnings) => warnings.where(
-          (warning) => warning.placeSubscriptionId == _myPlace.subscriptionId,
-        ),
+      alertsProvider.select(
+        (alerts) {
+          return alerts.where(
+            (alert) => alert.placeSubscriptionId == _myPlace.subscriptionId,
+          );
+        },
       ),
     );
-
-    var warningService = ref.read(warningsProvider.notifier);
 
     /// generate a threaded list of alerts with updates of alert as thread
     /// the returned data has the structure:
@@ -102,7 +102,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              warningService.markAllWarningsAsRead();
+              markAllWarningsAsRead(ref);
 
               final snackBar = SnackBar(
                 content: Text(

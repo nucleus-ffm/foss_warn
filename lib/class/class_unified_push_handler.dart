@@ -2,15 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
-import 'package:foss_warn/services/api_handler.dart';
-import 'package:foss_warn/class/class_fpas_place.dart';
-import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import 'package:unifiedpush/constants.dart';
 import 'package:unifiedpush/unifiedpush.dart';
-import '../services/check_for_my_places_warnings.dart';
 import 'package:foss_warn/main.dart';
 import '../widgets/dialogs/no_up_distributor_found_dialog.dart';
 import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
@@ -52,31 +49,18 @@ class UnifiedPushHandler {
 
   /// callback function to handle notification from unifiedPush
   static Future<void> onMessage({
-    required AlertAPI alertApi,
-    required MyPlacesService myPlacesService,
-    required WarningService warningService,
     required Uint8List message,
     required String instance,
-    required List<Place> myPlaces,
+    required WidgetRef ref,
   }) async {
-    debugPrint("instance $instance");
-    if (instance != userPreferences.unifiedPushInstance) {
-      return;
-    }
-    debugPrint("onNotification");
+    if (instance != userPreferences.unifiedPushInstance) return;
+
     var payload = utf8.decode(message);
-    debugPrint("message: $payload");
-    if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) {
-      // system message or debug
-    } else {
-      checkForMyPlacesWarnings(
-        alertApi: alertApi,
-        myPlacesService: myPlacesService,
-        warningService: warningService,
-        places: myPlaces,
-      );
-    }
-    return;
+    debugPrint("Received a notification. Message: $payload");
+
+    if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) return;
+
+    ref.invalidate(alertsForPlaceFutureProvider);
   }
 
   /// register for push notifications

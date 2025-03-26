@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
-import '../../services/update_provider.dart';
+import 'package:foss_warn/services/list_handler.dart';
 
 class DeletePlaceDialog extends ConsumerWidget {
   final Place myPlace;
@@ -15,7 +15,6 @@ class DeletePlaceDialog extends ConsumerWidget {
     var theme = Theme.of(context);
     var navigator = Navigator.of(context);
 
-    var updater = ref.read(updaterProvider);
     var alertApi = ref.read(alertApiProvider);
 
     Future<void> onDeletePlacePressed() async {
@@ -28,7 +27,7 @@ class DeletePlaceDialog extends ConsumerWidget {
         subscriptionId: myPlace.subscriptionId,
       );
 
-      updater.deletePlace(myPlace);
+      ref.read(myPlacesProvider.notifier).remove(myPlace);
 
       if (!context.mounted) return;
       navigator.pop();
