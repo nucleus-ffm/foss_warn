@@ -229,8 +229,10 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
         );
       } else {
         return CameraFit.bounds(
-          // set the bounds to the northpol if we don't have any points
-          bounds: LatLngBounds.fromPoints([const LatLng(90.0, 0.0)]),
+          // set the bounds to the north pole if we don't have any points
+          bounds: LatLngBounds.fromPoints(
+            [const LatLng(90.0, 0.0), const LatLng(89.9, 0.1)],
+          ),
           padding: const EdgeInsets.all(30),
         );
       }
@@ -268,9 +270,9 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
         ),
       );
     } catch (e) {
-      return const SizedBox(
+      return SizedBox(
         height: 200,
-        child: Text("Errpr"),
+        child: Text("Error - failed to show map: $e"),
       );
     }
   }
@@ -279,14 +281,14 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   void initState() {
     super.initState();
 
-    var warning = ref.read(warningsProvider).firstWhere(
-          (element) => element.identifier == widget.warningIdentifier,
-        );
-    ref
-        .read(warningsProvider.notifier)
-        .updateWarning(warning.copyWith(read: true));
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var warning = ref.read(warningsProvider).firstWhere(
+            (element) => element.identifier == widget.warningIdentifier,
+          );
+      ref
+          .read(warningsProvider.notifier)
+          .updateWarning(warning.copyWith(read: true));
+
       // cancel the notification
       await NotificationService.cancelOneNotification(
         warning.identifier.hashCode,

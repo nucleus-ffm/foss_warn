@@ -95,6 +95,16 @@ class FPASApi implements AlertAPI {
       },
     );
 
+    switch (response.statusCode) {
+      case 200: // nothing to do
+        break;
+      default:
+        throw UndefinedServerError(
+          message: response.body,
+          statusCode: response.statusCode,
+        );
+    }
+
     var xml2jsonTransformer = Xml2Json();
     xml2jsonTransformer.parse(utf8.decode(response.bodyBytes));
 

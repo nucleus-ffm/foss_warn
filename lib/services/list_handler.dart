@@ -76,7 +76,7 @@ extension UpdateListEntry<T> on List<T> {
   /// Update a single element in a list
   /// [element] the element to update. Must be uniquely identifiable through the == operator
   List<T> updateEntry(T element) {
-    var index = indexOf(element);
+    int index = indexOf(element);
 
     return [
       ...sublist(0, index),
