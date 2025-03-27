@@ -24,7 +24,8 @@ class Area {
 
   Area.fromJson(Map<String, dynamic> json)
       : description = json['areaDesc'],
-        geoJson = json['geoJson'] ?? "";
+        geoJson = json['geoJson'] ??
+            ""; //@TODO(Nucleus) geoJson should never be "" as this produces an error if we try to use the geoJson for the map
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'areaDesc': description,
@@ -59,6 +60,16 @@ class Area {
       }
     }
     return result;
+  }
+
+  /// create an area from the CAP data
+  /// convert he CAP geo info into geo json data
+  static Area areaFromJsonWithCAPData(
+    Map<String, dynamic> data,
+  ) {
+    Map<String, dynamic> capToGeoJson = _convertCAPGeoInfoToGeoJson(data);
+    data.putIfAbsent("geoJson", () => jsonEncode(capToGeoJson));
+    return Area.fromJson(data);
   }
 
   /// converts tha CAP geo information to geo json

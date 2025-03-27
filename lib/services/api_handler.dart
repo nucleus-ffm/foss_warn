@@ -25,11 +25,11 @@ Future<void> callAPI({
 
   await loadMyPlacesList();
 
+  var updatedWarnings = <WarnMessage>[];
   for (Place place in places) {
     List<String> alertIds = [];
     try {
-      alertIds =
-      await alertApi.getAlerts(subscriptionId: place.subscriptionId);
+      alertIds = await alertApi.getAlerts(subscriptionId: place.subscriptionId);
     } on InvalidSubscriptionError {
       //@TODO(Nucleus) handle invalid subscription
       continue;
@@ -42,7 +42,7 @@ Future<void> callAPI({
       // inform user about error
       appState.error = true;
     }
-    var warnings = await Future.wait([
+    List<WarnMessage> warnings = await Future.wait([
       for (String alertId in alertIds) ...[
         alertApi.getAlertDetail(
           alertId: alertId,
@@ -51,8 +51,7 @@ Future<void> callAPI({
       ],
     ]);
 
-    var updatedWarnings = <WarnMessage>[];
-    for (var warning in warnings) {
+    for (WarnMessage warning in warnings) {
       updatedWarnings.add(
         warning.copyWith(
           isUpdateOfAlreadyNotifiedWarning: _isAlertAnUpdate(
@@ -77,10 +76,9 @@ Future<void> callAPI({
         );
       }
     }
-
-    // Update the state
-    warningService.set(updatedWarnings);
   }
+  // Update the state
+  warningService.set(updatedWarnings);
 
   // update status notification if the user wants
   if (userPreferences.showStatusNotification) {
