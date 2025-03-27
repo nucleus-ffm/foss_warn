@@ -15,7 +15,7 @@ class BoundingBox {
   factory BoundingBox.fromJson(Map<String, dynamic> json) {
     var minLatLng = (json['min_latLng'] as Map<String, dynamic>)
         .map((key, value) => MapEntry(key, value as List<dynamic>));
-    var maxLatLng = (json['min_latLng'] as Map<String, dynamic>)
+    var maxLatLng = (json['max_latLng'] as Map<String, dynamic>)
         .map((key, value) => MapEntry(key, value as List<dynamic>));
 
     /// create new warnMessage objects from saved data

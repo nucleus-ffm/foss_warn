@@ -210,7 +210,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     );
     // create polygon around place
     selectedPlacePolygon = Polygon(
-      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
       points: circlePolygonPoints,
     );
   }
@@ -225,7 +225,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     );
     // create polygon around place
     selectedPlacePolygon = Polygon(
-      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
       points: points,
     );
   }
@@ -512,6 +512,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                               // setup unifiedPush
                               await UnifiedPushHandler.setupUnifiedPush(
                                 context,
+                                ref,
                               );
 
                               // subscribe for new area and create new place

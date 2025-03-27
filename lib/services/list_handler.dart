@@ -7,7 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../class/class_warn_message.dart';
 
 final cachedPlacesProvider = FutureProvider<List<Place>>((ref) async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
+  SharedPreferencesWithCache preferences =
+      await SharedPreferencesWithCache.create(
+    cacheOptions: const SharedPreferencesWithCacheOptions(),
+  );
 
   if (preferences.containsKey("MyPlacesListAsJson")) {
     List<dynamic> data =
@@ -48,7 +51,11 @@ class MyPlacesService extends StateNotifier<List<Place>> {
   }
 
   Future<void> set(List<Place> places) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+    SharedPreferencesWithCache preferences =
+        await SharedPreferencesWithCache.create(
+      cacheOptions: const SharedPreferencesWithCacheOptions(),
+    );
+
     preferences.setString("MyPlacesListAsJson", jsonEncode(places));
 
     if (!mounted) return;
@@ -69,7 +76,7 @@ extension UpdateListEntry<T> on List<T> {
   /// Update a single element in a list
   /// [element] the element to update. Must be uniquely identifiable through the == operator
   List<T> updateEntry(T element) {
-    var index = indexOf(element);
+    int index = indexOf(element);
 
     return [
       ...sublist(0, index),

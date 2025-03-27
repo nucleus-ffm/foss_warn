@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
@@ -45,6 +46,7 @@ class FPASApi implements AlertAPI {
       privacyNotice: data["privacy_notice"],
       termsOfService: data["terms_of_service"],
       congestionState: data["congestion_state"],
+      supportedPushServices: data["supported_push_services"],
     );
   }
 
@@ -61,6 +63,18 @@ class FPASApi implements AlertAPI {
         'User-Agent': constants.httpUserAgent,
       },
     );
+
+    switch (response.statusCode) {
+      case 200: //nothing to do
+        break;
+      case 400:
+        throw InvalidSubscriptionError();
+      default:
+        throw UndefinedServerError(
+          statusCode: response.statusCode,
+          message: response.body,
+        );
+    }
 
     return List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
   }
@@ -80,6 +94,16 @@ class FPASApi implements AlertAPI {
         'User-Agent': constants.httpUserAgent,
       },
     );
+
+    switch (response.statusCode) {
+      case 200: // nothing to do
+        break;
+      default:
+        throw UndefinedServerError(
+          message: response.body,
+          statusCode: response.statusCode,
+        );
+    }
 
     var xml2jsonTransformer = Xml2Json();
     xml2jsonTransformer.parse(utf8.decode(response.bodyBytes));
@@ -120,6 +144,23 @@ class FPASApi implements AlertAPI {
     var url =
         Uri.parse("${userPreferences.fossPublicAlertServerUrl}/subscription/");
 
+    ServerSettings serverSettings = await fetchServerSettings();
+    // check if webpush / encrypted UP is supported
+    bool isEncryptedUnifiedPushSupported =
+        serverSettings.supportedPushServices["UNIFIED_PUSH_ENCRYPTED"] ?? false;
+
+    // use new webpush (aka encrypted unifiedPush) if possible and use
+    // unencrypted unifiedPush as fallback
+    String pushService = "";
+    if (userPreferences.webPushVapidKey != null &&
+        userPreferences.webPushAuthKey != null &&
+        userPreferences.webPushPublicKey != null &&
+        isEncryptedUnifiedPushSupported) {
+      pushService = "UNIFIED_PUSH_ENCRYPTED";
+    } else {
+      pushService = "UNIFIED_PUSH";
+    }
+
     var response = await http.post(
       url,
       headers: {
@@ -128,16 +169,21 @@ class FPASApi implements AlertAPI {
       },
       body: jsonEncode({
         'token': unifiedPushEndpoint,
-        'push_service': "UNIFIED_PUSH",
+        'push_service': pushService,
         'min_lat': boundingBox.minLatLng.latitude.toString(),
         'max_lat': boundingBox.maxLatLng.latitude.toString(),
         'min_lon': boundingBox.minLatLng.longitude.toString(),
         'max_lon': boundingBox.maxLatLng.longitude.toString(),
+        'p256dh_key': userPreferences.webPushPublicKey,
+        'auth_key': userPreferences.webPushAuthKey,
       }),
     );
 
     if (response.statusCode != 200) {
-      throw RegisterAreaError();
+      throw RegisterAreaError(
+        statusCode: response.statusCode,
+        message: response.body,
+      );
     }
 
     Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -150,7 +196,34 @@ class FPASApi implements AlertAPI {
       "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
 
-    var response = await http.delete(
+    try {
+      var response = await http.delete(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          'User-Agent': constants.httpUserAgent,
+        },
+      );
+      switch (response.statusCode) {
+        case 200: // successfully unsubscribed
+          break;
+        case 400: // invalid subscription id. Subscriptions was already deleted
+          break;
+        default:
+          throw UnregisterAreaError();
+      }
+    } on SocketException {
+      throw UnregisterAreaError();
+    }
+  }
+
+  @override
+  Future<String> fetchVapidKeyForWebPush() async {
+    var url = Uri.parse(
+      "${userPreferences.fossPublicAlertServerUrl}/subscription/?type=webpush",
+    );
+
+    var response = await http.get(
       url,
       headers: {
         "Content-Type": "application/json",
@@ -159,7 +232,10 @@ class FPASApi implements AlertAPI {
     );
 
     if (response.statusCode != 200) {
-      throw UnregisterAreaError();
+      throw VapidKeyException();
     }
+
+    Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+    return data['vapid-key'];
   }
 }

@@ -107,7 +107,7 @@ class Info {
             .toList(),
       );
     } else {
-      areas = [Area.fromJson(json['area'])];
+      areas = [Area.areaFromJsonWithCAPData(json['area'])];
     }
 
     return Info(

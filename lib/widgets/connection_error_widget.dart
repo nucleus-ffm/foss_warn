@@ -61,8 +61,7 @@ class ConnectionError extends StatelessWidget {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Text(
-                    'Ups. Something went wrong. Please contact the developer',
-                    // @todo translate app_error_message
+                    localizations.connection_error_app_error,
                     style: theme.textTheme.displaySmall,
                     overflow: TextOverflow.ellipsis,
                   ),
