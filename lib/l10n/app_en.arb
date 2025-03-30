@@ -31,8 +31,6 @@
   "@all_warnings_everything_ok_text": {},
   "all_warnings_reload": "Reload",
   "@all_warnings_reload": {},
-  "my_places_no_warning_found": "No warnings found",
-  "@my_places_no_warning_found": {},
   "my_place_warning_found": "There are warnings for you",
   "@my_place_warning_found": {},
   "my_place_no_place_added": "No place is selected",
@@ -460,12 +458,16 @@
   "@explanation_warning_level_all_clear_text": {},
   "explanation_warning_level_ack": "Acknowledged",
   "explanation_warning_level_error": "Error",
-  "my_place_there_are": "There are",
-  "@my_place_there_are": {},
-  "my_place_warnings_more_then_one": "warnings",
-  "@my_place_warnings_more_then_one": {},
-  "my_place_warnings_only_one": "warning",
-  "@my_place_warnings_only_one": {},
+  "my_place_warnings_count": "There {count, plural, =0{are no warnings} =1{is one warning} other{are {count} warnings}}",
+  "@my_place_warnings_count": {
+    "description": "Tells how many warnings there are for a place",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
   "warning_widget_and": "and",
   "@warning_widget_and": {},
   "warning_widget_other": "other",
