@@ -415,6 +415,8 @@
   "@explanation_warning_level_all_clear_text": {},
   "my_place_there_are": "There are",
   "@my_place_there_are": {},
+  "my_place_there_is": "There is",
+  "@my_place_there_is": {},
   "my_place_warnings_more_then_one": "warnings",
   "@my_place_warnings_more_then_one": {},
   "my_place_warnings_only_one": "warning",
