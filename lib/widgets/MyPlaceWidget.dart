@@ -20,7 +20,7 @@ class MyPlaceWidget extends StatelessWidget {
             " " +
             AppLocalizations.of(context)!.my_place_warnings_more_then_one;
       } else {
-        return AppLocalizations.of(context)!.my_place_there_are +
+        return AppLocalizations.of(context)!.my_place_there_is +
             " " +
             myPlace.countWarnings.toString() +
             " " +
