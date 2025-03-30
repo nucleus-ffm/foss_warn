@@ -21,6 +21,7 @@ class MyPlaceWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
+    var localizations = context.localizations;
 
     var warnings = ref.watch(
       warningsProvider.select(
@@ -29,20 +30,6 @@ class MyPlaceWidget extends ConsumerWidget {
         ),
       ),
     );
-
-    String checkForWarnings() {
-      var localizations = context.localizations;
-
-      if (warnings.isNotEmpty) {
-        if (warnings.length > 1) {
-          return "${localizations.my_place_there_are} ${warnings.length} ${localizations.my_place_warnings_more_then_one}";
-        } else {
-          return "${localizations.my_place_there_are} ${warnings.length} ${localizations.my_place_warnings_only_one}";
-        }
-      } else {
-        return localizations.my_places_no_warning_found;
-      }
-    }
 
     return Card(
       child: InkWell(
@@ -99,7 +86,12 @@ class MyPlaceWidget extends ConsumerWidget {
                             overflow: TextOverflow.fade,
                           ),
                         ),
-                        Flexible(child: Text(checkForWarnings())),
+                        Flexible(
+                          child: Text(
+                            localizations
+                                .my_place_warnings_count(warnings.length),
+                          ),
+                        ),
                       ],
                     ),
                   ),
