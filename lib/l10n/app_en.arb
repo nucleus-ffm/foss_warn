@@ -329,6 +329,7 @@
   "@connection_error_no_internet": {},
   "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
   "@connection_error_no_internet": {},
+  "connection_error_subscription_expired": "Some of your subscriptions have expired.",
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
@@ -564,5 +565,13 @@
   "welcome_view_foss_public_alert_server_confirm_success": "Confirmed",
   "@welcome_view_foss_public_alert_server_confirm_success": {},
   "welcome_view_foss_public_alert_server_use_default_server": "Use default server",
-  "@welcome_view_foss_public_alert_server_use_default_server": {}
+  "@welcome_view_foss_public_alert_server_use_default_server": {},
+  "invalid_subscription_dialog_headline": "Renew expired subscriptions",
+  "invalid_subscription_dialog_text": "Some of your subscriptions have expired. Click on resubscribe to get push notifications again",
+  "invalid_subscription_dialog_resubscribe_button" : "resubscribe",
+  "invalid_subscription_dialog_loading_indicator_replace_places" : "replacing the old places...",
+  "invalid_subscription_dialog_error_body" : ":( Oh no, failed to resubscribe.",
+  "invalid_subscription_dialog_error_status_code": "HTTP Status code:",
+  "invalid_subscription_dialog_error_message": "Error message:",
+  "invalid_subscription_dialog_successfully_resubscribed": "Successfully resubscribed"
 }

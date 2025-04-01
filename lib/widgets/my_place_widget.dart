@@ -44,6 +44,8 @@ class MyPlaceWidget extends ConsumerWidget {
     }
 
     return Card(
+      color:
+          place.isExpired ? theme.colorScheme.outlineVariant : theme.cardColor,
       child: InkWell(
         onLongPress: () {
           debugPrint("DeletePlaceDialog opened");

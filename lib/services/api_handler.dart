@@ -18,8 +18,6 @@ Future<void> callAPI({
 }) async {
   bool successfullyFetched = true;
   String error = "";
-  List<WarnMessage> tempWarnMessageList = [];
-  tempWarnMessageList.clear();
 
   debugPrint("call API");
 
@@ -31,7 +29,9 @@ Future<void> callAPI({
     try {
       alertIds = await alertApi.getAlerts(subscriptionId: place.subscriptionId);
     } on InvalidSubscriptionError {
-      //@TODO(Nucleus) handle invalid subscription
+      place.isExpired = true;
+      //@TODO(Nucleus) show notification about invalid subscriptions if the app
+      // is not in the foreground right now
       continue;
     } on UndefinedServerError catch (e) {
       ErrorLogger.writeErrorLog(
@@ -41,6 +41,7 @@ Future<void> callAPI({
       );
       // inform user about error
       appState.error = true;
+      continue;
     }
     List<WarnMessage> warnings = await Future.wait([
       for (String alertId in alertIds) ...[
@@ -77,10 +78,12 @@ Future<void> callAPI({
       }
     }
   }
+
   // Update the state
   warningService.set(updatedWarnings);
 
   // update status notification if the user wants
+  // @TODO(Nucleus): This is not used anymore. Remove or update
   if (userPreferences.showStatusNotification) {
     if (error != "") {
       sendStatusUpdateNotification(successfullyFetched, error);

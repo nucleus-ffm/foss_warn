@@ -6,26 +6,31 @@ class Place {
 
   BoundingBox boundingBox;
   String subscriptionId;
+  bool isExpired;
 
   Place({
     required String name,
     required this.boundingBox,
     required this.subscriptionId,
     String? eTag,
+    bool? isExpired,
   })  : _name = name,
-        eTag = eTag ?? "";
+        eTag = eTag ?? "",
+        isExpired = isExpired ?? false;
 
   Place copyWith({
     String? name,
     String? eTag,
     BoundingBox? boundingBox,
     String? subscriptionId,
+    bool? isExpired,
   }) =>
       Place(
         name: name ?? _name,
         eTag: eTag ?? this.eTag,
         boundingBox: boundingBox ?? this.boundingBox,
         subscriptionId: subscriptionId ?? this.subscriptionId,
+        isExpired: isExpired ?? this.isExpired,
       );
 
   String get name => _name;
@@ -36,6 +41,7 @@ class Place {
       boundingBox: BoundingBox.fromJson(json['boundingBox']),
       subscriptionId: json['subscriptionId'] as String,
       eTag: (json['eTag'] ?? "") as String,
+      isExpired: (json['isExpired'] ?? false) as bool,
     );
   }
 
@@ -45,6 +51,7 @@ class Place {
       'boundingBox': boundingBox,
       'subscriptionId': subscriptionId,
       'eTag': eTag,
+      'isExpired': isExpired,
     };
   }
 }
