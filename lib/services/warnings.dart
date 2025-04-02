@@ -18,7 +18,7 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
   final List<Place> places;
 
   List<WarnMessage> _sortWarnings(List<WarnMessage> warnings) {
-    var sortedWarnings = List<WarnMessage>.of(state);
+    List<WarnMessage> sortedWarnings = List<WarnMessage>.of(warnings);
 
     if (userPreferences.sortWarningsBy == SortingCategories.severity) {
       sortedWarnings.sort(
@@ -57,8 +57,8 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
   }
 
   void updateWarning(WarnMessage warning) {
-    var warnings = List<WarnMessage>.from(state);
-    warnings.updateEntry(warning);
+    List<WarnMessage> warnings = List<WarnMessage>.from(state);
+    warnings = warnings.updateEntry(warning);
     state = _sortWarnings(warnings);
   }
 

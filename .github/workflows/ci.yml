@@ -28,7 +28,7 @@ jobs:
           channel: 'stable'
           cache: true
           cache-key: "${{ runner.OS }}-flutter-install-cache"
-          flutter-version: "3.24.5"
+          flutter-version: "3.29.0"
 
       - run: flutter pub get
       - run: flutter gen-l10n
@@ -46,7 +46,7 @@ jobs:
           channel: 'stable'
           cache: true
           cache-key: "${{ runner.OS }}-flutter-install-cache"
-          flutter-version: "3.24.5"
+          flutter-version: "3.29.0"
 
       - run: flutter pub get
       - run: flutter gen-l10n
