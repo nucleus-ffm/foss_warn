@@ -1,4 +1,5 @@
 {
+  "@@locale": "pt_BR",
   "warning_from": "Mensagem de",
   "@warning_from": {},
   "settings_alertSwiss_subtitle": "Avisos para a Suíça",

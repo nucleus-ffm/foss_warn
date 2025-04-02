@@ -1,4 +1,5 @@
 {
+  "@@locale": "fr",
   "settings_background_service": "Mises à jours automatique",
   "@settings_background_service": {},
   "settings_notification": "Notifications",
