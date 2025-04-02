@@ -16,11 +16,11 @@ import 'class_info.dart';
 ///   - messageType (REQUIRED) The code denoting the nature of the alert message
 ///   - source (OPTIONAL) The text identifying the source of the alert message
 ///   - scope (REQUIRED) The code denoting the intended distribution of the alert message
-///   - restriction (CONDITIONAL) Used when <scope> value is "Restricted".
-///   - addresses (CONDITIONAL) Required when <scope> is “Private”, optional when <scope> isPublic” or “Restricted”.
+///   - restriction (CONDITIONAL) Used when `<scope>` value is "Restricted".
+///   - addresses (CONDITIONAL) Required when `<scope>` is “Private”, optional when `<scope>` isPublic” or “Restricted”.
 ///   - code (OPTIONAL) Any user-defined flag or special code used to flag the alert message for special handling.
-///   - note (OPTIONAL) The message note is primarily intended for  use with <status> “Exercise” and<msgType> “Error”.
-///   - references (OPTIONAL)  The message note is primarily intended for use with <status> “Exercise” and <msgType> “Error”.
+///   - note (OPTIONAL) The message note is primarily intended for  use with `<status>` “Exercise” and `<msgType>` “Error”.
+///   - references (OPTIONAL)  The message note is primarily intended for use with `<status>` “Exercise” and `<msgType>` “Error”.
 ///   - incidents (OPTIONAL) Used to collate multiple messages referring to different aspects of the same incident.
 ///   - info  (OPTIONAL) The container for all component parts of the info sub-element of the alert message
 class WarnMessage {
