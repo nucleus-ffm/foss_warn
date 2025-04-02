@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "main_nav_bar_all_warnings": "All warnings",
   "main_nav_bar_my_places": "My places",
   "main_nav_bar_map": "Map",
@@ -297,10 +298,6 @@
     }
   },
   "welcome_view_permission_action": "Request permission",
-  "welcome_view_notification_permission_headline": "Notification Permission",
-  "welcome_view_notification_permission_text": "FOSSWarn needs your permission to send you notification in case there is an alert for your area. Press on the button below to open the permission dialog.",
-  "welcome_view_alarm_permission_headline": "Alarm Permission",
-  "welcome_view_alarm_permission_text": "FOSSWarn needs your permission to schedule exact alarms. Press on the button below to open the permission dialog",
   "welcome_view_important_headline": "Important",
   "@welcome_view_important_headline": {},
   "welcome_view_important_text": "Please read the disclaimer before use. By using the app, you agree to it.",
@@ -328,7 +325,6 @@
   "connection_error_no_internet": "No server connection",
   "@connection_error_no_internet": {},
   "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
-  "@connection_error_no_internet": {},
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
