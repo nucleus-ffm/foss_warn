@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/add_my_place_with_map_view.dart';
 import 'package:foss_warn/views/alert_update_thread_view.dart';
@@ -18,6 +19,11 @@ final routesProvider = Provider<GoRouter>(
     initialLocation: '/',
     redirect: (context, state) {
       debugPrint("Navigating to ${state.uri.path}");
+
+      if (userPreferences.showWelcomeScreen) {
+        return "/introduction";
+      }
+
       return null;
     },
     routes: [
