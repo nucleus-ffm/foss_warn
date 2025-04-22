@@ -9,7 +9,7 @@ import '../main.dart';
 import 'class_douglas_peucker.dart';
 
 class Area {
-  String description; // Kreisname or general description of the area
+  String description; // general description of the area
   String geoJson; // polygons of the area stored as pure json file
 
   Area({
@@ -88,6 +88,7 @@ class Area {
   static Map<String, dynamic> _convertCAPGeoInfoToGeoJson(
     Map<String, dynamic> data,
   ) {
+    const double polygonSimplificationTolerance = 0.001;
     Map<String, dynamic> featureCollection = {};
     featureCollection.putIfAbsent("type", () => "FeatureCollection");
 
@@ -101,8 +102,8 @@ class Area {
       Map<String, dynamic> polygonFeature = {};
 
       if (data["polygon"] is List) {
-        var polygons = data["poloygon"] as List<String>;
         // the data contain more then one polygon. So we build a multipolygon
+        List<String> polygons = List<String>.from(data["polygon"]);
 
         // multiple polygons
         // type MultiPolygon
@@ -138,7 +139,10 @@ class Area {
           }
 
           // apply douglas peucker to reduce number of polygons
-          oneRowCoordinates = DouglasPeucker.simplify(oneRowCoordinates, 0.001);
+          oneRowCoordinates = DouglasPeucker.simplify(
+            coordinates: oneRowCoordinates,
+            tolerance: polygonSimplificationTolerance,
+          );
 
           oneRowCoordinatesOuterList.clear();
           oneRowCoordinatesOuterList.add(oneRowCoordinates);
@@ -188,7 +192,10 @@ class Area {
         }
 
         // apply douglas peucker to reduce number of polygons
-        oneRowCoordinates = DouglasPeucker.simplify(oneRowCoordinates, 0.001);
+        oneRowCoordinates = DouglasPeucker.simplify(
+          coordinates: oneRowCoordinates,
+          tolerance: polygonSimplificationTolerance,
+        );
 
         // add the row to the List
         coordinatesList.add(oneRowCoordinates);
@@ -226,7 +233,6 @@ class Area {
   //  default borderColor: 0xFFFB8C00
   static List<Polygon> createListOfPolygonsForAreas(List<Area> areas) {
     List<Polygon> result = [];
-    List<String> debugResult = [];
     try {
       GeoJsonParser myGeoJson = GeoJsonParser(
         defaultPolygonFillColor: const Color(0xFFB01917).withValues(alpha: 0.2),
@@ -235,9 +241,8 @@ class Area {
       );
       for (Area area in areas) {
         myGeoJson.parseGeoJsonAsString(area.geoJson);
-        debugResult.add(area.geoJson);
-        result.addAll(myGeoJson.polygons);
       }
+      result.addAll(myGeoJson.polygons);
       return result;
     } catch (e) {
       ErrorLogger.writeErrorLog(
