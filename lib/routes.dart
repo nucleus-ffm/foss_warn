@@ -23,7 +23,6 @@ final routesProvider = Provider<GoRouter>(
       if (userPreferences.showWelcomeScreen) {
         return "/introduction";
       }
-
       return null;
     },
     routes: [
@@ -38,89 +37,98 @@ final routesProvider = Provider<GoRouter>(
           onSettingsPressed: () => context.go('/settings'),
           onAboutPressed: () => context.go('/about'),
         ),
-      ),
-      GoRoute(
-        path: '/introduction',
-        builder: (context, state) => IntroductionView(
-          onFinished: () => context.go('/'),
-        ),
-      ),
-      GoRoute(
-        path: '/about',
-        builder: (context, state) => AboutView(
-          onShowLicensePressed: () => context.go('/license'),
-        ),
-      ),
-      GoRoute(
-        path: '/license',
-        builder: (context, state) => const LicensePage(),
-      ),
-      GoRoute(
-        path: '/dev-settings',
-        builder: (context, state) => DevSettings(
-          onShowLogFilePressed: () => context.go('/log-file-viewer'),
-        ),
-      ),
-      GoRoute(
-        path: '/log-file-viewer',
-        builder: (context, state) => const LogFileViewer(),
-      ),
-      GoRoute(
-        path: '/settings',
-        builder: (context, state) => Settings(
-          onNotificationSettingsPressed: () =>
-              context.go('/settings/notifications'),
-          onIntroductionPressed: () => context.go('/introduction'),
-          onDevSettingsPressed: () => context.go('/dev-settings'),
-        ),
         routes: [
           GoRoute(
-            path: 'notifications',
-            builder: (context, state) => const NotificationSettingsView(),
-          ),
-        ],
-      ),
-      GoRoute(
-        path: '/places',
-        redirect: (context, state) => '/places/add',
-        routes: [
-          GoRoute(
-            path: 'add',
-            builder: (context, state) => AddMyPlaceWithMapView(
-              onPlaceAdded: () => context.go('/'),
+            path: '/introduction',
+            builder: (context, state) => IntroductionView(
+              onFinished: () => context.go('/'),
             ),
           ),
           GoRoute(
-            path: ':id',
-            builder: (context, state) {
-              String placeSubscriptionId = state.pathParameters["id"]!;
-              return MyPlaceDetailScreen(
-                placeSubscriptionId: placeSubscriptionId,
-                onAlertPressed: (String alertId) =>
-                    context.go('/alerts/$alertId'),
-                onAlertUpdateThreadPressed: () => context.go('/alerts/update/'),
-              );
-            },
-          ),
-        ],
-      ),
-      GoRoute(
-        path: '/alerts',
-        redirect: (context, state) => '/',
-        routes: [
-          GoRoute(
-            path: ':id',
-            builder: (context, state) {
-              String id = state.pathParameters["id"]!;
-              return DetailScreen(warningIdentifier: id);
-            },
-          ),
-          GoRoute(
-            path: 'update',
-            builder: (context, state) => AlertUpdateThreadView(
-              onAlertPressed: (alertId) => context.go('/alerts/$alertId'),
-              onAlertUpdateThreadPressed: () => context.go('/alerts/update'),
+            path: '/about',
+            builder: (context, state) => AboutView(
+              onShowLicensePressed: () => context.go('/about/license'),
             ),
+            routes: [
+              GoRoute(
+                path: '/license',
+                builder: (context, state) => const LicensePage(),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: '/settings',
+            builder: (context, state) => Settings(
+              onNotificationSettingsPressed: () =>
+                  context.go('/settings/notifications'),
+              onIntroductionPressed: () => context.go('/introduction'),
+              onDevSettingsPressed: () => context.go('/settings/dev-settings'),
+            ),
+            routes: [
+              GoRoute(
+                path: 'notifications',
+                builder: (context, state) => const NotificationSettingsView(),
+              ),
+              GoRoute(
+                path: 'dev-settings',
+                builder: (context, state) => DevSettings(
+                  onShowLogFilePressed: () =>
+                      context.go('/settings/dev-settings/log-file-viewer'),
+                ),
+                routes: [
+                  GoRoute(
+                    path: '/log-file-viewer',
+                    builder: (context, state) => const LogFileViewer(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          GoRoute(
+            path: '/places',
+            redirect: (context, state) => null,
+            routes: [
+              GoRoute(
+                path: 'add',
+                builder: (context, state) => AddMyPlaceWithMapView(
+                  onPlaceAdded: () => context.go('/'),
+                ),
+              ),
+              GoRoute(
+                path: ':id',
+                builder: (context, state) {
+                  String placeSubscriptionId = state.pathParameters["id"]!;
+                  return MyPlaceDetailScreen(
+                    placeSubscriptionId: placeSubscriptionId,
+                    onAlertPressed: (String alertId) =>
+                        context.go('/alerts/$alertId'),
+                    onAlertUpdateThreadPressed: () =>
+                        context.go('/alerts/update/'),
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: '/alerts',
+            redirect: (context, state) => null,
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (context, state) {
+                  String id = state.pathParameters["id"]!;
+                  return DetailScreen(warningIdentifier: id);
+                },
+              ),
+              GoRoute(
+                path: 'update',
+                builder: (context, state) => AlertUpdateThreadView(
+                  onAlertPressed: (alertId) => context.go('/alerts/$alertId'),
+                  onAlertUpdateThreadPressed: () =>
+                      context.go('/alerts/update'),
+                ),
+              ),
+            ],
           ),
         ],
       ),
