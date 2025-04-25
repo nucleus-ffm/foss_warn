@@ -10,7 +10,7 @@ class IntroductionWelcomeSlide extends StatelessWidget {
     var localizations = context.localizations;
 
     return IntroductionBaseSlide(
-      imagePath: "assets/app_icon/app_icon.png",
+      imagePath: "app_icon.png",
       title: localizations.welcome_view_foss_warn_headline,
       text: localizations.welcome_view_foss_warn_text,
     );

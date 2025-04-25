@@ -10,7 +10,7 @@ class IntroductionWarningLevelsSlide extends StatelessWidget {
     var localizations = context.localizations;
 
     return IntroductionBaseSlide(
-      imagePath: "assets/steps.png",
+      imagePath: "warn-levels.png",
       title: localizations.welcome_view_warning_steps_headline,
       text: localizations.welcome_view_warning_steps_text,
     );

@@ -16,7 +16,7 @@ class IntroductionFinishsSlide extends StatelessWidget {
     var theme = Theme.of(context);
 
     return IntroductionBaseSlide(
-      imagePath: "assets/check.png",
+      imagePath: "check.png",
       title: localizations.welcome_view_lets_go_headline,
       text: localizations.welcome_view_lets_go_text,
       footer: Align(
