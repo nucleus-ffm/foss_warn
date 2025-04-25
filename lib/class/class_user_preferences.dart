@@ -301,7 +301,7 @@ class UserPreferences {
     _preferences.setString("fossPublicAlertServerUrl", newValue);
   }
 
-  final String _fossPublicAlertServerOperator = "";
+  final String _fossPublicAlertServerOperator = "KDE";
   String get fossPublicAlertServerOperator {
     String? data = _preferences.getString("fossPublicAlertServerOperator");
     return data ?? _fossPublicAlertServerOperator;
@@ -311,7 +311,8 @@ class UserPreferences {
     _preferences.setString("fossPublicAlertServerOperator", value);
   }
 
-  final String _fossPublicAlertServerPrivacyNotice = "";
+  final String _fossPublicAlertServerPrivacyNotice =
+      "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Privacy";
   String get fossPublicAlertServerPrivacyNotice {
     String? data = _preferences.getString("fossPublicAlertServerPrivacyNotice");
     return data ?? _fossPublicAlertServerPrivacyNotice;
@@ -321,7 +322,8 @@ class UserPreferences {
     _preferences.setString("fossPublicAlertServerPrivacyNotice", value);
   }
 
-  final String _fossPublicAlertServerTermsOfService = "";
+  final String _fossPublicAlertServerTermsOfService =
+      "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Terms-of-Service";
   String get fossPublicAlertServerTermsOfService {
     String? data =
         _preferences.getString("fossPublicAlertServerTermsOfService");

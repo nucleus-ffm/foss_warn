@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/main.dart';
 
 class IntroductionBaseSlide extends StatelessWidget {
   const IntroductionBaseSlide({
@@ -16,14 +17,19 @@ class IntroductionBaseSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = userPreferences.selectedThemeMode;
+    final darkModeOn = brightness == ThemeMode.dark;
+    const String basePath = "assets/introduction";
+    final String themeDependedPath =
+        darkModeOn ? "$basePath/darkmode" : "$basePath/lightmode";
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(20.0).copyWith(top: 80.0),
+        padding: const EdgeInsets.all(20.0).copyWith(top: 120.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              imagePath,
+              "$themeDependedPath/$imagePath",
               fit: BoxFit.contain,
               width: 220.0,
               height: 200.0,

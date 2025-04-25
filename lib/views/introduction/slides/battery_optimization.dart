@@ -65,7 +65,7 @@ class _IntroductionBatteryOptimizationSlideState
     }
 
     return IntroductionBaseSlide(
-      imagePath: "assets/battery.png",
+      imagePath: "battery.png",
       title: localizations.welcome_view_battery_optimisation_headline,
       text: localizations.welcome_view_battery_optimisation_text,
       footer: FutureBuilder(
