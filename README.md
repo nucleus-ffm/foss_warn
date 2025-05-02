@@ -41,6 +41,15 @@ The app is currently in a BETA status. It works quite well, but be aware of the 
 ## Known problems
 - the layout could be improved for small devices
 
+## Requirements
+
+When running the application on Linux, make sure you have the following installed:
+- `xdg-user-dirs`
+- A UnifiedPush provider, like KDE's KUnifiedPush
+
+Install the DBus service (`linux/de.nucleus.foss_warn.service`) file to `/usr/share/dbus-1/services/` to be able to retrieve background notifications.
+Edit the `Exec=` line where necessary.
+
 ## FAQ
 <details>
 <summary>How to change the notification sound?</summary>
