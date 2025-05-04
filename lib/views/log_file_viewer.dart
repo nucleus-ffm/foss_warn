@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../class/class_error_logger.dart';
@@ -30,22 +31,22 @@ class _LogFileViewerState extends State<LogFileViewer> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = context.localizations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Log file Viewer"),
+        title: Text(localization.error_log_viewer_title),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            const Text("Here is the Logfile for FOSSWarn"),
+            Text(localization.error_log_viewer_headline),
             FutureBuilder<String>(
               future: ErrorLogger.readLog(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
                     final String log = snapshot.data!;
-                    //print(log);
                     return Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Column(
@@ -83,7 +84,7 @@ class _LogFileViewerState extends State<LogFileViewer> {
                                   shareText(
                                     context,
                                     log,
-                                    "Errorlog shared from FOSSWarn",
+                                    localization.error_log_share_info,
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -91,7 +92,7 @@ class _LogFileViewerState extends State<LogFileViewer> {
                                       Theme.of(context).colorScheme.primary,
                                 ),
                                 child: Text(
-                                  "Teilen",
+                                  localization.error_log_button_share,
                                   style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.onPrimary,
@@ -101,13 +102,14 @@ class _LogFileViewerState extends State<LogFileViewer> {
                               ElevatedButton(
                                 onPressed: () {
                                   ErrorLogger.deleteLog();
+                                  setState(() {});
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       Theme.of(context).colorScheme.error,
                                 ),
                                 child: Text(
-                                  "Löschen",
+                                  localization.error_log_button_delete,
                                   style: TextStyle(
                                     color:
                                         Theme.of(context).colorScheme.onError,
