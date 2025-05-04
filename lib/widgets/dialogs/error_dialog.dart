@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 
 import '../../services/update_provider.dart';
@@ -20,6 +21,7 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
   @override
   Widget build(BuildContext context) {
     var updater = ref.read(updaterProvider);
+    var localization = context.localizations;
 
     return FutureBuilder<String>(
       future: ErrorLogger.readLog(),
@@ -27,32 +29,28 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
             final String log = snapshot.data!;
-            //print(log);
             return AlertDialog(
-              title: const Text("Oh no - something went wrong :("),
-              //@todo translate error_dialog_headline
+              title: Text(localization.error_dialog_headline),
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "FOSS Warn has noticed an error."
-                    " Please contact the developer and attach the following log:", //@todo translate error_dialog_text_introduction
+                    localization.error_dialog_description,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const Text(
-                      "The log does not contain any privacy sensitive information beside maybe your selected place. "
-                      "FOSS Warn also does not send any log information to a server."), //@todo translate error_dialog_text_privacy
+                  Text(
+                    localization.error_dialog_privacy,
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "What should I do now?", // @todo translate error_dialog_text_instructions_headline
+                    localization.error_dialog_instruction_headline,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const Text(
-                    "write an E-Mail to: foss_warn@posteo.de",
-                  ), // @toto translate error_dialog_text_instructions_text
-                  const Text("or open an Github Issue"),
+                  Text(
+                    localization.error_dialog_instruction_body,
+                  ),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Divider(),
@@ -84,7 +82,7 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                           });
                         },
                       ),
-                      const Text("hide error bar"), //@todo translate
+                      Text(localization.error_dialog_hide_error_bar),
                     ],
                   ),
                 ],
@@ -94,9 +92,9 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: log));
                     final snackBar = SnackBar(
-                      content: const Text(
-                        "copied", //@todo translate
-                        style: TextStyle(color: Colors.black),
+                      content: Text(
+                        localization.error_dialog_copy_success,
+                        style: const TextStyle(color: Colors.black),
                       ),
                       backgroundColor: Colors.green[100],
                     );
@@ -104,7 +102,7 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   child: Text(
-                    "copy", //@todo translate
+                    localization.error_dialog_copy,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -116,7 +114,7 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    "close", //@todo translate
+                    localization.main_dialog_close,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
