@@ -42,7 +42,7 @@ class ErrorLogger {
     } catch (e) {
       // If encountering an error, return 0
       debugPrint("Error while reading logfile: ${e.toString()}");
-      return "Error. Can not read logfile.";
+      return "Error. Can not read logfile. No logfile to display.";
     }
   }
 

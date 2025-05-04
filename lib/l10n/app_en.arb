@@ -620,5 +620,19 @@
   "@alert_publisher_unknown": {
     "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
   },
-  "failed_to_open_url": "Failed to open URL"
+  "failed_to_open_url": "Failed to open URL",
+  "error_dialog_headline": "Oh no - something went wrong :(",
+  "error_dialog_description": "FOSSWarn has noticed an error. Please report the error and attach the following log.",
+  "error_dialog_privacy": "The log does not contain any privacy-sensitive information besides maybe your selected places. FOSSWarn does not send any logs to a server.",
+  "error_dialog_instruction_headline": "What should I do now?",
+  "error_dialog_instruction_body": "1. Check if the error is just because of a missing internet connection\n2. Check if there is already an open issue on GitHub\n3. Find the relevant part of the log. If the same error message occurs multiple times in the log, sending just one error message is enough.\n4. Open a new issue or write an email to foss-warn@posteo.de",
+  "error_dialog_hide_error_bar": "Hide error bar",
+  "error_dialog_copy": "copy error log",
+  "error_dialog_copy_success": "copied",
+  "error_log_viewer_title": "Log file Viewer",
+  "error_log_viewer_headline": "Here you can read the error log for FOSSWarn",
+  "error_log_button_delete": "Delete",
+  "error_log_button_share": "Share logfile",
+  "error_log_share_info": "Error log shared from FOSSWar"
+
 }
