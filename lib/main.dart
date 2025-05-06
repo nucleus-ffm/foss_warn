@@ -33,12 +33,16 @@ class FOSSWarn extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var routes = ref.read(routesProvider);
+    // load preferences - this is suboptimal as it constantly loads
+    // the settings, loading it just once would be enough.
+    ref.read(userPreferencesProvider.notifier).loadPreferences();
+    final userPrefProvider = ref.watch(userPreferencesProvider);
 
     return MaterialApp.router(
       title: 'FOSS Warn',
-      theme: userPreferences.selectedLightTheme,
-      darkTheme: userPreferences.selectedDarkTheme,
-      themeMode: userPreferences.selectedThemeMode,
+      theme: userPrefProvider.selectedLightTheme,
+      darkTheme: userPrefProvider.selectedDarkTheme,
+      themeMode: userPrefProvider.selectedThemeMode,
       debugShowCheckedModeBanner: false,
       routerConfig: routes,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

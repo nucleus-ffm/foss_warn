@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 
-import '../../services/update_provider.dart';
+import '../../class/class_user_preferences.dart';
 
 class ChooseThemeDialog extends ConsumerStatefulWidget {
   const ChooseThemeDialog({super.key});
@@ -13,6 +13,7 @@ class ChooseThemeDialog extends ConsumerStatefulWidget {
 }
 
 class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
+  /// generate the buttons to select the brightness setting
   List<Widget> generateBrightnessButtons() {
     List<ThemeMode> themeModes = [
       ThemeMode.light,
@@ -26,8 +27,10 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
     return result;
   }
 
+  /// generate the button to the switch between light mode, dark mode and system
   Widget generateBrightnessButton(ThemeMode themeMode) {
-    var updater = ref.read(updaterProvider);
+    var userPrefProvider = ref.watch(userPreferencesProvider);
+    final notifier = ref.watch(userPreferencesProvider.notifier);
 
     return TextButton(
       style: TextButton.styleFrom(
@@ -37,7 +40,7 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           side: BorderSide(
             // change border color if theme is currently selected
-            color: (userPreferences.selectedThemeMode == themeMode)
+            color: (userPrefProvider.selectedThemeMode == themeMode)
                 ? Colors.green
                 : Colors.transparent,
             width: 5,
@@ -45,11 +48,8 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
         ),
       ),
       onPressed: () {
-        setState(() {
-          userPreferences.selectedThemeMode = themeMode;
-        });
-        // Reload the full app for theme changes to reflect
-        updater.updateView();
+        // set new selected theme mode
+        notifier.setSelectedThemeMode(themeMode);
       },
       child: Text(
         selectTextForThemeMode(themeMode),
@@ -96,43 +96,39 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   /// generate from the list of available themes a list of button
   /// with the primary colors
   List<Widget> generateAvailableThemes() {
+    var userPrefProvider = ref.watch(userPreferencesProvider);
     List<Widget> result = [];
 
-    if (userPreferences.selectedThemeMode == ThemeMode.light ||
-        (userPreferences.selectedThemeMode == ThemeMode.system &&
+    if (userPrefProvider.selectedThemeMode == ThemeMode.light ||
+        (userPrefProvider.selectedThemeMode == ThemeMode.system &&
             MediaQuery.of(context).platformBrightness == Brightness.light)) {
       for (ThemeData th in userPreferences.availableLightThemes) {
-        result.add(generateColorButton(th));
+        result.add(generateColorButton(th, true));
       }
     } else {
       for (ThemeData th in userPreferences.availableDarkThemes) {
-        result.add(generateColorButton(th));
+        result.add(generateColorButton(th, false));
       }
     }
     return result;
   }
 
-  Widget generateColorButton(ThemeData theme) {
-    var mediaQuery = MediaQuery.of(context);
-
-    var updater = ref.read(updaterProvider);
+  /// generate a round button with the primary color of the given theme
+  Widget generateColorButton(ThemeData theme, bool lightMode) {
+    var userPrefProvider = ref.watch(userPreferencesProvider);
+    final notifier = ref.watch(userPreferencesProvider.notifier);
 
     return Container(
       width: 90,
       padding: const EdgeInsets.all(1),
       child: TextButton(
         onPressed: () {
-          setState(() {
-            if (userPreferences.selectedThemeMode == ThemeMode.light ||
-                (userPreferences.selectedThemeMode == ThemeMode.system &&
-                    mediaQuery.platformBrightness == Brightness.light)) {
-              userPreferences.selectedLightTheme = theme;
-            } else {
-              userPreferences.selectedDarkTheme = theme;
-            }
-          });
-          // Reload the full app for theme changes to reflect
-          updater.updateView();
+          // set selected theme
+          if (lightMode) {
+            notifier.setSelectedLightTheme(theme);
+          } else {
+            notifier.setSelectedDarkTheme(theme);
+          }
         },
         style: TextButton.styleFrom(
           minimumSize: const Size(80, 80),
@@ -140,8 +136,8 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
           shape: CircleBorder(
             side: BorderSide(
               // change border color if theme is currently selected
-              color: (userPreferences.selectedLightTheme == theme ||
-                      userPreferences.selectedDarkTheme == theme)
+              color: (userPrefProvider.selectedLightTheme == theme ||
+                      userPrefProvider.selectedDarkTheme == theme)
                   ? Colors.green
                   : Colors.transparent,
               width: 5,

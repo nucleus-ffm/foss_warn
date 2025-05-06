@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
 
 import '../class/class_area.dart';
@@ -7,7 +9,7 @@ import '../class/class_warn_message.dart';
 import '../main.dart';
 import '../services/list_handler.dart';
 
-class MapWidget extends StatefulWidget {
+class MapWidget extends ConsumerStatefulWidget {
   final List<PolygonLayer>? polygonLayers;
   final List<MarkerLayer>? markerLayers;
   final List<Widget>? widgets;
@@ -49,12 +51,13 @@ class MapWidget extends StatefulWidget {
   }
 
   @override
-  State<MapWidget> createState() => _MapWidgetState();
+  ConsumerState<MapWidget> createState() => _MapWidgetState();
 }
 
-class _MapWidgetState extends State<MapWidget> {
+class _MapWidgetState extends ConsumerState<MapWidget> {
   @override
   Widget build(BuildContext context) {
+    final userPrefProvider = ref.watch(userPreferencesProvider);
     return FlutterMap(
       mapController: widget.mapController,
       options: MapOptions(
@@ -71,8 +74,8 @@ class _MapWidgetState extends State<MapWidget> {
               (BuildContext context, Widget tileWidget, TileImage tile) {
             // there is not build in dark mode with the tiles form osm.org therefore we
             // have to manipulate the incoming tiles with some color magic
-            return userPreferences.selectedThemeMode == ThemeMode.dark ||
-                    (userPreferences.selectedThemeMode == ThemeMode.system &&
+            return userPrefProvider.selectedThemeMode == ThemeMode.dark ||
+                    (userPrefProvider.selectedThemeMode == ThemeMode.system &&
                         MediaQuery.of(context).platformBrightness ==
                             Brightness.dark)
                 ? ColorFiltered(

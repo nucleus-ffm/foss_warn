@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
+import 'package:foss_warn/main.dart';
 import '../class/class_notification_preferences.dart';
 
 class NotificationPreferencesListTileWidget extends StatefulWidget {
@@ -87,12 +87,15 @@ class _NotificationPreferencesListTileWidgetState
                                 // update notification level with slider value
                                 widget.notificationPreferences
                                     .notificationLevel = notificationLevel;
+
+                                // update stored setting
+                                // @TODO(Nucleus): this needs to be replaced if the have more source settings again
+                                userPreferences.notificationSourceSetting =
+                                    NotificationPreferences(
+                                  notificationLevel: notificationLevel,
+                                );
                               },
                             );
-                          },
-                          onChangeEnd: (value) {
-                            // save settings, after change is complete
-                            saveSettings();
                           },
                         ),
                       ),
