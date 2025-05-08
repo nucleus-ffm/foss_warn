@@ -23,35 +23,6 @@ class UserPreferences {
       cacheOptions: const SharedPreferencesWithCacheOptions(),
     );
   }
-
-  final bool _shouldNotifyGeneral = true;
-  bool get shouldNotifyGeneral {
-    bool? data = _preferences.getBool("shouldNotifyGeneral");
-    if (data == null) {
-      return _shouldNotifyGeneral;
-    } else {
-      return data;
-    }
-  }
-
-  set shouldNotifyGeneral(bool newValue) {
-    _preferences.setBool("shouldNotifyGeneral", newValue);
-  }
-
-  final bool _showStatusNotification = false;
-  bool get showStatusNotification {
-    bool? data = _preferences.getBool("showStatusNotification");
-    if (data == null) {
-      return _showStatusNotification;
-    } else {
-      return data;
-    }
-  }
-
-  set showStatusNotification(bool newValue) {
-    _preferences.setBool("showStatusNotification", newValue);
-  }
-
   // to save the user settings for which source
   // the user would like to be notified
   final NotificationPreferences _notificationSourceSetting =
@@ -96,40 +67,6 @@ class UserPreferences {
 
   set startScreen(int newValue) {
     _preferences.setInt("startScreen", newValue);
-  }
-
-  final double _warningFontSize = 14;
-  double get warningFontSize {
-    double? data = _preferences.getDouble("warningFontSize");
-    return data ?? _warningFontSize;
-  }
-
-  set warningFontSize(double value) {
-    _preferences.setDouble("warningFontSize", value);
-  }
-
-  final bool _showWelcomeScreen = true;
-  bool get showWelcomeScreen {
-    bool? data = _preferences.getBool("showWelcomeScreen");
-    return data ?? _showWelcomeScreen;
-  }
-
-  set showWelcomeScreen(bool value) {
-    _preferences.setBool("showWelcomeScreen", value);
-  }
-
-  final SortingCategories _sortWarningsBy = SortingCategories.severity;
-  SortingCategories get sortWarningsBy {
-    int? data = _preferences.getInt("sortWarningBy");
-    if (data != null) {
-      return SortingCategories.values.elementAt(data);
-    } else {
-      return _sortWarningsBy;
-    }
-  }
-
-  set sortWarningsBy(SortingCategories newValue) {
-    _preferences.setInt("sortWarningBy", newValue.index);
   }
 
   final String _versionNumber = "1.0.0-alpha_1"; // shown in the about view
@@ -384,32 +321,7 @@ class UserPreferences {
 
 /// handle user preferences that need a provider like color theme settings
 class UserPreferencesNotifier extends StateNotifier<UserPreferencesState> {
-  UserPreferencesNotifier() : super(UserPreferencesState());
-
-  Future<void> loadPreferences() async {
-    final prefs = await SharedPreferencesWithCache.create(
-      cacheOptions: const SharedPreferencesWithCacheOptions(),
-    );
-
-    state = state.copyWith(
-      shouldNotifyGeneral:
-          prefs.getBool("shouldNotifyGeneral") ?? state.shouldNotifyGeneral,
-      showStatusNotification: prefs.getBool("showStatusNotification") ??
-          state.showStatusNotification,
-      selectedThemeMode: _getThemeMode(prefs.getString("selectedThemeMode")),
-      selectedDarkTheme:
-          _getSelectedDarkTheme(prefs.getInt("selectedDarkTheme")),
-      selectedLightTheme:
-          _getSelectedLightTheme(prefs.getInt("selectedLightTheme")),
-      startScreen: prefs.getInt("startScreen") ?? state.startScreen,
-      warningFontSize:
-          prefs.getDouble("warningFontSize") ?? state.warningFontSize,
-      showWelcomeScreen:
-          prefs.getBool("showWelcomeScreen") ?? state.showWelcomeScreen,
-      sortWarningsBy: SortingCategories
-          .values[prefs.getInt("sortWarningBy") ?? state.sortWarningsBy.index],
-    );
-  }
+  UserPreferencesNotifier(super.state);
 
   void setShouldNotifyGeneral(bool value) {
     state = state.copyWith(shouldNotifyGeneral: value);
@@ -462,37 +374,6 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferencesState> {
     );
   }
 
-  static ThemeMode _getThemeMode(String? mode) {
-    switch (mode) {
-      case 'ThemeMode.dark':
-        return ThemeMode.dark;
-      case 'ThemeMode.light':
-        return ThemeMode.light;
-      default:
-        return ThemeMode.system;
-    }
-  }
-
-  static ThemeData _getSelectedDarkTheme(int? theme) {
-    if (theme != null &&
-        theme > -1 &&
-        theme < userPreferences.availableDarkThemes.length) {
-      return userPreferences.availableDarkThemes[theme];
-    } else {
-      return userPreferences.availableDarkThemes.first;
-    }
-  }
-
-  static ThemeData _getSelectedLightTheme(int? theme) {
-    if (theme != null &&
-        theme > -1 &&
-        theme < userPreferences.availableLightThemes.length) {
-      return userPreferences.availableLightThemes[theme];
-    } else {
-      return userPreferences.availableLightThemes.first;
-    }
-  }
-
   Future<void> _savePreference<T>(String key, T value) async {
     final prefs = await SharedPreferencesWithCache.create(
       cacheOptions: const SharedPreferencesWithCacheOptions(),
@@ -507,6 +388,8 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferencesState> {
       prefs.setString(key, value);
     }
   }
+
+  UserPreferencesState get preferences => state;
 }
 
 class UserPreferencesState {
@@ -542,6 +425,7 @@ class UserPreferencesState {
     double? warningFontSize,
     bool? showWelcomeScreen,
     SortingCategories? sortWarningsBy,
+    notificationSourceSetting
   }) {
     return UserPreferencesState(
       shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -558,7 +442,73 @@ class UserPreferencesState {
   }
 }
 
+/// provider for loading stored preferences at startup
+final loadPreferencesFromStorageProvider = FutureProvider<UserPreferencesState>(
+  (ref) async {
+    final prefs = await SharedPreferencesWithCache.create(
+      cacheOptions: const SharedPreferencesWithCacheOptions(),
+    );
+
+    ThemeData getSelectedDarkTheme(int? theme) {
+      if (theme != null &&
+          theme > -1 &&
+          theme < userPreferences.availableDarkThemes.length) {
+        return userPreferences.availableDarkThemes[theme];
+      } else {
+        return userPreferences.availableDarkThemes.first;
+      }
+    }
+
+    ThemeData getSelectedLightTheme(int? theme) {
+      if (theme != null &&
+          theme > -1 &&
+          theme < userPreferences.availableLightThemes.length) {
+        return userPreferences.availableLightThemes[theme];
+      } else {
+        return userPreferences.availableLightThemes.first;
+      }
+    }
+
+    ThemeMode getThemeMode(String? mode) {
+      switch (mode) {
+        case 'ThemeMode.dark':
+          return ThemeMode.dark;
+        case 'ThemeMode.light':
+          return ThemeMode.light;
+        default:
+          return ThemeMode.system;
+      }
+    }
+
+    return UserPreferencesState(
+      shouldNotifyGeneral: prefs.getBool("shouldNotifyGeneral") ?? true,
+      showStatusNotification: prefs.getBool("showStatusNotification") ?? false,
+      selectedThemeMode: getThemeMode(prefs.getString("selectedThemeMode")),
+      selectedDarkTheme:
+          getSelectedDarkTheme(prefs.getInt("selectedDarkTheme")),
+      selectedLightTheme:
+          getSelectedLightTheme(prefs.getInt("selectedLightTheme")),
+      startScreen: prefs.getInt("startScreen") ?? 0,
+      warningFontSize: prefs.getDouble("warningFontSize") ?? 10,
+      showWelcomeScreen: prefs.getBool("showWelcomeScreen") ?? true,
+      sortWarningsBy:
+          SortingCategories.values[prefs.getInt("sortWarningBy") ?? 1],
+
+    );
+  },
+);
+
 final userPreferencesProvider =
     StateNotifierProvider<UserPreferencesNotifier, UserPreferencesState>(
-  (ref) => UserPreferencesNotifier(),
+  (ref) {
+    // init the provider and load settings from storage
+    var preferencesSnapshot = ref.watch(loadPreferencesFromStorageProvider);
+    return UserPreferencesNotifier(
+      preferencesSnapshot.when(
+        data: (data) => data,
+        error: (error, stackTrace) => UserPreferencesState(),
+        loading: () => UserPreferencesState(),
+      ),
+    );
+  },
 );
