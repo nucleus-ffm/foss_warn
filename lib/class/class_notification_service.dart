@@ -355,7 +355,8 @@ class NotificationService {
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.getActiveNotifications();
 
-    if (activeNotifications!.length == 2 &&
+    if (activeNotifications != null &&
+        activeNotifications.length == 2 &&
         activeNotifications.any(
           (element) =>
               element.channelId == "de.nucleus.foss_warn.notifications_state",
