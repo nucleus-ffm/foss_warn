@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
-import 'package:foss_warn/main.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
@@ -41,18 +41,23 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-  int selectedIndex = userPreferences.startScreen;
+  late int selectedIndex;
 
   @override
   void initState() {
     super.initState();
 
+    var userPreferences = ref.read(userPreferencesProvider);
+    selectedIndex = userPreferences.startScreen;
+
+    var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+
     // init unified push
     UnifiedPush.initialize(
-      onNewEndpoint: UnifiedPushHandler.onNewEndpoint,
-      onRegistrationFailed: UnifiedPushHandler.onRegistrationFailed,
-      onUnregistered: UnifiedPushHandler.onUnregistered,
-      onMessage: (message, instance) => UnifiedPushHandler.onMessage(
+      onNewEndpoint: unifiedPushHandler.onNewEndpoint,
+      onRegistrationFailed: unifiedPushHandler.onRegistrationFailed,
+      onUnregistered: unifiedPushHandler.onUnregistered,
+      onMessage: (message, instance) => unifiedPushHandler.onMessage(
         message: message,
         instance: instance,
         ref: ref,
@@ -63,7 +68,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
       linuxDBusName: "de.nucleus.foss_warn",
     );
 
-    UnifiedPushHandler.setupUnifiedPush(context, ref);
+    unifiedPushHandler.setupUnifiedPush(context, ref);
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
   }

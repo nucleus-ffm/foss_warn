@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 
-class IntroductionBaseSlide extends StatelessWidget {
+class IntroductionBaseSlide extends ConsumerWidget {
   const IntroductionBaseSlide({
     required this.imagePath,
     required this.title,
@@ -16,12 +17,15 @@ class IntroductionBaseSlide extends StatelessWidget {
   final Widget? footer;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var userPreferences = ref.watch(userPreferencesProvider);
+
     final brightness = userPreferences.selectedThemeMode;
     final darkModeOn = brightness == ThemeMode.dark;
     const String basePath = "assets/introduction";
     final String themeDependedPath =
         darkModeOn ? "$basePath/darkmode" : "$basePath/lightmode";
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20.0).copyWith(top: 120.0),

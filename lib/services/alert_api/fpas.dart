@@ -3,27 +3,27 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/constants.dart' as constants;
-import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 
 final alertApiProvider = Provider(
-  (ref) => FPASApi(serverUrl: userPreferences.fossPublicAlertServerUrl),
+  (ref) => FPASApi(userPreferences: ref.watch(userPreferencesProvider)),
 );
 
 class FPASApi implements AlertAPI {
-  // TODO(PureTryOut): make use of this once userPreferences is a StateProvider which we can listen to updates for
-  final String _baseUrl;
+  final UserPreferences _userPreferences;
 
-  const FPASApi({required String serverUrl}) : _baseUrl = serverUrl;
+  const FPASApi({required UserPreferences userPreferences})
+      : _userPreferences = userPreferences;
 
   @override
   Future<ServerSettings> fetchServerSettings({String? overrideUrl}) async {
     var url = Uri.parse(
-      "${overrideUrl ?? userPreferences.fossPublicAlertServerUrl}/config/server_status",
+      "${overrideUrl ?? _userPreferences.fossPublicAlertServerUrl}/config/server_status",
     );
     var response = await http.get(
       url,
@@ -40,7 +40,7 @@ class FPASApi implements AlertAPI {
     Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
 
     return ServerSettings(
-      url: overrideUrl ?? _baseUrl,
+      url: overrideUrl ?? _userPreferences.fossPublicAlertServerUrl,
       version: data["server_version"],
       operator: data["server_operator"],
       privacyNotice: data["privacy_notice"],
@@ -55,7 +55,7 @@ class FPASApi implements AlertAPI {
     required String subscriptionId,
   }) async {
     var url = Uri.parse(
-      "${userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId",
+      "${_userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId",
     );
 
     var response = await http.get(
@@ -89,8 +89,9 @@ class FPASApi implements AlertAPI {
     required String alertId,
     required String placeSubscriptionId,
   }) async {
-    var url =
-        Uri.parse("${userPreferences.fossPublicAlertServerUrl}/alert/$alertId");
+    var url = Uri.parse(
+      "${_userPreferences.fossPublicAlertServerUrl}/alert/$alertId",
+    );
 
     var response = await http.get(
       url,
@@ -126,7 +127,7 @@ class FPASApi implements AlertAPI {
   @override
   Future<void> sendHeartbeat({required String subscriptionId}) async {
     var url = Uri.parse(
-      "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
+      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
 
     var response = await http.put(
@@ -148,7 +149,7 @@ class FPASApi implements AlertAPI {
     required String unifiedPushEndpoint,
   }) async {
     var url =
-        Uri.parse("${userPreferences.fossPublicAlertServerUrl}/subscription/");
+        Uri.parse("${_userPreferences.fossPublicAlertServerUrl}/subscription/");
 
     ServerSettings serverSettings = await fetchServerSettings();
     // check if webpush / encrypted UP is supported
@@ -158,9 +159,9 @@ class FPASApi implements AlertAPI {
     // use new webpush (aka encrypted unifiedPush) if possible and use
     // unencrypted unifiedPush as fallback
     String pushService = "";
-    if (userPreferences.webPushVapidKey != null &&
-        userPreferences.webPushAuthKey != null &&
-        userPreferences.webPushPublicKey != null &&
+    if (_userPreferences.webPushVapidKey != null &&
+        _userPreferences.webPushAuthKey != null &&
+        _userPreferences.webPushPublicKey != null &&
         isEncryptedUnifiedPushSupported) {
       pushService = "UNIFIED_PUSH_ENCRYPTED";
     } else {
@@ -180,8 +181,8 @@ class FPASApi implements AlertAPI {
         'max_lat': boundingBox.maxLatLng.latitude.toString(),
         'min_lon': boundingBox.minLatLng.longitude.toString(),
         'max_lon': boundingBox.maxLatLng.longitude.toString(),
-        'p256dh_key': userPreferences.webPushPublicKey,
-        'auth_key': userPreferences.webPushAuthKey,
+        'p256dh_key': _userPreferences.webPushPublicKey,
+        'auth_key': _userPreferences.webPushAuthKey,
       }),
     );
 
@@ -199,7 +200,7 @@ class FPASApi implements AlertAPI {
   @override
   Future<void> unregisterArea({required String subscriptionId}) async {
     var url = Uri.parse(
-      "${userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
+      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
 
     try {
@@ -226,7 +227,7 @@ class FPASApi implements AlertAPI {
   @override
   Future<String> fetchVapidKeyForWebPush() async {
     var url = Uri.parse(
-      "${userPreferences.fossPublicAlertServerUrl}/subscription/?type=webpush",
+      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?type=webpush",
     );
 
     var response = await http.get(

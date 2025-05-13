@@ -3,8 +3,6 @@ import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/notification_preferences_list_tile_widget.dart';
 import 'package:foss_warn/widgets/dialogs/warning_severity_explanation.dart';
 
-import '../main.dart';
-
 class NotificationSettingsView extends StatefulWidget {
   const NotificationSettingsView({super.key});
 
@@ -62,10 +60,7 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
               ),
               const SizedBox(height: 10),
               // generate the settings tiles
-              NotificationPreferencesListTileWidget(
-                notificationPreferences:
-                    userPreferences.notificationSourceSetting,
-              ),
+              const NotificationPreferencesListTileWidget(),
             ],
           ),
         ),

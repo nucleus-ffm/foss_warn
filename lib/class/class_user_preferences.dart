@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart' as foundation;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/themes/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,224 +12,418 @@ import 'package:foss_warn/constants.dart' as constants;
 import '../enums/severity.dart';
 import 'class_notification_preferences.dart';
 
-/// handle user preferences. The values written here are default values
-/// the correct values are loaded in loadSettings() from sharedPreferences
-class UserPreferences {
-  late final SharedPreferencesWithCache _preferences;
+final List<ThemeData> availableLightThemes = [
+  greenLightTheme,
+  orangeLightTheme,
+  purpleLightTheme,
+  blueLightTheme,
+  yellowLightTheme,
+  indigoLightTheme,
+];
+final List<ThemeData> availableDarkThemes = [
+  greenDarkTheme,
+  orangeDarkTheme,
+  purpleDarkTheme,
+  yellowDarkTheme,
+  blueDarkTheme,
+  greyDarkTheme,
+];
 
-  Future<void> init() async {
+class SharedPreferencesState {
+  static late final SharedPreferencesWithCache _preferences;
+
+  SharedPreferencesState._();
+
+  static SharedPreferencesWithCache get instance {
+    return _preferences;
+  }
+
+  static Future<void> initialize() async {
     _preferences = await SharedPreferencesWithCache.create(
       cacheOptions: const SharedPreferencesWithCacheOptions(),
     );
   }
+}
 
-  final bool _shouldNotifyGeneral = true;
-  bool get shouldNotifyGeneral {
-    bool? data = _preferences.getBool("shouldNotifyGeneral");
-    if (data == null) {
-      return _shouldNotifyGeneral;
-    } else {
-      return data;
-    }
+final userPreferencesProvider =
+    StateNotifierProvider<UserPreferencesService, UserPreferences>((ref) {
+  final preferences = SharedPreferencesState.instance;
+
+  // Migrate from previous full enum name stored to only the name of the property
+  // "ThemeMode.system" vs "system"
+  var selectedThemeMode =
+      preferences.getString("selectedThemeMode") ?? "system";
+  if (!ThemeMode.values.any((element) => element.name == selectedThemeMode)) {
+    selectedThemeMode = "system";
   }
 
-  set shouldNotifyGeneral(bool newValue) {
-    _preferences.setBool("shouldNotifyGeneral", newValue);
+  var selectedLightTheme = preferences.getInt("selectedLightTheme") ?? 0;
+  if (selectedLightTheme > availableLightThemes.length - 1) {
+    selectedLightTheme = 0;
   }
 
-  final bool _showStatusNotification = false;
-  bool get showStatusNotification {
-    bool? data = _preferences.getBool("showStatusNotification");
-    if (data == null) {
-      return _showStatusNotification;
-    } else {
-      return data;
-    }
+  var selectedDarkTheme = preferences.getInt("selectedDarkTheme") ?? 0;
+  if (selectedDarkTheme > availableDarkThemes.length - 1) {
+    selectedDarkTheme = 0;
   }
 
-  set showStatusNotification(bool newValue) {
-    _preferences.setBool("showStatusNotification", newValue);
+  var selectedSorting = preferences.getInt("sortWarningsBy") ?? 0;
+  SortingCategories.values[selectedSorting];
+
+  String? fossPublicAlertServerUrl =
+      preferences.getString("fossPublicAlertServerUrl");
+  if (foundation.kReleaseMode) {
+    fossPublicAlertServerUrl ??= constants.defaultFPASServerUrl;
+  } else {
+    // in DEBUG mode set to local server but also
+    // allow to change the default server
+    fossPublicAlertServerUrl ??= "http://10.0.2.2:8000";
   }
 
+  var notificationSourceSettingString =
+      preferences.getString("notificationSourceSetting");
+  var notificationPreferences =
+      NotificationPreferences(notificationLevel: Severity.moderate);
+  if (notificationSourceSettingString != null) {
+    var notificationSourceSettingMap =
+        jsonDecode(notificationSourceSettingString) as Map<String, dynamic>;
+    notificationPreferences =
+        NotificationPreferences.fromJson(notificationSourceSettingMap);
+  }
+
+  return UserPreferencesService(
+    UserPreferences(
+      shouldNotifyGeneral: preferences.getBool("shouldNotifyGeneral") ?? true,
+      showStatusNotification:
+          preferences.getBool("showSstatusNotification") ?? true,
+      showExtendedMetadata:
+          preferences.getBool("showExtendedMetaData") ?? false,
+      notificationSourceSetting: notificationPreferences,
+      selectedThemeMode: ThemeMode.values.byName(selectedThemeMode),
+      selectedLightTheme: availableLightThemes[selectedLightTheme],
+      selectedDarkTheme: availableDarkThemes[selectedDarkTheme],
+      startScreen: preferences.getInt("startScreen ") ?? 0,
+      warningFontSize: preferences.getDouble("warningFontSize") ?? 14.0,
+      showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
+      sortWarningsBy: SortingCategories.values[selectedSorting],
+      isFirstStart: preferences.getBool("isFirstStart") ?? true,
+      areWarningsFromCache:
+          preferences.getBool("areWarningsFromCache") ?? false,
+      maxSizeOfSubscriptionBoundingBox:
+          preferences.getInt("maxSizeOfSubscriptionBoudningBox") ?? 20,
+      fossPublicAlertServerUrl: fossPublicAlertServerUrl,
+      fossPublicAlertServerOperator:
+          preferences.getString("fossPublicAlertServerOperator") ?? "KDE",
+      fossPublicAlertServerPrivacyNotice: preferences
+              .getString("fossPublicAlertServerPrivacyNotice") ??
+          "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Privacy",
+      fossPublicAlertServerTermsOfService: preferences
+              .getString("fossPublicAlertServerTermsOfService") ??
+          "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Terms-of-Service",
+      unifiedPushEndpoint: preferences.getString("unifiedPushEndpoint") ?? "",
+      unifiedPushRegistered:
+          preferences.getBool("unifiedPushRegistered") ?? false,
+      fossPublicAlertSubscriptionIdsToSubscribe: preferences
+              .getStringList("fossPublicAlertSubscriptionIdsToSubscribe") ??
+          [],
+      webPushVapidKey: preferences.getString("webPushVapidKey"),
+      webPushAuthKey: preferences.getString("webPushAuthKey"),
+      webPushPublicKey: preferences.getString("webPushPublicKey"),
+      previousInstalledVersionCode:
+          preferences.getInt("previousInstalledVersionCode") ?? -1,
+    ),
+    sharedPreferences: preferences,
+  );
+});
+
+class UserPreferencesService extends StateNotifier<UserPreferences> {
+  final SharedPreferencesWithCache _sharedPreferences;
+
+  UserPreferencesService(
+    super.state, {
+    required SharedPreferencesWithCache sharedPreferences,
+  }) : _sharedPreferences = sharedPreferences;
+
+  void setShouldNotifyGeneral(bool value) {
+    state = state.copyWith(shouldNotifyGeneral: value);
+    _sharedPreferences.setBool("shouldNotifyGeneral", value);
+  }
+
+  void setShowStatusNotification(bool value) {
+    state = state.copyWith(showStatusNotification: value);
+    _sharedPreferences.setBool("showStatusNotification", value);
+  }
+
+  void setShowExtendedMetadata(bool value) {
+    state = state.copyWith(showExtendedMetadata: value);
+    _sharedPreferences.setBool("showExtendedMetaData", value);
+  }
+
+  void setNotificationSourceSetting(NotificationPreferences value) {
+    state = state.copyWith(notificationSourceSetting: value);
+    _sharedPreferences.setString(
+      "notificationSourceSetting",
+      jsonEncode(value),
+    );
+  }
+
+  void setSelectedThemeMode(ThemeMode themeMode) {
+    state = state.copyWith(selectedThemeMode: themeMode);
+    _sharedPreferences.setString("selectedThemeMode", themeMode.name);
+  }
+
+  void setLightTheme(ThemeData theme) {
+    state = state.copyWith(selectedLightTheme: theme);
+    var indexSelectedTheme = availableLightThemes.indexOf(theme);
+    _sharedPreferences.setInt("selectedLightTheme", indexSelectedTheme);
+  }
+
+  void setDarkTheme(ThemeData theme) {
+    state = state.copyWith(selectedDarkTheme: theme);
+    var indexSelectedTheme = availableDarkThemes.indexOf(theme);
+    _sharedPreferences.setInt("selectedDarkTheme", indexSelectedTheme);
+  }
+
+  void setStartScreen(int value) {
+    state = state.copyWith(startScreen: value);
+    _sharedPreferences.setInt("startScreen", value);
+  }
+
+  void setWarningFontSize(double value) {
+    state = state.copyWith(warningFontSize: value);
+    _sharedPreferences.setDouble("warningFontSize", value);
+  }
+
+  void setShowWelcomeScreen(bool value) {
+    state = state.copyWith(showWelcomeScreen: value);
+    _sharedPreferences.setBool("showWelcomeScreen", value);
+  }
+
+  void setSortWarningsBy(SortingCategories category) {
+    state = state.copyWith(sortWarningsBy: category);
+    var indexSorting = SortingCategories.values.indexOf(category);
+    _sharedPreferences.setInt("sortWarningsBy", indexSorting);
+  }
+
+  void setIsFirstStart(bool value) {
+    state = state.copyWith(isFirstStart: value);
+    _sharedPreferences.setBool("isFirstStart", value);
+  }
+
+  void setAreWarningsFromCache(bool value) {
+    state = state.copyWith(areWarningsFromCache: value);
+    _sharedPreferences.setBool("areWarningsFromCache", value);
+  }
+
+  void setMaxSizeOfSubscriptionBoundingBox(int value) {
+    state = state.copyWith(maxSizeOfSubscriptionBoundingBox: value);
+    _sharedPreferences.setInt("maxSizeOfSubscriptionBoundingBox", value);
+  }
+
+  void setFossPublicAlertServerUrl(String value) {
+    state = state.copyWith(fossPublicAlertServerUrl: value);
+    _sharedPreferences.setString("fossPublicAlertServerUrl", value);
+  }
+
+  void setFossPublicAlertServerOperator(String value) {
+    state = state.copyWith(fossPublicAlertServerOperator: value);
+    _sharedPreferences.setString("fossPublicAlertServerOperator", value);
+  }
+
+  void setFossPublicAlertServerPrivacyNotice(String value) {
+    state = state.copyWith(fossPublicAlertServerPrivacyNotice: value);
+    _sharedPreferences.setString("fossPublicAlertServerPrivacyNotice", value);
+  }
+
+  void setFossPublicAlertServerTermsOfService(String value) {
+    state = state.copyWith(fossPublicAlertServerOperator: value);
+    _sharedPreferences.setString("fossPublicAlertServerTermsOfService", value);
+  }
+
+  void setUnifiedpushEndpoint(String value) {
+    state = state.copyWith(unifiedPushEndpoint: value);
+    _sharedPreferences.setString("unifiedPushEndpoint", value);
+  }
+
+  void setUnifiedPushRegistered(bool value) {
+    state = state.copyWith(unifiedPushRegistered: value);
+    _sharedPreferences.setBool("unifiedPushRegistered", value);
+  }
+
+  void setFossPublicAlertSubscriptionIdsToSubscribe(List<String> value) {
+    state = state.copyWith(fossPublicAlertSubscriptionIdsToSubscribe: value);
+    _sharedPreferences.setStringList(
+      "fossPublicAlertSubscriptionIdsToSubscribe",
+      value,
+    );
+  }
+
+  void setWebPushVapidKey(String value) {
+    state = state.copyWith(webPushVapidKey: value);
+    _sharedPreferences.setString("webPushVapidKey", value);
+  }
+
+  void setWebPushPublicKey(String value) {
+    state = state.copyWith(webPushPublicKey: value);
+    _sharedPreferences.setString("webPushPublicKey", value);
+  }
+
+  void setWebPushAuthKey(String value) {
+    state = state.copyWith(webPushAuthKey: value);
+    _sharedPreferences.setString("webPushAuthKey", value);
+  }
+
+  void setPreviouslyInstalledVersionCode(int value) {
+    state = state.copyWith(previousInstalledVersionCode: value);
+    _sharedPreferences.setInt("previousInstalledVersionCode", value);
+  }
+}
+
+/// handle user preferences. The values written here are default values
+/// the correct values are loaded in loadSettings() from sharedPreferences
+class UserPreferences {
+  UserPreferences({
+    required this.shouldNotifyGeneral,
+    required this.showStatusNotification,
+    required this.showExtendedMetadata,
+    required this.notificationSourceSetting,
+    required this.selectedThemeMode,
+    required this.selectedLightTheme,
+    required this.selectedDarkTheme,
+    required this.startScreen,
+    required this.warningFontSize,
+    required this.showWelcomeScreen,
+    required this.sortWarningsBy,
+    required this.isFirstStart,
+    required this.areWarningsFromCache,
+    required this.maxSizeOfSubscriptionBoundingBox,
+    required this.fossPublicAlertServerUrl,
+    required this.fossPublicAlertServerOperator,
+    required this.fossPublicAlertServerPrivacyNotice,
+    required this.fossPublicAlertServerTermsOfService,
+    required this.unifiedPushEndpoint,
+    required this.unifiedPushRegistered,
+    required this.fossPublicAlertSubscriptionIdsToSubscribe,
+    required this.webPushVapidKey,
+    required this.webPushAuthKey,
+    required this.webPushPublicKey,
+    required this.previousInstalledVersionCode,
+  });
+
+  final bool shouldNotifyGeneral;
+  final bool showStatusNotification;
+  final bool showExtendedMetadata;
   // to save the user settings for which source
   // the user would like to be notified
-  NotificationPreferences notificationSourceSetting =
-      NotificationPreferences(notificationLevel: Severity.moderate);
+  final NotificationPreferences notificationSourceSetting;
+  final ThemeMode selectedThemeMode;
+  final ThemeData selectedLightTheme;
+  final ThemeData selectedDarkTheme;
+  final int startScreen;
+  final double warningFontSize;
+  final bool showWelcomeScreen;
+  final SortingCategories sortWarningsBy;
+  final bool isFirstStart;
+  final bool areWarningsFromCache;
+  final int maxSizeOfSubscriptionBoundingBox;
 
-  // if true show more tags in WarningDetailView
-  final bool _showExtendedMetaData = false;
-  bool get showExtendedMetaData {
-    bool? data = _preferences.getBool("showExtendedMetaData");
-    if (data == null) {
-      return _showExtendedMetaData;
-    } else {
-      return data;
-    }
-  }
+  final String fossPublicAlertServerUrl;
+  final String fossPublicAlertServerOperator;
+  final String fossPublicAlertServerPrivacyNotice;
+  final String fossPublicAlertServerTermsOfService;
+  final String unifiedPushEndpoint;
+  final bool unifiedPushRegistered;
+  final List<String> fossPublicAlertSubscriptionIdsToSubscribe;
+  final String? webPushVapidKey;
+  final String? webPushAuthKey;
+  final String? webPushPublicKey;
 
-  set showExtendedMetaData(bool newValue) {
-    _preferences.setBool("showExtendedMetaData", newValue);
-  }
+  // Version of the application, shown in the about view
+  // TODO(PureTryOut): get this from package_info_plus instead
+  // That way we only need to keep track of one number.
+  static const String versionNumber = "1.0.0-alpha_1";
 
-  final ThemeMode _selectedThemeMode = ThemeMode.system;
+  static const int currentVersionCode = 32;
+  final int previousInstalledVersionCode;
 
-  ThemeMode get selectedThemeMode {
-    String? data = _preferences.getString("selectedThemeMode");
+  static const String unifiedPushInstance = "FOSSWarn";
+  static const String osmTileServerURL =
+      "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
-    if (data == null) {
-      return _selectedThemeMode;
-    } else {
-      switch (data) {
-        case 'ThemeMode.system':
-          return selectedThemeMode = ThemeMode.system;
-        case 'ThemeMode.dark':
-          return ThemeMode.dark;
-        case 'ThemeMode.light':
-          return ThemeMode.light;
-        default:
-          return ThemeMode.system;
-      }
-    }
-  }
-
-  set selectedThemeMode(ThemeMode value) {
-    debugPrint("set new theme mode ${value.name}");
-    _preferences.setString("selectedThemeMode", value.toString());
-  }
-
-  final ThemeData _selectedLightTheme = greenLightTheme;
-  ThemeData get selectedLightTheme {
-    int? data = _preferences.getInt("selectedLightTheme");
-    if (data != null && data > -1 && data < availableLightThemes.length) {
-      return availableLightThemes[data];
-    } else {
-      return _selectedLightTheme;
-    }
-  }
-
-  set selectedLightTheme(ThemeData newTheme) {
-    _preferences.setInt(
-      "selectedLightTheme",
-      availableLightThemes.indexOf(newTheme),
-    );
-  }
-
-  final ThemeData _selectedDarkTheme = greenDarkTheme;
-  ThemeData get selectedDarkTheme {
-    int? data = _preferences.getInt("selectedDarkTheme");
-    if (data != null && data > -1 && data < availableDarkThemes.length) {
-      return availableDarkThemes[data];
-    } else {
-      return _selectedDarkTheme;
-    }
-  }
-
-  set selectedDarkTheme(ThemeData newTheme) {
-    _preferences.setInt(
-      "selectedDarkTheme",
-      availableDarkThemes.indexOf(newTheme),
-    );
-  }
-
-  final int _startScreen = 0;
-  int get startScreen {
-    int? data = _preferences.getInt("startScreen");
-    return data ?? _startScreen;
-  }
-
-  set startScreen(int newValue) {
-    _preferences.setInt("startScreen", newValue);
-  }
-
-  final double _warningFontSize = 14;
-  double get warningFontSize {
-    double? data = _preferences.getDouble("warningFontSize");
-    return data ?? _warningFontSize;
-  }
-
-  set warningFontSize(double value) {
-    _preferences.setDouble("warningFontSize", value);
-  }
-
-  final bool _showWelcomeScreen = true;
-  bool get showWelcomeScreen {
-    bool? data = _preferences.getBool("showWelcomeScreen");
-    return data ?? _showWelcomeScreen;
-  }
-
-  set showWelcomeScreen(bool value) {
-    _preferences.setBool("showWelcomeScreen", value);
-  }
-
-  final SortingCategories _sortWarningsBy = SortingCategories.severity;
-  SortingCategories get sortWarningsBy {
-    int? data = _preferences.getInt("sortWarningBy");
-    if (data != null) {
-      return SortingCategories.values.elementAt(data);
-    } else {
-      return _sortWarningsBy;
-    }
-  }
-
-  set sortWarningsBy(SortingCategories newValue) {
-    _preferences.setInt("sortWarningBy", newValue.index);
-  }
-
-  final String _versionNumber = "1.0.0-alpha_1"; // shown in the about view
-  String get versionNumber {
-    return _versionNumber;
-  }
-
-  final int _currentVersionCode = 32;
-  int get currentVersionCode {
-    return _currentVersionCode;
-  }
-
-  final int _previousInstalledVersionCode = -1;
-  int get previousInstalledVersionCode {
-    int? data = _preferences.getInt("previousInstalledVersionCode");
-    return data ?? _previousInstalledVersionCode;
-  }
-
-  set previousInstalledVersionCode(int newValue) {
-    _preferences.setInt("previousInstalledVersionCode", newValue);
-  }
-
-  final bool _isFirstStart = true;
-  bool get isFirstStart {
-    bool? data = _preferences.getBool("isFirstStart");
-    return data ?? _isFirstStart;
-  }
-
-  set isFirstStart(bool newValue) {
-    _preferences.setBool("isFirstStart", newValue);
-  }
-
-  final Duration networkTimeout = const Duration(seconds: 8);
-
-  final List<ThemeData> availableLightThemes = [
-    greenLightTheme,
-    orangeLightTheme,
-    purpleLightTheme,
-    blueLightTheme,
-    yellowLightTheme,
-    indigoLightTheme,
-  ];
-  final List<ThemeData> availableDarkThemes = [
-    greenDarkTheme,
-    orangeDarkTheme,
-    purpleDarkTheme,
-    yellowDarkTheme,
-    blueDarkTheme,
-    greyDarkTheme,
-  ];
+  UserPreferences copyWith({
+    bool? shouldNotifyGeneral,
+    bool? showStatusNotification,
+    bool? showExtendedMetadata,
+    NotificationPreferences? notificationSourceSetting,
+    ThemeMode? selectedThemeMode,
+    ThemeData? selectedLightTheme,
+    ThemeData? selectedDarkTheme,
+    int? startScreen,
+    double? warningFontSize,
+    bool? showWelcomeScreen,
+    SortingCategories? sortWarningsBy,
+    bool? isFirstStart,
+    bool? areWarningsFromCache,
+    int? maxSizeOfSubscriptionBoundingBox,
+    String? fossPublicAlertServerUrl,
+    String? fossPublicAlertServerOperator,
+    String? fossPublicAlertServerPrivacyNotice,
+    String? fossPublicAlertServerTermsOfService,
+    String? unifiedPushEndpoint,
+    bool? unifiedPushRegistered,
+    List<String>? fossPublicAlertSubscriptionIdsToSubscribe,
+    String? webPushVapidKey,
+    String? webPushAuthKey,
+    String? webPushPublicKey,
+    int? previousInstalledVersionCode,
+  }) =>
+      UserPreferences(
+        shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
+        showStatusNotification:
+            showStatusNotification ?? this.showStatusNotification,
+        showExtendedMetadata: showExtendedMetadata ?? this.showExtendedMetadata,
+        notificationSourceSetting:
+            notificationSourceSetting ?? this.notificationSourceSetting,
+        selectedThemeMode: selectedThemeMode ?? this.selectedThemeMode,
+        selectedLightTheme: selectedLightTheme ?? this.selectedLightTheme,
+        selectedDarkTheme: selectedDarkTheme ?? this.selectedDarkTheme,
+        startScreen: startScreen ?? this.startScreen,
+        warningFontSize: warningFontSize ?? this.warningFontSize,
+        showWelcomeScreen: showWelcomeScreen ?? this.showWelcomeScreen,
+        sortWarningsBy: sortWarningsBy ?? this.sortWarningsBy,
+        isFirstStart: isFirstStart ?? this.isFirstStart,
+        areWarningsFromCache: areWarningsFromCache ?? this.areWarningsFromCache,
+        maxSizeOfSubscriptionBoundingBox: maxSizeOfSubscriptionBoundingBox ??
+            this.maxSizeOfSubscriptionBoundingBox,
+        fossPublicAlertServerUrl:
+            fossPublicAlertServerUrl ?? this.fossPublicAlertServerUrl,
+        fossPublicAlertServerOperator:
+            fossPublicAlertServerOperator ?? this.fossPublicAlertServerOperator,
+        fossPublicAlertServerPrivacyNotice:
+            fossPublicAlertServerPrivacyNotice ??
+                this.fossPublicAlertServerPrivacyNotice,
+        fossPublicAlertServerTermsOfService:
+            fossPublicAlertServerTermsOfService ??
+                this.fossPublicAlertServerTermsOfService,
+        unifiedPushEndpoint: unifiedPushEndpoint ?? this.unifiedPushEndpoint,
+        unifiedPushRegistered:
+            unifiedPushRegistered ?? this.unifiedPushRegistered,
+        fossPublicAlertSubscriptionIdsToSubscribe:
+            fossPublicAlertSubscriptionIdsToSubscribe ??
+                this.fossPublicAlertSubscriptionIdsToSubscribe,
+        webPushVapidKey: webPushVapidKey ?? this.webPushVapidKey,
+        webPushAuthKey: webPushAuthKey ?? this.webPushAuthKey,
+        webPushPublicKey: webPushPublicKey ?? this.webPushPublicKey,
+        previousInstalledVersionCode:
+            previousInstalledVersionCode ?? this.previousInstalledVersionCode,
+      );
 
   /// the path and filename where the error log is saved
-  final String errorLogPath = "errorLog.txt";
+  static const String errorLogPath = "errorLog.txt";
 
   /// Dark mode colors for the map.
   /// invert(100%), hue-rotate(180deg), brightness(95%), contrast(90%)
-  final ColorFilter mapDarkMode = const ColorFilter.matrix(<double>[
+  static const ColorFilter mapDarkMode = ColorFilter.matrix(<double>[
     -0.574,
     -1.43,
     -0.144,
@@ -251,7 +448,7 @@ class UserPreferences {
 
   /// Light mode for the map
   /// original colors from OSM
-  final ColorFilter mapLightMode = const ColorFilter.matrix(<double>[
+  static const ColorFilter mapLightMode = ColorFilter.matrix(<double>[
     1,
     0,
     0,
@@ -275,151 +472,4 @@ class UserPreferences {
   ]);
 
   final frequencyOfAPICall = 15;
-  final bool _areWarningsFromCache = false;
-  bool get areWarningsFromCache {
-    bool? data = _preferences.getBool("areWarningsFromCache");
-    return data ?? _areWarningsFromCache;
-  }
-
-  set areWarningsFromCache(bool value) {
-    _preferences.setBool("areWarningsFromCache", value);
-  }
-
-  // unified Push settings
-  String get fossPublicAlertServerUrl {
-    String? data = _preferences.getString("fossPublicAlertServerUrl");
-    if (foundation.kReleaseMode) {
-      return data ?? constants.defaultFPASServerUrl;
-    } else {
-      // in DEBUG mode set to local server but also
-      // allow to change the default server
-      return data ?? "http://10.0.2.2:8000";
-    }
-  }
-
-  set fossPublicAlertServerUrl(String newValue) {
-    _preferences.setString("fossPublicAlertServerUrl", newValue);
-  }
-
-  final String _fossPublicAlertServerOperator = "KDE";
-  String get fossPublicAlertServerOperator {
-    String? data = _preferences.getString("fossPublicAlertServerOperator");
-    return data ?? _fossPublicAlertServerOperator;
-  }
-
-  set fossPublicAlertServerOperator(String value) {
-    _preferences.setString("fossPublicAlertServerOperator", value);
-  }
-
-  final String _fossPublicAlertServerPrivacyNotice =
-      "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Privacy";
-  String get fossPublicAlertServerPrivacyNotice {
-    String? data = _preferences.getString("fossPublicAlertServerPrivacyNotice");
-    return data ?? _fossPublicAlertServerPrivacyNotice;
-  }
-
-  set fossPublicAlertServerPrivacyNotice(String value) {
-    _preferences.setString("fossPublicAlertServerPrivacyNotice", value);
-  }
-
-  final String _fossPublicAlertServerTermsOfService =
-      "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Terms-of-Service";
-  String get fossPublicAlertServerTermsOfService {
-    String? data =
-        _preferences.getString("fossPublicAlertServerTermsOfService");
-    return data ?? _fossPublicAlertServerTermsOfService;
-  }
-
-  set fossPublicAlertServerTermsOfService(String value) {
-    _preferences.setString("fossPublicAlertServerTermsOfService", value);
-  }
-
-  final String _unifiedPushEndpoint = "";
-  String get unifiedPushEndpoint {
-    String? data = _preferences.getString("unifiedPushEndpoint");
-    return data ?? _unifiedPushEndpoint;
-  }
-
-  set unifiedPushEndpoint(String value) {
-    _preferences.setString("unifiedPushEndpoint", value);
-  }
-
-  final bool _unifiedPushRegistered = false;
-  bool get unifiedPushRegistered {
-    bool? data = _preferences.getBool("unifiedPushRegistered");
-    return data ?? _unifiedPushRegistered;
-  }
-
-  set unifiedPushRegistered(bool value) {
-    _preferences.setBool("unifiedPushRegistered", value);
-  }
-
-  final List<String> _fossPublicAlertSubscriptionIdsToSubscribe =
-      []; //@TODO(nucleus): there is the "server" missing in the name
-  List<String> get fossPublicAlertSubscriptionIdsToSubscribe {
-    List<String>? data =
-        _preferences.getStringList("fossPublicAlertSubscriptionIdsToSubscribe");
-    return data ?? _fossPublicAlertSubscriptionIdsToSubscribe;
-  }
-
-  set fossPublicAlertSubscriptionIdsToSubscribe(List<String> value) {
-    _preferences.setStringList(
-      "fossPublicAlertSubscriptionIdsToSubscribe",
-      value,
-    );
-  }
-
-  final int _maxSizeOfSubscriptionBoundingBox = 20;
-  int get maxSizeOfSubscriptionBoundingBox {
-    int? data = _preferences.getInt("maxSizeOfSubscriptionBoundingBox");
-    return data ?? _maxSizeOfSubscriptionBoundingBox;
-  }
-
-  set maxSizeOfSubscriptionBoundingBox(int value) {
-    _preferences.setInt("maxSizeOfSubscriptionBoundingBox", value);
-  }
-
-  final String unifiedPushInstance = "FOSSWarn";
-  final String httpUserAgent = "de.nucleus.foss_warn";
-  final String osmTileServerULR =
-      "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-
-  String? get webPushVapidKey {
-    String? data = _preferences.getString("webPushVapidKey");
-    return data;
-  }
-
-  set webPushVapidKey(String? value) {
-    if (value == null) {
-      _preferences.remove("webPushVapidKey");
-    } else {
-      _preferences.setString("webPushVapidKey", value);
-    }
-  }
-
-  String? get webPushAuthKey {
-    String? data = _preferences.getString("webPushAuthKey");
-    return data;
-  }
-
-  set webPushAuthKey(String? value) {
-    if (value == null) {
-      _preferences.remove("webPushAuthKey");
-    } else {
-      _preferences.setString("webPushAuthKey", value);
-    }
-  }
-
-  String? get webPushPublicKey {
-    String? data = _preferences.getString("webPushPublicKey");
-    return data;
-  }
-
-  set webPushPublicKey(String? value) {
-    if (value == null) {
-      _preferences.remove("webPushPublicKey");
-    } else {
-      _preferences.setString("webPushPublicKey", value);
-    }
-  }
 }

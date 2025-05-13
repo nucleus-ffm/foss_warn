@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart';
 
-class FontSizeDialog extends StatefulWidget {
+class FontSizeDialog extends ConsumerStatefulWidget {
   const FontSizeDialog({super.key});
 
   @override
-  State<FontSizeDialog> createState() => _FontSizeDialogState();
+  ConsumerState<FontSizeDialog> createState() => _FontSizeDialogState();
 }
 
-class _FontSizeDialogState extends State<FontSizeDialog> {
+class _FontSizeDialogState extends ConsumerState<FontSizeDialog> {
   @override
   Widget build(BuildContext context) {
     var localizations = context.localizations;
     var theme = Theme.of(context);
     var navigator = Navigator.of(context);
+
+    var userPreferences = ref.watch(userPreferencesProvider);
+    var userPreferencesService = ref.read(userPreferencesProvider.notifier);
 
     return SimpleDialog(
       title: Text(localizations.font_size_headline),
@@ -36,9 +40,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 selected:
                     userPreferences.warningFontSize == 12.0 ? true : false,
                 onTap: () {
-                  setState(() {
-                    userPreferences.warningFontSize = 12.0;
-                  });
+                  userPreferencesService.setWarningFontSize(12.0);
                   navigator.pop();
                 },
               ),
@@ -55,10 +57,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 selected:
                     userPreferences.warningFontSize == 14.0 ? true : false,
                 onTap: () {
-                  setState(() {
-                    userPreferences.warningFontSize = 14.0;
-                  });
-
+                  userPreferencesService.setWarningFontSize(14.0);
                   navigator.pop();
                 },
               ),
@@ -75,10 +74,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 selected:
                     userPreferences.warningFontSize == 16.0 ? true : false,
                 onTap: () {
-                  setState(() {
-                    userPreferences.warningFontSize = 16.0;
-                  });
-
+                  userPreferencesService.setWarningFontSize(16.0);
                   navigator.pop();
                 },
               ),
@@ -95,10 +91,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                 selected:
                     userPreferences.warningFontSize == 18.0 ? true : false,
                 onTap: () {
-                  setState(() {
-                    userPreferences.warningFontSize = 18.0;
-                  });
-
+                  userPreferencesService.setWarningFontSize(18.0);
                   navigator.pop();
                 },
               ),

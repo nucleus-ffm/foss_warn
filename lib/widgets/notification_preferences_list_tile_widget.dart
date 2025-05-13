@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 import '../class/class_notification_preferences.dart';
 
-class NotificationPreferencesListTileWidget extends StatefulWidget {
-  final NotificationPreferences notificationPreferences;
-  const NotificationPreferencesListTileWidget({
-    super.key,
-    required this.notificationPreferences,
-  });
+class NotificationPreferencesListTileWidget extends ConsumerStatefulWidget {
+  const NotificationPreferencesListTileWidget({super.key});
 
   @override
-  State<NotificationPreferencesListTileWidget> createState() =>
+  ConsumerState<NotificationPreferencesListTileWidget> createState() =>
       _NotificationPreferencesListTileWidgetState();
 }
 
 class _NotificationPreferencesListTileWidgetState
-    extends State<NotificationPreferencesListTileWidget> {
+    extends ConsumerState<NotificationPreferencesListTileWidget> {
+  late double notificationLevel;
+
+  @override
+  void initState() {
+    super.initState();
+
+    var userPreferences = ref.read(userPreferencesProvider);
+    notificationLevel = Severity.getIndexFromSeverity(
+      userPreferences.notificationSourceSetting.notificationLevel,
+    );
+  }
+
   final EdgeInsets settingsTileListPadding =
       const EdgeInsets.fromLTRB(25, 2, 25, 2);
 
@@ -43,6 +52,8 @@ class _NotificationPreferencesListTileWidgetState
   Widget build(BuildContext context) {
     var localizations = context.localizations;
 
+    var userPreferencesService = ref.watch(userPreferencesProvider.notifier);
+
     return Column(
       children: [
         Padding(
@@ -67,32 +78,24 @@ class _NotificationPreferencesListTileWidgetState
                       ),
                       Flexible(
                         child: Slider(
-                          label: getLabelForWarningSeverity(
-                            Severity.getIndexFromSeverity(
-                              widget.notificationPreferences.notificationLevel,
-                            ),
-                          ),
+                          label: getLabelForWarningSeverity(notificationLevel),
                           divisions: 3,
                           min: 0,
                           max: 3,
-                          value: Severity.getIndexFromSeverity(
-                            widget.notificationPreferences.notificationLevel,
-                          ),
+                          value: notificationLevel,
                           onChanged: (value) {
-                            setState(
-                              () {
-                                final notificationLevel =
-                                    Severity.values[value.toInt()];
-
-                                // update notification level with slider value
-                                widget.notificationPreferences
-                                    .notificationLevel = notificationLevel;
-                              },
-                            );
+                            notificationLevel = value;
+                            setState(() {});
                           },
                           onChangeEnd: (value) {
                             // save settings, after change is complete
-                            saveSettings();
+                            final notificationLevel =
+                                Severity.values[value.toInt()];
+                            userPreferencesService.setNotificationSourceSetting(
+                              NotificationPreferences(
+                                notificationLevel: notificationLevel,
+                              ),
+                            );
                           },
                         ),
                       ),

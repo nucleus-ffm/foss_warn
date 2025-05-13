@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/save_and_load_shared_preferences.dart';
 
-import '../main.dart';
 import '../class/class_notification_service.dart';
 
-Future<void> sendStatusUpdateNotification(bool success, [String? error]) async {
+Future<void> sendStatusUpdateNotification(
+  bool success, {
+  required UserPreferences userPreferences,
+  String? error,
+}) async {
   String lastUpdate = await loadLastBackgroundUpdateTime();
   DateTime now = DateTime.now();
   int hour = now.hour;
