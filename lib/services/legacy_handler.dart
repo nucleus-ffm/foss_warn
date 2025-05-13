@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import '../class/class_notification_service.dart';
-import '../main.dart';
 import 'list_handler.dart';
 
 /// checks if there is old data in SharedPreferences and if yes reset all settings
 Future<void> legacyHandler() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
+  var preferences = SharedPreferencesState.instance;
   bool successfullyUpdated = false;
 
   try {
@@ -40,15 +39,11 @@ Future<void> legacyHandler() async {
 
   int prevVersion = -1;
   if (preferences.containsKey("previousInstalledVersionCode")) {
-    prevVersion = preferences.getInt("previousInstalledVersionCode")!;
+    prevVersion = preferences.getInt("previousInstalledVersionCode") ?? -1;
   } else {
-    if (preferences.containsKey("MyPlacesListAsJson")) {
-      prevVersion = userPreferences.previousInstalledVersionCode;
-    } else {
-      // new installation
-      prevVersion = userPreferences.currentVersionCode;
-      successfullyUpdated = true;
-    }
+    // new installation
+    prevVersion = preferences.getInt("currentVersionCode")!;
+    successfullyUpdated = true;
   }
 
   // @todo check for version < 0.8.0 because of new structured alerts
@@ -74,7 +69,7 @@ Future<void> legacyHandler() async {
     // update version code to current version
     preferences.setInt(
       "previousInstalledVersionCode",
-      userPreferences.currentVersionCode,
+      UserPreferences.currentVersionCode,
     );
   }
 }

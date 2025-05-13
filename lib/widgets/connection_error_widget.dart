@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 
-import '../main.dart';
 import 'dialogs/error_dialog.dart';
 
-class ConnectionError extends StatelessWidget {
+class ConnectionError extends ConsumerWidget {
   const ConnectionError({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
     var theme = Theme.of(context);
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     if (userPreferences.areWarningsFromCache) {
       return Container(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/warnings.dart';
 
-import '../main.dart';
 import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 
@@ -34,9 +34,11 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
 
   @override
   void initState() {
+    var userPreferences = ref.read(userPreferencesProvider);
     maxSizeOfSubscriptionBoundingBox.text =
         userPreferences.maxSizeOfSubscriptionBoundingBox.toString();
-    return super.initState();
+
+    super.initState();
   }
 
   @override
@@ -46,6 +48,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
     var focusScope = FocusScope.of(context);
 
+    var userPreferencesService = ref.watch(userPreferencesProvider.notifier);
     var warningService = ref.read(processedAlertsProvider.notifier);
 
     return Scaffold(
@@ -178,8 +181,10 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                       if (value != "") {
                         if (double.parse(value) > 1) {
                           setState(() {
-                            userPreferences.maxSizeOfSubscriptionBoundingBox =
-                                int.parse(value);
+                            userPreferencesService
+                                .setMaxSizeOfSubscriptionBoundingBox(
+                              int.parse(value),
+                            );
                           });
                         }
                       }

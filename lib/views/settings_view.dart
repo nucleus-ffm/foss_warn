@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 
-import '../main.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 
@@ -35,6 +35,8 @@ class _SettingsState extends ConsumerState<Settings> {
 
   @override
   void initState() {
+    var userPreferences = ref.read(userPreferencesProvider);
+
     frequencyController.text =
         userPreferences.frequencyOfAPICall.toInt().toString();
     fpasServerURLController.text =
@@ -55,6 +57,8 @@ class _SettingsState extends ConsumerState<Settings> {
       1: localizations.settings_start_view_only_my_places,
     };
 
+    var userPreferences = ref.watch(userPreferencesProvider);
+    var userPreferencesService = ref.read(userPreferencesProvider.notifier);
     var alertApi = ref.read(alertApiProvider);
 
     return Scaffold(
@@ -122,22 +126,27 @@ class _SettingsState extends ConsumerState<Settings> {
                   try {
                     var serverSettings =
                         await alertApi.fetchServerSettings(overrideUrl: newUrl);
-                    userPreferences.fossPublicAlertServerUrl =
-                        serverSettings.url;
-                    userPreferences.fossPublicAlertServerOperator =
-                        serverSettings.operator;
-                    userPreferences.fossPublicAlertServerPrivacyNotice =
-                        serverSettings.privacyNotice;
-                    userPreferences.fossPublicAlertServerTermsOfService =
-                        serverSettings.termsOfService;
-                    setState(() {
-                      _fpasServerURLError = false;
-                    });
+                    userPreferencesService
+                        .setFossPublicAlertServerUrl(serverSettings.url);
+                    userPreferencesService.setFossPublicAlertServerOperator(
+                      serverSettings.operator,
+                    );
+                    userPreferencesService
+                        .setFossPublicAlertServerPrivacyNotice(
+                      serverSettings.privacyNotice,
+                    );
+                    userPreferencesService
+                        .setFossPublicAlertServerTermsOfService(
+                      serverSettings.termsOfService,
+                    );
+
+                    _fpasServerURLError = false;
+                    setState(() {});
                   } catch (e) {
                     debugPrint(e.toString());
-                    setState(() {
-                      _fpasServerURLError = true;
-                    });
+
+                    _fpasServerURLError = true;
+                    setState(() {});
                   }
                 },
               ),
@@ -201,9 +210,7 @@ class _SettingsState extends ConsumerState<Settings> {
                   color: theme.colorScheme.primary,
                 ),
                 onChanged: (int? newValue) {
-                  setState(() {
-                    userPreferences.startScreen = newValue!;
-                  });
+                  userPreferencesService.setStartScreen(newValue!);
                 },
                 items: [0, 1].map<DropdownMenuItem<int>>((value) {
                   return DropdownMenuItem<int>(
@@ -216,11 +223,9 @@ class _SettingsState extends ConsumerState<Settings> {
             ListTile(
               title: Text(localizations.settings_show_extended_metadata),
               trailing: Switch(
-                value: userPreferences.showExtendedMetaData,
+                value: userPreferences.showExtendedMetadata,
                 onChanged: (value) {
-                  setState(() {
-                    userPreferences.showExtendedMetaData = value;
-                  });
+                  userPreferencesService.setShowExtendedMetadata(value);
                 },
               ),
             ),

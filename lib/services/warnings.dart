@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
-import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
@@ -16,7 +16,10 @@ class AlertRetrievalError implements Exception {}
 final processedAlertsProvider =
     StateNotifierProvider<WarningService, List<WarnMessage>>(
   (ref) {
-    return WarningService(places: ref.watch(myPlacesProvider));
+    return WarningService(
+      userPreferences: ref.watch(userPreferencesProvider),
+      places: ref.watch(myPlacesProvider),
+    );
   },
 );
 
@@ -79,6 +82,8 @@ final alertsProvider = Provider<List<WarnMessage>>((ref) {
   ref.listen(tickingChangeProvider(50), (_, event) {
     ref.invalidate(alertsFutureProvider);
   });
+
+  var userPreferences = ref.watch(userPreferencesProvider);
 
   var alertsSnapshot = ref.watch(alertsFutureProvider);
 
@@ -165,8 +170,10 @@ void markAllWarningsAsRead(WidgetRef ref) {
 }
 
 class WarningService extends StateNotifier<List<WarnMessage>> {
-  WarningService({required this.places}) : super(<WarnMessage>[]);
+  WarningService({required this.userPreferences, required this.places})
+      : super(<WarnMessage>[]);
 
+  final UserPreferences userPreferences;
   final List<Place> places;
 
   bool hasWarningToNotify() =>

@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 import '../../enums/sorting_categories.dart';
-import '../../main.dart';
 
-class SortByDialog extends StatefulWidget {
+class SortByDialog extends ConsumerStatefulWidget {
   const SortByDialog({super.key});
 
   @override
-  State<SortByDialog> createState() => _SortByDialogState();
+  ConsumerState<SortByDialog> createState() => _SortByDialogState();
 }
 
-class _SortByDialogState extends State<SortByDialog> {
+class _SortByDialogState extends ConsumerState<SortByDialog> {
   @override
   Widget build(BuildContext context) {
     var localizations = context.localizations;
     var theme = Theme.of(context);
     var navigator = Navigator.of(context);
+
+    var userPreferences = ref.watch(userPreferencesProvider);
+    var userPreferencesService = ref.read(userPreferencesProvider.notifier);
 
     return SimpleDialog(
       title: Text(localizations.sorting_headline),
@@ -31,10 +35,7 @@ class _SortByDialogState extends State<SortByDialog> {
               ? true
               : false,
           onTap: () {
-            setState(() {
-              userPreferences.sortWarningsBy = SortingCategories.data;
-            });
-
+            userPreferencesService.setSortWarningsBy(SortingCategories.data);
             navigator.pop();
           },
         ),
@@ -49,10 +50,8 @@ class _SortByDialogState extends State<SortByDialog> {
               ? true
               : false,
           onTap: () {
-            setState(() {
-              userPreferences.sortWarningsBy = SortingCategories.severity;
-            });
-
+            userPreferencesService
+                .setSortWarningsBy(SortingCategories.severity);
             navigator.pop();
           },
         ),
@@ -67,10 +66,7 @@ class _SortByDialogState extends State<SortByDialog> {
               ? true
               : false,
           onTap: () {
-            setState(() {
-              userPreferences.sortWarningsBy = SortingCategories.source;
-            });
-
+            userPreferencesService.setSortWarningsBy(SortingCategories.source);
             navigator.pop();
           },
         ),

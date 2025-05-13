@@ -4,10 +4,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_area.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart' show userPreferences;
 import 'package:foss_warn/services/translate_and_colorize_warning.dart';
 import 'package:foss_warn/services/url_launcher.dart';
 import 'package:foss_warn/services/warnings.dart';
@@ -255,6 +255,8 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     var theme = Theme.of(context);
     var localizations = context.localizations;
 
+    var userPreferences = ref.watch(userPreferencesProvider);
+
     WarnMessage warning = ref.watch(
       alertsProvider.select(
         (value) => value.firstWhere(
@@ -403,21 +405,23 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   }
 }
 
-class _Region extends StatefulWidget {
+class _Region extends ConsumerStatefulWidget {
   const _Region({required this.alert});
 
   final WarnMessage alert;
 
   @override
-  State<_Region> createState() => _RegionState();
+  ConsumerState<_Region> createState() => _RegionState();
 }
 
-class _RegionState extends State<_Region> {
+class _RegionState extends ConsumerState<_Region> {
   bool showMore = false;
 
   @override
   Widget build(BuildContext context) {
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     var areaDescriptionList = _generateAreaDescriptionList(
       alert: widget.alert,
@@ -492,14 +496,16 @@ class _RegionState extends State<_Region> {
   }
 }
 
-class _Tags extends StatelessWidget {
+class _Tags extends ConsumerWidget {
   const _Tags({required this.alert});
 
   final WarnMessage alert;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -537,7 +543,7 @@ class _Tags extends StatelessWidget {
               action: () => const WarningSeverityExplanation(),
             ),
             // display more metadata button if enabled in the settings
-            if (userPreferences.showExtendedMetaData) ...[
+            if (userPreferences.showExtendedMetadata) ...[
               Wrap(
                 children: [
                   _TagButton(
@@ -585,7 +591,7 @@ class _Tags extends StatelessWidget {
   }
 }
 
-class _TagButton extends StatelessWidget {
+class _TagButton extends ConsumerWidget {
   const _TagButton({
     required this.color,
     required this.eventType,
@@ -599,7 +605,9 @@ class _TagButton extends StatelessWidget {
   final String info;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var userPreferences = ref.watch(userPreferencesProvider);
+
     Future<void> onPressed() async {
       await showDialog(
         context: context,
@@ -705,14 +713,16 @@ class _Map extends StatelessWidget {
   }
 }
 
-class _Description extends StatelessWidget {
+class _Description extends ConsumerWidget {
   const _Description({required this.alert});
 
   final WarnMessage alert;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -742,14 +752,16 @@ class _Description extends StatelessWidget {
   }
 }
 
-class _WarningAppendix extends StatelessWidget {
+class _WarningAppendix extends ConsumerWidget {
   const _WarningAppendix({required this.assets});
 
   final List<Widget> assets;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     return Column(
       children: [
@@ -782,14 +794,16 @@ class _WarningAppendix extends StatelessWidget {
   }
 }
 
-class _Instruction extends StatelessWidget {
+class _Instruction extends ConsumerWidget {
   const _Instruction({required this.instruction});
 
   final String instruction;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -826,14 +840,16 @@ class _Instruction extends StatelessWidget {
   }
 }
 
-class _Source extends StatelessWidget {
+class _Source extends ConsumerWidget {
   const _Source({required this.alert});
 
   final WarnMessage alert;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     var publisher = alert.publisher.isNotEmpty
         ? alert.publisher
@@ -864,7 +880,7 @@ class _Source extends StatelessWidget {
   }
 }
 
-class _Contact extends StatelessWidget {
+class _Contact extends ConsumerWidget {
   const _Contact({required this.alert});
 
   final WarnMessage alert;
@@ -923,8 +939,10 @@ class _Contact extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -969,15 +987,17 @@ class _Contact extends StatelessWidget {
   }
 }
 
-class _Web extends StatelessWidget {
+class _Web extends ConsumerWidget {
   const _Web({required this.alert});
 
   final WarnMessage alert;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
     var localizations = context.localizations;
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     Future<void> onPressed() async {
       bool success = await launchUrlInBrowser(alert.info[0].web!);

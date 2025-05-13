@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
 
 import '../class/class_area.dart';
 import '../class/class_warn_message.dart';
-import '../main.dart';
 import '../services/list_handler.dart';
 
-class MapWidget extends StatefulWidget {
+class MapWidget extends ConsumerStatefulWidget {
   final List<PolygonLayer>? polygonLayers;
   final List<MarkerLayer>? markerLayers;
   final List<Widget>? widgets;
   final MapController mapController;
   final CameraFit initialCameraFit;
+
   const MapWidget({
     super.key,
     this.polygonLayers,
@@ -49,12 +51,14 @@ class MapWidget extends StatefulWidget {
   }
 
   @override
-  State<MapWidget> createState() => _MapWidgetState();
+  ConsumerState<MapWidget> createState() => _MapWidgetState();
 }
 
-class _MapWidgetState extends State<MapWidget> {
+class _MapWidgetState extends ConsumerState<MapWidget> {
   @override
   Widget build(BuildContext context) {
+    var userPreferences = ref.watch(userPreferencesProvider);
+
     return FlutterMap(
       mapController: widget.mapController,
       options: MapOptions(
@@ -65,7 +69,7 @@ class _MapWidgetState extends State<MapWidget> {
       ),
       children: [
         TileLayer(
-          urlTemplate: userPreferences.osmTileServerULR,
+          urlTemplate: UserPreferences.osmTileServerURL,
           userAgentPackageName: constants.httpUserAgent,
           tileBuilder:
               (BuildContext context, Widget tileWidget, TileImage tile) {
@@ -76,11 +80,11 @@ class _MapWidgetState extends State<MapWidget> {
                         MediaQuery.of(context).platformBrightness ==
                             Brightness.dark)
                 ? ColorFiltered(
-                    colorFilter: userPreferences.mapDarkMode,
+                    colorFilter: UserPreferences.mapDarkMode,
                     child: tileWidget,
                   )
                 : ColorFiltered(
-                    colorFilter: userPreferences.mapLightMode,
+                    colorFilter: UserPreferences.mapLightMode,
                     child: tileWidget,
                   );
           },

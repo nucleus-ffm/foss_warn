@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart';
 import '../../services/url_launcher.dart';
 
-class PrivacyDialog extends StatefulWidget {
+class PrivacyDialog extends ConsumerStatefulWidget {
   const PrivacyDialog({super.key});
 
   @override
-  State<PrivacyDialog> createState() => _PrivacyDialogState();
+  ConsumerState<PrivacyDialog> createState() => _PrivacyDialogState();
 }
 
-class _PrivacyDialogState extends State<PrivacyDialog> {
+class _PrivacyDialogState extends ConsumerState<PrivacyDialog> {
   @override
   Widget build(BuildContext context) {
     var localizations = context.localizations;
     var navigator = Navigator.of(context);
+
+    var userPreferences = ref.watch(userPreferencesProvider);
 
     return AlertDialog(
       title: Text(localizations.privacy_headline),
