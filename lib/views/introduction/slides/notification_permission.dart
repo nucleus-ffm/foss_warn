@@ -19,7 +19,7 @@ class IntroductionNotificationPermissionSlide extends StatelessWidget {
     var theme = Theme.of(context);
 
     return IntroductionBaseSlide(
-      imagePath: "assets/battery.png",
+      imagePath: "permission.png",
       title: localizations.welcome_view_notification_permission_headline,
       text: localizations.welcome_view_notification_permission_text,
       footer: Column(

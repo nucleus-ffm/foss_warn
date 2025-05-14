@@ -27,7 +27,7 @@ class IntroductionDisclaimerSlide extends StatelessWidget {
     }
 
     return IntroductionBaseSlide(
-      imagePath: "assets/paragraph.png",
+      imagePath: "legal.png",
       title: localizations.welcome_view_important_headline,
       text: localizations.welcome_view_important_text,
       footer: Column(
@@ -42,6 +42,7 @@ class IntroductionDisclaimerSlide extends StatelessWidget {
               style: TextStyle(color: theme.colorScheme.onPrimary),
             ),
           ),
+          const SizedBox(height: 5),
           TextButton(
             onPressed: onShowPrivacyPressed,
             style: TextButton.styleFrom(

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/main.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/services/api_handler.dart';
@@ -8,9 +9,10 @@ import 'package:foss_warn/views/introduction/slides/alarm_permission.dart';
 import 'package:foss_warn/views/introduction/slides/battery_optimization.dart';
 import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
 import 'package:foss_warn/views/introduction/slides/finish.dart';
-import 'package:foss_warn/views/introduction/slides/fpas_server_select.dart';
+import 'package:foss_warn/views/introduction/slides/fpas_server_info.dart';
 import 'package:foss_warn/views/introduction/slides/notification_permission.dart';
 import 'package:foss_warn/views/introduction/slides/places.dart';
+import 'package:foss_warn/views/introduction/slides/unifiedpush.dart';
 import 'package:foss_warn/views/introduction/slides/warning_levels.dart';
 import 'package:foss_warn/views/introduction/slides/welcome.dart';
 
@@ -68,28 +70,13 @@ class _IntroductionViewState extends State<IntroductionView>
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
+    var localisation = context.localizations;
 
     // TODO(PureTryOut): replace this for a fullproof solution to retrieve the keyboardOpen status
     // This will work fine on Android for the most part, however insets being bigger than 0 doesn't necessarily mean it's the keyboard.
     // The keyboard can also be floating in which case this will also report keyboardClosed, even though it's definitely open.
     // We should probably use a native platform API to request the keyboard status from the platform.
     var keyboardOpen = mediaQuery.viewInsets.bottom > 0;
-
-    Future<void> onServerSelected(ServerSettings serverSettings) async {
-      selectedServerSettings = serverSettings;
-      setState(() {});
-
-      userPreferences.fossPublicAlertServerUrl = serverSettings.url;
-      userPreferences.fossPublicAlertServerOperator = serverSettings.operator;
-      userPreferences.fossPublicAlertServerPrivacyNotice =
-          serverSettings.privacyNotice;
-      userPreferences.fossPublicAlertServerTermsOfService =
-          serverSettings.termsOfService;
-
-      if (Platform.isLinux) {
-        await NotificationService().init();
-      }
-    }
 
     Future<void> onRequestNotificationPermissionPressed() async {
       hasNotificationPermission =
@@ -133,10 +120,8 @@ class _IntroductionViewState extends State<IntroductionView>
 
     var introductionPages = [
       const IntroductionWelcomeSlide(),
-      IntroductionFPASServerSelectionSlide(
-        selectedServerSettings: selectedServerSettings,
-        onServerSelected: onServerSelected,
-      ),
+      const IntroductionFPASServerInfoSlide(),
+      const IntroductionUnifiedpushSlide(),
       const IntroductionDisclaimerSlide(),
       if (Platform.isAndroid) ...[
         IntroductionNotificationPermissionSlide(
@@ -163,15 +148,16 @@ class _IntroductionViewState extends State<IntroductionView>
                 Row(
                   children: [
                     Visibility(
-                      maintainSize: true,
-                      maintainSemantics: true,
+                      maintainSize: false,
+                      maintainSemantics: false,
                       maintainAnimation: true,
                       maintainState: true,
                       // TODO(PureTryOut): check for screen sizes instead
                       visible: !Platform.isAndroid && currentPage >= 1.0,
                       child: TextButton(
                         onPressed: onPagePrevious,
-                        child: const Text("Previous"),
+                        child:
+                            Text(localisation.welcome_view_navigation_previous),
                       ),
                     ),
                     Expanded(
@@ -183,8 +169,8 @@ class _IntroductionViewState extends State<IntroductionView>
                       ),
                     ),
                     Visibility(
-                      maintainSize: true,
-                      maintainSemantics: true,
+                      maintainSize: false,
+                      maintainSemantics: false,
                       maintainAnimation: true,
                       maintainState: true,
                       // TODO(PureTryOut): check for screen sizes instead
@@ -192,7 +178,7 @@ class _IntroductionViewState extends State<IntroductionView>
                           currentPage < introductionPages.length - 1,
                       child: TextButton(
                         onPressed: onPageNext,
-                        child: const Text("Next"),
+                        child: Text(localisation.welcome_view_navigation_next),
                       ),
                     ),
                   ],

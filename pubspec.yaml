@@ -57,8 +57,5 @@ flutter:
   assets:
    # welcome screen
    - assets/app_icon/app_icon.png
-   - assets/location.png
-   - assets/battery.png
-   - assets/check.png
-   - assets/steps.png
-   - assets/paragraph.png
+   - assets/introduction/darkmode/
+   - assets/introduction/lightmode/
