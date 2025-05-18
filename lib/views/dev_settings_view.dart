@@ -1,10 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/warnings.dart';
+import 'package:latlong2/latlong.dart';
 
+import '../class/class_bounding_box.dart';
+import '../class/class_fpas_place.dart';
+import '../services/alert_api/fpas.dart';
+import '../services/api_handler.dart';
+import '../services/list_handler.dart';
+import '../services/subscription_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 
@@ -48,6 +58,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
     var focusScope = FocusScope.of(context);
 
+    var userPreferences = ref.watch(userPreferencesProvider);
     var userPreferencesService = ref.watch(userPreferencesProvider.notifier);
     var warningService = ref.read(processedAlertsProvider.notifier);
 
@@ -204,6 +215,71 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     decoration: const InputDecoration(),
                     style: theme.textTheme.bodyMedium,
                   ),
+                ),
+              ),
+              ListTile(
+                title:
+                    Text(localizations.dev_settings_subscribe_for_test_alert),
+                trailing: Switch(
+                  value: userPreferences.subscribeForTestAlerts,
+                  onChanged: (value) async {
+                    String testAlertPlaceName = "Test Alerts - Point Nemo";
+                    var api = ref.read(alertApiProvider);
+
+                    if (value) {
+                      try {
+                        await subscribeForArea(
+                          // FPAS publishes its test alerts for Point Nemo as
+                          // this point has the maximal distance to the next
+                          // coast in the world.
+                          boundingBox: BoundingBox(
+                            minLatLng: const LatLng(-47.8767, -122.3933),
+                            maxLatLng: const LatLng(-48.8767, -124.3933),
+                          ),
+                          selectedPlaceName: testAlertPlaceName,
+                          context: context,
+                          ref: ref,
+                        );
+                        userPreferencesService.setSubscribeForTestAlerts(value);
+                      } on RegisterAreaError {
+                        // do not set the switch to true
+                      } on SocketException {
+                        // do not set the switch to true
+                      }
+                    } else {
+                      // remove subscription for Point Nemo
+                      var places = ref.read(myPlacesProvider.notifier);
+                      Place? place = places.places.firstWhereOrNull(
+                        (p) => p.name == testAlertPlaceName,
+                      );
+                      if (place != null) {
+                        try {
+                          await api.unregisterArea(
+                            subscriptionId: place.subscriptionId,
+                          );
+                          places.remove(place);
+                          userPreferencesService
+                              .setSubscribeForTestAlerts(value);
+                        } on UnregisterAreaError {
+                          // we currently can not unsubscribe - show a snack bar to inform the
+                          // user to check their internet connection
+                          final snackBar = SnackBar(
+                            content: Text(
+                              localizations.delete_place_error,
+                              style: TextStyle(
+                                color: theme.colorScheme.onErrorContainer,
+                              ),
+                            ),
+                            backgroundColor: theme.colorScheme.errorContainer,
+                          );
+                          scaffoldMessenger.showSnackBar(snackBar);
+                        }
+                      } else {
+                        // place was manually removed by the user
+                        userPreferencesService.setSubscribeForTestAlerts(value);
+                      }
+                    }
+                  },
                 ),
               ),
             ],
