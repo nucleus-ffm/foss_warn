@@ -14,6 +14,7 @@ import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/widgets/dialogs/loading_screen.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
+import 'package:uuid/uuid.dart';
 
 /// register with the given boundingBox for push notifications
 /// and add the new place to the myPlacesProvider list
@@ -26,6 +27,7 @@ Future<void> subscribeForArea({
   var userPreferences = ref.watch(userPreferencesProvider);
   var localizations = context.localizations;
   var alertApi = ref.read(alertApiProvider);
+  var uuid = const Uuid();
 
   // subscribe for new area and create new place
   // with the returned subscription id
@@ -84,6 +86,7 @@ Future<void> subscribeForArea({
           .add_my_place_with_map_loading_screen_subscription_success,
     );
     Place newPlace = Place(
+      id: uuid.v4(),
       boundingBox: boundingBox,
       subscriptionId: subscriptionId,
       name: selectedPlaceName,

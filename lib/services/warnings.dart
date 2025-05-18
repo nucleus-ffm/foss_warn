@@ -34,12 +34,35 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
 
   // Fetch all available alerts
   List<AlertApiResult> retrievedAlerts;
+
+  /// fetch alerts for one place and catch invalid subscriptions errors
+  Future<List<({String alertId, String subscriptionId})>> getAlertForOnePlace(
+    Place place,
+  ) async {
+    if (place.isExpired) {
+      // the places has expired, We can not fetch for alerts until we resubscribed again
+      return [];
+    }
+
+    try {
+      return await alertApi.getAlerts(subscriptionId: place.subscriptionId);
+    } on InvalidSubscriptionError {
+      // set expired to true
+      ref
+          .read(myPlacesProvider.notifier)
+          .set(places.updateEntry(place.copyWith(isExpired: true)));
+      return [];
+    }
+  }
+
   try {
-    var alertsForPlaces = await Future.wait([
+    List<List<({String alertId, String subscriptionId})>> alertsForPlaces =
+        await Future.wait([
       for (var place in places) ...[
-        alertApi.getAlerts(subscriptionId: place.subscriptionId),
+        getAlertForOnePlace(place),
       ],
     ]);
+
     // Combine alerts for the individual places into a single list
     retrievedAlerts =
         alertsForPlaces.reduce((value, element) => value + element);
@@ -54,7 +77,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
 
   // Determine which alerts we don't already know about
   var newAlerts = <AlertApiResult>[];
-  for (var alert in retrievedAlerts) {
+  for (AlertApiResult alert in retrievedAlerts) {
     if (!previouslyCachedAlerts
         .any((oldAlert) => oldAlert.fpasId == alert.alertId)) {
       newAlerts.add(alert);
