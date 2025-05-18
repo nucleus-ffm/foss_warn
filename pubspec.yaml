@@ -23,6 +23,7 @@ dependencies:
   unifiedpush: ^6.0.1
   unifiedpush_linux: ^0.1.0
   xml2json: ^6.2.5
+  uuid: ^4.4.2
 
   # used by the map
   flutter_map: ^7.0.2

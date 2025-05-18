@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../widgets/my_place_widget.dart';
@@ -56,7 +57,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
               padding: const EdgeInsets.only(bottom: 65),
               child: Column(
                 children: [
-                  if (alertsSnapshot.hasError) ...[
+                  if (alertsSnapshot.hasError || places.hasExpiredPlaces) ...[
                     const ConnectionError(),
                   ],
                   ...places.map(

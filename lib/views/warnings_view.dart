@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/connection_error_widget.dart';
@@ -55,7 +56,7 @@ class WarningsView extends ConsumerWidget {
 
     return Column(
       children: [
-        if (alertsSnapshot.hasError) ...[
+        if (alertsSnapshot.hasError || places.hasExpiredPlaces) ...[
           const ConnectionError(),
         ],
         Expanded(child: body),

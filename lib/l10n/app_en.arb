@@ -384,6 +384,7 @@
   "@connection_error_no_internet": {},
   "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
   "@connection_error_app_error": {},
+  "connection_error_subscription_expired": "Some of your subscriptions have expired.",
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
@@ -669,7 +670,7 @@
     "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
   },
   "failed_to_open_url": "Failed to open URL",
-  "@failed_to_open_url": {},
+  "error_dialog_headline": "Oh no - something went wrong :(",
   "error_dialog_description": "FOSSWarn has noticed an error. Please report the error and attach the following log.",
   "@error_dialog_description": {},
   "error_dialog_privacy": "The log does not contain any privacy-sensitive information besides maybe your selected places. FOSSWarn does not send any logs to a server.",
@@ -694,5 +695,28 @@
   "@error_log_button_share": {},
   "error_log_share_info": "Error log shared from FOSSWarn",
   "@error_log_share_info": {},
-  "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server"
+  "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server",
+  "error_log_share_info": "Error log shared from FOSSWarn",
+  "invalid_subscription_dialog_headline": "Renew expired subscriptions",
+  "invalid_subscription_dialog_text": "Some of your subscriptions have expired. Click on resubscribe to get push notifications again",
+  "invalid_subscription_dialog_resubscribe_button" : "resubscribe",
+  "invalid_subscription_dialog_loading_indicator_replace_places" : "replacing the old places...",
+  "invalid_subscription_dialog_error_body" : "Oh no, failed to resubscribe.",
+  "invalid_subscription_dialog_error_status_code": "HTTP Status code: {status_code}",
+   "@invalid_subscription_dialog_error_status_code": {
+    "placeholders": {
+            "status_code": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_error_message": "Error message: {message}",
+     "@invalid_subscription_dialog_error_message": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+  "invalid_subscription_dialog_successfully_resubscribed": "Successfully resubscribed"
 }
