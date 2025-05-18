@@ -633,6 +633,6 @@
   "error_log_viewer_headline": "Here you can read the error log for FOSSWarn",
   "error_log_button_delete": "Delete",
   "error_log_button_share": "Share logfile",
-  "error_log_share_info": "Error log shared from FOSSWar"
-
+  "error_log_share_info": "Error log shared from FOSSWar",
+  "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server"
 }
