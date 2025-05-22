@@ -58,5 +58,7 @@
   "settings_background_service": "Uuendused taustal",
   "@settings_background_service": {},
   "settings_frequent_of_background_update": "Taustal tehtava uuenduste kontrolli sagedus",
-  "@settings_frequent_of_background_update": {}
+  "@settings_frequent_of_background_update": {},
+  "privacy_link_to_privacy": "Andmekaitsepõhimõtted:",
+  "@privacy_link_to_privacy": {}
 }
