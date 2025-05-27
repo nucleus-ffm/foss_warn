@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart';
 
 class ChooseThemeDialog extends ConsumerStatefulWidget {
   const ChooseThemeDialog({super.key});
@@ -25,6 +25,9 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   }
 
   Widget generateBrightnessButton(ThemeMode themeMode) {
+    var userPreferences = ref.watch(userPreferencesProvider);
+    var userPreferencesService = ref.read(userPreferencesProvider.notifier);
+
     return TextButton(
       style: TextButton.styleFrom(
         padding: const EdgeInsets.only(left: 10, right: 10),
@@ -40,11 +43,7 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
           ),
         ),
       ),
-      onPressed: () {
-        setState(() {
-          userPreferences.selectedThemeMode = themeMode;
-        });
-      },
+      onPressed: () => userPreferencesService.setSelectedThemeMode(themeMode),
       child: Text(
         selectTextForThemeMode(themeMode),
         style: TextStyle(color: selectForegroundColor(themeMode)),
@@ -90,16 +89,18 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
   /// generate from the list of available themes a list of button
   /// with the primary colors
   List<Widget> generateAvailableThemes() {
+    var userPreferences = ref.watch(userPreferencesProvider);
+
     List<Widget> result = [];
 
     if (userPreferences.selectedThemeMode == ThemeMode.light ||
         (userPreferences.selectedThemeMode == ThemeMode.system &&
             MediaQuery.of(context).platformBrightness == Brightness.light)) {
-      for (ThemeData th in userPreferences.availableLightThemes) {
+      for (ThemeData th in availableLightThemes) {
         result.add(generateColorButton(th));
       }
     } else {
-      for (ThemeData th in userPreferences.availableDarkThemes) {
+      for (ThemeData th in availableDarkThemes) {
         result.add(generateColorButton(th));
       }
     }
@@ -108,6 +109,9 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
 
   Widget generateColorButton(ThemeData theme) {
     var mediaQuery = MediaQuery.of(context);
+
+    var userPreferences = ref.watch(userPreferencesProvider);
+    var userPreferencesService = ref.read(userPreferencesProvider.notifier);
 
     return Container(
       width: 90,
@@ -118,9 +122,9 @@ class _ChooseThemeDialogState extends ConsumerState<ChooseThemeDialog> {
             if (userPreferences.selectedThemeMode == ThemeMode.light ||
                 (userPreferences.selectedThemeMode == ThemeMode.system &&
                     mediaQuery.platformBrightness == Brightness.light)) {
-              userPreferences.selectedLightTheme = theme;
+              userPreferencesService.setLightTheme(theme);
             } else {
-              userPreferences.selectedDarkTheme = theme;
+              userPreferencesService.setDarkTheme(theme);
             }
           });
         },

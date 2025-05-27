@@ -8,9 +8,9 @@ import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_user_agent_http_client.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
@@ -106,14 +106,22 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
   late BoundingBox boundingBox;
   double placeRadius = 10; // radius of the polygon in km
   double radiusSliderMinValue = 1; // min radius of the slider
-  double radiusSliderMaxValue = userPreferences.maxSizeOfSubscriptionBoundingBox
-      .toDouble(); // max radio of the slider
+  late double radiusSliderMaxValue; // max radio of the slider
   LatLng? currentPlaceLatLng; // the coordinates of the current selected place
   Place? currentPlaceToAdd; // the currently selected place
   int numberOfEdgesPolygon =
       4; // defines how many edges the circle polygon should have
   double cameraPadding =
       50; // padding around the polygon when centering the map
+
+  @override
+  void initState() {
+    super.initState();
+
+    var userPreferences = ref.read(userPreferencesProvider);
+    radiusSliderMaxValue =
+        userPreferences.maxSizeOfSubscriptionBoundingBox.toDouble();
+  }
 
   /// calculate a polygon with [numberOfEdges] with
   /// the [radius] (in km) around the given [center]-point
@@ -272,6 +280,8 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
 
+    var unifiedPushHandler = ref.watch(unifiedPushHandlerProvider);
+    var userPreferences = ref.watch(userPreferencesProvider);
     var alertApi = ref.read(alertApiProvider);
 
     return Scaffold(
@@ -513,7 +523,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                             if (_selectedPlaceName != "" &&
                                 selectedPlacePolygon != null) {
                               // setup unifiedPush
-                              await UnifiedPushHandler.setupUnifiedPush(
+                              await unifiedPushHandler.setupUnifiedPush(
                                 context,
                                 ref,
                               );

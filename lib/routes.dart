@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/main.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/add_my_place_with_map_view.dart';
 import 'package:foss_warn/views/alert_update_thread_view.dart';
@@ -20,7 +20,12 @@ final routesProvider = Provider<GoRouter>(
     redirect: (context, state) {
       debugPrint("Navigating to ${state.uri.path}");
 
-      if (userPreferences.showWelcomeScreen) {
+      var showWelcomeScreen = ref.read(
+        userPreferencesProvider
+            .select((preferences) => preferences.showWelcomeScreen),
+      );
+
+      if (showWelcomeScreen) {
         return "/introduction";
       }
       return null;

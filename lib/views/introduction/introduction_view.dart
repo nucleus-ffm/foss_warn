@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/views/introduction/slides/alarm_permission.dart';
@@ -18,7 +19,7 @@ import 'package:foss_warn/views/introduction/slides/welcome.dart';
 
 const int pageSwitchDurationInMilliseconds = 500;
 
-class IntroductionView extends StatefulWidget {
+class IntroductionView extends ConsumerStatefulWidget {
   const IntroductionView({
     required this.onFinished,
     super.key,
@@ -27,10 +28,10 @@ class IntroductionView extends StatefulWidget {
   final VoidCallback onFinished;
 
   @override
-  State<IntroductionView> createState() => _IntroductionViewState();
+  ConsumerState<IntroductionView> createState() => _IntroductionViewState();
 }
 
-class _IntroductionViewState extends State<IntroductionView>
+class _IntroductionViewState extends ConsumerState<IntroductionView>
     with WidgetsBindingObserver {
   int currentPage = 0;
   final PageController pageController = PageController();
@@ -72,6 +73,8 @@ class _IntroductionViewState extends State<IntroductionView>
     var mediaQuery = MediaQuery.of(context);
     var localisation = context.localizations;
 
+    var userPreferencesService = ref.read(userPreferencesProvider.notifier);
+
     // TODO(PureTryOut): replace this for a fullproof solution to retrieve the keyboardOpen status
     // This will work fine on Android for the most part, however insets being bigger than 0 doesn't necessarily mean it's the keyboard.
     // The keyboard can also be floating in which case this will also report keyboardClosed, even though it's definitely open.
@@ -94,7 +97,7 @@ class _IntroductionViewState extends State<IntroductionView>
     }
 
     Future<void> onFinishPressed() async {
-      userPreferences.showWelcomeScreen = false;
+      userPreferencesService.setShowWelcomeScreen(false);
       setState(() {});
 
       widget.onFinished();

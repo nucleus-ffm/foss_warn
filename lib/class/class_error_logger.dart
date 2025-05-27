@@ -15,7 +15,7 @@ class ErrorLogger {
 
   static Future<File> get _localFile async {
     final path = await _localPath;
-    String errorLogPath = UserPreferences().errorLogPath;
+    String errorLogPath = UserPreferences.errorLogPath;
     return File('$path/$errorLogPath');
   }
 

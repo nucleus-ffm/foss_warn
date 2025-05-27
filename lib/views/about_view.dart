@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/dialogs/disclaimer_dialog.dart';
-import '../main.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/missing_imprint_dialog.dart';
 import '../widgets/dialogs/privacy_dialog.dart';
@@ -157,7 +157,7 @@ class AboutView extends StatelessWidget {
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "${userPreferences.versionNumber} (beta)",
+              "${UserPreferences.versionNumber} (beta)",
               style: theme.textTheme.bodyLarge,
             ),
             onTap: () {
