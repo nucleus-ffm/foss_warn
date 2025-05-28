@@ -41,10 +41,11 @@ List<String> _generateAreaDescriptionList({
   return result;
 }
 
-// @todo think about moving code to better place
+// @TODO(Nucleus) think about moving code to better place and think about replacing this with something better
 String _replaceHTMLTags(String text) {
   String replacedText = text;
   replacedText = replacedText.replaceAll("<br/>", "\n");
+  replacedText = replacedText.replaceAll("<br />", "\n");
   replacedText = replacedText.replaceAll("<br>", "\n");
   replacedText = replacedText.replaceAll("br>", "\n");
   replacedText = replacedText.replaceAll("&nbsp;", " ");
