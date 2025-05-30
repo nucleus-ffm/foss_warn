@@ -21,7 +21,10 @@ class IntroductionBaseSlide extends ConsumerWidget {
     var userPreferences = ref.watch(userPreferencesProvider);
 
     final brightness = userPreferences.selectedThemeMode;
-    final darkModeOn = brightness == ThemeMode.dark;
+    final platformBrightness = MediaQuery.of(context).platformBrightness;
+    final darkModeOn = brightness == ThemeMode.dark ||
+        (brightness == ThemeMode.system &&
+            platformBrightness == Brightness.dark);
     const String basePath = "assets/introduction";
     final String themeDependedPath =
         darkModeOn ? "$basePath/darkmode" : "$basePath/lightmode";

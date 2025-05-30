@@ -106,9 +106,9 @@ final routesProvider = Provider<GoRouter>(
                   return MyPlaceDetailScreen(
                     placeSubscriptionId: placeSubscriptionId,
                     onAlertPressed: (String alertId) =>
-                        context.go('/alerts/$alertId'),
+                        context.push('/alerts/$alertId'),
                     onAlertUpdateThreadPressed: () =>
-                        context.go('/alerts/update/'),
+                        context.push('/alerts/update/'),
                   );
                 },
               ),
