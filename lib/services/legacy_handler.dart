@@ -1,75 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
-import '../class/class_notification_service.dart';
-import 'list_handler.dart';
 
-/// checks if there is old data in SharedPreferences and if yes reset all settings
+/// This handler should allow a smooth transition from one version to another.
+/// This handler checks if there are old settings that need to be reset or migrated.
+/// After a reset, the user should be informed.
 Future<void> legacyHandler() async {
   var preferences = SharedPreferencesState.instance;
-  bool successfullyUpdated = false;
-
   try {
-    // before version 0.6.0 we stored e.g. notificationGeneral as string and not as bool.
-    String? oldVersionIndicator =
-        preferences.getString("showStatusNotification");
-
-    if (oldVersionIndicator != null) {
-      debugPrint("[legacyHandler] found old data - reset settings..");
-
-      // reset all settings and data
-      preferences.clear();
-
-      preferences.setBool("hadToResetSettings", true);
-      preferences.setBool("showWelcomeScreen", false);
-      // show notification to get the users attention
-      await NotificationService.showNotification(
-        id: 4,
-        title: "FOSS Warn needs your attention",
-        body:
-            "FOSS Warn has been updated to a new version and needs your attention",
-        payload: "",
-        channel: "other",
-      );
+    if (preferences.containsKey("previousInstalledVersionCode")) {
+      // we have a version information. This is an update
+      int previousVersionCode =
+          preferences.getInt("previousInstalledVersionCode")!;
+      if (previousVersionCode < UserPreferences.currentVersionCode) {
+        //@TODO(Nucleus): handle update migration if necessary and show notification afterwards
+      }
     }
-  } catch (e) {
-    debugPrint("[legacyHandler] Error: ${e.toString()}");
-    //@todo write to logfile?
-  }
-
-  int prevVersion = -1;
-  if (preferences.containsKey("previousInstalledVersionCode")) {
-    prevVersion = preferences.getInt("previousInstalledVersionCode") ?? -1;
-  } else {
-    // new installation
-    prevVersion = preferences.getInt("currentVersionCode")!;
-    successfullyUpdated = true;
-  }
-
-  // @todo check for version < 0.8.0 because of new structured alerts
-  if (prevVersion < 32) {
-    try {
-      allAvailablePlacesNames = [];
-      preferences.remove("geocodes");
-      // set flag to show migration dialog
-      preferences.setBool("hadToResetSettings", true);
-
-      successfullyUpdated = true;
-    } catch (e) {
-      debugPrint("[legacyHandler] Error: ${e.toString()}");
-      ErrorLogger.writeErrorLog(
-        "legacyhandler.dart",
-        "migration from version < 32",
-        e.toString(),
-      );
-    }
-  }
-
-  if (successfullyUpdated) {
-    // update version code to current version
+    // migration complete or new installation. Set previousInstalledVersionCode to current version
     preferences.setInt(
       "previousInstalledVersionCode",
       UserPreferences.currentVersionCode,
+    );
+  } catch (e) {
+    // catch everything from the legacy handler to prevent interrupting the user
+    debugPrint("[legacyHandler] Error: ${e.toString()}");
+    ErrorLogger.writeErrorLog(
+      "legacyhandler.dart",
+      "migration from version < 32",
+      e.toString(),
     );
   }
 }
