@@ -42,12 +42,12 @@ Future<void> legacyHandler() async {
     prevVersion = preferences.getInt("previousInstalledVersionCode") ?? -1;
   } else {
     // new installation
-    prevVersion = preferences.getInt("currentVersionCode")!;
+    prevVersion = UserPreferences.currentVersionCode;
     successfullyUpdated = true;
   }
 
   // @todo check for version < 0.8.0 because of new structured alerts
-  if (prevVersion < 32) {
+  if (prevVersion < UserPreferences.currentVersionCode) {
     try {
       allAvailablePlacesNames = [];
       preferences.remove("geocodes");
