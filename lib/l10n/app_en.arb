@@ -692,6 +692,7 @@
   "@error_log_button_delete": {},
   "error_log_button_share": "Share logfile",
   "@error_log_button_share": {},
-  "error_log_share_info": "Error log shared from FOSSWar",
-  "@error_log_share_info": {}
+  "error_log_share_info": "Error log shared from FOSSWarn",
+  "@error_log_share_info": {},
+  "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server"
 }

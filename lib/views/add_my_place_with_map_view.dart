@@ -11,15 +11,12 @@ import 'package:foss_warn/class/class_user_agent_http_client.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/services/alert_api/fpas.dart';
-import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/subscription_handler.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
-import '../class/class_notification_service.dart';
-import '../class/class_unified_push_handler.dart';
 import '../widgets/dialogs/loading_screen.dart';
 
 class NovatimResponse {
@@ -280,10 +277,6 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
 
-    var unifiedPushHandler = ref.watch(unifiedPushHandlerProvider);
-    var userPreferences = ref.watch(userPreferencesProvider);
-    var alertApi = ref.read(alertApiProvider);
-
     return Scaffold(
       // set to false to prevent jumping of the radiusSlider Widget
       resizeToAvoidBottomInset: false,
@@ -522,70 +515,13 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                           onPressed: () async {
                             if (_selectedPlaceName != "" &&
                                 selectedPlacePolygon != null) {
-                              // setup unifiedPush
-                              await unifiedPushHandler.setupUnifiedPush(
-                                context,
-                                ref,
-                              );
-
-                              // subscribe for new area and create new place
-                              // with the returned subscription id
-                              if (!context.mounted) return;
-                              LoadingScreen.instance().show(
+                              await subscribeForArea(
+                                boundingBox: boundingBox,
+                                selectedPlaceName: _selectedPlaceName,
                                 context: context,
-                                text: localizations.loading_screen_loading,
+                                ref: ref,
                               );
-                              String subscriptionId = "";
-                              try {
-                                subscriptionId = await alertApi.registerArea(
-                                  boundingBox: boundingBox,
-                                  unifiedPushEndpoint:
-                                      userPreferences.unifiedPushEndpoint,
-                                );
-                              } catch (e) {
-                                debugPrint("Error: ${e.toString()}");
-                                ErrorLogger.writeErrorLog(
-                                  "AddMyPlaceWithMapView",
-                                  "add place button",
-                                  e.toString(),
-                                );
-                                if (!context.mounted) return;
-                                LoadingScreen.instance().show(
-                                  context: context,
-                                  text: localizations
-                                      .add_my_place_with_map_loading_screen_subscription_error,
-                                );
-                                await Future.delayed(
-                                  const Duration(seconds: 5),
-                                );
-                              }
-                              if (subscriptionId != "") {
-                                if (!context.mounted) return;
-                                LoadingScreen.instance().show(
-                                  context: context,
-                                  text: localizations
-                                      .add_my_place_with_map_loading_screen_subscription_success,
-                                );
-                                Place newPlace = Place(
-                                  boundingBox: boundingBox,
-                                  subscriptionId: subscriptionId,
-                                  name: _selectedPlaceName,
-                                );
-
-                                ref
-                                    .read(myPlacesProvider.notifier)
-                                    .add(newPlace);
-
-                                // cancel warning of missing places (ID: 3)
-                                NotificationService.cancelOneNotification(
-                                  3,
-                                );
-                                widget.onPlaceAdded();
-                              }
-                              await Future.delayed(
-                                const Duration(seconds: 1),
-                              );
-                              LoadingScreen.instance().hide();
+                              widget.onPlaceAdded();
                             } else {
                               debugPrint(
                                 "Error_selectedPlaceName or selectedPlacePolygon is null",

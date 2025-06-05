@@ -131,6 +131,8 @@ final userPreferencesProvider =
       webPushPublicKey: preferences.getString("webPushPublicKey"),
       previousInstalledVersionCode:
           preferences.getInt("previousInstalledVersionCode") ?? -1,
+      subscribeForTestAlerts:
+          preferences.getBool("subscribeForTestAlerts") ?? false,
     ),
     sharedPreferences: preferences,
   );
@@ -277,6 +279,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(previousInstalledVersionCode: value);
     _sharedPreferences.setInt("previousInstalledVersionCode", value);
   }
+
+  void setSubscribeForTestAlerts(bool value) {
+    state = state.copyWith(subscribeForTestAlerts: value);
+    _sharedPreferences.setBool("subscribeForTestAlerts", value);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -308,6 +315,7 @@ class UserPreferences {
     required this.webPushAuthKey,
     required this.webPushPublicKey,
     required this.previousInstalledVersionCode,
+    required this.subscribeForTestAlerts,
   });
 
   final bool shouldNotifyGeneral;
@@ -337,6 +345,7 @@ class UserPreferences {
   final String? webPushVapidKey;
   final String? webPushAuthKey;
   final String? webPushPublicKey;
+  final bool subscribeForTestAlerts;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -376,6 +385,7 @@ class UserPreferences {
     String? webPushAuthKey,
     String? webPushPublicKey,
     int? previousInstalledVersionCode,
+    bool? subscribeForTestAlerts,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -416,6 +426,8 @@ class UserPreferences {
         webPushPublicKey: webPushPublicKey ?? this.webPushPublicKey,
         previousInstalledVersionCode:
             previousInstalledVersionCode ?? this.previousInstalledVersionCode,
+        subscribeForTestAlerts:
+            subscribeForTestAlerts ?? this.subscribeForTestAlerts,
       );
 
   /// the path and filename where the error log is saved
