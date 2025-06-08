@@ -16,6 +16,7 @@ import '../services/api_handler.dart';
 import '../services/list_handler.dart';
 import '../services/subscription_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
+import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 
 class DevSettings extends ConsumerStatefulWidget {
@@ -167,7 +168,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: const Text("Übersicht über Fehlermeldungen"),
+                title: const Text("Übersicht über Fehlermeldungen"), //@TODO translate
                 subtitle: const Text(
                   "Führt zu einer Seite mit den Fehlermeldungen an",
                 ),
@@ -281,6 +282,17 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     }
                   },
                 ),
+              ),
+              ListTile(
+                title:
+                Text(localizations.dev_settings_troubleshoot_notifications),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                    const NotificationTroubleshootDialog(),
+                  );
+                },
               ),
             ],
           ),

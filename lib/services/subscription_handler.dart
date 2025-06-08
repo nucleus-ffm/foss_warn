@@ -16,6 +16,8 @@ import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:uuid/uuid.dart';
 
+import '../class/class_unified_push_handler.dart';
+
 /// register with the given boundingBox for push notifications
 /// and add the new place to the myPlacesProvider list
 Future<void> subscribeForArea({
@@ -24,7 +26,10 @@ Future<void> subscribeForArea({
   required BuildContext context,
   required WidgetRef ref,
 }) async {
-  var userPreferences = ref.watch(userPreferencesProvider);
+  //@TODO(Nucleus): This await does not work. After this unifiedPushRegistered should be set to true but it isn't
+  //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
+  await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
+  if (!context.mounted) return;
   var localizations = context.localizations;
   var alertApi = ref.read(alertApiProvider);
   var uuid = const Uuid();
@@ -36,6 +41,39 @@ Future<void> subscribeForArea({
     context: context,
     text: localizations.loading_screen_loading,
   );
+
+  LoadingScreen.instance().show(
+    context: context,
+    text: localizations.loading_screen_wait_for_push_to_complete,
+  );
+
+  var userPreferences = ref.read(userPreferencesProvider);
+  debugPrint(
+    "wait for registration state=${userPreferences.unifiedPushRegistered}",
+  );
+  // wait for the registration to finish. This shouldn't be necessary as we
+  // wait for setupUnifiedPush(), which should ensure that
+  // userPreferences.unifiedPushRegistered is set to true. But as this isn't
+  // working as expected, and unifiedPushRegistered is not
+  // set to true afterward, we must wait again.
+  if (!userPreferences.unifiedPushRegistered) {
+    await Future.doWhile(() async {
+      await Future.delayed(const Duration(microseconds: 1));
+      userPreferences = ref.read(userPreferencesProvider);
+      return !userPreferences.unifiedPushRegistered;
+    }).timeout(
+      const Duration(seconds: 20),
+      onTimeout: () {
+        debugPrint(
+          "Timeout waiting for unifiedPushRegistered to be set to true.",
+        );
+        return;
+      },
+    );
+  }
+
+  // subscribe for new area and create new place
+  // with the returned subscription id
   String subscriptionId = "";
   try {
     subscriptionId = await alertApi.registerArea(
@@ -53,7 +91,9 @@ Future<void> subscribeForArea({
     LoadingScreen.instance().show(
       context: context,
       text:
-          localizations.add_my_place_with_map_loading_screen_subscription_error,
+          localizations.add_my_place_with_map_loading_screen_subscription_error(
+        e.toString(),
+      ),
     );
     await Future.delayed(
       const Duration(seconds: 5),
@@ -70,7 +110,9 @@ Future<void> subscribeForArea({
     LoadingScreen.instance().show(
       context: context,
       text:
-          localizations.add_my_place_with_map_loading_screen_subscription_error,
+          localizations.add_my_place_with_map_loading_screen_subscription_error(
+        e.toString(),
+      ),
     );
     await Future.delayed(
       const Duration(seconds: 5),

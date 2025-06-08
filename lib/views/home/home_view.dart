@@ -64,10 +64,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
         alertApi: ref.read(alertApiProvider),
         myPlacesService: ref.read(myPlacesProvider.notifier),
         warningService: ref.read(processedAlertsProvider.notifier),
+        context: context,
       ),
       linuxDBusName: "de.nucleus.foss_warn",
-    );
-
+    ).then((registered) {
+      UnifiedPush.register(
+        instance: UserPreferences.unifiedPushInstance,
+      );
+    });
+    // setup unifiedpush at every startup
     unifiedPushHandler.setupUnifiedPush(context, ref);
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
