@@ -36,12 +36,13 @@ class UnifiedPushHandler {
       return;
     }
 
-    _preferencesService.setUnifiedPushRegistered(true);
     _preferencesService.setUnifiedpushEndpoint(endpoint.url);
     if (endpoint.pubKeySet != null) {
       _preferencesService.setWebPushPublicKey(endpoint.pubKeySet!.pubKey);
       _preferencesService.setWebPushAuthKey(endpoint.pubKeySet!.auth);
     }
+    _preferencesService.setUnifiedPushRegistered(true);
+    //@TODO(Nucleus): we need to update the subscriptions and send the new endpoint to the server
   }
 
   void onRegistrationFailed(FailedReason failedReason, String instance) {
@@ -57,6 +58,7 @@ class UnifiedPushHandler {
   void onUnregistered(String instance) {
     _preferencesService.setUnifiedpushEndpoint("");
     _preferencesService.setUnifiedPushRegistered(false);
+    _preferencesService.setWebPushVapidKey(null);
   }
 
   /// callback function to handle notification from unifiedPush
@@ -67,15 +69,20 @@ class UnifiedPushHandler {
     required WarningService warningService,
     required String instance,
     required WidgetRef ref,
+    required BuildContext context,
   }) async {
     if (instance != UserPreferences.unifiedPushInstance) return;
 
     var payload = utf8.decode(message.content);
     debugPrint("Received a notification. Message: $payload");
 
-    if (payload.contains("[DEBUG]") || payload.contains("[HEARTBEAT]")) return;
-
-    ref.invalidate(alertsFutureProvider);
+    var alerts = await ref.refresh(alertsFutureProvider.future);
+    var places = ref.read(myPlacesProvider);
+    var userPreferences = ref.read(userPreferencesProvider);
+    if (!context.mounted) {
+      return;
+    }
+    showNotification(alerts, places, userPreferences, context);
   }
 
   /// register for push notifications and keep registration up to date
@@ -148,9 +155,6 @@ class UnifiedPushHandler {
       );
       return;
     }
-
-    // register with the distributor
-    await UnifiedPush.register(instance: UserPreferences.unifiedPushInstance);
 
     debugPrint(
       "wait for registration state=${_userPreferences.unifiedPushRegistered}",

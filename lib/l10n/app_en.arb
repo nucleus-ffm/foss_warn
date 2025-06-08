@@ -292,7 +292,7 @@
   "@notification_settings_headline": {},
   "notification_settings_notify_by": "Notify by",
   "@notification_settings_notify_by": {},
-  "notification_settings_notify_by_extreme": "extreme Messages",
+  "notification_settings_notify_by_extreme": "Extreme Messages",
   "@notification_settings_notify_by_extreme": {},
   "notification_settings_notify_by_severe": "Severe Messages",
   "@notification_settings_notify_by_severe": {},
@@ -300,6 +300,8 @@
   "@notification_settings_notify_by_moderate": {},
   "notification_settings_notify_by_minor": "Minor Messages",
   "@notification_settings_notify_by_minor": {},
+  "notification_settings_notify_by_update": "Update Messages",
+  "@notification_settings_notify_by_update": {},
   "notification_settings_thunderstorm": "Thunderstorm",
   "@notification_settings_thunderstorm": {},
   "notification_settings_strong_weather": "Strong weather",
@@ -517,6 +519,8 @@
   "@warning_severity_explanation_dialog_minor_description": {},
   "warning_severity_explanation_dialog_extreme_description": "Extraordinary threat to life or property. May have a significant short-term impact on your health, property and/or public infrastructure.",
   "@warning_severity_explanation_dialog_extreme_description": {},
+  "warning_severity_explanation_dialog_update_description": "Update of an already notified alert",
+   "@warning_severity_explanation_dialog_update_description": {},
   "warning_severity_explanation_dialog_headline": "Severity",
   "@warning_severity_explanation_dialog_headline": {},
   "warning_severity_minor": "Minor",
@@ -603,8 +607,16 @@
   "@warning_detail_view_map_center_map_button_tooltip": {},
   "loading_screen_loading": "Loading",
   "@loading_screen_loading": {},
-  "add_my_place_with_map_loading_screen_subscription_error": "Something went wrong. Can not subscribe. Please try again later.",
-  "@add_my_place_with_map_loading_screen_subscription_error": {},
+  "loading_screen_wait_for_push_to_complete": "Wait for push registration to complete.",
+  "add_my_place_with_map_loading_screen_subscription_error": "Something went wrong. Can not subscribe. Please try again later. The server responded with {error}",
+    "@add_my_place_with_map_loading_screen_subscription_error": {
+        "description": "Message shown if the subscriptions failed",
+            "placeholders": {
+                "error": {
+                    "type": "String"
+                }
+            }
+    },
   "add_my_place_with_map_loading_screen_subscription_success": "successfully subscribed",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
   "add_my_place_with_map_select_radius": "Select radius",
@@ -696,6 +708,7 @@
   "error_log_share_info": "Error log shared from FOSSWarn",
   "@error_log_share_info": {},
   "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server",
+  "dev_settings_troubleshoot_notifications": "Troubleshoot notifications",
   "error_log_share_info": "Error log shared from FOSSWarn",
   "invalid_subscription_dialog_headline": "Renew expired subscriptions",
   "invalid_subscription_dialog_text": "Some of your subscriptions have expired. Click on resubscribe to get push notifications again",
@@ -718,5 +731,27 @@
             }
         }
     },
-  "invalid_subscription_dialog_successfully_resubscribed": "Successfully resubscribed"
+  "invalid_subscription_dialog_successfully_resubscribed": "Successfully resubscribed",
+  "notification_channel_other_name": "Other",
+  "notification_channel_other_description": "Other notifications",
+  "notification_group_name": "FOSSWarn notifications",
+  "notification_group_description": "There are multiple notifications from FOSSWarn",
+  "notification_alert_new_title": "New alert for {place}",
+  "@notification_alert_new_title": {
+    "description": "Title of the notification shown for a new alert",
+    "placeholders": {
+        "place": {
+            "type": "String"
+        }
+    }
+  },
+  "notification_alert_update_title": "Updated alert for {place}",
+    "@notification_alert_title": {
+      "description": "Title of the notification shown for an updated alert",
+      "placeholders": {
+          "place": {
+              "type": "String"
+          }
+      }
+    }
 }

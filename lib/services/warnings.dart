@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
@@ -5,6 +6,7 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
@@ -192,6 +194,55 @@ void markAllWarningsAsRead(WidgetRef ref) {
   }
 }
 
+/// show notifications for alerts
+void showNotification(
+  List<WarnMessage> alerts,
+  List<Place> places,
+  UserPreferences userPreferences,
+  BuildContext context,
+) {
+  var localisations = context.localizations;
+
+  for (WarnMessage warning in alerts) {
+    var place = places.firstWhere(
+      (place) => place.subscriptionId == warning.placeSubscriptionId,
+    );
+
+    if ((!warning.read &&
+            !warning.notified &&
+            !warning.isUpdateOfAlreadyNotifiedWarning) &&
+        checkIfEventShouldBeNotified(
+          warning.info[0].severity,
+          userPreferences,
+        )) {
+      NotificationService.showNotification(
+        // generate from the warning in the List the notification id
+        // because the warning identifier is no int, we have to generate a hash code
+        id: warning.identifier.hashCode,
+        title: localisations.notification_alert_new_title(place.name),
+        body: warning.info[0].headline,
+        payload: place.name,
+        channelId:
+            "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
+        channelName: warning.info[0].severity.getLocalizedName(context),
+      );
+    } else if (warning.isUpdateOfAlreadyNotifiedWarning &&
+        !warning.notified &&
+        !warning.read) {
+      NotificationService.showNotification(
+        // generate from the warning in the List the notification id
+        // because the warning identifier is no int, we have to generate a hash code
+        id: warning.identifier.hashCode,
+        title: localisations.notification_alert_update_title(place.name),
+        body: warning.info[0].headline,
+        payload: place.name,
+        channelId: "de.nucleus.foss_warn.notifications_update",
+        channelName: "update",
+      );
+    }
+  }
+}
+
 class WarningService extends StateNotifier<List<WarnMessage>> {
   WarningService({required this.userPreferences, required this.places})
       : super(<WarnMessage>[]);
@@ -205,8 +256,9 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
         (element) =>
             !element.notified &&
             !element.hideWarningBecauseThereIsANewerVersion &&
-            _checkIfEventShouldBeNotified(
+            checkIfEventShouldBeNotified(
               element.info[0].severity,
+              userPreferences,
             ),
       );
 
@@ -223,50 +275,6 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
     state = alerts;
   }
 
-  /// checks if there can be a notification for a warning in [_warnings]
-  Future<void> sendNotificationForWarnings() async {
-    var updatedWarnings = <WarnMessage>[];
-
-    for (WarnMessage warning in state) {
-      var place = places.firstWhere(
-        (place) => place.subscriptionId == warning.placeSubscriptionId,
-      );
-
-      if ((!warning.read &&
-              !warning.notified &&
-              !warning.isUpdateOfAlreadyNotifiedWarning) &&
-          _checkIfEventShouldBeNotified(warning.info[0].severity)) {
-        await NotificationService.showNotification(
-          // generate from the warning in the List the notification id
-          // because the warning identifier is no int, we have to generate a hash code
-          id: warning.identifier.hashCode,
-          title: "Neue Warnung für ${place.name}",
-          body: warning.info[0].headline,
-          payload: place.name,
-          channel: warning.info[0].severity.name,
-        );
-      } else if (warning.isUpdateOfAlreadyNotifiedWarning &&
-          !warning.notified &&
-          !warning.read) {
-        await await NotificationService.showNotification(
-          // generate from the warning in the List the notification id
-          // because the warning identifier is no int, we have to generate a hash code
-          id: warning.identifier.hashCode,
-          title: "Update einer Warnung für ${place.name}",
-          body: warning.info[0].headline,
-          payload: place.name,
-          channel: "de.nucleus.foss_warn.notifications_update",
-        );
-      }
-
-      // Alert is not already read or shown as notification
-      // set notified to true to avoid sending notification twice
-      updatedWarnings.add(warning.copyWith(notified: true));
-    }
-
-    state = updatedWarnings;
-  }
-
   /// set the read and notified status from all warnings to false
   /// used for debug purpose
   /// [@ref] to update view
@@ -280,21 +288,24 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
       ],
     ];
   }
-
-  /// Return [true] if the user wants a notification - [false] if not.
-  ///
-  /// The source should be listed in the List notificationSourceSettings.
-  /// check if the user wants to be notified for
-  /// the given source and the given severity
-  ///
-  /// example:
-  ///
-  /// Warning severity | Notification setting | notification?   <br>
-  /// Moderate (2)     | Minor (3)            | 3 >= 2 => true  <br>
-  /// Minor (3)        | Moderate (2)         | 2 >= 3 => false
-  bool _checkIfEventShouldBeNotified(Severity severity) =>
-      Severity.getIndexFromSeverity(
-        userPreferences.notificationSourceSetting.notificationLevel,
-      ) >=
-      Severity.getIndexFromSeverity(severity);
 }
+
+/// Return [true] if the user wants a notification - [false] if not.
+///
+/// The source should be listed in the List notificationSourceSettings.
+/// check if the user wants to be notified for
+/// the given source and the given severity
+///
+/// example:
+///
+/// Warning severity | Notification setting | notification?   <br>
+/// Moderate (2)     | Minor (3)            | 3 >= 2 => true  <br>
+/// Minor (3)        | Moderate (2)         | 2 >= 3 => false
+bool checkIfEventShouldBeNotified(
+  Severity severity,
+  UserPreferences userPreferences,
+) =>
+    Severity.getIndexFromSeverity(
+      userPreferences.notificationSourceSetting.notificationLevel,
+    ) >=
+    Severity.getIndexFromSeverity(severity);

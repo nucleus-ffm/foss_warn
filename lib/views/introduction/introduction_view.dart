@@ -84,6 +84,12 @@ class _IntroductionViewState extends ConsumerState<IntroductionView>
       hasNotificationPermission =
           await NotificationService().requestNotificationPermission() ?? false;
 
+      if (!context.mounted) {
+        return;
+      }
+      // clean and create the notification channels used by FOSSWarn
+      NotificationService.cleanUpNotificationChannels();
+      NotificationService.createNotificationChannels(context);
       setState(() {});
       NotificationService().init();
     }
@@ -122,10 +128,6 @@ class _IntroductionViewState extends ConsumerState<IntroductionView>
         IntroductionNotificationPermissionSlide(
           hasPermission: hasNotificationPermission,
           onPermissionChanged: onRequestNotificationPermissionPressed,
-        ),
-        IntroductionAlarmPermissionSlide(
-          hasPermission: hasAlarmPermission,
-          onPermissionChanged: onRequestAlarmPermissionPressed,
         ),
         const IntroductionBatteryOptimizationSlide(),
       ],
