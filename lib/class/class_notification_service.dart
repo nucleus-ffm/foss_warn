@@ -285,21 +285,11 @@ class NotificationService {
     }
   }
 
-  /// Request exact alarm permission on Android. This methode is currently
-  /// used in the welcome view. This should later be migrated into a cross
-  /// platform solution. This permission is currently not used for notifications
-  /// but will be necessary if the alarmManager plugin in combination with
-  /// the UnifiedPush plugin is working again. We should move the permission
-  /// handling later out of the notifications setup.
-  Future<bool?> requestExactAlarmPermission() async {
-    final androidNotificationPlugin =
-        _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
-    if (androidNotificationPlugin != null) {
-      // Request schedule exact alarm permission (Android 14+)
-      return await androidNotificationPlugin.requestExactAlarmsPermission();
-    } else {
-      return null;
+  /// [Android only]
+  /// Function to remove all deprecated notification channels
+  static Future<void> cleanUpNotificationChannels() async {
+    if (!Platform.isAndroid) {
+      return;
     }
   }
 
