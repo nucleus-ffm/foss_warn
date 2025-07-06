@@ -155,24 +155,5 @@ class UnifiedPushHandler {
       );
       return;
     }
-
-    debugPrint(
-      "wait for registration state=${_userPreferences.unifiedPushRegistered}",
-    );
-    // wait for the registration to finish
-    if (!_userPreferences.unifiedPushRegistered) {
-      await Future.doWhile(() async {
-        await Future.delayed(const Duration(microseconds: 1));
-        return !_userPreferences.unifiedPushRegistered;
-      }).timeout(
-        const Duration(seconds: 20),
-        onTimeout: () {
-          debugPrint(
-            "Timeout waiting for unifiedPushRegistered to be set to true.",
-          );
-          return;
-        },
-      );
-    }
   }
 }

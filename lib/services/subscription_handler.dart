@@ -26,9 +26,8 @@ Future<void> subscribeForArea({
   required BuildContext context,
   required WidgetRef ref,
 }) async {
-  //@TODO(Nucleus): This await does not work. After this unifiedPushRegistered should be set to true but it isn't
   //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
-  await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
+  ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
   if (!context.mounted) return;
   var localizations = context.localizations;
   var alertApi = ref.read(alertApiProvider);
@@ -51,11 +50,7 @@ Future<void> subscribeForArea({
   debugPrint(
     "wait for registration state=${userPreferences.unifiedPushRegistered}",
   );
-  // wait for the registration to finish. This shouldn't be necessary as we
-  // wait for setupUnifiedPush(), which should ensure that
-  // userPreferences.unifiedPushRegistered is set to true. But as this isn't
-  // working as expected, and unifiedPushRegistered is not
-  // set to true afterward, we must wait again.
+  // wait for the registration to finish.
   if (!userPreferences.unifiedPushRegistered) {
     await Future.doWhile(() async {
       await Future.delayed(const Duration(microseconds: 1));
@@ -171,8 +166,6 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
         unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
       );
     } on RegisterAreaError catch (e) {
-      debugPrint("RegisterAreaError $e");
-      //@TODO display error
       if (!context.mounted) return;
       LoadingScreen.instance().show(
         context: context,
@@ -181,7 +174,6 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
       LoadingScreen.instance().hide();
       return;
     } on UnregisterAreaError catch (e) {
-      debugPrint("UnregisterAreaError $e");
       if (!context.mounted) return;
       LoadingScreen.instance().show(
         context: context,
