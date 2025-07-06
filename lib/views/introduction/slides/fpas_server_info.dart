@@ -14,7 +14,7 @@ class IntroductionFPASServerInfoSlide extends StatelessWidget {
         'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-the-FOSS-Public-Alert-Server-and-why-do-I-have-to-select-a-server%3F';
 
     return IntroductionBaseSlide(
-      imagePath: "app_icon.png",
+      imagePath: "fpas_logo.png",
       title: localizations.welcome_view_foss_server_selection_headline,
       text: localizations.welcome_view_foss_server_selection_text,
       footer: Column(
