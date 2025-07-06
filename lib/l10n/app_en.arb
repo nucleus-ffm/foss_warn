@@ -312,10 +312,6 @@
   "@notification_settings_everything": {},
   "dev_settings_headline": "Developer Settings",
   "@dev_settings_headline": {},
-  "dev_settings_test_notification": "Test Notification",
-  "@dev_settings_test_notification": {},
-  "dev_settings_test_notification_text": "Manually runs the background service once",
-  "@dev_settings_test_notification_text": {},
   "dev_settings_delete_list_of_read_warnings": "Delete list of read warnings",
   "@dev_settings_delete_list_of_read_warnings": {},
   "dev_settings_delete_list_of_read_warnings_text": "manually clears the saved list of warnings already read.",
@@ -330,6 +326,15 @@
   "@dev_settings_load_cached_warnings_text": {},
   "dev_settings_success": "done",
   "@dev_settings_success": {},
+  "dev_settings_collect_system_information_title": "Collect system information for Troubleshooting",
+  "dev_settings_collect_system_information_subtitle": "Collects information about the system that can be sent to the developer for error handling. No data is sent automatically.",
+  "dev_settings_collect_system_information_snackbar": "Collecting system information.",
+  "dev_settings_open_log_file_viewer_title": "Open Logfile viewer",
+  "dev_settings_open_log_file_viewer_subtitle": "Provides an overview over all error messages",
+  "dev_settings_show_error_messages_title": "Show error messages",
+  "dev_settings_show_error_messages_subtitle": "Shows a dialog with error messages",
+  "dev_settings_max_size_bounding_box_title": "Max size of bounding box for a subscription (be careful)",
+  "dev_settings_max_size_bounding_box_subtitle": "Allows to select the max size of the bounding box for a subscription. Larger subscription areas can affect performance. Be careful.",
   "welcome_view_foss_warn_headline": "FOSS Warn",
   "@welcome_view_foss_warn_headline": {},
   "welcome_view_foss_warn_text": "Glad you want to use FOSS Warn. Swipe to start the introduction.",
@@ -753,5 +758,39 @@
               "type": "String"
           }
       }
+    },
+  "troubleshoot_notification_title": "Troubleshoot notifications",
+  "troubleshoot_notification_register_state": "Currently registered? {state}",
+  "@troubleshoot_notification_register_state": {
+       "description": "State of the push notification service",
+       "placeholder": {
+            "state": {
+                "type": "bool"
+            }
+       }
+  },
+  "troubleshoot_notification_current_endpoint": "Current endpoint: {endpoint}",
+  "@troubleshoot_notification_current_endpoint": {
+    "description": "Current selected endpoint for push notifications",
+    "placeholder": {
+        "endpoint": {
+            "type": "String"
+        }
     }
+  },
+  "troubleshoot_notification_current_vapid_key": "Current VAPID key: {key}",
+  "@troubleshoot_notification_current_vapid_key": {
+        "description": "Current vapid key",
+        "placeholder": {
+            "key":{
+                "type": "String"
+            }
+        }
+  },
+  "troubleshoot_notification_reset_push_setup": "Reset push setup",
+  "troubleshoot_notification_resubscribe": "Re-subscribe for places with new push config",
+  "no_up_distributor_found_dialog_title": "No push distributor found",
+  "no_up_distributor_found_dialog_explanation": "FOSSWarn couldn't find any UnifiedPush distributor installed on your device. To subscribe to an area, you must have one installed, or you won't get any notifications. Please install a distributor and retry the subscription.",
+  "no_up_distributor_found_up_explanation_button": "What is unifiedPush and how to install a distributor?",
+  "no_up_distributor_found_direct_link_to_ntfy": "For the fast ones: ntfy on F-Droid (requires changing the default server)"
 }
