@@ -148,3 +148,113 @@ Future<void> subscribeForArea({
   );
   LoadingScreen.instance().hide();
 }
+
+Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
+  var alertApi = ref.read(alertApiProvider);
+  var places = ref.read(myPlacesProvider);
+  var userPreferences = ref.read(userPreferencesProvider);
+
+  LoadingScreen.instance().show(
+    context: context,
+    text: "Resubscribing for all of your areas. Please wait.",
+  );
+
+  for (Place place in places) {
+    String newSubscriptionId = "";
+    // register again
+    try {
+      // remove old subscription, if the subscription is already deleted nothing changes
+      await alertApi.unregisterArea(subscriptionId: place.subscriptionId);
+
+      newSubscriptionId = await alertApi.registerArea(
+        boundingBox: place.boundingBox,
+        unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
+      );
+    } on RegisterAreaError catch (e) {
+      debugPrint("RegisterAreaError $e");
+      //@TODO display error
+      if (!context.mounted) return;
+      LoadingScreen.instance().show(
+        context: context,
+        text: "Failed to register for area. The server responded with $e",
+      );
+      LoadingScreen.instance().hide();
+      return;
+    } on UnregisterAreaError catch (e) {
+      debugPrint("UnregisterAreaError $e");
+      if (!context.mounted) return;
+      LoadingScreen.instance().show(
+        context: context,
+        text: "Failed to unregister for area. The server responded with $e",
+      );
+      LoadingScreen.instance().hide();
+      return;
+    }
+
+    // replace the old subscription id with the new one
+    ref.read(myPlacesProvider.notifier).set(
+          ref.read(myPlacesProvider).updateEntry(
+                place.copyWith(
+                  subscriptionId: newSubscriptionId,
+                ),
+              ),
+        );
+  }
+  LoadingScreen.instance().hide();
+}
+
+/// Resubscribe for a place in case of expired subscription
+Future<void> resubscribeForOneAreaInBackground(
+  WidgetRef ref,
+  Place place,
+) async {
+  var alertApi = ref.read(alertApiProvider);
+  String newSubscriptionId = "";
+  var userPreferences = ref.read(userPreferencesProvider);
+
+  try {
+    newSubscriptionId = await alertApi.registerArea(
+      boundingBox: place.boundingBox,
+      unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
+    );
+  } on RegisterAreaError catch (e) {
+    debugPrint("RegisterAreaError $e");
+    ErrorLogger.writeErrorLog(
+      "subscription_handler.dart",
+      "resubscribeForOneAreaInBackground",
+      e.toString(),
+    );
+  }
+
+  ref.read(myPlacesProvider.notifier).set(
+        ref.read(myPlacesProvider).updateEntry(
+              place.copyWith(
+                subscriptionId: newSubscriptionId,
+              ),
+            ),
+      );
+}
+
+/// This method need to be called once a week to ensure that the subscription on
+/// the server wasn't removed. Calling it more often is also fine.
+Future<void> updateAllSubscriptions(WidgetRef ref) async {
+  debugPrint("UpdateAllSubscriptions");
+  var places = await ref.read(cachedPlacesProvider.future);
+  var api = ref.read(alertApiProvider);
+  for (Place place in places) {
+    try {
+      debugPrint("Send update for subscription");
+      api.updateSubscription(subscriptionId: place.subscriptionId);
+    } on InvalidSubscriptionError {
+      // the subscription expired, we have to register again
+      resubscribeForOneAreaInBackground(ref, place);
+    } on RegisterAreaError catch (e) {
+      debugPrint("Failed to update all subscriptions due to $e");
+      ErrorLogger.writeErrorLog(
+        "subscription_handler.dart",
+        "updateAllSubscriptions",
+        e.toString(),
+      );
+    }
+  }
+}

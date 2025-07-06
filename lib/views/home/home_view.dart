@@ -13,6 +13,8 @@ import 'package:foss_warn/views/my_places_view.dart';
 import 'package:foss_warn/widgets/dialogs/sort_by_dialog.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
+import '../../services/subscription_handler.dart';
+
 enum MainMenuItem {
   settings,
   about,
@@ -74,6 +76,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
     });
     // setup unifiedpush at every startup
     unifiedPushHandler.setupUnifiedPush(context, ref);
+    // update all subscriptions
+    updateAllSubscriptions(ref);
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
   }
