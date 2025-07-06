@@ -576,7 +576,7 @@
   "@explanation_warning_level_ack": {},
   "explanation_warning_level_error": "பிழை",
   "@explanation_warning_level_error": {},
-  "my_place_warnings_count": "அங்கு {எண்ணிக்கை, பன்மை, = 0 {are no warnings} = 1 {is one warning} மற்றவை {{count} எச்சரிக்கைகள்}}",
+  "my_place_warnings_count": "அங்கு {count, plural, =0{முன்னறிவிப்புகள் இல்லை} =1{ஒரு முன்னறிவிப்பு} other{{count} முன்னறிவிப்புகள்}}",
   "@my_place_warnings_count": {
     "description": "Tells how many warnings there are for a place",
     "placeholders": {
