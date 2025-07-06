@@ -25,20 +25,3 @@ Future<List<Place>> loadMyPlacesList() async {
 
   return [];
 }
-
-/// load the time when the API could be called successfully the last time.
-/// used in the status notification
-Future<String> loadLastBackgroundUpdateTime() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  if (preferences.containsKey("lastBackgroundUpdateTime")) {
-    return preferences.getString("lastBackgroundUpdateTime")!;
-  }
-  return "";
-}
-
-/// saved the time when the API could be called successfully the last time.
-/// used in the status notification
-Future<void> saveLastBackgroundUpdateTime(String time) async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("lastBackgroundUpdateTime", time);
-}
