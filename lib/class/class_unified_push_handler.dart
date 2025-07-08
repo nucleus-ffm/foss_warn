@@ -76,13 +76,14 @@ class UnifiedPushHandler {
     var payload = utf8.decode(message.content);
     debugPrint("Received a notification. Message: $payload");
 
-    var alerts = await ref.refresh(alertsFutureProvider.future);
+    var alerts = ref.refresh(processedAlertsProvider);
+    var alertsService = ref.read(processedAlertsProvider.notifier);
     var places = ref.read(myPlacesProvider);
     var userPreferences = ref.read(userPreferencesProvider);
     if (!context.mounted) {
       return;
     }
-    showNotification(alerts, places, userPreferences, context);
+    showNotification(alerts, places, userPreferences, context, alertsService);
   }
 
   /// register for push notifications and keep registration up to date

@@ -227,8 +227,11 @@ Future<void> resubscribeForOneAreaInBackground(
       );
 }
 
-/// This method need to be called once a week to ensure that the subscription on
-/// the server wasn't removed. Calling it more often is also fine.
+/// Send an update message to the server to keep the subscriptions alive
+///
+/// This method needs to be called at least once a week to ensure that
+/// the subscription on the server hasn't been removed.
+/// Calling it more often is also fine.
 Future<void> updateAllSubscriptions(WidgetRef ref) async {
   debugPrint("UpdateAllSubscriptions");
   var places = await ref.read(cachedPlacesProvider.future);

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' as foundation;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/themes/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,6 +92,19 @@ final userPreferencesProvider =
         NotificationPreferences.fromJson(notificationSourceSettingMap);
   }
 
+  /// load the alerts from disk and deserialize it
+  List<WarnMessage> loadAlertsFromDisk() {
+    String? alerts = preferences.getString("cachedAlerts");
+    List<WarnMessage> result = [];
+    if (alerts != null) {
+      List<dynamic> alertsAsJson = jsonDecode(alerts);
+      for (Map<String, dynamic> alert in alertsAsJson) {
+        result.add(WarnMessage.fromJsonFromStorage(alert));
+      }
+    }
+    return result;
+  }
+
   return UserPreferencesService(
     UserPreferences(
       shouldNotifyGeneral: preferences.getBool("shouldNotifyGeneral") ?? true,
@@ -133,6 +147,7 @@ final userPreferencesProvider =
           preferences.getInt("previousInstalledVersionCode") ?? -1,
       subscribeForTestAlerts:
           preferences.getBool("subscribeForTestAlerts") ?? false,
+      cachedAlerts: loadAlertsFromDisk(),
     ),
     sharedPreferences: preferences,
   );
@@ -288,6 +303,12 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(subscribeForTestAlerts: value);
     _sharedPreferences.setBool("subscribeForTestAlerts", value);
   }
+
+  void setCachedAlerts(List<WarnMessage> alerts) {
+    state = state.copyWith(cachedAlerts: alerts);
+    var alertsJson = jsonEncode(alerts);
+    _sharedPreferences.setString("cachedAlerts", alertsJson);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -320,6 +341,7 @@ class UserPreferences {
     required this.webPushPublicKey,
     required this.previousInstalledVersionCode,
     required this.subscribeForTestAlerts,
+    required this.cachedAlerts,
   });
 
   final bool shouldNotifyGeneral;
@@ -350,6 +372,7 @@ class UserPreferences {
   final String? webPushAuthKey;
   final String? webPushPublicKey;
   final bool subscribeForTestAlerts;
+  final List<WarnMessage> cachedAlerts;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -390,6 +413,7 @@ class UserPreferences {
     String? webPushPublicKey,
     int? previousInstalledVersionCode,
     bool? subscribeForTestAlerts,
+    List<WarnMessage>? cachedAlerts,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -432,6 +456,7 @@ class UserPreferences {
             previousInstalledVersionCode ?? this.previousInstalledVersionCode,
         subscribeForTestAlerts:
             subscribeForTestAlerts ?? this.subscribeForTestAlerts,
+        cachedAlerts: cachedAlerts ?? this.cachedAlerts,
       );
 
   /// the path and filename where the error log is saved
