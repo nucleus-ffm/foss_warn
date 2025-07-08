@@ -238,6 +238,11 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
             (alert) => alert.identifier == widget.warningIdentifier,
           );
 
+      // update the read state of the alert
+      var alertsService = ref.read(processedAlertsProvider.notifier);
+      alertsService.updateAlert(warning.copyWith(read: true));
+      ref.invalidate(alertsFutureProvider);
+
       // cancel the notification
       await NotificationService.cancelOneNotification(
         warning.identifier.hashCode,

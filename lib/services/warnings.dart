@@ -20,6 +20,7 @@ final processedAlertsProvider =
   (ref) {
     return WarningService(
       userPreferences: ref.watch(userPreferencesProvider),
+      userPreferencesService: ref.watch(userPreferencesProvider.notifier),
       places: ref.watch(myPlacesProvider),
     );
   },
@@ -96,7 +97,23 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     ],
   ]);
 
-  return newAlertsDetails + previouslyCachedAlerts;
+  var result = newAlertsDetails + previouslyCachedAlerts;
+
+  // add new alert to the processed alerts
+  for (WarnMessage alert in newAlertsDetails) {
+    ref.read(processedAlertsProvider.notifier).updateAlert(alert);
+  }
+
+  var cachedAlerts = ref.read(processedAlertsProvider);
+  for (WarnMessage alert in cachedAlerts) {
+    if (!retrievedAlerts
+        .any((apiResult) => alert.fpasId == apiResult.alertId)) {
+      // the alert is not in the server response anymore, remove cached alert
+      ref.read(processedAlertsProvider).remove(alert);
+    }
+  }
+
+  return result;
 });
 
 /// Provides a complete list of all warnings for subscribed places.
@@ -200,6 +217,7 @@ void showNotification(
   List<Place> places,
   UserPreferences userPreferences,
   BuildContext context,
+  WarningService alertService,
 ) {
   var localisations = context.localizations;
 
@@ -226,6 +244,11 @@ void showNotification(
             "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
         channelName: warning.info[0].severity.getLocalizedName(context),
       );
+      // update notification status for alert
+      //@TODO(Nucleus): Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
+      //@TODO(Nucleus): How can we avoid that the WarningService gets disposed?
+      if (!alertService.mounted) return;
+      alertService.updateAlert(warning.copyWith(notified: true));
     } else if (warning.isUpdateOfAlreadyNotifiedWarning &&
         !warning.notified &&
         !warning.read) {
@@ -244,11 +267,25 @@ void showNotification(
 }
 
 class WarningService extends StateNotifier<List<WarnMessage>> {
-  WarningService({required this.userPreferences, required this.places})
-      : super(<WarnMessage>[]);
+  WarningService({
+    required this.userPreferences,
+    required this.userPreferencesService,
+    required this.places,
+  }) : super([]) {
+    _loadAlertsFromDisk();
+  }
 
   final UserPreferences userPreferences;
+  final UserPreferencesService userPreferencesService;
   final List<Place> places;
+
+  Future<void> _loadAlertsFromDisk() async {
+    state = userPreferences.cachedAlerts;
+  }
+
+  Future<void> _saveAlertsToDisk() async {
+    userPreferencesService.setCachedAlerts(state);
+  }
 
   bool hasWarningToNotify() =>
       state.isNotEmpty &&
@@ -266,13 +303,23 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
     var alerts = List<WarnMessage>.from(state);
 
     if (alerts.contains(alert)) {
-      alerts.updateEntry(alert);
+      // do not forget to use the return value as new state
+      alerts = alerts.updateEntry(alert);
     } else {
       // New from polling
       alerts.add(alert);
     }
-
     state = alerts;
+    _saveAlertsToDisk();
+  }
+
+  void deleteAlert(WarnMessage alert) {
+    var alerts = List<WarnMessage>.from(state);
+
+    if (alerts.contains(alert)) {
+      alerts.remove(alert);
+    }
+    _saveAlertsToDisk();
   }
 
   /// set the read and notified status from all warnings to false

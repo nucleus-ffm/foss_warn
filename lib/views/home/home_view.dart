@@ -55,6 +55,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
 
     // init unified push
+    // In a dev environment with multiple hot restarts, this registers multiple callbacks
     UnifiedPush.initialize(
       onNewEndpoint: unifiedPushHandler.onNewEndpoint,
       onRegistrationFailed: unifiedPushHandler.onRegistrationFailed,
@@ -70,12 +71,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
       ),
       linuxDBusName: "de.nucleus.foss_warn",
     ).then((registered) {
-      UnifiedPush.register(
-        instance: UserPreferences.unifiedPushInstance,
-      );
+      if (registered) {
+        // as we are already registered, we don't have to call setupUnifiedPush
+        UnifiedPush.register(
+          instance: UserPreferences.unifiedPushInstance,
+        );
+      } else {
+        if (!mounted) {
+          return;
+        }
+        // setup unifiedPush at every startup
+        unifiedPushHandler.setupUnifiedPush(context, ref);
+      }
     });
-    // setup unifiedpush at every startup
-    unifiedPushHandler.setupUnifiedPush(context, ref);
     // update all subscriptions
     updateAllSubscriptions(ref);
 

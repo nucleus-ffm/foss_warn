@@ -115,25 +115,38 @@ class WarnMessage {
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
         status: Status.fromJson(json["status"]),
-        messageType: MessageType.fromJson(json["msgType"]),
+        messageType: json["msgType"] != null
+            ? MessageType.fromJson(json["msgType"])
+            : MessageType.alert,
         scope: Scope.fromJson(json["scope"]),
         publisher: "", //@todo
         info: Info.infoListFromJsonWithCAPIData(json['info']),
         references: json["references"] == null
             ? null
             : References.fromString(json['references']),
-        notified: false,
-        read: false,
+        notified: json['notified'] ?? false,
+        read: json['read'] ?? false,
+      );
+
+  factory WarnMessage.fromJsonFromStorage(
+    Map<String, dynamic> json,
+  ) =>
+      WarnMessage.fromJson(
+        json,
+        fpasId: json['fpasId'],
+        placeSubscriptionId: json['placeSubscriptionId'],
       );
 
   Map<String, dynamic> toJson() => {
         'fpasId': fpasId,
+        'placeSubscriptionId': placeSubscriptionId,
         'identifier': identifier,
         'publisher': publisher,
         'sender': sender,
         'sent': sent,
         'status': status,
-        'messageType': messageType,
+        'msgType':
+            messageType, // we are using the msgType here to be compatibel with CAP
         'scope': scope,
         'notified': notified,
         'read': read,
