@@ -11,7 +11,7 @@ on:
   
 env:
   JAVA_VERSION: "17.x"
-  FLUTTER_VERSION: "3.27.4"
+  FLUTTER_VERSION: "3.29.0"
   FLUTTER_CHANNEL: 'stable'
   PROPERTIES_PATH: "./android/key.properties"
   STOREFILE_PATH: "key.jks"
