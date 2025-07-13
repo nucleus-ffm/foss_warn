@@ -787,7 +787,26 @@
             }
         }
   },
+   "troubleshoot_notification_current_public_key": "Current public key: {key}",
+   "@troubleshoot_notification_current_vapid_key": {
+         "description": "Current public key",
+         "placeholder": {
+             "key":{
+                 "type": "String"
+             }
+         }
+   },
+    "troubleshoot_notification_current_auth_key": "Current auth key: {key}",
+    "@troubleshoot_notification_current_auth_key": {
+           "description": "Current auth key",
+           "placeholder": {
+               "key":{
+                   "type": "String"
+               }
+           }
+    },
   "troubleshoot_notification_reset_push_setup": "Reset push setup",
+  "troubleshoot_notification_unregister_for_push": "Unregister",
   "troubleshoot_notification_resubscribe": "Re-subscribe for places with new push config",
   "no_up_distributor_found_dialog_title": "No push distributor found",
   "no_up_distributor_found_dialog_explanation": "FOSSWarn couldn't find any UnifiedPush distributor installed on your device. To subscribe to an area, you must have one installed, or you won't get any notifications. Please install a distributor and retry the subscription.",
