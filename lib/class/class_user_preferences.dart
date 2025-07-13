@@ -140,14 +140,16 @@ final userPreferencesProvider =
       fossPublicAlertSubscriptionIdsToSubscribe: preferences
               .getStringList("fossPublicAlertSubscriptionIdsToSubscribe") ??
           [],
-      webPushVapidKey: preferences.getString("webPushVapidKey"),
-      webPushAuthKey: preferences.getString("webPushAuthKey"),
-      webPushPublicKey: preferences.getString("webPushPublicKey"),
+      webPushVapidKey: preferences.getString("webPushVapidKey") ?? "",
+      webPushAuthKey: preferences.getString("webPushAuthKey") ?? "",
+      webPushPublicKey: preferences.getString("webPushPublicKey") ?? "",
       previousInstalledVersionCode:
           preferences.getInt("previousInstalledVersionCode") ?? -1,
       subscribeForTestAlerts:
           preferences.getBool("subscribeForTestAlerts") ?? false,
       cachedAlerts: loadAlertsFromDisk(),
+      showDebugNotification:
+          preferences.getBool("showDebugNotification") ?? false,
     ),
     sharedPreferences: preferences,
   );
@@ -259,7 +261,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
 
   void setUnifiedpushEndpoint(String value) {
     state = state.copyWith(unifiedPushEndpoint: value);
-    _sharedPreferences.setString("unifiedPushEndpoint", value);
+    if (value != "") {
+      _sharedPreferences.setString("unifiedPushEndpoint", value);
+    } else {
+      _sharedPreferences.remove("unifiedPushEndpoint");
+    }
   }
 
   void setUnifiedPushRegistered(bool value) {
@@ -275,23 +281,31 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     );
   }
 
-  void setWebPushVapidKey(String? value) {
+  void setWebPushVapidKey(String value) {
     state = state.copyWith(webPushVapidKey: value);
-    if (value == null) {
-      _sharedPreferences.remove("webPushVapidKey");
-    } else {
+    if (value != "") {
       _sharedPreferences.setString("webPushVapidKey", value);
+    } else {
+      _sharedPreferences.remove("webPushVapidKey");
     }
   }
 
   void setWebPushPublicKey(String value) {
     state = state.copyWith(webPushPublicKey: value);
-    _sharedPreferences.setString("webPushPublicKey", value);
+    if (value != "") {
+      _sharedPreferences.setString("webPushPublicKey", value);
+    } else {
+      _sharedPreferences.remove("webPushPublicKey");
+    }
   }
 
   void setWebPushAuthKey(String value) {
     state = state.copyWith(webPushAuthKey: value);
-    _sharedPreferences.setString("webPushAuthKey", value);
+    if (value != "") {
+      _sharedPreferences.setString("webPushAuthKey", value);
+    } else {
+      _sharedPreferences.remove("webPushAuthKey");
+    }
   }
 
   void setPreviouslyInstalledVersionCode(int value) {
@@ -308,6 +322,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(cachedAlerts: alerts);
     var alertsJson = jsonEncode(alerts);
     _sharedPreferences.setString("cachedAlerts", alertsJson);
+  }
+
+  void setShowDebugNotification(bool value) {
+    state = state.copyWith(showDebugNotification: value);
+    _sharedPreferences.setBool("showDebugNotification", value);
   }
 }
 
@@ -342,6 +361,7 @@ class UserPreferences {
     required this.previousInstalledVersionCode,
     required this.subscribeForTestAlerts,
     required this.cachedAlerts,
+    required this.showDebugNotification,
   });
 
   final bool shouldNotifyGeneral;
@@ -368,11 +388,12 @@ class UserPreferences {
   final String unifiedPushEndpoint;
   final bool unifiedPushRegistered;
   final List<String> fossPublicAlertSubscriptionIdsToSubscribe;
-  final String? webPushVapidKey;
-  final String? webPushAuthKey;
-  final String? webPushPublicKey;
+  final String webPushVapidKey;
+  final String webPushAuthKey;
+  final String webPushPublicKey;
   final bool subscribeForTestAlerts;
   final List<WarnMessage> cachedAlerts;
+  final bool showDebugNotification;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -414,6 +435,7 @@ class UserPreferences {
     int? previousInstalledVersionCode,
     bool? subscribeForTestAlerts,
     List<WarnMessage>? cachedAlerts,
+    bool? showDebugNotification,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -457,6 +479,8 @@ class UserPreferences {
         subscribeForTestAlerts:
             subscribeForTestAlerts ?? this.subscribeForTestAlerts,
         cachedAlerts: cachedAlerts ?? this.cachedAlerts,
+        showDebugNotification:
+            showDebugNotification ?? this.showDebugNotification,
       );
 
   /// the path and filename where the error log is saved
