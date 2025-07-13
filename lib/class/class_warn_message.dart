@@ -123,7 +123,7 @@ class WarnMessage {
         info: Info.infoListFromJsonWithCAPIData(json['info']),
         references: json["references"] == null
             ? null
-            : References.fromString(json['references']),
+            : References.fromStringOrJson(json['references']),
         notified: json['notified'] ?? false,
         read: json['read'] ?? false,
       );
