@@ -269,6 +269,18 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   );
                 },
               ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title: Text(localizations.dev_settings_show_debug_notification),
+                trailing: Switch(
+                  value: userPreferences.showDebugNotification,
+                  onChanged: (value) async {
+                    userPreferencesService.setShowDebugNotification(
+                      !userPreferences.showDebugNotification,
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
