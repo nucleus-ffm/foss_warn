@@ -398,9 +398,9 @@ class UserPreferences {
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
   // That way we only need to keep track of one number.
-  static const String versionNumber = "1.0.0-alpha_1";
+  static const String versionNumber = "1.0.0-alpha_2";
 
-  static const int currentVersionCode = 32;
+  static const int currentVersionCode = 36;
   final int previousInstalledVersionCode;
 
   static const String unifiedPushInstance = "FOSSWarn";
