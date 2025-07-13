@@ -335,6 +335,7 @@
   "dev_settings_show_error_messages_subtitle": "Shows a dialog with error messages",
   "dev_settings_max_size_bounding_box_title": "Max size of bounding box for a subscription (be careful)",
   "dev_settings_max_size_bounding_box_subtitle": "Allows to select the max size of the bounding box for a subscription. Larger subscription areas can affect performance. Be careful.",
+  "dev_settings_show_debug_notification": "Show debug notifications",
   "welcome_view_foss_warn_headline": "FOSS Warn",
   "@welcome_view_foss_warn_headline": {},
   "welcome_view_foss_warn_text": "Glad you want to use FOSS Warn. Swipe to start the introduction.",
