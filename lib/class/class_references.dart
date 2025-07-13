@@ -10,6 +10,16 @@ class References {
     required this.send,
   });
 
+  /// construct a References either from String or from json
+  /// we are using this method as the references data in CAP alerts from the API are
+  /// Strings, but after we stored these alerts on disk, they are Maps
+  factory References.fromStringOrJson(var references) {
+    if (references is Map<String, dynamic>) {
+      return References.fromJson(references);
+    }
+    return References.fromString(references);
+  }
+
   /// create References object by extracting the data
   /// from a String in format `<sender>,<identifier>,<sent>`
   factory References.fromString(String references) {
