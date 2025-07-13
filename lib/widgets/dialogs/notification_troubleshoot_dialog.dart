@@ -43,7 +43,17 @@ class _NotificationTroubleshootDialogState
             ),
             Text(
               localizations.troubleshoot_notification_current_vapid_key(
-                userPreferences.webPushVapidKey ?? "None",
+                userPreferences.webPushVapidKey,
+              ),
+            ),
+            Text(
+              localizations.troubleshoot_notification_current_public_key(
+                (userPreferences.webPushPublicKey),
+              ),
+            ),
+            Text(
+              localizations.troubleshoot_notification_current_auth_key(
+                (userPreferences.webPushAuthKey),
               ),
             ),
             ElevatedButton(
@@ -52,6 +62,22 @@ class _NotificationTroubleshootDialogState
                   UserPreferences.unifiedPushInstance,
                 );
                 var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                // @TODO(Nucleus): Calling onUnregistered shouldn't be necessary, but it currently is
+                unifiedPushHandler
+                    .onUnregistered(UserPreferences.unifiedPushInstance);
+              },
+              child: Text(
+                localizations.troubleshoot_notification_unregister_for_push,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await UnifiedPush.unregister(
+                  UserPreferences.unifiedPushInstance,
+                );
+                var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                unifiedPushHandler
+                    .onUnregistered(UserPreferences.unifiedPushInstance);
                 if (!context.mounted) return;
                 unifiedPushHandler.setupUnifiedPush(context, ref);
               },
