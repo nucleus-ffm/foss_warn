@@ -7,7 +7,7 @@ on:
   
 env:
   JAVA_VERSION: "17.x"
-  FLUTTER_VERSION: "3.29.0"
+  FLUTTER_VERSION: "3.27.4"
   FLUTTER_CHANNEL: 'stable'
   FLUTTER_CHANNEL_ARM64: 'master' # stable it not working on arm64, so we have to use master. see https://github.com/subosito/flutter-action/issues/345
   PROPERTIES_PATH: "./android/key.properties"
