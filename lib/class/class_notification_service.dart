@@ -54,7 +54,7 @@ class NotificationService {
       id,
       title,
       body,
-      _notificationsDetails(channelName, channelId),
+      _notificationsDetails(channelId, channelName),
       payload: payload,
     );
     showGroupNotification();

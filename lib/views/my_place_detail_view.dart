@@ -34,7 +34,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     );
 
     var warnings = ref.watch(
-      alertsProvider.select(
+      processedAlertsProvider.select(
         (warnings) => warnings.where(
           (warning) => warning.placeSubscriptionId == place.subscriptionId,
         ),

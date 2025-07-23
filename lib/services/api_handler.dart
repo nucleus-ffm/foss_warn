@@ -26,6 +26,9 @@ class UnregisterAreaError implements Exception {}
 // Thrown when the server response indicates that the subscription is invalid or deleted
 class InvalidSubscriptionError implements Exception {}
 
+// Thrown when the requested alert is not available on the server anymore
+class AlertUnavailableError implements Exception {}
+
 typedef AlertApiResult = ({String subscriptionId, String alertId});
 
 /// Thrown when the server indicates something went wrong while registering

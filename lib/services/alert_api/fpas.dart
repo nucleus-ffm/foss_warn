@@ -105,6 +105,8 @@ class FPASApi implements AlertAPI {
     switch (response.statusCode) {
       case 200: // nothing to do
         break;
+      case 404:
+        throw AlertUnavailableError();
       default:
         throw UndefinedServerError(
           message: response.body,
@@ -131,7 +133,7 @@ class FPASApi implements AlertAPI {
     var url = Uri.parse(
       "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
-
+    //@TODO can throw an SocketException
     var response = await http.put(
       url,
       headers: {
@@ -166,9 +168,9 @@ class FPASApi implements AlertAPI {
     // use new webpush (aka encrypted unifiedPush) if possible and use
     // unencrypted unifiedPush as fallback
     String pushService = "";
-    if (_userPreferences.webPushVapidKey != null &&
-        _userPreferences.webPushAuthKey != null &&
-        _userPreferences.webPushPublicKey != null &&
+    if (_userPreferences.webPushVapidKey != "" &&
+        _userPreferences.webPushAuthKey != "" &&
+        _userPreferences.webPushPublicKey != "" &&
         isEncryptedUnifiedPushSupported) {
       pushService = "UNIFIED_PUSH_ENCRYPTED";
     } else {

@@ -335,6 +335,7 @@
   "dev_settings_show_error_messages_subtitle": "Shows a dialog with error messages",
   "dev_settings_max_size_bounding_box_title": "Max size of bounding box for a subscription (be careful)",
   "dev_settings_max_size_bounding_box_subtitle": "Allows to select the max size of the bounding box for a subscription. Larger subscription areas can affect performance. Be careful.",
+  "dev_settings_show_debug_notification": "Show debug notifications",
   "welcome_view_foss_warn_headline": "FOSS Warn",
   "@welcome_view_foss_warn_headline": {},
   "welcome_view_foss_warn_text": "Glad you want to use FOSS Warn. Swipe to start the introduction.",
@@ -787,7 +788,26 @@
             }
         }
   },
+   "troubleshoot_notification_current_public_key": "Current public key: {key}",
+   "@troubleshoot_notification_current_vapid_key": {
+         "description": "Current public key",
+         "placeholder": {
+             "key":{
+                 "type": "String"
+             }
+         }
+   },
+    "troubleshoot_notification_current_auth_key": "Current auth key: {key}",
+    "@troubleshoot_notification_current_auth_key": {
+           "description": "Current auth key",
+           "placeholder": {
+               "key":{
+                   "type": "String"
+               }
+           }
+    },
   "troubleshoot_notification_reset_push_setup": "Reset push setup",
+  "troubleshoot_notification_unregister_for_push": "Unregister",
   "troubleshoot_notification_resubscribe": "Re-subscribe for places with new push config",
   "no_up_distributor_found_dialog_title": "No push distributor found",
   "no_up_distributor_found_dialog_explanation": "FOSSWarn couldn't find any UnifiedPush distributor installed on your device. To subscribe to an area, you must have one installed, or you won't get any notifications. Please install a distributor and retry the subscription.",
