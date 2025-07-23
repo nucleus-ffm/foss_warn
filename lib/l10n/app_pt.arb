@@ -667,7 +667,7 @@
   "@welcome_view_important_headline": {},
   "explanation_rescue": "Resgate",
   "@explanation_rescue": {},
-  "add_my_place_with_map_loading_screen_subscription_error": "Algo correu mal. Não foi possível assinar o local. Tente novamente mais tarde.",
+  "add_my_place_with_map_loading_screen_subscription_error": "Algo correu mal. Não foi possível assinar o local. Tente novamente mais tarde. O servidor respondeu com {error}",
   "@add_my_place_with_map_loading_screen_subscription_error": {},
   "about_headline": "Sobre",
   "@about_headline": {},
