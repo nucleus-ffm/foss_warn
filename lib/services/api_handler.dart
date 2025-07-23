@@ -103,11 +103,11 @@ abstract class AlertAPI {
     required String placeSubscriptionId,
   });
 
-  /// Send a heartbeat to the FPAS Server once a day to prevent the given subscription to be deleted.
+  /// Update the subscriptions at every app startup to prevent the given subscription to be deleted.
   /// [subscriptionId] is the ID of the subscription to send a heartbeat for.
   ///
   /// Throws a [PlaceSubscriptionError] when the server doesn't know the subscription.
-  Future<void> sendHeartbeat({required String subscriptionId});
+  Future<void> updateSubscription({required String subscriptionId});
 
   /// Subscribe to alerts from a specific area.
   /// Make sure the application has been registered to UnifiedPush first as the server requires it.

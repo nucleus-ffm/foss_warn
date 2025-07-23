@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
@@ -125,7 +126,8 @@ class FPASApi implements AlertAPI {
   }
 
   @override
-  Future<void> sendHeartbeat({required String subscriptionId}) async {
+  Future<void> updateSubscription({required String subscriptionId}) async {
+    debugPrint("Update subscription");
     var url = Uri.parse(
       "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
@@ -137,6 +139,11 @@ class FPASApi implements AlertAPI {
         'User-Agent': constants.httpUserAgent,
       },
     );
+
+    if (response.statusCode == 404) {
+      // subscription has expired, we have to register again
+      throw InvalidSubscriptionError();
+    }
 
     if (response.statusCode != 200) {
       throw PlaceSubscriptionError();

@@ -95,7 +95,7 @@ final userPreferencesProvider =
     UserPreferences(
       shouldNotifyGeneral: preferences.getBool("shouldNotifyGeneral") ?? true,
       showStatusNotification:
-          preferences.getBool("showSstatusNotification") ?? true,
+          preferences.getBool("showStatusNotification") ?? true,
       showExtendedMetadata:
           preferences.getBool("showExtendedMetaData") ?? false,
       notificationSourceSetting: notificationPreferences,
@@ -110,7 +110,7 @@ final userPreferencesProvider =
       areWarningsFromCache:
           preferences.getBool("areWarningsFromCache") ?? false,
       maxSizeOfSubscriptionBoundingBox:
-          preferences.getInt("maxSizeOfSubscriptionBoudningBox") ?? 20,
+          preferences.getInt("maxSizeOfSubscriptionBoundingBox") ?? 20,
       fossPublicAlertServerUrl: fossPublicAlertServerUrl,
       fossPublicAlertServerOperator:
           preferences.getString("fossPublicAlertServerOperator") ?? "KDE",
@@ -260,9 +260,13 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     );
   }
 
-  void setWebPushVapidKey(String value) {
+  void setWebPushVapidKey(String? value) {
     state = state.copyWith(webPushVapidKey: value);
-    _sharedPreferences.setString("webPushVapidKey", value);
+    if (value == null) {
+      _sharedPreferences.remove("webPushVapidKey");
+    } else {
+      _sharedPreferences.setString("webPushVapidKey", value);
+    }
   }
 
   void setWebPushPublicKey(String value) {

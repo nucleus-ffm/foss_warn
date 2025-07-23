@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/services/api_handler.dart';
-import 'package:foss_warn/views/introduction/slides/alarm_permission.dart';
 import 'package:foss_warn/views/introduction/slides/battery_optimization.dart';
 import 'package:foss_warn/views/introduction/slides/disclaimer.dart';
 import 'package:foss_warn/views/introduction/slides/finish.dart';
@@ -85,15 +84,14 @@ class _IntroductionViewState extends ConsumerState<IntroductionView>
       hasNotificationPermission =
           await NotificationService().requestNotificationPermission() ?? false;
 
+      if (!context.mounted) {
+        return;
+      }
+      // clean and create the notification channels used by FOSSWarn
+      NotificationService.cleanUpNotificationChannels();
+      NotificationService.createNotificationChannels(context);
       setState(() {});
-    }
-
-    Future<void> onRequestAlarmPermissionPressed() async {
-      hasAlarmPermission =
-          await NotificationService().requestExactAlarmPermission() ?? false;
-
-      setState(() {});
-      await NotificationService().init();
+      NotificationService().init();
     }
 
     Future<void> onFinishPressed() async {
@@ -130,10 +128,6 @@ class _IntroductionViewState extends ConsumerState<IntroductionView>
         IntroductionNotificationPermissionSlide(
           hasPermission: hasNotificationPermission,
           onPermissionChanged: onRequestNotificationPermissionPressed,
-        ),
-        IntroductionAlarmPermissionSlide(
-          hasPermission: hasAlarmPermission,
-          onPermissionChanged: onRequestAlarmPermissionPressed,
         ),
         const IntroductionBatteryOptimizationSlide(),
       ],

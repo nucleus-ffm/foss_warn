@@ -292,7 +292,7 @@
   "@notification_settings_headline": {},
   "notification_settings_notify_by": "Notify by",
   "@notification_settings_notify_by": {},
-  "notification_settings_notify_by_extreme": "extreme Messages",
+  "notification_settings_notify_by_extreme": "Extreme Messages",
   "@notification_settings_notify_by_extreme": {},
   "notification_settings_notify_by_severe": "Severe Messages",
   "@notification_settings_notify_by_severe": {},
@@ -300,6 +300,8 @@
   "@notification_settings_notify_by_moderate": {},
   "notification_settings_notify_by_minor": "Minor Messages",
   "@notification_settings_notify_by_minor": {},
+  "notification_settings_notify_by_update": "Update Messages",
+  "@notification_settings_notify_by_update": {},
   "notification_settings_thunderstorm": "Thunderstorm",
   "@notification_settings_thunderstorm": {},
   "notification_settings_strong_weather": "Strong weather",
@@ -310,10 +312,6 @@
   "@notification_settings_everything": {},
   "dev_settings_headline": "Developer Settings",
   "@dev_settings_headline": {},
-  "dev_settings_test_notification": "Test Notification",
-  "@dev_settings_test_notification": {},
-  "dev_settings_test_notification_text": "Manually runs the background service once",
-  "@dev_settings_test_notification_text": {},
   "dev_settings_delete_list_of_read_warnings": "Delete list of read warnings",
   "@dev_settings_delete_list_of_read_warnings": {},
   "dev_settings_delete_list_of_read_warnings_text": "manually clears the saved list of warnings already read.",
@@ -328,6 +326,15 @@
   "@dev_settings_load_cached_warnings_text": {},
   "dev_settings_success": "done",
   "@dev_settings_success": {},
+  "dev_settings_collect_system_information_title": "Collect system information for Troubleshooting",
+  "dev_settings_collect_system_information_subtitle": "Collects information about the system that can be sent to the developer for error handling. No data is sent automatically.",
+  "dev_settings_collect_system_information_snackbar": "Collecting system information.",
+  "dev_settings_open_log_file_viewer_title": "Open Logfile viewer",
+  "dev_settings_open_log_file_viewer_subtitle": "Provides an overview over all error messages",
+  "dev_settings_show_error_messages_title": "Show error messages",
+  "dev_settings_show_error_messages_subtitle": "Shows a dialog with error messages",
+  "dev_settings_max_size_bounding_box_title": "Max size of bounding box for a subscription (be careful)",
+  "dev_settings_max_size_bounding_box_subtitle": "Allows to select the max size of the bounding box for a subscription. Larger subscription areas can affect performance. Be careful.",
   "welcome_view_foss_warn_headline": "FOSS Warn",
   "@welcome_view_foss_warn_headline": {},
   "welcome_view_foss_warn_text": "Glad you want to use FOSS Warn. Swipe to start the introduction.",
@@ -517,6 +524,8 @@
   "@warning_severity_explanation_dialog_minor_description": {},
   "warning_severity_explanation_dialog_extreme_description": "Extraordinary threat to life or property. May have a significant short-term impact on your health, property and/or public infrastructure.",
   "@warning_severity_explanation_dialog_extreme_description": {},
+  "warning_severity_explanation_dialog_update_description": "Update of an already notified alert",
+   "@warning_severity_explanation_dialog_update_description": {},
   "warning_severity_explanation_dialog_headline": "Severity",
   "@warning_severity_explanation_dialog_headline": {},
   "warning_severity_minor": "Minor",
@@ -603,8 +612,16 @@
   "@warning_detail_view_map_center_map_button_tooltip": {},
   "loading_screen_loading": "Loading",
   "@loading_screen_loading": {},
-  "add_my_place_with_map_loading_screen_subscription_error": "Something went wrong. Can not subscribe. Please try again later.",
-  "@add_my_place_with_map_loading_screen_subscription_error": {},
+  "loading_screen_wait_for_push_to_complete": "Wait for push registration to complete.",
+  "add_my_place_with_map_loading_screen_subscription_error": "Something went wrong. Can not subscribe. Please try again later. The server responded with {error}",
+    "@add_my_place_with_map_loading_screen_subscription_error": {
+        "description": "Message shown if the subscriptions failed",
+            "placeholders": {
+                "error": {
+                    "type": "String"
+                }
+            }
+    },
   "add_my_place_with_map_loading_screen_subscription_success": "successfully subscribed",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
   "add_my_place_with_map_select_radius": "Select radius",
@@ -696,6 +713,7 @@
   "error_log_share_info": "Error log shared from FOSSWarn",
   "@error_log_share_info": {},
   "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server",
+  "dev_settings_troubleshoot_notifications": "Troubleshoot notifications",
   "error_log_share_info": "Error log shared from FOSSWarn",
   "invalid_subscription_dialog_headline": "Renew expired subscriptions",
   "invalid_subscription_dialog_text": "Some of your subscriptions have expired. Click on resubscribe to get push notifications again",
@@ -718,5 +736,61 @@
             }
         }
     },
-  "invalid_subscription_dialog_successfully_resubscribed": "Successfully resubscribed"
+  "invalid_subscription_dialog_successfully_resubscribed": "Successfully resubscribed",
+  "notification_channel_other_name": "Other",
+  "notification_channel_other_description": "Other notifications",
+  "notification_group_name": "FOSSWarn notifications",
+  "notification_group_description": "There are multiple notifications from FOSSWarn",
+  "notification_alert_new_title": "New alert for {place}",
+  "@notification_alert_new_title": {
+    "description": "Title of the notification shown for a new alert",
+    "placeholders": {
+        "place": {
+            "type": "String"
+        }
+    }
+  },
+  "notification_alert_update_title": "Updated alert for {place}",
+    "@notification_alert_title": {
+      "description": "Title of the notification shown for an updated alert",
+      "placeholders": {
+          "place": {
+              "type": "String"
+          }
+      }
+    },
+  "troubleshoot_notification_title": "Troubleshoot notifications",
+  "troubleshoot_notification_register_state": "Currently registered? {state}",
+  "@troubleshoot_notification_register_state": {
+       "description": "State of the push notification service",
+       "placeholder": {
+            "state": {
+                "type": "bool"
+            }
+       }
+  },
+  "troubleshoot_notification_current_endpoint": "Current endpoint: {endpoint}",
+  "@troubleshoot_notification_current_endpoint": {
+    "description": "Current selected endpoint for push notifications",
+    "placeholder": {
+        "endpoint": {
+            "type": "String"
+        }
+    }
+  },
+  "troubleshoot_notification_current_vapid_key": "Current VAPID key: {key}",
+  "@troubleshoot_notification_current_vapid_key": {
+        "description": "Current vapid key",
+        "placeholder": {
+            "key":{
+                "type": "String"
+            }
+        }
+  },
+  "troubleshoot_notification_reset_push_setup": "Reset push setup",
+  "troubleshoot_notification_resubscribe": "Re-subscribe for places with new push config",
+  "no_up_distributor_found_dialog_title": "No push distributor found",
+  "no_up_distributor_found_dialog_explanation": "FOSSWarn couldn't find any UnifiedPush distributor installed on your device. To subscribe to an area, you must have one installed, or you won't get any notifications. Please install a distributor and retry the subscription.",
+  "no_up_distributor_found_up_explanation_button": "What is unifiedPush and how to install a distributor?",
+  "no_up_distributor_found_direct_link_to_ntfy": "For the fast ones: ntfy on F-Droid (requires changing the default server)"
 }

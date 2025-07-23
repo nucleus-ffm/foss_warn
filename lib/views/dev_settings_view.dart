@@ -16,6 +16,7 @@ import '../services/api_handler.dart';
 import '../services/list_handler.dart';
 import '../services/subscription_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
+import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 
 class DevSettings extends ConsumerStatefulWidget {
@@ -73,28 +74,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
             children: [
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: Text(localizations.dev_settings_test_notification),
-                subtitle:
-                    Text(localizations.dev_settings_test_notification_text),
-                onTap: () {
-                  bool thereIsNoWarning = !ref
-                      .read(processedAlertsProvider.notifier)
-                      .hasWarningToNotify();
-                  if (thereIsNoWarning) {
-                    final snackBar = SnackBar(
-                      content: const Text(
-                        'Es liegen keine neuen Warnungen für Ihre Orte vor',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      backgroundColor: Colors.green[100],
-                    );
-
-                    scaffoldMessenger.showSnackBar(snackBar);
-                  }
-                },
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
                 title: Text(
                   "${localizations.dev_settings_delete_list_of_read_warnings} & \n${localizations.dev_settings_delete_notification_list}",
                 ),
@@ -117,24 +96,25 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: const Text(
-                  "Systeminformationen zur Fehlerbehebung sammeln",
+                title: Text(
+                  localizations.dev_settings_collect_system_information_title,
                 ),
-                subtitle: const Text(
-                  "Stellt Informationen zum System zusammen, die zwecks Fehlerbehandlung an den Entwickler geschickt werden kann. Es werden keine Daten versendet.",
+                subtitle: Text(
+                  localizations
+                      .dev_settings_collect_system_information_subtitle,
                 ),
                 onTap: () {
-                  debugPrint("Systeminformationen sammeln");
+                  debugPrint("collect system information");
                   showDialog(
                     context: context,
                     builder: (BuildContext context) =>
                         const SystemInformationDialog(),
                   );
-
                   final snackBar = SnackBar(
-                    content: const Text(
-                      "Collecting system information...",
-                      style: TextStyle(color: Colors.black),
+                    content: Text(
+                      localizations
+                          .dev_settings_collect_system_information_snackbar,
+                      style: const TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.green[100],
                   );
@@ -144,41 +124,35 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: const Text("Zeige Fehlermeldungen an"),
-                subtitle:
-                    const Text("Zeigt einen Dialog zu Fehlermeldungen an"),
+                title:
+                    Text(localizations.dev_settings_show_error_messages_title),
+                subtitle: Text(
+                  localizations.dev_settings_show_error_messages_subtitle,
+                ),
                 onTap: () {
-                  debugPrint("Lade Fehlermeldungen");
+                  debugPrint("loading error messages");
                   showDialog(
                     context: context,
                     builder: (BuildContext context) => const ErrorDialog(),
                   );
-
-                  final snackBar = SnackBar(
-                    content: const Text(
-                      "Collecting system information...",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    backgroundColor: Colors.green[100],
-                  );
-
-                  scaffoldMessenger.showSnackBar(snackBar);
                 },
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: const Text("Übersicht über Fehlermeldungen"),
-                subtitle: const Text(
-                  "Führt zu einer Seite mit den Fehlermeldungen an",
+                title:
+                    Text(localizations.dev_settings_open_log_file_viewer_title),
+                subtitle: Text(
+                  localizations.dev_settings_open_log_file_viewer_subtitle,
                 ),
                 onTap: widget.onShowLogFilePressed,
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title:
-                    const Text("Max size of bounding box for a subscription"),
-                subtitle: const Text(
-                  "select the max size of bounding box for a subscription",
+                title: Text(
+                  localizations.dev_settings_max_size_bounding_box_title,
+                ),
+                subtitle: Text(
+                  localizations.dev_settings_max_size_bounding_box_subtitle,
                 ),
                 trailing: SizedBox(
                   width: 100,
@@ -218,6 +192,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                 ),
               ),
               ListTile(
+                contentPadding: _settingsTileListPadding,
                 title:
                     Text(localizations.dev_settings_subscribe_for_test_alert),
                 trailing: Switch(
@@ -281,6 +256,18 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     }
                   },
                 ),
+              ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title:
+                    Text(localizations.dev_settings_troubleshoot_notifications),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        const NotificationTroubleshootDialog(),
+                  );
+                },
               ),
             ],
           ),
