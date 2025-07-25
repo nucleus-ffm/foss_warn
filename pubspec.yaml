@@ -14,13 +14,13 @@ dependencies:
     sdk: flutter
   http: ^1.1.0
   flutter_local_notifications: ^17.2.4
-  shared_preferences: ^2.3.3
-  shared_preferences_android: ^2.4.0
+  shared_preferences: ^2.5.3
+  shared_preferences_android: ^2.4.10
   rxdart: ^0.28.0
   url_launcher: ^6.3.1
-  share_plus: ^10.1.1
+  share_plus: ^11.0.0
   intl: any # for localizations
-  unifiedpush: ^6.0.1
+  unifiedpush: ^6.0.2
   unifiedpush_linux: ^0.1.0
   xml2json: ^6.2.5
   uuid: ^4.4.2

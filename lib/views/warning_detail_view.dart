@@ -301,10 +301,12 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
       String shareSubject = warning.info[0].headline;
 
       var box = context.findRenderObject() as RenderBox?;
-      await Share.share(
-        shareText,
-        subject: shareSubject,
-        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      await SharePlus.instance.share(
+        ShareParams(
+          text: shareText,
+          subject: shareSubject,
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+        ),
       );
     }
 
