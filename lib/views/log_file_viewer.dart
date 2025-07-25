@@ -22,10 +22,12 @@ class _LogFileViewerState extends State<LogFileViewer> {
     String shareSubject,
   ) async {
     final box = context.findRenderObject() as RenderBox?;
-    await Share.share(
-      shareText,
-      subject: shareSubject,
-      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    await SharePlus.instance.share(
+      ShareParams(
+        text: shareText,
+        subject: shareSubject,
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      ),
     );
   }
 

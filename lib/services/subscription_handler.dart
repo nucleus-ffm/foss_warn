@@ -27,7 +27,7 @@ Future<void> subscribeForArea({
   required WidgetRef ref,
 }) async {
   //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
-  ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
+  await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
   if (!context.mounted) return;
   var localizations = context.localizations;
   var alertApi = ref.read(alertApiProvider);
