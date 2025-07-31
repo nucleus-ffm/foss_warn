@@ -184,8 +184,8 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     LatLng southEast = LatLng(south, east);
 
     boundingBox = BoundingBox(
-      minLatLng: LatLng(north, west),
-      maxLatLng: LatLng(south, east),
+      minLatLng: southWest,
+      maxLatLng: northEast,
     );
 
     return [northWest, southWest, southEast, northEast];
