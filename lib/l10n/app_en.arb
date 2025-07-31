@@ -393,6 +393,10 @@
   "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
   "@connection_error_app_error": {},
   "connection_error_subscription_expired": "Some of your subscriptions have expired.",
+  "connection_error_fetching_new_alerts": "Fetching new alerts...",
+  "@connection_error_fetching_new_alerts": {
+    "description": "Displayed if there are not alerts ",},
+  }
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
@@ -625,8 +629,7 @@
     },
   "add_my_place_with_map_loading_screen_subscription_success": "successfully subscribed",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
-  "add_my_place_with_map_select_radius": "Select radius",
-  "@add_my_place_with_map_select_radius": {},
+  "add_my_place_with_map_select_area_size": "Select area size",
   "add_my_place_with_map_loading_screen_searching": "searching…",
   "@add_my_place_with_map_loading_screen_searching": {},
   "add_my_place_with_map_loading_screen_search_no_result_found": "No results found. Please try again",

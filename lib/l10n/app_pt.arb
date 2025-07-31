@@ -529,8 +529,6 @@
   "@loading_screen_loading": {},
   "add_my_place_with_map_loading_screen_subscription_success": "inscrito com sucesso",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
-  "add_my_place_with_map_select_radius": "Selecione o raio",
-  "@add_my_place_with_map_select_radius": {},
   "welcome_view_foss_public_alert_server_select_instance": "Selecione a instância do servidor",
   "@welcome_view_foss_public_alert_server_select_instance": {},
   "welcome_view_notification_permission_headline": "Autorização para notificar",

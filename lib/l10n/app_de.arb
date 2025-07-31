@@ -470,8 +470,6 @@
   "@add_my_place_with_map_loading_screen_subscription_error": {},
   "add_my_place_with_map_loading_screen_subscription_success": "Erfolgreich abonniert",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
-  "add_my_place_with_map_select_radius": "Wähle Radius",
-  "@add_my_place_with_map_select_radius": {},
   "add_my_place_with_map_loading_screen_search_no_result_found": "Keine Ergebnisse gefunden. Bitte erneut probieren",
   "@add_my_place_with_map_loading_screen_search_no_result_found": {},
   "choose_theme_dialog_headline": "Wähle Farb-Thema",
