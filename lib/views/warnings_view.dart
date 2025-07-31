@@ -20,7 +20,7 @@ class WarningsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var places = ref.watch(myPlacesProvider);
-    var alerts = ref.watch(alertsProvider);
+    var alerts = ref.watch(processedAlertsProvider);
 
     // Just to detect if we have an error while polling for alerts.
     // We don't actually use the value otherwise.
@@ -56,7 +56,10 @@ class WarningsView extends ConsumerWidget {
 
     return Column(
       children: [
-        if (alertsSnapshot.hasError || places.hasExpiredPlaces) ...[
+        if (alertsSnapshot.hasError ||
+            places.hasExpiredPlaces ||
+            alertsSnapshot.isLoading) ...[
+          //TODO
           const ConnectionError(),
         ],
         Expanded(child: body),
@@ -122,8 +125,8 @@ class _NoPlacesConfigured extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text("\n"),
-            Text(localizations.all_warnings_no_places_chosen_text),
+            const SizedBox(height: 10),
+            Text(localizations.my_place_no_place_added_text),
           ],
         ),
       ),

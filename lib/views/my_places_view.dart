@@ -57,7 +57,9 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
               padding: const EdgeInsets.only(bottom: 65),
               child: Column(
                 children: [
-                  if (alertsSnapshot.hasError || places.hasExpiredPlaces) ...[
+                  if (alertsSnapshot.hasError ||
+                      places.hasExpiredPlaces ||
+                      alertsSnapshot.isLoading) ...[
                     const ConnectionError(),
                   ],
                   ...places.map(
@@ -77,7 +79,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  localizations.my_place_no_place_added,
+                  localizations.all_warnings_no_places_chosen,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -85,7 +87,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  localizations.my_place_no_place_added_text,
+                  localizations.all_warnings_no_places_chosen_text,
                   textAlign: TextAlign.center,
                 ),
               ],
