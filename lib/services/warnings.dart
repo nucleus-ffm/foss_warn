@@ -81,8 +81,11 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   // Determine which alerts we don't already know about
   var newAlerts = <AlertApiResult>[];
   for (AlertApiResult alert in retrievedAlerts) {
-    if (!previouslyCachedAlerts
-        .any((oldAlert) => oldAlert.fpasId == alert.alertId)) {
+    if (!previouslyCachedAlerts.any(
+      (oldAlert) =>
+          oldAlert.fpasId == alert.alertId &&
+          oldAlert.placeSubscriptionId == alert.subscriptionId,
+    )) {
       newAlerts.add(alert);
     }
   }
@@ -106,8 +109,11 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
 
   var cachedAlerts = ref.read(processedAlertsProvider);
   for (WarnMessage alert in cachedAlerts) {
-    if (!retrievedAlerts
-        .any((apiResult) => alert.fpasId == apiResult.alertId)) {
+    if (!retrievedAlerts.any(
+      (apiResult) =>
+          alert.fpasId == apiResult.alertId &&
+          alert.placeSubscriptionId == apiResult.subscriptionId,
+    )) {
       // the alert is not in the server response anymore, remove cached alert
       ref.read(processedAlertsProvider).remove(alert);
     }
