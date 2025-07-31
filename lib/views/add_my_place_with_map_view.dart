@@ -201,9 +201,6 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
 
   /// create a circle polygon around the current selected place.
   void createPolygon() {
-    /*List<LatLng> circlePolygonPoints = calculatePolygonCoordinates(
-        currentPlaceLatLng!, placeRadius, numberOfEdgesPolygon);*/
-
     List<LatLng> circlePolygonPoints = calculateSquareCoordinates(
       currentPlaceLatLng!,
       placeRadius,
@@ -485,7 +482,8 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
-                            localizations.add_my_place_with_map_select_radius,
+                            localizations
+                                .add_my_place_with_map_select_area_size,
                             style: theme.textTheme.labelLarge,
                           ),
                         ),
@@ -511,7 +509,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                             ],
                           ),
                         ),
-                        TextButton(
+                        ElevatedButton(
                           onPressed: () async {
                             if (_selectedPlaceName != "" &&
                                 selectedPlacePolygon != null) {
