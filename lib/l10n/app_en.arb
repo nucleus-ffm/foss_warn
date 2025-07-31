@@ -395,8 +395,8 @@
   "connection_error_subscription_expired": "Some of your subscriptions have expired.",
   "connection_error_fetching_new_alerts": "Fetching new alerts...",
   "@connection_error_fetching_new_alerts": {
-    "description": "Displayed if there are not alerts ",},
-  }
+    "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+  },
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
