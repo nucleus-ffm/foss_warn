@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
-import 'package:foss_warn/services/warnings.dart';
 
 import '../main.dart';
 import '../services/list_handler.dart';
@@ -113,13 +112,10 @@ class ConnectionError extends ConsumerWidget {
       );
     }
 
-    final alerts = ref.watch(alertsFutureProvider);
-    final processedAlerts = ref.watch(processedAlertsProvider);
-
-    if (processedAlerts.isEmpty && alerts.isLoading) {
+    if (appState.isFirstFetch) {
       return Container(
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
-        color: theme.colorScheme.tertiary,
+        color: theme.colorScheme.inversePrimary,
         child: Row(
           children: [
             const Icon(

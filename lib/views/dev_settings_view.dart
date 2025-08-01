@@ -96,8 +96,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,
-                title: const Text(
-                  "Removed cached alerts",
+                title: Text(
+                  localizations.dev_settings_remove_cached_alerts,
                 ),
                 onTap: () {
                   userPreferencesService.setCachedAlerts([]);

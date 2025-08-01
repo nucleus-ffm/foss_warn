@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../widgets/my_place_widget.dart';
@@ -41,6 +42,8 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
     var localizations = context.localizations;
 
     var places = ref.watch(myPlacesProvider);
+    // we have to watch the alertsProvider to keep the timer running
+    ref.watch(alertsProvider);
 
     // Just to detect if we have an error while polling for alerts.
     // We don't actually use the value otherwise.
@@ -59,7 +62,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
                 children: [
                   if (alertsSnapshot.hasError ||
                       places.hasExpiredPlaces ||
-                      alertsSnapshot.isLoading) ...[
+                      appState.isFirstFetch) ...[
                     const ConnectionError(),
                   ],
                   ...places.map(

@@ -20,7 +20,10 @@ class WarningsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var places = ref.watch(myPlacesProvider);
-    var alerts = ref.watch(processedAlertsProvider);
+
+    // just to keep the timer running
+    ref.watch(alertsProvider);
+    var processedAlerts = ref.watch(processedAlertsProvider);
 
     // Just to detect if we have an error while polling for alerts.
     // We don't actually use the value otherwise.
@@ -30,7 +33,7 @@ class WarningsView extends ConsumerWidget {
       child: Column(
         children: [
           for (var place in places) ...[
-            for (var warning in alerts.where(
+            for (var warning in processedAlerts.where(
               (warning) => warning.placeSubscriptionId == place.subscriptionId,
             )) ...[
               WarningWidget(
@@ -46,7 +49,7 @@ class WarningsView extends ConsumerWidget {
       ),
     );
 
-    if (alerts.isEmpty) {
+    if (processedAlerts.isEmpty) {
       body = const _NoWarnings();
     }
 
