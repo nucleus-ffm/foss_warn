@@ -336,6 +336,7 @@
   "dev_settings_max_size_bounding_box_title": "Max size of bounding box for a subscription (be careful)",
   "dev_settings_max_size_bounding_box_subtitle": "Allows to select the max size of the bounding box for a subscription. Larger subscription areas can affect performance. Be careful.",
   "dev_settings_show_debug_notification": "Show debug notifications",
+  "dev_settings_remove_cached_alerts": "Remove cached alerts",
   "welcome_view_foss_warn_headline": "FOSS Warn",
   "@welcome_view_foss_warn_headline": {},
   "welcome_view_foss_warn_text": "Glad you want to use FOSS Warn. Swipe to start the introduction.",
@@ -393,6 +394,10 @@
   "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
   "@connection_error_app_error": {},
   "connection_error_subscription_expired": "Some of your subscriptions have expired.",
+  "connection_error_fetching_new_alerts": "Fetching new alerts...",
+  "@connection_error_fetching_new_alerts": {
+    "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+  },
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
@@ -625,8 +630,7 @@
     },
   "add_my_place_with_map_loading_screen_subscription_success": "successfully subscribed",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
-  "add_my_place_with_map_select_radius": "Select radius",
-  "@add_my_place_with_map_select_radius": {},
+  "add_my_place_with_map_select_area_size": "Select area size",
   "add_my_place_with_map_loading_screen_searching": "searching…",
   "@add_my_place_with_map_loading_screen_searching": {},
   "add_my_place_with_map_loading_screen_search_no_result_found": "No results found. Please try again",

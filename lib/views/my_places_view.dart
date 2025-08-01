@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../widgets/my_place_widget.dart';
@@ -41,6 +42,8 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
     var localizations = context.localizations;
 
     var places = ref.watch(myPlacesProvider);
+    // we have to watch the alertsProvider to keep the timer running
+    ref.watch(alertsProvider);
 
     // Just to detect if we have an error while polling for alerts.
     // We don't actually use the value otherwise.
@@ -57,7 +60,9 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
               padding: const EdgeInsets.only(bottom: 65),
               child: Column(
                 children: [
-                  if (alertsSnapshot.hasError || places.hasExpiredPlaces) ...[
+                  if (alertsSnapshot.hasError ||
+                      places.hasExpiredPlaces ||
+                      appState.isFirstFetch) ...[
                     const ConnectionError(),
                   ],
                   ...places.map(
@@ -77,7 +82,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  localizations.my_place_no_place_added,
+                  localizations.all_warnings_no_places_chosen,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -85,7 +90,7 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  localizations.my_place_no_place_added_text,
+                  localizations.all_warnings_no_places_chosen_text,
                   textAlign: TextAlign.center,
                 ),
               ],

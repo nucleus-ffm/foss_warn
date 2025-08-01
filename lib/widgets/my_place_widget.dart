@@ -24,7 +24,7 @@ class MyPlaceWidget extends ConsumerWidget {
     var localizations = context.localizations;
 
     var warnings = ref.watch(
-      alertsProvider.select(
+      processedAlertsProvider.select(
         (alerts) => alerts.where(
           (alert) => alert.placeSubscriptionId == place.subscriptionId,
         ),

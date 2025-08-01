@@ -83,7 +83,7 @@ class _MapViewState extends ConsumerState<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    var alerts = ref.watch(alertsProvider);
+    var alerts = ref.watch(processedAlertsProvider);
 
     return Scaffold(
       body: MapWidget(

@@ -97,6 +97,25 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title: Text(
+                  localizations.dev_settings_remove_cached_alerts,
+                ),
+                onTap: () {
+                  userPreferencesService.setCachedAlerts([]);
+
+                  final snackBar = SnackBar(
+                    content: Text(
+                      localizations.dev_settings_success,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.green[100],
+                  );
+
+                  scaffoldMessenger.showSnackBar(snackBar);
+                },
+              ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title: Text(
                   localizations.dev_settings_collect_system_information_title,
                 ),
                 subtitle: Text(

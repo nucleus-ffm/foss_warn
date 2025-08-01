@@ -161,7 +161,10 @@ class WarnMessage {
   bool operator ==(Object other) {
     if (other is! WarnMessage) return false;
 
-    return other.identifier == identifier;
+    // An alert is only the same if the ID and the subscription ID are the same.
+    // We can have one alert for multiple places
+    return other.identifier == identifier &&
+        other.placeSubscriptionId == placeSubscriptionId;
   }
 
   @override

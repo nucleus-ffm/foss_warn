@@ -12,6 +12,8 @@ import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/update_loop.dart';
 
+import '../main.dart';
+
 class AlertRetrievalError implements Exception {}
 
 // TODO(PureTryOut): cache retrieved alerts on disk rather than just in memory
@@ -74,15 +76,15 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   }
 
   var previouslyCachedAlerts = ref.read(processedAlertsProvider);
-  if (retrievedAlerts.isEmpty) {
-    return previouslyCachedAlerts;
-  }
 
   // Determine which alerts we don't already know about
   var newAlerts = <AlertApiResult>[];
   for (AlertApiResult alert in retrievedAlerts) {
-    if (!previouslyCachedAlerts
-        .any((oldAlert) => oldAlert.fpasId == alert.alertId)) {
+    if (!previouslyCachedAlerts.any(
+      (oldAlert) =>
+          oldAlert.fpasId == alert.alertId &&
+          oldAlert.placeSubscriptionId == alert.subscriptionId,
+    )) {
       newAlerts.add(alert);
     }
   }
@@ -106,12 +108,18 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
 
   var cachedAlerts = ref.read(processedAlertsProvider);
   for (WarnMessage alert in cachedAlerts) {
-    if (!retrievedAlerts
-        .any((apiResult) => alert.fpasId == apiResult.alertId)) {
+    if (!retrievedAlerts.any(
+      (apiResult) =>
+          alert.fpasId == apiResult.alertId &&
+          alert.placeSubscriptionId == apiResult.subscriptionId,
+    )) {
       // the alert is not in the server response anymore, remove cached alert
       ref.read(processedAlertsProvider).remove(alert);
     }
   }
+
+  // we have once fetched alerts, we do not need to display the loading scree again.
+  appState.isFirstFetch = false;
 
   return result;
 });

@@ -111,6 +111,33 @@ class ConnectionError extends ConsumerWidget {
         ),
       );
     }
+
+    if (appState.isFirstFetch) {
+      return Container(
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+        color: theme.colorScheme.inversePrimary,
+        child: Row(
+          children: [
+            const Icon(
+              Icons.update,
+              color: Colors.green,
+            ),
+            const SizedBox(width: 10),
+            Flexible(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  "fetching new alerts...",
+                  style: theme.textTheme.displaySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return const SizedBox();
   }
 }
