@@ -799,5 +799,13 @@
   "no_up_distributor_found_up_explanation_button": "Що таке unifiedPush і як встановити дистриб'ютор?",
   "@no_up_distributor_found_up_explanation_button": {},
   "no_up_distributor_found_direct_link_to_ntfy": "Для швидких: ntfy на F-Droid (потрібно змінити сервер за замовчуванням)",
-  "@no_up_distributor_found_direct_link_to_ntfy": {}
+  "@no_up_distributor_found_direct_link_to_ntfy": {},
+  "dev_settings_remove_cached_alerts": "Вилучити кешовані сповіщення",
+  "@dev_settings_remove_cached_alerts": {},
+  "connection_error_fetching_new_alerts": "Отримання нових сповіщень...",
+  "@connection_error_fetching_new_alerts": {
+    "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+  },
+  "add_my_place_with_map_select_area_size": "Виберіть розмір області",
+  "@add_my_place_with_map_select_area_size": {}
 }
