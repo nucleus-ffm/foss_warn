@@ -227,8 +227,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                           // this point has the maximal distance to the next
                           // coast in the world.
                           boundingBox: BoundingBox(
-                            minLatLng: const LatLng(-47.8767, -122.3933),
-                            maxLatLng: const LatLng(-48.8767, -124.3933),
+                            minLatLng: const LatLng(-48.8767, -124.3933),
+                            maxLatLng: const LatLng(-47.8767, -122.3933),
                           ),
                           selectedPlaceName: testAlertPlaceName,
                           context: context,
