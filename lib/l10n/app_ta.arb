@@ -146,7 +146,7 @@
   "@warning_urgency_immediate": {},
   "add_my_place_with_map_add_place_button": "இடம் சேர்க்கவும்",
   "@add_my_place_with_map_add_place_button": {},
-  "add_my_place_with_map_loading_screen_subscription_error": "ஏதோ தவறு நடந்தது. குழுசேர முடியாது. தயவுசெய்து பின்னர் மீண்டும் முயற்சிக்கவும். சர்வர் பதிலளித்தார் {error}",
+  "add_my_place_with_map_loading_screen_subscription_error": "ஏதோ தவறு நடந்தது. குழுசேர முடியாது. தயவுசெய்து பின்னர் மீண்டும் முயற்சிக்கவும். சேவையகம் {error} உடன் பதிலளித்தது",
   "@add_my_place_with_map_loading_screen_subscription_error": {},
   "add_my_place_with_map_loading_screen_subscription_success": "வெற்றிகரமாக குழுசேர்ந்தது",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
@@ -719,5 +719,114 @@
     }
   },
   "invalid_subscription_dialog_successfully_resubscribed": "வெற்றிகரமாக மறுபரிசீலனை செய்யப்பட்டது",
-  "@invalid_subscription_dialog_successfully_resubscribed": {}
+  "@invalid_subscription_dialog_successfully_resubscribed": {},
+  "notification_settings_notify_by_update": "செய்திகளைப் புதுப்பிக்கவும்",
+  "@notification_settings_notify_by_update": {},
+  "dev_settings_collect_system_information_title": "சரிசெய்தலுக்கான கணினி தகவல்களை சேகரிக்கவும்",
+  "@dev_settings_collect_system_information_title": {},
+  "dev_settings_collect_system_information_subtitle": "பிழை கையாளுதலுக்காக டெவலப்பருக்கு அனுப்பக்கூடிய கணினி பற்றிய தகவல்களை சேகரிக்கிறது. எந்த தரவு தானாக அனுப்பப்படுவதில்லை.",
+  "@dev_settings_collect_system_information_subtitle": {},
+  "dev_settings_collect_system_information_snackbar": "கணினி தகவல்களை சேகரித்தல்.",
+  "@dev_settings_collect_system_information_snackbar": {},
+  "dev_settings_open_log_file_viewer_title": "திற Logfile viewer",
+  "@dev_settings_open_log_file_viewer_title": {},
+  "dev_settings_open_log_file_viewer_subtitle": "எல்லா பிழை செய்திகளுக்கும் ஒரு கண்ணோட்டத்தை வழங்குகிறது",
+  "@dev_settings_open_log_file_viewer_subtitle": {},
+  "dev_settings_show_error_messages_title": "காட்டு பிழை செய்திகள்",
+  "@dev_settings_show_error_messages_title": {},
+  "dev_settings_show_error_messages_subtitle": "பிழை செய்திகளுடன் உரையாடலைக் காட்டுகிறது",
+  "@dev_settings_show_error_messages_subtitle": {},
+  "dev_settings_max_size_bounding_box_title": "Max அளவு of bounding box க்கு a சந்தா (be careful)",
+  "@dev_settings_max_size_bounding_box_title": {},
+  "dev_settings_max_size_bounding_box_subtitle": "Allows பெறுநர் தேர்ந்தெடு the max அளவு of the bounding box க்கு a subscription. Larger சந்தா areas can affect performance. கவனமாக இருங்கள்.",
+  "@dev_settings_max_size_bounding_box_subtitle": {},
+  "dev_settings_show_debug_notification": "பிழைத்திருத்த அறிவிப்புகளைக் காட்டு",
+  "@dev_settings_show_debug_notification": {},
+  "warning_severity_explanation_dialog_update_description": "புதுப்பிப்பு of an already notified alert",
+  "@warning_severity_explanation_dialog_update_description": {},
+  "loading_screen_wait_for_push_to_complete": "Wait க்கு push registration பெறுநர் complete.",
+  "@loading_screen_wait_for_push_to_complete": {},
+  "dev_settings_troubleshoot_notifications": "அறிவிப்புகளை சரிசெய்யவும்",
+  "@dev_settings_troubleshoot_notifications": {},
+  "notification_channel_other_name": "மற்றொன்று",
+  "@notification_channel_other_name": {},
+  "notification_channel_other_description": "பிற அறிவிப்புகள்",
+  "@notification_channel_other_description": {},
+  "notification_group_name": "ஃபோச்வர்ன் அறிவிப்புகள்",
+  "@notification_group_name": {},
+  "notification_group_description": "There அரே multiple notifications இருந்து FOSSWarn",
+  "@notification_group_description": {},
+  "notification_alert_new_title": "புதிய alert க்கு {place}",
+  "@notification_alert_new_title": {
+    "description": "Title of the notification shown for a new alert",
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "notification_alert_update_title": "{place}",
+  "@notification_alert_update_title": {},
+  "troubleshoot_notification_title": "அறிவிப்புகளை சரிசெய்யவும்",
+  "@troubleshoot_notification_title": {},
+  "troubleshoot_notification_register_state": "தற்போது பதிவு செய்யப்பட்டுள்ளதா? {state}",
+  "@troubleshoot_notification_register_state": {
+    "description": "State of the push notification service",
+    "placeholder": {
+      "state": {
+        "type": "bool"
+      }
+    }
+  },
+  "troubleshoot_notification_current_endpoint": "மின்னோட்ட்ம், ஓட்டம் endpoint: {endpoint}",
+  "@troubleshoot_notification_current_endpoint": {
+    "description": "Current selected endpoint for push notifications",
+    "placeholder": {
+      "endpoint": {
+        "type": "String"
+      }
+    }
+  },
+  "troubleshoot_notification_current_vapid_key": "தற்போதைய VAPID விசை: {key}",
+  "@troubleshoot_notification_current_vapid_key": {
+    "description": "Current public key",
+    "placeholder": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "troubleshoot_notification_current_public_key": "மின்னோட்ட்ம், ஓட்டம் public key: {key}",
+  "@troubleshoot_notification_current_public_key": {},
+  "troubleshoot_notification_current_auth_key": "தற்போதைய அங்கீகார விசை: {key}",
+  "@troubleshoot_notification_current_auth_key": {
+    "description": "Current auth key",
+    "placeholder": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "troubleshoot_notification_reset_push_setup": "புச் அமைப்பை மீட்டமைக்கவும்",
+  "@troubleshoot_notification_reset_push_setup": {},
+  "troubleshoot_notification_unregister_for_push": "பதிவு செய்யப்படாதது",
+  "@troubleshoot_notification_unregister_for_push": {},
+  "troubleshoot_notification_resubscribe": "Re-subscribe க்கு places with புதிய push கட்டமைப்பு",
+  "@troubleshoot_notification_resubscribe": {},
+  "no_up_distributor_found_dialog_title": "இல்லை push distributor found",
+  "@no_up_distributor_found_dialog_title": {},
+  "no_up_distributor_found_dialog_explanation": "உங்கள் சாதனத்தில் நிறுவப்பட்ட எந்தவொரு ஒருங்கிணைந்த புச் விநியோகச்தரையும் ஃபோச்வர்ன் கண்டுபிடிக்க முடியவில்லை. ஒரு பகுதிக்கு குழுசேர, நீங்கள் ஒன்றை நிறுவ வேண்டும், அல்லது உங்களுக்கு எந்த அறிவிப்பும் கிடைக்காது. தயவுசெய்து ஒரு விநியோகச்தரை நிறுவி சந்தாவை மீண்டும் முயற்சிக்கவும்.",
+  "@no_up_distributor_found_dialog_explanation": {},
+  "no_up_distributor_found_up_explanation_button": "What is unifiedPush and how பெறுநர் install a distributor?",
+  "@no_up_distributor_found_up_explanation_button": {},
+  "no_up_distributor_found_direct_link_to_ntfy": "க்கு the fast ones: ntfy on F-Droid (requires changing the இயல்புநிலை server)",
+  "@no_up_distributor_found_direct_link_to_ntfy": {},
+  "dev_settings_remove_cached_alerts": "தற்காலிக சேமிப்பு விழிப்பூட்டல்களை அகற்று",
+  "@dev_settings_remove_cached_alerts": {},
+  "connection_error_fetching_new_alerts": "புதிய விழிப்பூட்டல்களைப் பெறுகிறது...",
+  "@connection_error_fetching_new_alerts": {
+    "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+  },
+  "add_my_place_with_map_select_area_size": "பகுதி அளவைத் தேர்ந்தெடுக்கவும்",
+  "@add_my_place_with_map_select_area_size": {}
 }
