@@ -62,45 +62,51 @@ jobs:
     
         
   build_arm64:
-    # use arm64 runner as we can not cross compile from x64 -> arm64
     runs-on: ubuntu-24.04-arm
 
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-java@v3
-      with:
-        java-version: ${{env.JAVA_VERSION}}
-        distribution: adopt
+    container:
+      image: debian:stable
+      options: --user root
 
-    # install dependencies
-    - run: |
-        sudo apt-get update && sudo apt-get upgrade -y
-        sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev libstdc++-12-dev
-        
-    - run: |
-        # Creating the key.properties file
+    steps:
+    - name: Install system dependencies
+      run: |
+        apt-get update && apt-get upgrade -y
+        apt-get install -y curl git clang cmake ninja-build pkg-config libgtk-3-dev libstdc++-12-dev openjdk-17-jdk ca-certificates
+    - name: Set up Java environment
+      run: |
+        export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-arm64"
+        echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Create key.properties file
+      run: |
         echo storePassword=${{ secrets.STORE_PASSWORD }} > ${{env.PROPERTIES_PATH}}
         echo keyPassword=${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
         echo keyAlias=${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
         echo storeFile=${{ env.STOREFILE_PATH }} >> ${{env.PROPERTIES_PATH}}
-        # '>' = overwrites '>>' = appends
-    # Decoding base64 key into a file
-    - run: |
-        # create key.jks
+    - name: Decode base64 keystore
+      run: |
+        mkdir -p android/app
         echo "${{ secrets.KEYSTORE }}" | base64 --decode > android/app/key.jks
-    
-    - uses: subosito/flutter-action@v2
-      with:
-        channel: ${{env.FLUTTER_CHANNEL_ARM64}}
-        flutter-version: ${{env.FLUTTER_VERSION}}
-        cache: true
-        cache-key: "${{ runner.OS }}-flutter-install-cache"
-    - run: flutter --version
-    - run: flutter pub get
-    - run: flutter gen-l10n # generate translation strings
-    - run: flutter test
-    - run: flutter build linux --target-platform linux-arm64
-    - uses: actions/upload-artifact@v4
+    - name: Install Flutter
+      run: |
+        curl -L https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${{env.FLUTTER_VERSION}}-stable.tar.xz -o flutter.tar.xz
+        mkdir /flutter
+        tar xf flutter.tar.xz -C /flutter --strip-components=1
+        echo "/flutter/bin" >> $GITHUB_PATH
+    - name: Check Flutter version
+      run: flutter --version
+    - name: Get dependencies
+      run: flutter pub get
+    - name: Generate translation strings
+      run: flutter gen-l10n
+    - name: Run tests
+      run: flutter test
+    - name: Build linux-arm64 bundle
+      run: flutter build linux --target-platform linux-arm64
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
       with:
         name: FOSSWarn-linux-arm64-bundle
         path: build/linux/arm64/release/bundle/
