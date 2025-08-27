@@ -69,6 +69,10 @@ jobs:
       options: --user root
 
     steps:
+    - name: Prepare sources for contrib/non-free
+      run: |
+        echo "deb http://deb.debian.org/debian stable main contrib non-free" > /etc/apt/sources.list
+        apt-get update && apt-get upgrade -y
     - name: Install system dependencies
       run: |
         apt-get update && apt-get upgrade -y
