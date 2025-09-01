@@ -219,9 +219,11 @@ List<Widget> _generateAssets(String text, {required BuildContext context}) {
 
 class DetailScreen extends ConsumerStatefulWidget {
   final String warningIdentifier;
+  final String subscriptionId;
 
   const DetailScreen({
     required this.warningIdentifier,
+    required this.subscriptionId,
     super.key,
   });
 
@@ -238,7 +240,9 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var warning = ref.read(alertsProvider).firstWhere(
-            (alert) => alert.identifier == widget.warningIdentifier,
+            (alert) =>
+                alert.identifier == widget.warningIdentifier &&
+                alert.placeSubscriptionId == widget.subscriptionId,
           );
 
       // update the read state of the alert

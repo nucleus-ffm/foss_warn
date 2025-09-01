@@ -37,7 +37,8 @@ final routesProvider = Provider<GoRouter>(
           onAddPlacePressed: () => context.go('/places/add'),
           onPlacePressed: (placeSubscriptionId) =>
               context.go('/places/$placeSubscriptionId'),
-          onAlertPressed: (String alertId) => context.go('/alerts/$alertId'),
+          onAlertPressed: (String alertId, String subscriptionId) =>
+              context.go('/alerts/$alertId/$subscriptionId'),
           onAlertUpdateThreadPressed: () => context.go('/alerts/update'),
           onSettingsPressed: () => context.go('/settings'),
           onAboutPressed: () => context.go('/about'),
@@ -105,8 +106,8 @@ final routesProvider = Provider<GoRouter>(
                   String placeSubscriptionId = state.pathParameters["id"]!;
                   return MyPlaceDetailScreen(
                     placeSubscriptionId: placeSubscriptionId,
-                    onAlertPressed: (String alertId) =>
-                        context.push('/alerts/$alertId'),
+                    onAlertPressed: (String alertId, String subscriptionId) =>
+                        context.push('/alerts/$alertId/$subscriptionId'),
                     onAlertUpdateThreadPressed: () =>
                         context.push('/alerts/update/'),
                   );
@@ -119,16 +120,22 @@ final routesProvider = Provider<GoRouter>(
             redirect: (context, state) => null,
             routes: [
               GoRoute(
-                path: ':id',
+                path: ':id/:subscriptionId',
                 builder: (context, state) {
                   String id = state.pathParameters["id"]!;
-                  return DetailScreen(warningIdentifier: id);
+                  String subscriptionId =
+                      state.pathParameters["subscriptionId"]!;
+                  return DetailScreen(
+                    warningIdentifier: id,
+                    subscriptionId: subscriptionId,
+                  );
                 },
               ),
               GoRoute(
                 path: 'update',
                 builder: (context, state) => AlertUpdateThreadView(
-                  onAlertPressed: (alertId) => context.go('/alerts/$alertId'),
+                  onAlertPressed: (alertId, subscriptionId) =>
+                      context.go('/alerts/$alertId/$subscriptionId'),
                   onAlertUpdateThreadPressed: () =>
                       context.go('/alerts/update'),
                 ),

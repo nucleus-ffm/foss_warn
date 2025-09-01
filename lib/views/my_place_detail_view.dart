@@ -17,7 +17,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
   });
 
   final String placeSubscriptionId;
-  final void Function(String alertId) onAlertPressed;
+  final void Function(String alertId, String subscriptionId) onAlertPressed;
   final void Function() onAlertUpdateThreadPressed;
 
   @override
