@@ -24,7 +24,7 @@ class WarningWidget extends ConsumerWidget {
         _updateThread = updateThread,
         _isMyPlaceWarning = isMyPlaceWarning;
 
-  final void Function(String id) onAlertPressed;
+  final void Function(String id, String subscriptionId) onAlertPressed;
   final void Function() onAlertUpdateThreadPressed;
   final List<WarnMessage>? _updateThread;
   final WarnMessage _warnMessage;
@@ -87,7 +87,10 @@ class WarningWidget extends ConsumerWidget {
 
     return Card(
       child: InkWell(
-        onTap: () => onAlertPressed(_warnMessage.identifier),
+        onTap: () => onAlertPressed(
+          _warnMessage.identifier,
+          _warnMessage.placeSubscriptionId,
+        ),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
@@ -188,7 +191,10 @@ class WarningWidget extends ConsumerWidget {
               Column(
                 children: [
                   IconButton(
-                    onPressed: () => onAlertPressed(_warnMessage.identifier),
+                    onPressed: () => onAlertPressed(
+                      _warnMessage.identifier,
+                      _warnMessage.placeSubscriptionId,
+                    ),
                     icon: const Icon(Icons.read_more),
                   ),
                   (_updateThread != null && _updateThread.length > 1)
