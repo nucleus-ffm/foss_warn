@@ -65,15 +65,15 @@ class AboutView extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.open_in_browser_outlined),
             title: Text(
-              (localizations.about_official_source),
+              (localizations.about_official_sources),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "https://warnung.bund.de/meldungen",
+              "https://alerts.kde.org/sources/status",
               style: theme.textTheme.bodyLarge,
             ),
             onTap: () =>
-                launchUrlInBrowser('https://warnung.bund.de/meldungen'),
+                launchUrlInBrowser('https://alerts.kde.org/sources/status'),
           ),
           ListTile(
             leading: const Icon(Icons.perm_identity_outlined),
@@ -98,6 +98,20 @@ class AboutView extends StatelessWidget {
               style: theme.textTheme.bodyLarge,
             ),
             onTap: () => launchEmail('mailto:foss-warn@posteo.de'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.question_mark),
+            title: Text(
+              localizations.about_faq,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              "https://github.com/nucleus-ffm/foss_warn/wiki/FAQ",
+              style: theme.textTheme.bodyLarge,
+            ),
+            onTap: () => launchUrlInBrowser(
+              'https://github.com/nucleus-ffm/foss_warn/wiki/FAQ',
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.account_balance_outlined),
