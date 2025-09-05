@@ -1,5 +1,13 @@
-(FOSS Warn befindet sich noch in einer Beta-Version.)
+FOSS Warn ist eine App, um weltweite Katastrophenwarnungen zu erhalten. Egal ob Hochwasser, Tsunami oder Bombenentschärfung, wenn es eine Warnung gibt, werden Sie diese bekommen.
 
-FOSS Warn ist eine inoffizielle App um Warnmeldungen von warnung.bund.de (Deutschland) oder alert.swiss (Schweiz) zu erhalten. Zusätzlich können Sie in der App Orte hinterlegen, für die Sie im Fall einer Warnung eine Benachrichtigung erhalten möchten.
+FOSS Warn nutzt den FOSS Public Alert Server, um Warnungen zu beziehen. Dieser aggregiert offizielle Feeds mit Warnungen von über 100 Ländern weltweit.
 
-Wichtig: FOSS Warn ist inoffiziell und hat nichts mit der offiziellen App *Nina* vom BBK zu tun. 
+Eine Liste mit unterstützten Ländern finden Sie hier: https://alerts.kde.org/sources/status
+
+Funktionen:
+- erhalte Warnungen in über 100 Ländern weltweit
+- erhalte Push-Notifications via UnifiedPush
+- Darstellung der Warnungen auf einer Karte
+- Material 3
+
+FOSS Warn und der FOSS Public Alert Server ist unabhängig und in keiner Weise verbunden mit einer offiziellen Behörde.
