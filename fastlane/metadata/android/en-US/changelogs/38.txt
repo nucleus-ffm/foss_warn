@@ -1,0 +1,5 @@
+- Extensive overhaul of the app
+- Migration of the old APIs to the new FOSS Public Alert Server
+- Now with push notifications via UnifiedPush
+- Updated texts and translations
+- This update requires the app to be set up again
