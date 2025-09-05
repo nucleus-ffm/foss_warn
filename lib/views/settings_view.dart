@@ -112,10 +112,12 @@ class _SettingsState extends ConsumerState<Settings> {
               title: TextField(
                 controller: fpasServerURLController,
                 decoration: InputDecoration(
-                  // @todo translate settings_foss_public_alert_server_enter_url_label_text
-                  labelText: 'Enter FPAS Server URL',
-                  // settings_foss_public_alert_server_enter_url_error
-                  errorText: _fpasServerURLError ? "Invalid Server URL" : null,
+                  labelText: localizations
+                      .settings_foss_public_alert_server_enter_url_label_text,
+                  errorText: _fpasServerURLError
+                      ? localizations
+                          .settings_foss_public_alert_server_enter_url_error
+                      : null,
                 ),
                 onChanged: (value) {
                   setState(() {
