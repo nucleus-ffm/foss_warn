@@ -255,7 +255,7 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
   }
 
   void setFossPublicAlertServerTermsOfService(String value) {
-    state = state.copyWith(fossPublicAlertServerOperator: value);
+    state = state.copyWith(fossPublicAlertServerTermsOfService: value);
     _sharedPreferences.setString("fossPublicAlertServerTermsOfService", value);
   }
 
