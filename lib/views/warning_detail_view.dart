@@ -30,8 +30,10 @@ List<String> _generateAreaDescriptionList({
   for (Area area in alert.info[0].area) {
     List<String> splitDescription = area.description.split(",");
     for (int i = 0; i < splitDescription.length; i++) {
-      if (counter <= length || addAll) {
-        result.add(splitDescription[i]);
+      String areaDescritpion = splitDescription[i];
+      if ((counter <= length || addAll) &&
+          areaDescritpion != "polygonal event area") {
+        result.add(areaDescritpion);
         counter++;
       } else {
         break;
@@ -49,7 +51,8 @@ String _replaceHTMLTags(String text) {
   replacedText = replacedText.replaceAll("<br>", "\n");
   replacedText = replacedText.replaceAll("br>", "\n");
   replacedText = replacedText.replaceAll("&nbsp;", " ");
-
+  replacedText = replacedText.replaceAll("\\n", "\n");
+  replacedText = replacedText.replaceAll("\\\n", " ");
   return replacedText;
 }
 
