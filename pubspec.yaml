@@ -1,10 +1,11 @@
 name: foss_warn
-description: Eine FOSS Umsetzung von NINA
+description: A FOSS client for the FOSS Public Alert Server
 publish_to: 'none'
-version: 0.8.1+33
+version: 1.0.0+38
 
 environment:
-  sdk: ">=2.17.0 <3.13.3"
+  sdk: ">=3.6.2 <4.0.0"
+  flutter: ">=3.29.0"
 
 dependencies:
   flutter:
@@ -13,16 +14,16 @@ dependencies:
     sdk: flutter
   http: ^1.1.0
   flutter_local_notifications: ^17.2.4
-  shared_preferences: ^2.3.3
-  shared_preferences_android: ^2.4.0
-  provider: ^6.1.1
+  shared_preferences: ^2.5.3
+  shared_preferences_android: ^2.4.10
   rxdart: ^0.28.0
   url_launcher: ^6.3.1
-  share_plus: ^10.1.1
-  android_alarm_manager_plus: ^4.0.4
+  share_plus: ^11.0.0
   intl: any # for localizations
-  unifiedpush: ^5.0.2
+  unifiedpush: ^6.0.2
+  unifiedpush_linux: ^0.1.0
   xml2json: ^6.2.5
+  uuid: ^4.4.2
 
   # used by the map
   flutter_map: ^7.0.2
@@ -32,9 +33,14 @@ dependencies:
 
   #icons_launcher: ^2.1.6
 
+  path_provider: any
+  vector_tile_renderer: any
+  flutter_riverpod: ^2.6.1
+  go_router: ^14.8.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^5.0.0
 
 icons_launcher:
   image_path: "assets/app_icon/app_icon.png"
@@ -52,8 +58,5 @@ flutter:
   assets:
    # welcome screen
    - assets/app_icon/app_icon.png
-   - assets/location.png
-   - assets/battery.png
-   - assets/check.png
-   - assets/steps.png
-   - assets/paragraph.png
+   - assets/introduction/darkmode/
+   - assets/introduction/lightmode/

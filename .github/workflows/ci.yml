@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+  workflow_dispatch:
+
+jobs:
+  fastlane-metadata:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Fastlane Supply Metadata
+        uses: ashutoshgngwr/validate-fastlane-supply-metadata@v1
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: "${{ runner.OS }}-flutter-install-cache"
+          flutter-version: "3.29.0"
+
+      - run: flutter pub get
+      - run: flutter gen-l10n
+      - run: dart format -o none --set-exit-if-changed .
+      - run: flutter analyze
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: "${{ runner.OS }}-flutter-install-cache"
+          flutter-version: "3.29.0"
+
+      - run: flutter pub get
+      - run: flutter gen-l10n
+      - run: flutter test

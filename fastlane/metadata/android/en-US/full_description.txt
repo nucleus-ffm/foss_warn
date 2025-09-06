@@ -1,7 +1,13 @@
-(The app is currently in a BETA status.)
+FOSS Warn is an app for receiving global emergency alerts. Whether it's flooding, a tsunami, or bomb disposal, if there's an alert, you'll receive it.
 
-FOSS Warn is an unofficial open source application to get emergency alerts from warnung.bund.de (Germany) or alert.swiss (Switzerland). You can store locations in the app for which you would like to receive notifications.
+FOSS Warn uses the FOSS Public Alert Server to obtain alerts. This aggregates official feeds with alerts from over 100 countries worldwide.
 
-Important: FOSS Warn is unofficial and has nothing to do with the official APP Nina from BBK.
+A list of supported countries can be found here: https://alerts.kde.org/sources/status
 
-Notice: FOSS Warn is currently only available in German, but there is a translation help <a href="https://github.com/nucleus-ffm/foss_warn/wiki/Translation-of-the-UI-into-English"> here </a>
+Features:
+- Receive alerts in over 100 countries worldwide
+- Receive push notifications via UnifiedPush
+- Display alerts on a map
+- Material 3
+
+FOSS Warn and the FOSS Public Alert Server are independent and in no way affiliated with any official authority. 

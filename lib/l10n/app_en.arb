@@ -1,8 +1,11 @@
 {
+  "@@locale": "en",
   "main_nav_bar_all_warnings": "All warnings",
   "@main_nav_bar_all_warnings": {},
   "main_nav_bar_my_places": "My places",
   "@main_nav_bar_my_places": {},
+  "main_nav_bar_map": "Map",
+  "@main_nav_bar_map": {},
   "main_dot_menu_settings": "Settings",
   "@main_dot_menu_settings": {},
   "main_dot_menu_about": "About",
@@ -21,6 +24,10 @@
   "@all_warnings_no_places_chosen": {},
   "all_warnings_no_places_chosen_text": "Please press the plus to add a place",
   "@all_warnings_no_places_chosen_text": {},
+  "all_warnings_failed_to_fetch_alerts": "Failed to fetch alerts",
+  "@all_warnings_failed_to_fetch_alerts": {
+    "description": "Main message shown when retrieving alerts failed"
+  },
   "all_warnings_nothing_to_show": "Nothing to see here",
   "@all_warnings_nothing_to_show": {},
   "all_warnings_nothing_to_show_text": "FOSS Warn has nothing to show here",
@@ -31,8 +38,6 @@
   "@all_warnings_everything_ok_text": {},
   "all_warnings_reload": "Reload",
   "@all_warnings_reload": {},
-  "my_places_no_warning_found": "No warnings found",
-  "@my_places_no_warning_found": {},
   "my_place_warning_found": "There are warnings for you",
   "@my_place_warning_found": {},
   "my_place_no_place_added": "No place is selected",
@@ -85,18 +90,36 @@
   "@settings_sorting": {},
   "settings_extended_settings": "Advanced settings",
   "@settings_extended_settings": {},
-  "settings_alertSwiss": "Activate AlertSwiss",
-  "@settings_alertSwiss": {},
-  "settings_alertSwiss_subtitle": "Warnings for Switzerland",
-  "@settings_alertSwiss_subtitle": {},
   "settings_show_welcome_dialog": "Show welcome dialogue again",
   "@settings_show_welcome_dialog": {},
   "settings_dev_settings": "Open developer settings",
   "@settings_dev_settings": {},
   "warning_tags": "Tags",
   "@warning_tags": {},
-  "warning_from": "Message from",
-  "@warning_from": {},
+  "warning_from_title": "Message from",
+  "@warning_from_title": {},
+  "warning_region_title": "Region",
+  "@warning_region_title": {},
+  "warning_type_title": "Type",
+  "@warning_type_title": {},
+  "warning_severity_title": "Severity",
+  "@warning_severity_title": {},
+  "warning_description_title": "Description",
+  "@warning_description_title": {},
+  "warning_recommended_action_title": "Recommended action",
+  "@warning_recommended_action_title": {},
+  "warning_source_title": "Source",
+  "@warning_source_title": {},
+  "warning_from": "Message from: {datetime}",
+  "@warning_from": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_context_information": "Context information:",
+  "@warning_context_information": {},
   "warning_effective": "Effective",
   "@warning_effective": {},
   "warning_onset": "Onset",
@@ -109,12 +132,24 @@
   "@warning_shared_by_foss_warn": {},
   "warning_open_picture_with_browser": "Open picture with browser",
   "@warning_open_picture_with_browser": {},
-  "warning_type": "Type",
-  "@warning_type": {},
+  "warning_type": "Type:\n{warningType}",
+  "@warning_type": {
+    "placeholders": {
+      "warningType": {
+        "type": "String"
+      }
+    }
+  },
   "warning_event": "Event",
   "@warning_event": {},
-  "warning_severity": "Severity",
-  "@warning_severity": {},
+  "warning_severity": "Severity:\n{severity}",
+  "@warning_severity": {
+    "placeholders": {
+      "severity": {
+        "type": "String"
+      }
+    }
+  },
   "warning_urgency": "Urgency",
   "@warning_urgency": {},
   "warning_certainty": "Certainty",
@@ -133,18 +168,42 @@
   "@warning_show_less": {},
   "warning_appendix": "Appendix",
   "@warning_appendix": {},
-  "warning_region": "Region",
-  "@warning_region": {},
+  "warning_region": "Region\n{region}",
+  "@warning_region": {
+    "placeholders": {
+      "region": {
+        "type": "String"
+      }
+    }
+  },
   "warning_places": "Places",
   "@warning_places": {},
-  "warning_description": "Description",
-  "@warning_description": {},
-  "warning_recommended_action": "Recommended Action",
-  "@warning_recommended_action": {},
-  "warning_source": "Source",
-  "@warning_source": {},
-  "warning_contact_website": "Contact & Website",
-  "@warning_contact_website": {},
+  "warning_description": "Description\n{description}",
+  "@warning_description": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_recommended_action": "Recommended action\n{recommendedAction}",
+  "@warning_recommended_action": {
+    "placeholders": {
+      "recommendedAction": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_source": "Source\n{source}",
+  "@warning_source": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "warning_contact": "Contact",
+  "@warning_contact": {},
   "warning_website": "Website",
   "@warning_website": {},
   "add_new_place_place_name": "Add a new place",
@@ -155,14 +214,8 @@
   "@about_headline": {},
   "about_summery": "This app is a free and open source project and has been created in the hope that it will be useful. Suggestions on how it can be improved or reports on bugs you have experienced are welcome. If you like this app and find it useful, I would love to hear about it.",
   "@about_summery": {},
-  "about_source": "Source",
-  "@about_source": {},
-  "about_source_subtitle": "Sources used for retrieving the messages",
-  "@about_source_subtitle": {},
-  "about_official_source": "Official Source",
-  "@about_official_source": {},
-  "about_official_source_subtitle": "not used",
-  "@about_official_source_subtitle": {},
+  "about_official_sources": "Official Sources",
+  "@about_official_sources": {},
   "about_author": "Author",
   "@about_author": {},
   "about_author_subtitle": "not used",
@@ -181,7 +234,7 @@
   "@about_privacy_subtitle": {},
   "about_disclaimer": "Disclaimer",
   "@about_disclaimer": {},
-  "about_disclaimer_subtitle": "What Foss warn cannot do",
+  "about_disclaimer_subtitle": "What FOSS Warn cannot do",
   "@about_disclaimer_subtitle": {},
   "about_version": "Version",
   "@about_version": {},
@@ -199,9 +252,10 @@
   "@about_sourcecode": {},
   "about_sourcecode_subtitle": "Soon on floppy, meanwhile on github",
   "@about_sourcecode_subtitle": {},
+  "about_faq": "FAQ",
   "privacy_headline": "Privacy",
   "@privacy_headline": {},
-  "privacy_main_text": "FOSS Warn does not send any information about its usage but only connects to warnung.bund.de at regular intervals and downloads the latest warnings. The locations you have saved (at district level) are visible to the operator of the API.\n\nFor the list of localities, FOSS Warn loads once at the first startup a list from the Github repository. This is only temporary and will be changed in the next version.\n\nFOSSWarn uses OpenStreetMap to display the area of an alert on a map.\n\nFOSS Warn transmits only the technically necessary data.\nFOSS Warn does not influence the server-side processing.",
+  "privacy_main_text": "FOSS Warn does not send any information about its usage and only connects to the following services:\n - the FPAS server: this server handles the subscriptions, sends push notifications and can be selected in the settings. \n - opensteetmap.org: Used to display the map and to search for places. \nFOSS Warn transmits only the technically necessary data.",
   "@privacy_main_text": {},
   "privacy_link_to_privacy": "To the privacy policy of",
   "@privacy_link_to_privacy": {},
@@ -211,30 +265,16 @@
   "@imprint_main_text": {},
   "source_headline": "Source",
   "@source_headline": {},
-  "source_mowas_title": "Mowas (Modular Warning System)",
-  "@source_mowas_title": {},
   "source_mowas_description": "Federal Office of Civil Protection and Disaster Assistance - warns of disasters",
   "@source_mowas_description": {},
   "source_biwapp_title": "Biwapp (Citizen Info & Warning App)",
   "@source_biwapp_title": {},
-  "source_biwapp_description": "regional warning and information system of many municipalities - warns e.g. of: Bomb discovery, chemical accident, fire, flood, landslide / avalanche, major damage situation, severe weather, traffic accident, lesson cancellation and epidemic.",
-  "@source_biwapp_description": {},
-  "source_katwarn_title": "Katwarn",
-  "@source_katwarn_title": {},
   "source_katwarn_description": "Developed by the Fraunhofer-Gesellschaft - warns e.g. in case of: Major fire, bomb discovery and environmental disaster",
   "@source_katwarn_description": {},
   "source_dwd_title": "DWD (German Weather Service)",
   "@source_dwd_title": {},
-  "source_dwd_description": "Federal agency - warns of severe weather",
-  "@source_dwd_description": {},
   "source_lhp_title": "LHP (Interstate Flood Portal)",
   "@source_lhp_title": {},
-  "source_lhp_description": "A joint initiative of the German federal states warns of flooding",
-  "@source_lhp_description": {},
-  "source_alertswiss_title": "Alert Swiss (experimental)",
-  "@source_alertswiss_title": {},
-  "source_alertswiss_description": "Alerts for Switzerland",
-  "@source_alertswiss_description": {},
   "status_headline": "Status",
   "@status_headline": {},
   "status_source_status": "Source status",
@@ -251,7 +291,7 @@
   "@notification_settings_headline": {},
   "notification_settings_notify_by": "Notify by",
   "@notification_settings_notify_by": {},
-  "notification_settings_notify_by_extreme": "extreme Messages",
+  "notification_settings_notify_by_extreme": "Extreme Messages",
   "@notification_settings_notify_by_extreme": {},
   "notification_settings_notify_by_severe": "Severe Messages",
   "@notification_settings_notify_by_severe": {},
@@ -259,6 +299,8 @@
   "@notification_settings_notify_by_moderate": {},
   "notification_settings_notify_by_minor": "Minor Messages",
   "@notification_settings_notify_by_minor": {},
+  "notification_settings_notify_by_update": "Update Messages",
+  "@notification_settings_notify_by_update": {},
   "notification_settings_thunderstorm": "Thunderstorm",
   "@notification_settings_thunderstorm": {},
   "notification_settings_strong_weather": "Strong weather",
@@ -269,14 +311,6 @@
   "@notification_settings_everything": {},
   "dev_settings_headline": "Developer Settings",
   "@dev_settings_headline": {},
-  "dev_settings_test_notification": "Test Notification",
-  "@dev_settings_test_notification": {},
-  "dev_settings_test_notification_text": "Manually runs the background service once",
-  "@dev_settings_test_notification_text": {},
-  "dev_settings_restart_background_service": "Restart background service",
-  "@dev_settings_restart_background_service": {},
-  "dev_settings_restart_background_service_text": "Restarts the background service. May help to fix problems",
-  "@dev_settings_restart_background_service_text": {},
   "dev_settings_delete_list_of_read_warnings": "Delete list of read warnings",
   "@dev_settings_delete_list_of_read_warnings": {},
   "dev_settings_delete_list_of_read_warnings_text": "manually clears the saved list of warnings already read.",
@@ -285,28 +319,35 @@
   "@dev_settings_delete_notification_list": {},
   "dev_settings_delete_notification_list_text": "Manually clears the saved list of alerts for which you have already received a notification.",
   "@dev_settings_delete_notification_list_text": {},
-  "dev_settings_call_alert_swiss": "Call Alert Swiss",
-  "@dev_settings_call_alert_swiss": {},
-  "dev_settings_call_alert_swiss_text": "Runs the method once and adds the messages.",
-  "@dev_settings_call_alert_swiss_text": {},
   "dev_settings_load_cached_warnings": "Load cached warnings",
   "@dev_settings_load_cached_warnings": {},
   "dev_settings_load_cached_warnings_text": "Loads the cached messages",
   "@dev_settings_load_cached_warnings_text": {},
-  "dev_settings_test_geocode": "Test geocode",
-  "@dev_settings_test_geocode": {},
-  "dev_settings_test_geocode_text": "Loads the geocodes for the list",
-  "@dev_settings_test_geocode_text": {},
-  "dev_settings_delete_warnings": "Delete warnings",
-  "@dev_settings_delete_warnings": {},
-  "dev_settings_delete_warnings_text": "Clears the list with warnings",
-  "@dev_settings_delete_warnings_text": {},
   "dev_settings_success": "done",
   "@dev_settings_success": {},
+  "dev_settings_collect_system_information_title": "Collect system information for Troubleshooting",
+  "dev_settings_collect_system_information_subtitle": "Collects information about the system that can be sent to the developer for error handling. No data is sent automatically.",
+  "dev_settings_collect_system_information_snackbar": "Collecting system information.",
+  "dev_settings_open_log_file_viewer_title": "Open Logfile viewer",
+  "dev_settings_open_log_file_viewer_subtitle": "Provides an overview over all error messages",
+  "dev_settings_show_error_messages_title": "Show error messages",
+  "dev_settings_show_error_messages_subtitle": "Shows a dialog with error messages",
+  "dev_settings_max_size_bounding_box_title": "Max size of bounding box for a subscription (be careful)",
+  "dev_settings_max_size_bounding_box_subtitle": "Allows to select the max size of the bounding box for a subscription. Larger subscription areas can affect performance. Be careful.",
+  "dev_settings_show_debug_notification": "Show debug notifications",
+  "dev_settings_remove_cached_alerts": "Remove cached alerts",
   "welcome_view_foss_warn_headline": "FOSS Warn",
   "@welcome_view_foss_warn_headline": {},
   "welcome_view_foss_warn_text": "Glad you want to use FOSS Warn. Swipe to start the introduction.",
   "@welcome_view_foss_warn_text": {},
+  "welcome_view_foss_server_selection_headline": "FOSS Public Alert Server",
+  "@welcome_view_foss_server_selection_headline": {},
+  "welcome_view_foss_server_selection_text": "FOSSWarn now uses the FOSS Public Alert Server (FPAS) to receive alerts. This server allows to get push notifications about emergency alerts for a large number of countries in the world. The default server is operated by KDE and is hosted in Germany. You can change the selected server in the settings and use any other FPAS server.",
+  "@welcome_view_foss_server_selection_text": {},
+  "welcome_view_foss_server_selection_select_instance_helptext": "Learn more about the FPAS",
+  "@welcome_view_foss_server_selection_select_instance_helptext": {},
+  "welcome_view_permission_action": "Request permission",
+  "@welcome_view_permission_action": {},
   "welcome_view_important_headline": "Important",
   "@welcome_view_important_headline": {},
   "welcome_view_important_text": "Please read the disclaimer before use. By using the app, you agree to it.",
@@ -315,13 +356,17 @@
   "@welcome_view_battery_optimisation_headline": {},
   "welcome_view_battery_optimisation_text": "In order for FOSS Warn to reliably send you background notifications, battery optimization for FOSS Warn should be disabled.",
   "@welcome_view_battery_optimisation_text": {},
+  "welcome_view_battery_optimisation_verifying": "Verifying battery optimization state...",
+  "@welcome_view_battery_optimisation_verifying": {},
   "welcome_view_battery_optimisation_action": "Disable",
   "@welcome_view_battery_optimisation_action": {},
   "welcome_view_battery_optimisation_action_success": "Success",
   "@welcome_view_battery_optimisation_action_success": {},
+  "welcome_view_action_success": "Success",
+  "@welcome_view_action_success": {},
   "welcome_view_my_places_headline": "My places",
   "@welcome_view_my_places_headline": {},
-  "welcome_view_my_places_text": "In the app, you have the option of storing locations for which you want to receive notifications. The matching to see if there are alerts for this location takes place locally. If your location is not listed, you can try your county or the next larger location. If you tap on a location for a long time, you can delete it again.",
+  "welcome_view_my_places_text": "To receive alerts, you have to subscribe to an area of interest. You can subscribe to any area in the world. We currently support around 100 countries. You will receive push notifications for every subscription. To unsubscribe, you can long-press the location and click on delete.",
   "@welcome_view_my_places_text": {},
   "welcome_view_warning_steps_headline": "Warning levels",
   "@welcome_view_warning_steps_headline": {},
@@ -333,8 +378,25 @@
   "@welcome_view_lets_go_text": {},
   "welcome_view_end_button": "End",
   "@welcome_view_end_button": {},
+  "welcome_view_unifiedpush_headline": "Push Notifications",
+  "@welcome_view_unifiedpush_headline": {},
+  "welcome_view_unifiedpush_text": "FOSSWarn uses UnifiedPush to receive push notifications about new emergency alerts. UnifiedPush is a decentralized push notification system that lets you choose the service you want to use. It’s designed to be privacy-friendly, flexible, and open. To use UnifiedPush, you must install an additional app that acts as a distributor.",
+  "@welcome_view_unifiedpush_text": {},
+  "welcome_view_unifiedpush_learn_more_button": "Learn more about UnifiedPush.",
+  "@welcome_view_unifiedpush_learn_more_button": {},
+  "welcome_view_navigation_previous": "Previous",
+  "@welcome_view_navigation_previous": {},
+  "welcome_view_navigation_next": "Next",
+  "@welcome_view_navigation_next": {},
   "connection_error_no_internet": "No server connection",
   "@connection_error_no_internet": {},
+  "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
+  "@connection_error_app_error": {},
+  "connection_error_subscription_expired": "Some of your subscriptions have expired.",
+  "connection_error_fetching_new_alerts": "Fetching new alerts...",
+  "@connection_error_fetching_new_alerts": {
+    "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+  },
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
@@ -347,7 +409,7 @@
   "@font_size_very_big": {},
   "disclaimer_headline": "Disclaimer",
   "@disclaimer_headline": {},
-  "disclaimer_text": "This app was created in the hope that it will be useful, comes\nbut comes WITHOUT ANY WARRANTY. The developer cannot at any time \nguarantee at any time that the app will function without error or that it will\ndisplay all warnings at all times. The interfaces used\nmay change at any time, which may cause the app to stop working for the\nno longer works. Also, the developer does not assume any warranty \nfor the topicality, correctness and completeness of the displayed messages. \nmessages. Therefore, do NOT rely on this app at ANY TIME. \non this app. Also, the warnings are always received with a certain\nDELAY received in the background. This app does not use \npush services, but loads the latest messages at a certain interval and \nlatest messages and then notifies when necessary.\nBy using FOSS Warn, you agree that.",
+  "disclaimer_text": "This app was created in the hope that it will be helpful, but it comes WITHOUT ANY WARRANTY. The developer cannot guarantee that the app will function without errors or that it will display all warnings at all times. Also, the developer does not assume any warranty for the topicality, correctness, and completeness of the displayed messages. Therefore, do NOT rely on this app at ANY TIME. Also, the warnings may received with a certain DELAY. You agree to this by using FOSS Warn.",
   "@disclaimer_text": {},
   "sorting_headline": "How should the messages be sorted?",
   "@sorting_headline": {},
@@ -391,6 +453,10 @@
   "@explanation_other": {},
   "explanation_other_text": "Information with other messages",
   "@explanation_other_text": {},
+  "explanation_transport": "Transport",
+  "@explanation_transport": {},
+  "explanation_rescue": "Rescue",
+  "@explanation_rescue": {},
   "delete_place_headline": "Delete place?",
   "@delete_place_headline": {},
   "delete_place_confirmation": "Are you sure you want to delete this place?",
@@ -399,6 +465,8 @@
   "@delete_place_delete": {},
   "delete_place_cancel": "Cancel",
   "@delete_place_cancel": {},
+  "delete_place_error": "Can not remove place. Please check your internet connection.",
+  "@delete_place_error": {},
   "explanation_warning_level_headline": "Warning levels",
   "@explanation_warning_level_headline": {},
   "explanation_warning_level_attention": "Attention",
@@ -413,12 +481,20 @@
   "@explanation_warning_level_all_clear": {},
   "explanation_warning_level_all_clear_text": "All-clear for a previous message. Most of the time the warning is now lifted.",
   "@explanation_warning_level_all_clear_text": {},
-  "my_place_there_are": "There are",
-  "@my_place_there_are": {},
-  "my_place_warnings_more_then_one": "warnings",
-  "@my_place_warnings_more_then_one": {},
-  "my_place_warnings_only_one": "warning",
-  "@my_place_warnings_only_one": {},
+  "explanation_warning_level_ack": "Acknowledged",
+  "@explanation_warning_level_ack": {},
+  "explanation_warning_level_error": "Error",
+  "@explanation_warning_level_error": {},
+  "my_place_warnings_count": "There {count, plural, =0{are no warnings} =1{is one warning} other{are {count} warnings}}",
+  "@my_place_warnings_count": {
+    "description": "Tells how many warnings there are for a place",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
   "warning_widget_and": "and",
   "@warning_widget_and": {},
   "warning_widget_other": "other",
@@ -433,8 +509,6 @@
   "@notification_settings_slidervalue_extreme": {},
   "notification_settings_slidervalue_moderate": "moderate",
   "@notification_settings_slidervalue_moderate": {},
-  "notification_settings_source_disabled": "Source disabled - you won't get a notification",
-  "@notification_settings_source_disabled": {},
   "notification_settings_slidervalue_severe": "severe",
   "@notification_settings_slidervalue_severe": {},
   "notification_settings_slidervalue_minor": "minor",
@@ -455,6 +529,8 @@
   "@warning_severity_explanation_dialog_minor_description": {},
   "warning_severity_explanation_dialog_extreme_description": "Extraordinary threat to life or property. May have a significant short-term impact on your health, property and/or public infrastructure.",
   "@warning_severity_explanation_dialog_extreme_description": {},
+  "warning_severity_explanation_dialog_update_description": "Update of an already notified alert",
+   "@warning_severity_explanation_dialog_update_description": {},
   "warning_severity_explanation_dialog_headline": "Severity",
   "@warning_severity_explanation_dialog_headline": {},
   "warning_severity_minor": "Minor",
@@ -489,12 +565,44 @@
   "@notification_no_places_selected_title": {},
   "warning_status_actual": "actual",
   "@warning_status_actual": {},
+  "warning_status_exercise": "excercise",
+  "@warning_status_exercise": {},
+  "warning_status_system": "system",
+  "@warning_status_system": {},
+  "warning_status_test": "test",
+  "@warning_status_test": {},
+  "warning_status_draft": "draft",
+  "@warning_status_draft": {},
   "warning_urgency_immediate": "immediate",
   "@warning_urgency_immediate": {},
+  "warning_urgency_expected": "expected",
+  "@warning_urgency_expected": {},
+  "warning_urgency_future": "future",
+  "@warning_urgency_future": {},
+  "warning_urgency_past": "past",
+  "@warning_urgency_past": {},
+  "warning_urgency_unknown": "unknown",
+  "@warning_urgency_unknown": {},
   "add_my_place_with_map_add_place_button": "Add place",
   "@add_my_place_with_map_add_place_button": {},
   "warning_certainty_observed": "observed",
   "@warning_certainty_observed": {},
+  "warning_certainty_likely": "likely",
+  "@warning_certainty_likely": {},
+  "warning_certainty_possible": "possible",
+  "@warning_certainty_possible": {},
+  "warning_certainty_unlikely": "unlikely",
+  "@warning_certainty_unlikely": {},
+  "warning_certainty_unknown": "unknown",
+  "@warning_certainty_unknown": {},
+  "warning_certainty_other": "other",
+  "@warning_certainty_other": {},
+  "warning_scope_public": "Public",
+  "@warning_scope_public": {},
+  "warning_scope_restricted": "Restricted",
+  "@warning_scope_restricted": {},
+  "warning_scope_private": "Private",
+  "@warning_scope_private": {},
   "map_view_warning_overview_no_alerts": "There are no alerts",
   "@map_view_warning_overview_no_alerts": {},
   "map_view_filter_chips_tooltip_show": "show",
@@ -509,12 +617,19 @@
   "@warning_detail_view_map_center_map_button_tooltip": {},
   "loading_screen_loading": "Loading",
   "@loading_screen_loading": {},
-  "add_my_place_with_map_loading_screen_subscription_error": "Something went wrong. Can not subscribe. Please try again later.",
-  "@add_my_place_with_map_loading_screen_subscription_error": {},
+  "loading_screen_wait_for_push_to_complete": "Wait for push registration to complete.",
+  "add_my_place_with_map_loading_screen_subscription_error": "Something went wrong. Can not subscribe. Please try again later. The server responded with {error}",
+    "@add_my_place_with_map_loading_screen_subscription_error": {
+        "description": "Message shown if the subscriptions failed",
+            "placeholders": {
+                "error": {
+                    "type": "String"
+                }
+            }
+    },
   "add_my_place_with_map_loading_screen_subscription_success": "successfully subscribed",
   "@add_my_place_with_map_loading_screen_subscription_success": {},
-  "add_my_place_with_map_select_radius": "Select radius",
-  "@add_my_place_with_map_select_radius": {},
+  "add_my_place_with_map_select_area_size": "Select area size",
   "add_my_place_with_map_loading_screen_searching": "searching…",
   "@add_my_place_with_map_loading_screen_searching": {},
   "add_my_place_with_map_loading_screen_search_no_result_found": "No results found. Please try again",
@@ -526,5 +641,179 @@
   "legacy_warning_dialog_migration_button": "start auto migration",
   "@legacy_warning_dialog_migration_button": {},
   "add_my_place_with_map_loading_screen_search_error": "Something went wrong. Please try it again later.",
-  "@add_my_place_with_map_loading_screen_search_error": {}
+  "@add_my_place_with_map_loading_screen_search_error": {},
+  "error_dialog_text_privacy": "The log does not contain any privacy sensitive information beside maybe your selected place. FOSS Warn also does not send any log information to a server.",
+  "@error_dialog_text_privacy": {},
+  "error_dialog_text_introduction": "FOSS Warn has noticed an error. If this error persists, please contact the developer and attach the following log:",
+  "@error_dialog_text_introduction": {},
+  "app_error_message": "Ups. Something went wrong. Please contact the developer",
+  "@app_error_message": {},
+  "error_dialog_headline": "Oh no - something went wrong :(",
+  "@error_dialog_headline": {},
+  "error_dialog_text_instructions_text": "- Check your internet connection\n- Check if the issue is persistent\n- write an E-Mail to: foss-warn@posteo.de\n- or open an Github Issue",
+  "@error_dialog_text_instructions_text": {},
+  "error_dialog_text_instructions_headline": "What should I do now?",
+  "@error_dialog_text_instructions_headline": {},
+  "welcome_view_foss_public_alert_server_headline": "FOSS Public Alert Server",
+  "@welcome_view_foss_public_alert_server_headline": {},
+  "welcome_view_foss_public_alert_server_text": "FOSS Warn now uses the FOSS Public Alert Server as the backend. This allows us to deliver push notifications and support more areas worldwide. The FOSS Public Alert Server is developed by the FOSS Warn team in cooperation with KDE.",
+  "@welcome_view_foss_public_alert_server_text": {},
+  "welcome_view_notification_permission_text": "FOSSWarn needs your permission to send you notifications in case there are alerts for your area. Press the button below to open the permission dialog.",
+  "@welcome_view_notification_permission_text": {},
+  "welcome_view_foss_public_alert_server_select_instance": "Select server instance",
+  "@welcome_view_foss_public_alert_server_select_instance": {},
+  "welcome_view_notification_permission_headline": "Notification permission",
+  "@welcome_view_notification_permission_headline": {},
+  "welcome_view_alarm_permission_headline": "Alarm permission",
+  "@welcome_view_alarm_permission_headline": {},
+  "welcome_view_alarm_permission_text": "FOSSWarn needs your permission to schedule exact alarms. Press on the button below to open the permission dialog.",
+  "@welcome_view_alarm_permission_text": {},
+  "welcome_view_foss_public_alert_server_select_instance_helptext": "Why do I need to select a server?",
+  "@welcome_view_foss_public_alert_server_select_instance_helptext": {},
+  "welcome_view_request_permission": "Request permission",
+  "@welcome_view_request_permission": {},
+  "settings_foss_public_alert_server_enter_url_label_text": "Enter FPAS Server URL",
+  "@settings_foss_public_alert_server_enter_url_label_text": {},
+  "settings_foss_public_alert_server_enter_url_error": "Invalid Server URL",
+  "@settings_foss_public_alert_server_enter_url_error": {},
+  "welcome_view_foss_public_alert_server_server_operator": "This server is operated by:",
+  "@welcome_view_foss_public_alert_server_server_operator": {},
+  "welcome_view_foss_public_alert_server_use_custom_server": "Use custom server",
+  "@welcome_view_foss_public_alert_server_use_custom_server": {},
+  "welcome_view_foss_public_alert_server_confirm_button": "Confirm",
+  "@welcome_view_foss_public_alert_server_confirm_button": {},
+  "welcome_view_foss_public_alert_server_confirm_success": "Confirmed",
+  "@welcome_view_foss_public_alert_server_confirm_success": {},
+  "welcome_view_foss_public_alert_server_use_default_server": "Use default server",
+  "@welcome_view_foss_public_alert_server_use_default_server": {},
+  "alert_publisher_unknown": "Unknown",
+  "@alert_publisher_unknown": {
+    "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
+  },
+  "failed_to_open_url": "Failed to open URL",
+  "error_dialog_headline": "Oh no - something went wrong :(",
+  "error_dialog_description": "FOSSWarn has noticed an error. Please report the error and attach the following log.",
+  "@error_dialog_description": {},
+  "error_dialog_privacy": "The log does not contain any privacy-sensitive information besides maybe your selected places. FOSSWarn does not send any logs to a server.",
+  "@error_dialog_privacy": {},
+  "error_dialog_instruction_headline": "What should I do now?",
+  "@error_dialog_instruction_headline": {},
+  "error_dialog_instruction_body": "1. Check if the error is just because of a missing internet connection\n2. Check if there is already an open issue on GitHub\n3. Find the relevant part of the log. If the same error message occurs multiple times in the log, sending just one error message is enough.\n4. Open a new issue or write an email to foss-warn@posteo.de",
+  "@error_dialog_instruction_body": {},
+  "error_dialog_hide_error_bar": "Hide error bar",
+  "@error_dialog_hide_error_bar": {},
+  "error_dialog_copy": "copy error log",
+  "@error_dialog_copy": {},
+  "error_dialog_copy_success": "copied",
+  "@error_dialog_copy_success": {},
+  "error_log_viewer_title": "Log file Viewer",
+  "@error_log_viewer_title": {},
+  "error_log_viewer_headline": "Here you can read the error log for FOSSWarn",
+  "@error_log_viewer_headline": {},
+  "error_log_button_delete": "Delete",
+  "@error_log_button_delete": {},
+  "error_log_button_share": "Share logfile",
+  "@error_log_button_share": {},
+  "error_log_share_info": "Error log shared from FOSSWarn",
+  "@error_log_share_info": {},
+  "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server",
+  "dev_settings_troubleshoot_notifications": "Troubleshoot notifications",
+  "error_log_share_info": "Error log shared from FOSSWarn",
+  "invalid_subscription_dialog_headline": "Renew expired subscriptions",
+  "invalid_subscription_dialog_text": "Some of your subscriptions have expired. Click on resubscribe to get push notifications again",
+  "invalid_subscription_dialog_resubscribe_button" : "resubscribe",
+  "invalid_subscription_dialog_loading_indicator_replace_places" : "replacing the old places...",
+  "invalid_subscription_dialog_error_body" : "Oh no, failed to resubscribe.",
+  "invalid_subscription_dialog_error_status_code": "HTTP Status code: {status_code}",
+   "@invalid_subscription_dialog_error_status_code": {
+    "placeholders": {
+            "status_code": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_error_message": "Error message: {message}",
+     "@invalid_subscription_dialog_error_message": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+  "invalid_subscription_dialog_successfully_resubscribed": "Successfully resubscribed",
+  "notification_channel_other_name": "Other",
+  "notification_channel_other_description": "Other notifications",
+  "notification_group_name": "FOSSWarn notifications",
+  "notification_group_description": "There are multiple notifications from FOSSWarn",
+  "notification_alert_new_title": "New alert for {place}",
+  "@notification_alert_new_title": {
+    "description": "Title of the notification shown for a new alert",
+    "placeholders": {
+        "place": {
+            "type": "String"
+        }
+    }
+  },
+  "notification_alert_update_title": "Updated alert for {place}",
+    "@notification_alert_title": {
+      "description": "Title of the notification shown for an updated alert",
+      "placeholders": {
+          "place": {
+              "type": "String"
+          }
+      }
+    },
+  "troubleshoot_notification_title": "Troubleshoot notifications",
+  "troubleshoot_notification_register_state": "Currently registered? {state}",
+  "@troubleshoot_notification_register_state": {
+       "description": "State of the push notification service",
+       "placeholder": {
+            "state": {
+                "type": "bool"
+            }
+       }
+  },
+  "troubleshoot_notification_current_endpoint": "Current endpoint: {endpoint}",
+  "@troubleshoot_notification_current_endpoint": {
+    "description": "Current selected endpoint for push notifications",
+    "placeholder": {
+        "endpoint": {
+            "type": "String"
+        }
+    }
+  },
+  "troubleshoot_notification_current_vapid_key": "Current VAPID key: {key}",
+  "@troubleshoot_notification_current_vapid_key": {
+        "description": "Current vapid key",
+        "placeholder": {
+            "key":{
+                "type": "String"
+            }
+        }
+  },
+   "troubleshoot_notification_current_public_key": "Current public key: {key}",
+   "@troubleshoot_notification_current_vapid_key": {
+         "description": "Current public key",
+         "placeholder": {
+             "key":{
+                 "type": "String"
+             }
+         }
+   },
+    "troubleshoot_notification_current_auth_key": "Current auth key: {key}",
+    "@troubleshoot_notification_current_auth_key": {
+           "description": "Current auth key",
+           "placeholder": {
+               "key":{
+                   "type": "String"
+               }
+           }
+    },
+  "troubleshoot_notification_reset_push_setup": "Reset push setup",
+  "troubleshoot_notification_unregister_for_push": "Unregister",
+  "troubleshoot_notification_resubscribe": "Re-subscribe for places with new push config",
+  "no_up_distributor_found_dialog_title": "No push distributor found",
+  "no_up_distributor_found_dialog_explanation": "FOSSWarn couldn't find any UnifiedPush distributor installed on your device. To subscribe to an area, you must have one installed, or you won't get any notifications. Please install a distributor and retry the subscription.",
+  "no_up_distributor_found_up_explanation_button": "What is unifiedPush and how to install a distributor?",
+  "no_up_distributor_found_direct_link_to_ntfy": "For the fast ones: ntfy on F-Droid (requires changing the default server)"
 }

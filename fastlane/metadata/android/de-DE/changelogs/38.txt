@@ -1,0 +1,5 @@
+- Umfassende Überarbeitung der App
+- Umstellung der alten APIs auf den neuen FOSS Public Alert Server
+- Jetzt mit Push Benachrichtigungen via UnifiedPush
+- Aktualisierte Texte und Übersetzungen
+- Dieses Update benötigt eine Neu-Einrichtung der App
