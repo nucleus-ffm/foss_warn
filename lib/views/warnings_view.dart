@@ -14,7 +14,7 @@ class WarningsView extends ConsumerWidget {
     super.key,
   });
 
-  final void Function(String alertId) onAlertPressed;
+  final void Function(String alertId, String subscriptionId) onAlertPressed;
   final VoidCallback onAlertUpdateThreadPressed;
 
   @override

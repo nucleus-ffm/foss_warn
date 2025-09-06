@@ -33,7 +33,7 @@ class HomeView extends ConsumerStatefulWidget {
 
   final VoidCallback onAddPlacePressed;
   final void Function(String placeSubscriptionId) onPlacePressed;
-  final void Function(String alertId) onAlertPressed;
+  final void Function(String alertId, String subcriptionId) onAlertPressed;
   final VoidCallback onAlertUpdateThreadPressed;
   final VoidCallback onSettingsPressed;
   final VoidCallback onAboutPressed;
