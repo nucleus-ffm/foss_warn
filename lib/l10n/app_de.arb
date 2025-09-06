@@ -569,5 +569,234 @@
     "error_dialog_text_privacy": "Das Log beinhaltet keine sensitiven Informationen abseits von evtl. deinen ausgewählten Orten. FOSS Warn sendet keine Logs an einen Server.",
     "@error_dialog_text_privacy": {},
     "error_dialog_text_introduction": "FOSS Warn hat einen Fehler festgestellt. Bitte kontaktiere den Entwickler und füge das nachfolgen Log an:",
-    "@error_dialog_text_introduction": {}
+    "@error_dialog_text_introduction": {},
+    "about_official_sources": "Offizielle Quellen",
+    "@about_official_sources": {},
+    "about_faq": "FAQ",
+    "@about_faq": {},
+    "notification_settings_notify_by_update": "Aktualisierungen",
+    "@notification_settings_notify_by_update": {},
+    "dev_settings_collect_system_information_title": "Sammle Systeminformationen für Fehlerbehebung",
+    "@dev_settings_collect_system_information_title": {},
+    "dev_settings_collect_system_information_subtitle": "Stellt Informationen über das System zusammen, die an die Entwickler zur Fehlerbehebung gesendet werden können. Es werden keine Daten automatisch versendet.",
+    "@dev_settings_collect_system_information_subtitle": {},
+    "dev_settings_collect_system_information_snackbar": "Stelle Systeminformationen zusammen.",
+    "@dev_settings_collect_system_information_snackbar": {},
+    "dev_settings_open_log_file_viewer_title": "Öffne Protokolldatei Betrachter",
+    "@dev_settings_open_log_file_viewer_title": {},
+    "dev_settings_open_log_file_viewer_subtitle": "Biete eine Übersicht über alle Fehlermeldungen",
+    "@dev_settings_open_log_file_viewer_subtitle": {},
+    "dev_settings_show_error_messages_title": "Fehlermeldungen anzeigen",
+    "@dev_settings_show_error_messages_title": {},
+    "dev_settings_show_error_messages_subtitle": "Zeigt einen Dialog mit Fehlermeldungen an",
+    "@dev_settings_show_error_messages_subtitle": {},
+    "dev_settings_max_size_bounding_box_title": "Max Größe der Begrenzungsbox für Abos (Vorsicht)",
+    "@dev_settings_max_size_bounding_box_title": {},
+    "dev_settings_max_size_bounding_box_subtitle": "Erlaubt die Auswahl der maximalen Größe des Begrenzungsbox für ein Abo. Größere Abonnementbereiche können die Leistung beeinträchtigen. Seien Sie vorsichtig.",
+    "@dev_settings_max_size_bounding_box_subtitle": {},
+    "dev_settings_show_debug_notification": "Fehlerbehebungsbenachrichtigungen anzeigen",
+    "@dev_settings_show_debug_notification": {},
+    "dev_settings_remove_cached_alerts": "Entferne zwischengespeicherte Warnungen",
+    "@dev_settings_remove_cached_alerts": {},
+    "welcome_view_foss_server_selection_headline": "FOSS Public Alert Server",
+    "@welcome_view_foss_server_selection_headline": {},
+    "welcome_view_foss_server_selection_text": "FOSS Warn nutzt nun den FOSS Public Alert Server, um Warnmeldungen zu empfangen. Dieser Server ermöglicht es, Push-Benachrichtigungen über Notfallwarnungen für eine Vielzahl von Ländern weltweit zu erhalten. Der Standardserver wird von KDE betrieben und ist in Deutschland gehostet. Sie können den ausgewählten Server in den Einstellungen ändern und einen beliebigen anderen Server verwenden.",
+    "@welcome_view_foss_server_selection_text": {},
+    "welcome_view_foss_server_selection_select_instance_helptext": "Erfahre mehr über den Server",
+    "@welcome_view_foss_server_selection_select_instance_helptext": {},
+    "welcome_view_permission_action": "Berechtigung anfragen",
+    "@welcome_view_permission_action": {},
+    "welcome_view_battery_optimisation_verifying": "Überprüfung des Batterieoptimierungsstatus...",
+    "@welcome_view_battery_optimisation_verifying": {},
+    "welcome_view_action_success": "Erfolgreich",
+    "@welcome_view_action_success": {},
+    "welcome_view_unifiedpush_headline": "Push-Benachrichtigungen",
+    "@welcome_view_unifiedpush_headline": {},
+    "welcome_view_unifiedpush_text": "FOSS Warn nutzt UnifiedPush, um Push-Benachrichtigungen über neue Notfallwarnungen zu empfangen. UnifiedPush ist ein dezentrales Push-Benachrichtigungssystem, bei dem Sie den gewünschten Dienst auswählen können. Es ist datenschutzfreundlich, flexibel und offen gestaltet. Um UnifiedPush nutzen zu können, müssen Sie eine zusätzliche App installieren, die als Verteiler fungiert.",
+    "@welcome_view_unifiedpush_text": {},
+    "welcome_view_unifiedpush_learn_more_button": "Erfahre mehr über UnifiedPush.",
+    "@welcome_view_unifiedpush_learn_more_button": {},
+    "welcome_view_navigation_previous": "Zurück",
+    "@welcome_view_navigation_previous": {},
+    "welcome_view_navigation_next": "Nächste",
+    "@welcome_view_navigation_next": {},
+    "connection_error_app_error": "Ups, etwas ist schiefgelaufen. Bitte wenden Sie sich an den Entwickler",
+    "@connection_error_app_error": {},
+    "connection_error_subscription_expired": "Einige Ihrer Abonnements sind abgelaufen.",
+    "@connection_error_subscription_expired": {},
+    "connection_error_fetching_new_alerts": "Lade neue Warnungen...",
+    "@connection_error_fetching_new_alerts": {
+        "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+    },
+    "explanation_transport": "Transport",
+    "@explanation_transport": {},
+    "explanation_rescue": "Rettung",
+    "@explanation_rescue": {},
+    "warning_severity_explanation_dialog_update_description": "Aktualisierung einer bereits erhaltenen Warnung",
+    "@warning_severity_explanation_dialog_update_description": {},
+    "loading_screen_wait_for_push_to_complete": "Warten Sie, bis die Push-Registrierung abgeschlossen ist.",
+    "@loading_screen_wait_for_push_to_complete": {},
+    "add_my_place_with_map_select_area_size": "Wähle Bereichsgröße",
+    "@add_my_place_with_map_select_area_size": {},
+    "welcome_view_notification_permission_text": "FOSS Warn benötigt Ihre Erlaubnis, um Ihnen Benachrichtigungen zu senden, falls es Warnmeldungen für Ihre Region gibt. Drücken Sie die Schaltfläche unten, um das Dialogfeld für die Berechtigungen zu öffnen.",
+    "@welcome_view_notification_permission_text": {},
+    "welcome_view_foss_public_alert_server_select_instance": "Wähle Server Instanz",
+    "@welcome_view_foss_public_alert_server_select_instance": {},
+    "welcome_view_alarm_permission_headline": "Alarm Berechtigung",
+    "@welcome_view_alarm_permission_headline": {},
+    "welcome_view_alarm_permission_text": "FOSS Warn benötigt Ihre Erlaubnis, um genaue Alarme zu planen. Drücken Sie auf die Schaltfläche unten, um das Berechtigungsdialogfeld zu öffnen.",
+    "@welcome_view_alarm_permission_text": {},
+    "welcome_view_foss_public_alert_server_select_instance_helptext": "Warum muss ich einen Server auswählen?",
+    "@welcome_view_foss_public_alert_server_select_instance_helptext": {},
+    "welcome_view_request_permission": "Berechtigung anfragen",
+    "@welcome_view_request_permission": {},
+    "settings_foss_public_alert_server_enter_url_label_text": "Trage FPAS Server URL ein",
+    "@settings_foss_public_alert_server_enter_url_label_text": {},
+    "settings_foss_public_alert_server_enter_url_error": "Ungültige Server URL",
+    "@settings_foss_public_alert_server_enter_url_error": {},
+    "welcome_view_foss_public_alert_server_server_operator": "Dieser Server wird betrieben von:",
+    "@welcome_view_foss_public_alert_server_server_operator": {},
+    "welcome_view_foss_public_alert_server_use_custom_server": "Nutze eigenen Server",
+    "@welcome_view_foss_public_alert_server_use_custom_server": {},
+    "welcome_view_foss_public_alert_server_confirm_button": "Bestätigen",
+    "@welcome_view_foss_public_alert_server_confirm_button": {},
+    "welcome_view_foss_public_alert_server_confirm_success": "Bestätigt",
+    "@welcome_view_foss_public_alert_server_confirm_success": {},
+    "welcome_view_foss_public_alert_server_use_default_server": "Nutze Standard Server",
+    "@welcome_view_foss_public_alert_server_use_default_server": {},
+    "alert_publisher_unknown": "Unbekannt",
+    "@alert_publisher_unknown": {
+        "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
+    },
+    "failed_to_open_url": "Öffnen der URL fehlgeschlagen",
+    "@failed_to_open_url": {},
+    "error_dialog_description": "FOSS Warn hat einen Fehler festgestellt. Bitte melden Sie den Fehler und fügen Sie das folgende Protokoll bei.",
+    "@error_dialog_description": {},
+    "error_dialog_privacy": "Das Protokoll enthält keine datenschutzrelevanten Informationen, außer möglicherweise den von Ihnen ausgewählten Orten. FOSSWarn sendet keine Protokolle an einen Server.",
+    "@error_dialog_privacy": {},
+    "error_dialog_instruction_headline": "Was soll Ich jetzt tun?",
+    "@error_dialog_instruction_headline": {},
+    "error_dialog_instruction_body": "1. Überprüfen Sie, ob der Fehler nur auf eine fehlende Internetverbindung zurückzuführen ist.\n2. Überprüfen Sie, ob es bereits ein offenes Issue auf GitHub gibt.\n3. Suchen Sie den relevanten Teil des Protokolls. Wenn dieselbe Fehlermeldung mehrfach im Protokoll auftritt, reicht es aus, nur eine Fehlermeldung zu senden.\n4. Erstellen Sie ein neues Issue oder schreiben Sie eine E-Mail an foss-warn@posteo.de",
+    "@error_dialog_instruction_body": {},
+    "error_dialog_hide_error_bar": "Blende Fehlerbalken aus",
+    "@error_dialog_hide_error_bar": {},
+    "error_dialog_copy": "Kopiere Fehlerprotokoll",
+    "@error_dialog_copy": {},
+    "error_dialog_copy_success": "Kopiert",
+    "@error_dialog_copy_success": {},
+    "error_log_viewer_title": "Protokolldatei Betrachter",
+    "@error_log_viewer_title": {},
+    "error_log_viewer_headline": "Hier können Sie das Fehlerprotokoll von FOSS Warn lesen",
+    "@error_log_viewer_headline": {},
+    "error_log_button_delete": "Löschen",
+    "@error_log_button_delete": {},
+    "error_log_button_share": "Protokoll teilen",
+    "@error_log_button_share": {},
+    "error_log_share_info": "Fehlerprotokoll geteilt von FOSS Warn",
+    "@error_log_share_info": {},
+    "dev_settings_subscribe_for_test_alert": "Abonnieren Sie technische Testmeldungen vom FOSS Public Alert Server",
+    "@dev_settings_subscribe_for_test_alert": {},
+    "dev_settings_troubleshoot_notifications": "Fehlerbehebung bei Benachrichtigungen",
+    "@dev_settings_troubleshoot_notifications": {},
+    "invalid_subscription_dialog_headline": "Abgelaufene Abonnements erneuern",
+    "@invalid_subscription_dialog_headline": {},
+    "invalid_subscription_dialog_text": "Einige Ihrer Abonnements sind abgelaufen. Klicken Sie auf „Erneut abonnieren“, um wieder Push-Benachrichtigungen zu erhalten.",
+    "@invalid_subscription_dialog_text": {},
+    "invalid_subscription_dialog_resubscribe_button": "Erneut abonnieren",
+    "@invalid_subscription_dialog_resubscribe_button": {},
+    "invalid_subscription_dialog_loading_indicator_replace_places": "Ersetze die alten Orte...",
+    "@invalid_subscription_dialog_loading_indicator_replace_places": {},
+    "invalid_subscription_dialog_error_body": "Oh nein, erneut abonnieren gescheitert.",
+    "@invalid_subscription_dialog_error_body": {},
+    "invalid_subscription_dialog_error_status_code": "HTTP Status Code: {status_code}",
+    "@invalid_subscription_dialog_error_status_code": {
+        "placeholders": {
+            "status_code": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_error_message": "Fehlermeldung: {message}",
+    "@invalid_subscription_dialog_error_message": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_successfully_resubscribed": "Erfolgreich erneut abonniert",
+    "@invalid_subscription_dialog_successfully_resubscribed": {},
+    "notification_channel_other_name": "Andere",
+    "@notification_channel_other_name": {},
+    "notification_channel_other_description": "Andere Benachrichtigungen",
+    "@notification_channel_other_description": {},
+    "notification_group_name": "FOSS Warn Benachrichtigungen",
+    "@notification_group_name": {},
+    "notification_group_description": "Es gibt mehrere Benachrichtigungen für FOSS Warn",
+    "@notification_group_description": {},
+    "notification_alert_new_title": "Neue Warnung für {place}",
+    "@notification_alert_new_title": {
+        "description": "Title of the notification shown for a new alert",
+        "placeholders": {
+            "place": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_alert_update_title": "Aktualisierte Warnung für {place}",
+    "@notification_alert_update_title": {},
+    "troubleshoot_notification_title": "Fehlerbehebung bei Benachrichtigungen",
+    "@troubleshoot_notification_title": {},
+    "troubleshoot_notification_register_state": "Aktuell registriert? {state}",
+    "@troubleshoot_notification_register_state": {
+        "description": "State of the push notification service",
+        "placeholder": {
+            "state": {
+                "type": "bool"
+            }
+        }
+    },
+    "troubleshoot_notification_current_endpoint": "Aktueller Endpunkt: {endpoint}",
+    "@troubleshoot_notification_current_endpoint": {
+        "description": "Current selected endpoint for push notifications",
+        "placeholder": {
+            "endpoint": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_current_vapid_key": "Aktueller VAPID Key: {key}",
+    "@troubleshoot_notification_current_vapid_key": {
+        "description": "Current public key",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_current_public_key": "Aktueller Public Key: {key}",
+    "@troubleshoot_notification_current_public_key": {},
+    "troubleshoot_notification_current_auth_key": "Aktueller Auth Key: {key}",
+    "@troubleshoot_notification_current_auth_key": {
+        "description": "Current auth key",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_reset_push_setup": "Push Setup zurücksetzen",
+    "@troubleshoot_notification_reset_push_setup": {},
+    "troubleshoot_notification_unregister_for_push": "Abmelden",
+    "@troubleshoot_notification_unregister_for_push": {},
+    "troubleshoot_notification_resubscribe": "Orte mit neuer Push-Konfiguration erneut abonnieren",
+    "@troubleshoot_notification_resubscribe": {},
+    "no_up_distributor_found_dialog_title": "Kein Push-Verteiler gefunden",
+    "@no_up_distributor_found_dialog_title": {},
+    "no_up_distributor_found_dialog_explanation": "FOSSWarn konnte keinen UnifiedPush-Distributor auf Ihrem Gerät finden. Um einen Bereich zu abonnieren, muss ein solcher Distributor installiert sein, da Sie sonst keine Benachrichtigungen erhalten. Bitte installieren Sie einen Distributor und versuchen Sie das Abonnement erneut.",
+    "@no_up_distributor_found_dialog_explanation": {},
+    "no_up_distributor_found_up_explanation_button": "Was ist UnifiedPush und wie installiert man einen Distributor?",
+    "@no_up_distributor_found_up_explanation_button": {},
+    "no_up_distributor_found_direct_link_to_ntfy": "Für die Schnellen: ntfy auf F-Droid (erfordert eine Änderung des Standardservers)",
+    "@no_up_distributor_found_direct_link_to_ntfy": {}
 }
