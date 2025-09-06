@@ -114,7 +114,7 @@
     "@about_privacy_subtitle": {},
     "about_disclaimer": "Застереження",
     "@about_disclaimer": {},
-    "about_disclaimer_subtitle": "Чого не може зробити Foss warn",
+    "about_disclaimer_subtitle": "Чого не може зробити FOSS Warn",
     "@about_disclaimer_subtitle": {},
     "about_version": "Версія",
     "@about_version": {},
@@ -464,7 +464,7 @@
     "@dev_settings_show_debug_notification": {},
     "welcome_view_foss_server_selection_headline": "Сервер публічних сповіщень FOSS",
     "@welcome_view_foss_server_selection_headline": {},
-    "welcome_view_foss_server_selection_text": "FOSSWarn тепер використовує сервер публічних сповіщень FOSS (FPAS) для отримання сповіщень. Цей сервер дозволяє отримувати push-сповіщення про екстрені ситуації для великої кількості країн світу. Сервер за замовчуванням керується KDE та розміщений у Німеччині. Ви можете змінити вибраний сервер у налаштуваннях та використовувати будь-який інший сервер FPAS. Ця версія є альфа-тестовою версією FOSSWarn з підтримкою FPAS. Ця версія ще не готова до виробництва.",
+    "welcome_view_foss_server_selection_text": "FOSSWarn тепер використовує сервер публічних сповіщень FOSS (FPAS) для отримання сповіщень. Цей сервер дозволяє отримувати push-сповіщення про екстрені ситуації для великої кількості країн світу. Сервер за замовчуванням керується KDE та розміщений у Німеччині. Ви можете змінити вибраний сервер у налаштуваннях та використовувати будь-який інший сервер FPAS.",
     "@welcome_view_foss_server_selection_text": {},
     "welcome_view_foss_server_selection_select_instance_helptext": "Дізнайтеся більше про FPAS",
     "@welcome_view_foss_server_selection_select_instance_helptext": {},
@@ -807,5 +807,9 @@
         "description": "Displayed if there are no alerts and the app is still fetching new alerts"
     },
     "add_my_place_with_map_select_area_size": "Виберіть розмір області",
-    "@add_my_place_with_map_select_area_size": {}
+    "@add_my_place_with_map_select_area_size": {},
+    "about_official_sources": "Офіційні джерела",
+    "@about_official_sources": {},
+    "about_faq": "FAQ",
+    "@about_faq": {}
 }
