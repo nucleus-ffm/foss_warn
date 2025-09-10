@@ -6,7 +6,7 @@
 </div>
 
 <p align="center">
-Get emergency alerts from warnung.bund.de <br>
+Get emergency alerts from the FOSS Public Alert Server <br>
 <a href="https://f-droid.org/packages/de.nucleus.foss_warn">
     <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
@@ -30,7 +30,7 @@ Get emergency alerts from warnung.bund.de <br>
 <a href="https://github.com/nucleus-ffm/foss_warn/releases/latest" alt="Github latest Releases"><img src="https://img.shields.io/github/downloads/nucleus-ffm/foss_warn/latest/total.svg"></a>
 </p>
 <hr>
-An open source application written in Flutter to receive emergency alerts from the [FOSS Public Alert Server](https://invent.kde.org/webapps/foss-public-alert-server)
+An open source application written in Flutter to receive emergency alerts from the <a href="https://invent.kde.org/webapps/foss-public-alert-server">FOSS Public Alert Server</a>
 
 The list of supported countries can be found here: https://alerts.kde.org/sources/status
 
