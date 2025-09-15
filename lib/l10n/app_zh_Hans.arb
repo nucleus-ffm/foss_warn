@@ -1,1 +1,212 @@
-{}
+{
+    "main_nav_bar_all_warnings": "所有警报",
+    "@main_nav_bar_all_warnings": {},
+    "main_nav_bar_my_places": "我的地点",
+    "@main_nav_bar_my_places": {},
+    "main_nav_bar_map": "地图",
+    "@main_nav_bar_map": {},
+    "main_dot_menu_settings": "设置",
+    "@main_dot_menu_settings": {},
+    "main_dot_menu_about": "关于",
+    "@main_dot_menu_about": {},
+    "main_app_bar_tooltip_mark_all_warnings_as_read": "将警告标为已读",
+    "@main_app_bar_tooltip_mark_all_warnings_as_read": {},
+    "main_app_bar_tooltip_show_menu": "显示菜单",
+    "@main_app_bar_tooltip_show_menu": {},
+    "main_dialog_understand": "理解",
+    "@main_dialog_understand": {},
+    "main_dialog_save": "保存",
+    "@main_dialog_save": {},
+    "main_dialog_close": "关闭",
+    "@main_dialog_close": {},
+    "all_warnings_no_places_chosen": "未选择地点",
+    "@all_warnings_no_places_chosen": {},
+    "all_warnings_no_places_chosen_text": "请按“+”添加地点",
+    "@all_warnings_no_places_chosen_text": {},
+    "all_warnings_failed_to_fetch_alerts": "获取警报失败",
+    "@all_warnings_failed_to_fetch_alerts": {
+        "description": "Main message shown when retrieving alerts failed"
+    },
+    "all_warnings_nothing_to_show": "没啥可看的",
+    "@all_warnings_nothing_to_show": {},
+    "all_warnings_nothing_to_show_text": "FOSS Warn 在这里没什么可显示的",
+    "@all_warnings_nothing_to_show_text": {},
+    "all_warnings_everything_ok": "一切都好",
+    "@all_warnings_everything_ok": {},
+    "all_warnings_everything_ok_text": "你没有警报",
+    "@all_warnings_everything_ok_text": {},
+    "all_warnings_reload": "重载",
+    "@all_warnings_reload": {},
+    "my_place_warning_found": "你有警报",
+    "@my_place_warning_found": {},
+    "my_place_no_place_added": "未选择地点",
+    "@my_place_no_place_added": {},
+    "my_place_no_place_added_text": "请先选择一个地点",
+    "@my_place_no_place_added_text": {},
+    "settings": "设置",
+    "@settings": {},
+    "settings_notification": "通知",
+    "@settings_notification": {},
+    "settings_android_notification_settings": "打开 Android 通知设置",
+    "@settings_android_notification_settings": {},
+    "settings_app_notification_settings": "打开通知设置",
+    "@settings_app_notification_settings": {},
+    "settings_show_status_notification_title": "显示状态通知",
+    "@settings_show_status_notification_title": {},
+    "settings_show_status_notification_subtitle": "展示带上次更新时间的通知",
+    "@settings_show_status_notification_subtitle": {},
+    "settings_background_service": "后台更新",
+    "@settings_background_service": {},
+    "settings_frequent_of_background_update": "后台更新频率",
+    "@settings_frequent_of_background_update": {},
+    "settings_frequent_of_background_update_minute": "分钟",
+    "@settings_frequent_of_background_update_minute": {},
+    "settings_display": "展示",
+    "@settings_display": {},
+    "settings_start_view": "启动视图",
+    "@settings_start_view": {},
+    "settings_start_view_all_warnings": "所有警报",
+    "@settings_start_view_all_warnings": {},
+    "settings_start_view_only_my_places": "我的地点",
+    "@settings_start_view_only_my_places": {},
+    "settings_show_extended_metadata": "显示扩展元数据",
+    "@settings_show_extended_metadata": {},
+    "settings_color_schema": "颜色方案",
+    "@settings_color_schema": {},
+    "settings_color_schema_light": "浅",
+    "@settings_color_schema_light": {},
+    "settings_color_schema_dark": "深",
+    "@settings_color_schema_dark": {},
+    "settings_color_schema_auto": "自动",
+    "@settings_color_schema_auto": {},
+    "settings_display_all_warnings_title": "展示所有警报",
+    "@settings_display_all_warnings_title": {},
+    "settings_display_all_warnings_subtitle": "显示所有警报",
+    "@settings_display_all_warnings_subtitle": {},
+    "settings_font_size": "字体大小",
+    "@settings_font_size": {},
+    "settings_sorting": "排序",
+    "@settings_sorting": {},
+    "settings_extended_settings": "高级设置",
+    "@settings_extended_settings": {},
+    "settings_show_welcome_dialog": "再次显示欢迎对话框",
+    "@settings_show_welcome_dialog": {},
+    "settings_dev_settings": "打开开发者设置",
+    "@settings_dev_settings": {},
+    "warning_tags": "标签",
+    "@warning_tags": {},
+    "warning_from_title": "消息发送自",
+    "@warning_from_title": {},
+    "warning_region_title": "地区",
+    "@warning_region_title": {},
+    "warning_type_title": "类型",
+    "@warning_type_title": {},
+    "warning_severity_title": "严重程度",
+    "@warning_severity_title": {},
+    "warning_description_title": "描述",
+    "@warning_description_title": {},
+    "warning_recommended_action_title": "建议操作",
+    "@warning_recommended_action_title": {},
+    "warning_source_title": "来源",
+    "@warning_source_title": {},
+    "warning_from": "消息自：{datetime}",
+    "@warning_from": {
+        "placeholders": {
+            "datetime": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_context_information": "上下文信息：",
+    "@warning_context_information": {},
+    "warning_effective": "生效中",
+    "@warning_effective": {},
+    "warning_onset": "开始",
+    "@warning_onset": {},
+    "warning_expires": "过期",
+    "@warning_expires": {},
+    "warning_share": "分享",
+    "@warning_share": {},
+    "warning_shared_by_foss_warn": "由 FOSS Warn 分享",
+    "@warning_shared_by_foss_warn": {},
+    "warning_open_picture_with_browser": "用浏览器打开图片",
+    "@warning_open_picture_with_browser": {},
+    "warning_type": "类型：\n{warningType}",
+    "@warning_type": {
+        "placeholders": {
+            "warningType": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_event": "事件",
+    "@warning_event": {},
+    "warning_severity": "严重程度：\n{severity}",
+    "@warning_severity": {
+        "placeholders": {
+            "severity": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_urgency": "紧急度",
+    "@warning_urgency": {},
+    "warning_certainty": "确信度",
+    "@warning_certainty": {},
+    "warning_scope": "范围",
+    "@warning_scope": {},
+    "warning_identifier": "ID",
+    "@warning_identifier": {},
+    "warning_sender": "发送者",
+    "@warning_sender": {},
+    "warning_status": "状态",
+    "@warning_status": {},
+    "warning_show_more": "显示更多",
+    "@warning_show_more": {},
+    "warning_show_less": "显示较少",
+    "@warning_show_less": {},
+    "about_summery": "本应用是自由开源项目，创建目的是希望它会有帮助。欢迎改进程序的建议或报告您遇到的问题。希望听到您喜欢这款应用并发现它有帮助。",
+    "@about_summery": {},
+    "warning_appendix": "附录",
+    "@warning_appendix": {},
+    "warning_region": "地区\n{region}",
+    "@warning_region": {
+        "placeholders": {
+            "region": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_places": "地点",
+    "@warning_places": {},
+    "warning_description": "描述\n{description}",
+    "@warning_description": {
+        "placeholders": {
+            "description": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_recommended_action": "建议操作\n{recommendedAction}",
+    "@warning_recommended_action": {
+        "placeholders": {
+            "recommendedAction": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_source": "数据源\n{source}",
+    "@warning_source": {
+        "placeholders": {
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_contact": "联系",
+    "@warning_contact": {},
+    "warning_website": "网站",
+    "@warning_website": {},
+    "add_new_place_place_name": "添加新地点",
+    "@add_new_place_place_name": {}
+}
