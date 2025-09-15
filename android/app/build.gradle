@@ -98,3 +98,18 @@ dependencies {
     // for flutter_local_notification plugin
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
 }
+
+// The following code creates a mapping that assigns a unique numeric value for each ABI
+// and overrides the output version code.
+//
+// See https://developer.android.com/build/configure-apk-splits#configure-APK-versions
+ext.abiCodes = ["x86_64": 1, "armeabi-v7a": 2, "arm64-v8a": 3]
+import com.android.build.OutputFile
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def abiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+        if (abiVersionCode != null) {
+            output.versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+        }
+    }
+}
