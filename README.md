@@ -99,7 +99,7 @@ special thanks to:
 
 
 ## Disclaimer
-This app was created in the hope that it will be useful, but it comes WITHOUT ANY WARRANTY. The developer cannot guarantee at any time that the app will function without errors and display all warnings at all times. Do NOT rely on this app at ANY TIME. Always pay attention to other sources of warnings and follow the instructions of local authorities.
+This app was created in the hope that it will be useful, but it comes WITHOUT ANY WARRANTY. The developer cannot guarantee at any time that the app will function without errors and display all warnings at all times; therefore, the developer shall not be held liable (except in cases of gross negligence or intent). Do NOT rely on this app at ANY TIME. Always pay attention to other sources of warnings and follow the instructions of local authorities.
 
 ## Haftungsausschluss 
-Diese App wurde in der Hoffnung erstellt, dass sie nützlich ist, kommt aber OHNE JEGLICHE GEWÄHRLEISTUNG. Der Entwickler kann zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert und alle Warnungen jederzeit anzeigt. Verlassen Sie sich zu KEINEM ZEITPUNKT auf diese App. Beachten Sie immer andere Warnungsquellen und folgen Sie den Hinweisen der örtlichen Behörden.
+Diese App wurde in der Hoffnung erstellt, dass sie nützlich ist, kommt aber OHNE JEGLICHE GEWÄHRLEISTUNG. Der Entwickler kann zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert und alle Warnungen jederzeit anzeigt, und übernimmt daher keine Haftung (außer im Falle von grober Fahrlässigkeit oder von Vorsatz). Verlassen Sie sich zu KEINEM ZEITPUNKT auf diese App. Beachten Sie immer andere Warnungsquellen und folgen Sie den Hinweisen der örtlichen Behörden.
