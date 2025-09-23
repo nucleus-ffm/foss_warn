@@ -166,11 +166,11 @@
     "@source_mowas_description": {},
     "source_biwapp_title": "Biwapp (Bürger-Info- & Warn-App)",
     "@source_biwapp_title": {},
-    "source_katwarn_description": "Entwickelt von der Fraunhofer-Gesellschaft - warnt z.B. bei: Großbrand, Bombenfund und Umweltkatastrophe",
+    "source_katwarn_description": "Entwickelt von der Fraunhofer-Gesellschaft – warnt z.B. bei: Großbrand, Bombenfund und Umweltkatastrophe",
     "@source_katwarn_description": {},
     "source_dwd_title": "DWD (Deutscher Wetterdienst)",
     "@source_dwd_title": {},
-    "source_lhp_title": "LHP (Länderübergreifendes Hochwasser Portal)",
+    "source_lhp_title": "LHP (Länderübergreifendes Hochwasserportal)",
     "@source_lhp_title": {},
     "status_headline": "Status",
     "@status_headline": {},
@@ -236,7 +236,7 @@
     "@welcome_view_my_places_text": {},
     "welcome_view_warning_steps_headline": "Warnstufen",
     "@welcome_view_warning_steps_headline": {},
-    "welcome_view_warning_steps_text": "Alle Warnungen haben eine vom Herausgeber bestimmte Warn- bzw. Wichtigkeitsstufe. In den Einstellungen können Sie einstellen, für welche der vier Stufen Sie Benachrichtigungen erhalten möchten. Standardmäßig werden Sie bei Meldungen von 'geringer' Wichtigkeit nicht benachrichtigt. In der App selbst werden immer alle Meldungen angezeigt.",
+    "welcome_view_warning_steps_text": "Alle Warnungen haben eine vom Herausgeber bestimmte Warn- bzw. Wichtigkeitsstufe. In den Einstellungen können Sie einstellen, für welche der vier Stufen Sie Benachrichtigungen erhalten möchten. Standardmäßig werden Sie bei Meldungen von „geringer“ Wichtigkeit nicht benachrichtigt. In der App selbst werden immer alle Meldungen angezeigt.",
     "@welcome_view_warning_steps_text": {},
     "welcome_view_lets_go_headline": "Los geht's!",
     "@welcome_view_lets_go_headline": {},
@@ -460,7 +460,7 @@
     "@map_view_filter_chips_tooltip_select_filter": {},
     "map_view_filter_chips_tooltip_hide": "verberge",
     "@map_view_filter_chips_tooltip_hide": {},
-    "my_places_view_add_new_place_button_tooltip": "Öffne neue Seite um einen Ort hinzuzufügen",
+    "my_places_view_add_new_place_button_tooltip": "Öffne neue Seite, um einen Ort hinzuzufügen",
     "@my_places_view_add_new_place_button_tooltip": {},
     "warning_detail_view_map_center_map_button_tooltip": "Karte zentrieren",
     "@warning_detail_view_map_center_map_button_tooltip": {},
@@ -490,7 +490,7 @@
     "@warning_source_title": {},
     "warning_scope_private": "Privat",
     "@warning_scope_private": {},
-    "error_dialog_text_instructions_text": "- Überprüfe deine Internetverbindung\n- Überprüfe ob das Problem dauerhaft besteht\n- schreibe eine Email an: foss-warn@posteo.de\n- oder erstelle ein Ticket auf Github",
+    "error_dialog_text_instructions_text": "- Überprüfe deine Internetverbindung\n- Überprüfe, ob das Problem dauerhaft besteht\n- schreibe eine Email an: foss-warn@posteo.de\n- oder erstelle ein Ticket auf Github",
     "@error_dialog_text_instructions_text": {},
     "all_warnings_failed_to_fetch_alerts": "Fehler beim Abrufen der Warnungen",
     "@all_warnings_failed_to_fetch_alerts": {
@@ -582,7 +582,7 @@
     "@dev_settings_collect_system_information_subtitle": {},
     "dev_settings_collect_system_information_snackbar": "Stelle Systeminformationen zusammen.",
     "@dev_settings_collect_system_information_snackbar": {},
-    "dev_settings_open_log_file_viewer_title": "Öffne Protokolldatei Betrachter",
+    "dev_settings_open_log_file_viewer_title": "Öffne Protokolldatei-Betrachter",
     "@dev_settings_open_log_file_viewer_title": {},
     "dev_settings_open_log_file_viewer_subtitle": "Biete eine Übersicht über alle Fehlermeldungen",
     "@dev_settings_open_log_file_viewer_subtitle": {},
@@ -590,7 +590,7 @@
     "@dev_settings_show_error_messages_title": {},
     "dev_settings_show_error_messages_subtitle": "Zeigt einen Dialog mit Fehlermeldungen an",
     "@dev_settings_show_error_messages_subtitle": {},
-    "dev_settings_max_size_bounding_box_title": "Max Größe der Begrenzungsbox für Abos (Vorsicht)",
+    "dev_settings_max_size_bounding_box_title": "Max. Größe der Begrenzungsbox für Abos (Vorsicht)",
     "@dev_settings_max_size_bounding_box_title": {},
     "dev_settings_max_size_bounding_box_subtitle": "Erlaubt die Auswahl der maximalen Größe des Begrenzungsbox für ein Abo. Größere Abonnementbereiche können die Leistung beeinträchtigen. Seien Sie vorsichtig.",
     "@dev_settings_max_size_bounding_box_subtitle": {},
@@ -640,9 +640,9 @@
     "@add_my_place_with_map_select_area_size": {},
     "welcome_view_notification_permission_text": "FOSS Warn benötigt Ihre Erlaubnis, um Ihnen Benachrichtigungen zu senden, falls es Warnmeldungen für Ihre Region gibt. Drücken Sie die Schaltfläche unten, um das Dialogfeld für die Berechtigungen zu öffnen.",
     "@welcome_view_notification_permission_text": {},
-    "welcome_view_foss_public_alert_server_select_instance": "Wähle Server Instanz",
+    "welcome_view_foss_public_alert_server_select_instance": "Wähle Server-Instanz",
     "@welcome_view_foss_public_alert_server_select_instance": {},
-    "welcome_view_alarm_permission_headline": "Alarm Berechtigung",
+    "welcome_view_alarm_permission_headline": "Alarm-Berechtigung",
     "@welcome_view_alarm_permission_headline": {},
     "welcome_view_alarm_permission_text": "FOSS Warn benötigt Ihre Erlaubnis, um genaue Alarme zu planen. Drücken Sie auf die Schaltfläche unten, um das Berechtigungsdialogfeld zu öffnen.",
     "@welcome_view_alarm_permission_text": {},
@@ -650,9 +650,9 @@
     "@welcome_view_foss_public_alert_server_select_instance_helptext": {},
     "welcome_view_request_permission": "Berechtigung anfragen",
     "@welcome_view_request_permission": {},
-    "settings_foss_public_alert_server_enter_url_label_text": "Trage FPAS Server URL ein",
+    "settings_foss_public_alert_server_enter_url_label_text": "Trage FPAS-Server-URL ein",
     "@settings_foss_public_alert_server_enter_url_label_text": {},
-    "settings_foss_public_alert_server_enter_url_error": "Ungültige Server URL",
+    "settings_foss_public_alert_server_enter_url_error": "Ungültige Server-URL",
     "@settings_foss_public_alert_server_enter_url_error": {},
     "welcome_view_foss_public_alert_server_server_operator": "Dieser Server wird betrieben von:",
     "@welcome_view_foss_public_alert_server_server_operator": {},
@@ -662,7 +662,7 @@
     "@welcome_view_foss_public_alert_server_confirm_button": {},
     "welcome_view_foss_public_alert_server_confirm_success": "Bestätigt",
     "@welcome_view_foss_public_alert_server_confirm_success": {},
-    "welcome_view_foss_public_alert_server_use_default_server": "Nutze Standard Server",
+    "welcome_view_foss_public_alert_server_use_default_server": "Nutze Standard-Server",
     "@welcome_view_foss_public_alert_server_use_default_server": {},
     "alert_publisher_unknown": "Unbekannt",
     "@alert_publisher_unknown": {
@@ -708,7 +708,7 @@
     "@invalid_subscription_dialog_loading_indicator_replace_places": {},
     "invalid_subscription_dialog_error_body": "Oh nein, erneut abonnieren gescheitert.",
     "@invalid_subscription_dialog_error_body": {},
-    "invalid_subscription_dialog_error_status_code": "HTTP Status Code: {status_code}",
+    "invalid_subscription_dialog_error_status_code": "HTTP-Status-Code: {status_code}",
     "@invalid_subscription_dialog_error_status_code": {
         "placeholders": {
             "status_code": {
@@ -730,7 +730,7 @@
     "@notification_channel_other_name": {},
     "notification_channel_other_description": "Andere Benachrichtigungen",
     "@notification_channel_other_description": {},
-    "notification_group_name": "FOSS Warn Benachrichtigungen",
+    "notification_group_name": "FOSS-Warn-Benachrichtigungen",
     "@notification_group_name": {},
     "notification_group_description": "Es gibt mehrere Benachrichtigungen für FOSS Warn",
     "@notification_group_description": {},
@@ -765,7 +765,7 @@
             }
         }
     },
-    "troubleshoot_notification_current_vapid_key": "Aktueller VAPID Key: {key}",
+    "troubleshoot_notification_current_vapid_key": "Aktueller VAPID-Schlüssel: {key}",
     "@troubleshoot_notification_current_vapid_key": {
         "description": "Current public key",
         "placeholder": {
@@ -774,9 +774,9 @@
             }
         }
     },
-    "troubleshoot_notification_current_public_key": "Aktueller Public Key: {key}",
+    "troubleshoot_notification_current_public_key": "Aktueller öffentlicher Schlüssel: {key}",
     "@troubleshoot_notification_current_public_key": {},
-    "troubleshoot_notification_current_auth_key": "Aktueller Auth Key: {key}",
+    "troubleshoot_notification_current_auth_key": "Aktueller Authentifizierungs-Schlüssel: {key}",
     "@troubleshoot_notification_current_auth_key": {
         "description": "Current auth key",
         "placeholder": {
