@@ -95,7 +95,7 @@
     "@settings_dev_settings": {},
     "warning_tags": "标签",
     "@warning_tags": {},
-    "warning_from_title": "消息发送自",
+    "warning_from_title": "发送时间",
     "@warning_from_title": {},
     "warning_region_title": "地区",
     "@warning_region_title": {},
@@ -109,7 +109,7 @@
     "@warning_recommended_action_title": {},
     "warning_source_title": "来源",
     "@warning_source_title": {},
-    "warning_from": "消息自：{datetime}",
+    "warning_from": "发送时间：{datetime}",
     "@warning_from": {
         "placeholders": {
             "datetime": {
@@ -119,7 +119,7 @@
     },
     "warning_context_information": "上下文信息：",
     "@warning_context_information": {},
-    "warning_effective": "生效中",
+    "warning_effective": "生效",
     "@warning_effective": {},
     "warning_onset": "开始",
     "@warning_onset": {},
