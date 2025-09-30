@@ -116,7 +116,7 @@ final userPreferencesProvider =
       selectedThemeMode: ThemeMode.values.byName(selectedThemeMode),
       selectedLightTheme: availableLightThemes[selectedLightTheme],
       selectedDarkTheme: availableDarkThemes[selectedDarkTheme],
-      startScreen: preferences.getInt("startScreen ") ?? 0,
+      startScreen: preferences.getInt("startScreen") ?? 0,
       warningFontSize: preferences.getDouble("warningFontSize") ?? 14.0,
       showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
       sortWarningsBy: SortingCategories.values[selectedSorting],
