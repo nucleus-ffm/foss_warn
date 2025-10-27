@@ -14,6 +14,7 @@ import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/update_loop.dart';
+import 'package:foss_warn/constants.dart' as constants;
 
 import '../class/class_error_logger.dart';
 
@@ -146,10 +147,12 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   var cachedAlerts = ref.read(processedAlertsProvider);
   for (WarnMessage alert in cachedAlerts) {
     if (!retrievedAlerts.any(
-      (apiResult) =>
-          alert.fpasId == apiResult.alertId &&
-          alert.placeSubscriptionId == apiResult.subscriptionId,
-    )) {
+          (apiResult) =>
+              alert.fpasId == apiResult.alertId &&
+              alert.placeSubscriptionId == apiResult.subscriptionId,
+        ) &&
+        // this check is to allow adding alerts from the map view
+        alert.placeSubscriptionId != constants.noSubscriptionId) {
       // the alert is not in the server response anymore, remove cached alert
       ref.read(processedAlertsProvider.notifier).deleteAlert(alert);
     }
@@ -351,6 +354,7 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
             ),
       );
 
+  /// Updates the given alert or add the alert if not in the list of alerts
   void updateAlert(WarnMessage alert) {
     var alerts = List<WarnMessage>.from(state);
 
@@ -360,6 +364,19 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
     } else {
       // New from polling
       alerts.add(alert);
+    }
+    state = alerts;
+    _saveAlertsToDisk();
+  }
+
+  /// Allows to delete a list of alerts at once
+  void deleteMultipleAlerts(List<WarnMessage> alertsToDelete) {
+    var alerts = List<WarnMessage>.from(state);
+
+    for (WarnMessage alert in alertsToDelete) {
+      if (alerts.contains(alert)) {
+        alerts.remove(alert);
+      }
     }
     state = alerts;
     _saveAlertsToDisk();
