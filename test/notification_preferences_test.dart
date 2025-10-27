@@ -49,6 +49,7 @@ void main() {
       subscribeForTestAlerts: false,
       cachedAlerts: [],
       showDebugNotification: false,
+      showUpdateDialog: false,
     );
   }
 

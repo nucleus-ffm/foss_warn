@@ -15,6 +15,7 @@ import 'package:unifiedpush/unifiedpush.dart';
 import 'package:unifiedpush_platform_interface/unifiedpush_platform_interface.dart';
 import 'package:unifiedpush_storage_shared_preferences/storage.dart';
 
+import '../../services/legacy_handler.dart';
 import '../../services/self_check_handler.dart';
 import '../../services/subscription_handler.dart';
 
@@ -97,6 +98,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
     updateAllSubscriptions(ref);
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (userPreferences.showUpdateDialog) {
+        showUpdateDialog(context, ref);
+      }
+    });
   }
 
   void onClickedNotification(String? payload) {

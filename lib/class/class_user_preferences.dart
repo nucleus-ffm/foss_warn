@@ -152,6 +152,7 @@ final userPreferencesProvider =
       cachedAlerts: loadAlertsFromDisk(),
       showDebugNotification:
           preferences.getBool("showDebugNotification") ?? false,
+      showUpdateDialog: preferences.getBool("showUpdateDialog") ?? false,
     ),
     sharedPreferences: preferences,
   );
@@ -340,6 +341,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(showDebugNotification: value);
     await _sharedPreferences.setBool("showDebugNotification", value);
   }
+
+  Future<void> setShowUpdateDialog(bool value) async {
+    state = state.copyWith(showDebugNotification: value);
+    await _sharedPreferences.setBool("showUpdateDialog", value);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -374,6 +380,7 @@ class UserPreferences {
     required this.subscribeForTestAlerts,
     required this.cachedAlerts,
     required this.showDebugNotification,
+    required this.showUpdateDialog,
   });
 
   final bool shouldNotifyGeneral;
@@ -406,6 +413,7 @@ class UserPreferences {
   final bool subscribeForTestAlerts;
   final List<WarnMessage> cachedAlerts;
   final bool showDebugNotification;
+  final bool showUpdateDialog;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -448,6 +456,7 @@ class UserPreferences {
     bool? subscribeForTestAlerts,
     List<WarnMessage>? cachedAlerts,
     bool? showDebugNotification,
+    bool? showUpdateDialog,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -493,6 +502,7 @@ class UserPreferences {
         cachedAlerts: cachedAlerts ?? this.cachedAlerts,
         showDebugNotification:
             showDebugNotification ?? this.showDebugNotification,
+        showUpdateDialog: showUpdateDialog ?? this.showUpdateDialog,
       );
 
   /// the path and filename where the error log is saved
