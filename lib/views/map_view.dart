@@ -108,6 +108,7 @@ class _MapViewState extends ConsumerState<MapView> {
               ? MapWidget.createPolygonsForMapWarning(ref)
               : [],
         ],
+        displayAllWarnings: filterChips["map_view_filter_chip_all_alerts"]!,
       ),
     );
   }
