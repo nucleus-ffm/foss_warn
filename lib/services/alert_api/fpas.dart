@@ -93,6 +93,38 @@ class FPASApi implements AlertAPI {
   }
 
   @override
+  Future<List<AlertApiResult>> getAlertsForArea({
+    required BoundingBox boundingBox,
+  }) async {
+    var url = Uri.parse(
+      "${_userPreferences.fossPublicAlertServerUrl}/alert/area?min_lat=${boundingBox.minLatLng.latitude}&max_lat=-${boundingBox.maxLatLng.latitude}&min_lon=${boundingBox.minLatLng.longitude}&max_lon=${boundingBox.maxLatLng.longitude}",
+    );
+
+    var response = await http.get(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        'User-Agent': constants.httpUserAgent,
+      },
+    );
+
+    switch (response.statusCode) {
+      case 200: // nothing to do
+        break;
+      default:
+        throw UndefinedServerError(
+          statusCode: response.statusCode,
+          message: response.body,
+        );
+    }
+
+    var alerts = List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
+    return alerts
+        .map((e) => (subscriptionId: "no subscription", alertId: e))
+        .toList();
+  }
+
+  @override
   Future<WarnMessage> getAlertDetail({
     required String alertId,
     required String placeSubscriptionId,
