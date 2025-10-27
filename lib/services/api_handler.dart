@@ -105,6 +105,17 @@ abstract class AlertAPI {
     required AppState appState,
   });
 
+  /// Get all alerts for a given area without subscription
+  /// This does not require to subscribe beforehand and allows to display alert details
+  /// of alerts on the map
+  ///
+  /// Returns a list of Alert ID's
+  ///
+  /// Throws an [UndefinedServerError] if the server responded in an unexpected way
+  Future<List<AlertApiResult>> getAlertsForArea({
+    required BoundingBox boundingBox,
+  });
+
   /// Get detail of an alert.
   /// [alertId] is the ID of an alert to retrieve details for.
   /// [placeSubscriptionId] is the ID of the place subscription this alert belongs too.
