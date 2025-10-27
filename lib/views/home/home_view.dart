@@ -12,6 +12,8 @@ import 'package:foss_warn/views/map_view.dart';
 import 'package:foss_warn/views/my_places_view.dart';
 import 'package:foss_warn/widgets/dialogs/sort_by_dialog.dart';
 import 'package:unifiedpush/unifiedpush.dart';
+import 'package:unifiedpush_platform_interface/unifiedpush_platform_interface.dart';
+import 'package:unifiedpush_storage_shared_preferences/storage.dart';
 
 import '../../services/subscription_handler.dart';
 
@@ -60,6 +62,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
       onNewEndpoint: unifiedPushHandler.onNewEndpoint,
       onRegistrationFailed: unifiedPushHandler.onRegistrationFailed,
       onUnregistered: unifiedPushHandler.onUnregistered,
+      linuxOptions: LinuxOptions(
+        dbusName: "de.nucleus.foss_warn",
+        storage: UnifiedPushStorageSharedPreferences(),
+        background: false,
+      ),
       onMessage: (message, instance) => unifiedPushHandler.onMessage(
         message: message,
         instance: instance,
@@ -69,7 +76,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
         warningService: ref.read(processedAlertsProvider.notifier),
         context: context,
       ),
-      linuxDBusName: "de.nucleus.foss_warn",
     ).then((registered) {
       if (registered) {
         // as we are already registered, we don't have to call setupUnifiedPush

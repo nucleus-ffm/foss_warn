@@ -20,8 +20,10 @@ dependencies:
   url_launcher: ^6.3.1
   share_plus: ^11.0.0
   intl: any # for localizations
-  unifiedpush: ^6.0.2
-  unifiedpush_linux: ^0.1.0
+  unifiedpush: ^6.2.0
+  unifiedpush_linux: ^1.0.0
+  unifiedpush_storage_shared_preferences: ^1.0.0
+  unifiedpush_platform_interface: ^4.0.0
   xml2json: ^6.2.5
   uuid: ^4.4.2
 
@@ -60,3 +62,4 @@ flutter:
    - assets/app_icon/app_icon.png
    - assets/introduction/darkmode/
    - assets/introduction/lightmode/
+   - assets/data/oasis-event-types.json
