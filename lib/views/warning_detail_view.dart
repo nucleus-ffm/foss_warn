@@ -239,7 +239,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var warning = ref.read(alertsProvider).firstWhere(
+      var warning = ref.read(processedAlertsProvider).firstWhere(
             (alert) =>
                 alert.identifier == widget.warningIdentifier &&
                 alert.placeSubscriptionId == widget.subscriptionId,
@@ -271,7 +271,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     var userPreferences = ref.watch(userPreferencesProvider);
 
     WarnMessage warning = ref.watch(
-      alertsProvider.select(
+      processedAlertsProvider.select(
         (value) => value.firstWhere(
           (element) => element.identifier == widget.warningIdentifier,
         ),
