@@ -144,6 +144,9 @@ Future<void> subscribeForArea({
   LoadingScreen.instance().hide();
 }
 
+/// resubscribed for all stored areas with the current push notification setup
+/// this methode can be called after the push notification config has changed,
+/// to update the subscription on the serverside
 Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
   var alertApi = ref.read(alertApiProvider);
   var places = ref.read(myPlacesProvider);
