@@ -5,11 +5,13 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 
+import '../class/class_unified_push_handler.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
 import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
+import '../widgets/dialogs/change_unified_push_distributor_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
 
 class Settings extends ConsumerStatefulWidget {
@@ -35,6 +37,14 @@ class _SettingsState extends ConsumerState<Settings> {
   final TextEditingController fpasServerURLController = TextEditingController();
   bool _fpasServerURLError = false;
   final _platform = const MethodChannel("flutter.native/helper");
+  String selectedDistributor = "None";
+
+  Future<void> readSelectedDistributor() async {
+    var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+    String? distributor = await unifiedPushHandler.getDistributor();
+    selectedDistributor = distributor ?? "None";
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -45,7 +55,10 @@ class _SettingsState extends ConsumerState<Settings> {
     fpasServerURLController.text =
         userPreferences.fossPublicAlertServerUrl.toString();
 
-    return super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      readSelectedDistributor();
+    });
+    super.initState();
   }
 
   @override

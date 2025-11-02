@@ -94,6 +94,8 @@
   "@settings_show_welcome_dialog": {},
   "settings_dev_settings": "Open developer settings",
   "@settings_dev_settings": {},
+  "settings_select_push_service_title": "Push Service",
+  "settings_select_push_service_subtitle": "Choose which push service you want to use.",
   "settings_self_check_title": "Self check",
   "settings_self_check_subtitle": "Run a self check for the notification setup",
   "warning_tags": "Tags",
@@ -817,7 +819,6 @@
   "no_up_distributor_found_dialog_title": "No push distributor found",
   "no_up_distributor_found_dialog_explanation": "FOSSWarn couldn't find any UnifiedPush distributor installed on your device. To subscribe to an area, you must have one installed, or you won't get any notifications. Please install a distributor and retry the subscription.",
   "no_up_distributor_found_up_explanation_button": "What is unifiedPush and how to install a distributor?",
-  "no_up_distributor_found_direct_link_to_ntfy": "For the fast ones: ntfy on F-Droid (requires changing the default server)"
   "no_up_distributor_found_direct_link_to_ntfy": "For the fast ones: ntfy on F-Droid (requires changing the default server)",
   "notification_self_check_title": "Notification Self Check",
   "notification_self_check_description": "This conducts tests to detect problems that could prevent notifications from being received by FOSSWarn. For help and more information, please visit the wiki.",
@@ -872,4 +873,6 @@
     "notification_self_check_test_subscription_subtitle_not_passed": "FOSSwarn was not able to subscribe to or send you a notification. Please recheck your setup.",
     "notification_self_check_test_subscription_subtitle_unknown": "FOSSWarn is trying to subscribe and receive a push notification. Please wait.",
     "change_unified_push_distributor_dialog_title": "Change UnifiedPush distributor"
+    "change_unified_push_distributor_dialog_body": "Please select the UnifiedPush distributor that FOSSWarn should use."
+
 }
