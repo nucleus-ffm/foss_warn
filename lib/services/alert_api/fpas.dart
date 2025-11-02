@@ -223,7 +223,7 @@ class FPASApi implements AlertAPI {
       switch (response.statusCode) {
         case 200: // successfully unsubscribed
           break;
-        case 400: // invalid subscription id. Subscriptions was already deleted
+        case 404: // invalid subscription id. Subscriptions was already deleted
           break;
         default:
           throw UnregisterAreaError();

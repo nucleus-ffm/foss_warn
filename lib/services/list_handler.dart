@@ -58,7 +58,6 @@ class MyPlacesService extends StateNotifier<List<Place>> {
 
     preferences.setString("MyPlacesListAsJson", jsonEncode(places));
 
-    if (!mounted) return;
     state = places;
   }
 
