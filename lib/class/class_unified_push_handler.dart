@@ -1,21 +1,19 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
-import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import 'package:unifiedpush/unifiedpush.dart';
 import '../services/alert_api/fpas.dart';
+import '../services/notification_handler.dart';
 import '../widgets/dialogs/no_up_distributor_found_dialog.dart';
 import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
-import 'class_notification_service.dart';
 
 final unifiedPushHandlerProvider = Provider(
   (ref) => UnifiedPushHandler(
@@ -82,56 +80,8 @@ class UnifiedPushHandler {
 
     var payload = utf8.decode(message.content);
     debugPrint("Received a notification. Message: $payload");
-    var userPreferences = ref.read(userPreferencesProvider);
 
-    if (userPreferences.showDebugNotification) {
-      NotificationService.showNotification(
-        id: Random().nextInt(100),
-        title: "DEBUG Notification",
-        body:
-            "FOSSWarn has received a push notification with content: $payload",
-        payload: "",
-        channelId: "de.nucleus.foss_warn.notifications_other",
-        channelName: "Debug notifications",
-      );
-    }
-
-    String? addedAlertId;
-
-    try {
-      var payloadAsJson = jsonDecode(payload) as Map<String, dynamic>;
-      addedAlertId = payloadAsJson["alert_id"];
-      if (addedAlertId != null) {
-        WarnMessage alert = await ref.read(alertApiProvider).getAlertDetail(
-              alertId: addedAlertId,
-              placeSubscriptionId: "Not used",
-            );
-        if (checkIfEventShouldBeNotified(
-          alert.info[0].severity,
-          userPreferences,
-        )) {
-          NotificationService.showNotification(
-            id: alert.identifier.hashCode,
-            title: "New alert",
-            body: alert.info.first.headline,
-            payload: "",
-            channelId:
-                "de.nucleus.foss_warn.notifications_${alert.info[0].severity.name}",
-            channelName: "",
-          );
-        }
-      }
-    } on FormatException catch (e) {
-      debugPrint("Payload is not a json: $e");
-    } on AlertUnavailableError catch (e) {
-      debugPrint("Alert is not available anymore: $e");
-      ErrorLogger.writeErrorLog(
-        "class_unified_push_handler.dart",
-        "onMessage",
-        "Alert $addedAlertId is not available anymore",
-      );
-    }
-    // @TODO(Nucleus): This is not the perfect solution as we can not check for already read alerts or if the alert is just an update. It would be preferable if we could fetch all alerts like we did before. Currently, this results in a "concurrent modification during iteration" error if the app is launched by a notification.
+    handleIncomingNotification(payload, ref);
   }
 
   /// register for push notifications and keep registration up to date
