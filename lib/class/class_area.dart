@@ -6,7 +6,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import '../main.dart';
-import 'class_douglas_peucker.dart';
 
 class Area {
   String description; // general description of the area
@@ -52,9 +51,9 @@ class Area {
     if (data != null) {
       // there a multiple entries => multiple areas
       for (int i = 0; i < data.length; i++) {
-        Map<String, dynamic> capToGeoJson =
-            _convertCAPGeoInfoToGeoJson(data[i]);
-
+        Map<String, dynamic> capToGeoJson = _convertCAPGeoInfoToGeoJson(
+          data[i],
+        );
         data[i].putIfAbsent("geoJson", () => jsonEncode(capToGeoJson));
         result.add(Area.fromJson(data[i]));
       }
@@ -88,7 +87,6 @@ class Area {
   static Map<String, dynamic> _convertCAPGeoInfoToGeoJson(
     Map<String, dynamic> data,
   ) {
-    const double polygonSimplificationTolerance = 0.001;
     Map<String, dynamic> featureCollection = {};
     featureCollection.putIfAbsent("type", () => "FeatureCollection");
 
@@ -138,12 +136,6 @@ class Area {
             oneRowCoordinates.add(onePairOfCoordinatesList);
           }
 
-          // apply douglas peucker to reduce number of polygons
-          oneRowCoordinates = DouglasPeucker.simplify(
-            coordinates: oneRowCoordinates,
-            tolerance: polygonSimplificationTolerance,
-          );
-
           oneRowCoordinatesOuterList.clear();
           oneRowCoordinatesOuterList.add(oneRowCoordinates);
 
@@ -190,12 +182,6 @@ class Area {
           // add the pair to the row List
           oneRowCoordinates.add(onePairOfCoordinatesList);
         }
-
-        // apply douglas peucker to reduce number of polygons
-        oneRowCoordinates = DouglasPeucker.simplify(
-          coordinates: oneRowCoordinates,
-          tolerance: polygonSimplificationTolerance,
-        );
 
         // add the row to the List
         coordinatesList.add(oneRowCoordinates);
