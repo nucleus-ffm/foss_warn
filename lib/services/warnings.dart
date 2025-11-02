@@ -16,7 +16,6 @@ import '../main.dart';
 
 class AlertRetrievalError implements Exception {}
 
-// TODO(PureTryOut): cache retrieved alerts on disk rather than just in memory
 final processedAlertsProvider =
     StateNotifierProvider<WarningService, List<WarnMessage>>(
   (ref) {
@@ -114,7 +113,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
           alert.placeSubscriptionId == apiResult.subscriptionId,
     )) {
       // the alert is not in the server response anymore, remove cached alert
-      ref.read(processedAlertsProvider).remove(alert);
+      ref.read(processedAlertsProvider.notifier).deleteAlert(alert);
     }
   }
 
@@ -210,7 +209,7 @@ final alertsProvider = Provider<List<WarnMessage>>((ref) {
 /// set the read status from all warnings to true
 /// @ref to update view
 void markAllWarningsAsRead(WidgetRef ref) {
-  var alerts = ref.read(alertsProvider);
+  var alerts = ref.read(processedAlertsProvider);
 
   for (var alert in alerts) {
     ref
@@ -251,6 +250,7 @@ void showNotification(
         channelId:
             "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
         channelName: warning.info[0].severity.getLocalizedName(context),
+        userPreferences: userPreferences,
       );
       // update notification status for alert
       //@TODO(Nucleus): Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
@@ -269,6 +269,7 @@ void showNotification(
         payload: place.name,
         channelId: "de.nucleus.foss_warn.notifications_update",
         channelName: "update",
+        userPreferences: userPreferences,
       );
     }
   }
@@ -326,6 +327,7 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
 
     if (alerts.contains(alert)) {
       alerts.remove(alert);
+      state = alerts;
     }
     _saveAlertsToDisk();
   }
