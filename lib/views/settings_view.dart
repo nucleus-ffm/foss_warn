@@ -9,16 +9,19 @@ import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
+import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({
+    required this.onNotificationSelfCheckPressed,
     required this.onNotificationSettingsPressed,
     required this.onIntroductionPressed,
     required this.onDevSettingsPressed,
     super.key,
   });
 
+  final VoidCallback onNotificationSelfCheckPressed;
   final VoidCallback onNotificationSettingsPressed;
   final VoidCallback onIntroductionPressed;
   final VoidCallback onDevSettingsPressed;
@@ -91,6 +94,38 @@ class _SettingsState extends ConsumerState<Settings> {
             ListTile(
               title: Text(localizations.settings_app_notification_settings),
               onTap: widget.onNotificationSettingsPressed,
+            ),
+            ListTile(
+              title:
+                  Text(localizations.dev_settings_troubleshoot_notifications),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      const NotificationTroubleshootDialog(),
+                );
+              },
+            ),
+            ListTile(
+              title: Text(localizations.settings_select_push_service_title),
+              subtitle:
+                  Text(localizations.settings_select_push_service_subtitle),
+              trailing: Text(selectedDistributor),
+              onTap: () async {
+                String? picked = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      const ChangeUnifiedPushDistributorDialog(),
+                );
+                if (picked != null) {
+                  selectedDistributor = picked;
+                }
+              },
+            ),
+            ListTile(
+              title: Text(localizations.settings_self_check_title),
+              subtitle: Text(localizations.settings_self_check_subtitle),
+              onTap: widget.onNotificationSelfCheckPressed,
             ),
             const Divider(
               height: 50,

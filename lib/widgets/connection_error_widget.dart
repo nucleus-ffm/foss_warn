@@ -10,7 +10,12 @@ import 'dialogs/error_dialog.dart';
 import 'dialogs/invalid_subscription_dialog.dart';
 
 class ConnectionError extends ConsumerWidget {
-  const ConnectionError({super.key});
+  const ConnectionError({
+    super.key,
+    required this.onNotificationSelfCheckPressed,
+  });
+
+  final VoidCallback onNotificationSelfCheckPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,12 +60,12 @@ class ConnectionError extends ConsumerWidget {
         child: Container(
           padding:
               const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
-          color: theme.colorScheme.error,
+          color: theme.colorScheme.errorContainer,
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.error,
-                color: Colors.white,
+                color: theme.colorScheme.onErrorContainer,
               ),
               const SizedBox(width: 10),
               Flexible(
@@ -68,7 +73,10 @@ class ConnectionError extends ConsumerWidget {
                   scrollDirection: Axis.horizontal,
                   child: Text(
                     localizations.connection_error_app_error,
-                    style: theme.textTheme.displaySmall,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: theme.colorScheme.onErrorContainer,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -88,12 +96,12 @@ class ConnectionError extends ConsumerWidget {
         child: Container(
           padding:
               const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
-          color: theme.colorScheme.error,
+          color: theme.colorScheme.errorContainer,
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.error,
-                color: Colors.white,
+                color: theme.colorScheme.onErrorContainer,
               ),
               const SizedBox(width: 10),
               Flexible(
@@ -101,7 +109,10 @@ class ConnectionError extends ConsumerWidget {
                   scrollDirection: Axis.horizontal,
                   child: Text(
                     localizations.connection_error_subscription_expired,
-                    style: theme.textTheme.displaySmall,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: theme.colorScheme.onErrorContainer,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -134,6 +145,39 @@ class ConnectionError extends ConsumerWidget {
               ),
             ),
           ],
+        ),
+      );
+    }
+
+    if (appState.pushNotificationSetupError) {
+      return InkWell(
+        onTap: onNotificationSelfCheckPressed,
+        child: Container(
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+          color: theme.colorScheme.error,
+          child: Row(
+            children: [
+              Icon(
+                Icons.info,
+                color: theme.colorScheme.onError,
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    "Detected problem with push notifications",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: theme.colorScheme.onError,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }

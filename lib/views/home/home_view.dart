@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
@@ -15,6 +16,7 @@ import 'package:unifiedpush/unifiedpush.dart';
 import 'package:unifiedpush_platform_interface/unifiedpush_platform_interface.dart';
 import 'package:unifiedpush_storage_shared_preferences/storage.dart';
 
+import '../../services/self_check_handler.dart';
 import '../../services/subscription_handler.dart';
 
 enum MainMenuItem {
@@ -30,6 +32,7 @@ class HomeView extends ConsumerStatefulWidget {
     required this.onAlertUpdateThreadPressed,
     required this.onSettingsPressed,
     required this.onAboutPressed,
+    required this.onNotificationSelfCheckPressed,
     super.key,
   });
 
@@ -39,6 +42,7 @@ class HomeView extends ConsumerStatefulWidget {
   final VoidCallback onAlertUpdateThreadPressed;
   final VoidCallback onSettingsPressed;
   final VoidCallback onAboutPressed;
+  final VoidCallback onNotificationSelfCheckPressed;
 
   @override
   ConsumerState<HomeView> createState() => _HomeViewState();
@@ -94,6 +98,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
     updateAllSubscriptions(ref);
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
+
+    appState.pushNotificationSetupError = backgroundSelfCheck(ref);
   }
 
   void onClickedNotification(String? payload) {
@@ -113,11 +119,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
       1 => MyPlacesView(
           onAddPlacePressed: widget.onAddPlacePressed,
           onPlacePressed: widget.onPlacePressed,
+          onNotificationSelfCheckPressed: widget.onNotificationSelfCheckPressed,
         ),
       2 => const MapView(),
       _ => WarningsView(
           onAlertPressed: widget.onAlertPressed,
           onAlertUpdateThreadPressed: widget.onAlertUpdateThreadPressed,
+          onNotificationSelfCheckPressed: widget.onNotificationSelfCheckPressed,
         ),
     };
 

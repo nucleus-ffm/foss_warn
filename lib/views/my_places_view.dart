@@ -13,11 +13,13 @@ class MyPlacesView extends ConsumerStatefulWidget {
   const MyPlacesView({
     required this.onAddPlacePressed,
     required this.onPlacePressed,
+    required this.onNotificationSelfCheckPressed,
     super.key,
   });
 
   final VoidCallback onAddPlacePressed;
   final void Function(String placeSubscriptionId) onPlacePressed;
+  final VoidCallback onNotificationSelfCheckPressed;
 
   @override
   ConsumerState<MyPlacesView> createState() => _MyPlacesState();
@@ -62,8 +64,12 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
                 children: [
                   if (alertsSnapshot.hasError ||
                       places.hasExpiredPlaces ||
-                      appState.isFirstFetch) ...[
-                    const ConnectionError(),
+                      appState.isFirstFetch ||
+                      appState.pushNotificationSetupError) ...[
+                    ConnectionError(
+                      onNotificationSelfCheckPressed:
+                          widget.onNotificationSelfCheckPressed,
+                    ),
                   ],
                   ...places.map(
                     (place) => MyPlaceWidget(

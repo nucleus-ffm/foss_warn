@@ -3,4 +3,5 @@ class AppState {
   bool areWarningsFromCache = false;
   bool isFirstFetch =
       true; // used to display a text that the app is fetching new alerts if the app is freshly started
+  bool pushNotificationSetupError = false;
 }

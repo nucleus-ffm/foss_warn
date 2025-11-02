@@ -39,6 +39,10 @@ dependencies:
   vector_tile_renderer: any
   flutter_riverpod: ^2.6.1
   go_router: ^14.8.1
+  permission_handler: ^12.0.1
+  permission_handler_android: ^13.0.1
+  permission_handler_platform_interface: ^4.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

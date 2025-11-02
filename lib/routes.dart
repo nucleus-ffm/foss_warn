@@ -9,6 +9,7 @@ import 'package:foss_warn/views/home/home_view.dart';
 import 'package:foss_warn/views/introduction/introduction_view.dart';
 import 'package:foss_warn/views/log_file_viewer.dart';
 import 'package:foss_warn/views/my_place_detail_view.dart';
+import 'package:foss_warn/views/notification_selfcheck_view.dart';
 import 'package:foss_warn/views/notification_settings_view.dart';
 import 'package:foss_warn/views/settings_view.dart';
 import 'package:foss_warn/views/warning_detail_view.dart';
@@ -42,6 +43,8 @@ final routesProvider = Provider<GoRouter>(
           onAlertUpdateThreadPressed: () => context.go('/alerts/update'),
           onSettingsPressed: () => context.go('/settings'),
           onAboutPressed: () => context.go('/about'),
+          onNotificationSelfCheckPressed: () =>
+              context.go("/settings/notification-self-check"),
         ),
         routes: [
           GoRoute(
@@ -69,8 +72,14 @@ final routesProvider = Provider<GoRouter>(
                   context.go('/settings/notifications'),
               onIntroductionPressed: () => context.go('/introduction'),
               onDevSettingsPressed: () => context.go('/settings/dev-settings'),
+              onNotificationSelfCheckPressed: () =>
+                  context.go('/settings/notification-self-check'),
             ),
             routes: [
+              GoRoute(
+                path: 'notification-self-check',
+                builder: (context, state) => const NotificationSelfCheckView(),
+              ),
               GoRoute(
                 path: 'notifications',
                 builder: (context, state) => const NotificationSettingsView(),

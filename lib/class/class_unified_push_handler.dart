@@ -216,4 +216,19 @@ class UnifiedPushHandler {
       return;
     }
   }
+
+  Future<List<Map<String, String>>> getListOfDistributors() async {
+    List<Map<String, String>> result = [];
+    List<String> distributors = await UnifiedPush.getDistributors();
+    for (String distributor in distributors) {
+      var split = distributor.split(".");
+      String name = split.last;
+      result.add({"name": name, "distributor": distributor});
+    }
+    return result;
+  }
+
+  Future<String?> getDistributor() async {
+    return await UnifiedPush.getDistributor();
+  }
 }
