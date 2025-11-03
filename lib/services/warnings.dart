@@ -250,7 +250,6 @@ void showNotification(
         channelId:
             "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
         channelName: warning.info[0].severity.getLocalizedName(context),
-        userPreferences: userPreferences,
       );
       // update notification status for alert
       //@TODO(Nucleus): Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
@@ -269,7 +268,6 @@ void showNotification(
         payload: place.name,
         channelId: "de.nucleus.foss_warn.notifications_update",
         channelName: "update",
-        userPreferences: userPreferences,
       );
     }
   }
