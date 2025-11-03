@@ -36,7 +36,7 @@ class _NotificationTroubleshootDialogState
                 userPreferences.unifiedPushRegistered,
               ),
             ),
-            Text(
+            SelectableText(
               localizations.troubleshoot_notification_current_endpoint(
                 userPreferences.unifiedPushEndpoint,
               ),

@@ -53,16 +53,23 @@ class _NotificationSelfCheckState
   /// returns SelfCheckState.passed if the permission is granted and
   /// SelfCheckState.notPassed if not
   Future<SelfCheckState> checkNotificationPermission() async {
-    bool permission = await Permission.notification.status.isGranted;
-    return permission ? SelfCheckState.passed : SelfCheckState.notPassed;
+    print("Hallo");
+    if (Platform.isAndroid || Platform.isIOS) {
+      bool permission = await Permission.notification.status.isGranted;
+      return permission ? SelfCheckState.passed : SelfCheckState.notPassed;
+    }
+    print("check notification permission");
+    return SelfCheckState.passed;
   }
 
   /// request the Notification permission
   Future<void> requestNotificationPermission() async {
-    bool permissionRequest = await Permission.notification.request().isGranted;
-    notificationPermissionState =
-        permissionRequest ? SelfCheckState.passed : SelfCheckState.notPassed;
-    setState(() {});
+    if(Platform.isAndroid || Platform.isIOS) {
+      bool permissionRequest = await Permission.notification.request().isGranted;
+      notificationPermissionState =
+      permissionRequest ? SelfCheckState.passed : SelfCheckState.notPassed;
+      setState(() {});
+    }
   }
 
   /// Check the list of available distributor on the system
@@ -196,10 +203,7 @@ class _NotificationSelfCheckState
     }
 
     bool successfullyNotification =
-        await NotificationService.isNotificationActive(confirmationId.hashCode);
-    notificationState = successfullyNotification
-        ? SelfCheckState.passed
-        : SelfCheckState.notPassed;
+    await NotificationService.isNotificationActive(confirmationId.hashCode);
 
     // @TODO (Nucleus): An useful addition would be to check if the notification arrived and let the user click on the notification
 
@@ -260,7 +264,13 @@ class _NotificationSelfCheckState
     setState(() {});
     var subscriptionTestResult = await testSubscriptionAndNotification();
     subscriptionState = subscriptionTestResult.subscriptionState;
-    notificationState = subscriptionTestResult.notificationState;
+    if(Platform.isLinux) {
+      // there is no way to get the active notifications on Linux
+      notificationState = SelfCheckState.unknown;
+    } else {
+      notificationState = subscriptionTestResult.notificationState;
+    }
+   
     if (!mounted) return;
     setState(() {});
   }

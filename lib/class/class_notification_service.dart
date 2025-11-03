@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
 import 'class_error_logger.dart';
+import 'class_user_preferences.dart';
 
 ///
 /// ID 2: Status notification
@@ -49,6 +50,7 @@ class NotificationService {
     String? payload,
     required String channelId,
     required String channelName,
+    required UserPreferences userPreferences,
   }) async {
     _flutterLocalNotificationsPlugin.show(
       id,
@@ -58,6 +60,18 @@ class NotificationService {
       payload: payload,
     );
     showGroupNotification();
+    if (userPreferences.enableFOSSWarnAtHome) {
+      // send notification to FOSSWarn@Home connector
+      // this sends the title of the alert
+      // write the message to a named pipe for the IPC
+      final command =
+          "echo '{\"title\": \"$title\", \"body\": \"$body\", \"severity\": \"$channelId\"}' > /tmp/fosswarn@home_pipe";
+      print("run command $command"); //@TODO remove
+      Process.run('/bin/bash', ['-c', command]).then((result) {
+        stdout.write(result.stdout);
+        stderr.write(result.stderr);
+      });
+    }
   }
 
   // @TODO(Nucleus): refactor this
@@ -209,8 +223,8 @@ class NotificationService {
       AndroidNotificationChannel(
         "de.nucleus.foss_warn.notifications_severe",
         localizations.notification_settings_notify_by_severe,
-        description:
-            localizations.warning_severity_explanation_dialog_minor_description,
+        description: localizations
+            .warning_severity_explanation_dialog_severe_description,
         groupId: "de.nucleus.foss_warn.notification_group",
         importance: Importance.max,
       ),
@@ -310,10 +324,15 @@ class NotificationService {
 
   /// Check if a notification with the given id is currently active
   static Future<bool> isNotificationActive(int id) async {
-    List<ActiveNotification> activeNotification =
-        await _flutterLocalNotificationsPlugin.getActiveNotifications();
-    return activeNotification.any(
-      (notification) => notification.id != null && notification.id == id,
-    );
+    // getActiveNotifications will throw a UnimplementedError
+    if (Platform.isIOS || Platform.isAndroid || Platform.isMacOS) {
+      List<ActiveNotification> activeNotification =
+          await _flutterLocalNotificationsPlugin.getActiveNotifications();
+      return activeNotification.any(
+        (notification) => notification.id != null && notification.id == id,
+      );
+    }
+    // on Linux we do not know
+    return false;
   }
 }

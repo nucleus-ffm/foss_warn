@@ -152,6 +152,8 @@ final userPreferencesProvider =
       cachedAlerts: loadAlertsFromDisk(),
       showDebugNotification:
           preferences.getBool("showDebugNotification") ?? false,
+      enableFOSSWarnAtHome:
+          preferences.getBool("enableFOSSWarnAtHome") ?? false,
     ),
     sharedPreferences: preferences,
   );
@@ -340,6 +342,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(showDebugNotification: value);
     await _sharedPreferences.setBool("showDebugNotification", value);
   }
+
+  Future<void> setEnableFOSSWarnAtHome(bool value) async{
+    state = state.copyWith(enableFOSSWarnAtHome: value);
+    await _sharedPreferences.setBool("enableFOSSWarnAtHome", value);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -374,6 +381,7 @@ class UserPreferences {
     required this.subscribeForTestAlerts,
     required this.cachedAlerts,
     required this.showDebugNotification,
+    required this.enableFOSSWarnAtHome,
   });
 
   final bool shouldNotifyGeneral;
@@ -406,6 +414,7 @@ class UserPreferences {
   final bool subscribeForTestAlerts;
   final List<WarnMessage> cachedAlerts;
   final bool showDebugNotification;
+  final bool enableFOSSWarnAtHome;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -448,6 +457,7 @@ class UserPreferences {
     bool? subscribeForTestAlerts,
     List<WarnMessage>? cachedAlerts,
     bool? showDebugNotification,
+    bool? enableFOSSWarnAtHome,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -493,6 +503,7 @@ class UserPreferences {
         cachedAlerts: cachedAlerts ?? this.cachedAlerts,
         showDebugNotification:
             showDebugNotification ?? this.showDebugNotification,
+        enableFOSSWarnAtHome: enableFOSSWarnAtHome ?? this.enableFOSSWarnAtHome,
       );
 
   /// the path and filename where the error log is saved

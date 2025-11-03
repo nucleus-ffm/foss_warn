@@ -169,6 +169,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
       appBar: AppBar(
         title: const Text("FOSS Warn"),
         actions: [
+          // @TODO debug only, remove before release
+          IconButton(
+            icon: const Icon(Icons.notifications_on_rounded),
+            tooltip: "show a test notification",
+            onPressed: () {
+              NotificationService.showNotification(
+                // generate from the warning in the List the notification id
+                // because the warning identifier is no int, we have to generate a hash code
+                id: 5,
+                title: "Test Notification for FOSSWarn Home",
+                body: "This is a test notification.",
+                payload: "",
+                channelId: "de.nucleus.foss_warn.notifications_moderate",
+                channelName: "Moderate",
+                userPreferences: ref.read(userPreferencesProvider),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.sort),
             tooltip: localizations.main_app_bar_action_sort_tooltip,

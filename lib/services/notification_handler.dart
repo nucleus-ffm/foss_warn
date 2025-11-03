@@ -58,6 +58,7 @@ void handleDebugNotification(String payload, WidgetRef ref) {
       payload: "",
       channelId: "de.nucleus.foss_warn.notifications_other",
       channelName: "Debug notifications",
+      userPreferences: ref.read(userPreferencesProvider),
     );
   }
 }
@@ -89,6 +90,7 @@ Future<void> newAlertNotification(
           channelId:
               "de.nucleus.foss_warn.notifications_${alert.info[0].severity.name}",
           channelName: "",
+          userPreferences: ref.read(userPreferencesProvider),
         );
       }
     }
@@ -116,5 +118,6 @@ void subscriptionConfirmationNotification(
     payload: confirmationId,
     channelId: "de.nucleus.foss_warn.notifications_other",
     channelName: "",
+    userPreferences: ref.read(userPreferencesProvider),
   );
 }

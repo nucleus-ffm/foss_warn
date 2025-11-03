@@ -297,6 +297,18 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   },
                 ),
               ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title: const Text("Enable FOSSWarn@Home support"),
+                trailing: Switch(
+                  value: userPreferences.enableFOSSWarnAtHome,
+                  onChanged: (value) async {
+                    userPreferencesService.setEnableFOSSWarnAtHome(
+                      !userPreferences.enableFOSSWarnAtHome,
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
