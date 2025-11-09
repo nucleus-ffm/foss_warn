@@ -163,170 +163,180 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     required SharedPreferencesWithCache sharedPreferences,
   }) : _sharedPreferences = sharedPreferences;
 
-  void setShouldNotifyGeneral(bool value) {
+  Future<void> setShouldNotifyGeneral(bool value) async {
     state = state.copyWith(shouldNotifyGeneral: value);
-    _sharedPreferences.setBool("shouldNotifyGeneral", value);
+    await _sharedPreferences.setBool("shouldNotifyGeneral", value);
   }
 
-  void setShowStatusNotification(bool value) {
+  Future<void> setShowStatusNotification(bool value) async {
     state = state.copyWith(showStatusNotification: value);
-    _sharedPreferences.setBool("showStatusNotification", value);
+    await _sharedPreferences.setBool("showStatusNotification", value);
   }
 
-  void setShowExtendedMetadata(bool value) {
+  Future<void> setShowExtendedMetadata(bool value) async {
     state = state.copyWith(showExtendedMetadata: value);
-    _sharedPreferences.setBool("showExtendedMetaData", value);
+    await _sharedPreferences.setBool("showExtendedMetaData", value);
   }
 
-  void setNotificationSourceSetting(NotificationPreferences value) {
+  Future<void> setNotificationSourceSetting(
+    NotificationPreferences value,
+  ) async {
     state = state.copyWith(notificationSourceSetting: value);
-    _sharedPreferences.setString(
+    await _sharedPreferences.setString(
       "notificationSourceSetting",
       jsonEncode(value),
     );
   }
 
-  void setSelectedThemeMode(ThemeMode themeMode) {
+  Future<void> setSelectedThemeMode(ThemeMode themeMode) async {
     state = state.copyWith(selectedThemeMode: themeMode);
-    _sharedPreferences.setString("selectedThemeMode", themeMode.name);
+    await _sharedPreferences.setString("selectedThemeMode", themeMode.name);
   }
 
-  void setLightTheme(ThemeData theme) {
+  Future<void> setLightTheme(ThemeData theme) async {
     state = state.copyWith(selectedLightTheme: theme);
     var indexSelectedTheme = availableLightThemes.indexOf(theme);
-    _sharedPreferences.setInt("selectedLightTheme", indexSelectedTheme);
+    await _sharedPreferences.setInt("selectedLightTheme", indexSelectedTheme);
   }
 
-  void setDarkTheme(ThemeData theme) {
+  Future<void> setDarkTheme(ThemeData theme) async {
     state = state.copyWith(selectedDarkTheme: theme);
     var indexSelectedTheme = availableDarkThemes.indexOf(theme);
-    _sharedPreferences.setInt("selectedDarkTheme", indexSelectedTheme);
+    await _sharedPreferences.setInt("selectedDarkTheme", indexSelectedTheme);
   }
 
-  void setStartScreen(int value) {
+  Future<void> setStartScreen(int value) async {
     state = state.copyWith(startScreen: value);
-    _sharedPreferences.setInt("startScreen", value);
+    await _sharedPreferences.setInt("startScreen", value);
   }
 
-  void setWarningFontSize(double value) {
+  Future<void> setWarningFontSize(double value) async {
     state = state.copyWith(warningFontSize: value);
-    _sharedPreferences.setDouble("warningFontSize", value);
+    await _sharedPreferences.setDouble("warningFontSize", value);
   }
 
-  void setShowWelcomeScreen(bool value) {
+  Future<void> setShowWelcomeScreen(bool value) async {
     state = state.copyWith(showWelcomeScreen: value);
-    _sharedPreferences.setBool("showWelcomeScreen", value);
+    await _sharedPreferences.setBool("showWelcomeScreen", value);
   }
 
-  void setSortWarningsBy(SortingCategories category) {
+  Future<void> setSortWarningsBy(SortingCategories category) async {
     state = state.copyWith(sortWarningsBy: category);
     var indexSorting = SortingCategories.values.indexOf(category);
-    _sharedPreferences.setInt("sortWarningsBy", indexSorting);
+    await _sharedPreferences.setInt("sortWarningsBy", indexSorting);
   }
 
-  void setIsFirstStart(bool value) {
+  Future<void> setIsFirstStart(bool value) async {
     state = state.copyWith(isFirstStart: value);
-    _sharedPreferences.setBool("isFirstStart", value);
+    await _sharedPreferences.setBool("isFirstStart", value);
   }
 
-  void setAreWarningsFromCache(bool value) {
+  Future<void> setAreWarningsFromCache(bool value) async {
     state = state.copyWith(areWarningsFromCache: value);
-    _sharedPreferences.setBool("areWarningsFromCache", value);
+    await _sharedPreferences.setBool("areWarningsFromCache", value);
   }
 
-  void setMaxSizeOfSubscriptionBoundingBox(int value) {
+  Future<void> setMaxSizeOfSubscriptionBoundingBox(int value) async {
     state = state.copyWith(maxSizeOfSubscriptionBoundingBox: value);
-    _sharedPreferences.setInt("maxSizeOfSubscriptionBoundingBox", value);
+    await _sharedPreferences.setInt("maxSizeOfSubscriptionBoundingBox", value);
   }
 
-  void setFossPublicAlertServerUrl(String value) {
+  Future<void> setFossPublicAlertServerUrl(String value) async {
     state = state.copyWith(fossPublicAlertServerUrl: value);
-    _sharedPreferences.setString("fossPublicAlertServerUrl", value);
+    await _sharedPreferences.setString("fossPublicAlertServerUrl", value);
   }
 
-  void setFossPublicAlertServerOperator(String value) {
+  Future<void> setFossPublicAlertServerOperator(String value) async {
     state = state.copyWith(fossPublicAlertServerOperator: value);
-    _sharedPreferences.setString("fossPublicAlertServerOperator", value);
+    await _sharedPreferences.setString("fossPublicAlertServerOperator", value);
   }
 
-  void setFossPublicAlertServerPrivacyNotice(String value) {
+  Future<void> setFossPublicAlertServerPrivacyNotice(String value) async {
     state = state.copyWith(fossPublicAlertServerPrivacyNotice: value);
-    _sharedPreferences.setString("fossPublicAlertServerPrivacyNotice", value);
+    await _sharedPreferences.setString(
+      "fossPublicAlertServerPrivacyNotice",
+      value,
+    );
   }
 
-  void setFossPublicAlertServerTermsOfService(String value) {
+  Future<void> setFossPublicAlertServerTermsOfService(String value) async {
     state = state.copyWith(fossPublicAlertServerTermsOfService: value);
-    _sharedPreferences.setString("fossPublicAlertServerTermsOfService", value);
+    await _sharedPreferences.setString(
+      "fossPublicAlertServerTermsOfService",
+      value,
+    );
   }
 
-  void setUnifiedpushEndpoint(String value) {
+  Future<void> setUnifiedpushEndpoint(String value) async {
     state = state.copyWith(unifiedPushEndpoint: value);
     if (value != "") {
-      _sharedPreferences.setString("unifiedPushEndpoint", value);
+      await _sharedPreferences.setString("unifiedPushEndpoint", value);
     } else {
-      _sharedPreferences.remove("unifiedPushEndpoint");
+      await _sharedPreferences.remove("unifiedPushEndpoint");
     }
   }
 
-  void setUnifiedPushRegistered(bool value) {
+  Future<void> setUnifiedPushRegistered(bool value) async {
     state = state.copyWith(unifiedPushRegistered: value);
-    _sharedPreferences.setBool("unifiedPushRegistered", value);
+    await _sharedPreferences.setBool("unifiedPushRegistered", value);
   }
 
-  void setFossPublicAlertSubscriptionIdsToSubscribe(List<String> value) {
+  Future<void> setFossPublicAlertSubscriptionIdsToSubscribe(
+    List<String> value,
+  ) async {
     state = state.copyWith(fossPublicAlertSubscriptionIdsToSubscribe: value);
-    _sharedPreferences.setStringList(
+    await _sharedPreferences.setStringList(
       "fossPublicAlertSubscriptionIdsToSubscribe",
       value,
     );
   }
 
-  void setWebPushVapidKey(String value) {
+  Future<void> setWebPushVapidKey(String value) async {
     state = state.copyWith(webPushVapidKey: value);
     if (value != "") {
-      _sharedPreferences.setString("webPushVapidKey", value);
+      await _sharedPreferences.setString("webPushVapidKey", value);
     } else {
-      _sharedPreferences.remove("webPushVapidKey");
+      await _sharedPreferences.remove("webPushVapidKey");
     }
   }
 
-  void setWebPushPublicKey(String value) {
+  Future<void> setWebPushPublicKey(String value) async {
     state = state.copyWith(webPushPublicKey: value);
     if (value != "") {
-      _sharedPreferences.setString("webPushPublicKey", value);
+      await _sharedPreferences.setString("webPushPublicKey", value);
     } else {
-      _sharedPreferences.remove("webPushPublicKey");
+      await _sharedPreferences.remove("webPushPublicKey");
     }
   }
 
-  void setWebPushAuthKey(String value) {
+  Future<void> setWebPushAuthKey(String value) async {
     state = state.copyWith(webPushAuthKey: value);
     if (value != "") {
-      _sharedPreferences.setString("webPushAuthKey", value);
+      await _sharedPreferences.setString("webPushAuthKey", value);
     } else {
-      _sharedPreferences.remove("webPushAuthKey");
+      await _sharedPreferences.remove("webPushAuthKey");
     }
   }
 
-  void setPreviouslyInstalledVersionCode(int value) {
+  Future<void> setPreviouslyInstalledVersionCode(int value) async {
     state = state.copyWith(previousInstalledVersionCode: value);
-    _sharedPreferences.setInt("previousInstalledVersionCode", value);
+    await _sharedPreferences.setInt("previousInstalledVersionCode", value);
   }
 
-  void setSubscribeForTestAlerts(bool value) {
+  Future<void> setSubscribeForTestAlerts(bool value) async {
     state = state.copyWith(subscribeForTestAlerts: value);
-    _sharedPreferences.setBool("subscribeForTestAlerts", value);
+    await _sharedPreferences.setBool("subscribeForTestAlerts", value);
   }
 
-  void setCachedAlerts(List<WarnMessage> alerts) {
+  Future<void> setCachedAlerts(List<WarnMessage> alerts) async {
     state = state.copyWith(cachedAlerts: alerts);
     var alertsJson = jsonEncode(alerts);
-    _sharedPreferences.setString("cachedAlerts", alertsJson);
+    await _sharedPreferences.setString("cachedAlerts", alertsJson);
   }
 
-  void setShowDebugNotification(bool value) {
+  Future<void> setShowDebugNotification(bool value) async {
     state = state.copyWith(showDebugNotification: value);
-    _sharedPreferences.setBool("showDebugNotification", value);
+    await _sharedPreferences.setBool("showDebugNotification", value);
   }
 }
 
@@ -398,9 +408,9 @@ class UserPreferences {
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
   // That way we only need to keep track of one number.
-  static const String versionNumber = "1.0.0";
+  static const String versionNumber = "1.0.1-alpha0";
 
-  static const int currentVersionCode = 38;
+  static const int currentVersionCode = 39;
   final int previousInstalledVersionCode;
 
   static const String unifiedPushInstance = "FOSSWarn";

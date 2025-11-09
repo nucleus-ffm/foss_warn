@@ -10,7 +10,12 @@ import 'dialogs/error_dialog.dart';
 import 'dialogs/invalid_subscription_dialog.dart';
 
 class ConnectionError extends ConsumerWidget {
-  const ConnectionError({super.key});
+  const ConnectionError({
+    super.key,
+    required this.onNotificationSelfCheckPressed,
+  });
+
+  final VoidCallback onNotificationSelfCheckPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,21 +60,37 @@ class ConnectionError extends ConsumerWidget {
         child: Container(
           padding:
               const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
-          color: theme.colorScheme.error,
+          color: theme.colorScheme.errorContainer,
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.error,
-                color: Colors.white,
+                color: theme.colorScheme.onErrorContainer,
               ),
               const SizedBox(width: 10),
               Flexible(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Text(
-                    localizations.connection_error_app_error,
-                    style: theme.textTheme.displaySmall,
-                    overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    children: [
+                      Text(
+                        localizations.connection_error_app_error,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        localizations.connection_error_app_error_action,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -88,21 +109,87 @@ class ConnectionError extends ConsumerWidget {
         child: Container(
           padding:
               const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
-          color: theme.colorScheme.error,
+          color: theme.colorScheme.errorContainer,
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.error,
-                color: Colors.white,
+                color: theme.colorScheme.onErrorContainer,
               ),
               const SizedBox(width: 10),
               Flexible(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Text(
-                    localizations.connection_error_subscription_expired,
-                    style: theme.textTheme.displaySmall,
-                    overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localizations.connection_error_subscription_expired,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        localizations
+                            .connection_error_subscription_expired_action,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (appState.pushNotificationSetupError) {
+      return InkWell(
+        onTap: onNotificationSelfCheckPressed,
+        child: Container(
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+          color: theme.colorScheme.error,
+          child: Row(
+            children: [
+              Icon(
+                Icons.info,
+                color: theme.colorScheme.onError,
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localizations
+                            .connection_error_push_notification_setup_error,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onError,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        localizations
+                            .connection_error_push_notification_setup_error_action,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: theme.colorScheme.onError,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -127,7 +214,7 @@ class ConnectionError extends ConsumerWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Text(
-                  "fetching new alerts...",
+                  localizations.connection_error_first_fetch,
                   style: theme.textTheme.displaySmall,
                   overflow: TextOverflow.ellipsis,
                 ),

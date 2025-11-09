@@ -13,11 +13,13 @@ class MyPlacesView extends ConsumerStatefulWidget {
   const MyPlacesView({
     required this.onAddPlacePressed,
     required this.onPlacePressed,
+    required this.onNotificationSelfCheckPressed,
     super.key,
   });
 
   final VoidCallback onAddPlacePressed;
   final void Function(String placeSubscriptionId) onPlacePressed;
+  final VoidCallback onNotificationSelfCheckPressed;
 
   @override
   ConsumerState<MyPlacesView> createState() => _MyPlacesState();
@@ -62,8 +64,12 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
                 children: [
                   if (alertsSnapshot.hasError ||
                       places.hasExpiredPlaces ||
-                      appState.isFirstFetch) ...[
-                    const ConnectionError(),
+                      appState.isFirstFetch ||
+                      appState.pushNotificationSetupError) ...[
+                    ConnectionError(
+                      onNotificationSelfCheckPressed:
+                          widget.onNotificationSelfCheckPressed,
+                    ),
                   ],
                   ...places.map(
                     (place) => MyPlaceWidget(
@@ -76,25 +82,41 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
             ),
           ),
         ] else ...[
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  localizations.all_warnings_no_places_chosen,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  localizations.all_warnings_no_places_chosen_text,
-                  textAlign: TextAlign.center,
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              if (alertsSnapshot.hasError ||
+                  places.hasExpiredPlaces ||
+                  appState.isFirstFetch ||
+                  appState.pushNotificationSetupError) ...[
+                ConnectionError(
+                  onNotificationSelfCheckPressed:
+                      widget.onNotificationSelfCheckPressed,
                 ),
               ],
-            ),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      localizations.all_warnings_no_places_chosen,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      localizations.all_warnings_no_places_chosen_text,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
         Positioned(

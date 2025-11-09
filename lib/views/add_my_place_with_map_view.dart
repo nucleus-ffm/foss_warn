@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_agent_http_client.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
@@ -17,6 +19,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
+import '../services/api_handler.dart';
 import '../widgets/dialogs/loading_screen.dart';
 
 class NovatimResponse {
@@ -357,12 +360,13 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                         if (searchResult.isEmpty) {
                           if (!context.mounted) return;
 
-                          LoadingScreen.instance().show(
-                            context: context,
+                          LoadingScreen.instance().showResult(
                             text: localizations
                                 .add_my_place_with_map_loading_screen_search_no_result_found,
                           );
-                          await Future.delayed(const Duration(seconds: 3));
+                        } else {
+                          // hide the loading screen again
+                          LoadingScreen.instance().hide();
                         }
                       } catch (e) {
                         debugPrint("Novatim search failed: ${e.toString()}");
@@ -372,16 +376,12 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                           e.toString(),
                         );
                         if (!context.mounted) return;
-                        LoadingScreen.instance().show(
-                          context: context,
+                        LoadingScreen.instance().showResult(
                           text: localizations
                               .add_my_place_with_map_loading_screen_search_error,
                         );
-                        await Future.delayed(const Duration(seconds: 3));
                       }
                     }
-                    // hide the loading screen again
-                    LoadingScreen.instance().hide();
 
                     setState(() {
                       // show results
@@ -499,7 +499,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   onChanged: (value) {
                                     setState(() {
                                       placeRadius = value;
-                                      // calcualte the a polygon around the current place
+                                      // calculate the a polygon around the current place
                                       createPolygon();
                                     });
                                   },
@@ -513,13 +513,21 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                           onPressed: () async {
                             if (_selectedPlaceName != "" &&
                                 selectedPlacePolygon != null) {
-                              await subscribeForArea(
-                                boundingBox: boundingBox,
-                                selectedPlaceName: _selectedPlaceName,
-                                context: context,
-                                ref: ref,
-                              );
-                              widget.onPlaceAdded();
+                              try {
+                                await subscribeForArea(
+                                  boundingBox: boundingBox,
+                                  selectedPlaceName: _selectedPlaceName,
+                                  context: context,
+                                  ref: ref,
+                                );
+                                widget.onPlaceAdded();
+                              } on RegisterAreaError {
+                                // subscription failed
+                              } on UnifiedPushRegistrationTimeoutError {
+                                // subscription failed
+                              } on SocketException {
+                                // subscription failed
+                              }
                             } else {
                               debugPrint(
                                 "Error_selectedPlaceName or selectedPlacePolygon is null",

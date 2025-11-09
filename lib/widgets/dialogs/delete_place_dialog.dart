@@ -28,6 +28,7 @@ class DeletePlaceDialog extends ConsumerWidget {
         await alertApi.unregisterArea(
           subscriptionId: myPlace.subscriptionId,
         );
+        ref.read(myPlacesProvider.notifier).remove(myPlace);
       } on UnregisterAreaError {
         // we currently can not unsubscribe - show a snack bar to inform the
         // user to check their internet connection
@@ -40,7 +41,6 @@ class DeletePlaceDialog extends ConsumerWidget {
         );
         scaffoldMessenger.showSnackBar(snackBar);
       }
-      ref.read(myPlacesProvider.notifier).remove(myPlace);
 
       if (!context.mounted) return;
       navigator.pop();

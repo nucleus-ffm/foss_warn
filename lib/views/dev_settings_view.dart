@@ -11,12 +11,12 @@ import 'package:latlong2/latlong.dart';
 
 import '../class/class_bounding_box.dart';
 import '../class/class_fpas_place.dart';
+import '../class/class_unified_push_handler.dart';
 import '../services/alert_api/fpas.dart';
 import '../services/api_handler.dart';
 import '../services/list_handler.dart';
 import '../services/subscription_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
-import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 
 class DevSettings extends ConsumerStatefulWidget {
@@ -239,6 +239,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                         // do not set the switch to true
                       } on SocketException {
                         // do not set the switch to true
+                      } on UnifiedPushRegistrationTimeoutError {
+                        // do not se the switch to true
                       }
                     } else {
                       // remove subscription for Point Nemo
@@ -275,18 +277,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     }
                   },
                 ),
-              ),
-              ListTile(
-                contentPadding: _settingsTileListPadding,
-                title:
-                    Text(localizations.dev_settings_troubleshoot_notifications),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        const NotificationTroubleshootDialog(),
-                  );
-                },
               ),
               ListTile(
                 contentPadding: _settingsTileListPadding,

@@ -1,7 +1,7 @@
 name: foss_warn
 description: A FOSS client for the FOSS Public Alert Server
 publish_to: 'none'
-version: 1.0.0+38
+version: 1.0.1-alpha0+39
 
 environment:
   sdk: ">=3.6.2 <4.0.0"
@@ -20,8 +20,10 @@ dependencies:
   url_launcher: ^6.3.1
   share_plus: ^11.0.0
   intl: any # for localizations
-  unifiedpush: ^6.0.2
-  unifiedpush_linux: ^0.1.0
+  unifiedpush: ^6.2.0
+  unifiedpush_linux: ^1.0.0
+  unifiedpush_storage_shared_preferences: ^1.0.0
+  unifiedpush_platform_interface: ^4.0.0
   xml2json: ^6.2.5
   uuid: ^4.4.2
 
@@ -37,6 +39,10 @@ dependencies:
   vector_tile_renderer: any
   flutter_riverpod: ^2.6.1
   go_router: ^14.8.1
+  permission_handler: ^12.0.1
+  permission_handler_android: ^13.0.1
+  permission_handler_platform_interface: ^4.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

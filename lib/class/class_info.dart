@@ -95,6 +95,8 @@ class Info {
     if (json['category'] is List) {
       categories =
           Category.categoryListFromJson(List<String>.from(json['category']));
+    } else if (json["category"] == null) {
+      categories = [Category.other];
     } else {
       categories = [Category.fromString(json['category'])];
     }

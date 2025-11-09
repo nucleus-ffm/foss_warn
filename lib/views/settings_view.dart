@@ -5,20 +5,25 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 
+import '../class/class_unified_push_handler.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
+import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
+import '../widgets/dialogs/change_unified_push_distributor_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
 
 class Settings extends ConsumerStatefulWidget {
   const Settings({
+    required this.onNotificationSelfCheckPressed,
     required this.onNotificationSettingsPressed,
     required this.onIntroductionPressed,
     required this.onDevSettingsPressed,
     super.key,
   });
 
+  final VoidCallback onNotificationSelfCheckPressed;
   final VoidCallback onNotificationSettingsPressed;
   final VoidCallback onIntroductionPressed;
   final VoidCallback onDevSettingsPressed;
@@ -32,6 +37,14 @@ class _SettingsState extends ConsumerState<Settings> {
   final TextEditingController fpasServerURLController = TextEditingController();
   bool _fpasServerURLError = false;
   final _platform = const MethodChannel("flutter.native/helper");
+  String selectedDistributor = "None";
+
+  Future<void> readSelectedDistributor() async {
+    var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+    String? distributor = await unifiedPushHandler.getDistributor();
+    selectedDistributor = distributor ?? "None";
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -42,7 +55,10 @@ class _SettingsState extends ConsumerState<Settings> {
     fpasServerURLController.text =
         userPreferences.fossPublicAlertServerUrl.toString();
 
-    return super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      readSelectedDistributor();
+    });
+    super.initState();
   }
 
   @override
@@ -91,6 +107,39 @@ class _SettingsState extends ConsumerState<Settings> {
             ListTile(
               title: Text(localizations.settings_app_notification_settings),
               onTap: widget.onNotificationSettingsPressed,
+            ),
+            ListTile(
+              title:
+                  Text(localizations.dev_settings_troubleshoot_notifications),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      const NotificationTroubleshootDialog(),
+                );
+              },
+            ),
+            ListTile(
+              title: Text(localizations.settings_select_push_service_title),
+              subtitle:
+                  Text(localizations.settings_select_push_service_subtitle),
+              trailing: Text(selectedDistributor),
+              onTap: () async {
+                String? picked = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      const ChangeUnifiedPushDistributorDialog(),
+                );
+                if (picked != null) {
+                  selectedDistributor = picked;
+                  setState(() {});
+                }
+              },
+            ),
+            ListTile(
+              title: Text(localizations.settings_self_check_title),
+              subtitle: Text(localizations.settings_self_check_subtitle),
+              onTap: widget.onNotificationSelfCheckPressed,
             ),
             const Divider(
               height: 50,

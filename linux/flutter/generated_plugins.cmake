@@ -3,7 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  screen_retriever_linux
   url_launcher_linux
+  webcrypto
+  window_manager
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

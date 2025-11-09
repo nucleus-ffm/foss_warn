@@ -21,12 +21,12 @@ class BoundingBox {
     /// create new warnMessage objects from saved data
     return BoundingBox(
       minLatLng: LatLng(
-        minLatLng['coordinates']![0],
         minLatLng['coordinates']![1],
+        minLatLng['coordinates']![0],
       ), //@todo
       maxLatLng: LatLng(
-        maxLatLng['coordinates']![0],
         maxLatLng['coordinates']![1],
+        maxLatLng['coordinates']![0],
       ),
     );
   }
@@ -34,6 +34,7 @@ class BoundingBox {
   Map<String, dynamic> toJson() {
     try {
       return {
+        // LatLng.toJson returns [longitude, latitude]
         'min_latLng': minLatLng,
         'max_latLng': maxLatLng,
       };

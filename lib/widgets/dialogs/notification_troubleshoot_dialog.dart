@@ -72,6 +72,15 @@ class _NotificationTroubleshootDialogState
             ),
             ElevatedButton(
               onPressed: () async {
+                var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                unifiedPushHandler.setupUnifiedPush(context, ref);
+              },
+              child: const Text(
+                "register",
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
                 await UnifiedPush.unregister(
                   UserPreferences.unifiedPushInstance,
                 );

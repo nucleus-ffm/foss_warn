@@ -58,10 +58,11 @@ class InvalidSubscriptionDialogState
         String newSubscriptionId = "";
         // register again
         try {
-          newSubscriptionId = await alertApi.registerArea(
+          SubscriptionApiResult result = await alertApi.registerArea(
             boundingBox: place.boundingBox,
             unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
           );
+          newSubscriptionId = result.subscriptionId;
         } on RegisterAreaError catch (e) {
           setState(() {
             currentState = State.error;

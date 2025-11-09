@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/list.dart';
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/connection_error_widget.dart';
@@ -11,11 +12,13 @@ class WarningsView extends ConsumerWidget {
   const WarningsView({
     required this.onAlertPressed,
     required this.onAlertUpdateThreadPressed,
+    required this.onNotificationSelfCheckPressed,
     super.key,
   });
 
   final void Function(String alertId, String subscriptionId) onAlertPressed;
   final VoidCallback onAlertUpdateThreadPressed;
+  final VoidCallback onNotificationSelfCheckPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,9 +64,11 @@ class WarningsView extends ConsumerWidget {
       children: [
         if (alertsSnapshot.hasError ||
             places.hasExpiredPlaces ||
-            alertsSnapshot.isLoading) ...[
-          //TODO
-          const ConnectionError(),
+            alertsSnapshot.isLoading ||
+            appState.pushNotificationSetupError) ...[
+          ConnectionError(
+            onNotificationSelfCheckPressed: onNotificationSelfCheckPressed,
+          ),
         ],
         Expanded(child: body),
       ],
