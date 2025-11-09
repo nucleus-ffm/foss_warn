@@ -66,4 +66,3 @@ flutter:
    - assets/app_icon/app_icon.png
    - assets/introduction/darkmode/
    - assets/introduction/lightmode/
-   - assets/data/oasis-event-types.json
