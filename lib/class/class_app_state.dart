@@ -1,8 +1,15 @@
 class AppState {
-  bool error = false; // true if API call and parsing was not successful
+  /// Flag that indicates that there was an error
+  bool error = false;
+
+  /// Flag to indicate that the displayed alerts are just from the cache and could
+  /// be out-dated. This should only happen, if the user does not have an internet connection
   bool areWarningsFromCache = false;
-  bool isFirstFetch =
-      true; // used to display a text that the app is fetching new alerts if the app is freshly started
+
+  /// used to display a text that the app is fetching new alerts if the app is freshly started
+  bool isFirstFetch = true;
+
+  /// Flag to indicate an error with the push notification setup
   bool pushNotificationSetupError = false;
 
   /// Flag that is set to true when we are resubscribing places.
