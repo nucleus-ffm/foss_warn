@@ -98,8 +98,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
     updateAllSubscriptions(ref);
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
-
-    appState.pushNotificationSetupError = backgroundSelfCheck(ref);
   }
 
   void onClickedNotification(String? payload) {
@@ -112,6 +110,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   Widget build(BuildContext context) {
     var localizations = AppLocalizations.of(context)!;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
+    appState.pushNotificationSetupError = backgroundSelfCheck(ref);
 
     var places = ref.watch(myPlacesProvider);
 
