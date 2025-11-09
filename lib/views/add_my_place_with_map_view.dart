@@ -357,12 +357,13 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                         if (searchResult.isEmpty) {
                           if (!context.mounted) return;
 
-                          LoadingScreen.instance().show(
-                            context: context,
+                          LoadingScreen.instance().showResult(
                             text: localizations
                                 .add_my_place_with_map_loading_screen_search_no_result_found,
                           );
-                          await Future.delayed(const Duration(seconds: 3));
+                        } else {
+                          // hide the loading screen again
+                          LoadingScreen.instance().hide();
                         }
                       } catch (e) {
                         debugPrint("Novatim search failed: ${e.toString()}");
@@ -372,16 +373,12 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                           e.toString(),
                         );
                         if (!context.mounted) return;
-                        LoadingScreen.instance().show(
-                          context: context,
+                        LoadingScreen.instance().showResult(
                           text: localizations
                               .add_my_place_with_map_loading_screen_search_error,
                         );
-                        await Future.delayed(const Duration(seconds: 3));
                       }
                     }
-                    // hide the loading screen again
-                    LoadingScreen.instance().hide();
 
                     setState(() {
                       // show results
