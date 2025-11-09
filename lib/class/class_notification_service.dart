@@ -307,4 +307,13 @@ class NotificationService {
   static Future<void> cancelAllNotification() async {
     await _flutterLocalNotificationsPlugin.cancelAll();
   }
+
+  /// Check if a notification with the given id is currently active
+  static Future<bool> isNotificationActive(int id) async {
+    List<ActiveNotification> activeNotification =
+        await _flutterLocalNotificationsPlugin.getActiveNotifications();
+    return activeNotification.any(
+      (notification) => notification.id != null && notification.id == id,
+    );
+  }
 }

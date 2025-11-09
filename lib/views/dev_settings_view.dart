@@ -11,6 +11,7 @@ import 'package:latlong2/latlong.dart';
 
 import '../class/class_bounding_box.dart';
 import '../class/class_fpas_place.dart';
+import '../class/class_unified_push_handler.dart';
 import '../services/alert_api/fpas.dart';
 import '../services/api_handler.dart';
 import '../services/list_handler.dart';
@@ -238,6 +239,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                         // do not set the switch to true
                       } on SocketException {
                         // do not set the switch to true
+                      } on UnifiedPushRegistrationTimeoutError {
+                        // do not se the switch to true
                       }
                     } else {
                       // remove subscription for Point Nemo

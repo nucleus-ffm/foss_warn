@@ -17,10 +17,21 @@ import 'package:foss_warn/services/api_handler.dart';
 import 'package:uuid/uuid.dart';
 
 import '../class/class_unified_push_handler.dart';
+import '../main.dart';
 
 /// register with the given boundingBox for push notifications
 /// and add the new place to the myPlacesProvider list
-Future<void> subscribeForArea({
+///
+/// returns a [String] with the confirmation id.
+/// This ID can be used to check if the confirmation notification arrived
+/// The confirmation is is an empty string if the subscription process was aborted
+///
+/// Throws [UnifiedPushRegistrationTimeoutError] if the registration failed
+///
+/// Throws [RegisterAreaError] if the registration request failed
+///
+/// Throws [SocketException] if the registration failed due to not working connection
+Future<String> subscribeForArea({
   required BoundingBox boundingBox,
   required String selectedPlaceName,
   required BuildContext context,
@@ -28,14 +39,14 @@ Future<void> subscribeForArea({
 }) async {
   //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
   await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
-  if (!context.mounted) return;
+  if (!context.mounted) return "";
   var localizations = context.localizations;
   var alertApi = ref.read(alertApiProvider);
   var uuid = const Uuid();
 
   // subscribe for new area and create new place
   // with the returned subscription id
-  if (!context.mounted) return;
+  if (!context.mounted) return "";
   LoadingScreen.instance().show(
     context: context,
     text: localizations.loading_screen_loading,
@@ -62,7 +73,7 @@ Future<void> subscribeForArea({
         debugPrint(
           "Timeout waiting for unifiedPushRegistered to be set to true.",
         );
-        return;
+        throw UnifiedPushRegistrationTimeoutError();
       },
     );
   }
@@ -70,11 +81,14 @@ Future<void> subscribeForArea({
   // subscribe for new area and create new place
   // with the returned subscription id
   String subscriptionId = "";
+  String confirmationId = "";
   try {
-    subscriptionId = await alertApi.registerArea(
+    SubscriptionApiResult result = await alertApi.registerArea(
       boundingBox: boundingBox,
       unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
     );
+    subscriptionId = result.subscriptionId;
+    confirmationId = result.confirmationId;
   } on RegisterAreaError catch (e) {
     debugPrint("Error: ${e.toString()}");
     ErrorLogger.writeErrorLog(
@@ -82,18 +96,13 @@ Future<void> subscribeForArea({
       "subscribe for area - RegisterAreaError",
       e.toString(),
     );
-    if (!context.mounted) return;
-    LoadingScreen.instance().show(
-      context: context,
+    if (!context.mounted) return "";
+    LoadingScreen.instance().showResult(
       text:
           localizations.add_my_place_with_map_loading_screen_subscription_error(
         e.toString(),
       ),
     );
-    await Future.delayed(
-      const Duration(seconds: 5),
-    );
-    LoadingScreen.instance().hide();
     rethrow;
   } on SocketException catch (e) {
     ErrorLogger.writeErrorLog(
@@ -101,22 +110,17 @@ Future<void> subscribeForArea({
       "subscribe for area - SocketException",
       e.toString(),
     );
-    if (!context.mounted) return;
-    LoadingScreen.instance().show(
-      context: context,
+    if (!context.mounted) return "";
+    LoadingScreen.instance().showResult(
       text:
           localizations.add_my_place_with_map_loading_screen_subscription_error(
         e.toString(),
       ),
     );
-    await Future.delayed(
-      const Duration(seconds: 5),
-    );
-    LoadingScreen.instance().hide();
     rethrow;
   }
   if (subscriptionId != "") {
-    if (!context.mounted) return;
+    if (!context.mounted) return "";
     LoadingScreen.instance().show(
       context: context,
       text: localizations
@@ -142,6 +146,7 @@ Future<void> subscribeForArea({
     const Duration(seconds: 1),
   );
   LoadingScreen.instance().hide();
+  return confirmationId;
 }
 
 /// resubscribed for all stored areas with the current push notification setup
@@ -151,6 +156,8 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
   var alertApi = ref.read(alertApiProvider);
   var places = ref.read(myPlacesProvider);
   var userPreferences = ref.read(userPreferencesProvider);
+  appState.distributorChangeInProgress = true;
+  debugPrint("[resubscribeForAllArea] Resubscribing...");
 
   LoadingScreen.instance().show(
     context: context,
@@ -164,10 +171,11 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
       // remove old subscription, if the subscription is already deleted nothing changes
       await alertApi.unregisterArea(subscriptionId: place.subscriptionId);
 
-      newSubscriptionId = await alertApi.registerArea(
+      SubscriptionApiResult result = await alertApi.registerArea(
         boundingBox: place.boundingBox,
         unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
       );
+      newSubscriptionId = result.subscriptionId;
     } on RegisterAreaError catch (e) {
       if (!context.mounted) return;
       LoadingScreen.instance().show(
@@ -195,6 +203,7 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
               ),
         );
   }
+  appState.distributorChangeInProgress = false;
   LoadingScreen.instance().hide();
 }
 
@@ -208,10 +217,11 @@ Future<void> resubscribeForOneAreaInBackground(
   var userPreferences = ref.read(userPreferencesProvider);
 
   try {
-    newSubscriptionId = await alertApi.registerArea(
+    SubscriptionApiResult result = await alertApi.registerArea(
       boundingBox: place.boundingBox,
       unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
     );
+    newSubscriptionId = result.subscriptionId;
   } on RegisterAreaError catch (e) {
     debugPrint("RegisterAreaError $e");
     ErrorLogger.writeErrorLog(

@@ -31,6 +31,11 @@ class AlertUnavailableError implements Exception {}
 
 typedef AlertApiResult = ({String subscriptionId, String alertId});
 
+typedef SubscriptionApiResult = ({
+  String subscriptionId,
+  String confirmationId
+});
+
 /// Thrown when the server indicates something went wrong while registering
 class RegisterAreaError implements Exception {
   final int statusCode;
@@ -119,7 +124,7 @@ abstract class AlertAPI {
   /// Returns a [String] containing the subscription ID
   ///
   /// Throws an [RegisterAreaError] if the registration was not successful
-  Future<String> registerArea({
+  Future<SubscriptionApiResult> registerArea({
     required BoundingBox boundingBox,
     required String unifiedPushEndpoint,
   });

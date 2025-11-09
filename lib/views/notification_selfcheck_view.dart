@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../class/class_bounding_box.dart';
 import '../class/class_fpas_place.dart';
+import '../class/class_notification_service.dart';
 import '../class/class_unified_push_handler.dart';
 import '../class/class_user_preferences.dart';
 import '../constants.dart';
@@ -41,7 +42,8 @@ class _NotificationSelfCheckState
   SelfCheckState endpointState = SelfCheckState.unknown;
   SelfCheckState distributorState = SelfCheckState.unknown;
   SelfCheckState selectedDistributorState = SelfCheckState.unknown;
-  SelfCheckState subscriptionAndNotificationState = SelfCheckState.unknown;
+  SelfCheckState subscriptionState = SelfCheckState.unknown;
+  SelfCheckState notificationState = SelfCheckState.unknown;
 
   List<Map<String, String>>? distributorList;
   String? selectedDistributor;
@@ -56,8 +58,11 @@ class _NotificationSelfCheckState
   }
 
   /// request the Notification permission
-  Future<bool> requestNotificationPermission() async {
-    return Permission.notification.request().isGranted;
+  Future<void> requestNotificationPermission() async {
+    bool permissionRequest = await Permission.notification.request().isGranted;
+    notificationPermissionState =
+        permissionRequest ? SelfCheckState.passed : SelfCheckState.notPassed;
+    setState(() {});
   }
 
   /// Check the list of available distributor on the system
@@ -116,7 +121,7 @@ class _NotificationSelfCheckState
   /// check if user server is in the list of servers with known issues or in the list
   /// of server that are not working at all
   SelfCheckState checkIfServerIsOk() {
-    if (endpoint != null) {
+    if (endpoint != null && endpoint != "") {
       // for server that are known to make some trouble
       for (String serverName in serversWithIssues) {
         if (endpoint!.contains(serverName)) {
@@ -138,7 +143,8 @@ class _NotificationSelfCheckState
   /// subscribes to the test alerts, waits until the notifications arrives and
   /// removes the subscription afterwards again
   /// this test requires, that all other tests are passed
-  Future<SelfCheckState> testSubscriptionAndNotification() async {
+  Future<({SelfCheckState subscriptionState, SelfCheckState notificationState})>
+      testSubscriptionAndNotification() async {
     if (notificationPermissionState != SelfCheckState.passed ||
         // check if serverOk state is not either passed or action suggested
         !(isServerOkState == SelfCheckState.passed ||
@@ -147,14 +153,17 @@ class _NotificationSelfCheckState
         distributorState != SelfCheckState.passed ||
         selectedDistributorState != SelfCheckState.passed) {
       // one of the other checks failed, we will not try to subscribe
-      return SelfCheckState.notPassed;
+      return (
+        subscriptionState: SelfCheckState.notPassed,
+        notificationState: SelfCheckState.unknown
+      );
     }
 
     String testAlertPlaceName = "Test subscription";
     var api = ref.read(alertApiProvider);
-
+    String confirmationId = "";
     try {
-      await subscribeForArea(
+      confirmationId = await subscribeForArea(
         // FPAS publishes its test alerts for Point Nemo as
         // this point has the maximal distance to the next
         // coast in the world.
@@ -168,11 +177,29 @@ class _NotificationSelfCheckState
       );
     } on RegisterAreaError {
       // do not set the switch to true
-      return SelfCheckState.notPassed;
+      return (
+        subscriptionState: SelfCheckState.notPassed,
+        notificationState: SelfCheckState.unknown
+      );
     } on SocketException {
       // do not set the switch to true
-      return SelfCheckState.notPassed;
+      return (
+        subscriptionState: SelfCheckState.notPassed,
+        notificationState: SelfCheckState.unknown
+      );
+    } on UnifiedPushRegistrationTimeoutError {
+      // do not set the switch to true
+      return (
+        subscriptionState: SelfCheckState.notPassed,
+        notificationState: SelfCheckState.unknown
+      );
     }
+
+    bool successfullyNotification =
+        await NotificationService.isNotificationActive(confirmationId.hashCode);
+    notificationState = successfullyNotification
+        ? SelfCheckState.passed
+        : SelfCheckState.notPassed;
 
     // @TODO (Nucleus): An useful addition would be to check if the notification arrived and let the user click on the notification
 
@@ -190,9 +217,19 @@ class _NotificationSelfCheckState
         debugPrint("[NotificationSelfCheck] Place successfully removed");
       } on UnregisterAreaError {
         debugPrint("[NotificationSelfCheck] UnregisterAreaError");
+        return (
+          subscriptionState: SelfCheckState.notPassed,
+          notificationState: SelfCheckState.unknown
+        );
       }
     }
-    return SelfCheckState.passed;
+
+    return (
+      subscriptionState: SelfCheckState.passed,
+      notificationState: successfullyNotification
+          ? SelfCheckState.passed
+          : SelfCheckState.notPassed
+    );
   }
 
   // run several self checks to detect problems
@@ -221,7 +258,9 @@ class _NotificationSelfCheckState
     selectedDistributorState = await checkCurrentDistributor();
     if (!mounted) return;
     setState(() {});
-    subscriptionAndNotificationState = await testSubscriptionAndNotification();
+    var subscriptionTestResult = await testSubscriptionAndNotification();
+    subscriptionState = subscriptionTestResult.subscriptionState;
+    notificationState = subscriptionTestResult.notificationState;
     if (!mounted) return;
     setState(() {});
   }
@@ -248,7 +287,7 @@ class _NotificationSelfCheckState
       required subtitleActionSuggested,
       required SelfCheckState state,
       String? additionalContext,
-      Function? onTap,
+      Function()? onTap,
     }) {
       String subtitle = "";
       IconData icon;
@@ -287,7 +326,7 @@ class _NotificationSelfCheckState
         subtitle:
             Text(subtitle, style: TextStyle(fontSize: 14, color: textColor)),
         trailing: Icon(icon, color: textColor),
-        onTap: () => onTap,
+        onTap: onTap != null ? () => onTap() : null,
         tileColor: color,
         textColor: textColor,
       );
@@ -312,7 +351,7 @@ class _NotificationSelfCheckState
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
-                      "https://wiki.fosswarn.org",
+                      "https://github.com/nucleus-ffm/foss_warn/wiki/Notification-self-check",
                     ),
                     child: Text(
                       localizations
@@ -392,13 +431,25 @@ class _NotificationSelfCheckState
             buildCheckListTile(
               title:
                   localizations.notification_self_check_test_subscription_title,
-              state: subscriptionAndNotificationState,
+              state: subscriptionState,
               subtitlePassed: localizations
                   .notification_self_check_test_subscription_subtitle_passed,
               subtitleNotPassed: localizations
                   .notification_self_check_test_subscription_subtitle_not_passed,
               subtitleUnknown: localizations
                   .notification_self_check_test_subscription_subtitle_unknown,
+              subtitleActionSuggested: "",
+            ),
+            buildCheckListTile(
+              title: localizations
+                  .notification_self_check_notification_check_title,
+              state: notificationState,
+              subtitlePassed: localizations
+                  .notification_self_check_notification_check_subtitle_passed,
+              subtitleNotPassed: localizations
+                  .notification_self_check_notification_check_subtitle_not_passed,
+              subtitleUnknown: localizations
+                  .notification_self_check_notification_check_subtitle_unknown,
               subtitleActionSuggested: "",
             ),
           ],
