@@ -396,11 +396,16 @@
   "@connection_error_no_internet": {},
   "connection_error_app_error": "Ups Something went wrong. Please contact the developer",
   "@connection_error_app_error": {},
+  "connection_error_app_error_action": "Tap here for more information",
   "connection_error_subscription_expired": "Some of your subscriptions have expired.",
+  "connection_error_subscription_expired_action": "Tap here to resubscribe",
   "connection_error_fetching_new_alerts": "Fetching new alerts...",
   "@connection_error_fetching_new_alerts": {
     "description": "Displayed if there are no alerts and the app is still fetching new alerts"
   },
+  "connection_error_first_fetch": "Fetching new alerts...",
+  "connection_error_push_notification_setup_error": "Detected problem with push notifications",
+  "connection_error_push_notification_setup_error_action": "Tap here for more information",
   "font_size_headline": "Font size",
   "@font_size_headline": {},
   "font_size_big": "Big",
@@ -849,7 +854,7 @@
                        }
                    }
     },
-    "notification_self_check_selected_distributor_subtitle_not_passed": "You did not select a distributor.",
+    "notification_self_check_selected_distributor_subtitle_not_passed": "You did not select a distributor. Please go to the settings and select a push service.",
     "notification_self_check_selected_distributor_subtitle_unknown": "FOSSWarn is looking for your selected UnifiedPush distributor. Please wait.",
     "notification_self_check_current_endpoint_title": "Current Endpoint",
     "notification_self_check_current_endpoint_subtitle_passed": "Your endpoint {key}",
@@ -862,17 +867,25 @@
                        }
     },
     "notification_self_check_current_endpoint_subtitle_not_passed": "No endpoint found. You are not registered for push notifications.",
-    "notification_self_check_current_endpoint_subtitle_unknown": "FOSSWarn is looking for your UnifiedPush endpoint. Please wait.",
+    "notification_self_check_current_endpoint_subtitle_unknown": "FOSSWarn is looking for your UnifiedPush endpoint.",
     "notification_self_check_server_check_title": "Server check",
     "notification_self_check_server_check_subtitle_passed": "This server is not known for issues. If you experience any issues with this server, please notify us.",
     "notification_self_check_server_check_subtitle_not_passed": "This server has been unreliable in the past or has had other issues. We recommend choosing another server. You may not be able to subscribe to this server, or you may not receive notifications.",
-    "notification_self_check_server_check_subtitle_unknown": "FOSSWarn is checking your server for known issues. Please wait.",
+    "notification_self_check_server_check_subtitle_unknown": "FOSSWarn is checking your server for known issues.",
     "notification_self_check_server_check_subtitle_action_suggested": "This server may be okay, but it has had some issues in the past. If you know what you are doing, you can still use this server; otherwise, we recommend switching to a different one.",
     "notification_self_check_test_subscription_title": "Test subscription and notification",
     "notification_self_check_test_subscription_subtitle_passed": "Successfully tested, you should see a notification.",
     "notification_self_check_test_subscription_subtitle_not_passed": "FOSSwarn was not able to subscribe to or send you a notification. Please recheck your setup.",
-    "notification_self_check_test_subscription_subtitle_unknown": "FOSSWarn is trying to subscribe and receive a push notification. Please wait.",
-    "change_unified_push_distributor_dialog_title": "Change UnifiedPush distributor"
-    "change_unified_push_distributor_dialog_body": "Please select the UnifiedPush distributor that FOSSWarn should use."
+    "notification_self_check_test_subscription_subtitle_unknown": "FOSSWarn is trying to subscribe and receive a push notification.",
+    "notification_self_check_notification_check_title": "Notification check",
+    "notification_self_check_notification_check_subtitle_passed": "Successfully received notification",
+    "notification_self_check_notification_check_subtitle_not_passed": "The notification was not received. Please check your setup again.",
+    "notification_self_check_notification_check_subtitle_unknown": "Waiting for a new notification.",
+    "change_unified_push_distributor_dialog_title": "Change UnifiedPush distributor",
+    "change_unified_push_distributor_dialog_body": "Please select the UnifiedPush distributor that FOSSWarn should use.",
+    "change_unified_push_distributor_dialog_body_no_distributor_found": "No distributor found",
+    "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Changing the distributor. Please wait...",
+    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Registration for new distributor failed with a timeout. Please try again."
+
 
 }
