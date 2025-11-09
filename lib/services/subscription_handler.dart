@@ -156,7 +156,7 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
   var alertApi = ref.read(alertApiProvider);
   var places = ref.read(myPlacesProvider);
   var userPreferences = ref.read(userPreferencesProvider);
-  appState.distributorChangeInProgress = true;
+  appState.reSubscriptionInProgress = true;
   debugPrint("[resubscribeForAllArea] Resubscribing...");
 
   LoadingScreen.instance().show(
@@ -203,7 +203,7 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
               ),
         );
   }
-  appState.distributorChangeInProgress = false;
+  appState.reSubscriptionInProgress = false;
   LoadingScreen.instance().hide();
 }
 

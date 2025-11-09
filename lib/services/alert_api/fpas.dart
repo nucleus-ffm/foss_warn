@@ -7,6 +7,7 @@ import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/constants.dart' as constants;
+import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
@@ -55,6 +56,11 @@ class FPASApi implements AlertAPI {
   Future<List<AlertApiResult>> getAlerts({
     required String subscriptionId,
   }) async {
+    // do not try to get new alerts if we currently resubscribe for places
+    if (appState.reSubscriptionInProgress) {
+      return [];
+    }
+
     var url = Uri.parse(
       "${_userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId",
     );
@@ -153,7 +159,7 @@ class FPASApi implements AlertAPI {
   }
 
   @override
-  Future<String> registerArea({
+  Future<SubscriptionApiResult> registerArea({
     required BoundingBox boundingBox,
     required String unifiedPushEndpoint,
   }) async {
@@ -203,7 +209,10 @@ class FPASApi implements AlertAPI {
     }
 
     Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-    return data["subscription_id"];
+    return (
+      subscriptionId: data["subscription_id"].toString(),
+      confirmationId: data["confirmation_id"].toString()
+    );
   }
 
   @override
