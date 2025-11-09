@@ -71,13 +71,26 @@ class ConnectionError extends ConsumerWidget {
               Flexible(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Text(
-                    localizations.connection_error_app_error,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: theme.colorScheme.onErrorContainer,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    children: [
+                      Text(
+                        localizations.connection_error_app_error,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        localizations.connection_error_app_error_action,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -107,13 +120,76 @@ class ConnectionError extends ConsumerWidget {
               Flexible(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Text(
-                    localizations.connection_error_subscription_expired,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: theme.colorScheme.onErrorContainer,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localizations.connection_error_subscription_expired,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        localizations
+                            .connection_error_subscription_expired_action,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onErrorContainer,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (appState.pushNotificationSetupError) {
+      return InkWell(
+        onTap: onNotificationSelfCheckPressed,
+        child: Container(
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
+          color: theme.colorScheme.error,
+          child: Row(
+            children: [
+              Icon(
+                Icons.info,
+                color: theme.colorScheme.onError,
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localizations
+                            .connection_error_push_notification_setup_error,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: theme.colorScheme.onError,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        localizations
+                            .connection_error_push_notification_setup_error_action,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: theme.colorScheme.onError,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -138,46 +214,13 @@ class ConnectionError extends ConsumerWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Text(
-                  "fetching new alerts...",
+                  localizations.connection_error_first_fetch,
                   style: theme.textTheme.displaySmall,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ],
-        ),
-      );
-    }
-
-    if (appState.pushNotificationSetupError) {
-      return InkWell(
-        onTap: onNotificationSelfCheckPressed,
-        child: Container(
-          padding:
-              const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
-          color: theme.colorScheme.error,
-          child: Row(
-            children: [
-              Icon(
-                Icons.info,
-                color: theme.colorScheme.onError,
-              ),
-              const SizedBox(width: 10),
-              Flexible(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Text(
-                    "Detected problem with push notifications",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: theme.colorScheme.onError,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       );
     }
