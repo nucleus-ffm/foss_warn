@@ -132,6 +132,7 @@ class _SettingsState extends ConsumerState<Settings> {
                 );
                 if (picked != null) {
                   selectedDistributor = picked;
+                  setState(() {});
                 }
               },
             ),
