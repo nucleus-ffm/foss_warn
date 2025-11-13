@@ -594,8 +594,33 @@ class _Tags extends ConsumerWidget {
                   ),
                   _TagButton(
                     color: Colors.purpleAccent,
-                    eventType: "Referenze",
+                    eventType: "Reference", // @TODO translate
                     info: alert.references?.identifier.toString() ?? "None",
+                  ),
+                  _TagButton(
+                    color: Colors.lightGreenAccent,
+                    eventType: "Restriction",
+                    info: alert.restriction ?? "None",
+                  ),
+                  _TagButton(
+                    color: Colors.deepPurpleAccent,
+                    eventType: "Addresses",
+                    info: alert.addresses ?? "None",
+                  ),
+                  _TagButton(
+                    color: Colors.lightBlueAccent,
+                    eventType: "Code",
+                    info: alert.code ?? "None",
+                  ),
+                  _TagButton(
+                    color: Colors.pinkAccent,
+                    eventType: "Note",
+                    info: alert.note ?? "None",
+                  ),
+                  _TagButton(
+                    color: Colors.cyanAccent,
+                    eventType: "Incidents",
+                    info: alert.incidents ?? "None",
                   ),
                 ],
               ),
@@ -632,6 +657,9 @@ class _TagButton extends ConsumerWidget {
         },
       );
     }
+
+    // hide buttons without values
+    if (info == "None") return const SizedBox();
 
     Widget body = Text(
       "$eventType: $info",
