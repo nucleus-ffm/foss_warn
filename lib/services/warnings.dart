@@ -8,12 +8,13 @@ import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/update_loop.dart';
 
-import '../main.dart';
+import '../class/class_error_logger.dart';
 
 class AlertRetrievalError implements Exception {}
 
@@ -75,7 +76,8 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     // Combine alerts for the individual places into a single list
     retrievedAlerts =
         alertsForPlaces.reduce((value, element) => value + element);
-  } on Exception {
+  } catch (e) {
+    debugPrint("[warnings] Tried to get alerts forPlaces and failed with $e");
     throw AlertRetrievalError();
   }
 
@@ -94,14 +96,44 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   }
 
   // Only get detail for new results
-  var newAlertsDetails = await Future.wait([
-    for (var alert in newAlerts) ...[
-      alertApi.getAlertDetail(
-        alertId: alert.alertId,
-        placeSubscriptionId: alert.subscriptionId,
-      ),
+  List<WarnMessage> newAlertsDetails = [];
+  await Future.wait(
+    [
+      for (var alert in newAlerts) ...[
+        alertApi.getAlertDetail(
+          alertId: alert.alertId,
+          placeSubscriptionId: alert.subscriptionId,
+        ),
+      ],
     ],
-  ]);
+    // cleanup is called in case there was an error in one of the futures
+    cleanUp: (value) {
+      newAlertsDetails.add(value);
+    },
+  ).then(
+    (value) {
+      newAlertsDetails = value;
+    },
+    onError: (exception) {
+      ErrorLogger.writeErrorLog(
+        "warnings.dart",
+        "Get new alert details",
+        exception.toString(),
+      );
+
+      var appStateService = ref.read(appStateProvider.notifier);
+      appStateService.setError(true);
+      return [];
+    },
+  ).catchError((exception) {
+    ErrorLogger.writeErrorLog(
+      "warnings.dart",
+      "Get new alert details",
+      exception.toString(),
+    );
+    var appStateService = ref.read(appStateProvider.notifier);
+    appStateService.setError(true);
+  });
 
   var result = newAlertsDetails + previouslyCachedAlerts;
 
@@ -200,12 +232,16 @@ final alertsProvider = Provider<List<WarnMessage>>((ref) {
     if (warning.references == null) continue;
 
     // The alert contains a reference, so it is an update of an previous alert
-    for (var referenceId in warning.references!.identifier) {
+    for (String referenceId in warning.references!.identifier) {
       // Check all alerts for references
-      var alWm = alerts.firstWhere((alert) => alert.identifier == referenceId);
-      alerts.updateEntry(
-        alWm.copyWith(hideWarningBecauseThereIsANewerVersion: true),
-      );
+      var alWm =
+          alerts.firstWhereOrNull((alert) => alert.identifier == referenceId);
+      // if alert exist, set update flag to true
+      if (alWm != null) {
+        alerts.updateEntry(
+          alWm.copyWith(hideWarningBecauseThereIsANewerVersion: true),
+        );
+      }
     }
   }
 
