@@ -111,6 +111,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
     var places = ref.watch(myPlacesProvider);
+    ref.watch(selfCheckProvider);
 
     var body = switch (selectedIndex) {
       1 => MyPlacesView(

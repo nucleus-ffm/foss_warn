@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/services/update_loop.dart';
 
+import '../class/class_app_state.dart';
 import '../class/class_user_preferences.dart';
 import '../constants.dart';
 
@@ -11,8 +13,7 @@ import '../constants.dart';
 ///
 /// returns true, is there is an error,
 /// false if there was no problem detected
-bool backgroundSelfCheck(WidgetRef ref) {
-  var userPreferences = ref.read(userPreferencesProvider);
+bool backgroundSelfCheck(UserPreferences userPreferences) {
   // check if UP is registered
   if (!userPreferences.unifiedPushRegistered) {
     return true;
@@ -31,3 +32,14 @@ bool backgroundSelfCheck(WidgetRef ref) {
   }
   return false;
 }
+
+/// Provider to periodically check in the background the push  notification setup
+/// detect errors
+final selfCheckProvider = Provider<void>((ref) {
+  ref.listen(tickingChangeProvider(250), (_, event) {
+    var appStateService = ref.read(appStateProvider.notifier);
+    appStateService.setPushNotificationSetupError(
+      backgroundSelfCheck(ref.read(userPreferencesProvider)),
+    );
+  });
+});
