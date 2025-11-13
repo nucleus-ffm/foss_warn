@@ -30,7 +30,7 @@ class References {
     // the IDs. This is a workaround for the wrong data format used by BIWAPP.
     // biw.BIWAPP-91770_ODc4ZGQ0Y2VlOGRiNmQxMg biw.BIWAPP-91770_YzVlMWQyN2NmNjU0MWY3Mg
     // </references>
-    if (rawReferencesData.length <= 3) {
+    if (rawReferencesData.length < 3) {
       return References(
         sender: "NA",
         identifier: rawReferencesData[0].split(' '),
