@@ -236,6 +236,7 @@ Future<void> resubscribeForOneAreaInBackground(
         ref.read(myPlacesProvider).updateEntry(
               place.copyWith(
                 subscriptionId: newSubscriptionId,
+                isExpired: false,
               ),
             ),
       );
@@ -253,7 +254,7 @@ Future<void> updateAllSubscriptions(WidgetRef ref) async {
   for (Place place in places) {
     try {
       debugPrint("Send update for subscription");
-      api.updateSubscription(subscriptionId: place.subscriptionId);
+      await api.updateSubscription(subscriptionId: place.subscriptionId);
     } on InvalidSubscriptionError {
       // the subscription expired, we have to register again
       resubscribeForOneAreaInBackground(ref, place);
