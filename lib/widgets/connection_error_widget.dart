@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
 
-import '../main.dart';
 import '../services/list_handler.dart';
 import 'dialogs/error_dialog.dart';
 import 'dialogs/invalid_subscription_dialog.dart';
@@ -21,6 +21,7 @@ class ConnectionError extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
     var myPlaceProvider = ref.watch(myPlacesProvider.notifier);
+    var appState = ref.watch(appStateProvider);
     var theme = Theme.of(context);
 
     var userPreferences = ref.watch(userPreferencesProvider);
@@ -72,6 +73,7 @@ class ConnectionError extends ConsumerWidget {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         localizations.connection_error_app_error,

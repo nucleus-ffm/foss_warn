@@ -102,10 +102,10 @@ class _MapViewState extends ConsumerState<MapView> {
         widgets: [buildFilterButtons()],
         polygonLayers: [
           ...filterChips["map_view_filter_chip_my_alerts"]!
-              ? MapWidget.createPolygonLayer(alerts)
+              ? MapWidget.createPolygonLayer(alerts, ref)
               : [],
           ...filterChips["map_view_filter_chip_all_alerts"]!
-              ? MapWidget.createPolygonsForMapWarning()
+              ? MapWidget.createPolygonsForMapWarning(ref)
               : [],
         ],
       ),

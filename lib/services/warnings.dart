@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
@@ -42,6 +43,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   /// fetch alerts for one place and catch invalid subscriptions errors
   Future<List<({String alertId, String subscriptionId})>> getAlertForOnePlace(
     Place place,
+    AppState appState,
   ) async {
     if (place.isExpired) {
       // the places has expired, We can not fetch for alerts until we resubscribed again
@@ -49,7 +51,10 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     }
 
     try {
-      return await alertApi.getAlerts(subscriptionId: place.subscriptionId);
+      return await alertApi.getAlerts(
+        subscriptionId: place.subscriptionId,
+        appState: appState,
+      );
     } on InvalidSubscriptionError {
       // set expired to true
       ref
@@ -63,7 +68,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     List<List<({String alertId, String subscriptionId})>> alertsForPlaces =
         await Future.wait([
       for (var place in places) ...[
-        getAlertForOnePlace(place),
+        getAlertForOnePlace(place, ref.read(appStateProvider)),
       ],
     ]);
 
@@ -118,7 +123,8 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   }
 
   // we have once fetched alerts, we do not need to display the loading scree again.
-  appState.isFirstFetch = false;
+  var appStateService = ref.read(appStateProvider.notifier);
+  appStateService.setIsFirstFetch(false);
 
   return result;
 });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:vector_tile_renderer/vector_tile_renderer.dart' hide TileLayer;
 
@@ -26,12 +27,15 @@ class VectorMapWidget extends StatefulWidget {
   State<VectorMapWidget> createState() => _VectorMapWidgetState();
 
   /// create polygon layer for my places alerts
-  static List<PolygonLayer> createPolygonLayer(List<WarnMessage> warnings) {
+  static List<PolygonLayer> createPolygonLayer(
+    List<WarnMessage> warnings,
+    WidgetRef ref,
+  ) {
     List<PolygonLayer> result = [];
     for (WarnMessage wm in warnings) {
       result.add(
         PolygonLayer(
-          polygons: Area.createListOfPolygonsForAreas(wm.info.first.area),
+          polygons: Area.createListOfPolygonsForAreas(wm.info.first.area, ref),
         ),
       );
     }
@@ -39,13 +43,13 @@ class VectorMapWidget extends StatefulWidget {
     return result;
   }
 
-  static List<PolygonLayer> createPolygonsForMapWarning() {
+  static List<PolygonLayer> createPolygonsForMapWarning(WidgetRef ref) {
     List<PolygonLayer> result = [];
     for (WarnMessage wm in mapWarningsList) {
       result.add(
         PolygonLayer(
           polygonCulling: true,
-          polygons: Area.createListOfPolygonsForAreas(wm.info.first.area),
+          polygons: Area.createListOfPolygonsForAreas(wm.info.first.area, ref),
         ),
       );
     }

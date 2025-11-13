@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/main.dart';
 
 class ErrorDialog extends ConsumerStatefulWidget {
   const ErrorDialog({super.key});
@@ -19,6 +19,12 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
   @override
   Widget build(BuildContext context) {
     var localization = context.localizations;
+
+    // we are just reading the appState value once to avoid rebuilding the
+    // widget everytime the update loop sets the error state to true which
+    // result in a short time where the dialog is hidden. Reading it just once
+    // leads to a stable dialog
+    var appState = ref.read(appStateProvider);
 
     return FutureBuilder<String>(
       future: ErrorLogger.readLog(),
@@ -75,7 +81,9 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
                         value: !appState.error,
                         onChanged: (value) {
                           setState(() {
-                            appState.error = !(value ?? true);
+                            var appStateService =
+                                ref.read(appStateProvider.notifier);
+                            appStateService.setError(!(value ?? true));
                           });
                         },
                       ),

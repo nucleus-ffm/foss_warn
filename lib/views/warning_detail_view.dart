@@ -391,6 +391,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 _Map(
                   mapController: mapController,
                   alert: warning,
+                  ref: ref,
                 ),
                 const SizedBox(height: 20),
               ],
@@ -669,10 +670,12 @@ class _Map extends StatelessWidget {
   const _Map({
     required this.mapController,
     required this.alert,
+    required this.ref,
   });
 
   final MapController mapController;
   final WarnMessage alert;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
@@ -680,7 +683,7 @@ class _Map extends StatelessWidget {
 
     CameraFit createInitCameraFit() {
       List<LatLng> polygonPoints =
-          Area.getListWithAllPolygons(alert.info.first.area);
+          Area.getListWithAllPolygons(alert.info.first.area, ref);
 
       if (polygonPoints.isNotEmpty) {
         return CameraFit.bounds(
@@ -704,7 +707,8 @@ class _Map extends StatelessWidget {
         polygonLayers: [
           //@todo can be null
           PolygonLayer(
-            polygons: Area.createListOfPolygonsForAreas(alert.info.first.area),
+            polygons:
+                Area.createListOfPolygonsForAreas(alert.info.first.area, ref),
           ),
         ],
         widgets: [

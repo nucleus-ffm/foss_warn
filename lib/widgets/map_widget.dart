@@ -25,25 +25,29 @@ class MapWidget extends ConsumerStatefulWidget {
   });
 
   /// create polygon layer for my places alerts
-  static List<PolygonLayer> createPolygonLayer(List<WarnMessage> warnings) {
+  static List<PolygonLayer> createPolygonLayer(
+    List<WarnMessage> warnings,
+    WidgetRef ref,
+  ) {
     List<PolygonLayer> result = [];
     for (var warning in warnings) {
       result.add(
         PolygonLayer(
-          polygons: Area.createListOfPolygonsForAreas(warning.info.first.area),
+          polygons:
+              Area.createListOfPolygonsForAreas(warning.info.first.area, ref),
         ),
       );
     }
     return result;
   }
 
-  static List<PolygonLayer> createPolygonsForMapWarning() {
+  static List<PolygonLayer> createPolygonsForMapWarning(WidgetRef ref) {
     List<PolygonLayer> result = [];
     for (WarnMessage wm in mapWarningsList) {
       result.add(
         PolygonLayer(
           polygonCulling: true,
-          polygons: Area.createListOfPolygonsForAreas(wm.info.first.area),
+          polygons: Area.createListOfPolygonsForAreas(wm.info.first.area, ref),
         ),
       );
     }

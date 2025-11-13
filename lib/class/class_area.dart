@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_geojson/flutter_map_geojson.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
-import '../main.dart';
 
 class Area {
   String description; // general description of the area
@@ -202,10 +203,10 @@ class Area {
   }
 
   /// create a list with all latLon for all geoJsonFeatures
-  static List<LatLng> getListWithAllPolygons(List<Area> areas) {
+  static List<LatLng> getListWithAllPolygons(List<Area> areas, WidgetRef ref) {
     List<LatLng> result = [];
 
-    List<Polygon> polygons = createListOfPolygonsForAreas(areas);
+    List<Polygon> polygons = createListOfPolygonsForAreas(areas, ref);
 
     for (Polygon i in polygons) {
       result.addAll(i.points);
@@ -217,7 +218,10 @@ class Area {
   /// create a list of polygons from a list of areas
   //  default color: 0xFFB01917
   //  default borderColor: 0xFFFB8C00
-  static List<Polygon> createListOfPolygonsForAreas(List<Area> areas) {
+  static List<Polygon> createListOfPolygonsForAreas(
+    List<Area> areas,
+    WidgetRef ref,
+  ) {
     List<Polygon> result = [];
     try {
       GeoJsonParser myGeoJson = GeoJsonParser(
@@ -236,7 +240,8 @@ class Area {
         "Error while parsing geoJson",
         e.toString(),
       );
-      appState.error = true;
+      var appStateService = ref.read(appStateProvider.notifier);
+      appStateService.setError(true);
       return [];
     }
   }

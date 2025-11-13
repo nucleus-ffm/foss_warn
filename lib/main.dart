@@ -5,11 +5,9 @@ import 'package:foss_warn/routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
 
-import 'class/class_app_state.dart';
 import 'class/class_notification_service.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final AppState appState = AppState();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

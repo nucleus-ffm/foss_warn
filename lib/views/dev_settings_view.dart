@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
@@ -245,6 +246,9 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     } else {
                       // remove subscription for Point Nemo
                       var places = ref.read(myPlacesProvider.notifier);
+                      ref
+                          .read(appStateProvider.notifier)
+                          .setReSubscriptionInProgress(true);
                       Place? place = places.places.firstWhereOrNull(
                         (p) => p.name == testAlertPlaceName,
                       );
@@ -253,9 +257,12 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                           await api.unregisterArea(
                             subscriptionId: place.subscriptionId,
                           );
-                          places.remove(place);
+                          await places.remove(place);
                           userPreferencesService
                               .setSubscribeForTestAlerts(value);
+                          ref
+                              .read(appStateProvider.notifier)
+                              .setReSubscriptionInProgress(false);
                         } on UnregisterAreaError {
                           // we currently can not unsubscribe - show a snack bar to inform the
                           // user to check their internet connection
