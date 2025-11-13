@@ -62,49 +62,51 @@ class LoadingScreen {
                 color: Theme.of(context).colorScheme.tertiaryContainer,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: StreamBuilder(
-                  stream: textController.stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (_resultState) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 10),
-                            const Icon(Icons.error_outline),
-                            const SizedBox(height: 10),
-                            Text(
-                              snapshot.requireData.toString(),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                hide();
-                              },
-                              child: Text(localization.main_dialog_close),
-                            ),
-                          ],
-                        );
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: StreamBuilder(
+                    stream: textController.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        if (_resultState) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(height: 10),
+                              const Icon(Icons.error_outline),
+                              const SizedBox(height: 10),
+                              Text(
+                                snapshot.requireData.toString(),
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  hide();
+                                },
+                                child: Text(localization.main_dialog_close),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(height: 10),
+                              const CircularProgressIndicator(),
+                              const SizedBox(height: 10),
+                              Text(
+                                snapshot.requireData.toString(),
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ],
+                          );
+                        }
                       } else {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 10),
-                            const CircularProgressIndicator(),
-                            const SizedBox(height: 10),
-                            Text(
-                              snapshot.requireData.toString(),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        );
+                        return Container();
                       }
-                    } else {
-                      return Container();
-                    }
-                  },
+                    },
+                  ),
                 ),
               ),
             ),

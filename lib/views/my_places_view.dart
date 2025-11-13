@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:foss_warn/extensions/list.dart';
-import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../widgets/my_place_widget.dart';
@@ -47,10 +45,6 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
     // we have to watch the alertsProvider to keep the timer running
     ref.watch(alertsProvider);
 
-    // Just to detect if we have an error while polling for alerts.
-    // We don't actually use the value otherwise.
-    var alertsSnapshot = ref.watch(alertsFutureProvider);
-
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -62,15 +56,10 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
               padding: const EdgeInsets.only(bottom: 65),
               child: Column(
                 children: [
-                  if (alertsSnapshot.hasError ||
-                      places.hasExpiredPlaces ||
-                      appState.isFirstFetch ||
-                      appState.pushNotificationSetupError) ...[
-                    ConnectionError(
-                      onNotificationSelfCheckPressed:
-                          widget.onNotificationSelfCheckPressed,
-                    ),
-                  ],
+                  ConnectionError(
+                    onNotificationSelfCheckPressed:
+                        widget.onNotificationSelfCheckPressed,
+                  ),
                   ...places.map(
                     (place) => MyPlaceWidget(
                       place: place,
@@ -86,15 +75,10 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if (alertsSnapshot.hasError ||
-                  places.hasExpiredPlaces ||
-                  appState.isFirstFetch ||
-                  appState.pushNotificationSetupError) ...[
-                ConnectionError(
-                  onNotificationSelfCheckPressed:
-                      widget.onNotificationSelfCheckPressed,
-                ),
-              ],
+              ConnectionError(
+                onNotificationSelfCheckPressed:
+                    widget.onNotificationSelfCheckPressed,
+              ),
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,

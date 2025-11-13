@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/extensions/list.dart';
-import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/connection_error_widget.dart';
@@ -23,6 +23,7 @@ class WarningsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var places = ref.watch(myPlacesProvider);
+    var appState = ref.watch(appStateProvider);
 
     // just to keep the timer running
     ref.watch(alertsProvider);

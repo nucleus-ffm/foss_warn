@@ -10,7 +10,6 @@ import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import 'package:unifiedpush/unifiedpush.dart';
-import '../main.dart';
 import '../services/alert_api/fpas.dart';
 import '../services/notification_handler.dart';
 import '../widgets/dialogs/no_up_distributor_found_dialog.dart';
@@ -195,7 +194,6 @@ class UnifiedPushHandler {
     String selectedDistributor,
     WidgetRef ref,
   ) async {
-    appState.reSubscriptionInProgress = true;
     await unregisterDistributor(ref);
     await registerDistributor(selectedDistributor, ref);
     // wait until the registration is finished we have a new endpoint

@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/constants.dart' as constants;
-import 'package:foss_warn/main.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
@@ -55,6 +55,7 @@ class FPASApi implements AlertAPI {
   @override
   Future<List<AlertApiResult>> getAlerts({
     required String subscriptionId,
+    required AppState appState,
   }) async {
     // do not try to get new alerts if we currently resubscribe for places
     if (appState.reSubscriptionInProgress) {

@@ -25,11 +25,22 @@ class References {
   factory References.fromString(String references) {
     // Example data: trinet@caltech.edu,TRI13970876.1,2003-06-11T20:30:00-07:00
     // if more then one alert is referred, the identifiers are separated by spaces
-    List<String> temp = references.split(',');
+    List<String> rawReferencesData = references.split(',');
+    // Check if the data has the right format. If not, just try to read
+    // the IDs. This is a workaround for the wrong data format used by BIWAPP.
+    // biw.BIWAPP-91770_ODc4ZGQ0Y2VlOGRiNmQxMg biw.BIWAPP-91770_YzVlMWQyN2NmNjU0MWY3Mg
+    // </references>
+    if (rawReferencesData.length < 3) {
+      return References(
+        sender: "NA",
+        identifier: rawReferencesData[0].split(' '),
+        send: "NA",
+      );
+    }
     return References(
-      sender: temp[0],
-      identifier: temp[1].split(' '),
-      send: temp[2],
+      sender: rawReferencesData[0],
+      identifier: rawReferencesData[1].split(' '),
+      send: rawReferencesData[2],
     );
   }
 

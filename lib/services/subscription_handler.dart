@@ -16,8 +16,8 @@ import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:uuid/uuid.dart';
 
+import '../class/class_app_state.dart';
 import '../class/class_unified_push_handler.dart';
-import '../main.dart';
 
 /// register with the given boundingBox for push notifications
 /// and add the new place to the myPlacesProvider list
@@ -156,7 +156,8 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
   var alertApi = ref.read(alertApiProvider);
   var places = ref.read(myPlacesProvider);
   var userPreferences = ref.read(userPreferencesProvider);
-  appState.reSubscriptionInProgress = true;
+  var appStateSevice = ref.read(appStateProvider.notifier);
+  appStateSevice.setReSubscriptionInProgress(true);
   debugPrint("[resubscribeForAllArea] Resubscribing...");
 
   LoadingScreen.instance().show(
@@ -203,7 +204,7 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
               ),
         );
   }
-  appState.reSubscriptionInProgress = false;
+  appStateSevice.setReSubscriptionInProgress(false);
   LoadingScreen.instance().hide();
 }
 
@@ -235,6 +236,7 @@ Future<void> resubscribeForOneAreaInBackground(
         ref.read(myPlacesProvider).updateEntry(
               place.copyWith(
                 subscriptionId: newSubscriptionId,
+                isExpired: false,
               ),
             ),
       );
@@ -252,7 +254,7 @@ Future<void> updateAllSubscriptions(WidgetRef ref) async {
   for (Place place in places) {
     try {
       debugPrint("Send update for subscription");
-      api.updateSubscription(subscriptionId: place.subscriptionId);
+      await api.updateSubscription(subscriptionId: place.subscriptionId);
     } on InvalidSubscriptionError {
       // the subscription expired, we have to register again
       resubscribeForOneAreaInBackground(ref, place);

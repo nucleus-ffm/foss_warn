@@ -1,5 +1,6 @@
 import 'package:foss_warn/class/class_bounding_box.dart';
 
+import '../class/class_app_state.dart';
 import '../class/class_warn_message.dart';
 
 /// Indicates the server was unable to be reached
@@ -99,7 +100,10 @@ abstract class AlertAPI {
   /// Throws an [InvalidSubscriptionError] if the subscription is not valid
   ///
   /// Throws an [UndefinedServerError] if the server responded in an unexpected way
-  Future<List<AlertApiResult>> getAlerts({required String subscriptionId});
+  Future<List<AlertApiResult>> getAlerts({
+    required String subscriptionId,
+    required AppState appState,
+  });
 
   /// Get detail of an alert.
   /// [alertId] is the ID of an alert to retrieve details for.
