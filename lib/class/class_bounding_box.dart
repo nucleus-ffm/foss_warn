@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'class_error_logger.dart';
@@ -47,5 +48,28 @@ class BoundingBox {
       );
       return {};
     }
+  }
+
+  /// return a polygon object for the bounding box to display the area
+  /// on a map
+  Polygon getAsPolygon() {
+    return Polygon(
+      points: [
+        LatLng(minLatLng.latitude, minLatLng.longitude),
+        LatLng(minLatLng.latitude, maxLatLng.longitude),
+        LatLng(maxLatLng.latitude, maxLatLng.longitude),
+        LatLng(maxLatLng.latitude, minLatLng.longitude),
+        LatLng(minLatLng.latitude, minLatLng.longitude),
+      ],
+      color: Colors.amber.withValues(alpha: 0.2),
+      borderColor: Colors.amber,
+      borderStrokeWidth: 1,
+    );
+  }
+
+  @override
+  String toString() {
+    return "min lat/lng ${minLatLng.latitude}, ${minLatLng.longitude}, "
+        "max lat/lng ${maxLatLng.latitude}, ${maxLatLng.longitude}";
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
-import 'package:latlong2/latlong.dart';
+import 'package:foss_warn/widgets/map_alert_sheet.dart';
+
 import 'package:vector_map_tiles/vector_map_tiles.dart';
-import 'package:vector_tile_renderer/vector_tile_renderer.dart' as vectorTile;
 
 import '../class/class_area.dart';
+import '../class/class_fpas_place.dart';
 import '../class/class_warn_message.dart';
 import '../services/alert_api/fpas.dart';
-import '../services/api_handler.dart';
 import '../services/list_handler.dart';
 
 class MapWidget extends ConsumerStatefulWidget {
@@ -22,6 +22,7 @@ class MapWidget extends ConsumerStatefulWidget {
   final MapController mapController;
   final CameraFit initialCameraFit;
   final bool displayAllWarnings;
+  final bool smallAttribution;
 
   const MapWidget({
     super.key,
@@ -31,6 +32,7 @@ class MapWidget extends ConsumerStatefulWidget {
     this.tileLayers,
     required this.mapController,
     required this.initialCameraFit,
+    this.smallAttribution = false,
     this.displayAllWarnings = false,
   });
 
@@ -51,17 +53,26 @@ class MapWidget extends ConsumerStatefulWidget {
     return result;
   }
 
-  static List<PolygonLayer> createPolygonsForMapWarning(WidgetRef ref) {
-    List<PolygonLayer> result = [];
-    for (WarnMessage wm in mapWarningsList) {
-      result.add(
-        PolygonLayer(
-          polygonCulling: true,
-          polygons: Area.createListOfPolygonsForAreas(wm.info.first.area, ref),
-        ),
-      );
+  /// create a polygon layer with all subscriptions bounding boxes as polygons
+  /// This allows users to easy check which areas they have subscribed for
+  static List<PolygonLayer> createSubscriptionsBoundingBox(WidgetRef ref) {
+    var subscriptions = ref.read(myPlacesProvider);
+    List<Polygon> polygons = [];
+
+    if (subscriptions.isEmpty) {
+      return [];
     }
-    return result;
+
+    for (Place p in subscriptions) {
+      polygons.add(p.boundingBox.getAsPolygon());
+    }
+
+    return [
+      PolygonLayer(
+        polygonCulling: true,
+        polygons: polygons,
+      ),
+    ];
   }
 
   @override
@@ -71,128 +82,59 @@ class MapWidget extends ConsumerStatefulWidget {
 class _MapWidgetState extends ConsumerState<MapWidget> {
   Style? _style;
 
-  Future<Style> _readStyle() => StyleReader(
-        uri: 'http://10.0.2.2:8000/static/map_style.json',
-        // ignore: undefined_identifier
-        logger: const vectorTile.Logger.console(),
-      ).read();
-
-  Future<void> _initStyle() async {
+  /// Fetch the map style for the all alerts map
+  Future<void> _initMapStyle(FPASApi alertAPI) async {
     try {
-      _style = await _readStyle();
-    } catch (e, stack) {
-      // ignore: avoid_print
-      print(e);
-      // ignore: avoid_print
-      print(stack);
+      _style = await alertAPI.getMapStyle();
+    } catch (e) {
+      debugPrint(
+        "[map_widget.dart] Error while loading map style ${e.toString()}",
+      );
+      ErrorLogger.writeErrorLog(
+        "map_widget.dart",
+        "initMapStyle",
+        e.toString(),
+      );
     }
     setState(() {});
   }
 
-  Future<List<WarnMessage>> getAlerts(LatLng coordinates) async {
-    var alertApi = ref.watch(alertApiProvider);
-    double areaSelectionRadius = 0.01;
-    // construct the bounding box around the selected point on the map to fetch
-    // the alerts for this area
-    BoundingBox boundingBox = BoundingBox(
-      minLatLng: LatLng(coordinates.latitude - areaSelectionRadius,
-          coordinates.longitude - areaSelectionRadius),
-      maxLatLng: LatLng(coordinates.latitude + areaSelectionRadius,
-          coordinates.longitude + areaSelectionRadius),
-    );
-    List<AlertApiResult> results =
-        await alertApi.getAlertsForArea(boundingBox: boundingBox);
-    print(results);
-    List<WarnMessage> alerts = await Future.wait([
-      for (var alert in results) ...[
-        alertApi.getAlertDetail(
-            alertId: alert.alertId, placeSubscriptionId: "no subscription")
-      ]
-    ]);
-    print(alerts);
-    return alerts;
-  }
-
-  /// build from the given List of alerts a list of ListTiles with the headline
-  /// of each alert
-  List<ListTile> buildAlertListTile(List<WarnMessage> alerts) {
-    List<ListTile> result = [];
-
-    for (var alert in alerts) {
-      result.add(
-        ListTile(
-          title: Text(alert.info.first.headline),
-          onTap: () {
-            print("Tapped on ${alert.identifier}");
-          },
-        ),
+  /// Action that run when the users presses somewhere on the map. If the
+  /// displayAllAlerts mode is enable, this fetches all alerts and display a
+  /// modalBottomSheet with the alert information
+  Future<void> _onMapTapped(tagPosition, latLng) async {
+    if (widget.displayAllWarnings) {
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) => MapAlertSheet(latLng, ref),
       );
     }
-    return result;
-  }
-
-  Future<Widget> alertSelectionSheet(LatLng coordinates) async {
-    List<WarnMessage> alerts = await getAlerts(coordinates);
-    if (!context.mounted) return const Column();
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Current Alerts for this area",
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          ...buildAlertListTile(alerts),
-        ],
-      ),
-    );
   }
 
   @override
   void initState() {
     super.initState();
-    _initStyle();
   }
 
   @override
   Widget build(BuildContext context) {
     var userPreferences = ref.watch(userPreferencesProvider);
 
+    // load the map style in case we need it and we don't have it already
+    if (widget.displayAllWarnings && _style == null) {
+      _initMapStyle(ref.read(alertApiProvider));
+    }
+
     return FlutterMap(
       mapController: widget.mapController,
       options: MapOptions(
-          initialCameraFit: widget.initialCameraFit,
-          interactionOptions: const InteractionOptions(
-            flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-          ),
-          onTap: (tagPosition, latLng) {
-            print(LatLng);
-            showBottomSheet(
-                context: context,
-                builder: (context) {
-                  return FutureBuilder<Widget>(
-                      future: alertSelectionSheet(latLng),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          if (snapshot.hasData) {
-                            final Widget data = snapshot.data!;
-                            return data;
-                          } else {
-                            debugPrint(
-                                "Error getting system information: ${snapshot.error}");
-                            return const Text("Error",
-                                style: TextStyle(color: Colors.red));
-                          }
-                        } else {
-                          return Padding(
-                            padding: EdgeInsets.all(10),
-                            child: const CircularProgressIndicator(),
-                          );
-                        }
-                      });
-                });
-          }),
+        initialCameraFit: widget.initialCameraFit,
+        interactionOptions: const InteractionOptions(
+          flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+        ),
+        onLongPress: (tagPosition, latLng) => _onMapTapped(tagPosition, latLng),
+      ),
       children: [
         TileLayer(
           urlTemplate: UserPreferences.osmTileServerURL,
@@ -224,15 +166,23 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
                     maximumZoom: 22,
                     tileOffset: TileOffset.mapbox,
                     layerMode: VectorTileLayerMode.vector,
+                    fileCacheTtl: const Duration(minutes: 20),
                   )
                 : const SizedBox()
             : const SizedBox(),
         ...widget.polygonLayers ?? [],
         ...widget.markerLayers ?? [],
         ...widget.widgets ?? [],
-        const SimpleAttributionWidget(
-          source: Text('OpenStreetMap contributors'),
-        ),
+        // allow to hide the attribution text for widgets
+        widget.smallAttribution
+            ? const SimpleAttributionWidget(
+                source: Text('OSM'),
+              )
+            : const SimpleAttributionWidget(
+                source: Text(
+                  'OpenStreetMap contributors',
+                ),
+              ),
       ],
     );
   }

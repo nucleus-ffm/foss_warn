@@ -17,6 +17,7 @@ class _MapViewState extends ConsumerState<MapView> {
   Map<String, bool> filterChips = {
     "map_view_filter_chip_my_alerts": true,
     "map_view_filter_chip_all_alerts": false,
+    "map_view_filter_chip_subscriptions": false,
   };
 
   final MapController mapController = MapController();
@@ -29,6 +30,8 @@ class _MapViewState extends ConsumerState<MapView> {
         return localizations.main_nav_bar_all_warnings;
       case "map_view_filter_chip_my_alerts":
         return localizations.main_nav_bar_my_places;
+      case "map_view_filter_chip_subscriptions":
+        return localizations.map_view_filter_chips_subscriptions;
     }
     return "Error";
   }
@@ -45,6 +48,7 @@ class _MapViewState extends ConsumerState<MapView> {
 
   Widget buildFilterButtons() {
     var theme = Theme.of(context);
+    var localizations = context.localizations;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -53,28 +57,34 @@ class _MapViewState extends ConsumerState<MapView> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8),
-            child: Text("Filter by:", style: theme.textTheme.bodyMedium),
+            child: Text(
+              localizations.map_view_filter_chips_title,
+              style: theme.textTheme.bodyMedium,
+            ),
           ),
-          Row(
-            children: filterChips.entries
-                .map(
-                  (chip) => Padding(
-                    padding: const EdgeInsets.all(1),
-                    child: FilterChip(
-                      tooltip: findTooltipTranslation(chip.key, chip.value),
-                      label: Text(findLabelForChip(chip.key)),
-                      backgroundColor: Colors.transparent,
-                      shape: const StadiumBorder(side: BorderSide()),
-                      selected: chip.value,
-                      onSelected: (bool value) {
-                        setState(() {
-                          filterChips.update(chip.key, (value) => !value);
-                        });
-                      },
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: filterChips.entries
+                  .map(
+                    (chip) => Padding(
+                      padding: const EdgeInsets.all(1),
+                      child: FilterChip(
+                        tooltip: findTooltipTranslation(chip.key, chip.value),
+                        label: Text(findLabelForChip(chip.key)),
+                        backgroundColor: Colors.transparent,
+                        shape: const StadiumBorder(side: BorderSide()),
+                        selected: chip.value,
+                        onSelected: (bool value) {
+                          setState(() {
+                            filterChips.update(chip.key, (value) => !value);
+                          });
+                        },
+                      ),
                     ),
-                  ),
-                )
-                .toList(),
+                  )
+                  .toList(),
+            ),
           ),
         ],
       ),
@@ -87,7 +97,6 @@ class _MapViewState extends ConsumerState<MapView> {
 
     return Scaffold(
       body: MapWidget(
-        //vectorMapWidget
         initialCameraFit: const CameraFit.coordinates(
           padding: EdgeInsets.all(30),
           coordinates: [
@@ -104,8 +113,8 @@ class _MapViewState extends ConsumerState<MapView> {
           ...filterChips["map_view_filter_chip_my_alerts"]!
               ? MapWidget.createPolygonLayer(alerts, ref)
               : [],
-          ...filterChips["map_view_filter_chip_all_alerts"]!
-              ? MapWidget.createPolygonsForMapWarning(ref)
+          ...filterChips["map_view_filter_chip_subscriptions"]!
+              ? MapWidget.createSubscriptionsBoundingBox(ref)
               : [],
         ],
         displayAllWarnings: filterChips["map_view_filter_chip_all_alerts"]!,

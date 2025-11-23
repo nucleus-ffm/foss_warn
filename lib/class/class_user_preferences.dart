@@ -200,6 +200,7 @@ final userPreferencesProvider =
               DateTime.parse(preferences.getString("endOfDay")!))
           : const TimeOfDay(hour: 22, minute: 0),
       speakerSettings: speakerSettings,
+      showUpdateDialog: preferences.getBool("showUpdateDialog") ?? false,
     ),
     sharedPreferences: preferences,
   );
@@ -465,6 +466,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(speakerSettings: value);
     await _sharedPreferences.setString("speakerSettings", jsonEncode(value));
   }
+
+  Future<void> setShowUpdateDialog(bool value) async {
+    state = state.copyWith(showDebugNotification: value);
+    await _sharedPreferences.setBool("showUpdateDialog", value);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -510,6 +516,7 @@ class UserPreferences {
     required this.startOfDay,
     required this.endOfDay,
     required this.speakerSettings,
+    required this.showUpdateDialog,
   });
 
   final bool shouldNotifyGeneral;
@@ -553,6 +560,7 @@ class UserPreferences {
   final TimeOfDay startOfDay;
   final TimeOfDay endOfDay;
   final Map<String, bool> speakerSettings;
+  final bool showUpdateDialog;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -606,6 +614,7 @@ class UserPreferences {
     TimeOfDay? startOfDay,
     TimeOfDay? endOfDay,
     Map<String, bool>? speakerSettings,
+    bool? showUpdateDialog,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -665,6 +674,7 @@ class UserPreferences {
         startOfDay: startOfDay ?? this.startOfDay,
         endOfDay: endOfDay ?? this.endOfDay,
         speakerSettings: speakerSettings ?? this.speakerSettings,
+        showUpdateDialog: showUpdateDialog ?? this.showUpdateDialog,
       );
 
   /// the path and filename where the error log is saved
