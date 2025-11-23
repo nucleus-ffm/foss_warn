@@ -1,4 +1,5 @@
 import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import '../class/class_app_state.dart';
 import '../class/class_warn_message.dart';
@@ -147,4 +148,7 @@ abstract class AlertAPI {
   /// Unregister from a given subscription.
   /// [subscriptionId] is the ID of the subscription to unregister for.
   Future<void> unregisterArea({required String subscriptionId});
+
+  /// Fetch the map style used to display all alerts on a map
+  Future<Style> getMapStyle();
 }

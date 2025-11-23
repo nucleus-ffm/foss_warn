@@ -149,6 +149,7 @@ List<TextSpan> _htmlTextToTextSpans(String text) {
         );
         pointer = text.length;
       } else {
+        //@TODO(Nucleus): Refactor this. This does not work very well and is not really understandable
         debugPrint("pointer: $pointer  startPos: $startPos");
         returnList.add(
           TextSpan(
@@ -898,8 +899,8 @@ class _Source extends ConsumerWidget {
 
     var userPreferences = ref.watch(userPreferencesProvider);
 
-    var publisher = alert.publisher.isNotEmpty
-        ? alert.publisher
+    var sender = alert.sender.isNotEmpty
+        ? alert.sender
         : localizations.alert_publisher_unknown;
 
     return Column(
@@ -919,7 +920,7 @@ class _Source extends ConsumerWidget {
           ],
         ),
         Text(
-          publisher,
+          sender,
           style: TextStyle(fontSize: userPreferences.warningFontSize),
         ),
       ],
