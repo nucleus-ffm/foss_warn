@@ -31,11 +31,12 @@ import '../class/class_unified_push_handler.dart';
 /// Throws [RegisterAreaError] if the registration request failed
 ///
 /// Throws [SocketException] if the registration failed due to not working connection
-Future<String> subscribeForArea({
+Future<String> _subscribeForAreaWithPushNotifications({
   required BoundingBox boundingBox,
   required String selectedPlaceName,
   required BuildContext context,
   required WidgetRef ref,
+  bool? currentLocation,
 }) async {
   //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
   await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
@@ -131,6 +132,7 @@ Future<String> subscribeForArea({
       boundingBox: boundingBox,
       subscriptionId: subscriptionId,
       name: selectedPlaceName,
+      isForCurrentLocation: currentLocation,
     );
 
     var places = ref.read(myPlacesProvider.notifier);
@@ -147,6 +149,192 @@ Future<String> subscribeForArea({
   );
   LoadingScreen.instance().hide();
   return confirmationId;
+}
+
+/// register with the given boundingBox for push notifications
+/// and add the new place to the myPlacesProvider list.
+///
+/// This method does not show any dialogs and can be used from the background
+/// without a buildContext
+///
+/// returns a [String] with the confirmation id.
+/// This ID can be used to check if the confirmation notification arrived
+/// The confirmation is is an empty string if the subscription process was aborted
+///
+/// Throws [UnifiedPushRegistrationTimeoutError] if the registration failed
+///
+/// Throws [RegisterAreaError] if the registration request failed
+///
+/// Throws [SocketException] if the registration failed due to not working connection
+Future<String> _subscribeForAreaWithPushNotificationsBackground({
+  required BoundingBox boundingBox,
+  required String selectedPlaceName,
+  required Ref ref,
+  bool? currentLocation,
+}) async {
+  var alertApi = ref.read(alertApiProvider);
+  var uuid = const Uuid();
+
+  // subscribe for new area and create new place
+  // with the returned subscription id
+  var userPreferences = ref.read(userPreferencesProvider);
+  debugPrint(
+    "wait for registration state=${userPreferences.unifiedPushRegistered}",
+  );
+  // wait for the registration to finish.
+  if (!userPreferences.unifiedPushRegistered) {
+    ErrorLogger.writeErrorLog(
+      "subscription_handler.dart",
+      "subscribe for area in background - UnifiedPush not registered",
+      "UnifiedPush not registered, can not continue in background",
+    );
+    return "";
+  }
+
+  // subscribe for new area and create new place
+  // with the returned subscription id
+  String subscriptionId = "";
+  String confirmationId = "";
+  try {
+    SubscriptionApiResult result = await alertApi.registerArea(
+      boundingBox: boundingBox,
+      unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
+    );
+    subscriptionId = result.subscriptionId;
+    confirmationId = result.confirmationId;
+  } on RegisterAreaError catch (e) {
+    debugPrint("Error: ${e.toString()}");
+    ErrorLogger.writeErrorLog(
+      "subscription_handler.dart",
+      "subscribe for area - RegisterAreaError",
+      e.toString(),
+    );
+    rethrow;
+  } on SocketException catch (e) {
+    ErrorLogger.writeErrorLog(
+      "subscription_handler.dart",
+      "subscribe for area - SocketException",
+      e.toString(),
+    );
+    rethrow;
+  }
+  if (subscriptionId != "") {
+    Place newPlace = Place(
+      id: uuid.v4(),
+      boundingBox: boundingBox,
+      subscriptionId: subscriptionId,
+      name: selectedPlaceName,
+      isForCurrentLocation: currentLocation,
+    );
+
+    var places = ref.read(myPlacesProvider.notifier);
+
+    places.add(newPlace);
+
+    // cancel warning of missing places (ID: 3)
+    NotificationService.cancelOneNotification(
+      3,
+    );
+  }
+  await Future.delayed(
+    const Duration(seconds: 1),
+  );
+  LoadingScreen.instance().hide();
+  return confirmationId;
+}
+
+/// Add a new place with the selected bounding box but without registering for
+/// push notifications.
+Future<Null> _subscribeForAreaNoPush({
+  required BoundingBox boundingBox,
+  required String selectedPlaceName,
+  required WidgetRef ref,
+}) async {
+  var uuid = const Uuid();
+  Place newPlace = Place(
+    id: uuid.v4(),
+    boundingBox: boundingBox,
+    name: selectedPlaceName,
+  );
+
+  var places = ref.read(myPlacesProvider.notifier);
+
+  places.add(newPlace);
+}
+
+/// Add a new place with the selected bounding box but without registering for
+/// push notifications.
+Future<Null> _subscribeForAreaNoPushBackground({
+  required BoundingBox boundingBox,
+  required String selectedPlaceName,
+  required Ref ref,
+}) async {
+  var uuid = const Uuid();
+  Place newPlace = Place(
+    id: uuid.v4(),
+    boundingBox: boundingBox,
+    name: selectedPlaceName,
+  );
+
+  var places = ref.read(myPlacesProvider.notifier);
+
+  places.add(newPlace);
+}
+
+/// Register for push notification or is [noPushNotification] is set to true
+/// just adds a new place with the selected bounding box
+Future<String?> subscribeForArea({
+  required BoundingBox boundingBox,
+  required String selectedPlaceName,
+  required BuildContext context,
+  required WidgetRef ref,
+  noPushNotification = false,
+  isForCurrentLocation = false,
+}) async {
+  switch (noPushNotification) {
+    case true:
+      return _subscribeForAreaNoPush(
+        boundingBox: boundingBox,
+        selectedPlaceName: selectedPlaceName,
+        ref: ref,
+      );
+    case false:
+      return _subscribeForAreaWithPushNotifications(
+        boundingBox: boundingBox,
+        selectedPlaceName: selectedPlaceName,
+        context: context,
+        ref: ref,
+        currentLocation: isForCurrentLocation,
+      );
+  }
+  return null;
+}
+
+/// Register for push notification or is [noPushNotification] is set to true
+/// just adds a new place with the selected bounding box
+Future<String?> subscribeForAreaInBackground({
+  required BoundingBox boundingBox,
+  required String selectedPlaceName,
+  required Ref ref,
+  noPushNotification = false,
+  isForCurrentLocation = false,
+}) async {
+  switch (noPushNotification) {
+    case true:
+      return _subscribeForAreaNoPushBackground(
+        boundingBox: boundingBox,
+        selectedPlaceName: selectedPlaceName,
+        ref: ref,
+      );
+    case false:
+      return _subscribeForAreaWithPushNotificationsBackground(
+        boundingBox: boundingBox,
+        selectedPlaceName: selectedPlaceName,
+        ref: ref,
+        currentLocation: isForCurrentLocation,
+      );
+  }
+  return null;
 }
 
 /// resubscribed for all stored areas with the current push notification setup
@@ -168,9 +356,12 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
   for (Place place in places) {
     String newSubscriptionId = "";
     // register again
+    if (place.subscriptionId == null) {
+      continue;
+    }
     try {
       // remove old subscription, if the subscription is already deleted nothing changes
-      await alertApi.unregisterArea(subscriptionId: place.subscriptionId);
+      await alertApi.unregisterArea(subscriptionId: place.subscriptionId!);
 
       SubscriptionApiResult result = await alertApi.registerArea(
         boundingBox: place.boundingBox,
@@ -247,6 +438,40 @@ Future<void> resubscribeForOneAreaInBackground(
       );
 }
 
+/// Resubscribe for a place in case of expired subscription
+Future<void> resubscribeForOneAreaInBackgroundFromBackground(
+  ProviderContainer ref,
+  Place place,
+) async {
+  var alertApi = ref.read(alertApiProvider);
+  String newSubscriptionId = "";
+  var userPreferences = ref.read(userPreferencesProvider);
+
+  try {
+    SubscriptionApiResult result = await alertApi.registerArea(
+      boundingBox: place.boundingBox,
+      unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
+    );
+    newSubscriptionId = result.subscriptionId;
+  } on RegisterAreaError catch (e) {
+    debugPrint("RegisterAreaError $e");
+    ErrorLogger.writeErrorLog(
+      "subscription_handler.dart",
+      "resubscribeForOneAreaInBackground",
+      e.toString(),
+    );
+  }
+
+  await ref.read(myPlacesProvider.notifier).set(
+        ref.read(myPlacesProvider).updateEntry(
+              place.copyWith(
+                subscriptionId: newSubscriptionId,
+                isExpired: false,
+              ),
+            ),
+      );
+}
+
 /// Send an update message to the server to keep the subscriptions alive
 ///
 /// This method needs to be called at least once a week to ensure that
@@ -257,12 +482,37 @@ Future<void> updateAllSubscriptions(WidgetRef ref) async {
   var places = await ref.read(cachedPlacesProvider.future);
   var api = ref.read(alertApiProvider);
   for (Place place in places) {
+    if (place.subscriptionId == null) continue;
     try {
       debugPrint("Send update for subscription");
-      await api.updateSubscription(subscriptionId: place.subscriptionId);
+      await api.updateSubscription(subscriptionId: place.subscriptionId!);
     } on InvalidSubscriptionError {
       // the subscription expired, we have to register again
       resubscribeForOneAreaInBackground(ref, place);
+    } on RegisterAreaError catch (e) {
+      debugPrint("Failed to update all subscriptions due to $e");
+      ErrorLogger.writeErrorLog(
+        "subscription_handler.dart",
+        "updateAllSubscriptions",
+        e.toString(),
+      );
+    }
+  }
+}
+
+Future<void> updateAllSubscriptionsFromBackground(ProviderContainer ref) async {
+  debugPrint("UpdateAllSubscriptionFromBackground");
+
+  var places = await ref.read(cachedPlacesProvider.future);
+  var api = ref.read(alertApiProvider);
+  for (Place place in places) {
+    if (place.subscriptionId == null) continue;
+    try {
+      debugPrint("Send update for subscription");
+      await api.updateSubscription(subscriptionId: place.subscriptionId!);
+    } on InvalidSubscriptionError {
+      // the subscription expired, we have to register again
+      await resubscribeForOneAreaInBackgroundFromBackground(ref, place);
     } on RegisterAreaError catch (e) {
       debugPrint("Failed to update all subscriptions due to $e");
       ErrorLogger.writeErrorLog(

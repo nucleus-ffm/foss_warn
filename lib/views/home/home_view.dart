@@ -16,6 +16,8 @@ import 'package:unifiedpush_platform_interface/unifiedpush_platform_interface.da
 import 'package:unifiedpush_storage_shared_preferences/storage.dart';
 
 import '../../services/legacy_handler.dart';
+import '../../class/class_alarm_manager.dart';
+import '../../enums/alert_service.dart';
 import '../../services/self_check_handler.dart';
 import '../../services/subscription_handler.dart';
 
@@ -50,6 +52,64 @@ class HomeView extends ConsumerStatefulWidget {
 
 class _HomeViewState extends ConsumerState<HomeView> {
   late int selectedIndex;
+  late bool startedWithIntroduction;
+
+  void setup() {
+    var userPreferences = ref.read(userPreferencesProvider);
+
+    var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+
+    // only init after the welcome screen to avoid overwhelming the user at first start
+    if (!userPreferences.showWelcomeScreen) {
+      if (userPreferences.alertService == AlertService.push ||
+          userPreferences.alertService == AlertService.pushAndPoll) {
+        // init unified push
+        // In a dev environment with multiple hot restarts, this registers multiple callbacks
+        UnifiedPush.initialize(
+          onNewEndpoint: unifiedPushHandler.onNewEndpoint,
+          onRegistrationFailed: unifiedPushHandler.onRegistrationFailed,
+          onUnregistered: unifiedPushHandler.onUnregistered,
+          linuxOptions: LinuxOptions(
+            dbusName: "de.nucleus.foss_warn",
+            storage: UnifiedPushStorageSharedPreferences(),
+            background: false,
+          ),
+          onMessage: (message, instance) => unifiedPushHandler.onMessage(
+            message: message,
+            instance: instance,
+            ref: ref,
+            alertApi: ref.read(alertApiProvider),
+            myPlacesService: ref.read(myPlacesProvider.notifier),
+            warningService: ref.read(processedAlertsProvider.notifier),
+            context: context,
+          ),
+        ).then((registered) {
+          if (registered) {
+            // as we are already registered, we don't have to call setupUnifiedPush
+            UnifiedPush.register(
+              instance: UserPreferences.unifiedPushInstance,
+            );
+          } else {
+            if (!mounted) {
+              return;
+            }
+            // setup unifiedPush at every startup
+            unifiedPushHandler.setupUnifiedPush(context, ref);
+          }
+        });
+        // update all subscriptions
+        updateAllSubscriptions(ref);
+      }
+
+      if (userPreferences.alertService == AlertService.poll ||
+          userPreferences.alertService == AlertService.pushAndPoll) {
+        if (userPreferences.alertService == AlertService.poll ||
+            userPreferences.alertService == AlertService.pushAndPoll) {
+          AlarmManager().initialize();
+        }
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -58,52 +118,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var userPreferences = ref.read(userPreferencesProvider);
     selectedIndex = userPreferences.startScreen;
 
-    var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
-
-    // init unified push
-    // In a dev environment with multiple hot restarts, this registers multiple callbacks
-    UnifiedPush.initialize(
-      onNewEndpoint: unifiedPushHandler.onNewEndpoint,
-      onRegistrationFailed: unifiedPushHandler.onRegistrationFailed,
-      onUnregistered: unifiedPushHandler.onUnregistered,
-      linuxOptions: LinuxOptions(
-        dbusName: "de.nucleus.foss_warn",
-        storage: UnifiedPushStorageSharedPreferences(),
-        background: false,
-      ),
-      onMessage: (message, instance) => unifiedPushHandler.onMessage(
-        message: message,
-        instance: instance,
-        ref: ref,
-        alertApi: ref.read(alertApiProvider),
-        myPlacesService: ref.read(myPlacesProvider.notifier),
-        warningService: ref.read(processedAlertsProvider.notifier),
-        context: context,
-      ),
-    ).then((registered) {
-      if (registered) {
-        // as we are already registered, we don't have to call setupUnifiedPush
-        UnifiedPush.register(
-          instance: UserPreferences.unifiedPushInstance,
-        );
-      } else {
-        if (!mounted) {
-          return;
-        }
-        // setup unifiedPush at every startup
-        unifiedPushHandler.setupUnifiedPush(context, ref);
-      }
-    });
-    // update all subscriptions
-    updateAllSubscriptions(ref);
-
     NotificationService.onNotification.stream.listen(onClickedNotification);
+    startedWithIntroduction = userPreferences.showWelcomeScreen;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (userPreferences.showUpdateDialog) {
         showUpdateDialog(context, ref);
       }
     });
+
+    if(userPreferences.legacyPolling){
+      AlarmManager().initialize();
+    }
+    setup();
   }
 
   void onClickedNotification(String? payload) {
@@ -116,6 +143,17 @@ class _HomeViewState extends ConsumerState<HomeView> {
   Widget build(BuildContext context) {
     var localizations = AppLocalizations.of(context)!;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    // this checks if the state of the showIntroductionScreen changed since
+    // creating this widget and if yes, the introduction is done
+    // and we can setup UnifiedPush etc.
+    bool startedWithIntroductionNow = ref.watch(
+      userPreferencesProvider
+          .select((userPreferences) => userPreferences.showWelcomeScreen),
+    );
+    if (startedWithIntroduction != startedWithIntroductionNow) {
+      setup();
+    }
 
     var places = ref.watch(myPlacesProvider);
     ref.watch(selfCheckProvider);

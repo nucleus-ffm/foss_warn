@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
+import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/themes/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,7 +70,8 @@ final userPreferencesProvider =
   }
 
   var selectedSorting = preferences.getInt("sortWarningsBy") ?? 0;
-  SortingCategories.values[selectedSorting];
+
+  var alertService = preferences.getInt("alertService") ?? 0;
 
   String? fossPublicAlertServerUrl =
       preferences.getString("fossPublicAlertServerUrl");
@@ -153,6 +155,8 @@ final userPreferencesProvider =
       showDebugNotification:
           preferences.getBool("showDebugNotification") ?? false,
       showUpdateDialog: preferences.getBool("showUpdateDialog") ?? false,
+      locationTracking: preferences.getBool("locationTracking") ?? false,
+      alertService: AlertService.values[alertService],
     ),
     sharedPreferences: preferences,
   );
@@ -346,6 +350,17 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(showDebugNotification: value);
     await _sharedPreferences.setBool("showUpdateDialog", value);
   }
+
+  Future<void> setLocationTracking(bool value) async {
+    state = state.copyWith(locationTracking: value);
+    await _sharedPreferences.setBool("locationTracking", value);
+  }
+
+  Future<void> setAlertService(AlertService service) async {
+    state = state.copyWith(alertService: service);
+    var indexService = AlertService.values.indexOf(service);
+    await _sharedPreferences.setInt("alertService", indexService);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -381,6 +396,8 @@ class UserPreferences {
     required this.cachedAlerts,
     required this.showDebugNotification,
     required this.showUpdateDialog,
+    required this.locationTracking,
+    required this.alertService,
   });
 
   final bool shouldNotifyGeneral;
@@ -414,6 +431,8 @@ class UserPreferences {
   final List<WarnMessage> cachedAlerts;
   final bool showDebugNotification;
   final bool showUpdateDialog;
+  final bool locationTracking;
+  final AlertService alertService;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -457,6 +476,8 @@ class UserPreferences {
     List<WarnMessage>? cachedAlerts,
     bool? showDebugNotification,
     bool? showUpdateDialog,
+    bool? locationTracking,
+    AlertService? alertService,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -503,6 +524,8 @@ class UserPreferences {
         showDebugNotification:
             showDebugNotification ?? this.showDebugNotification,
         showUpdateDialog: showUpdateDialog ?? this.showUpdateDialog,
+        locationTracking: locationTracking ?? this.locationTracking,
+        alertService: alertService ?? this.alertService,
       );
 
   /// the path and filename where the error log is saved

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_alert_archive.dart';
 import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/class/class_notification_preferences.dart';
@@ -142,6 +143,9 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   // add new alert to the processed alerts
   for (WarnMessage alert in newAlertsDetails) {
     ref.read(processedAlertsProvider.notifier).updateAlert(alert);
+    if (ref.read(userPreferencesProvider).alertArchive) {
+      AlertArchive.writeAlertToArchive(alert);
+    }
   }
 
   var cachedAlerts = ref.read(processedAlertsProvider);
@@ -299,8 +303,7 @@ void showNotification(
         channelName: warning.info[0].severity.getLocalizedName(context),
       );
       // update notification status for alert
-      //@TODO(Nucleus): Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
-      //@TODO(Nucleus): How can we avoid that the WarningService gets disposed?
+      //@TODO(Nucleus): This should be fixed as we are using an ProviderContainer now, but check required. Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
       if (!alertService.mounted) return;
       alertService.updateAlert(warning.copyWith(notified: true));
     } else if (warning.isUpdateOfAlreadyNotifiedWarning &&

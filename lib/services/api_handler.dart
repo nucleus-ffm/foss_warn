@@ -117,6 +117,19 @@ abstract class AlertAPI {
     required BoundingBox boundingBox,
   });
 
+  /// Get all alerts for the given place.
+  ///
+  /// If the place has a subscriptioId, [getAlertsForSubscription] is called
+  /// otherwise the [getAlertsForArea]
+  ///
+  /// Throws an [InvalidSubscriptionError] if the subscription is not valid (in cases the subscription id is used
+  //
+  // Throws an [UndefinedServerError] if the server responded in an unexpected way
+  Future<List<AlertApiResult>> getAlerts({
+    required Place place,
+    required AppState appState,
+  });
+
   /// Get detail of an alert.
   /// [alertId] is the ID of an alert to retrieve details for.
   /// [placeSubscriptionId] is the ID of the place subscription this alert belongs too.

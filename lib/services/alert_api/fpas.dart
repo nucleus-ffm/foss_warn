@@ -14,6 +14,8 @@ import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:vector_tile_renderer/vector_tile_renderer.dart' as vector_title;
 
+import '../../class/class_fpas_place.dart';
+
 final alertApiProvider = Provider(
   (ref) => FPASApi(userPreferences: ref.watch(userPreferencesProvider)),
 );
@@ -55,7 +57,8 @@ class FPASApi implements AlertAPI {
   }
 
   @override
-  Future<List<AlertApiResult>> getAlerts({
+  Future<List<AlertApiResult>> getAlertsForSubscription({
+    required String placeId,
     required String subscriptionId,
     required AppState appState,
   }) async {
@@ -89,19 +92,17 @@ class FPASApi implements AlertAPI {
     }
 
     var alerts = List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
-    return alerts
-        .map((e) => (subscriptionId: subscriptionId, alertId: e))
-        .toList();
+    return alerts.map((e) => (placeId: placeId, alertId: e)).toList();
   }
 
   @override
   Future<List<AlertApiResult>> getAlertsForArea({
+    required String placeId,
     required BoundingBox boundingBox,
   }) async {
     var url = Uri.parse(
       "${_userPreferences.fossPublicAlertServerUrl}/alert/area?min_lat=${boundingBox.minLatLng.latitude}&max_lat=${boundingBox.maxLatLng.latitude}&min_lon=${boundingBox.minLatLng.longitude}&max_lon=${boundingBox.maxLatLng.longitude}",
     );
-
     var response = await http.get(
       url,
       headers: {
@@ -121,15 +122,32 @@ class FPASApi implements AlertAPI {
     }
 
     var alerts = List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
-    return alerts
-        .map((e) => (subscriptionId: "no subscription", alertId: e))
-        .toList();
+    return alerts.map((e) => (placeId: placeId, alertId: e)).toList();
+  }
+
+  @override
+  Future<List<AlertApiResult>> getAlerts({
+    required Place place,
+    required AppState appState,
+  }) async {
+    if (place.subscriptionId == null) {
+      return getAlertsForArea(
+        placeId: place.id,
+        boundingBox: place.boundingBox,
+      );
+    } else {
+      return getAlertsForSubscription(
+        placeId: place.id,
+        subscriptionId: place.subscriptionId!,
+        appState: appState,
+      );
+    }
   }
 
   @override
   Future<WarnMessage> getAlertDetail({
     required String alertId,
-    required String placeSubscriptionId,
+    required String placeId,
   }) async {
     var url = Uri.parse(
       "${_userPreferences.fossPublicAlertServerUrl}/alert/$alertId",
@@ -164,7 +182,7 @@ class FPASApi implements AlertAPI {
     return WarnMessage.fromJson(
       alert["alert"],
       fpasId: alertId,
-      placeSubscriptionId: placeSubscriptionId,
+      placeId: placeId,
     );
   }
 

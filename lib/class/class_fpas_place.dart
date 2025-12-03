@@ -6,14 +6,14 @@ class Place {
   String eTag;
 
   BoundingBox boundingBox;
-  String subscriptionId;
+  String? subscriptionId;
   bool isExpired;
 
   Place({
     required this.id,
     required String name,
     required this.boundingBox,
-    required this.subscriptionId,
+    this.subscriptionId,
     String? eTag,
     bool? isExpired,
   })  : _name = name,
@@ -43,7 +43,7 @@ class Place {
       id: json['id'],
       name: json['name'] as String,
       boundingBox: BoundingBox.fromJson(json['boundingBox']),
-      subscriptionId: json['subscriptionId'] as String,
+      subscriptionId: json['subscriptionId'] as String?,
       eTag: (json['eTag'] ?? "") as String,
       isExpired: (json['isExpired'] as bool?) ?? false,
     );

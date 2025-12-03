@@ -6,4 +6,8 @@ const List<String> serversWithIssues = ["unifiedpush.kde.org"];
 
 /// this id is used when fetching alerts for the map view and storing
 /// them temporarily in the list with the myPlaces alerts
-const String noSubscriptionId = "no subscription";
+const String noPlaceId = "no place id";
+const String localOnlyId = "-1";
+
+const int alarmManagerTaskIdPolling = 1;
+const int alarmManagerTaskIdLocation = 2;
