@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
 
@@ -153,7 +154,9 @@ class ConnectionError extends ConsumerWidget {
       );
     }
 
-    if (appState.pushNotificationSetupError) {
+    if (appState.pushNotificationSetupError &&
+        (userPreferences.alertService == AlertService.push ||
+            userPreferences.alertService == AlertService.pushAndPoll)) {
       return InkWell(
         onTap: onNotificationSelfCheckPressed,
         child: Container(

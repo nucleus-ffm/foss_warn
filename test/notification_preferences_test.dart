@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:foss_warn/class/class_notification_preferences.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/enums/category.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
@@ -50,6 +51,8 @@ void main() {
       cachedAlerts: [],
       showDebugNotification: false,
       showUpdateDialog: false,
+      alertService: AlertService.push,
+      alertArchive: false,
     );
   }
 

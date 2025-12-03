@@ -26,7 +26,7 @@ import 'class_info.dart';
 class WarnMessage {
   final String fpasId;
   final String identifier;
-  final String placeSubscriptionId;
+  final String placeId;
   final String publisher;
   final String sender;
   final String sent;
@@ -49,7 +49,7 @@ class WarnMessage {
   WarnMessage({
     required this.fpasId,
     required this.identifier,
-    required this.placeSubscriptionId,
+    required this.placeId,
     required this.publisher,
     required this.sender,
     required this.sent,
@@ -92,7 +92,7 @@ class WarnMessage {
       WarnMessage(
         fpasId: fpasId,
         identifier: identifier ?? this.identifier,
-        placeSubscriptionId: placeSubscriptionId,
+        placeId: placeId,
         publisher: publisher ?? this.publisher,
         sender: sender ?? this.sender,
         sent: sent ?? this.sent,
@@ -118,12 +118,12 @@ class WarnMessage {
   factory WarnMessage.fromJson(
     Map<String, dynamic> json, {
     required String fpasId,
-    required String placeSubscriptionId,
+    required String placeId,
   }) =>
       WarnMessage(
         fpasId: fpasId,
         identifier: json["identifier"] ?? "?",
-        placeSubscriptionId: placeSubscriptionId,
+        placeId: placeId,
         sender: json["sender"] ?? "?",
         sent: json["sent"] ?? "?",
         status: Status.fromJson(json["status"]),
@@ -146,12 +146,12 @@ class WarnMessage {
       WarnMessage.fromJson(
         json,
         fpasId: json['fpasId'],
-        placeSubscriptionId: json['placeSubscriptionId'],
+        placeId: json['placeId'] ?? "-1",
       );
 
   Map<String, dynamic> toJson() => {
         'fpasId': fpasId,
-        'placeSubscriptionId': placeSubscriptionId,
+        'placeId': placeId,
         'identifier': identifier,
         'publisher': publisher,
         'sender': sender,
@@ -177,8 +177,7 @@ class WarnMessage {
     // We can have one alert for multiple places
     // The identifier should be unique, but in reality, it isn't, so we have to
     // use the FPAS ID for identification.
-    return other.fpasId == fpasId &&
-        other.placeSubscriptionId == placeSubscriptionId;
+    return other.fpasId == fpasId && other.placeId == placeId;
   }
 
   @override

@@ -137,6 +137,19 @@ class NotificationService {
     }
   }
 
+  Future<bool?> requestAlarmPermission() async {
+    final androidNotificationPlugin =
+    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    if (androidNotificationPlugin != null) {
+      // Request notifications permission (Android 13+)
+      print("Request Alarm permission");
+      return await androidNotificationPlugin.requestExactAlarmsPermission();
+    } else {
+      return null;
+    }
+  }
+
   /// [Android only]
   /// Function to remove all deprecated notification channels
   static Future<void> cleanUpNotificationChannels() async {

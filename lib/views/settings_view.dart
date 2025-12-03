@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 
@@ -10,8 +11,8 @@ import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
-import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/change_unified_push_distributor_dialog.dart';
+import '../widgets/dialogs/select_alert_service.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
 
 class Settings extends ConsumerStatefulWidget {
@@ -109,37 +110,85 @@ class _SettingsState extends ConsumerState<Settings> {
               onTap: widget.onNotificationSettingsPressed,
             ),
             ListTile(
-              title:
-                  Text(localizations.dev_settings_troubleshoot_notifications),
+              title: Text(localizations.settings_select_alert_service_title),
+              subtitle:
+                  Text(localizations.settings_select_alert_service_subtitle),
+              trailing:
+                  Text(userPreferences.alertService.getLocalizedName(context)),
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) =>
-                      const NotificationTroubleshootDialog(),
+                  builder: (BuildContext context) {
+                    return const SelectAlertServiceDialog();
+                  },
                 );
               },
             ),
-            ListTile(
-              title: Text(localizations.settings_select_push_service_title),
-              subtitle:
-                  Text(localizations.settings_select_push_service_subtitle),
-              trailing: Text(selectedDistributor),
-              onTap: () async {
-                String? picked = await showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      const ChangeUnifiedPushDistributorDialog(),
-                );
-                if (picked != null) {
-                  selectedDistributor = picked;
-                  setState(() {});
-                }
-              },
+            userPreferences.alertService == AlertService.push ||
+                    userPreferences.alertService == AlertService.pushAndPoll
+                ? Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          localizations.settings_select_push_service_title,
+                        ),
+                        subtitle: Text(
+                          localizations.settings_select_push_service_subtitle,
+                        ),
+                        trailing: Text(selectedDistributor),
+                        onTap: () async {
+                          String? picked = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                const ChangeUnifiedPushDistributorDialog(),
+                          );
+                          if (picked != null) {
+                            selectedDistributor = picked;
+                            setState(() {});
+                          }
+                        },
+                      ),
+                      ListTile(
+                        title: Text(localizations.settings_self_check_title),
+                        subtitle:
+                            Text(localizations.settings_self_check_subtitle),
+                        onTap: widget.onNotificationSelfCheckPressed,
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
+            const Divider(
+              height: 50,
+              indent: 15.0,
+              endIndent: 15.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
+              child: Text(
+                localizations.settings_location_settings,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
             ),
             ListTile(
-              title: Text(localizations.settings_self_check_title),
-              subtitle: Text(localizations.settings_self_check_subtitle),
-              onTap: widget.onNotificationSelfCheckPressed,
+              title: Text("Legacy polling for alerts"),
+              subtitle: Text("This enables the old polling for alerts. "
+                  "This allows to not use any push notification setup. If this options is enabled and a push config is provided, "
+                  "FOSSWarn will use both. This can be useful if you have troubles with unreliable push notifications."),
+              trailing: Switch(
+                value: userPreferences.legacyPolling,
+                onChanged: (value) async {
+                  userPreferencesService.setLegacyPolling(value);
+                  if(value) {
+                    AlarmManager().initialize();
+                  } else {
+                    AlarmManager().cancelBackgroundTask();
+                  }
+                },
+              ),
             ),
             const Divider(
               height: 50,
