@@ -1,0 +1,5 @@
+- Das Problem mit der Startbildschirm-Einstellung ist jetzt behoben.
+- Das Problem mit dem Parser-Fehler bei Biwapp-Warnungen ist jetzt behoben.
+- Das Problem mit vertauschten Koordinaten nach einem ausgelaufenen Abo und einer automatischen Erneuerung ist behoben.
+- Es gibt jetzt einen Selbsttest, um das Push-Benachrichtigungs-setup zu testen.
+- Es gibt jetzt eine neue Einstellung, um einfach zwischen Push-Distributoren zu wechseln.

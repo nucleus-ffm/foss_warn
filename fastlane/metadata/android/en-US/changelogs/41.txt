@@ -1,0 +1,6 @@
+- fix the start screen setting
+- fix issue with biwapp alerts
+- fix the swapped coordinates of a subscription after a resubscribe
+- improve the notification workflow with a new self-check
+- add settings to switch between UnifiedPush distributors
+- other bug fixes

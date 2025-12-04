@@ -23,8 +23,8 @@ class AppUpdateReceiver : BroadcastReceiver() {
         }
 
         val notification = NotificationCompat.Builder(context, channelId)
-            .setContentTitle("FOSS Warn requires your attention")
-            .setContentText("FOSS Warn has been updated. Please open the app to continue.")
+            .setContentTitle("FOSS Warn has been updated")
+            .setContentText("Please verify that your subscriptions are still valid.")
             .setSmallIcon(android.R.drawable.ic_dialog_alert)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
