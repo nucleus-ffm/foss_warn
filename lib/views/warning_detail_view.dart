@@ -594,32 +594,32 @@ class _Tags extends ConsumerWidget {
                   ),
                   _TagButton(
                     color: Colors.purpleAccent,
-                    eventType: "Reference", // @TODO translate
+                    eventType: localizations.warning_reference,
                     info: alert.references?.identifier.toString() ?? "None",
                   ),
                   _TagButton(
                     color: Colors.lightGreenAccent,
-                    eventType: "Restriction",
+                    eventType: localizations.warning_restriction,
                     info: alert.restriction ?? "None",
                   ),
                   _TagButton(
                     color: Colors.deepPurpleAccent,
-                    eventType: "Addresses",
+                    eventType: localizations.warning_addresses,
                     info: alert.addresses ?? "None",
                   ),
                   _TagButton(
                     color: Colors.lightBlueAccent,
-                    eventType: "Code",
+                    eventType: localizations.warning_code,
                     info: alert.code ?? "None",
                   ),
                   _TagButton(
                     color: Colors.pinkAccent,
-                    eventType: "Note",
+                    eventType: localizations.warning_note,
                     info: alert.note ?? "None",
                   ),
                   _TagButton(
                     color: Colors.cyanAccent,
-                    eventType: "Incidents",
+                    eventType: localizations.warning_incidents,
                     info: alert.incidents ?? "None",
                   ),
                 ],
