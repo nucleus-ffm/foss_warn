@@ -223,6 +223,11 @@ Future<void> resubscribeForOneAreaInBackground(
       unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
     );
     newSubscriptionId = result.subscriptionId;
+    ErrorLogger.writeErrorLog(
+      "subscription_handler.dart",
+      "Info message",
+      "Resubscribe for ${place.name} - subscription ID changed from ${place.id} to $newSubscriptionId",
+    );
   } on RegisterAreaError catch (e) {
     debugPrint("RegisterAreaError $e");
     ErrorLogger.writeErrorLog(
