@@ -18,18 +18,18 @@ class _DeletePlaceDialogState extends State<MetaInfoForPlaceDialog> {
 
     var fpasPlace = widget.myPlace;
 
-    List<Text> generateMetaInfo(Place place) {
+    List<Widget> generateMetaInfo(Place place) {
       return [
         Text(
           "Bounding box max: \n\t\tLng: ${fpasPlace.boundingBox.maxLatLng.longitude}  \n\t\tLat: ${fpasPlace.boundingBox.maxLatLng.latitude}",
         ), // meta_info_for_place_dialog_bounding_box_max
         const Text("\n"),
         Text(
-          "Bounding box min:\n\t\t Lng: ${fpasPlace.boundingBox.minLatLng.longitude} \n\t\t Lat: ${fpasPlace.boundingBox.minLatLng.latitude}",
+          "Bounding box min:\n\t\tLng: ${fpasPlace.boundingBox.minLatLng.longitude} \n\t\tLat: ${fpasPlace.boundingBox.minLatLng.latitude}",
         ), // meta_info_for_place_dialog_bounding_box_min
         const Text("\n"),
-        Text(
-          "SubscriptionID: ${fpasPlace.subscriptionId}",
+        SelectableText(
+          "SubscriptionID:\n${fpasPlace.subscriptionId}",
         ), //meta_info_for_place_dialog_subscription_id
       ];
     }
