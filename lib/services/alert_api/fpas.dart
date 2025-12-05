@@ -235,6 +235,8 @@ class FPASApi implements AlertAPI {
           break;
         case 404: // invalid subscription id. Subscriptions was already deleted
           break;
+        case 400:
+          break; // Invalid subscriptions id. On the client side has something gone wrong
         default:
           throw UnregisterAreaError();
       }
