@@ -911,5 +911,17 @@
     "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Ändere den Anbieter. Bitte warten...",
     "@change_unified_push_distributor_dialog_loading_screen_change_distributor": {},
     "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Die Registrierung für einen neuen Anbieter ist wegen einer Zeitüberschreitung fehlgeschlagen. Bitte versuchs nochmal.",
-    "@change_unified_push_distributor_dialog_loading_screen_timeout_error": {}
+    "@change_unified_push_distributor_dialog_loading_screen_timeout_error": {},
+    "warning_reference": "Referenz",
+    "@warning_reference": {},
+    "warning_restriction": "Einschränkung",
+    "@warning_restriction": {},
+    "warning_addresses": "Adressen",
+    "@warning_addresses": {},
+    "warning_code": "Code",
+    "@warning_code": {},
+    "warning_note": "Notiz",
+    "@warning_note": {},
+    "warning_incidents": "Vorfälle",
+    "@warning_incidents": {}
 }
