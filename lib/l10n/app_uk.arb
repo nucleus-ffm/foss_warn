@@ -924,5 +924,17 @@
     "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Зміна дистриб'ютора. Зачекайте...",
     "@change_unified_push_distributor_dialog_loading_screen_change_distributor": {},
     "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Реєстрація нового дистриб'ютора не вдалася через тайм-аут. Будь ласка, спробуйте ще раз.",
-    "@change_unified_push_distributor_dialog_loading_screen_timeout_error": {}
+    "@change_unified_push_distributor_dialog_loading_screen_timeout_error": {},
+    "warning_reference": "Довідка",
+    "@warning_reference": {},
+    "warning_restriction": "Обмеження",
+    "@warning_restriction": {},
+    "warning_addresses": "Адреси",
+    "@warning_addresses": {},
+    "warning_code": "Код",
+    "@warning_code": {},
+    "warning_note": "Примітка",
+    "@warning_note": {},
+    "warning_incidents": "Інциденти",
+    "@warning_incidents": {}
 }
