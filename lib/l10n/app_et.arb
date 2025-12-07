@@ -949,5 +949,17 @@
     "notification_self_check_test_subscription_subtitle_not_passed": "FOSS Warn ei suutnud lisada tellimust ega saata sulle teavitust. Palun kontrolli oma rakenduse seadistusi.",
     "@notification_self_check_test_subscription_subtitle_not_passed": {},
     "notification_self_check_test_subscription_subtitle_unknown": "FOSS Warn proovib lisada tellimust ning saata ja saada teavitust.",
-    "@notification_self_check_test_subscription_subtitle_unknown": {}
+    "@notification_self_check_test_subscription_subtitle_unknown": {},
+    "warning_reference": "Viide",
+    "@warning_reference": {},
+    "warning_restriction": "Piirang",
+    "@warning_restriction": {},
+    "warning_addresses": "Aadressid",
+    "@warning_addresses": {},
+    "warning_code": "Kood",
+    "@warning_code": {},
+    "warning_note": "Märge",
+    "@warning_note": {},
+    "warning_incidents": "Intsidendid",
+    "@warning_incidents": {}
 }
