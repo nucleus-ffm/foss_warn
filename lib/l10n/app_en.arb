@@ -620,12 +620,14 @@
   "@warning_scope_private": {},
   "map_view_warning_overview_no_alerts": "There are no alerts",
   "@map_view_warning_overview_no_alerts": {},
+  "map_view_filter_chips_title": "Display options",
   "map_view_filter_chips_tooltip_show": "show",
   "@map_view_filter_chips_tooltip_show": {},
   "map_view_filter_chips_tooltip_select_filter": "Select filter",
   "@map_view_filter_chips_tooltip_select_filter": {},
   "map_view_filter_chips_tooltip_hide": "hide",
   "@map_view_filter_chips_tooltip_hide": {},
+  "map_view_filter_chips_subscriptions": "Subscriptions",
   "my_places_view_add_new_place_button_tooltip": "open new page to add a place",
   "@my_places_view_add_new_place_button_tooltip": {},
   "warning_detail_view_map_center_map_button_tooltip": "Center map",
@@ -891,7 +893,10 @@
     "change_unified_push_distributor_dialog_body": "Please select the UnifiedPush distributor that FOSSWarn should use.",
     "change_unified_push_distributor_dialog_body_no_distributor_found": "No distributor found",
     "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Changing the distributor. Please wait...",
-    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Registration for new distributor failed with a timeout. Please try again."
-
-
+    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Registration for new distributor failed with a timeout. Please try again.",
+    "update_dialog_title_v42": "Check your subscriptions",
+    "update_dialog_body_v42": "Please take a second to verify your subscription areas. Due to a bug in version 1.0.0, your subscription area might be wrong. Please confirm that the subscription areas listed below are for the correct geographical location. If the bounding box is not the expected area, please remove the subscription and re-add it. If everything is alright, there is nothing to do.",
+    "update_dialog_subscription_v42": "Your subscriptions",
+    "update_dialog_confirmation_v42": "I've checked my areas",
+    "map_alert_sheet_title": "Alerts for this area"
 }

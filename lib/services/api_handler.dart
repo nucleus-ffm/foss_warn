@@ -1,4 +1,5 @@
 import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import '../class/class_app_state.dart';
 import '../class/class_warn_message.dart';
@@ -105,6 +106,17 @@ abstract class AlertAPI {
     required AppState appState,
   });
 
+  /// Get all alerts for a given area without subscription
+  /// This does not require to subscribe beforehand and allows to display alert details
+  /// of alerts on the map
+  ///
+  /// Returns a list of Alert ID's
+  ///
+  /// Throws an [UndefinedServerError] if the server responded in an unexpected way
+  Future<List<AlertApiResult>> getAlertsForArea({
+    required BoundingBox boundingBox,
+  });
+
   /// Get detail of an alert.
   /// [alertId] is the ID of an alert to retrieve details for.
   /// [placeSubscriptionId] is the ID of the place subscription this alert belongs too.
@@ -136,4 +148,7 @@ abstract class AlertAPI {
   /// Unregister from a given subscription.
   /// [subscriptionId] is the ID of the subscription to unregister for.
   Future<void> unregisterArea({required String subscriptionId});
+
+  /// Fetch the map style used to display all alerts on a map
+  Future<Style> getMapStyle();
 }

@@ -10,7 +10,9 @@ import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:xml2json/xml2json.dart';
+import 'package:vector_tile_renderer/vector_tile_renderer.dart' as vector_title;
 
 final alertApiProvider = Provider(
   (ref) => FPASApi(userPreferences: ref.watch(userPreferencesProvider)),
@@ -89,6 +91,38 @@ class FPASApi implements AlertAPI {
     var alerts = List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
     return alerts
         .map((e) => (subscriptionId: subscriptionId, alertId: e))
+        .toList();
+  }
+
+  @override
+  Future<List<AlertApiResult>> getAlertsForArea({
+    required BoundingBox boundingBox,
+  }) async {
+    var url = Uri.parse(
+      "${_userPreferences.fossPublicAlertServerUrl}/alert/area?min_lat=${boundingBox.minLatLng.latitude}&max_lat=${boundingBox.maxLatLng.latitude}&min_lon=${boundingBox.minLatLng.longitude}&max_lon=${boundingBox.maxLatLng.longitude}",
+    );
+
+    var response = await http.get(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        'User-Agent': constants.httpUserAgent,
+      },
+    );
+
+    switch (response.statusCode) {
+      case 200: // nothing to do
+        break;
+      default:
+        throw UndefinedServerError(
+          statusCode: response.statusCode,
+          message: response.body,
+        );
+    }
+
+    var alerts = List<String>.from(jsonDecode(utf8.decode(response.bodyBytes)));
+    return alerts
+        .map((e) => (subscriptionId: "no subscription", alertId: e))
         .toList();
   }
 
@@ -265,5 +299,15 @@ class FPASApi implements AlertAPI {
 
     Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
     return data['vapid-key'];
+  }
+
+  @override
+  Future<Style> getMapStyle() {
+    return StyleReader(
+      uri:
+          "${_userPreferences.fossPublicAlertServerUrl}/static/map_style_alerts_only.json",
+      // ignore: undefined_identifier
+      logger: const vector_title.Logger.console(),
+    ).read();
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+
+import '../widgets/dialogs/update_dialog.dart';
 
 /// This handler should allow a smooth transition from one version to another.
 /// This handler checks if there are old settings that need to be reset or migrated.
@@ -19,6 +22,8 @@ Future<void> legacyHandler() async {
           // this is a major update. This requires user attention and we need to reset the entire app
           // clear all old settings to make place for the new app version
           preferences.clear();
+        } else if (previousVersionCode < 42) {
+          preferences.setBool("showUpdateDialog", true);
         }
       }
     }
@@ -36,4 +41,15 @@ Future<void> legacyHandler() async {
       e.toString(),
     );
   }
+}
+
+/// Show a dialog after an update with information about this version
+Future<void> showUpdateDialog(BuildContext context, WidgetRef ref) async {
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return const UpdateDialog();
+    },
+  );
+  ref.read(userPreferencesProvider.notifier).setShowUpdateDialog(false);
 }
