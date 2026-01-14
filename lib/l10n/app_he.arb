@@ -183,8 +183,6 @@
     "@warning_show_more": {},
     "warning_show_less": "להציג פחות",
     "@warning_show_less": {},
-    "warning_appendix": "",
-    "@warning_appendix": {},
     "warning_region": "אזור:\n{region}",
     "@warning_region": {
         "placeholders": {
