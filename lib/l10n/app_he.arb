@@ -354,6 +354,7 @@
     "welcome_view_important_text": "נא לקרוא את הגילוי הנאות בטרם השימוש. שימוש ביישומון מעיד על הסכמה.",
     "@welcome_view_important_text": {},
     "welcome_view_battery_optimisation_headline": "מיטוב הסוללה",
+    "welcome_view_battery_optimisation_verifying": "מוודא את מצב מיטוב הסוללה…",
     "@welcome_view_battery_optimisation_headline": {},
     "welcome_view_my_places_headline": "המקומות שלי",
     "welcome_view_warning_steps_headline": "רמות ההזהרות"
