@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,6 +88,30 @@ class _SettingsState extends ConsumerState<Settings> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: indentOfCategoriesTitles,
+                top: indentOfCategoriesTitles,
+              ),
+              child: Text(
+                "FOSSWarn Home",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.open_in_new),
+              title: const Text("Open FOSSWarn Home Settings"),
+              onTap: () async {
+                const command =
+                    "wtype -M alt -d 120 -P tab -d 120 -p tab -d 120 -m alt";
+                print("run command $command"); //@TODO remove
+                var result = await Process.run('/bin/sh', ['-c', command]);
+              },
+            ),
             Padding(
               padding: const EdgeInsets.only(
                 left: indentOfCategoriesTitles,
