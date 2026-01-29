@@ -706,7 +706,6 @@
     "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
   },
   "failed_to_open_url": "Failed to open URL",
-  "error_dialog_headline": "Oh no - something went wrong :(",
   "error_dialog_description": "FOSSWarn has noticed an error. Please report the error and attach the following log.",
   "@error_dialog_description": {},
   "error_dialog_privacy": "The log does not contain any privacy-sensitive information besides maybe your selected places. FOSSWarn does not send any logs to a server.",
@@ -733,7 +732,6 @@
   "@error_log_share_info": {},
   "dev_settings_subscribe_for_test_alert": "Subscribe for technical test alerts from the FOSS Public Alert Server",
   "dev_settings_troubleshoot_notifications": "Troubleshoot notifications",
-  "error_log_share_info": "Error log shared from FOSSWarn",
   "invalid_subscription_dialog_headline": "Renew expired subscriptions",
   "invalid_subscription_dialog_text": "Some of your subscriptions have expired. Click on resubscribe to get push notifications again",
   "invalid_subscription_dialog_resubscribe_button" : "resubscribe",
@@ -807,7 +805,7 @@
         }
   },
    "troubleshoot_notification_current_public_key": "Current public key: {key}",
-   "@troubleshoot_notification_current_vapid_key": {
+   "@troubleshoot_notification_current_public_key": {
          "description": "Current public key",
          "placeholder": {
              "key":{
