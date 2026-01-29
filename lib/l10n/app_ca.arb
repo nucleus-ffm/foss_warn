@@ -706,7 +706,6 @@
     "description": "Es mostra a la pantalla de detall de l'alerta quan l'editor de l'alerta és desconegut"
   },
   "failed_to_open_url": "No s'ha pogut obrir la URL",
-  "error_dialog_headline": "Ai, no - alguna cosa ha anat malament :(",
   "error_dialog_description": "FOSSWarn ha detectat un error. Informeu de l'error i adjunteu el següent registre.",
   "@error_dialog_description": {},
   "error_dialog_privacy": "El registre no conté cap informació sensible per a la privacitat a part dels vostres llocs seleccionats. FOSSWarn no envia cap registre a un servidor.",
@@ -733,7 +732,6 @@
   "@error_log_share_info": {},
   "dev_settings_subscribe_for_test_alert": "Subscriure's per a alertes de prova tècnica del FOSS Public Alert Server",
   "dev_settings_troubleshoot_notifications": "Solucionar problemes de notificacions",
-  "error_log_share_info": "Registre d'errors compartit de FOSSWarn",
   "invalid_subscription_dialog_headline": "Renovar subscripcions caducades",
   "invalid_subscription_dialog_text": "Algunes de les vostres subscripcions han caducat. Feu clic a tornar a subscriure per rebre notificacions push altre cop",
   "invalid_subscription_dialog_resubscribe_button" : "tornar a subscriure",
@@ -807,7 +805,7 @@
         }
   },
    "troubleshoot_notification_current_public_key": "Clau pública actual: {key}",
-   "@troubleshoot_notification_current_vapid_key": {
+   "@troubleshoot_notification_current_public_key": {
          "description": "Clau pública actual",
          "placeholder": {
              "key":{
