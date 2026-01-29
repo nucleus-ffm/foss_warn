@@ -706,7 +706,6 @@
     "description": "Se muestra en la pantalla de detalle de la alerta cuando el editor de la alerta es desconocido"
   },
   "failed_to_open_url": "No se ha podido abrir la URL",
-  "error_dialog_headline": "Ay, no - algo ha ido mal :(",
   "error_dialog_description": "FOSSWarn ha detectado un error. Informa del error y adjunta el siguiente registro.",
   "@error_dialog_description": {},
   "error_dialog_privacy": "El registro no contiene ninguna información sensible para la privacidad aparte de tus lugares seleccionados. FOSSWarn no envía ningún registro a un servidor.",
@@ -733,7 +732,6 @@
   "@error_log_share_info": {},
   "dev_settings_subscribe_for_test_alert": "Suscribirse para alertas de prueba técnica del FOSS Public Alert Server",
   "dev_settings_troubleshoot_notifications": "Solucionar problemas de notificaciones",
-  "error_log_share_info": "Registro de errores compartido desde FOSSWarn",
   "invalid_subscription_dialog_headline": "Renovar suscripciones caducadas",
   "invalid_subscription_dialog_text": "Algunas de tus suscripciones han caducado. Haz clic en volver a suscribirte para recibir notificaciones push de nuevo",
   "invalid_subscription_dialog_resubscribe_button" : "volver a suscribir",
@@ -807,7 +805,7 @@
         }
   },
    "troubleshoot_notification_current_public_key": "Clave pública actual: {key}",
-   "@troubleshoot_notification_current_vapid_key": {
+   "@troubleshoot_notification_current_public_key": {
          "description": "Clave pública actual",
          "placeholder": {
              "key":{
