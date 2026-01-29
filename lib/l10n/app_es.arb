@@ -1,1 +1,570 @@
-{}
+{
+    "main_nav_bar_all_warnings": "Todas las alertas",
+    "main_nav_bar_my_places": "Mis lugares",
+    "main_nav_bar_map": "Mapa",
+    "main_dot_menu_settings": "Configuración",
+    "main_dot_menu_about": "Acerca de",
+    "main_app_bar_tooltip_mark_all_warnings_as_read": "marcar alertas como leídas",
+    "main_app_bar_tooltip_show_menu": "mostrar menú",
+    "main_dialog_understand": "entendido",
+    "main_dialog_save": "Guardar",
+    "main_dialog_close": "Cerrar",
+    "all_warnings_no_places_chosen": "No se ha seleccionado ningún lugar",
+    "all_warnings_no_places_chosen_text": "Pulsa el signo más para añadir un lugar",
+    "all_warnings_failed_to_fetch_alerts": "No se han podido obtener las alertas",
+    "@all_warnings_failed_to_fetch_alerts": {
+        "description": "Main message shown when retrieving alerts failed"
+    },
+    "all_warnings_nothing_to_show": "No hay nada que mostrar",
+    "all_warnings_nothing_to_show_text": "FOSS Warn no tiene nada que mostrar aquí",
+    "all_warnings_everything_ok": "Todo está bien",
+    "all_warnings_everything_ok_text": "No hay alertas para ti",
+    "all_warnings_reload": "Recargar",
+    "my_place_warning_found": "Hay alertas para ti",
+    "my_place_no_place_added": "No se ha seleccionado ningún lugar",
+    "my_place_no_place_added_text": "Por favor, selecciona primero un lugar",
+    "settings": "Configuración",
+    "settings_notification": "Notificaciones",
+    "settings_android_notification_settings": "Abrir configuración de notificaciones de Android",
+    "settings_app_notification_settings": "Abrir configuración de notificaciones",
+    "settings_show_status_notification_title": "Mostrar notificación de estado",
+    "settings_show_status_notification_subtitle": "Muestra una notificación con la hora de la última actualización",
+    "settings_background_service": "Actualizaciones en segundo plano",
+    "settings_frequent_of_background_update": "Frecuencia de las actualizaciones en segundo plano",
+    "settings_frequent_of_background_update_minute": "min",
+    "settings_display": "Pantalla",
+    "settings_start_view": "Vista de inicio",
+    "settings_start_view_all_warnings": "Todas las alertas",
+    "settings_start_view_only_my_places": "Mis lugares",
+    "settings_show_extended_metadata": "Mostrar metadatos extendidos",
+    "settings_color_schema": "Esquema de color",
+    "settings_color_schema_light": "Claro",
+    "settings_color_schema_dark": "Oscuro",
+    "settings_color_schema_auto": "Automático",
+    "settings_display_all_warnings_title": "Mostrar todas las alertas",
+    "settings_display_all_warnings_subtitle": "Muestra todas las alertas",
+    "settings_font_size": "Tamaño de fuente",
+    "settings_sorting": "Ordenación",
+    "settings_extended_settings": "Configuración avanzada",
+    "settings_show_welcome_dialog": "Mostrar de nuevo el diálogo de bienvenida",
+    "settings_dev_settings": "Abrir configuración de desarrollador",
+    "settings_select_push_service_title": "Servicio de notificaciones push",
+    "settings_select_push_service_subtitle": "Elige qué servicio de notificaciones push quieres usar.",
+    "settings_self_check_title": "Autocomprobación",
+    "settings_self_check_subtitle": "Ejecuta una autocomprobación de la configuración de notificaciones",
+    "warning_tags": "Etiquetas",
+    "warning_from_title": "Mensaje de",
+    "warning_region_title": "Región",
+    "warning_type_title": "Tipo",
+    "warning_severity_title": "Gravedad",
+    "warning_description_title": "Descripción",
+    "warning_recommended_action_title": "Acción recomendada",
+    "warning_source_title": "Fuente",
+    "warning_from": "Mensaje de: {datetime}",
+    "@warning_from": {
+        "placeholders": {
+            "datetime": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_context_information": "Información de contexto:",
+    "warning_effective": "Efectivo",
+    "warning_onset": "Inicio",
+    "warning_expires": "Caduca",
+    "warning_share": "Compartir",
+    "warning_shared_by_foss_warn": "Compartido por FOSS Warn",
+    "warning_open_picture_with_browser": "Abrir imagen con el navegador",
+    "warning_type": "Tipo:\n{warningType}",
+    "@warning_type": {
+        "placeholders": {
+            "warningType": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_event": "Evento",
+    "warning_severity": "Gravedad:\n{severity}",
+    "@warning_severity": {
+        "placeholders": {
+            "severity": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_urgency": "Urgencia",
+    "warning_certainty": "Certidumbre",
+    "warning_scope": "Ámbito",
+    "warning_identifier": "ID",
+    "warning_sender": "Remitente",
+    "warning_status": "Estado",
+    "warning_reference": "Referencia",
+    "warning_restriction": "Restricción",
+    "warning_addresses": "Direcciones",
+    "warning_code": "Código",
+    "warning_note": "Nota",
+    "warning_incidents": "Incidentes",
+    "warning_show_more": "Mostrar más",
+    "warning_show_less": "Mostrar menos",
+    "warning_appendix": "Apéndice",
+    "warning_region": "Región\n{region}",
+    "@warning_region": {
+        "placeholders": {
+            "region": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_places": "Lugares",
+    "warning_description": "Descripción\n{description}",
+    "@warning_description": {
+        "placeholders": {
+            "description": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_recommended_action": "Acción recomendada\n{recommendedAction}",
+    "@warning_recommended_action": {
+        "placeholders": {
+            "recommendedAction": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_source": "Fuente\n{source}",
+    "@warning_source": {
+        "placeholders": {
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_contact": "Contacto",
+    "warning_website": "Sitio web",
+    "add_new_place_place_name": "Añadir un nuevo lugar",
+    "add_new_place": "Añadir un nuevo lugar",
+    "about_headline": "Acerca de",
+    "about_summery": "Esta aplicación es un proyecto libre y de código abierto, y se ha creado con la esperanza de que sea útil. Son bienvenidas las sugerencias sobre cómo se puede mejorar o los informes de errores que hayas experimentado. Si te gusta esta aplicación y la encuentras útil, me encantaría saberlo.",
+    "about_official_sources": "Fuentes oficiales",
+    "about_author": "Autor",
+    "about_author_subtitle": "no se utiliza",
+    "about_contact": "Contacto",
+    "about_contact_subtitle": "no se utiliza",
+    "about_imprint": "¿Imprint?",
+    "about_imprint_subtitle": "¿debería haber un imprint aquí?",
+    "about_privacy": "Privacidad",
+    "about_privacy_subtitle": "Todo lo que hace y no hace la aplicación",
+    "about_disclaimer": "Descargo de responsabilidad",
+    "about_disclaimer_subtitle": "Lo que FOSS Warn NO puede hacer",
+    "about_version": "Versión",
+    "about_licence": "Licencia",
+    "about_other_license": "Otras licencias",
+    "about_other_license_subtitle": "FOSS Warn utiliza otro software útil",
+    "about_contributors": "Colaboradores",
+    "about_contributors_subtitle": "personas que han contribuido a FOSS Warn",
+    "about_sourcecode": "Código fuente",
+    "about_sourcecode_subtitle": "Pronto en disquete, mientras tanto en github",
+    "about_faq": "P+F",
+    "privacy_headline": "Privacidad",
+    "privacy_main_text": "FOSS Warn no envía ninguna información sobre su uso y solo se conecta a los siguientes servicios:\n - el servidor FPAS: este servidor gestiona las suscripciones, envía notificaciones push y se puede seleccionar en la configuración. \n - opensteetmap.org: Se utiliza para mostrar el mapa y buscar lugares. \nFOSS Warn transmite solo los datos técnicamente necesarios.",
+    "privacy_link_to_privacy": "A la política de privacidad de",
+    "imprint_headline": "Imprimir",
+    "imprint_main_text": "La investigación por mi parte no ha podido responder claramente si el software está sujeto a la TMG y, por tanto, si sería obligatorio un imprint o no. La gran mayoría de aplicaciones en F-Droid NO tienen un imprint - las aplicaciones de escritorio aún menos. Si lo sabes y puedes darme una respuesta clara a la pregunta, me alegraría que me contactaras.\nEsta aplicación es un proyecto de código abierto no comercial sin contenido periodístico.",
+    "source_headline": "Fuente",
+    "source_mowas_description": "Oficina Federal de Protección Civil y Asistencia en Desastres - alerta sobre desastres",
+    "source_biwapp_title": "Biwapp (Información del ciudadano y aplicación de alertas)",
+    "source_katwarn_description": "Desarrollada por la Fraunhofer-Gesellschaft - alerta, por ejemplo, en caso de: incendio importante, descubrimiento de bombas y desastre ambiental",
+    "source_dwd_title": "DWD (Servicio Meteorológico Alemán)",
+    "source_lhp_title": "LHP (Portal de Inundaciones Interestatal)",
+    "status_headline": "Estado",
+    "status_source_status": "Estado de la fuente",
+    "status_server_not_reachable": "Servidor no accesible",
+    "status_error_while_parsing": "Error al analizar",
+    "status_everything_ok": "Todo está bien",
+    "status_count_of_message": "Recuento de mensajes",
+    "notification_settings_headline": "Configuración de notificaciones",
+    "notification_settings_notify_by": "Notificar por",
+    "notification_settings_notify_by_extreme": "Mensajes extremos",
+    "notification_settings_notify_by_severe": "Mensajes severos",
+    "notification_settings_notify_by_moderate": "Mensajes moderados",
+    "notification_settings_notify_by_minor": "Mensajes menores",
+    "notification_settings_notify_by_update": "Mensajes de actualización",
+    "notification_settings_thunderstorm": "Tormenta",
+    "notification_settings_strong_weather": "Tiempo fuerte",
+    "notification_settings_everything_else": "Todo lo demás",
+    "notification_settings_everything": "todo",
+    "dev_settings_headline": "Configuración de desarrollador",
+    "dev_settings_delete_list_of_read_warnings": "Eliminar lista de alertas leídas",
+    "dev_settings_delete_list_of_read_warnings_text": "borra manualmente la lista guardada de alertas ya leídas.",
+    "dev_settings_delete_notification_list": "Eliminar lista de notificaciones",
+    "dev_settings_delete_notification_list_text": "Borra manualmente la lista guardada de alertas para las que ya has recibido una notificación.",
+    "dev_settings_load_cached_warnings": "Cargar alertas almacenadas en caché",
+    "dev_settings_load_cached_warnings_text": "Carga los mensajes almacenados en caché",
+    "dev_settings_success": "hecho",
+    "dev_settings_collect_system_information_title": "Recopilar información del sistema para la resolución de problemas",
+    "dev_settings_collect_system_information_subtitle": "Recopila información sobre el sistema que se puede enviar al desarrollador para la gestión de errores. No se envía ningún dato automáticamente.",
+    "dev_settings_collect_system_information_snackbar": "Recopilando información del sistema.",
+    "dev_settings_open_log_file_viewer_title": "Abrir visor de archivos de registro",
+    "dev_settings_open_log_file_viewer_subtitle": "Proporciona una visión general de todos los mensajes de error",
+    "dev_settings_show_error_messages_title": "Mostrar mensajes de error",
+    "dev_settings_show_error_messages_subtitle": "Muestra un diálogo con mensajes de error",
+    "dev_settings_max_size_bounding_box_title": "Tamaño máximo del cuadro delimitador para una suscripción (ir con cuidado)",
+    "dev_settings_max_size_bounding_box_subtitle": "Permite seleccionar el tamaño máximo del cuadro delimitador para una suscripción. Áreas de suscripción más grandes pueden afectar al rendimiento. Ve con cuidado.",
+    "dev_settings_show_debug_notification": "Mostrar notificaciones de depuración",
+    "dev_settings_remove_cached_alerts": "Eliminar alertas almacenadas en caché",
+    "welcome_view_foss_warn_headline": "FOSS Warn",
+    "welcome_view_foss_warn_text": "Encantados de que quieras usar FOSS Warn. Desliza para comenzar la introducción.",
+    "welcome_view_foss_server_selection_headline": "Servidor de Alertas Público FOSS",
+    "welcome_view_foss_server_selection_text": "FOSSWarn ahora utiliza el FOSS Public Alert Server (FPAS) para recibir alertas. Este servidor permite recibir notificaciones push sobre alertas de emergencia para una gran cantidad de países del mundo. El servidor por defecto está operado por KDE y alojado en Alemania. Puedes cambiar el servidor seleccionado en la configuración y usar cualquier otro servidor FPAS.",
+    "welcome_view_foss_server_selection_select_instance_helptext": "Más información sobre el FPAS",
+    "welcome_view_permission_action": "Solicitar permiso",
+    "welcome_view_important_headline": "Importante",
+    "welcome_view_important_text": "Por favor, lee el descargo de responsabilidad antes de usarlo. Al usar la aplicación, aceptas sus condiciones.",
+    "welcome_view_battery_optimisation_headline": "Optimización de la batería",
+    "welcome_view_battery_optimisation_text": "Para que FOSS Warn te pueda enviar notificaciones en segundo plano de manera fiable, se debería desactivar la optimización de batería para FOSS Warn.",
+    "welcome_view_battery_optimisation_verifying": "Verificando el estado de optimización de la batería...",
+    "welcome_view_battery_optimisation_action": "Desactivar",
+    "welcome_view_battery_optimisation_action_success": "Éxito",
+    "welcome_view_action_success": "Éxito",
+    "welcome_view_my_places_headline": "Mis lugares",
+    "welcome_view_my_places_text": "Para recibir alertas, tienes que suscribirte a un área de interés. Puedes suscribirte a cualquier área del mundo. Actualmente damos soporte a unos 100 países. Recibirás notificaciones push para cada suscripción. Para cancelar la suscripción, puedes pulsar prolongadamente el lugar y hacer clic en eliminar.",
+    "welcome_view_warning_steps_headline": "Niveles de alerta",
+    "welcome_view_warning_steps_text": "Todas las alertas tienen un nivel de alerta o importancia determinado por el editor. En la configuración puedes establecer para cuáles de los cuatro niveles quieres recibir notificaciones. Por defecto, no se te notificará para los mensajes de importancia 'baja'. En la aplicación en sí, siempre se muestran todos los mensajes.",
+    "welcome_view_lets_go_headline": "¡Vamos allá!",
+    "welcome_view_lets_go_text": "Si encuentras útil esta aplicación, no dudes en hacérmelo saber ☺️",
+    "welcome_view_end_button": "Finalizar",
+    "welcome_view_unifiedpush_headline": "Notificaciones push",
+    "welcome_view_unifiedpush_text": "FOSSWarn utiliza UnifiedPush para recibir notificaciones push sobre nuevas alertas de emergencia. UnifiedPush es un sistema descentralizado de notificaciones push que te permite elegir el servicio que quieres usar. Está diseñado para respetar la privacidad, ser flexible y abierto. Para usar UnifiedPush, debes instalar una aplicación adicional que actúa como distribuidor.",
+    "welcome_view_unifiedpush_learn_more_button": "Más información sobre UnifiedPush.",
+    "welcome_view_navigation_previous": "Anterior",
+    "welcome_view_navigation_next": "Siguiente",
+    "connection_error_no_internet": "Sin conexión al servidor",
+    "connection_error_app_error": "¡Ups! Algo ha ido mal. Por favor, contacta con el desarrollador",
+    "connection_error_app_error_action": "Toca aquí para obtener más información",
+    "connection_error_subscription_expired": "Algunas de tus suscripciones han caducado.",
+    "connection_error_subscription_expired_action": "Toca aquí para volverte a suscribir",
+    "connection_error_fetching_new_alerts": "Recuperando nuevas alertas...",
+    "@connection_error_fetching_new_alerts": {
+        "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+    },
+    "connection_error_first_fetch": "Recuperando nuevas alertas...",
+    "connection_error_push_notification_setup_error": "Se ha detectado un problema con las notificaciones push",
+    "connection_error_push_notification_setup_error_action": "Toca aquí para obtener más información",
+    "font_size_headline": "Tamaño de fuente",
+    "font_size_big": "Grande",
+    "font_size_normal": "Normal",
+    "font_size_small": "Pequeña",
+    "font_size_very_big": "Extra grande",
+    "disclaimer_headline": "Descargo de responsabilidad",
+    "disclaimer_text": "Esta aplicación se creó con la esperanza de que sea útil, pero se proporciona SIN NINGUNA GARANTÍA. El desarrollador no puede garantizar que la aplicación funcione sin errores o que muestre todas las alertas en todo momento. Además, el desarrollador no asume ninguna garantía por la actualidad, corrección y completitud de los mensajes mostrados. Por tanto, NO confíes en esta aplicación en NINGÚN MOMENTO. Además, las alertas pueden recibirse con cierto RETRASO. Aceptas esto al usar FOSS Warn.",
+    "sorting_headline": "¿Cómo deben ordenarse los mensajes?",
+    "sorting_by_date": "Por fecha de emisión (más reciente primero)",
+    "sorting_by_warning_level": "por nivel de alerta (más alto primero)",
+    "sorting_by_source": "Por fuente",
+    "explanation_headline": "Explicación",
+    "explanation_health": "Salud",
+    "explanation_health_text": "eventos que amenazan la salud como pandemias o contaminación del agua",
+    "explanation_fire": "Incendio",
+    "explanation_fire_text": "información sobre incendios",
+    "explanation_infrastructure": "Infraestructura",
+    "explanation_infrastructure_text": "Información en caso de incidentes de infraestructura como el fallo de la línea de emergencia",
+    "explanation_CBRNE": "CBRNE",
+    "explanation_CBRNE_text": "Información en caso de incidentes que impliquen sustancias químicas, biológicas, radiológicas, nucleares y explosivas.",
+    "explanation_environment": "Medio ambiente",
+    "explanation_environment_text": "Información durante eventos naturales como marejadas ciclónicas",
+    "explanation_weather": "Tiempo",
+    "explanation_weather_text": "Información en caso de eventos meteorológicos como ráfagas de tormenta e inundaciones.",
+    "explanation_safety": "Seguridad",
+    "explanation_safety_text": "Información en caso de informes policiales",
+    "explanation_other": "Otros",
+    "explanation_other_text": "Información con otros mensajes",
+    "explanation_transport": "Transporte",
+    "explanation_rescue": "Rescate",
+    "delete_place_headline": "¿Eliminar lugar?",
+    "delete_place_confirmation": "¿Estás seguro de que quieres eliminar este lugar?",
+    "delete_place_delete": "Eliminar",
+    "delete_place_cancel": "Cancelar",
+    "delete_place_error": "No se puede eliminar el lugar. Por favor, comprueba tu conexión a internet.",
+    "explanation_warning_level_headline": "Niveles de alerta",
+    "explanation_warning_level_attention": "Atención",
+    "explanation_warning_level_attention_text": "Nuevo informe sobre una amenaza aguda y actual.",
+    "explanation_warning_level_update": "Actualización",
+    "explanation_warning_level_update_text": "Actualización de un mensaje anterior.",
+    "explanation_warning_level_all_clear": "Todo despejado",
+    "explanation_warning_level_all_clear_text": "Todo despejado para un mensaje anterior. La mayor parte del tiempo la alerta se ha levantado ahora.",
+    "explanation_warning_level_ack": "Confirmado",
+    "explanation_warning_level_error": "Error",
+    "my_place_warnings_count": "Hay {count, plural, =0{ninguna alerta} =1{una alerta} other{{count} alertas}}",
+    "@my_place_warnings_count": {
+        "description": "Tells how many warnings there are for a place",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "format": "compact"
+            }
+        }
+    },
+    "warning_widget_and": "y",
+    "warning_widget_other": "otro",
+    "warning_widget_unknown": "desconocido",
+    "legacy_warning_dialog_title": "Versión actualizada a",
+    "legacy_warning_dialog_text": "FOSS Warn se ha actualizado a su última iteración, introduciendo varios cambios. Uno de ellos es una vista de mapa, que muestra el área de una alerta en un mapa.\nComo parte de esta actualización, FOSSWarn utiliza una lista actualizada de lugares. Por tanto, tienes que migrar de los lugares antiguos a los nuevos. El proceso debería funcionar automáticamente si pulsas el botón `iniciar migración automática`. Eliminará los lugares antiguos e intentará añadir el mismo lugar de la nueva lista. Algunos lugares quizá ya no estén disponibles, ya que la lista antigua contiene algunos lugares no válidos. Por favor, comprueba si todos tus lugares seleccionados se han migrado correctamente y añade los lugares que falten manualmente.\n\nNos disculpamos por las molestias.",
+    "notification_settings_slidervalue_extreme": "extremo",
+    "notification_settings_slidervalue_moderate": "moderado",
+    "notification_settings_slidervalue_severe": "severo",
+    "notification_settings_slidervalue_minor": "menor",
+    "source_other_description": "Configuración general que se utiliza si no se ha hecho ninguna configuración más precisa.",
+    "source_other_title": "Otros",
+    "notification_settings_open_severity_explanation": "Explicaciones del grado de gravedad",
+    "notification_settings_description": "Aquí puedes establecer el nivel de alerta para cada fuente para el que quieres recibir una alerta.",
+    "warning_severity_explanation_dialog_severe_description": "Amenaza significativa para la vida o la propiedad. Puede afectar a tu salud, propiedad y/o infraestructura pública.",
+    "warning_severity_explanation_dialog_moderate_description": "Una alerta de una posible amenaza para la vida o la propiedad. Puede interrumpir gravemente las rutinas diarias normales.",
+    "warning_severity_explanation_dialog_minor_description": "Amenaza mínima o nula conocida para la vida o la propiedad. Puede interferir con las actividades diarias normales.",
+    "warning_severity_explanation_dialog_extreme_description": "Amenaza extraordinaria para la vida o la propiedad. Puede tener un impacto significativo a corto plazo en tu salud, propiedad y/o infraestructura pública.",
+    "warning_severity_explanation_dialog_update_description": "Actualización de una alerta ya notificada",
+    "warning_severity_explanation_dialog_headline": "Gravedad",
+    "warning_severity_minor": "Menor",
+    "warning_severity_moderate": "Moderado",
+    "warning_severity_severe": "Severo",
+    "warning_severity_extreme": "Extremo",
+    "warning_severity_unknown": "Desconocido",
+    "warning_widget_update_thread_tooltip": "Mostrar el hilo de actualizaciones de esta alerta",
+    "meta_info_for_place_dialog_latitude": "Latitud",
+    "meta_info_for_place_dialog_headline": "Información detallada sobre",
+    "meta_info_for_place_dialog_longitude": "Longitud",
+    "meta_info_for_place_dialog_bounding_box_max": "Cuadro delimitador máx",
+    "meta_info_for_place_dialog_bounding_box_min": "Cuadro delimitador mín",
+    "meta_info_for_place_dialog_subscription_id": "ID de suscripción",
+    "main_app_bar_action_sort_tooltip": "Abrir diálogo para ordenar alertas",
+    "notification_no_places_selected_body": "Por favor, comprueba tu selección",
+    "notification_no_places_selected_title": "Aún no has seleccionado ningún lugar",
+    "warning_status_actual": "real",
+    "warning_status_exercise": "ejercicio",
+    "warning_status_system": "sistema",
+    "warning_status_test": "prueba",
+    "warning_status_draft": "borrador",
+    "warning_urgency_immediate": "inmediato",
+    "warning_urgency_expected": "esperado",
+    "warning_urgency_future": "futuro",
+    "warning_urgency_past": "pasado",
+    "warning_urgency_unknown": "desconocido",
+    "add_my_place_with_map_add_place_button": "Añadir lugar",
+    "warning_certainty_observed": "observado",
+    "warning_certainty_likely": "probable",
+    "warning_certainty_possible": "posible",
+    "warning_certainty_unlikely": "poco probable",
+    "warning_certainty_unknown": "desconocido",
+    "warning_certainty_other": "otro",
+    "warning_scope_public": "Público",
+    "warning_scope_restricted": "Restringido",
+    "warning_scope_private": "Privado",
+    "map_view_warning_overview_no_alerts": "No hay alertas",
+    "map_view_filter_chips_tooltip_show": "mostrar",
+    "map_view_filter_chips_tooltip_select_filter": "Seleccionar filtro",
+    "map_view_filter_chips_tooltip_hide": "ocultar",
+    "my_places_view_add_new_place_button_tooltip": "abrir nueva página para añadir un lugar",
+    "warning_detail_view_map_center_map_button_tooltip": "Centrar mapa",
+    "loading_screen_loading": "Cargando",
+    "loading_screen_wait_for_push_to_complete": "Espera a que se complete el registro push.",
+    "add_my_place_with_map_loading_screen_subscription_error": "Algo ha ido mal. No se puede suscribir. Por favor, inténtalo de nuevo más tarde. El servidor ha respondido con {error}",
+    "@add_my_place_with_map_loading_screen_subscription_error": {
+        "description": "Message shown if the subscriptions failed",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "add_my_place_with_map_loading_screen_subscription_success": "suscrito correctamente",
+    "add_my_place_with_map_select_area_size": "Seleccionar tamaño del área",
+    "add_my_place_with_map_loading_screen_searching": "buscando…",
+    "add_my_place_with_map_loading_screen_search_no_result_found": "No se han encontrado resultados. Por favor, inténtalo de nuevo",
+    "choose_theme_dialog_headline": "Seleccionar tema de color",
+    "choose_theme_dialog_choose_accent_color": "Elige color de acento",
+    "legacy_warning_dialog_migration_button": "iniciar migración automática",
+    "add_my_place_with_map_loading_screen_search_error": "Algo ha ido mal. Por favor, inténtalo de nuevo más tarde.",
+    "error_dialog_text_privacy": "El registro no contiene ninguna información sensible para la privacidad aparte de tus lugares seleccionados. FOSS Warn tampoco envía ninguna información de registro a un servidor.",
+    "error_dialog_text_introduction": "FOSS Warn ha detectado un error. Si este error persiste, contacta con el desarrollador y adjunta el siguiente registro:",
+    "app_error_message": "Ups. Algo ha ido mal. Por favor, contacta con el desarrollador",
+    "error_dialog_headline": "Ay, no - algo ha ido mal :(",
+    "error_dialog_text_instructions_text": "- Comprueba tu conexión a internet\n- Comprueba si el problema es persistente\n- Escribe un correo electrónico a: foss-warn@posteo.de\n- o abre un informe en Github",
+    "error_dialog_text_instructions_headline": "¿Qué debo hacer ahora?",
+    "welcome_view_foss_public_alert_server_headline": "Servidor de Alertas Público FOSS",
+    "welcome_view_foss_public_alert_server_text": "FOSS Warn ahora utiliza el FOSS Public Alert Server como servidor. Esto nos permite enviar notificaciones push y dar soporte a más áreas en todo el mundo. El FOSS Public Alert Server está desarrollado por el equipo de FOSS Warn en cooperación con KDE.",
+    "welcome_view_notification_permission_text": "FOSSWarn necesita tu permiso para enviarte notificaciones en caso de que haya alertas para tu área. Pulsa el botón de abajo para abrir el diálogo de permisos.",
+    "welcome_view_foss_public_alert_server_select_instance": "Seleccionar instancia del servidor",
+    "welcome_view_notification_permission_headline": "Permiso de notificación",
+    "welcome_view_alarm_permission_headline": "Permiso de alarma",
+    "welcome_view_alarm_permission_text": "FOSSWarn necesita tu permiso para programar alarmas exactas. Pulsa el botón de abajo para abrir el diálogo de permisos.",
+    "welcome_view_foss_public_alert_server_select_instance_helptext": "¿Por qué debo seleccionar un servidor?",
+    "welcome_view_request_permission": "Solicitar permiso",
+    "settings_foss_public_alert_server_enter_url_label_text": "Introduce la URL del servidor FPAS",
+    "settings_foss_public_alert_server_enter_url_error": "URL del servidor inválida",
+    "welcome_view_foss_public_alert_server_server_operator": "Este servidor está operado por:",
+    "welcome_view_foss_public_alert_server_use_custom_server": "Usar servidor personalizado",
+    "welcome_view_foss_public_alert_server_confirm_button": "Confirmar",
+    "welcome_view_foss_public_alert_server_confirm_success": "Confirmado",
+    "welcome_view_foss_public_alert_server_use_default_server": "Usar servidor por defecto",
+    "alert_publisher_unknown": "Desconocido",
+    "@alert_publisher_unknown": {
+        "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
+    },
+    "failed_to_open_url": "No se ha podido abrir la URL",
+    "error_dialog_description": "FOSSWarn ha detectado un error. Informa del error y adjunta el siguiente registro.",
+    "error_dialog_privacy": "El registro no contiene ninguna información sensible para la privacidad aparte de tus lugares seleccionados. FOSSWarn no envía ningún registro a un servidor.",
+    "error_dialog_instruction_headline": "¿Qué debo hacer ahora?",
+    "error_dialog_instruction_body": "1. Comprueba si el error es solo por falta de conexión a internet\n2. Comprueba si ya hay un informe abierto en GitHub\n3. Encuentra la parte relevante del registro. Si el mismo mensaje de error aparece múltiples veces en el registro, basta con enviar uno solo.\n4. Abre un nuevo informe o escribe un correo electrónico a foss-warn@posteo.de",
+    "error_dialog_hide_error_bar": "Ocultar barra de errores",
+    "error_dialog_copy": "copiar registro de errores",
+    "error_dialog_copy_success": "copiado",
+    "error_log_viewer_title": "Visor de archivos de registro",
+    "error_log_viewer_headline": "Aquí puedes leer el registro de errores para FOSSWarn",
+    "error_log_button_delete": "Eliminar",
+    "error_log_button_share": "Compartir archivo de registro",
+    "error_log_share_info": "Registro de errores compartido desde FOSSWarn",
+    "dev_settings_subscribe_for_test_alert": "Suscribirse para alertas de prueba técnica del FOSS Public Alert Server",
+    "dev_settings_troubleshoot_notifications": "Solucionar problemas de notificaciones",
+    "invalid_subscription_dialog_headline": "Renovar suscripciones caducadas",
+    "invalid_subscription_dialog_text": "Algunas de tus suscripciones han caducado. Haz clic en volver a suscribirte para recibir notificaciones push de nuevo",
+    "invalid_subscription_dialog_resubscribe_button": "volver a suscribir",
+    "invalid_subscription_dialog_loading_indicator_replace_places": "reemplazando los lugares antiguos...",
+    "invalid_subscription_dialog_error_body": "Ay, no, no se ha podido volver a suscribir.",
+    "invalid_subscription_dialog_error_status_code": "Código de estado HTTP: {status_code}",
+    "@invalid_subscription_dialog_error_status_code": {
+        "placeholders": {
+            "status_code": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_error_message": "Mensaje de error: {message}",
+    "@invalid_subscription_dialog_error_message": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_successfully_resubscribed": "Se ha vuelto a suscribir correctamente",
+    "notification_channel_other_name": "Otros",
+    "notification_channel_other_description": "Otras notificaciones",
+    "notification_group_name": "Notificaciones de FOSSWarn",
+    "notification_group_description": "Hay múltiples notificaciones de FOSSWarn",
+    "notification_alert_new_title": "Nueva alerta para {place}",
+    "@notification_alert_new_title": {
+        "description": "Title of the notification shown for a new alert",
+        "placeholders": {
+            "place": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_alert_update_title": "Alerta actualizada para {place}",
+    "troubleshoot_notification_title": "Solucionar problemas de notificaciones",
+    "troubleshoot_notification_register_state": "¿Actualmente registrado? {state}",
+    "@troubleshoot_notification_register_state": {
+        "description": "State of the push notification service",
+        "placeholder": {
+            "state": {
+                "type": "bool"
+            }
+        }
+    },
+    "troubleshoot_notification_current_endpoint": "Endpoint actual: {endpoint}",
+    "@troubleshoot_notification_current_endpoint": {
+        "description": "Current selected endpoint for push notifications",
+        "placeholder": {
+            "endpoint": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_current_vapid_key": "Clave VAPID actual: {key}",
+    "@troubleshoot_notification_current_vapid_key": {
+        "description": "Current public key",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_current_public_key": "Clave pública actual: {key}",
+    "troubleshoot_notification_current_auth_key": "Clave de autenticación actual: {key}",
+    "@troubleshoot_notification_current_auth_key": {
+        "description": "Current auth key",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_reset_push_setup": "Reiniciar configuración push",
+    "troubleshoot_notification_unregister_for_push": "Darse de baja",
+    "troubleshoot_notification_resubscribe": "Volverse a suscribir para los lugares con nueva configuración push",
+    "no_up_distributor_found_dialog_title": "No se ha encontrado ningún distribuidor push",
+    "no_up_distributor_found_dialog_explanation": "FOSSWarn no ha podido encontrar ningún distribuidor UnifiedPush instalado en tu dispositivo. Para suscribirte a un área, debes tener uno instalado, o no recibirás ninguna notificación. Instala un distribuidor y vuelve a probar la suscripción.",
+    "no_up_distributor_found_up_explanation_button": "¿Qué es UnifiedPush y cómo instalar un distribuidor?",
+    "no_up_distributor_found_direct_link_to_ntfy": "Para los rápidos: ntfy en F-Droid (requiere cambiar el servidor por defecto)",
+    "notification_self_check_title": "Autocomprobación de notificaciones",
+    "notification_self_check_description": "Esto realiza pruebas para detectar problemas que podrían impedir que FOSSWarn reciba notificaciones. Para obtener ayuda y más información, visita el wiki.",
+    "notification_self_check_wiki_link_instruction": "Al wiki",
+    "notification_self_check_notification_permission_title": "Permiso de notificación",
+    "notification_self_check_notification_permission_subtitle_passed": "FOSSWarn tiene permiso para enviarte notificaciones.",
+    "notification_self_check_notification_permission_subtitle_not_passed": "FOSSWarn necesita tu permiso para enviarte notificaciones. Pulsa aquí para solicitar permiso.",
+    "notification_self_check_notification_permission_unknown": "FOSSWarn está comprobando el estado del permiso de notificación. Espera, por favor.",
+    "notification_self_check_installed_distributors_title": "Distribuidor UnifiedPush",
+    "notification_self_check_installed_distributors_subtitle_passed": "Se ha encontrado \n {key}",
+    "@notification_self_check_installed_distributors_subtitle_passed": {
+        "description": "The list of installed distributor ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_installed_distributors_subtitle_not_passed": "No se ha encontrado ningún distribuidor. Por favor, instala al menos uno en tu dispositivo.",
+    "notification_self_check_installed_distributors_subtitle_unknown": "FOSSWarn está buscando distribuidores UnifiedPush en tu dispositivo. Espera, por favor.",
+    "notification_self_check_selected_distributor_title": "Distribuidor seleccionado",
+    "notification_self_check_selected_distributor_subtitle_passed": "Tu distribuidor seleccionado actualmente es {key}",
+    "@notification_self_check_selected_distributor_subtitle_passed": {
+        "description": "The selected distributor ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_selected_distributor_subtitle_not_passed": "No has seleccionado ningún distribuidor. Por favor, ve a la configuración y selecciona un servicio push.",
+    "notification_self_check_selected_distributor_subtitle_unknown": "FOSSWarn está buscando tu distribuidor UnifiedPush seleccionado. Espera, por favor.",
+    "notification_self_check_current_endpoint_title": "Endpoint actual",
+    "notification_self_check_current_endpoint_subtitle_passed": "Tu endpoint {key}",
+    "@notification_self_check_current_endpoint_subtitle_passed": {
+        "description": "The current URL of the endpoint  ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_current_endpoint_subtitle_not_passed": "No se ha encontrado ningún endpoint. No estás registrado para notificaciones push.",
+    "notification_self_check_current_endpoint_subtitle_unknown": "FOSSWarn está buscando tu endpoint UnifiedPush.",
+    "notification_self_check_server_check_title": "Comprobación del servidor",
+    "notification_self_check_server_check_subtitle_passed": "Este servidor no es conocido por tener problemas. Si experimentas problemas con este servidor, notifícanos.",
+    "notification_self_check_server_check_subtitle_not_passed": "Este servidor ha sido poco fiable en el pasado o ha tenido otros problemas. Recomendamos elegir otro servidor. Puede que no te puedas suscribir a este servidor, o que no recibas notificaciones.",
+    "notification_self_check_server_check_subtitle_unknown": "FOSSWarn está comprobando tu servidor por problemas conocidos.",
+    "notification_self_check_server_check_subtitle_action_suggested": "Este servidor puede estar bien, pero ha tenido algunos problemas en el pasado. Si sabes lo que haces, puedes seguir usando este servidor; en caso contrario, te recomendamos cambiar a otro.",
+    "notification_self_check_test_subscription_title": "Suscripción y notificación de prueba",
+    "notification_self_check_test_subscription_subtitle_passed": "Probado con éxito, deberías ver una notificación.",
+    "notification_self_check_test_subscription_subtitle_not_passed": "FOSSwarn no ha podido suscribirte o enviarte una notificación. Por favor, revisa tu configuración.",
+    "notification_self_check_test_subscription_subtitle_unknown": "FOSSWarn está intentando suscribirse y recibir una notificación push.",
+    "notification_self_check_notification_check_title": "Comprobación de notificaciones",
+    "notification_self_check_notification_check_subtitle_passed": "Notificación recibida correctamente",
+    "notification_self_check_notification_check_subtitle_not_passed": "No se ha recibido la notificación. Por favor, comprueba tu configuración de nuevo.",
+    "notification_self_check_notification_check_subtitle_unknown": "Se está esperando una nueva notificación.",
+    "change_unified_push_distributor_dialog_title": "Cambiar distribuidor UnifiedPush",
+    "change_unified_push_distributor_dialog_body": "Selecciona el distribuidor UnifiedPush que debe usar FOSSWarn.",
+    "change_unified_push_distributor_dialog_body_no_distributor_found": "No se ha encontrado ningún distribuidor",
+    "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Cambiando el distribuidor. Espera, por favor...",
+    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "El registro para el nuevo distribuidor ha fallado con un tiempo de espera agotado. Vuelve a intentarlo."
+}
