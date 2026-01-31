@@ -88,7 +88,7 @@ class WarningWidget extends ConsumerWidget {
     return Card(
       child: InkWell(
         onTap: () => onAlertPressed(
-          _warnMessage.identifier,
+          _warnMessage.fpasId,
           _warnMessage.placeSubscriptionId,
         ),
         child: Padding(
@@ -192,7 +192,7 @@ class WarningWidget extends ConsumerWidget {
                 children: [
                   IconButton(
                     onPressed: () => onAlertPressed(
-                      _warnMessage.identifier,
+                      _warnMessage.fpasId,
                       _warnMessage.placeSubscriptionId,
                     ),
                     icon: const Icon(Icons.read_more),

@@ -81,7 +81,7 @@ Future<void> newAlertNotification(
         userPreferences,
       )) {
         NotificationService.showNotification(
-          id: alert.identifier.hashCode,
+          id: alert.fpasId.hashCode,
           title: "New alert",
           body: alert.info.first.headline,
           payload: "",

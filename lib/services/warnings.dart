@@ -285,7 +285,7 @@ void showNotification(
       NotificationService.showNotification(
         // generate from the warning in the List the notification id
         // because the warning identifier is no int, we have to generate a hash code
-        id: warning.identifier.hashCode,
+        id: warning.fpasId.hashCode,
         title: localisations.notification_alert_new_title(place.name),
         body: warning.info[0].headline,
         payload: place.name,
