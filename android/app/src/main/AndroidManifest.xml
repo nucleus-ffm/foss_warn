@@ -47,7 +47,14 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+           <!--  for running on TV -->
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+               <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+           </intent-filter>
        </activity>
+
 
        <!-- flutter_local_notifications (see: https://pub.dev/packages/flutter_local_notifications#androidmanifestxml-setup) -->
        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver" />
@@ -72,4 +79,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
    </application>
+
+    <!-- for running on TV-->
+    <uses-feature android:name="android.software.leanback"
+        android:required="false" />
 </manifest>

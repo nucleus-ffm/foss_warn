@@ -26,9 +26,9 @@ final routesProvider = Provider<GoRouter>(
             .select((preferences) => preferences.showWelcomeScreen),
       );
 
-      if (showWelcomeScreen) {
+      /* if (showWelcomeScreen) {
         return "/introduction";
-      }
+      } */
       return null;
     },
     routes: [
