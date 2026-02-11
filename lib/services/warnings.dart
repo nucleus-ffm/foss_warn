@@ -148,7 +148,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
       (apiResult) =>
           alert.fpasId == apiResult.alertId &&
           alert.placeSubscriptionId == apiResult.subscriptionId,
-    )) {
+    ) &&  !(alert.placeSubscriptionId == "Manually added")) {
       // the alert is not in the server response anymore, remove cached alert
       ref.read(processedAlertsProvider.notifier).deleteAlert(alert);
     }

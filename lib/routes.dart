@@ -6,6 +6,7 @@ import 'package:foss_warn/views/add_my_place_with_map_view.dart';
 import 'package:foss_warn/views/alert_update_thread_view.dart';
 import 'package:foss_warn/views/dev_settings_view.dart';
 import 'package:foss_warn/views/home/home_view.dart';
+import 'package:foss_warn/views/home/tv_home.dart';
 import 'package:foss_warn/views/introduction/introduction_view.dart';
 import 'package:foss_warn/views/log_file_viewer.dart';
 import 'package:foss_warn/views/my_place_detail_view.dart';
@@ -13,6 +14,7 @@ import 'package:foss_warn/views/notification_selfcheck_view.dart';
 import 'package:foss_warn/views/notification_settings_view.dart';
 import 'package:foss_warn/views/settings_view.dart';
 import 'package:foss_warn/views/warning_detail_view.dart';
+import 'package:foss_warn/views/warnings_details_view_tv.dart';
 import 'package:go_router/go_router.dart';
 
 final routesProvider = Provider<GoRouter>(
@@ -26,15 +28,15 @@ final routesProvider = Provider<GoRouter>(
             .select((preferences) => preferences.showWelcomeScreen),
       );
 
-      if (showWelcomeScreen) {
+      /* if (showWelcomeScreen) {
         return "/introduction";
-      }
+      } */
       return null;
     },
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => HomeView(
+        builder: (context, state) => HomeViewTV(
           onAddPlacePressed: () => context.go('/places/add'),
           onPlacePressed: (placeSubscriptionId) =>
               context.go('/places/$placeSubscriptionId'),
@@ -134,7 +136,7 @@ final routesProvider = Provider<GoRouter>(
                   String id = state.pathParameters["id"]!;
                   String subscriptionId =
                       state.pathParameters["subscriptionId"]!;
-                  return DetailScreen(
+                  return DetailScreenTV(
                     warningIdentifier: id,
                     subscriptionId: subscriptionId,
                   );

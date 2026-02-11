@@ -26,6 +26,9 @@ dependencies:
   unifiedpush_platform_interface: ^4.0.0
   xml2json: ^6.2.5
   uuid: ^4.4.2
+  shelf: ^1.4.2
+  shelf_router: ^1.1.4
+  qr_flutter: ^4.1.0
 
   # used by the map
   flutter_map: ^7.0.2

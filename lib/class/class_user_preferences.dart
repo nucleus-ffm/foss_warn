@@ -117,7 +117,7 @@ final userPreferencesProvider =
       selectedLightTheme: availableLightThemes[selectedLightTheme],
       selectedDarkTheme: availableDarkThemes[selectedDarkTheme],
       startScreen: preferences.getInt("startScreen") ?? 0,
-      warningFontSize: preferences.getDouble("warningFontSize") ?? 14.0,
+      warningFontSize: preferences.getDouble("warningFontSize") ?? 25.0, //@TODO adapted for TV
       showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
       sortWarningsBy: SortingCategories.values[selectedSorting],
       isFirstStart: preferences.getBool("isFirstStart") ?? true,

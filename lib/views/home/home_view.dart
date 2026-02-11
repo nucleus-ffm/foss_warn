@@ -16,6 +16,7 @@ import 'package:unifiedpush_platform_interface/unifiedpush_platform_interface.da
 import 'package:unifiedpush_storage_shared_preferences/storage.dart';
 
 import '../../services/self_check_handler.dart';
+import '../../services/server.dart';
 import '../../services/subscription_handler.dart';
 
 enum MainMenuItem {
@@ -97,6 +98,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
     updateAllSubscriptions(ref);
 
     NotificationService.onNotification.stream.listen(onClickedNotification);
+
+    startServer(ref);
   }
 
   void onClickedNotification(String? payload) {

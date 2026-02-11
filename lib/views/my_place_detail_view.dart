@@ -6,6 +6,7 @@ import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../widgets/warning_widget.dart';
+import '../widgets/warning_widget_tv.dart';
 
 //@todo rename to MyPlacesDetailView
 class MyPlaceDetailScreen extends ConsumerWidget {
@@ -87,17 +88,17 @@ class MyPlaceDetailScreen extends ConsumerWidget {
 
     /// build the list of warnings widgets. The first element of the threaded list is used
     /// and the remaining alerts are added as updateThread to the WarningWidget
-    List<WarningWidget> buildWarningWidgets(
+    List<WarningWidgetTV> buildWarningWidgets(
       List<List<WarnMessage>> listOfWarnings,
     ) {
-      List<WarningWidget> result = [];
+      List<WarningWidgetTV> result = [];
 
       for (List<WarnMessage> listWarn in listOfWarnings) {
         // do not show alerts for which there is a newer version of it
         // these alerts a only shown in the update thread
         if (!listWarn[0].hideWarningBecauseThereIsANewerVersion) {
           result.add(
-            WarningWidget(
+            WarningWidgetTV(
               onAlertPressed: onAlertPressed,
               onAlertUpdateThreadPressed: onAlertUpdateThreadPressed,
               warnMessage: listWarn[0],
@@ -134,6 +135,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
+        //scrollDirection: Axis.horizontal,
         child: Column(children: buildWarningWidgets(generateListOfAlerts())),
       ),
     );

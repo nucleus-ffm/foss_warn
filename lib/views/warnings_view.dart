@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_app_state.dart';
@@ -7,6 +8,8 @@ import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/connection_error_widget.dart';
 import 'package:foss_warn/widgets/warning_widget.dart';
+
+import '../widgets/warning_widget_tv.dart';
 
 class WarningsView extends ConsumerWidget {
   const WarningsView({
@@ -34,13 +37,14 @@ class WarningsView extends ConsumerWidget {
     var alertsSnapshot = ref.watch(alertsFutureProvider);
 
     Widget body = SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       child: Column(
         children: [
           for (var place in places) ...[
             for (var warning in processedAlerts.where(
               (warning) => warning.placeSubscriptionId == place.subscriptionId,
             )) ...[
-              WarningWidget(
+              WarningWidgetTV(
                 place: place,
                 warnMessage: warning,
                 isMyPlaceWarning: true,

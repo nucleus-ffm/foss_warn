@@ -95,6 +95,23 @@ class _FontSizeDialogState extends ConsumerState<FontSizeDialog> {
                   navigator.pop();
                 },
               ),
+              ListTile(
+                title: const Text(
+                  "TV Size", //@TODO translate
+                  style: TextStyle(fontSize: 25),
+                ),
+                leading: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.abc),
+                ),
+                selectedColor: theme.colorScheme.secondary,
+                selected:
+                userPreferences.warningFontSize == 25.0 ? true : false,
+                onTap: () {
+                  userPreferencesService.setWarningFontSize(25.0);
+                  navigator.pop();
+                },
+              )
             ],
           ),
         ),

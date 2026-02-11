@@ -12,6 +12,29 @@ final greenLightTheme = ThemeData(
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
+    titleLarge: TextStyle(
+      fontSize: 30,
+    ),
+    bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
+    displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
+);
+
+final greenLightThemeTV = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.light,
+  colorSchemeSeed: Colors.green,
+  textTheme: const TextTheme(
+
+    displayLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    displayMedium: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    titleLarge: TextStyle(
+      fontSize: 30,
+    ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
