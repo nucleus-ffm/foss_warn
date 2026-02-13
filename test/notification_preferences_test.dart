@@ -49,6 +49,8 @@ void main() {
       subscribeForTestAlerts: false,
       cachedAlerts: [],
       showDebugNotification: false,
+      enableFOSSWarnAtHome: false,
+      fossWarnTVAddress: ""
     );
   }
 

@@ -154,6 +154,7 @@ final userPreferencesProvider =
           preferences.getBool("showDebugNotification") ?? false,
       enableFOSSWarnAtHome:
           preferences.getBool("enableFOSSWarnAtHome") ?? false,
+      fossWarnTVAddress: preferences.getString("fossWarnTVAddress") ?? "",
     ),
     sharedPreferences: preferences,
   );
@@ -347,6 +348,12 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(enableFOSSWarnAtHome: value);
     await _sharedPreferences.setBool("enableFOSSWarnAtHome", value);
   }
+
+  Future<void> setFossWarnTVAddress(String value) async{
+    state = state.copyWith(fossWarnTVAddress: value);
+    await _sharedPreferences.setString("fossWarnTVAddress", value);
+  }
+
 }
 
 /// handle user preferences. The values written here are default values
@@ -382,6 +389,7 @@ class UserPreferences {
     required this.cachedAlerts,
     required this.showDebugNotification,
     required this.enableFOSSWarnAtHome,
+    required this.fossWarnTVAddress,
   });
 
   final bool shouldNotifyGeneral;
@@ -415,6 +423,7 @@ class UserPreferences {
   final List<WarnMessage> cachedAlerts;
   final bool showDebugNotification;
   final bool enableFOSSWarnAtHome;
+  final String fossWarnTVAddress;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -458,6 +467,7 @@ class UserPreferences {
     List<WarnMessage>? cachedAlerts,
     bool? showDebugNotification,
     bool? enableFOSSWarnAtHome,
+    String? fossWarnTVAddress,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -504,6 +514,7 @@ class UserPreferences {
         showDebugNotification:
             showDebugNotification ?? this.showDebugNotification,
         enableFOSSWarnAtHome: enableFOSSWarnAtHome ?? this.enableFOSSWarnAtHome,
+        fossWarnTVAddress: fossWarnTVAddress ?? this.fossWarnTVAddress,
       );
 
   /// the path and filename where the error log is saved

@@ -37,6 +37,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
       const EdgeInsets.fromLTRB(25, 2, 25, 2);
   final TextEditingController maxSizeOfSubscriptionBoundingBox =
       TextEditingController();
+  final TextEditingController fossWarnTvTextController = TextEditingController();
+  bool fosswarntvError = false;
 
   @override
   void dispose() {
@@ -49,6 +51,9 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
     var userPreferences = ref.read(userPreferencesProvider);
     maxSizeOfSubscriptionBoundingBox.text =
         userPreferences.maxSizeOfSubscriptionBoundingBox.toString();
+
+    fossWarnTvTextController.text =
+        userPreferences.fossWarnTVAddress.toString();
 
     super.initState();
   }
@@ -63,6 +68,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
     var userPreferences = ref.watch(userPreferencesProvider);
     var userPreferencesService = ref.watch(userPreferencesProvider.notifier);
     var warningService = ref.read(processedAlertsProvider.notifier);
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -306,6 +313,34 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     userPreferencesService.setEnableFOSSWarnAtHome(
                       !userPreferences.enableFOSSWarnAtHome,
                     );
+                  },
+                ),
+              ),
+              ListTile(
+                title: TextField(
+                  controller: fossWarnTvTextController,
+                  decoration: InputDecoration(
+                    labelText: "Enter IP Address of the TV client (enter with http://) ",
+                    errorText: fosswarntvError
+                        ? "Invalid address"
+                        : null,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      fosswarntvError = false;
+                    });
+                  },
+                  onSubmitted: (newUrl) async {
+                    try {
+                      userPreferencesService
+                          .setFossWarnTVAddress(newUrl);
+                      fosswarntvError = false;
+                      setState(() {});
+                    } catch (e) {
+                      debugPrint(e.toString());
+                      fosswarntvError = true;
+                      setState(() {});
+                    }
                   },
                 ),
               ),

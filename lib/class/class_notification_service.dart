@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
+import '../constants.dart' as constants;
 import 'class_error_logger.dart';
 import 'class_user_preferences.dart';
 
@@ -51,6 +53,7 @@ class NotificationService {
     required String channelId,
     required String channelName,
     required UserPreferences userPreferences,
+    String? alertID,
   }) async {
     _flutterLocalNotificationsPlugin.show(
       id,
@@ -71,6 +74,28 @@ class NotificationService {
         stdout.write(result.stdout);
         stderr.write(result.stderr);
       });
+
+      if(alertID != null && userPreferences.fossWarnTVAddress != "") {
+
+        // send request to TV
+        var url = Uri.parse(
+          "${userPreferences.fossWarnTVAddress}:8080/show_alert?id=$alertID",
+        );
+        print("Sending command to TV on address $url");
+
+        var response = await http.get(
+          url,
+          headers: {
+            "Content-Type": "application/json",
+            'User-Agent': constants.httpUserAgent,
+          },
+        );
+        debugPrint(response.toString());
+      } else {
+        print("No TV address configured. ${userPreferences.fossWarnTVAddress} "
+            "or no id: $alertID");
+      }
+
     }
   }
 

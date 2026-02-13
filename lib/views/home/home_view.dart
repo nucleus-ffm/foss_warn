@@ -184,6 +184,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 channelId: "de.nucleus.foss_warn.notifications_moderate",
                 channelName: "Moderate",
                 userPreferences: ref.read(userPreferencesProvider),
+                alertID: "1f45a843-a391-4675-b4a0-91b077be028b",
               );
             },
           ),

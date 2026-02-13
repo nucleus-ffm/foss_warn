@@ -91,6 +91,7 @@ Future<void> newAlertNotification(
               "de.nucleus.foss_warn.notifications_${alert.info[0].severity.name}",
           channelName: "",
           userPreferences: ref.read(userPreferencesProvider),
+          alertID: alert.fpasId
         );
       }
     }
