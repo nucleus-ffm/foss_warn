@@ -9,7 +9,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../services/self_check_handler.dart';
 import '../../services/server.dart';
-import 'package:qr/qr.dart';
 
 enum MainMenuItem {
   settings,

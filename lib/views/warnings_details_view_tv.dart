@@ -17,6 +17,28 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:share_plus/share_plus.dart';
 
+CameraFit createInitCameraFit(WarnMessage alert, WidgetRef ref) {
+  print("Calculate camera fit for ${alert.info.first.headline}");
+
+  List<LatLng> polygonPoints =
+  Area.getListWithAllPolygons(alert.info.first.area, ref);
+
+  if (polygonPoints.isNotEmpty) {
+    return CameraFit.bounds(
+      bounds: LatLngBounds.fromPoints(polygonPoints),
+      padding: const EdgeInsets.all(30),
+    );
+  } else {
+    print("Poly is empty :(");
+    return CameraFit.bounds(
+      // set the bounds to the northpol if we don't have any points
+      bounds: LatLngBounds.fromPoints([const LatLng(90.0, 0.0)]),
+      padding: const EdgeInsets.all(30),
+    );
+  }
+}
+
+
 List<String> _generateAreaDescriptionList({
   required WarnMessage alert,
   required int length,
@@ -233,11 +255,11 @@ class DetailScreenTV extends ConsumerStatefulWidget {
 
 class _DetailScreenState extends ConsumerState<DetailScreenTV> {
   final MapController mapController = MapController();
+  bool isFirstBuild = true;
 
   @override
   void initState() {
     super.initState();
-
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var warning = ref.read(processedAlertsProvider).firstWhere(
@@ -266,9 +288,9 @@ class _DetailScreenState extends ConsumerState<DetailScreenTV> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     var localizations = context.localizations;
     final width = MediaQuery.of(context).size.width;
+
 
     var userPreferences = ref.watch(userPreferencesProvider);
 
@@ -279,6 +301,16 @@ class _DetailScreenState extends ConsumerState<DetailScreenTV> {
         ),
       ),
     );
+
+    print("Rebuild");
+
+    if(!isFirstBuild) {
+      mapController.fitCamera(createInitCameraFit(warning, ref));
+    } else {
+      isFirstBuild = false;
+    }
+
+
 
 
     List<Widget> assets = _generateAssets(
@@ -302,7 +334,9 @@ class _DetailScreenState extends ConsumerState<DetailScreenTV> {
                   children: [
                     Text(
                       warning.info[0].headline,
-                      style: theme.textTheme.titleLarge,
+                      style: TextStyle(
+                        fontSize: userPreferences.warningFontSize+10
+                      )
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -683,31 +717,11 @@ class _Map extends StatelessWidget {
   Widget build(BuildContext context) {
     var localizations = context.localizations;
 
-    CameraFit createInitCameraFit() {
-      print("Calculate camera fit");
-      List<LatLng> polygonPoints =
-          Area.getListWithAllPolygons(alert.info.first.area, ref);
-
-      if (polygonPoints.isNotEmpty) {
-        return CameraFit.bounds(
-          bounds: LatLngBounds.fromPoints(polygonPoints),
-          padding: const EdgeInsets.all(30),
-        );
-      } else {
-        print("Poly is empty :(");
-        return CameraFit.bounds(
-          // set the bounds to the northpol if we don't have any points
-          bounds: LatLngBounds.fromPoints([const LatLng(90.0, 0.0)]),
-          padding: const EdgeInsets.all(30),
-        );
-      }
-    }
-
     return SizedBox(
       //height: 200,
       child: MapWidget(
         mapController: mapController,
-        initialCameraFit: createInitCameraFit(),
+        initialCameraFit: createInitCameraFit(alert, ref),
         polygonLayers: [
           //@todo can be null
           PolygonLayer(
@@ -724,7 +738,7 @@ class _Map extends StatelessWidget {
                 tooltip: localizations
                     .warning_detail_view_map_center_map_button_tooltip,
                 onPressed: () {
-                  mapController.fitCamera(createInitCameraFit());
+                  mapController.fitCamera(createInitCameraFit(alert, ref));
                 },
                 child: const Icon(Icons.center_focus_strong),
               ),

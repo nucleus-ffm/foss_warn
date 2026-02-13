@@ -13,7 +13,6 @@ Future<void> main() async {
 
   await SharedPreferencesState.initialize();
   await legacyHandler();
-  //startWebserver();
 
   var showWelcomeScreen =
       SharedPreferencesState.instance.getBool("showWelcomeScreen") ?? true;
