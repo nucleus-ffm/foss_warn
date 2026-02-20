@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/notification_preferences_list_tile_widget.dart';
 import 'package:foss_warn/widgets/dialogs/warning_severity_explanation.dart';
+import 'package:foss_warn/enums/category.dart';
 
-class NotificationSettingsView extends StatefulWidget {
+import '../services/url_launcher.dart';
+
+class NotificationSettingsView extends ConsumerStatefulWidget {
   const NotificationSettingsView({super.key});
 
   @override
-  State<NotificationSettingsView> createState() =>
+  ConsumerState<NotificationSettingsView> createState() =>
       _NotificationSettingsViewState();
 }
 
-class _NotificationSettingsViewState extends State<NotificationSettingsView> {
+class _NotificationSettingsViewState
+    extends ConsumerState<NotificationSettingsView> {
   final EdgeInsets settingsTileListPadding =
       const EdgeInsets.fromLTRB(25, 2, 25, 2);
 
@@ -22,6 +27,17 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.notification_settings_headline),
+        actions: [
+          IconButton(
+            onPressed: () {
+              launchUrlInBrowser(
+                'https://github.com/nucleus-ffm/foss_warn/wiki/Notification-Settings',
+              );
+            },
+            icon: const Icon(Icons.help),
+            tooltip: localizations.help_button_tooltip,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -47,6 +63,8 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
                     );
                   },
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Icons.info),
                       const SizedBox(width: 10),
@@ -60,7 +78,30 @@ class _NotificationSettingsViewState extends State<NotificationSettingsView> {
               ),
               const SizedBox(height: 10),
               // generate the settings tiles
-              const NotificationPreferencesListTileWidget(),
+              NotificationPreferencesListTileWidget(
+                name: localizations.notification_settings_global_warning_level,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ExpansionTile(
+                title: Text(
+                  localizations
+                      .notification_settings_show_advanced_settings_title,
+                ),
+                subtitle: Text(
+                  localizations
+                      .notification_settings_show_advanced_settings_subtitle,
+                ),
+                children: [
+                  ...Category.values.map(
+                    (element) => NotificationPreferencesListTileWidget(
+                      name: element.getLocalizedName(context),
+                      category: element,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

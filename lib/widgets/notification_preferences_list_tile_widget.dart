@@ -1,12 +1,21 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
-import '../class/class_notification_preferences.dart';
+import 'package:foss_warn/enums/category.dart';
 
 class NotificationPreferencesListTileWidget extends ConsumerStatefulWidget {
-  const NotificationPreferencesListTileWidget({super.key});
+  final String name;
+  final Category? category;
+
+  const NotificationPreferencesListTileWidget({
+    super.key,
+    required this.name,
+    this.category,
+  });
 
   @override
   ConsumerState<NotificationPreferencesListTileWidget> createState() =>
@@ -15,7 +24,8 @@ class NotificationPreferencesListTileWidget extends ConsumerStatefulWidget {
 
 class _NotificationPreferencesListTileWidgetState
     extends ConsumerState<NotificationPreferencesListTileWidget> {
-  late double notificationLevel;
+  late int notificationLevel;
+  Severity intMaxValue = Severity.minor;
 
   @override
   void initState() {
@@ -23,7 +33,7 @@ class _NotificationPreferencesListTileWidgetState
 
     var userPreferences = ref.read(userPreferencesProvider);
     notificationLevel = Severity.getIndexFromSeverity(
-      userPreferences.notificationSourceSetting.notificationLevel,
+      userPreferences.notificationSourceSetting.globalNotificationLevel,
     );
   }
 
@@ -31,7 +41,7 @@ class _NotificationPreferencesListTileWidgetState
       const EdgeInsets.fromLTRB(25, 2, 25, 2);
 
   // return the label for the given value
-  String getLabelForWarningSeverity(double sliderValue) {
+  String getLabelForWarningSeverity(int sliderValue) {
     var localizations = context.localizations;
 
     switch (sliderValue.toInt()) {
@@ -52,6 +62,25 @@ class _NotificationPreferencesListTileWidgetState
   Widget build(BuildContext context) {
     var localizations = context.localizations;
 
+    if (widget.category != null) {
+      intMaxValue = ref.watch(
+        userPreferencesProvider.select(
+          (preferences) =>
+              preferences.notificationSourceSetting.globalNotificationLevel,
+        ),
+      );
+      notificationLevel = Severity.getIndexFromSeverity(
+        ref.watch(
+          userPreferencesProvider.select(
+            (preferences) => preferences.notificationSourceSetting
+                .getSeverityLevelForOneCategory(widget.category!),
+          ),
+        ),
+      );
+      notificationLevel =
+          min(Severity.getIndexFromSeverity(intMaxValue), notificationLevel);
+    }
+
     var userPreferencesService = ref.watch(userPreferencesProvider.notifier);
 
     return Column(
@@ -62,12 +91,17 @@ class _NotificationPreferencesListTileWidgetState
         ),
         ListTile(
           contentPadding: settingsTileListPadding,
+          title:
+              Text(widget.name, style: Theme.of(context).textTheme.titleMedium),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // hide the slider when source is disabled
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  widget.category != null
+                      ? Text(widget.category!.getLocalizedExplanation(context))
+                      : const SizedBox(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
@@ -82,20 +116,46 @@ class _NotificationPreferencesListTileWidgetState
                           divisions: 3,
                           min: 0,
                           max: 3,
-                          value: notificationLevel,
+                          value: notificationLevel.toDouble(),
                           onChanged: (value) {
-                            notificationLevel = value;
+                            notificationLevel = value.round();
                             setState(() {});
                           },
                           onChangeEnd: (value) {
                             // save settings, after change is complete
                             final notificationLevel =
                                 Severity.values[value.toInt()];
-                            userPreferencesService.setNotificationSourceSetting(
-                              NotificationPreferences(
-                                notificationLevel: notificationLevel,
-                              ),
-                            );
+
+                            var notificationMap = ref
+                                .read(userPreferencesProvider)
+                                .notificationSourceSetting
+                                .categoryNotificationLevel;
+
+                            if (widget.category != null) {
+                              notificationMap[widget.category!] =
+                                  notificationLevel;
+                              userPreferencesService
+                                  .setNotificationSourceSetting(
+                                ref
+                                    .read(userPreferencesProvider)
+                                    .notificationSourceSetting
+                                    .copyWith(
+                                      categoryNotificationLevel:
+                                          notificationMap,
+                                    ),
+                              );
+                            } else {
+                              userPreferencesService
+                                  .setNotificationSourceSetting(
+                                ref
+                                    .read(userPreferencesProvider)
+                                    .notificationSourceSetting
+                                    .copyWith(
+                                      globalNotificationLevel:
+                                          notificationLevel,
+                                    ),
+                              );
+                            }
                           },
                         ),
                       ),

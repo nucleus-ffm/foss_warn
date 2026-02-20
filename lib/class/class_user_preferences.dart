@@ -83,8 +83,10 @@ final userPreferencesProvider =
 
   var notificationSourceSettingString =
       preferences.getString("notificationSourceSetting");
-  var notificationPreferences =
-      NotificationPreferences(notificationLevel: Severity.moderate);
+  var notificationPreferences = NotificationPreferences(
+    globalNotificationLevel: Severity.moderate,
+    categoryNotificationLevel: {},
+  );
   if (notificationSourceSettingString != null) {
     var notificationSourceSettingMap =
         jsonDecode(notificationSourceSettingString) as Map<String, dynamic>;
