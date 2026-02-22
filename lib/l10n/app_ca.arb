@@ -1,0 +1,570 @@
+{
+    "main_nav_bar_all_warnings": "Totes les alertes",
+    "main_nav_bar_my_places": "Els meus llocs",
+    "main_nav_bar_map": "Mapa",
+    "main_dot_menu_settings": "Configuració",
+    "main_dot_menu_about": "Quant a",
+    "main_app_bar_tooltip_mark_all_warnings_as_read": "marcar alertes com a llegides",
+    "main_app_bar_tooltip_show_menu": "mostrar menú",
+    "main_dialog_understand": "entès",
+    "main_dialog_save": "Desar",
+    "main_dialog_close": "Tancar",
+    "all_warnings_no_places_chosen": "No s'ha seleccionat cap lloc",
+    "all_warnings_no_places_chosen_text": "Premeu el signe més per afegir un lloc",
+    "all_warnings_failed_to_fetch_alerts": "No s'han pogut obtenir les alertes",
+    "@all_warnings_failed_to_fetch_alerts": {
+        "description": "Main message shown when retrieving alerts failed"
+    },
+    "all_warnings_nothing_to_show": "No hi ha res a mostrar",
+    "all_warnings_nothing_to_show_text": "FOSS Warn no té res a mostrar aquí",
+    "all_warnings_everything_ok": "Tot està bé",
+    "all_warnings_everything_ok_text": "No hi ha alertes per a tu",
+    "all_warnings_reload": "Tornar a carregar",
+    "my_place_warning_found": "Hi ha alertes per a tu",
+    "my_place_no_place_added": "No s'ha seleccionat cap lloc",
+    "my_place_no_place_added_text": "Si us plau, seleccioneu primer un lloc",
+    "settings": "Configuració",
+    "settings_notification": "Notificacions",
+    "settings_android_notification_settings": "Obrir configuració de notificacions d'Android",
+    "settings_app_notification_settings": "Obrir configuració de notificacions",
+    "settings_show_status_notification_title": "Mostrar notificació d'estat",
+    "settings_show_status_notification_subtitle": "Mostra una notificació amb l'hora de l'última actualització",
+    "settings_background_service": "Actualitzacions en segon pla",
+    "settings_frequent_of_background_update": "Freqüència de les actualitzacions en segon pla",
+    "settings_frequent_of_background_update_minute": "min",
+    "settings_display": "Pantalla",
+    "settings_start_view": "Vista d'inici",
+    "settings_start_view_all_warnings": "Totes les alertes",
+    "settings_start_view_only_my_places": "Els meus llocs",
+    "settings_show_extended_metadata": "Mostrar metadades ampliades",
+    "settings_color_schema": "Esquema de color",
+    "settings_color_schema_light": "Clar",
+    "settings_color_schema_dark": "Fosc",
+    "settings_color_schema_auto": "Automàtic",
+    "settings_display_all_warnings_title": "Mostrar totes les alertes",
+    "settings_display_all_warnings_subtitle": "Mostra totes les alertes",
+    "settings_font_size": "Mida de la font",
+    "settings_sorting": "Ordenació",
+    "settings_extended_settings": "Configuració avançada",
+    "settings_show_welcome_dialog": "Mostrar altre cop el diàleg de benvinguda",
+    "settings_dev_settings": "Obrir configuració de desenvolupador",
+    "settings_select_push_service_title": "Servei de notificacions push",
+    "settings_select_push_service_subtitle": "Trieu quin servei de notificacions push voleu utilitzar.",
+    "settings_self_check_title": "Autocomprovació",
+    "settings_self_check_subtitle": "Executa una autocomprovació de la configuració de notificacions",
+    "warning_tags": "Etiquetes",
+    "warning_from_title": "Missatge de",
+    "warning_region_title": "Regió",
+    "warning_type_title": "Tipus",
+    "warning_severity_title": "Severitat",
+    "warning_description_title": "Descripció",
+    "warning_recommended_action_title": "Acció recomanada",
+    "warning_source_title": "Font",
+    "warning_from": "Missatge de: {datetime}",
+    "@warning_from": {
+        "placeholders": {
+            "datetime": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_context_information": "Informació de context:",
+    "warning_effective": "Efectiu",
+    "warning_onset": "Inici",
+    "warning_expires": "Caduca",
+    "warning_share": "Compartir",
+    "warning_shared_by_foss_warn": "Compartit per FOSS Warn",
+    "warning_open_picture_with_browser": "Obrir imatge amb el navegador",
+    "warning_type": "Tipus:\n{warningType}",
+    "@warning_type": {
+        "placeholders": {
+            "warningType": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_event": "Esdeveniment",
+    "warning_severity": "Severitat:\n{severity}",
+    "@warning_severity": {
+        "placeholders": {
+            "severity": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_urgency": "Urgència",
+    "warning_certainty": "Certesa",
+    "warning_scope": "Abast",
+    "warning_identifier": "ID",
+    "warning_sender": "Remitent",
+    "warning_status": "Estat",
+    "warning_reference": "Referència",
+    "warning_restriction": "Restricció",
+    "warning_addresses": "Adreces",
+    "warning_code": "Codi",
+    "warning_note": "Nota",
+    "warning_incidents": "Incidents",
+    "warning_show_more": "Mostrar més",
+    "warning_show_less": "Mostrar menys",
+    "warning_appendix": "Apèndix",
+    "warning_region": "Regió\n{region}",
+    "@warning_region": {
+        "placeholders": {
+            "region": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_places": "Llocs",
+    "warning_description": "Descripció\n{description}",
+    "@warning_description": {
+        "placeholders": {
+            "description": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_recommended_action": "Acció recomanada\n{recommendedAction}",
+    "@warning_recommended_action": {
+        "placeholders": {
+            "recommendedAction": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_source": "Font\n{source}",
+    "@warning_source": {
+        "placeholders": {
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_contact": "Contacte",
+    "warning_website": "Lloc web",
+    "add_new_place_place_name": "Afegir un nou lloc",
+    "add_new_place": "Afegir un nou lloc",
+    "privacy_headline": "Privacitat",
+    "privacy_main_text": "FOSS Warn no envia cap informació sobre el seu ús i només es connecta als següents serveis:\n - el servidor FPAS: aquest servidor gestiona les subscripcions, envia notificacions push i es pot seleccionar a la configuració. \n - opensteetmap.org: S'utilitza per mostrar el mapa i buscar llocs. \nFOSS Warn transmet només les dades tècnicament necessàries.",
+    "privacy_link_to_privacy": "A la política de privacitat de",
+    "imprint_headline": "Imprimir",
+    "imprint_main_text": "La recerca per la meva part no ha pogut respondre clarament si el programari està subjecte a la TMG i, per tant, si seria obligatori un imprimat o no. La gran majoria d'aplicacions a F-Droid NO tenen un imprimat - les aplicacions d'escriptori encara menys. Si ho sabeu i em podeu donar una resposta clara a la pregunta, m'alegraria que em contactéssiu.\nAquesta app és un projecte de codi obert no comercial sense contingut periodístic.",
+    "source_headline": "Font",
+    "source_mowas_description": "Oficina Federal de Protecció Civil i Assistència en Desastres - alerta sobre desastres",
+    "source_biwapp_title": "Biwapp (Informació del ciutadà i aplicació d'alertes)",
+    "source_katwarn_description": "Desenvolupada per la Fraunhofer-Gesellschaft - alerta, per exemple, en cas de: incendi important, descoberta de bombes i desastre ambiental",
+    "source_dwd_title": "DWD (Servei Meteorològic Alemany)",
+    "source_lhp_title": "LHP (Portal d'Inundacions Interestatal)",
+    "status_headline": "Estat",
+    "status_source_status": "Estat de la font",
+    "status_server_not_reachable": "Servidor no accessible",
+    "status_error_while_parsing": "Error en analitzar",
+    "status_everything_ok": "Tot està bé",
+    "status_count_of_message": "Recompte de missatges",
+    "notification_settings_headline": "Configuració de notificacions",
+    "notification_settings_notify_by": "Notificar per",
+    "notification_settings_notify_by_extreme": "Missatges extrems",
+    "notification_settings_notify_by_severe": "Missatges severs",
+    "notification_settings_notify_by_moderate": "Missatges moderats",
+    "notification_settings_notify_by_minor": "Missatges menors",
+    "notification_settings_notify_by_update": "Missatges d'actualització",
+    "notification_settings_thunderstorm": "Tempesta",
+    "notification_settings_strong_weather": "Temps fort",
+    "notification_settings_everything_else": "Tot la resta",
+    "notification_settings_everything": "tot",
+    "dev_settings_headline": "Configuració de desenvolupador",
+    "dev_settings_delete_list_of_read_warnings": "Eliminar llista d'alertes llegides",
+    "dev_settings_delete_list_of_read_warnings_text": "esborra manualment la llista desada d'alertes ja llegides.",
+    "dev_settings_delete_notification_list": "Eliminar llista de notificacions",
+    "dev_settings_delete_notification_list_text": "Esborra manualment la llista desada d'alertes per a les quals ja heu rebut una notificació.",
+    "dev_settings_load_cached_warnings": "Carregar alertes emmagatzemades en cau",
+    "dev_settings_load_cached_warnings_text": "Carrega els missatges emmagatzemats en cau",
+    "dev_settings_success": "fet",
+    "dev_settings_collect_system_information_title": "Recollir informació del sistema per a la resolució de problemes",
+    "dev_settings_collect_system_information_subtitle": "Recull informació sobre el sistema que es pot enviar al desenvolupador per a la gestió d'errors. No s'envia cap dada automàticament.",
+    "dev_settings_collect_system_information_snackbar": "Recollint informació del sistema.",
+    "dev_settings_open_log_file_viewer_title": "Obrir visor de fitxers de registre",
+    "dev_settings_open_log_file_viewer_subtitle": "Proporciona una visió general de tots els missatges d'error",
+    "dev_settings_show_error_messages_title": "Mostrar missatges d'error",
+    "dev_settings_show_error_messages_subtitle": "Mostra un diàleg amb missatges d'error",
+    "dev_settings_max_size_bounding_box_title": "Mida màxima del quadre delimitador per a una subscripció (anar amb compte)",
+    "dev_settings_max_size_bounding_box_subtitle": "Permet seleccionar la mida màxima del quadre delimitador per a una subscripció. Àrees de subscripció més grans poden afectar el rendiment. Aneu amb compte.",
+    "dev_settings_show_debug_notification": "Mostrar notificacions de depuració",
+    "dev_settings_remove_cached_alerts": "Eliminar alertes emmagatzemades en cau",
+    "welcome_view_foss_warn_headline": "FOSS Warn",
+    "welcome_view_foss_warn_text": "Encantats que vulgueu utilitzar FOSS Warn. Llisqueu per començar la introducció.",
+    "welcome_view_foss_server_selection_headline": "Servidor Públic d'Alertes FOSS",
+    "welcome_view_foss_server_selection_text": "FOSSWarn ara utilitza el FOSS Public Alert Server (FPAS) per rebre alertes. Aquest servidor permet rebre notificacions push sobre alertes d'emergència per a un gran nombre de països del món. El servidor per defecte està operat per KDE i allotjat a Alemanya. Podeu canviar el servidor seleccionat a la configuració i utilitzar qualsevol altre servidor FPAS.",
+    "welcome_view_foss_server_selection_select_instance_helptext": "Més informació sobre el FPAS",
+    "welcome_view_permission_action": "Sol·licitar permís",
+    "welcome_view_important_headline": "Important",
+    "welcome_view_important_text": "Si us plau, llegiu el descàrrec de responsabilitat abans d'usar-lo. En utilitzar l'aplicació, accepteu les seves condicions.",
+    "welcome_view_battery_optimisation_headline": "Optimització de la bateria",
+    "welcome_view_battery_optimisation_text": "Perquè FOSS Warn us pugui enviar notificacions en segon pla de manera fiable, s'hauria de desactivar l'optimització de bateria per a FOSS Warn.",
+    "welcome_view_battery_optimisation_verifying": "Verificant l'estat d'optimització de la bateria...",
+    "welcome_view_battery_optimisation_action": "Desactivar",
+    "welcome_view_battery_optimisation_action_success": "Èxit",
+    "welcome_view_action_success": "Èxit",
+    "welcome_view_my_places_headline": "Els meus llocs",
+    "welcome_view_my_places_text": "Per rebre alertes, heu de subscriure-us a una àrea d'interès. Podeu subscriure-us a qualsevol àrea del món. Actualment donem suport a uns 100 països. Rebreu notificacions push per a cada subscripció. Per cancel·lar la subscripció, podeu prémer prolongadament el lloc i fer clic a eliminar.",
+    "welcome_view_warning_steps_headline": "Nivells d'alerta",
+    "welcome_view_warning_steps_text": "Totes les alertes tenen un nivell d'alerta o importància determinat per l'editor. A la configuració podeu establir per a quins dels quatre nivells voleu rebre notificacions. Per defecte, no se us notificarà per als missatges d'importància 'baixa'. A l'aplicació en si, sempre es mostren tots els missatges.",
+    "welcome_view_lets_go_headline": "Som-hi!",
+    "welcome_view_lets_go_text": "Si trobeu útil aquesta app, no dubteu a fer-m'ho saber ☺️",
+    "welcome_view_end_button": "Finalitzar",
+    "welcome_view_unifiedpush_headline": "Notificacions push",
+    "welcome_view_unifiedpush_text": "FOSSWarn utilitza UnifiedPush per rebre notificacions push sobre noves alertes d'emergència. UnifiedPush és un sistema descentralitzat de notificacions push que us permet triar el servei que voleu utilitzar. Està dissenyat per respectar la privacitat, ser flexible i obert. Per utilitzar UnifiedPush, heu d'instal·lar una aplicació addicional que actua com a distribuïdor.",
+    "welcome_view_unifiedpush_learn_more_button": "Més informació sobre UnifiedPush.",
+    "welcome_view_navigation_previous": "Anterior",
+    "welcome_view_navigation_next": "Següent",
+    "connection_error_no_internet": "Sense connexió al servidor",
+    "connection_error_app_error": "Ups! Alguna cosa ha anat malament. Si us plau, contacteu amb el desenvolupador",
+    "connection_error_app_error_action": "Toqueu aquí per obtenir més informació",
+    "connection_error_subscription_expired": "Algunes de les vostres subscripcions han caducat.",
+    "connection_error_subscription_expired_action": "Toqueu aquí per tornar-vos a subscriure",
+    "connection_error_fetching_new_alerts": "Recuperant noves alertes...",
+    "@connection_error_fetching_new_alerts": {
+        "description": "Displayed if there are no alerts and the app is still fetching new alerts"
+    },
+    "connection_error_first_fetch": "Recuperant noves alertes...",
+    "connection_error_push_notification_setup_error": "S'ha detectat un problema amb les notificacions push",
+    "connection_error_push_notification_setup_error_action": "Toqueu aquí per obtenir més informació",
+    "font_size_headline": "Mida de la font",
+    "font_size_big": "Gran",
+    "font_size_normal": "Normal",
+    "font_size_small": "Petita",
+    "font_size_very_big": "Extra gran",
+    "disclaimer_headline": "Descàrrec de responsabilitat",
+    "disclaimer_text": "Aquesta app es va crear amb l'esperança que sigui útil, però es proporciona SENSE CAP GARANTIA. El desenvolupador no pot garantir que l'app funcioni sense errors o que mostri totes les alertes en tot moment. A més, el desenvolupador no assumeix cap garantia per l'actualitat, correcció i completesa dels missatges mostrats. Per tant, NO confieu en aquesta app en CAP MOMENT. A més, les alertes poden rebre's amb cert RETARD. Accepteu això en utilitzar FOSS Warn.",
+    "sorting_headline": "Com s'han d'ordenar els missatges?",
+    "sorting_by_date": "Per data d'emissió (més recent primer)",
+    "sorting_by_warning_level": "per nivell d'alerta (més alt primer)",
+    "sorting_by_source": "Per font",
+    "explanation_headline": "Explicació",
+    "explanation_health": "Salut",
+    "explanation_health_text": "esdeveniments que amenacen la salut com pandèmies o contaminació de l'aigua",
+    "explanation_fire": "Incendi",
+    "explanation_fire_text": "informació sobre incendis",
+    "explanation_infrastructure": "Infraestructura",
+    "explanation_infrastructure_text": "Informació en cas d'incidents d'infraestructura com la fallada de la línia d'emergència",
+    "explanation_CBRNE": "CBRNE",
+    "explanation_CBRNE_text": "Informació en cas d'incidents que impliquin substàncies químiques, biològiques, radiològiques, nuclears i explosives.",
+    "explanation_environment": "Medi ambient",
+    "explanation_environment_text": "Informació durant esdeveniments naturals com onades de tempesta",
+    "explanation_weather": "Temps",
+    "explanation_weather_text": "Informació en cas d'esdeveniments meteorològics com ràfegues de tempesta i inundacions.",
+    "explanation_safety": "Seguretat",
+    "explanation_safety_text": "Informació en cas d'informes policials",
+    "explanation_other": "Altres",
+    "explanation_other_text": "Informació amb altres missatges",
+    "explanation_transport": "Transport",
+    "explanation_rescue": "Rescat",
+    "delete_place_headline": "Eliminar lloc?",
+    "delete_place_confirmation": "Esteu segur que voleu eliminar aquest lloc?",
+    "delete_place_delete": "Eliminar",
+    "delete_place_cancel": "Cancel·lar",
+    "delete_place_error": "No es pot eliminar el lloc. Si us plau, comproveu la vostra connexió a internet.",
+    "explanation_warning_level_headline": "Nivells d'alerta",
+    "explanation_warning_level_attention": "Atenció",
+    "explanation_warning_level_attention_text": "Nou informe sobre una amenaça aguda i actual.",
+    "explanation_warning_level_update": "Actualització",
+    "explanation_warning_level_update_text": "Actualització d'un missatge anterior.",
+    "explanation_warning_level_all_clear": "Tot clar",
+    "explanation_warning_level_all_clear_text": "Tot clar per a un missatge anterior. La major part del temps l'alerta s'ha aixecat ara.",
+    "explanation_warning_level_ack": "Confirmat",
+    "explanation_warning_level_error": "Error",
+    "my_place_warnings_count": "Hi ha {count, plural, =0{cap alerta} =1{una alerta} other{{count} alertes}}",
+    "@my_place_warnings_count": {
+        "description": "Tells how many warnings there are for a place",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "format": "compact"
+            }
+        }
+    },
+    "warning_widget_and": "i",
+    "warning_widget_other": "altre",
+    "warning_widget_unknown": "desconegut",
+    "legacy_warning_dialog_title": "Versió actualitzada a",
+    "legacy_warning_dialog_text": "FOSS Warn s'ha actualitzat a la seva última iteració, introduint diversos canvis. Un d'ells és una vista de mapa, que mostra l'àrea d'una alerta en un mapa.\nCom a part d'aquesta actualització, FOSSWarn utilitza una llista actualitzada de llocs. Per tant, heu de migrar dels llocs antics als nous. El procés hauria de funcionar automàticament si premeu el botó `iniciar migració automàtica`. Eliminarà els llocs antics i intentarà afegir el mateix lloc de la nova llista. Alguns llocs potser ja no estiguin disponibles, ja que la llista antiga conté alguns llocs no vàlids. Si us plau, comproveu si tots els vostres llocs seleccionats s'han migrat correctament i afegiu els llocs que faltin manualment.\n\nEns disculpem per les molèsties.",
+    "notification_settings_slidervalue_extreme": "extrem",
+    "notification_settings_slidervalue_moderate": "moderat",
+    "notification_settings_slidervalue_severe": "sever",
+    "notification_settings_slidervalue_minor": "menor",
+    "source_other_description": "Configuració general que s'utilitza si no s'ha fet cap configuració més precisa.",
+    "source_other_title": "Altres",
+    "notification_settings_open_severity_explanation": "Explicacions del grau de severitat",
+    "notification_settings_description": "Aquí podeu establir el nivell d'alerta per a cada font per al qual voleu rebre una alerta.",
+    "warning_severity_explanation_dialog_severe_description": "Amenaça significativa per a la vida o la propietat. Pot afectar la vostra salut, propietat i/o infraestructura pública.",
+    "warning_severity_explanation_dialog_moderate_description": "Una alerta d'una possible amenaça per a la vida o la propietat. Pot interrompre greument les rutines diàries normals.",
+    "warning_severity_explanation_dialog_minor_description": "Amenaça mínima o nul·la coneguda per a la vida o la propietat. Pot interferir amb les activitats diàries normals.",
+    "warning_severity_explanation_dialog_extreme_description": "Amenaça extraordinària per a la vida o la propietat. Pot tenir un impacte significatiu a curt termini en la vostra salut, propietat i/o infraestructura pública.",
+    "warning_severity_explanation_dialog_update_description": "Actualització d'una alerta ja notificada",
+    "warning_severity_explanation_dialog_headline": "Severitat",
+    "warning_severity_minor": "Menor",
+    "warning_severity_moderate": "Moderat",
+    "warning_severity_severe": "Sever",
+    "warning_severity_extreme": "Extrem",
+    "warning_severity_unknown": "Desconegut",
+    "warning_widget_update_thread_tooltip": "Mostrar el fil d'actualitzacions d'aquesta alerta",
+    "meta_info_for_place_dialog_latitude": "Latitud",
+    "meta_info_for_place_dialog_headline": "Informació detallada sobre",
+    "meta_info_for_place_dialog_longitude": "Longitud",
+    "meta_info_for_place_dialog_bounding_box_max": "Quadre delimitador màx",
+    "meta_info_for_place_dialog_bounding_box_min": "Quadre delimitador mín",
+    "meta_info_for_place_dialog_subscription_id": "ID de subscripció",
+    "main_app_bar_action_sort_tooltip": "Obrir diàleg per ordenar alertes",
+    "notification_no_places_selected_body": "Si us plau, comproveu la vostra selecció",
+    "notification_no_places_selected_title": "Encara no heu seleccionat cap lloc",
+    "warning_status_actual": "real",
+    "warning_status_exercise": "exercici",
+    "warning_status_system": "sistema",
+    "warning_status_test": "prova",
+    "warning_status_draft": "esborrany",
+    "warning_urgency_immediate": "immediat",
+    "warning_urgency_expected": "esperat",
+    "warning_urgency_future": "futur",
+    "warning_urgency_past": "passat",
+    "warning_urgency_unknown": "desconegut",
+    "warning_certainty_observed": "observat",
+    "warning_certainty_likely": "probable",
+    "warning_certainty_possible": "possible",
+    "warning_certainty_unlikely": "poc probable",
+    "warning_certainty_unknown": "desconegut",
+    "warning_certainty_other": "altre",
+    "warning_scope_public": "Públic",
+    "warning_scope_restricted": "Restringit",
+    "warning_scope_private": "Privat",
+    "map_view_warning_overview_no_alerts": "No hi ha alertes",
+    "map_view_filter_chips_tooltip_show": "mostrar",
+    "map_view_filter_chips_tooltip_select_filter": "Seleccionar filtre",
+    "map_view_filter_chips_tooltip_hide": "amagar",
+    "my_places_view_add_new_place_button_tooltip": "obrir nova pàgina per afegir un lloc",
+    "warning_detail_view_map_center_map_button_tooltip": "Centrar mapa",
+    "loading_screen_loading": "Carregant",
+    "loading_screen_wait_for_push_to_complete": "Espereu que es completi el registre push.",
+    "add_my_place_with_map_loading_screen_subscription_error": "Alguna cosa ha anat malament. No es pot subscriure. Si us plau, torneu-ho a provar més tard. El servidor ha respost amb {error}",
+    "@add_my_place_with_map_loading_screen_subscription_error": {
+        "description": "Message shown if the subscriptions failed",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "add_my_place_with_map_loading_screen_subscription_success": "subscrit correctament",
+    "add_my_place_with_map_select_area_size": "Seleccionar mida de l'àrea",
+    "add_my_place_with_map_loading_screen_searching": "cercant…",
+    "choose_theme_dialog_headline": "Seleccionar tema de color",
+    "choose_theme_dialog_choose_accent_color": "Trieu color d'accent",
+    "legacy_warning_dialog_migration_button": "iniciar migració automàtica",
+    "error_dialog_text_privacy": "El registre no conté cap informació sensible per a la privacitat a part dels vostres llocs seleccionats. FOSS Warn tampoc envia cap informació de registre a un servidor.",
+    "error_dialog_text_introduction": "FOSS Warn ha detectat un error. Si aquest error persisteix, contacteu amb el desenvolupador i adjunteu el següent registre:",
+    "app_error_message": "Ups. Alguna cosa ha anat malament. Si us plau, contacteu amb el desenvolupador",
+    "error_dialog_headline": "Ai, no - alguna cosa ha anat malament :(",
+    "error_dialog_text_instructions_text": "- Comproveu la vostra connexió a internet\n- Comproveu si el problema és persistent\n- Escriviu un correu electrònic a: foss-warn@posteo.de\n- o obriu un informe a Github",
+    "error_dialog_text_instructions_headline": "Què haig de fer ara?",
+    "welcome_view_foss_public_alert_server_headline": "Servidor Públic d'Alertes FOSS",
+    "welcome_view_foss_public_alert_server_text": "FOSS Warn ara utilitza el FOSS Public Alert Server com a servidor. Això ens permet enviar notificacions push i donar suport a més àrees arreu del món. El FOSS Public Alert Server està desenvolupat per l'equip de FOSS Warn en cooperació amb KDE.",
+    "welcome_view_notification_permission_text": "FOSSWarn necessita el vostre permís per enviar-vos notificacions en cas que hi hagi alertes per a la vostra àrea. Premeu el botó de sota per obrir el diàleg de permisos.",
+    "welcome_view_foss_public_alert_server_select_instance": "Seleccionar instància del servidor",
+    "welcome_view_notification_permission_headline": "Permís de notificació",
+    "welcome_view_alarm_permission_headline": "Permís d'alarma",
+    "welcome_view_alarm_permission_text": "FOSSWarn necessita el vostre permís per programar alarmes exactes. Premeu el botó de sota per obrir el diàleg de permisos.",
+    "welcome_view_foss_public_alert_server_select_instance_helptext": "Per què he de seleccionar un servidor?",
+    "welcome_view_request_permission": "Sol·licitar permís",
+    "settings_foss_public_alert_server_enter_url_label_text": "Introduïu la URL del servidor FPAS",
+    "settings_foss_public_alert_server_enter_url_error": "URL del servidor invàlida",
+    "welcome_view_foss_public_alert_server_server_operator": "Aquest servidor està operat per:",
+    "welcome_view_foss_public_alert_server_use_custom_server": "Utilitzar servidor personalitzat",
+    "welcome_view_foss_public_alert_server_confirm_button": "Confirmar",
+    "welcome_view_foss_public_alert_server_confirm_success": "Confirmat",
+    "welcome_view_foss_public_alert_server_use_default_server": "Utilitzar servidor per defecte",
+    "alert_publisher_unknown": "Desconegut",
+    "@alert_publisher_unknown": {
+        "description": "Shown on the alert detail screen when the publisher of an alert is unknown"
+    },
+    "failed_to_open_url": "No s'ha pogut obrir la URL",
+    "error_dialog_description": "FOSSWarn ha detectat un error. Informeu de l'error i adjunteu el següent registre.",
+    "error_dialog_privacy": "El registre no conté cap informació sensible per a la privacitat a part dels vostres llocs seleccionats. FOSSWarn no envia cap registre a un servidor.",
+    "error_dialog_instruction_headline": "Què haig de fer ara?",
+    "error_dialog_instruction_body": "1. Comproveu si l'error és només per manca de connexió a internet\n2. Comproveu si ja hi ha un informe obert a GitHub\n3. Trobeu la part rellevant del registre. Si el mateix missatge d'error apareix múltiples vegades al registre, n'hi ha prou amb enviar-ne un sol.\n4. Obriu un nou informe o escriviu un correu electrònic a foss-warn@posteo.de",
+    "error_dialog_hide_error_bar": "Amagar la barra d'errors",
+    "error_dialog_copy": "copiar el registre d'errors",
+    "error_dialog_copy_success": "copiat",
+    "error_log_viewer_title": "Visor de fitxers del registre",
+    "error_log_viewer_headline": "Aquí podeu llegir el registre d'errors de FOSSWarn",
+    "error_log_button_delete": "Eliminar",
+    "error_log_button_share": "Compartir el fitxer de registre d'errors",
+    "error_log_share_info": "Registre d'errors compartit de FOSSWarn",
+    "dev_settings_subscribe_for_test_alert": "Subscriure's per a alertes de prova tècnica del FOSS Public Alert Server",
+    "dev_settings_troubleshoot_notifications": "Solucionar problemes de notificacions",
+    "invalid_subscription_dialog_headline": "Renovar subscripcions caducades",
+    "invalid_subscription_dialog_text": "Algunes de les vostres subscripcions han caducat. Feu clic a tornar a subscriure per rebre notificacions push altre cop",
+    "invalid_subscription_dialog_resubscribe_button": "tornar a subscriure",
+    "invalid_subscription_dialog_loading_indicator_replace_places": "reemplaçant els llocs antics...",
+    "invalid_subscription_dialog_error_body": "Ai, no, no s'ha pogut tornar a subscriure.",
+    "invalid_subscription_dialog_error_status_code": "Codi d'error HTTP: {status_code}",
+    "@invalid_subscription_dialog_error_status_code": {
+        "placeholders": {
+            "status_code": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_error_message": "Missatge d'error: {message}",
+    "@invalid_subscription_dialog_error_message": {
+        "placeholders": {
+            "message": {
+                "type": "String"
+            }
+        }
+    },
+    "invalid_subscription_dialog_successfully_resubscribed": "S'ha tornat a subscriure correctament",
+    "notification_channel_other_name": "Altres",
+    "notification_channel_other_description": "Altres notificacions",
+    "notification_group_name": "Notificacions de FOSSWarn",
+    "notification_group_description": "Hi ha múltiples notificacions de FOSSWarn",
+    "notification_alert_new_title": "Nova alerta per a {place}",
+    "@notification_alert_new_title": {
+        "description": "Title of the notification shown for a new alert",
+        "placeholders": {
+            "place": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_alert_update_title": "Alerta actualitzada per a {place}",
+    "troubleshoot_notification_title": "Solucionar problemes de notificacions",
+    "troubleshoot_notification_register_state": "Actualment registrat? {state}",
+    "@troubleshoot_notification_register_state": {
+        "description": "State of the push notification service",
+        "placeholder": {
+            "state": {
+                "type": "bool"
+            }
+        }
+    },
+    "troubleshoot_notification_current_endpoint": "Endpoint actual: {endpoint}",
+    "@troubleshoot_notification_current_endpoint": {
+        "description": "Current selected endpoint for push notifications",
+        "placeholder": {
+            "endpoint": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_current_vapid_key": "Clau VAPID actual: {key}",
+    "@troubleshoot_notification_current_vapid_key": {
+        "description": "Current public key",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_current_public_key": "Clau pública actual: {key}",
+    "troubleshoot_notification_current_auth_key": "Clau d'autenticació actual: {key}",
+    "@troubleshoot_notification_current_auth_key": {
+        "description": "Current auth key",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "troubleshoot_notification_reset_push_setup": "Reiniciar configuració push",
+    "troubleshoot_notification_unregister_for_push": "Resregistrar configuració push",
+    "troubleshoot_notification_resubscribe": "Tornar-se a subscriure per als llocs amb nova configuració push",
+    "no_up_distributor_found_dialog_title": "No s'ha trobat cap distribuïdor UnifiedPush",
+    "no_up_distributor_found_dialog_explanation": "FOSSWarn no ha pogut trobar cap distribuïdor d'UnifiedPush instal·lat al vostre dispositiu. Per subscriure-us a una àrea, n'heu de tenir un instal·lat, o no rebreu cap notificació. Instal·leu un distribuïdor i torneu a provar la subscripció.",
+    "no_up_distributor_found_up_explanation_button": "Què és UnifiedPush i com instal·lar un distribuïdor?",
+    "no_up_distributor_found_direct_link_to_ntfy": "Per als ràpids: ntfy a F-Droid (requereix canviar el servidor per defecte)",
+    "notification_self_check_title": "Autocomprovació de notificacions",
+    "notification_self_check_description": "Això realitza proves per detectar problemes que podrien impedir que FOSSWarn rebi notificacions. Per obtenir ajuda i més informació, visiteu el wiki.",
+    "notification_self_check_wiki_link_instruction": "Al wiki",
+    "notification_self_check_notification_permission_title": "Permís de notificació",
+    "notification_self_check_notification_permission_subtitle_passed": "FOSSWarn té el permís per enviar-vos notificacions.",
+    "notification_self_check_notification_permission_subtitle_not_passed": "FOSSWarn necessita el vostre permís per enviar-vos notificacions. Premeu aquí per sol·licitar el permís.",
+    "notification_self_check_notification_permission_unknown": "FOSSWarn està comprovant l'estat del permís de notificació. Espereu, si us plau.",
+    "notification_self_check_installed_distributors_title": "Distribuïdor d'UnifiedPush",
+    "notification_self_check_installed_distributors_subtitle_passed": "S'ha trobat \n {key}",
+    "@notification_self_check_installed_distributors_subtitle_passed": {
+        "description": "The list of installed distributor ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_installed_distributors_subtitle_not_passed": "No s'ha trobat cap distribuïdor. Si us plau, instal·leu almenys un al vostre dispositiu.",
+    "notification_self_check_installed_distributors_subtitle_unknown": "FOSSWarn està buscant distribuïdors UnifiedPush al vostre dispositiu. Espereu, si us plau.",
+    "notification_self_check_selected_distributor_title": "Distribuïdor seleccionat",
+    "notification_self_check_selected_distributor_subtitle_passed": "El vostre distribuïdor seleccionat actualment és {key}",
+    "@notification_self_check_selected_distributor_subtitle_passed": {
+        "description": "The selected distributor ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_selected_distributor_subtitle_not_passed": "No heu seleccionat cap distribuïdor. Si us plau, aneu a la configuració i seleccioneu un servei push.",
+    "notification_self_check_selected_distributor_subtitle_unknown": "FOSSWarn està buscant el vostre distribuïdor UnifiedPush seleccionat. Espereu, si us plau.",
+    "notification_self_check_current_endpoint_title": "Endpoint actual",
+    "notification_self_check_current_endpoint_subtitle_passed": "El vostre endpoint {key}",
+    "@notification_self_check_current_endpoint_subtitle_passed": {
+        "description": "The current URL of the endpoint  ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_current_endpoint_subtitle_not_passed": "No s'ha trobat cap endpoint. No esteu registrat per a notificacions push.",
+    "notification_self_check_current_endpoint_subtitle_unknown": "FOSSWarn està buscant el vostre endpoint UnifiedPush.",
+    "notification_self_check_server_check_title": "Comprovació del servidor",
+    "notification_self_check_server_check_subtitle_passed": "Aquest servidor no és conegut per tenir problemes. Si experimenteu problemes amb aquest servidor, notifiqueu-nos.",
+    "notification_self_check_server_check_subtitle_not_passed": "Aquest servidor ha estat poc fiable en el passat o ha tingut altres problemes. Recomanem triar un altre servidor. Pot ser que no us pugueu subscriure a aquest servidor, o que no rebeu notificacions.",
+    "notification_self_check_server_check_subtitle_unknown": "FOSSWarn està comprovant el vostre servidor per problemes coneguts.",
+    "notification_self_check_server_check_subtitle_action_suggested": "Aquest servidor pot estar bé, però ha tingut alguns problemes en el passat. Si sabeu el que feu, podeu seguir utilitzant aquest servidor; en cas contrari, us recomanem canviar a un altre.",
+    "notification_self_check_test_subscription_title": "Subscripció i notificació de prova",
+    "notification_self_check_test_subscription_subtitle_passed": "Provat amb èxit, hauríeu de veure una notificació.",
+    "notification_self_check_test_subscription_subtitle_not_passed": "FOSSwarn no ha pogut subscriure-us o enviar-vos una notificació. Si us plau, reviseu la vostra configuració.",
+    "notification_self_check_test_subscription_subtitle_unknown": "FOSSWarn està intentant subscriure's i rebre una notificació push.",
+    "notification_self_check_notification_check_title": "Comprovació de notificacions",
+    "notification_self_check_notification_check_subtitle_passed": "Notificació rebuda correctament",
+    "notification_self_check_notification_check_subtitle_not_passed": "No s'ha rebut la notificació. Si us plau, comproveu la vostra configuració altre cop.",
+    "notification_self_check_notification_check_subtitle_unknown": "S'està esperant una nova notificació.",
+    "change_unified_push_distributor_dialog_title": "Canviar distribuïdor UnifiedPush",
+    "change_unified_push_distributor_dialog_body": "Seleccioneu el distribuïdor UnifiedPush que ha d'utilitzar FOSSWarn.",
+    "change_unified_push_distributor_dialog_body_no_distributor_found": "No s'ha trobat cap distribuïdor",
+    "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Canviant el distribuïdor. Espereu, si us plau...",
+    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "El registre per al nou distribuïdor ha fallat amb un temps d'espera esgotat. Torneu-ho a provar.",
+    "about_headline": "Quant a",
+    "about_summery": "Aquesta app és un projecte lliure i de codi obert, i s'ha creat amb l'esperança que sigui útil. Són benvingudes les suggerències sobre com es pot millorar o els informes d'errors que hàgiu experimentat. Si us agrada aquesta app i la trobeu útil, m'encantaria sentir-ho.",
+    "about_official_sources": "Fonts oficials",
+    "about_author": "Autor",
+    "about_author_subtitle": "no s'utilitza",
+    "about_contact": "Contacte",
+    "about_contact_subtitle": "no s'utilitza",
+    "about_imprint": "Imprimir?",
+    "about_imprint_subtitle": "hauria d'haver-hi un imprimat aquí?",
+    "about_privacy": "Privacitat",
+    "about_privacy_subtitle": "Tot el que fa i no fa l'app",
+    "about_disclaimer": "Descàrrec de responsabilitat",
+    "about_disclaimer_subtitle": "Allò que FOSS Warn NO pot fer",
+    "about_version": "Versió",
+    "about_licence": "Llicència",
+    "about_other_license": "Altres llicències",
+    "about_other_license_subtitle": "FOSS Warn utilitza altre programari útil",
+    "about_contributors": "Col·laboradors",
+    "about_contributors_subtitle": "persones que han contribuït a FOSS Warn",
+    "about_sourcecode": "Codi font",
+    "about_sourcecode_subtitle": "Aviat en disquet, mentrestant a github",
+    "about_faq": "PMF",
+    "add_my_place_with_map_add_place_button": "Afegir lloc",
+    "add_my_place_with_map_loading_screen_search_no_result_found": "No s'han trobat resultats. Si us plau, torneu-ho a provar",
+    "add_my_place_with_map_loading_screen_search_error": "Alguna cosa ha anat malament. Si us plau, torneu-ho a provar més tard."
+}

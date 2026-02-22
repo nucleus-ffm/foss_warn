@@ -1,0 +1,213 @@
+{
+    "main_nav_bar_all_warnings": "כל ההזהרות",
+    "main_nav_bar_my_places": "המקומות שלי",
+    "main_nav_bar_map": "מפה",
+    "main_dot_menu_settings": "הגדרות",
+    "main_dot_menu_about": "על אודות",
+    "main_app_bar_tooltip_mark_all_warnings_as_read": "סימון ההזהרות כנצפו",
+    "main_app_bar_tooltip_show_menu": "הצגת התפריט",
+    "main_dialog_understand": "מובן",
+    "main_dialog_save": "שמירה",
+    "main_dialog_close": "סגירה",
+    "all_warnings_no_places_chosen": "לא נבחרו מקומות",
+    "all_warnings_no_places_chosen_text": "נא ללחוץ על הפלוס להוספת מקומות",
+    "all_warnings_failed_to_fetch_alerts": "נכשל בהבאת התרעות",
+    "@all_warnings_failed_to_fetch_alerts": {
+        "description": "Main message shown when retrieving alerts failed"
+    },
+    "all_warnings_nothing_to_show": "אין מה לראות כאן",
+    "all_warnings_nothing_to_show_text": "ל־Foss Warn אין מה להציג כאן",
+    "all_warnings_everything_ok": "הכול בסדר",
+    "all_warnings_everything_ok_text": "אין הזהרות עבורך",
+    "all_warnings_reload": "טעינה מחדש",
+    "my_place_warning_found": "יש הזהרות עבורך",
+    "my_place_no_place_added": "לא נבחר מקום",
+    "my_place_no_place_added_text": "נא לבחור מקום קודם",
+    "settings": "הגדרות",
+    "settings_notification": "הודעות",
+    "settings_android_notification_settings": "פתיחת הגדרות ההודעות של אנדרואיד",
+    "settings_app_notification_settings": "פתיחת הגדרות ההודעות",
+    "settings_show_status_notification_title": "הצגת מצב ההודעות",
+    "settings_show_status_notification_subtitle": "מציג הודעה ובה הזמן של העדכון האחרון",
+    "settings_background_service": "עדכונים ברקע",
+    "settings_frequent_of_background_update": "תדירות העדכונים ברקע",
+    "settings_frequent_of_background_update_minute": "מינ׳",
+    "settings_display": "מראה",
+    "settings_start_view": "תצוגת ההתחלה",
+    "settings_start_view_all_warnings": "כל ההזהרות",
+    "settings_start_view_only_my_places": "המקומות שלי",
+    "settings_show_extended_metadata": "הצגת מטא־נתונים מורחבים",
+    "settings_color_schema": "ערכות הצבעים",
+    "settings_color_schema_light": "בהיר",
+    "settings_color_schema_dark": "כהה",
+    "settings_color_schema_auto": "אוטומטי",
+    "settings_display_all_warnings_title": "הצגת כל ההזהרות",
+    "settings_display_all_warnings_subtitle": "מציג את כל ההזהרות",
+    "settings_font_size": "גודל הגופן",
+    "settings_sorting": "מיון",
+    "settings_extended_settings": "הגדרות מתקדמות",
+    "settings_show_welcome_dialog": "הצגת תיבת הדו־שיח של „ברוכים הבאים” שוב",
+    "settings_dev_settings": "פתיחת ההגדרות למפתחים",
+    "settings_select_push_service_title": "שירות דחיפה",
+    "settings_select_push_service_subtitle": "בחירת שירות הדחיפה שבו יש להשתמש.",
+    "settings_self_check_title": "בדיקה עצמית",
+    "settings_self_check_subtitle": "הרצת בדיקה עצמית של תצורת ההודעות",
+    "warning_tags": "תגיות",
+    "warning_from_title": "הודעה מ־",
+    "warning_region_title": "אזור",
+    "warning_type_title": "סוג",
+    "warning_severity_title": "חומרה",
+    "warning_description_title": "תיאור",
+    "warning_recommended_action_title": "פעולות מומלצות",
+    "warning_source_title": "מקור",
+    "warning_from": "הודעה מ־{datetime}",
+    "@warning_from": {
+        "placeholders": {
+            "datetime": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_context_information": "מידע על ההקשר:",
+    "warning_effective": "יעילות",
+    "warning_expires": "תום תוקף",
+    "warning_share": "שיתוף",
+    "warning_shared_by_foss_warn": "שותף בעזרת Foss Warn",
+    "warning_open_picture_with_browser": "פתיחת התמונה בדפדפן",
+    "warning_type": "סוג:\n{warningType}",
+    "@warning_type": {
+        "placeholders": {
+            "warningType": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_event": "אירוע",
+    "warning_severity": "חומרה:\n{severity}",
+    "@warning_severity": {
+        "placeholders": {
+            "severity": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_urgency": "דחיפות",
+    "warning_certainty": "ודאות",
+    "warning_scope": "היקף",
+    "warning_identifier": "ת״ז",
+    "warning_sender": "שולח",
+    "warning_status": "מצב",
+    "warning_reference": "הפנייה",
+    "warning_restriction": "הגבלה",
+    "warning_addresses": "כתובות",
+    "warning_code": "קוד",
+    "warning_note": "הערה",
+    "warning_incidents": "תאונות",
+    "warning_show_more": "להציג יותר",
+    "warning_show_less": "להציג פחות",
+    "warning_region": "אזור:\n{region}",
+    "@warning_region": {
+        "placeholders": {
+            "region": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_places": "מקומות",
+    "warning_description": "תיאור:\n{description}",
+    "@warning_description": {
+        "placeholders": {
+            "description": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_recommended_action": "פעולות מומלצות:\n{recommendedAction}",
+    "@warning_recommended_action": {
+        "placeholders": {
+            "recommendedAction": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_source": "מקור:\n{source}",
+    "@warning_source": {
+        "placeholders": {
+            "source": {
+                "type": "String"
+            }
+        }
+    },
+    "warning_contact": "יצירת קשר",
+    "warning_website": "אתר",
+    "add_new_place_place_name": "הוספת מקום חדש",
+    "add_new_place": "הוספת מקום חדש",
+    "about_headline": "על אודות",
+    "about_summery": "יישומון זה הוא חופשי ובקוד פתוח והוא נוצר בתקווה שיהיה יעיל. הצעות לשיפור ודיווח על תקלים שנתקלתם בהם יתרבלו בברכה. אם אהבתם את היישומון ואתם חושבים שהוא יעיל, אשמח לשמוע על כך.",
+    "about_official_sources": "מקורות רשמיים",
+    "about_author": "מחבר",
+    "about_author_subtitle": "לא בשימוש",
+    "about_contact": "יצירת קשר",
+    "about_contact_subtitle": "לא בשימוש",
+    "about_privacy": "פרטיות",
+    "about_privacy_subtitle": "כל מה שהיישומון עושה ולא עושה",
+    "about_disclaimer": "גילוי נאות",
+    "about_disclaimer_subtitle": "מה Foss Warn לא יכול לעשות",
+    "about_version": "גרסה",
+    "about_licence": "רישיון",
+    "about_other_license": "רישיון נוסף",
+    "about_other_license_subtitle": "Foss Warn משתמש בתוכנות יעילות נוספות",
+    "about_contributors": "תורמים",
+    "about_contributors_subtitle": "אנשים שתרמו ל־Foss Warn",
+    "about_sourcecode": "קוד המקור",
+    "about_sourcecode_subtitle": "בקרוב ב־floppy; כרגע ב־GitHub",
+    "about_faq": "שו״ת",
+    "privacy_headline": "פרטיות",
+    "privacy_main_text": "Foss Warn אינו שולח שום מידע על השימוש בו ומתחבר לשירותים הבאים בלבד:\n - שרת ה־FPSA: שרת זה מנהל את ההרשמות, שולח הודעות דחיפה וניתן לבחור בו בהגדרות.\n - OpenStreetMap.org: משמש להצגת המפה ולחיפוש מקומות.\nFOSS Warn משדר רק את המידע הטכני הנחוץ.",
+    "privacy_link_to_privacy": "למדיניות הפרטיות של",
+    "source_headline": "מקור",
+    "status_headline": "מצב",
+    "status_source_status": "מצב המקור",
+    "status_server_not_reachable": "לא ניתן לגשת לשרת",
+    "status_error_while_parsing": "שגיאה במהלך הניתוח",
+    "status_everything_ok": "הכול בסדר",
+    "status_count_of_message": "מספר ההודעות",
+    "notification_settings_headline": "הגדרות ההודעות",
+    "notification_settings_notify_by": "הודעה בעזרת",
+    "notification_settings_notify_by_extreme": "הודעות קיצוניות",
+    "notification_settings_notify_by_severe": "הודעות חמורות",
+    "notification_settings_notify_by_moderate": "הודעות בינוניות",
+    "notification_settings_notify_by_minor": "הודעות שוליות",
+    "notification_settings_notify_by_update": "עדכון ההודעות",
+    "notification_settings_thunderstorm": "סופת רעמים",
+    "notification_settings_strong_weather": "מזג אוויר סוער",
+    "notification_settings_everything_else": "כל השאר",
+    "notification_settings_everything": "הכול",
+    "dev_settings_headline": "הגדרות למפתחים",
+    "dev_settings_delete_list_of_read_warnings": "מחיקת רשימת ההזהרות שנקראו",
+    "dev_settings_delete_list_of_read_warnings_text": "מנקה ידנית את הרשימה השמורה של ההזהרות שנקראו.",
+    "dev_settings_delete_notification_list": "מחיקת רשימת ההודעות",
+    "dev_settings_load_cached_warnings": "טעינת ההזהרות שבמטמון",
+    "dev_settings_load_cached_warnings_text": "טוען את ההודעות שבמטמון",
+    "dev_settings_success": "סיים",
+    "dev_settings_collect_system_information_title": "לאסוף מידע מערכת לצורך טיפול בבעיות",
+    "dev_settings_collect_system_information_subtitle": "אוסף מידע על המערכת שניתן יהיה לשלוח למפתח לצורך טיפול בשגיאות. הנתונים אינם נשלחים באופן אוטומטי.",
+    "dev_settings_collect_system_information_snackbar": "אוסף מידע מערכת.",
+    "dev_settings_open_log_file_viewer_title": "פתיחת מציג קובץ היומן",
+    "dev_settings_open_log_file_viewer_subtitle": "מציג סקירה של כל הודעות השגיאה",
+    "dev_settings_show_error_messages_title": "הצגת הודעות השגיאה",
+    "dev_settings_show_error_messages_subtitle": "מציג תיבת דו־שיח ובה הודעות שגיאה",
+    "dev_settings_show_debug_notification": "הצגת הודעות ניפוי התקלים",
+    "dev_settings_remove_cached_alerts": "הסרת ההתרעות שבמטמון",
+    "welcome_view_foss_warn_headline": "FOSS Warn",
+    "welcome_view_foss_warn_text": "אני שמח שברצונך להשתמש ב־FOSS Warn. יש להחליק הצידה כדי להתחיל את ההקדמה.",
+    "welcome_view_foss_server_selection_headline": "FOSS Public Alert Server",
+    "welcome_view_foss_server_selection_select_instance_helptext": "לקריאה נוספת על FPAS",
+    "welcome_view_permission_action": "בקשת הרשאה",
+    "welcome_view_important_headline": "חשוב",
+    "welcome_view_important_text": "נא לקרוא את הגילוי הנאות בטרם השימוש. שימוש ביישומון מעיד על הסכמה.",
+    "welcome_view_battery_optimisation_headline": "מיטוב הסוללה",
+    "welcome_view_battery_optimisation_verifying": "מוודא את מצב מיטוב הסוללה…",
+    "welcome_view_my_places_headline": "המקומות שלי",
+    "welcome_view_warning_steps_headline": "רמות ההזהרות"
+}
