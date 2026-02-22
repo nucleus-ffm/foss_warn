@@ -135,7 +135,7 @@ final routesProvider = Provider<GoRouter>(
                   String subscriptionId =
                       state.pathParameters["subscriptionId"]!;
                   return DetailScreen(
-                    warningIdentifier: id,
+                    warningFPASIdentifer: id,
                     subscriptionId: subscriptionId,
                   );
                 },
@@ -143,8 +143,8 @@ final routesProvider = Provider<GoRouter>(
               GoRoute(
                 path: 'update',
                 builder: (context, state) => AlertUpdateThreadView(
-                  onAlertPressed: (alertId, subscriptionId) =>
-                      context.go('/alerts/$alertId/$subscriptionId'),
+                  onAlertPressed: (fpasAlertId, subscriptionId) =>
+                      context.go('/alerts/$fpasAlertId/$subscriptionId'),
                   onAlertUpdateThreadPressed: () =>
                       context.go('/alerts/update'),
                 ),

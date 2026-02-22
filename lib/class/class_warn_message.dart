@@ -175,10 +175,12 @@ class WarnMessage {
 
     // An alert is only the same if the ID and the subscription ID are the same.
     // We can have one alert for multiple places
-    return other.identifier == identifier &&
+    // The identifier should be unique, but in reality, it isn't, so we have to
+    // use the FPAS ID for identification.
+    return other.fpasId == fpasId &&
         other.placeSubscriptionId == placeSubscriptionId;
   }
 
   @override
-  int get hashCode => identifier.hashCode;
+  int get hashCode => fpasId.hashCode;
 }

@@ -61,7 +61,6 @@ class MyPlaceDetailScreen extends ConsumerWidget {
             for (var alWm in warnings) {
               debugPrint(alWm.identifier);
               if (alWm.identifier.compareTo(id) == 0) {
-                //print("found referenced alert: ${alWm.identifier}");
                 // check if alert is already in the thread
                 if (!oneUpdateThread
                     .any((element) => element.identifier == alWm.identifier)) {
