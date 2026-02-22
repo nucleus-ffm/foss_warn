@@ -27,6 +27,16 @@ enum Category {
     return result;
   }
 
+  /// parse json data to enum value
+  static Category fromJson(String json) {
+    try {
+      return values.byName(json.toLowerCase());
+    } catch (e) {
+      debugPrint("[Category] no value found: $e");
+      return Category.other;
+    }
+  }
+
   /// extract the severity from the string and return the corresponding enum
   static Category fromString(String category) {
     for (Category cat in Category.values) {
@@ -52,6 +62,23 @@ enum Category {
       infra => localizations.explanation_infrastructure,
       cbrne => localizations.explanation_CBRNE,
       other => localizations.explanation_other,
+    };
+  }
+
+  String getLocalizedExplanation(BuildContext context) {
+    var localizations = context.localizations;
+    return switch (this) {
+      geo => localizations.explanation_environment_text,
+      met => localizations.explanation_weather_text,
+      safety => localizations.explanation_safety_text,
+      rescue => localizations.explanation_rescue_text,
+      fire => localizations.explanation_fire_text,
+      health => localizations.explanation_health_text,
+      env => localizations.explanation_environment_text,
+      transport => localizations.explanation_transport_text,
+      infra => localizations.explanation_infrastructure_text,
+      cbrne => localizations.explanation_CBRNE_text,
+      other => localizations.explanation_other_text,
     };
   }
 }

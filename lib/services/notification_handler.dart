@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/services/warnings.dart';
+import 'package:foss_warn/class/class_notification_preferences.dart';
 
 import '../class/class_error_logger.dart';
 import '../class/class_notification_service.dart';
@@ -76,8 +76,9 @@ Future<void> newAlertNotification(
             alertId: addedAlertId,
             placeSubscriptionId: "Not used",
           );
-      if (checkIfEventShouldBeNotified(
+      if (NotificationPreferences.checkIfEventShouldBeNotified(
         alert.info[0].severity,
+        alert.info[0].category,
         userPreferences,
       )) {
         NotificationService.showNotification(

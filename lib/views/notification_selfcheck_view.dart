@@ -335,6 +335,17 @@ class _NotificationSelfCheckState
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.notification_self_check_title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              launchUrlInBrowser(
+                "https://github.com/nucleus-ffm/foss_warn/wiki/Notification-self-check",
+              );
+            },
+            tooltip: localizations.help_button_tooltip,
+            icon: const Icon(Icons.help),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -342,24 +353,6 @@ class _NotificationSelfCheckState
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(localizations.notification_self_check_description),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.open_in_browser),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: TextButton(
-                    onPressed: () => launchUrlInBrowser(
-                      "https://github.com/nucleus-ffm/foss_warn/wiki/Notification-self-check",
-                    ),
-                    child: Text(
-                      localizations
-                          .notification_self_check_wiki_link_instruction,
-                    ),
-                  ),
-                ),
-              ],
             ),
             buildCheckListTile(
               title: localizations

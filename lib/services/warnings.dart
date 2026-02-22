@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/class/class_notification_preferences.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
@@ -278,8 +279,9 @@ void showNotification(
     if ((!warning.read &&
             !warning.notified &&
             !warning.isUpdateOfAlreadyNotifiedWarning) &&
-        checkIfEventShouldBeNotified(
+        NotificationPreferences.checkIfEventShouldBeNotified(
           warning.info[0].severity,
+          warning.info[0].category,
           userPreferences,
         )) {
       NotificationService.showNotification(
@@ -342,8 +344,9 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
         (element) =>
             !element.notified &&
             !element.hideWarningBecauseThereIsANewerVersion &&
-            checkIfEventShouldBeNotified(
+            NotificationPreferences.checkIfEventShouldBeNotified(
               element.info[0].severity,
+              element.info[0].category,
               userPreferences,
             ),
       );
@@ -386,23 +389,3 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
     ];
   }
 }
-
-/// Return [true] if the user wants a notification - [false] if not.
-///
-/// The source should be listed in the List notificationSourceSettings.
-/// check if the user wants to be notified for
-/// the given source and the given severity
-///
-/// example:
-///
-/// Warning severity | Notification setting | notification?   <br>
-/// Moderate (2)     | Minor (3)            | 3 >= 2 => true  <br>
-/// Minor (3)        | Moderate (2)         | 2 >= 3 => false
-bool checkIfEventShouldBeNotified(
-  Severity severity,
-  UserPreferences userPreferences,
-) =>
-    Severity.getIndexFromSeverity(
-      userPreferences.notificationSourceSetting.notificationLevel,
-    ) >=
-    Severity.getIndexFromSeverity(severity);

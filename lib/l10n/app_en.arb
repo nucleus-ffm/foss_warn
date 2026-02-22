@@ -469,9 +469,11 @@
   "explanation_other_text": "Information with other messages",
   "@explanation_other_text": {},
   "explanation_transport": "Transport",
+  "explanation_transport_text": "Information about public and private transportation",
   "@explanation_transport": {},
   "explanation_rescue": "Rescue",
   "@explanation_rescue": {},
+  "explanation_rescue_text": "Information about rescue and recovery",
   "delete_place_headline": "Delete place?",
   "@delete_place_headline": {},
   "delete_place_confirmation": "Are you sure you want to delete this place?",
@@ -534,8 +536,11 @@
   "@source_other_title": {},
   "notification_settings_open_severity_explanation": "Explanations of the degree of severity",
   "@notification_settings_open_severity_explanation": {},
-  "notification_settings_description": "Here you can set the warning level for each source for which you want to receive a warning.",
+  "notification_settings_description": "Here you can set the warning level for each alert category for which you want to receive a warning. The global setting will always override the per-category setting.",
   "@notification_settings_description": {},
+  "notification_settings_show_advanced_settings_title": "Show advanced settings",
+  "notification_settings_show_advanced_settings_subtitle": "With the advanced notification settings, you can set a warning level for each category.",
+  "notification_settings_global_warning_level": "Global setting",
   "warning_severity_explanation_dialog_severe_description": "Significant threat to life or property. May affect your health, property and/or public infrastructure.",
   "@warning_severity_explanation_dialog_severe_description": {},
   "warning_severity_explanation_dialog_moderate_description": "A warning of a possible threat to life or property. Can severely disrupt normal daily routines.",
@@ -891,7 +896,6 @@
     "change_unified_push_distributor_dialog_body": "Please select the UnifiedPush distributor that FOSSWarn should use.",
     "change_unified_push_distributor_dialog_body_no_distributor_found": "No distributor found",
     "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Changing the distributor. Please wait...",
-    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Registration for new distributor failed with a timeout. Please try again."
-
-
+    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Registration for new distributor failed with a timeout. Please try again.",
+    "help_button_tooltip": "Get help in the wiki."
 }
