@@ -6,12 +6,18 @@ class ChangeLogDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Änderungsprotokoll'),
+      title: const Text('Changelog'),
       content: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(
+              "1.1.0",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+            Text("* add notification filter based on alert categories\n"
+                "* bugfix \n"),
             Text(
               "1.0.1",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
