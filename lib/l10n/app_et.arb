@@ -489,7 +489,7 @@
     "legacy_warning_dialog_title": "Uuendatud versiooniks",
     "source_other_title": "Muu",
     "notification_settings_open_severity_explanation": "Ohutasemete olulisuse selgitus",
-    "notification_settings_description": "Järgnevas saad iga allika jaoks määrata ohutasemed, mille kohta soovid teavitusi saada.",
+    "notification_settings_description": "Järgnevas saad iga hoiatuste kategooria jaoks määrata ohutasemed, mille kohta soovid teavitusi saada. Üldine seadistus alati sürjutab kategooriakohased seadistused.",
     "warning_severity_explanation_dialog_severe_description": "Oluline oht elule ja varale. Võib mõjutada sinu tervist, sinu vara ja/või avalikku taristut.",
     "warning_severity_explanation_dialog_moderate_description": "Võimalik oht elule ja varale. Võib märgatavalt mõjutada tavalist igapäevast elu.",
     "warning_severity_explanation_dialog_minor_description": "Väike või olematu oht elule ja varale. Võib osaliselt mõjutada tavalist igapäevast elu.",
@@ -567,5 +567,11 @@
     "warning_addresses": "Aadressid",
     "warning_code": "Kood",
     "warning_note": "Märge",
-    "warning_incidents": "Intsidendid"
+    "warning_incidents": "Intsidendid",
+    "explanation_transport_text": "Ühistransporditeave ja info isikliku transpordi jaoks",
+    "explanation_rescue_text": "Teave päästmise ja taastamise kohta",
+    "notification_settings_show_advanced_settings_title": "Näita üksikasjalikke seadistusi",
+    "notification_settings_show_advanced_settings_subtitle": "Üksikasjalikes seadistustes saad määrata teavituste tasemeid iga kategooria kohta.",
+    "notification_settings_global_warning_level": "Üldseadistus",
+    "help_button_tooltip": "Abiteavet leiad meie viki lehelt."
 }
