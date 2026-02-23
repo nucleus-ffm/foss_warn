@@ -516,5 +516,7 @@
     "warning_addresses": "Adressen",
     "warning_code": "Code",
     "warning_note": "Notiz",
-    "warning_incidents": "Vorfälle"
+    "warning_incidents": "Vorfälle",
+    "notification_settings_global_warning_level": "Globale Einstellung",
+    "notification_settings_show_advanced_settings_title": "Erweiterte Einstellungen anzeigen"
 }
