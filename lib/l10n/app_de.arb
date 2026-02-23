@@ -202,7 +202,7 @@
     "warning_severity_explanation_dialog_moderate_description": "Eine Warnung vor einer möglichen Bedrohung von Leben oder Eigentum. Kann den normalen Tagesablauf stark beeinträchtigen.",
     "source_other_description": "Allgemeine Einstellung, die verwendet wird, wenn keine genauere Einstellung vorgenommen wurde.",
     "warning_severity_explanation_dialog_minor_description": "Minimale bis keine bekannte Bedrohung für Leben oder Eigentum. Kann den normalen Tagesablauf beeinträchtigen.",
-    "notification_settings_description": "Hier kannst du die Warnstufe für jede Quelle einstellen, für die du eine Warnung erhalten möchtest.",
+    "notification_settings_description": "Hier kannst du die Warnstufe für jede Alarmkategorie einstellen, für die du eine Warnung erhalten möchtest. Die globale Einstellung hat immer Vorrang vor der Einstellung pro Kategorie.",
     "source_other_title": "Sonstige",
     "warning_severity_explanation_dialog_extreme_description": "Außergewöhnliche Gefahr für Leben oder Eigentum. Kann kurzfristig erhebliche Auswirkungen auf Gesundheit, Eigentum und/oder öffentliche Infrastruktur haben.",
     "warning_severity_explanation_dialog_severe_description": "Erhebliche Gefahr für Leben oder Eigentum. Kann sich auf Gesundheit, Eigentum und/oder öffentliche Infrastruktur auswirken.",
@@ -518,5 +518,9 @@
     "warning_note": "Notiz",
     "warning_incidents": "Vorfälle",
     "notification_settings_global_warning_level": "Globale Einstellung",
-    "notification_settings_show_advanced_settings_title": "Erweiterte Einstellungen anzeigen"
+    "notification_settings_show_advanced_settings_title": "Erweiterte Einstellungen anzeigen",
+    "explanation_transport_text": "Informationen zu öffentlichen und privaten Verkehrsmitteln",
+    "explanation_rescue_text": "Informationen zu Rettung und Bergung",
+    "notification_settings_show_advanced_settings_subtitle": "Mit den erweiterten Benachrichtigungseinstellungen kannst du für jede Kategorie eine Warnstufe festlegen.",
+    "help_button_tooltip": "Hilfe findest du im Wiki."
 }
