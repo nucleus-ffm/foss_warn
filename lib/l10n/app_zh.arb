@@ -311,7 +311,7 @@
     "source_other_description": "没有做更多精确设置时使用的通用设置。",
     "source_other_title": "其他",
     "notification_settings_open_severity_explanation": "严重程度的解释",
-    "notification_settings_description": "可以在此设置你想接收警报的每个数据源的警告等级。",
+    "notification_settings_description": "可以在此设置想接收警告的每个警报类别的警告等级。全局设置始终覆盖每个类别的设置。",
     "warning_severity_explanation_dialog_severe_description": "对生命或财产的重大威胁。可能影响你的健康、财产和/或公共基础设施。",
     "warning_severity_explanation_dialog_moderate_description": "可能对生命或财产造成威胁的警报。可能严重扰乱正常日常惯例。",
     "warning_severity_explanation_dialog_minor_description": "对生命或财产只有很小的已知威胁或根本没有已知威胁。可能妨碍日常活动。",
@@ -566,5 +566,11 @@
     "warning_addresses": "地址",
     "warning_code": "代码",
     "warning_note": "附注",
-    "warning_incidents": "事件"
+    "warning_incidents": "事件",
+    "explanation_transport_text": "公共和私人交通的信息",
+    "explanation_rescue_text": "救援和恢复信息",
+    "notification_settings_show_advanced_settings_title": "显示高级设置",
+    "notification_settings_show_advanced_settings_subtitle": "高级通知设置可以为每个类别设置警告等级。",
+    "notification_settings_global_warning_level": "全局设置",
+    "help_button_tooltip": "在 wiki 中获取帮助。"
 }
