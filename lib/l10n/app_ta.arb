@@ -24,7 +24,7 @@
     "source_mowas_title": "மோவாச் (மட்டு எச்சரிக்கை அமைப்பு)",
     "source_mowas_description": "குடிமை பாதுகாப்பு மற்றும் பேரழிவு உதவி கூட்டாட்சி அலுவலகம் - பேரழிவுகளை எச்சரிக்கிறது",
     "source_biwapp_description": "பல நகராட்சிகளின் பிராந்திய எச்சரிக்கை மற்றும் செய்தி அமைப்பு - எச்சரிக்கிறது எ.கா. of: வெடிகுண்டு கண்டுபிடிப்பு, இரசாயன விபத்து, தீ, வெள்ளம், நிலச்சரிவு / பனிச்சரிவு, பெரிய சேத நிலைமை, கடுமையான வானிலை, போக்குவரத்து விபத்து, பாடம் ரத்து மற்றும் தொற்றுநோய்.",
-    "source_biwapp_title": "BWAPP (குடிமக்கள் செய்தி மற்றும் எச்சரிக்கை பயன்பாடு)",
+    "source_biwapp_title": "Biwapp (குடிமக்கள் செய்தி மற்றும் எச்சரிக்கை பயன்பாடு)",
     "status_source_status": "மூல நிலை",
     "status_server_not_reachable": "சேவையகம் அடைய முடியாது",
     "status_error_while_parsing": "பாகுபடுத்தும் போது பிழை",
@@ -84,7 +84,7 @@
     "source_other_description": "இன்னும் துல்லியமான அமைப்பு செய்யப்படாவிட்டால் பயன்படுத்தப்படும் பொதுவான அமைப்பு.",
     "source_other_title": "மற்றொன்று",
     "notification_settings_open_severity_explanation": "தீவிரத்தின் அளவு பற்றிய விளக்கங்கள்",
-    "notification_settings_description": "நீங்கள் ஒரு எச்சரிக்கையைப் பெற விரும்பும் ஒவ்வொரு மூலத்திற்கும் எச்சரிக்கை அளவை இங்கே அமைக்கலாம்.",
+    "notification_settings_description": "நீங்கள் எச்சரிக்கையைப் பெற விரும்பும் ஒவ்வொரு முன்னறிவிப்பு வகைக்கும் முன்னறிவிப்பு அளவை இங்கே அமைக்கலாம். உலகளாவிய அமைப்பு எப்பொழுதும் ஒவ்வொரு வகை அமைப்பை மீறும்.",
     "warning_severity_explanation_dialog_severe_description": "வாழ்க்கை அல்லது சொத்துக்கு குறிப்பிடத்தக்க அச்சுறுத்தல். உங்கள் உடல்நலம், சொத்து மற்றும்/அல்லது பொது உள்கட்டமைப்பை பாதிக்கலாம்.",
     "main_nav_bar_my_places": "என் இடங்கள்",
     "main_dot_menu_settings": "அமைப்புகள்",
@@ -156,7 +156,7 @@
     "about_privacy": "தனியுரிமை",
     "about_privacy_subtitle": "பயன்பாடு செய்யும் மற்றும் செய்யாத அனைத்தும்",
     "about_disclaimer": "மறுப்பு",
-    "about_disclaimer_subtitle": "ஃபோச் எச்சரிக்கை என்ன செய்ய முடியாது",
+    "about_disclaimer_subtitle": "FOSS Warn என்ன செய்ய முடியாது",
     "about_version": "பதிப்பு",
     "about_licence": "உரிமம்",
     "about_other_license": "பிற உரிமம்",
@@ -272,7 +272,7 @@
     "warning_source_title": "மூலம்",
     "warning_context_information": "சூழல் தகவல்:",
     "welcome_view_foss_server_selection_headline": "பொது முன்னறிவிப்பு சேவையகத்தைப் பயன்படுத்துங்கள்",
-    "welcome_view_foss_server_selection_text": "ஃபோச்வர்ன் இப்போது விழிப்பூட்டல்களைப் பெற FOSS பொது முன்னறிவிப்பு சேவையகத்தை (FPAS) பயன்படுத்துகிறது. இந்த சேவையகம் உலகில் அதிக எண்ணிக்கையிலான நாடுகளுக்கான அவசர எச்சரிக்கைகள் குறித்த புச் அறிவிப்புகளைப் பெற அனுமதிக்கிறது. இயல்புநிலை சேவையகம் KDE ஆல் இயக்கப்படுகிறது மற்றும் செர்மனியில் புரவலன் செய்யப்படுகிறது. அமைப்புகளில் தேர்ந்தெடுக்கப்பட்ட சேவையகத்தை மாற்றலாம் மற்றும் வேறு எந்த FPAS சேவையகத்தையும் பயன்படுத்தலாம். இந்த பதிப்பு FPAS ஆதரவுடன் ஃபோச்வர்னின் ஆல்பா சோதனை பதிப்பாகும். இந்த பதிப்பு இன்னும் தயாரிப்புக்கு தயாராக இல்லை.",
+    "welcome_view_foss_server_selection_text": "FOSSWarn இப்போது விழிப்பூட்டல்களைப் பெற FOSS பொது முன்னறிவிப்பு சேவையகத்தை (FPAS) பயன்படுத்துகிறது. இந்தச் சேவையகம் உலகின் பல நாடுகளுக்கு அவசர எச்சரிக்கைகள் பற்றிய அறிவிப்புகளைப் பெற அனுமதிக்கிறது. இயல்புநிலை சர்வர் KDE ஆல் இயக்கப்படுகிறது மற்றும் செர்மனியில் புரவலன் செய்யப்படுகிறது. நீங்கள் தேர்ந்தெடுத்த சேவையகத்தை அமைப்புகளில் மாற்றலாம் மற்றும் வேறு எந்த FPAS சேவையகத்தையும் பயன்படுத்தலாம்.",
     "welcome_view_foss_server_selection_select_instance_helptext": "FPAS பற்றி மேலும் அறிக",
     "welcome_view_permission_action": "இசைவு கோருங்கள்",
     "welcome_view_battery_optimisation_verifying": "பேட்டரி தேர்வுமுறை நிலையை சரிபார்க்கிறது ...",
@@ -455,5 +455,89 @@
     "@connection_error_fetching_new_alerts": {
         "description": "Displayed if there are no alerts and the app is still fetching new alerts"
     },
-    "add_my_place_with_map_select_area_size": "பகுதி அளவைத் தேர்ந்தெடுக்கவும்"
+    "add_my_place_with_map_select_area_size": "பகுதி அளவைத் தேர்ந்தெடுக்கவும்",
+    "settings_select_push_service_title": "புச் பணி",
+    "settings_select_push_service_subtitle": "நீங்கள் பயன்படுத்த விரும்பும் புச் சேவையைத் தேர்வு செய்யவும்.",
+    "settings_self_check_title": "தன்வய சரிபார்ப்பு",
+    "settings_self_check_subtitle": "அறிவிப்பு அமைப்பிற்கான தன்வய சரிபார்ப்பை இயக்கவும்",
+    "warning_reference": "குறிப்பு",
+    "warning_restriction": "கட்டுப்பாடு",
+    "warning_addresses": "முகவரிகள்",
+    "warning_code": "குறியீடு",
+    "warning_note": "குறிப்பு",
+    "warning_incidents": "சம்பவங்கள்",
+    "about_official_sources": "அதிகாரப்பூர்வ ஆதாரங்கள்",
+    "about_faq": "அடிக்கடி கேட்கப்படும் கேள்விகள்",
+    "connection_error_app_error_action": "மேலும் தகவலுக்கு இங்கே தட்டவும்",
+    "connection_error_subscription_expired_action": "மீண்டும் குழுசேர இங்கே தட்டவும்",
+    "connection_error_first_fetch": "புதிய விழிப்பூட்டல்களைப் பெறுகிறது...",
+    "connection_error_push_notification_setup_error": "புச் அறிவிப்புகளில் சிக்கல் கண்டறியப்பட்டது",
+    "connection_error_push_notification_setup_error_action": "மேலும் தகவலுக்கு இங்கே தட்டவும்",
+    "explanation_transport_text": "பொது மற்றும் தனியார் போக்குவரத்து பற்றிய தகவல்கள்",
+    "explanation_rescue_text": "மீட்பு மற்றும் மீட்பு பற்றிய தகவல்கள்",
+    "notification_settings_show_advanced_settings_title": "மேம்பட்ட அமைப்புகளைக் காட்டு",
+    "notification_settings_show_advanced_settings_subtitle": "மேம்பட்ட அறிவிப்பு அமைப்புகள் மூலம், ஒவ்வொரு வகைக்கும் முன்னறிவிப்பு அளவை அமைக்கலாம்.",
+    "notification_settings_global_warning_level": "உலகளாவிய அமைப்பு",
+    "notification_self_check_title": "அறிவிப்பு தன்வய சரிபார்ப்பு",
+    "notification_self_check_description": "FOSSWarn ஆல் அறிவிப்புகளைப் பெறுவதைத் தடுக்கக்கூடிய சிக்கல்களைக் கண்டறிய இது சோதனைகளை நடத்துகிறது. உதவி மற்றும் கூடுதல் தகவலுக்கு, விக்கியைப் பார்க்கவும்.",
+    "notification_self_check_wiki_link_instruction": "விக்கிக்கு",
+    "notification_self_check_notification_permission_title": "அறிவிப்பு இசைவு",
+    "notification_self_check_notification_permission_subtitle_passed": "FOSSWarn உங்களுக்கு அறிவிப்புகளை அனுப்ப அனுமதிக்கப்பட்டுள்ளது.",
+    "notification_self_check_notification_permission_subtitle_not_passed": "உங்களுக்கு அறிவிப்புகளை அனுப்ப FOSSWarnக்கு உங்கள் இசைவு தேவை. இசைவு கோர இங்கே அழுத்தவும்.",
+    "notification_self_check_notification_permission_unknown": "FOSSWarn அறிவிப்பு இசைவு நிலையைச் சரிபார்க்கிறது. தயவுசெய்து காத்திருக்கவும்.",
+    "notification_self_check_installed_distributors_title": "UnifiedPush விநியோகச்தர்",
+    "notification_self_check_installed_distributors_subtitle_passed": "கண்டுபிடிக்கப்பட்டது \n{key}",
+    "@notification_self_check_installed_distributors_subtitle_passed": {
+        "description": "The list of installed distributor ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_installed_distributors_subtitle_not_passed": "விநியோகச்தர் இல்லை. உங்கள் சாதனத்தில் குறைந்தபட்சம் ஒன்றை நிறுவவும்.",
+    "notification_self_check_installed_distributors_subtitle_unknown": "FOSSWarn உங்கள் சாதனத்தில் UnifiedPush விநியோகச்தர்களைத் தேடுகிறது. தயவுசெய்து காத்திருக்கவும்.",
+    "notification_self_check_selected_distributor_title": "தேர்ந்தெடுக்கப்பட்ட விநியோகச்தர்",
+    "notification_self_check_selected_distributor_subtitle_passed": "நீங்கள் தற்போது தேர்ந்தெடுத்த விநியோகச்தர் {key}",
+    "@notification_self_check_selected_distributor_subtitle_passed": {
+        "description": "The selected distributor ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_selected_distributor_subtitle_not_passed": "நீங்கள் ஒரு விநியோகச்தரை தேர்ந்தெடுக்கவில்லை. அமைப்புகளுக்குச் சென்று புச் சேவையைத் தேர்ந்தெடுக்கவும்.",
+    "notification_self_check_selected_distributor_subtitle_unknown": "நீங்கள் தேர்ந்தெடுத்த UnifiedPush விநியோகச்தரை FOSSWarn தேடுகிறது. தயவுசெய்து காத்திருக்கவும்.",
+    "notification_self_check_current_endpoint_title": "தற்போதைய இறுதிப்புள்ளி",
+    "notification_self_check_current_endpoint_subtitle_passed": "உங்கள் இறுதிப்புள்ளி {key}",
+    "@notification_self_check_current_endpoint_subtitle_passed": {
+        "description": "The current URL of the endpoint  ",
+        "placeholder": {
+            "key": {
+                "type": "String"
+            }
+        }
+    },
+    "notification_self_check_current_endpoint_subtitle_not_passed": "இறுதிப்புள்ளி இல்லை. புச் அறிவிப்புகளுக்கு நீங்கள் பதிவு செய்யப்படவில்லை.",
+    "notification_self_check_current_endpoint_subtitle_unknown": "FOSSWarn உங்கள் UnifiedPush இறுதிப் புள்ளியைத் தேடுகிறது.",
+    "notification_self_check_server_check_title": "சர்வர் சோதனை",
+    "notification_self_check_server_check_subtitle_passed": "இந்த சேவையகம் சிக்கல்களுக்கு அறியப்படவில்லை. இந்த சர்வரில் ஏதேனும் சிக்கல்கள் இருந்தால், எங்களுக்குத் தெரிவிக்கவும்.",
+    "notification_self_check_server_check_subtitle_not_passed": "இந்தச் சேவையகம் கடந்த காலத்தில் நம்பகத்தன்மையற்றதாக இருந்தது அல்லது வேறு சிக்கல்களைக் கொண்டிருந்தது. மற்றொரு சேவையகத்தைத் தேர்ந்தெடுக்க பரிந்துரைக்கிறோம். நீங்கள் இந்த சேவையகத்திற்கு குழுசேர முடியாமல் போகலாம் அல்லது அறிவிப்புகளைப் பெறாமல் இருக்கலாம்.",
+    "notification_self_check_server_check_subtitle_unknown": "FOSSWarn உங்கள் சர்வரை அறியப்பட்ட சிக்கல்களை சரிபார்க்கிறது.",
+    "notification_self_check_server_check_subtitle_action_suggested": "இந்த சர்வர் சரியாக இருக்கலாம், ஆனால் கடந்த காலத்தில் சில சிக்கல்கள் இருந்தன. நீங்கள் என்ன செய்கிறீர்கள் என்பது உங்களுக்குத் தெரிந்தால், நீங்கள் இன்னும் இந்த சேவையகத்தைப் பயன்படுத்தலாம்; இல்லையெனில், வேறு ஒன்றுக்கு மாற பரிந்துரைக்கிறோம்.",
+    "notification_self_check_test_subscription_title": "சோதனை சந்தா மற்றும் அறிவிப்பு",
+    "notification_self_check_test_subscription_subtitle_passed": "வெற்றிகரமாக சோதிக்கப்பட்டது, நீங்கள் அறிவிப்பைப் பார்க்க வேண்டும்.",
+    "notification_self_check_test_subscription_subtitle_not_passed": "FOSSwarn குழுசேரவோ அல்லது உங்களுக்கு அறிவிப்பை அனுப்பவோ முடியவில்லை. உங்கள் அமைப்பை மீண்டும் சரிபார்க்கவும்.",
+    "notification_self_check_test_subscription_subtitle_unknown": "FOSSWarn குழுசேர்ந்து புச் அறிவிப்பைப் பெற முயற்சிக்கிறது.",
+    "notification_self_check_notification_check_title": "அறிவிப்பு சரிபார்ப்பு",
+    "notification_self_check_notification_check_subtitle_passed": "அறிவிப்பு வெற்றிகரமாகப் பெறப்பட்டது",
+    "notification_self_check_notification_check_subtitle_not_passed": "அறிவிப்பு வரவில்லை. உங்கள் அமைப்பை மீண்டும் சரிபார்க்கவும்.",
+    "notification_self_check_notification_check_subtitle_unknown": "புதிய அறிவிப்புக்காகக் காத்திருக்கிறது.",
+    "change_unified_push_distributor_dialog_title": "UnifiedPush விநியோகச்தரை மாற்றவும்",
+    "change_unified_push_distributor_dialog_body": "FOSSWarn பயன்படுத்த வேண்டிய UnifiedPush விநியோகச்தரைத் தேர்ந்தெடுக்கவும்.",
+    "change_unified_push_distributor_dialog_body_no_distributor_found": "விநியோகச்தர் இல்லை",
+    "change_unified_push_distributor_dialog_loading_screen_change_distributor": "விநியோகச்தரை மாற்றுதல். தயவுசெய்து காத்திருங்கள்...",
+    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "புதிய விநியோகச்தருக்கான பதிவு நேரம் முடிந்ததால் தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.",
+    "help_button_tooltip": "விக்கியில் உதவி பெறவும்."
 }
