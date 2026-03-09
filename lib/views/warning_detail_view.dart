@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_area.dart';
@@ -451,6 +452,15 @@ class _Tags extends ConsumerWidget {
                     color: Colors.cyanAccent,
                     eventType: localizations.warning_incidents,
                     info: alert.incidents ?? "None",
+                  ),
+                  _TagButton(
+                    color: Colors.teal,
+                    eventType: "FPAS ID",
+                    info: alert.fpasId,
+                    action: () {
+                      Clipboard.setData(ClipboardData(text: alert.fpasId));
+                      return const SizedBox();
+                    },
                   ),
                 ],
               ),
