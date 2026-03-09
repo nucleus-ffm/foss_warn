@@ -139,11 +139,10 @@ class NotificationService {
 
   Future<bool?> requestAlarmPermission() async {
     final androidNotificationPlugin =
-    _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+        _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
     if (androidNotificationPlugin != null) {
       // Request notifications permission (Android 13+)
-      print("Request Alarm permission");
       return await androidNotificationPlugin.requestExactAlarmsPermission();
     } else {
       return null;
@@ -166,8 +165,6 @@ class NotificationService {
         .add("de.nucleus.foss_warn.notifications_severe");
     currentNotificationChannelIds
         .add("de.nucleus.foss_warn.notifications_extreme");
-    currentNotificationChannelIds
-        .add("de.nucleus.foss_warn.notifications_state");
     currentNotificationChannelIds
         .add("de.nucleus.foss_warn.notifications_other");
     currentNotificationChannelIds
