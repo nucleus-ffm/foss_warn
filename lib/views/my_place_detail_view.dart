@@ -10,13 +10,13 @@ import '../widgets/warning_widget.dart';
 //@todo rename to MyPlacesDetailView
 class MyPlaceDetailScreen extends ConsumerWidget {
   const MyPlaceDetailScreen({
-    required this.placeSubscriptionId,
+    required this.placeId,
     required this.onAlertPressed,
     required this.onAlertUpdateThreadPressed,
     super.key,
   });
 
-  final String placeSubscriptionId;
+  final String placeId;
   final void Function(String alertId, String subscriptionId) onAlertPressed;
   final void Function() onAlertUpdateThreadPressed;
 
@@ -28,7 +28,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     var place = ref.read(
       myPlacesProvider.select(
         (value) => value.firstWhere(
-          (element) => element.subscriptionId == placeSubscriptionId,
+          (element) => element.id == placeId,
         ),
       ),
     );
@@ -36,7 +36,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     var warnings = ref.watch(
       processedAlertsProvider.select(
         (warnings) => warnings.where(
-          (warning) => warning.placeSubscriptionId == place.subscriptionId,
+          (warning) => warning.placeId == place.id,
         ),
       ),
     );

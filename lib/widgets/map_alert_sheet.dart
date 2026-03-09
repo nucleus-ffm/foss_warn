@@ -42,15 +42,17 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
         coordinates.longitude + areaSelectionRadius,
       ),
     );
-    List<AlertApiResult> results =
-        await alertApi.getAlertsForArea(boundingBox: boundingBox);
+    List<AlertApiResult> results = await alertApi.getAlertsForArea(
+      placeId: constants.noPlaceId,
+      boundingBox: boundingBox,
+    );
     if (results != []) {
       alerts = await Future.wait(
         [
           for (var alert in results) ...[
             alertApi.getAlertDetail(
               alertId: alert.alertId,
-              placeSubscriptionId: constants.noSubscriptionId,
+              placeId: constants.noPlaceId,
             ),
           ],
         ],
@@ -146,7 +148,7 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
       var alerts = widget.ref.read(processedAlertsProvider);
       List<WarnMessage> alertsToDelete = [];
       for (WarnMessage alert in alerts) {
-        if (alert.placeSubscriptionId == constants.noSubscriptionId) {
+        if (alert.placeId == constants.noPlaceId) {
           alertsToDelete.add(alert);
         }
       }

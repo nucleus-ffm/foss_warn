@@ -112,11 +112,11 @@ final routesProvider = Provider<GoRouter>(
               GoRoute(
                 path: ':id',
                 builder: (context, state) {
-                  String placeSubscriptionId = state.pathParameters["id"]!;
+                  String placeId = state.pathParameters["id"]!;
                   return MyPlaceDetailScreen(
-                    placeSubscriptionId: placeSubscriptionId,
-                    onAlertPressed: (String alertId, String subscriptionId) =>
-                        context.push('/alerts/$alertId/$subscriptionId'),
+                    placeId: placeId,
+                    onAlertPressed: (String alertId, String placeId) =>
+                        context.push('/alerts/$alertId/$placeId'),
                     onAlertUpdateThreadPressed: () =>
                         context.push('/alerts/update/'),
                   );

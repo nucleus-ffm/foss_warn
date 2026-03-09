@@ -2,6 +2,7 @@ import 'package:foss_warn/class/class_bounding_box.dart';
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 
 import '../class/class_app_state.dart';
+import '../class/class_fpas_place.dart';
 import '../class/class_warn_message.dart';
 
 /// Indicates the server was unable to be reached
@@ -31,7 +32,7 @@ class InvalidSubscriptionError implements Exception {}
 // Thrown when the requested alert is not available on the server anymore
 class AlertUnavailableError implements Exception {}
 
-typedef AlertApiResult = ({String subscriptionId, String alertId});
+typedef AlertApiResult = ({String placeId, String alertId});
 
 typedef SubscriptionApiResult = ({
   String subscriptionId,
@@ -101,7 +102,8 @@ abstract class AlertAPI {
   /// Throws an [InvalidSubscriptionError] if the subscription is not valid
   ///
   /// Throws an [UndefinedServerError] if the server responded in an unexpected way
-  Future<List<AlertApiResult>> getAlerts({
+  Future<List<AlertApiResult>> getAlertsForSubscription({
+    required String placeId,
     required String subscriptionId,
     required AppState appState,
   });
@@ -114,6 +116,7 @@ abstract class AlertAPI {
   ///
   /// Throws an [UndefinedServerError] if the server responded in an unexpected way
   Future<List<AlertApiResult>> getAlertsForArea({
+    required String placeId,
     required BoundingBox boundingBox,
   });
 
@@ -137,7 +140,7 @@ abstract class AlertAPI {
   /// Returns a [WarnMessage] containing the detail of the alert.
   Future<WarnMessage> getAlertDetail({
     required String alertId,
-    required String placeSubscriptionId,
+    required String placeId,
   });
 
   /// Update the subscriptions at every app startup to prevent the given subscription to be deleted.

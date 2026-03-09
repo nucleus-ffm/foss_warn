@@ -74,7 +74,7 @@ Future<void> newAlertNotification(
     if (addedAlertId != null) {
       WarnMessage alert = await ref.read(alertApiProvider).getAlertDetail(
             alertId: addedAlertId,
-            placeSubscriptionId: "Not used",
+            placeId: "Not used",
           );
       if (NotificationPreferences.checkIfEventShouldBeNotified(
         alert.info[0].severity,

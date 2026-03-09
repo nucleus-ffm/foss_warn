@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
@@ -24,22 +25,29 @@ class DeletePlaceDialog extends ConsumerWidget {
 
       // Unsubscribe from server
       debugPrint("unregister from server for place ${myPlace.name}");
-      try {
-        await alertApi.unregisterArea(
-          subscriptionId: myPlace.subscriptionId,
-        );
+      if (myPlace.subscriptionId == null) {
         ref.read(myPlacesProvider.notifier).remove(myPlace);
-      } on UnregisterAreaError {
-        // we currently can not unsubscribe - show a snack bar to inform the
-        // user to check their internet connection
-        final snackBar = SnackBar(
-          content: Text(
-            localizations.delete_place_error,
-            style: TextStyle(color: theme.colorScheme.onErrorContainer),
-          ),
-          backgroundColor: theme.colorScheme.errorContainer,
-        );
-        scaffoldMessenger.showSnackBar(snackBar);
+      } else {
+        var appSate = ref.read(appStateProvider.notifier);
+        appSate.setReSubscriptionInProgress(true);
+        try {
+          await alertApi.unregisterArea(
+            subscriptionId: myPlace.subscriptionId!,
+          );
+          ref.read(myPlacesProvider.notifier).remove(myPlace);
+        } on UnregisterAreaError {
+          // we currently can not unsubscribe - show a snack bar to inform the
+          // user to check their internet connection
+          final snackBar = SnackBar(
+            content: Text(
+              localizations.delete_place_error,
+              style: TextStyle(color: theme.colorScheme.onErrorContainer),
+            ),
+            backgroundColor: theme.colorScheme.errorContainer,
+          );
+          scaffoldMessenger.showSnackBar(snackBar);
+        }
+        appSate.setReSubscriptionInProgress(false);
       }
 
       if (!context.mounted) return;

@@ -38,7 +38,7 @@ class WarningsView extends ConsumerWidget {
         children: [
           for (var place in places) ...[
             for (var warning in processedAlerts.where(
-              (warning) => warning.placeSubscriptionId == place.subscriptionId,
+              (warning) => warning.placeId == place.id,
             )) ...[
               WarningWidget(
                 place: place,
