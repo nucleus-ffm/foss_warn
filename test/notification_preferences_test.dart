@@ -51,6 +51,7 @@ void main() {
       cachedAlerts: [],
       showDebugNotification: false,
       showUpdateDialog: false,
+      locationTracking: false,
       alertService: AlertService.push,
       alertArchive: false,
     );

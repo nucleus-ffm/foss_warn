@@ -157,6 +157,7 @@ final userPreferencesProvider =
       showUpdateDialog: preferences.getBool("showUpdateDialog") ?? false,
       locationTracking: preferences.getBool("locationTracking") ?? false,
       alertService: AlertService.values[alertService],
+      alertArchive: preferences.getBool("alertArchive") ?? false,
     ),
     sharedPreferences: preferences,
   );
@@ -361,6 +362,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     var indexService = AlertService.values.indexOf(service);
     await _sharedPreferences.setInt("alertService", indexService);
   }
+
+  Future<void> setAlertArchive(bool value) async {
+    state = state.copyWith(alertArchive: value);
+    await _sharedPreferences.setBool("alertArchive", value);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -398,6 +404,7 @@ class UserPreferences {
     required this.showUpdateDialog,
     required this.locationTracking,
     required this.alertService,
+    required this.alertArchive,
   });
 
   final bool shouldNotifyGeneral;
@@ -433,6 +440,7 @@ class UserPreferences {
   final bool showUpdateDialog;
   final bool locationTracking;
   final AlertService alertService;
+  final bool alertArchive;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -478,6 +486,7 @@ class UserPreferences {
     bool? showUpdateDialog,
     bool? locationTracking,
     AlertService? alertService,
+    bool? alertArchive,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -526,10 +535,12 @@ class UserPreferences {
         showUpdateDialog: showUpdateDialog ?? this.showUpdateDialog,
         locationTracking: locationTracking ?? this.locationTracking,
         alertService: alertService ?? this.alertService,
+        alertArchive: alertArchive ?? this.alertArchive,
       );
 
   /// the path and filename where the error log is saved
   static const String errorLogPath = "errorLog.txt";
+  static const String alertArchivePath = "alertArchive.txt";
 
   /// Dark mode colors for the map.
   /// invert(100%), hue-rotate(180deg), brightness(95%), contrast(90%)

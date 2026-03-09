@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_alarm_manager.dart';
+import 'package:foss_warn/class/class_app_state.dart';
+import 'package:foss_warn/class/class_location_tracker.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
@@ -165,7 +168,7 @@ class _SettingsState extends ConsumerState<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                localizations.settings_location_settings,
+                "${localizations.settings_location_settings} - Experimental",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -174,18 +177,36 @@ class _SettingsState extends ConsumerState<Settings> {
               ),
             ),
             ListTile(
-              title: Text("Legacy polling for alerts"),
-              subtitle: Text("This enables the old polling for alerts. "
-                  "This allows to not use any push notification setup. If this options is enabled and a push config is provided, "
-                  "FOSSWarn will use both. This can be useful if you have troubles with unreliable push notifications."),
+              title: Text(localizations.settings_location_tracking_title),
+              subtitle: Text(localizations.settings_location_tracking_subtitle),
               trailing: Switch(
-                value: userPreferences.legacyPolling,
+                value: userPreferences.locationTracking,
                 onChanged: (value) async {
-                  userPreferencesService.setLegacyPolling(value);
-                  if(value) {
-                    AlarmManager().initialize();
+                  if (value) {
+                    bool result =
+                        await LocationTracker.checkLocationPermission(context);
+                    // only update the settings, if the enabling the location tracking
+                    // was successful
+                    if (result) {
+                      userPreferencesService.setLocationTracking(value);
+                    }
+                    if (!context.mounted) return;
+                    var locationTracker = ref.read(locationTrackerProvider);
+                    locationTracker.init(context);
+                    locationTracker.subscribeForCurrentLocation();
+                    AlarmManager.requestAlarmPermission();
+                    AlarmManager.registerBackgroundLocationTask();
                   } else {
-                    AlarmManager().cancelBackgroundTask();
+                    ref
+                        .read(appStateProvider.notifier)
+                        .setReSubscriptionInProgress(true);
+                    userPreferencesService.setLocationTracking(value);
+                    var locationTracker = ref.read(locationTrackerProvider);
+                    await locationTracker.removeCurrentLocationSubscription();
+                    ref
+                        .read(appStateProvider.notifier)
+                        .setReSubscriptionInProgress(false);
+                    AlarmManager.cancelBackgroundLocationTask();
                   }
                 },
               ),
