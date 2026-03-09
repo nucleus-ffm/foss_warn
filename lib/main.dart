@@ -51,6 +51,11 @@ class FOSSWarn extends ConsumerWidget {
           .select((preferences) => preferences.selectedDarkTheme),
     );
 
+    // add English as first entry to the supported locals to force English as
+    // fallback if no other language is supported on the device
+    List<Locale> supportedLocals = [const Locale("en")];
+    supportedLocals.addAll(AppLocalizations.supportedLocales);
+
     return MaterialApp.router(
       title: 'FOSS Warn',
       theme: selectedLightTheme,
@@ -59,7 +64,7 @@ class FOSSWarn extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: routes,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      supportedLocales: supportedLocals,
     );
   }
 }
