@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
+import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
 import 'package:latlong2/latlong.dart';
@@ -44,6 +46,7 @@ class _NotificationSelfCheckState
   SelfCheckState selectedDistributorState = SelfCheckState.unknown;
   SelfCheckState subscriptionState = SelfCheckState.unknown;
   SelfCheckState notificationState = SelfCheckState.unknown;
+  SelfCheckState exactAlarmPermissionState = SelfCheckState.unknown;
 
   List<Map<String, String>>? distributorList;
   String? selectedDistributor;
@@ -100,13 +103,13 @@ class _NotificationSelfCheckState
     StringBuffer result = StringBuffer();
     for (Map<String, String> distributor in distributorList!) {
       result.writeAll(
-        [distributor["name"], " (", distributor["distributor"], ")", "\n"],
+        [distributor["name"], " (", distributor["distributor"], ")", "\n "],
       );
     }
     return result.toString();
   }
 
-  /// check the selected endpoint for unifiedpush and
+  /// check the selected endpoint for unifiedPush and
   /// store the endpoint the the endpoint var
   Future<SelfCheckState> checkSelectedEndpoint() async {
     var userPreferences = ref.read(userPreferencesProvider);
@@ -161,7 +164,7 @@ class _NotificationSelfCheckState
 
     String testAlertPlaceName = "Test subscription";
     var api = ref.read(alertApiProvider);
-    String confirmationId = "";
+    String? confirmationId = "";
     try {
       confirmationId = await subscribeForArea(
         // FPAS publishes its test alerts for Point Nemo as
@@ -196,13 +199,16 @@ class _NotificationSelfCheckState
     }
 
     bool successfullyNotification =
-        await NotificationService.isNotificationActive(confirmationId.hashCode);
+        await NotificationService.isNotificationActive(
+      confirmationId.hashCode,
+    ); //@TODO check if this could be an issue
     notificationState = successfullyNotification
         ? SelfCheckState.passed
         : SelfCheckState.notPassed;
 
     // @TODO (Nucleus): An useful addition would be to check if the notification arrived and let the user click on the notification
 
+    ref.read(appStateProvider.notifier).setReSubscriptionInProgress(true);
     // remove subscription
     var places = ref.read(myPlacesProvider.notifier);
     Place? place = places.places.firstWhereOrNull(
@@ -211,7 +217,7 @@ class _NotificationSelfCheckState
     if (place != null) {
       try {
         await api.unregisterArea(
-          subscriptionId: place.subscriptionId,
+          subscriptionId: place.subscriptionId!,
         );
         places.remove(place);
         debugPrint("[NotificationSelfCheck] Place successfully removed");
@@ -223,6 +229,7 @@ class _NotificationSelfCheckState
         );
       }
     }
+    ref.read(appStateProvider.notifier).setReSubscriptionInProgress(false);
 
     return (
       subscriptionState: SelfCheckState.passed,
@@ -230,6 +237,11 @@ class _NotificationSelfCheckState
           ? SelfCheckState.passed
           : SelfCheckState.notPassed
     );
+  }
+
+  Future<SelfCheckState> checkAlarmPermission() async {
+    bool granted = await Permission.scheduleExactAlarm.status.isGranted;
+    return granted ? SelfCheckState.passed : SelfCheckState.notPassed;
   }
 
   // run several self checks to detect problems
@@ -263,6 +275,8 @@ class _NotificationSelfCheckState
     notificationState = subscriptionTestResult.notificationState;
     if (!mounted) return;
     setState(() {});
+    exactAlarmPermissionState = await checkAlarmPermission();
+    setState(() {});
   }
 
   @override
@@ -277,6 +291,7 @@ class _NotificationSelfCheckState
   @override
   Widget build(BuildContext context) {
     var localizations = context.localizations;
+    var userPreferences = ref.read(userPreferencesProvider);
 
     /// build one list tile for one check
     ListTile buildCheckListTile({
@@ -445,6 +460,22 @@ class _NotificationSelfCheckState
                   .notification_self_check_notification_check_subtitle_unknown,
               subtitleActionSuggested: "",
             ),
+            // only display this check if polling is selected
+            userPreferences.alertService == AlertService.poll ||
+                    userPreferences.alertService == AlertService.pushAndPoll
+                ? buildCheckListTile(
+                    title: localizations
+                        .notification_self_check_exact_alarm_permission_check_title,
+                    state: exactAlarmPermissionState,
+                    subtitlePassed: localizations
+                        .notification_self_check_exact_alarm_permission_check_subtitle_passed,
+                    subtitleNotPassed: localizations
+                        .notification_self_check_exact_alarm_permission_check_subtitle_not_passed,
+                    subtitleUnknown: localizations
+                        .notification_self_check_exact_alarm_permission_check_subtitle_unknown,
+                    subtitleActionSuggested: "",
+                  )
+                : const SizedBox(),
           ],
         ),
       ),
