@@ -14,6 +14,7 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/subscription_handler.dart';
+import 'package:foss_warn/widgets/dialogs/confirm_no_push_subscription.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -164,6 +165,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
   }
 
   /// calculate a bounding box on the map with the Haversine formula
+  /// @TODO migrate that to the BoundingBox class
   List<LatLng> calculateSquareCoordinates(
     LatLng center,
     double radius,
@@ -513,20 +515,45 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                           onPressed: () async {
                             if (_selectedPlaceName != "" &&
                                 selectedPlacePolygon != null) {
-                              try {
-                                await subscribeForArea(
-                                  boundingBox: boundingBox,
-                                  selectedPlaceName: _selectedPlaceName,
+                              if (!ref
+                                  .read(userPreferencesProvider)
+                                  .unifiedPushRegistered) {
+                                // ask if the user really wants to subscribe without push notifications
+
+                                bool result = await showDialog(
                                   context: context,
-                                  ref: ref,
+                                  builder: (BuildContext context) {
+                                    return const ConfirmNoPushDialog();
+                                  },
                                 );
+                                if (!context.mounted) return;
+                                if (result) {
+                                  await subscribeForArea(
+                                    boundingBox: boundingBox,
+                                    selectedPlaceName: _selectedPlaceName,
+                                    context: context,
+                                    ref: ref,
+                                    noPushNotification: true,
+                                  );
+                                }
                                 widget.onPlaceAdded();
-                              } on RegisterAreaError {
-                                // subscription failed
-                              } on UnifiedPushRegistrationTimeoutError {
-                                // subscription failed
-                              } on SocketException {
-                                // subscription failed
+                              } else {
+                                // subscribe normally with push notifications
+                                try {
+                                  await subscribeForArea(
+                                    boundingBox: boundingBox,
+                                    selectedPlaceName: _selectedPlaceName,
+                                    context: context,
+                                    ref: ref,
+                                  );
+                                  widget.onPlaceAdded();
+                                } on RegisterAreaError {
+                                  // subscription failed
+                                } on UnifiedPushRegistrationTimeoutError {
+                                  // subscription failed
+                                } on SocketException {
+                                  // subscription failed
+                                }
                               }
                             } else {
                               debugPrint(
