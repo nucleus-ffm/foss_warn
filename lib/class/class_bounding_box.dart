@@ -23,14 +23,8 @@ class BoundingBox {
 
     /// create new warnMessage objects from saved data
     return BoundingBox(
-      minLatLng: LatLng( //@TODO(Nucleus) why not using LatLng.fromJson()?
-        minLatLng['coordinates']![1],
-        minLatLng['coordinates']![0],
-      ), //@todo
-      maxLatLng: LatLng(
-        maxLatLng['coordinates']![1],
-        maxLatLng['coordinates']![0],
-      ),
+      minLatLng: LatLng.fromJson(minLatLng),
+      maxLatLng: LatLng.fromJson(maxLatLng),
     );
   }
 
