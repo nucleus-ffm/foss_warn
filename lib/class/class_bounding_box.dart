@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -71,5 +73,32 @@ class BoundingBox {
   String toString() {
     return "min lat/lng ${minLatLng.latitude}, ${minLatLng.longitude}, "
         "max lat/lng ${maxLatLng.latitude}, ${maxLatLng.longitude}";
+  }
+
+  /// calculate a bounding box on the map with the Haversine formula
+  static BoundingBox buildAroundCenterPoint(
+    LatLng center,
+    double radius,
+    int numEdge,
+  ) {
+    double earthRadius = 6371; // Earth's radius in km
+
+    double lat = center.latitude;
+    double lon = center.longitude;
+
+    double north = lat + (radius / earthRadius) * (180 / pi);
+    double south = lat - (radius / earthRadius) * (180 / pi);
+    double east =
+        lon + (radius / earthRadius) * (180 / pi) / cos(lat * pi / 180);
+    double west =
+        lon - (radius / earthRadius) * (180 / pi) / cos(lat * pi / 180);
+
+    LatLng northEast = LatLng(north, east);
+    LatLng southWest = LatLng(south, west);
+
+    return BoundingBox(
+      minLatLng: southWest,
+      maxLatLng: northEast,
+    );
   }
 }

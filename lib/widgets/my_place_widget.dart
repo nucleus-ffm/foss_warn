@@ -79,7 +79,10 @@ class MyPlaceWidget extends ConsumerWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            place.name,
+                            place.isForCurrentLocation != null &&
+                                    place.isForCurrentLocation!
+                                ? localizations.location_tracking_place_name
+                                : place.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

@@ -8,6 +8,7 @@ class Place {
   BoundingBox boundingBox;
   String? subscriptionId;
   bool isExpired;
+  bool? isForCurrentLocation;
 
   Place({
     required this.id,
@@ -16,9 +17,11 @@ class Place {
     this.subscriptionId,
     String? eTag,
     bool? isExpired,
+    bool? isForCurrentLocation,
   })  : _name = name,
         eTag = eTag ?? "",
-        isExpired = isExpired ?? false;
+        isExpired = isExpired ?? false,
+        isForCurrentLocation = isForCurrentLocation ?? false;
 
   Place copyWith({
     String? name,
@@ -26,6 +29,7 @@ class Place {
     BoundingBox? boundingBox,
     String? subscriptionId,
     bool? isExpired,
+    bool? isForCurrentLocation,
   }) =>
       Place(
         id: id,
@@ -34,6 +38,7 @@ class Place {
         boundingBox: boundingBox ?? this.boundingBox,
         subscriptionId: subscriptionId ?? this.subscriptionId,
         isExpired: isExpired ?? this.isExpired,
+        isForCurrentLocation: isForCurrentLocation ?? this.isForCurrentLocation,
       );
 
   String get name => _name;
@@ -46,6 +51,7 @@ class Place {
       subscriptionId: json['subscriptionId'] as String?,
       eTag: (json['eTag'] ?? "") as String,
       isExpired: (json['isExpired'] as bool?) ?? false,
+      isForCurrentLocation: (json['isForCurrentLocation'] as bool?) ?? false,
     );
   }
 
@@ -57,6 +63,7 @@ class Place {
       'subscriptionId': subscriptionId,
       'eTag': eTag,
       'isExpired': isExpired,
+      'isForCurrentLocation': isForCurrentLocation,
     };
   }
 

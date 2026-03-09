@@ -44,6 +44,7 @@ dependencies:
   permission_handler: ^12.0.1
   permission_handler_android: ^13.0.1
   permission_handler_platform_interface: ^4.3.0
+  geolocator: ^14.0.2
 
 dev_dependencies:
   flutter_test:

@@ -68,6 +68,14 @@ Future<void> backgroundPollingCallback() async {
     "Background update has finished at $now",
   );
 }
+
+/// callback task for updating the current location
+// avoids issues in release mode on Flutter >= 3.3.0
+@pragma('vm:entry-point', true)
+Future<void> backgroundLocationUpdateCallback() async {
+  final container = ProviderContainer();
+  var locationTracker = container.read(locationTrackerProvider);
+  locationTracker.subscribeForCurrentLocation();
 }
 
 @pragma('vm:entry-point', true)
@@ -102,10 +110,33 @@ class AlarmManager {
     debugPrint("AlarmManager notification successfully started");
   }
 
-  Future<void> cancelBackgroundTask() async {
+  /// creates a new background task to call the APIs
+  static Future<void> registerBackgroundLocationTask() async {
     if (!Platform.isAndroid) return;
-    await AndroidAlarmManager.cancel(1);
-    debugPrint("AlarmManager canceled");
+    await AndroidAlarmManager.periodic(
+      // @TODO in a future version we can let the user decide for the update periode
+      const Duration(hours: 1, minutes: 30),
+      constants.alarmManagerTaskIdLocation,
+      backgroundLocationUpdateCallback,
+      exact: false,
+      rescheduleOnReboot: true,
+      allowWhileIdle: true,
+      wakeup: true,
+    );
+    debugPrint("AlarmManager task location successfully started");
+  }
+
+  /// cancel the periodic task
+  static Future<void> cancelBackgroundPollingTask() async {
+    if (!Platform.isAndroid) return;
+    await AndroidAlarmManager.cancel(constants.alarmManagerTaskIdPolling);
+    debugPrint("AlarmManager polling task canceled");
+  }
+
+  static Future<void> cancelBackgroundLocationTask() async {
+    if (!Platform.isAndroid) return;
+    await AndroidAlarmManager.cancel(constants.alarmManagerTaskIdLocation);
+    debugPrint("AlarmManager location task canceled");
   }
 
   /// request alarm permission and return the state afterwards
