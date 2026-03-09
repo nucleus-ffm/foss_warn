@@ -44,22 +44,6 @@ class _NoUPDistributorFoundDialogState
                 ),
               ],
             ),
-            Row(
-              children: [
-                const Icon(Icons.open_in_browser),
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: TextButton(
-                    onPressed: () => launchUrlInBrowser(
-                      'https://f-droid.org/de/packages/io.heckel.ntfy/',
-                    ),
-                    child: Text(
-                      localizations.no_up_distributor_found_direct_link_to_ntfy,
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
