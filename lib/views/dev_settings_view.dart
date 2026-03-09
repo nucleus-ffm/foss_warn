@@ -18,6 +18,7 @@ import '../services/api_handler.dart';
 import '../services/list_handler.dart';
 import '../services/subscription_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
+import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 
 class DevSettings extends ConsumerStatefulWidget {
@@ -255,7 +256,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                       if (place != null) {
                         try {
                           await api.unregisterArea(
-                            subscriptionId: place.subscriptionId,
+                            subscriptionId: place.subscriptionId!,
                           );
                           await places.remove(place);
                           userPreferencesService
@@ -296,6 +297,18 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     );
                   },
                 ),
+              ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title:
+                    Text(localizations.dev_settings_troubleshoot_notifications),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        const NotificationTroubleshootDialog(),
+                  );
+                },
               ),
             ],
           ),
