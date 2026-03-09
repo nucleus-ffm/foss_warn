@@ -89,7 +89,7 @@ class WarningWidget extends ConsumerWidget {
       child: InkWell(
         onTap: () => onAlertPressed(
           _warnMessage.fpasId,
-          _warnMessage.placeSubscriptionId,
+          _warnMessage.placeId,
         ),
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -193,7 +193,7 @@ class WarningWidget extends ConsumerWidget {
                   IconButton(
                     onPressed: () => onAlertPressed(
                       _warnMessage.fpasId,
-                      _warnMessage.placeSubscriptionId,
+                      _warnMessage.placeId,
                     ),
                     icon: const Icon(Icons.read_more),
                   ),

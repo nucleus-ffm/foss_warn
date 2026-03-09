@@ -81,7 +81,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
       var warning = ref.read(processedAlertsProvider).firstWhere(
             (alert) =>
                 alert.fpasId == widget.warningFPASIdentifer &&
-                alert.placeSubscriptionId == widget.subscriptionId,
+                alert.placeId == widget.subscriptionId,
           );
 
       // update the read state of the alert

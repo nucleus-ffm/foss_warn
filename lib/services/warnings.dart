@@ -45,7 +45,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   List<AlertApiResult> retrievedAlerts;
 
   /// fetch alerts for one place and catch invalid subscriptions errors
-  Future<List<({String alertId, String subscriptionId})>> getAlertForOnePlace(
+  Future<List<AlertApiResult>> getAlertForOnePlace(
     Place place,
     AppState appState,
   ) async {
@@ -56,7 +56,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
 
     try {
       return await alertApi.getAlerts(
-        subscriptionId: place.subscriptionId,
+        place: place,
         appState: appState,
       );
     } on InvalidSubscriptionError {
@@ -69,7 +69,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   }
 
   try {
-    List<List<({String alertId, String subscriptionId})>> alertsForPlaces =
+    List<List<({String alertId, String placeId})>> alertsForPlaces =
         await Future.wait([
       for (var place in places) ...[
         getAlertForOnePlace(place, ref.read(appStateProvider)),
@@ -91,8 +91,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   for (AlertApiResult alert in retrievedAlerts) {
     if (!previouslyCachedAlerts.any(
       (oldAlert) =>
-          oldAlert.fpasId == alert.alertId &&
-          oldAlert.placeSubscriptionId == alert.subscriptionId,
+          oldAlert.fpasId == alert.alertId && oldAlert.placeId == alert.placeId,
     )) {
       newAlerts.add(alert);
     }
@@ -104,8 +103,9 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     [
       for (var alert in newAlerts) ...[
         alertApi.getAlertDetail(
+          //@TODO we need to call another method for places without subscription
           alertId: alert.alertId,
-          placeSubscriptionId: alert.subscriptionId,
+          placeId: alert.placeId,
         ),
       ],
     ],
@@ -118,6 +118,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
       newAlertsDetails = value;
     },
     onError: (exception) {
+      //@TODO this on error call returns something wrong
       ErrorLogger.writeErrorLog(
         "warnings.dart",
         "Get new alert details",
@@ -126,7 +127,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
 
       var appStateService = ref.read(appStateProvider.notifier);
       appStateService.setError(true);
-      return [];
+      return "";
     },
   ).catchError((exception) {
     ErrorLogger.writeErrorLog(
@@ -153,10 +154,9 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     if (!retrievedAlerts.any(
           (apiResult) =>
               alert.fpasId == apiResult.alertId &&
-              alert.placeSubscriptionId == apiResult.subscriptionId,
+              alert.placeId == apiResult.placeId,
         ) &&
-        // this check is to allow adding alerts from the map view
-        alert.placeSubscriptionId != constants.noSubscriptionId) {
+        alert.placeId != constants.noPlaceId) {
       // the alert is not in the server response anymore, remove cached alert
       ref.read(processedAlertsProvider.notifier).deleteAlert(alert);
     }
@@ -280,7 +280,7 @@ void showNotification(
 
   for (WarnMessage warning in alerts) {
     var place = places.firstWhere(
-      (place) => place.subscriptionId == warning.placeSubscriptionId,
+      (place) => place.subscriptionId == warning.placeId,
     );
 
     if ((!warning.read &&

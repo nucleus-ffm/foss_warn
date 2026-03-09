@@ -26,7 +26,7 @@ class MyPlaceWidget extends ConsumerWidget {
     var warnings = ref.watch(
       processedAlertsProvider.select(
         (alerts) => alerts.where(
-          (alert) => alert.placeSubscriptionId == place.subscriptionId,
+          (alert) => alert.placeId == place.id,
         ),
       ),
     );
@@ -46,7 +46,7 @@ class MyPlaceWidget extends ConsumerWidget {
         },
         onTap: () {
           if (warnings.isNotEmpty) {
-            onPressed(place.subscriptionId);
+            onPressed(place.id);
           }
         },
         child: Padding(
@@ -125,7 +125,7 @@ class MyPlaceWidget extends ConsumerWidget {
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(15),
                             ),
-                            onPressed: () => onPressed(place.subscriptionId),
+                            onPressed: () => onPressed(place.id),
                             child: const Icon(
                               Icons.mark_chat_read,
                               color: Colors.white,
@@ -137,7 +137,7 @@ class MyPlaceWidget extends ConsumerWidget {
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(15),
                             ),
-                            onPressed: () => onPressed(place.subscriptionId),
+                            onPressed: () => onPressed(place.id),
                             child: const Icon(
                               Icons.warning,
                               color: Colors.white,
