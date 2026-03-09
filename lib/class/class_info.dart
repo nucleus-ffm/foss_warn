@@ -117,7 +117,7 @@ class Info {
       event: json['event'],
       urgency: Urgency.fromJson(json['urgency']),
       severity: Severity.fromJson(json['severity']),
-      certainty: Certainty.fromJson(json['certainty']),
+      certainty: Certainty.fromJson(json['certainty'] ?? "other"),
       effective: json['effective'],
       onset: json['onset'],
       expires: json['expires'],
