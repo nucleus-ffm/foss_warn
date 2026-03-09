@@ -902,6 +902,11 @@
     "notification_self_check_notification_check_subtitle_passed": "Successfully received notification",
     "notification_self_check_notification_check_subtitle_not_passed": "The notification was not received. Please check your setup again.",
     "notification_self_check_notification_check_subtitle_unknown": "Waiting for a new notification.",
+    "notification_self_check_exact_alarm_permission_check_title": "Schedule exact alarm permission",
+    "notification_self_check_exact_alarm_permission_check_subtitle_passed": "Permission granted",
+    "notification_self_check_exact_alarm_permission_check_subtitle_not_passed": "Permission not granted",
+    "notification_self_check_exact_alarm_permission_check_subtitle_unknown": "Waiting for check results",
+
     "change_unified_push_distributor_dialog_title": "Change UnifiedPush distributor",
     "change_unified_push_distributor_dialog_body": "Please select the UnifiedPush distributor that FOSSWarn should use.",
     "change_unified_push_distributor_dialog_body_no_distributor_found": "No distributor found",
