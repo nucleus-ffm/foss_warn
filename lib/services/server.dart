@@ -8,7 +8,7 @@ import '../class/class_warn_message.dart';
 import '../routes.dart';
 import 'alert_api/fpas.dart';
 
-Future<void> handleTVCommands() async {
+Future<void> handleTVCommands(int duration) async {
   bool useHDMICeC = false;
   // @TODO let the user define if the device supports HDMI CEC or serial communication
   if (useHDMICeC) {
@@ -40,7 +40,7 @@ Future<void> handleTVCommands() async {
     });
 
     // wait 5 minutes to turn TV off again
-    await Future.delayed(const Duration(minutes: 1));
+    await Future.delayed(Duration(minutes: duration));
 
     // turn TV off/put into ready state
     const commandOff = "python ~/foss_warn-home/python_serial_control/serial_communication.py \"set powerstate=ready \" ";
@@ -57,6 +57,10 @@ Future<void> handleRequest(HttpRequest request, WidgetRef ref) async {
 
   if (request.uri.path == '/show_alert') {
     final String? id = request.uri.queryParameters['id'];
+    final String? durationString = request.uri.queryParameters['duration'];
+
+   int defaultDuration = 5;
+   final int duration =  durationString != null? int.parse(durationString): defaultDuration;
 
     if (id != null) {
       WarnMessage alert = await ref.read(alertApiProvider).getAlertDetail(
@@ -75,7 +79,7 @@ Future<void> handleRequest(HttpRequest request, WidgetRef ref) async {
         ..close();
 
       // do not wait for TV commands to finish as they are long running
-      handleTVCommands();
+      handleTVCommands(duration);
     } else {
       request.response
         ..statusCode = 400
