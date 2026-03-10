@@ -1,0 +1,4 @@
+enum Daytime{
+  day,
+  night
+}

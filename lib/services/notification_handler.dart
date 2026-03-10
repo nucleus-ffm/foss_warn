@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_notification_preferences.dart';
+import 'package:foss_warn/routes.dart';
 
 import '../class/class_error_logger.dart';
 import '../class/class_notification_service.dart';
@@ -93,6 +94,8 @@ Future<void> newAlertNotification(
           userPreferences: ref.read(userPreferencesProvider),
           alertID: alert.fpasId
         );
+        var routes = ref.read(routesProvider);
+        routes.go("/alerts/${alert.fpasId}/1234");
       }
     }
   } on AlertUnavailableError catch (e) {

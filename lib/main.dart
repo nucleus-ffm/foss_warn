@@ -4,6 +4,7 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
+import 'package:foss_warn/themes/themes.dart';
 
 import 'class/class_notification_service.dart';
 

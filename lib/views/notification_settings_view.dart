@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/enums/daytime.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/notification_preferences_list_tile_widget.dart';
 import 'package:foss_warn/widgets/dialogs/warning_severity_explanation.dart';
@@ -19,6 +20,7 @@ class _NotificationSettingsViewState
     extends ConsumerState<NotificationSettingsView> {
   final EdgeInsets settingsTileListPadding =
       const EdgeInsets.fromLTRB(25, 2, 25, 2);
+  Daytime selectedMode = Daytime.day;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,50 @@ class _NotificationSettingsViewState
                 ),
               ),
               const SizedBox(height: 10),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Start of the day"),
+                  TextButton(onPressed: () async {
+                    TimeOfDay? newStartTime = await showTimePicker(context: context, initialTime: TimeOfDay(hour: 8, minute: 0));
+                  }, child: Text("08:00")),
+                ],
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("End of the day"),
+                  TextButton(onPressed: () async {
+                    TimeOfDay? newEndTime = await showTimePicker(context: context, initialTime: TimeOfDay(hour: 22, minute: 0));
+                  }, child: Text("22:00")),
+                ],
+              ),
+
+              SegmentedButton(
+                  onSelectionChanged: (Set<Daytime> newSelection) {
+                    selectedMode = newSelection.first;
+                    setState(() {});
+                  },
+                  segments: [
+                    const ButtonSegment(
+                      value: Daytime.day,
+                      icon: Icon(Icons.sunny),
+                      label: Text("Day"),
+                    ),
+                    const ButtonSegment(
+                        value: Daytime.night,
+                        icon: Icon(Icons.nightlight),
+                        label: Text("Night")),
+                  ],
+                  selected: <Daytime>{
+                    selectedMode
+                  },
+              ),
+
+
+
               // generate the settings tiles
               NotificationPreferencesListTileWidget(
                 name: localizations.notification_settings_global_warning_level,
@@ -102,6 +148,58 @@ class _NotificationSettingsViewState
                   ),
                 ],
               ),
+
+              const Divider(),
+              ListTile(
+                title: Text("Enable FOSSWarn@TV"),
+                subtitle: Text("If enabled FOSSWarn will show new alerts on your connected FOSSWarn@TV device"),
+                trailing: Switch(value: true, onChanged: (newValue) {}),
+              ),
+
+              ListTile(
+                //contentPadding: settingsTileListPadding,
+                title:
+                Text("Duration on TV", style: Theme.of(context).textTheme.titleMedium),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Define how long the warning should be displayed on your TV before the TV turns off again."),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            const Icon(
+                              Icons.tv,
+                              color: Colors.amber,
+                            ),
+                            Flexible(
+                              child: Slider(
+                                label: "Duration",
+                                //divisions: 3,
+                                min: 1,
+                                max: 15,
+                                value: 5,
+                                onChanged: (value) {
+                                  //@TODO
+                                  setState(() {});
+                                },
+                                onChangeEnd: (value) {
+                                },
+                              ),
+                            ),
+                            Text("5 min")
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
             ],
           ),
         ),
