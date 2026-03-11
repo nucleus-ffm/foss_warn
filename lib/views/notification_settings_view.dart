@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/daytime.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/notification_preferences_list_tile_widget.dart';
@@ -84,9 +85,13 @@ class _NotificationSettingsViewState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Start of the day"),
-                  TextButton(onPressed: () async {
-                    TimeOfDay? newStartTime = await showTimePicker(context: context, initialTime: TimeOfDay(hour: 8, minute: 0));
-                  }, child: Text("08:00")),
+                  TextButton(
+                      onPressed: () async {
+                        TimeOfDay? newStartTime = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay(hour: 8, minute: 0));
+                      },
+                      child: Text("08:00")),
                 ],
               ),
 
@@ -94,34 +99,34 @@ class _NotificationSettingsViewState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("End of the day"),
-                  TextButton(onPressed: () async {
-                    TimeOfDay? newEndTime = await showTimePicker(context: context, initialTime: TimeOfDay(hour: 22, minute: 0));
-                  }, child: Text("22:00")),
+                  TextButton(
+                      onPressed: () async {
+                        TimeOfDay? newEndTime = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay(hour: 22, minute: 0));
+                      },
+                      child: Text("22:00")),
                 ],
               ),
 
               SegmentedButton(
-                  onSelectionChanged: (Set<Daytime> newSelection) {
-                    selectedMode = newSelection.first;
-                    setState(() {});
-                  },
-                  segments: [
-                    const ButtonSegment(
-                      value: Daytime.day,
-                      icon: Icon(Icons.sunny),
-                      label: Text("Day"),
-                    ),
-                    const ButtonSegment(
-                        value: Daytime.night,
-                        icon: Icon(Icons.nightlight),
-                        label: Text("Night")),
-                  ],
-                  selected: <Daytime>{
-                    selectedMode
-                  },
+                onSelectionChanged: (Set<Daytime> newSelection) {
+                  selectedMode = newSelection.first;
+                  setState(() {});
+                },
+                segments: const [
+                  ButtonSegment(
+                    value: Daytime.day,
+                    icon: Icon(Icons.sunny),
+                    label: Text("Day"),
+                  ),
+                  ButtonSegment(
+                      value: Daytime.night,
+                      icon: Icon(Icons.nightlight),
+                      label: Text("Night")),
+                ],
+                selected: <Daytime>{selectedMode},
               ),
-
-
 
               // generate the settings tiles
               NotificationPreferencesListTileWidget(
@@ -152,21 +157,31 @@ class _NotificationSettingsViewState
               const Divider(),
               ListTile(
                 title: Text("Enable FOSSWarn@TV"),
-                subtitle: Text("If enabled FOSSWarn will show new alerts on your connected FOSSWarn@TV device"),
-                trailing: Switch(value: true, onChanged: (newValue) {}),
+                subtitle: Text(
+                    "If enabled FOSSWarn will show new alerts on your connected FOSSWarn@TV device"),
+                trailing: Switch(
+                  value: ref.watch(userPreferencesProvider.select(
+                      (userPreferences) => userPreferences.enableFOSSWarnAtTv)),
+                  onChanged: (value) {
+                    ref
+                        .read(userPreferencesProvider.notifier)
+                        .setEnableFOSSWarnAtTv(value);
+                  },
+                ),
               ),
 
               ListTile(
                 //contentPadding: settingsTileListPadding,
-                title:
-                Text("Duration on TV", style: Theme.of(context).textTheme.titleMedium),
+                title: Text("Duration on TV",
+                    style: Theme.of(context).textTheme.titleMedium),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Define how long the warning should be displayed on your TV before the TV turns off again."),
+                        Text(
+                            "Define how long the warning should be displayed on your TV before the TV turns off again."),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.max,
@@ -177,29 +192,41 @@ class _NotificationSettingsViewState
                             ),
                             Flexible(
                               child: Slider(
-                                label: "Duration",
-                                //divisions: 3,
+                                label: ref
+                                    .watch(userPreferencesProvider.select(
+                                        (userPreferences) => userPreferences
+                                            .displayDurationOnTv))
+                                    .toString(),
+                                divisions: 14,
                                 min: 1,
                                 max: 15,
-                                value: 5,
+                                value: ref
+                                    .watch(userPreferencesProvider.select(
+                                        (userPreferences) => userPreferences
+                                            .displayDurationOnTv))
+                                    .toDouble(),
                                 onChanged: (value) {
-                                  //@TODO
+                                  ref
+                                      .read(userPreferencesProvider.notifier)
+                                      .setDisplayDurationOnTv(value.round());
                                   setState(() {});
                                 },
                                 onChangeEnd: (value) {
+                                  ref
+                                      .read(userPreferencesProvider.notifier)
+                                      .setDisplayDurationOnTv(value.round());
                                 },
                               ),
                             ),
-                            Text("5 min")
+                            Text(
+                                "${ref.watch(userPreferencesProvider.select((userPreferences) => userPreferences.displayDurationOnTv))} min")
                           ],
                         ),
-
                       ],
                     ),
                   ],
                 ),
               ),
-
             ],
           ),
         ),

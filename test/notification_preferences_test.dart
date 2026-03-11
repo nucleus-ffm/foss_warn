@@ -50,7 +50,9 @@ void main() {
       cachedAlerts: [],
       showDebugNotification: false,
       enableFOSSWarnAtHome: false,
-      fossWarnTVAddress: ""
+      fossWarnTVAddress: "",
+      enableFOSSWarnAtTv: false,
+      displayDurationOnTv: 5,
     );
   }
 

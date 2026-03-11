@@ -1,4 +1,1 @@
-enum Daytime{
-  day,
-  night
-}
+enum Daytime { day, night }
