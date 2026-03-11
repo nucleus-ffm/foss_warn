@@ -112,13 +112,11 @@ class _SettingsState extends ConsumerState<Settings> {
                 var result = await Process.run('/bin/sh', ['-c', command]);
               },
             ),
-
             const Divider(
               height: 50,
               indent: 15.0,
               endIndent: 15.0,
             ),
-
             Padding(
               padding: const EdgeInsets.only(
                 left: indentOfCategoriesTitles,
@@ -133,10 +131,13 @@ class _SettingsState extends ConsumerState<Settings> {
                 ),
               ),
             ),
-            Platform.isAndroid? ListTile(
-              title: Text(localizations.settings_android_notification_settings),
-              onTap: () => _openNotificationSettings(),
-            ): const SizedBox(),
+            Platform.isAndroid
+                ? ListTile(
+                    title: Text(
+                        localizations.settings_android_notification_settings),
+                    onTap: () => _openNotificationSettings(),
+                  )
+                : const SizedBox(),
             ListTile(
               title: Text(localizations.settings_app_notification_settings),
               onTap: widget.onNotificationSettingsPressed,
