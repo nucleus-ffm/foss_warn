@@ -4,7 +4,6 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/routes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
-import 'package:foss_warn/themes/themes.dart';
 
 import 'class/class_notification_service.dart';
 
@@ -50,15 +49,25 @@ class FOSSWarn extends ConsumerWidget {
           .select((preferences) => preferences.selectedDarkTheme),
     );
 
-    return MaterialApp.router(
-      title: 'FOSS Warn',
-      theme: selectedLightTheme,
-      darkTheme: selectedDarkTheme,
-      themeMode: themeMode,
-      debugShowCheckedModeBanner: false,
-      routerConfig: routes,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+    const double scaleFactor = 1.5;
+
+    return Builder(
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(scaleFactor)),
+          child: MaterialApp.router(
+            title: 'FOSS Warn',
+            theme: selectedLightTheme,
+            darkTheme: selectedDarkTheme,
+            themeMode: themeMode,
+            debugShowCheckedModeBanner: false,
+            routerConfig: routes,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
+        );
+      },
     );
   }
 }

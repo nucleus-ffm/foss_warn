@@ -66,11 +66,13 @@ class MyPlaceWidget extends ConsumerWidget {
                         },
                       );
                     },
-                    icon: const Icon(Icons.location_city),
+                    icon: Icon(
+                      Icons.location_city,
+                      size: IconTheme.of(context).size,
+                    ),
                   ),
                   const SizedBox(width: 20),
                   SizedBox(
-                    height: 60,
                     width: mediaQuery.size.width * 0.6,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -123,9 +125,10 @@ class MyPlaceWidget extends ConsumerWidget {
                               padding: const EdgeInsets.all(15),
                             ),
                             onPressed: () => onPressed(place.subscriptionId),
-                            child: const Icon(
+                            child: Icon(
                               Icons.mark_chat_read,
                               color: Colors.white,
+                              size: IconTheme.of(context).size,
                             ),
                           )
                         : TextButton(
@@ -135,10 +138,9 @@ class MyPlaceWidget extends ConsumerWidget {
                               padding: const EdgeInsets.all(15),
                             ),
                             onPressed: () => onPressed(place.subscriptionId),
-                            child: const Icon(
-                              Icons.warning,
-                              color: Colors.white,
-                            ),
+                            child: Icon(Icons.warning,
+                                color: Colors.white,
+                                size: IconTheme.of(context).size),
                           ),
               ),
             ],

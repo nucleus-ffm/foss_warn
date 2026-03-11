@@ -69,19 +69,20 @@ class NotificationService {
       // write the message to a named pipe for the IPC
       final command =
           "echo '{\"title\": \"$title\", \"body\": \"$body\", \"severity\": \"$channelId\"}' > /tmp/fosswarn@home_pipe";
-      print("run command $command"); //@TODO remove
+      debugPrint("run command $command"); //@TODO remove
       Process.run('/bin/bash', ['-c', command]).then((result) {
         stdout.write(result.stdout);
         stderr.write(result.stderr);
       });
 
-      if(alertID != null && userPreferences.fossWarnTVAddress != "") {
-
+      if (alertID != null &&
+          userPreferences.fossWarnTVAddress != "" &&
+          userPreferences.enableFOSSWarnAtTv) {
         // send request to TV
         var url = Uri.parse(
-          "${userPreferences.fossWarnTVAddress}:8080/show_alert?id=$alertID",
+          "${userPreferences.fossWarnTVAddress}:8080/show_alert?id=$alertID?duration=${userPreferences.displayDurationOnTv}",
         );
-        print("Sending command to TV on address $url");
+        debugPrint("Sending command to TV on address $url");
 
         var response = await http.get(
           url,
@@ -92,10 +93,9 @@ class NotificationService {
         );
         debugPrint(response.toString());
       } else {
-        print("No TV address configured. ${userPreferences.fossWarnTVAddress} "
-            "or no id: $alertID");
+        debugPrint("No TV address configured. ${userPreferences.fossWarnTVAddress} "
+            "or no id: $alertID or feature disabled");
       }
-
     }
   }
 

@@ -84,15 +84,15 @@ Future<void> newAlertNotification(
         userPreferences,
       )) {
         NotificationService.showNotification(
-          id: alert.fpasId.hashCode,
-          title: "New alert",
-          body: alert.info.first.headline,
-          payload: "",
-          channelId:
-              "de.nucleus.foss_warn.notifications_${alert.info[0].severity.name}",
-          channelName: "",
-          userPreferences: ref.read(userPreferencesProvider),
-          alertID: alert.fpasId
+            id: alert.fpasId.hashCode,
+            title: "New alert",
+            body: alert.info.first.headline,
+            payload: "",
+            channelId:
+                "de.nucleus.foss_warn.notifications_${alert.info[0].severity.name}",
+            channelName: "",
+            userPreferences: ref.read(userPreferencesProvider),
+            alertID: alert.fpasId,
         );
         var routes = ref.read(routesProvider);
         routes.go("/alerts/${alert.fpasId}/1234");

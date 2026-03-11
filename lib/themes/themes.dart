@@ -15,6 +15,9 @@ final greenLightTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 final orangeLightTheme = ThemeData(
@@ -30,6 +33,9 @@ final orangeLightTheme = ThemeData(
     ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
   ),
 );
 
@@ -47,6 +53,9 @@ final purpleLightTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 final blueLightTheme = ThemeData(
@@ -62,6 +71,9 @@ final blueLightTheme = ThemeData(
     ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
   ),
 );
 
@@ -79,6 +91,9 @@ final yellowLightTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 final indigoLightTheme = ThemeData(
@@ -94,6 +109,9 @@ final indigoLightTheme = ThemeData(
     ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
   ),
 );
 
@@ -114,6 +132,9 @@ final greenDarkTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 // original green theme but dark
@@ -131,6 +152,9 @@ final orangeDarkTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 final purpleDarkTheme = ThemeData(
@@ -146,6 +170,9 @@ final purpleDarkTheme = ThemeData(
     ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
   ),
 );
 
@@ -163,6 +190,9 @@ final yellowDarkTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 final blueDarkTheme = ThemeData(
@@ -179,6 +209,9 @@ final blueDarkTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 final greyDarkTheme = ThemeData(
@@ -194,5 +227,8 @@ final greyDarkTheme = ThemeData(
     ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
   ),
 );

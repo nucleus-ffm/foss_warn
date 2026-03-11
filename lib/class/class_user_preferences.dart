@@ -109,53 +109,53 @@ final userPreferencesProvider =
 
   return UserPreferencesService(
     UserPreferences(
-      shouldNotifyGeneral: preferences.getBool("shouldNotifyGeneral") ?? true,
-      showStatusNotification:
-          preferences.getBool("showStatusNotification") ?? true,
-      showExtendedMetadata:
-          preferences.getBool("showExtendedMetaData") ?? false,
-      notificationSourceSetting: notificationPreferences,
-      selectedThemeMode: ThemeMode.values.byName(selectedThemeMode),
-      selectedLightTheme: availableLightThemes[selectedLightTheme],
-      selectedDarkTheme: availableDarkThemes[selectedDarkTheme],
-      startScreen: preferences.getInt("startScreen") ?? 0,
-      warningFontSize: preferences.getDouble("warningFontSize") ?? 14.0,
-      showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
-      sortWarningsBy: SortingCategories.values[selectedSorting],
-      isFirstStart: preferences.getBool("isFirstStart") ?? true,
-      areWarningsFromCache:
-          preferences.getBool("areWarningsFromCache") ?? false,
-      maxSizeOfSubscriptionBoundingBox:
-          preferences.getInt("maxSizeOfSubscriptionBoundingBox") ?? 20,
-      fossPublicAlertServerUrl: fossPublicAlertServerUrl,
-      fossPublicAlertServerOperator:
-          preferences.getString("fossPublicAlertServerOperator") ?? "KDE",
-      fossPublicAlertServerPrivacyNotice: preferences
-              .getString("fossPublicAlertServerPrivacyNotice") ??
-          "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Privacy",
-      fossPublicAlertServerTermsOfService: preferences
-              .getString("fossPublicAlertServerTermsOfService") ??
-          "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Terms-of-Service",
-      unifiedPushEndpoint: preferences.getString("unifiedPushEndpoint") ?? "",
-      unifiedPushRegistered:
-          preferences.getBool("unifiedPushRegistered") ?? false,
-      fossPublicAlertSubscriptionIdsToSubscribe: preferences
-              .getStringList("fossPublicAlertSubscriptionIdsToSubscribe") ??
-          [],
-      webPushVapidKey: preferences.getString("webPushVapidKey") ?? "",
-      webPushAuthKey: preferences.getString("webPushAuthKey") ?? "",
-      webPushPublicKey: preferences.getString("webPushPublicKey") ?? "",
-      previousInstalledVersionCode:
-          preferences.getInt("previousInstalledVersionCode") ?? -1,
-      subscribeForTestAlerts:
-          preferences.getBool("subscribeForTestAlerts") ?? false,
-      cachedAlerts: loadAlertsFromDisk(),
-      showDebugNotification:
-          preferences.getBool("showDebugNotification") ?? false,
-      enableFOSSWarnAtHome:
-          preferences.getBool("enableFOSSWarnAtHome") ?? false,
-      fossWarnTVAddress: preferences.getString("fossWarnTVAddress") ?? "",
-    ),
+        shouldNotifyGeneral: preferences.getBool("shouldNotifyGeneral") ?? true,
+        showStatusNotification:
+            preferences.getBool("showStatusNotification") ?? true,
+        showExtendedMetadata:
+            preferences.getBool("showExtendedMetaData") ?? false,
+        notificationSourceSetting: notificationPreferences,
+        selectedThemeMode: ThemeMode.values.byName(selectedThemeMode),
+        selectedLightTheme: availableLightThemes[selectedLightTheme],
+        selectedDarkTheme: availableDarkThemes[selectedDarkTheme],
+        startScreen: preferences.getInt("startScreen") ?? 0,
+        warningFontSize: preferences.getDouble("warningFontSize") ?? 14.0,
+        showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
+        sortWarningsBy: SortingCategories.values[selectedSorting],
+        isFirstStart: preferences.getBool("isFirstStart") ?? true,
+        areWarningsFromCache:
+            preferences.getBool("areWarningsFromCache") ?? false,
+        maxSizeOfSubscriptionBoundingBox:
+            preferences.getInt("maxSizeOfSubscriptionBoundingBox") ?? 20,
+        fossPublicAlertServerUrl: fossPublicAlertServerUrl,
+        fossPublicAlertServerOperator:
+            preferences.getString("fossPublicAlertServerOperator") ?? "KDE",
+        fossPublicAlertServerPrivacyNotice: preferences
+                .getString("fossPublicAlertServerPrivacyNotice") ??
+            "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Privacy",
+        fossPublicAlertServerTermsOfService: preferences
+                .getString("fossPublicAlertServerTermsOfService") ??
+            "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Terms-of-Service",
+        unifiedPushEndpoint: preferences.getString("unifiedPushEndpoint") ?? "",
+        unifiedPushRegistered:
+            preferences.getBool("unifiedPushRegistered") ?? false,
+        fossPublicAlertSubscriptionIdsToSubscribe: preferences
+                .getStringList("fossPublicAlertSubscriptionIdsToSubscribe") ??
+            [],
+        webPushVapidKey: preferences.getString("webPushVapidKey") ?? "",
+        webPushAuthKey: preferences.getString("webPushAuthKey") ?? "",
+        webPushPublicKey: preferences.getString("webPushPublicKey") ?? "",
+        previousInstalledVersionCode:
+            preferences.getInt("previousInstalledVersionCode") ?? -1,
+        subscribeForTestAlerts:
+            preferences.getBool("subscribeForTestAlerts") ?? false,
+        cachedAlerts: loadAlertsFromDisk(),
+        showDebugNotification:
+            preferences.getBool("showDebugNotification") ?? false,
+        enableFOSSWarnAtHome: preferences.getBool("enableFOSSWarnAtHome") ?? false,
+        fossWarnTVAddress: preferences.getString("fossWarnTVAddress") ?? "",
+        displayDurationOnTv: preferences.getInt("displayDurationOnTv") ?? 5,
+        enableFOSSWarnAtTv: preferences.getBool("enableFOSSWarnAtTv") ?? false),
     sharedPreferences: preferences,
   );
 });
@@ -344,16 +344,25 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     await _sharedPreferences.setBool("showDebugNotification", value);
   }
 
-  Future<void> setEnableFOSSWarnAtHome(bool value) async{
+  Future<void> setEnableFOSSWarnAtHome(bool value) async {
     state = state.copyWith(enableFOSSWarnAtHome: value);
     await _sharedPreferences.setBool("enableFOSSWarnAtHome", value);
   }
 
-  Future<void> setFossWarnTVAddress(String value) async{
+  Future<void> setFossWarnTVAddress(String value) async {
     state = state.copyWith(fossWarnTVAddress: value);
     await _sharedPreferences.setString("fossWarnTVAddress", value);
   }
 
+  Future<void> setDisplayDurationOnTv(int value) async {
+    state = state.copyWith(displayDurationOnTv: value);
+    await _sharedPreferences.setInt("displayDurationOnTV", value);
+  }
+
+  Future<void> setEnableFOSSWarnAtTv(bool value) async {
+    state = state.copyWith(enableFOSSWarnAtTv: value);
+    await _sharedPreferences.setBool("enableFOSSWarnAtTv", value);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -390,6 +399,8 @@ class UserPreferences {
     required this.showDebugNotification,
     required this.enableFOSSWarnAtHome,
     required this.fossWarnTVAddress,
+    required this.displayDurationOnTv,
+    required this.enableFOSSWarnAtTv,
   });
 
   final bool shouldNotifyGeneral;
@@ -424,6 +435,8 @@ class UserPreferences {
   final bool showDebugNotification;
   final bool enableFOSSWarnAtHome;
   final String fossWarnTVAddress;
+  final int displayDurationOnTv;
+  final bool enableFOSSWarnAtTv;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -468,6 +481,8 @@ class UserPreferences {
     bool? showDebugNotification,
     bool? enableFOSSWarnAtHome,
     String? fossWarnTVAddress,
+    int? displayDurationOnTv,
+    bool? enableFOSSWarnAtTv,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -515,6 +530,8 @@ class UserPreferences {
             showDebugNotification ?? this.showDebugNotification,
         enableFOSSWarnAtHome: enableFOSSWarnAtHome ?? this.enableFOSSWarnAtHome,
         fossWarnTVAddress: fossWarnTVAddress ?? this.fossWarnTVAddress,
+        displayDurationOnTv: displayDurationOnTv ?? this.displayDurationOnTv,
+        enableFOSSWarnAtTv: enableFOSSWarnAtTv ?? this.enableFOSSWarnAtTv,
       );
 
   /// the path and filename where the error log is saved

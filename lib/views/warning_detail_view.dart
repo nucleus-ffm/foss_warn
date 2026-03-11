@@ -548,9 +548,9 @@ class _Tags extends ConsumerWidget {
               info: alert.info[0].event,
             ),
             _TagButton(
-              color: alert.messageType.color,
-              eventType: localizations.warning_type_title,
-              info: alert.messageType.getLocalizedName(context),
+              color: Colors.blueAccent,
+              eventType: "Category",
+              info: alert.info.first.category.first.getLocalizedName(context),
             ),
             _TagButton(
               color: Severity.getColorForSeverity(alert.info[0].severity),
@@ -562,6 +562,11 @@ class _Tags extends ConsumerWidget {
             if (userPreferences.showExtendedMetadata) ...[
               Wrap(
                 children: [
+                  _TagButton(
+                    color: alert.messageType.color,
+                    eventType: localizations.warning_type_title,
+                    info: alert.messageType.getLocalizedName(context),
+                  ),
                   _TagButton(
                     color: Colors.green,
                     eventType: localizations.warning_urgency,

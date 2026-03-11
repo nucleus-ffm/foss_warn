@@ -21,12 +21,12 @@ final routesProvider = Provider<GoRouter>(
     redirect: (context, state) {
       debugPrint("Navigating to ${state.uri.path}");
 
-      var showWelcomeScreen = ref.read(
+      /* var showWelcomeScreen = ref.read(
         userPreferencesProvider
             .select((preferences) => preferences.showWelcomeScreen),
       );
 
-      /* if (showWelcomeScreen) {
+       if (showWelcomeScreen) {
         return "/introduction";
       } */
       return null;

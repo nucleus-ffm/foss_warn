@@ -218,15 +218,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
       bottomNavigationBar: NavigationBar(
         destinations: <NavigationDestination>[
           NavigationDestination(
-            icon: const Icon(Icons.warning),
+            icon: Icon(Icons.warning, size: IconTheme.of(context).size),
             label: localizations.main_nav_bar_all_warnings,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.place),
+            icon: Icon(Icons.place, size: IconTheme.of(context).size),
             label: localizations.main_nav_bar_my_places,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.map),
+            icon: Icon(
+              Icons.map,
+              size: IconTheme.of(context).size,
+            ),
             label: localizations.main_nav_bar_map,
           ),
         ],
