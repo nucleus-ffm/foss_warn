@@ -7,6 +7,8 @@ import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/enums/category.dart';
 
+import '../enums/daytime.dart';
+
 class NotificationPreferencesListTileWidget extends ConsumerStatefulWidget {
   final String name;
   final Category? category;
@@ -30,11 +32,6 @@ class _NotificationPreferencesListTileWidgetState
   @override
   void initState() {
     super.initState();
-
-    var userPreferences = ref.read(userPreferencesProvider);
-    notificationLevel = Severity.getIndexFromSeverity(
-      userPreferences.notificationSourceSetting.globalNotificationLevel,
-    );
   }
 
   final EdgeInsets settingsTileListPadding =
@@ -61,24 +58,66 @@ class _NotificationPreferencesListTileWidgetState
   @override
   Widget build(BuildContext context) {
     var localizations = context.localizations;
+    Daytime daytime = ref.watch(selectedDayTimeProvider);
+    bool isDay = daytime == Daytime.day;
 
     if (widget.category != null) {
-      intMaxValue = ref.watch(
-        userPreferencesProvider.select(
-          (preferences) =>
-              preferences.notificationSourceSetting.globalNotificationLevel,
-        ),
-      );
-      notificationLevel = Severity.getIndexFromSeverity(
-        ref.watch(
+      if (isDay) {
+        intMaxValue = ref.watch(
           userPreferencesProvider.select(
-            (preferences) => preferences.notificationSourceSetting
-                .getSeverityLevelForOneCategory(widget.category!),
+            (preferences) =>
+                preferences.notificationDaySetting.globalNotificationLevel,
           ),
-        ),
-      );
+        );
+
+        notificationLevel = Severity.getIndexFromSeverity(
+          ref.watch(
+            userPreferencesProvider.select(
+              (preferences) => preferences.notificationDaySetting
+                  .getSeverityLevelForOneCategory(widget.category!),
+            ),
+          ),
+        );
+      } else {
+        intMaxValue = ref.watch(
+          userPreferencesProvider.select(
+            (preferences) =>
+                preferences.notificationNightSetting.globalNotificationLevel,
+          ),
+        );
+
+        notificationLevel = Severity.getIndexFromSeverity(
+          ref.watch(
+            userPreferencesProvider.select(
+              (preferences) => preferences.notificationNightSetting
+                  .getSeverityLevelForOneCategory(widget.category!),
+            ),
+          ),
+        );
+      }
+
       notificationLevel =
           min(Severity.getIndexFromSeverity(intMaxValue), notificationLevel);
+    } else {
+      if (isDay) {
+        notificationLevel = Severity.getIndexFromSeverity(
+          ref.watch(
+            userPreferencesProvider.select(
+              (preferences) =>
+                  preferences.notificationDaySetting.globalNotificationLevel,
+            ),
+          ),
+        );
+      } else {
+        notificationLevel = Severity.getIndexFromSeverity(
+          ref.watch(
+            userPreferencesProvider.select(
+              (preferences) =>
+                  preferences.notificationNightSetting.globalNotificationLevel,
+            ),
+          ),
+        );
+      }
     }
 
     var userPreferencesService = ref.watch(userPreferencesProvider.notifier);
@@ -126,35 +165,66 @@ class _NotificationPreferencesListTileWidgetState
                             final notificationLevel =
                                 Severity.values[value.toInt()];
 
-                            var notificationMap = ref
-                                .read(userPreferencesProvider)
-                                .notificationSourceSetting
-                                .categoryNotificationLevel;
-
                             if (widget.category != null) {
-                              notificationMap[widget.category!] =
-                                  notificationLevel;
-                              userPreferencesService
-                                  .setNotificationSourceSetting(
-                                ref
+                              if (isDay) {
+                                var notificationMap = ref
                                     .read(userPreferencesProvider)
-                                    .notificationSourceSetting
-                                    .copyWith(
-                                      categoryNotificationLevel:
-                                          notificationMap,
-                                    ),
-                              );
+                                    .notificationDaySetting
+                                    .categoryNotificationLevel;
+                                notificationMap[widget.category!] =
+                                    notificationLevel;
+                                userPreferencesService
+                                    .setNotificationDaySetting(
+                                  ref
+                                      .read(userPreferencesProvider)
+                                      .notificationDaySetting
+                                      .copyWith(
+                                        categoryNotificationLevel:
+                                            notificationMap,
+                                      ),
+                                );
+                              } else {
+                                var notificationMap = ref
+                                    .read(userPreferencesProvider)
+                                    .notificationNightSetting
+                                    .categoryNotificationLevel;
+                                notificationMap[widget.category!] =
+                                    notificationLevel;
+                                userPreferencesService
+                                    .setNotificationNightSetting(
+                                  ref
+                                      .read(userPreferencesProvider)
+                                      .notificationNightSetting
+                                      .copyWith(
+                                        categoryNotificationLevel:
+                                            notificationMap,
+                                      ),
+                                );
+                              }
                             } else {
-                              userPreferencesService
-                                  .setNotificationSourceSetting(
-                                ref
-                                    .read(userPreferencesProvider)
-                                    .notificationSourceSetting
-                                    .copyWith(
-                                      globalNotificationLevel:
-                                          notificationLevel,
-                                    ),
-                              );
+                              if (isDay) {
+                                userPreferencesService
+                                    .setNotificationDaySetting(
+                                  ref
+                                      .read(userPreferencesProvider)
+                                      .notificationDaySetting
+                                      .copyWith(
+                                        globalNotificationLevel:
+                                            notificationLevel,
+                                      ),
+                                );
+                              } else {
+                                userPreferencesService
+                                    .setNotificationNightSetting(
+                                  ref
+                                      .read(userPreferencesProvider)
+                                      .notificationNightSetting
+                                      .copyWith(
+                                        globalNotificationLevel:
+                                            notificationLevel,
+                                      ),
+                                );
+                              }
                             }
                           },
                         ),

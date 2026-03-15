@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart' as constants;
+import '../enums/category.dart';
 import 'class_error_logger.dart';
 import 'class_user_preferences.dart';
 
@@ -50,6 +51,10 @@ class NotificationService {
     String? title,
     String? body,
     String? payload,
+    String? sender,
+    String? instructions,
+    String? severity,
+    List<String>? categories,
     required String channelId,
     required String channelName,
     required UserPreferences userPreferences,
@@ -63,6 +68,16 @@ class NotificationService {
       payload: payload,
     );
     showGroupNotification();
+    bool readOutAlert;
+    bool showOnTv;
+    if (TimeOfDay.now().isAfter(userPreferences.startOfDay) &&
+        TimeOfDay.now().isBefore(userPreferences.endOfDay)) {
+      readOutAlert = userPreferences.readOutAlertDay;
+      showOnTv = userPreferences.enableFOSSWarnAtTvDay;
+    } else {
+      readOutAlert = userPreferences.readOutAlertNight;
+      showOnTv = userPreferences.enableFOSSWarnAtTvNight;
+    }
     if (userPreferences.enableFOSSWarnAtHome) {
       // send notification to FOSSWarn@Home connector
       // this sends the title of the alert
@@ -77,25 +92,69 @@ class NotificationService {
 
       if (alertID != null &&
           userPreferences.fossWarnTVAddress != "" &&
-          userPreferences.enableFOSSWarnAtTv) {
+          showOnTv) {
         // send request to TV
         var url = Uri.parse(
           "${userPreferences.fossWarnTVAddress}:8080/show_alert?id=$alertID?duration=${userPreferences.displayDurationOnTv}",
         );
         debugPrint("Sending command to TV on address $url");
 
-        var response = await http.get(
+        http.get(
           url,
           headers: {
             "Content-Type": "application/json",
             'User-Agent': constants.httpUserAgent,
           },
-        );
-        debugPrint(response.toString());
-      } else {
-        debugPrint("No TV address configured. ${userPreferences.fossWarnTVAddress} "
-            "or no id: $alertID or feature disabled");
+        ).catchError((e) {
+          print("Can not send to Tv ${e.toString}");
+          return http.Response("body", 500);
+        }).then((value) => debugPrint(value.toString()));
       }
+    } else {
+      debugPrint(
+          "No TV address configured. ${userPreferences.fossWarnTVAddress} "
+          "or no id: $alertID or feature disabled");
+    }
+
+    if (readOutAlert) {
+      String messageToRead = "Achtung, neue Warnung";
+
+      var settings = userPreferences.speakerSettings;
+      settings.forEach((key, value) {
+        if (key == "severity" && value)
+          messageToRead += " mit Schweregrad $severity. ";
+        if (key == "title" && value) messageToRead += "und Title: $title. ";
+        if (key == "description" && value) messageToRead += ". $body. ";
+        if (key == "instruction" && value)
+          messageToRead += ". Es wird folgendes empfohlen: $instructions.";
+        if (key == "category" && value) {
+          if (categories != null) {
+            if (categories.length > 1) {
+              messageToRead += "Die Warnung ist in den folgenden Kategorien";
+              for (String cat in categories) {
+                messageToRead += cat;
+                messageToRead += ".";
+              }
+            } else {
+              messageToRead +=
+                  "Die Warnung hat Kategorie ${categories.first}. ";
+            }
+          }
+        }
+        ;
+        if (key == "sender" && value)
+          messageToRead += "Abgeschickt von $sender.";
+      });
+
+      print(messageToRead);
+
+      final command =
+          "source ~/global_venv/bin/activate && python ~/fosswarnhome/foss_warn-home/voice-app/generate_voice.py -m \"$messageToRead\"";
+      debugPrint("run command $command"); //@TODO remove
+      Process.run('/bin/bash', ['-c', command]).then((result) {
+        stdout.write(result.stdout);
+        stderr.write(result.stderr);
+      });
     }
   }
 

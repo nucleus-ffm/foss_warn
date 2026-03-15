@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/enums/daytime.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/category.dart';
 
@@ -83,6 +85,13 @@ class NotificationPreferences {
     return result;
   }
 
+  /// returns if the users thinks it is day or night at the moment
+  static bool _isDay(TimeOfDay startOfDay, TimeOfDay endOfDay) {
+    TimeOfDay now = TimeOfDay.now();
+    TimeOfDay.now();
+    return now.isAfter(startOfDay) && now.isBefore(endOfDay);
+  }
+
   /// Return [true] if the user wants a notification - [false] if not.
   ///
   /// If the user selected a category setting, this setting is applied. In every
@@ -101,15 +110,25 @@ class NotificationPreferences {
     List<Category> alertCategories,
     UserPreferences userPreferences,
   ) {
-    // check the global notification level
-    if (Severity.getIndexFromSeverity(
-          userPreferences.notificationSourceSetting.globalNotificationLevel,
-        ) >=
-        Severity.getIndexFromSeverity(alertSeverity)) {
-      List<Severity> selectedCategorySeverity = userPreferences
-          .notificationSourceSetting
-          .getSeverityLevelForMultipleCategories(alertCategories);
+    bool isDay = _isDay(userPreferences.startOfDay, userPreferences.endOfDay);
+    Severity globalNotificationLevel;
+    List<Severity> selectedCategorySeverity;
 
+    if (isDay) {
+      globalNotificationLevel =
+          userPreferences.notificationDaySetting.globalNotificationLevel;
+      selectedCategorySeverity = userPreferences.notificationDaySetting
+          .getSeverityLevelForMultipleCategories(alertCategories);
+    } else {
+      globalNotificationLevel =
+          userPreferences.notificationNightSetting.globalNotificationLevel;
+      selectedCategorySeverity = userPreferences.notificationNightSetting
+          .getSeverityLevelForMultipleCategories(alertCategories);
+    }
+
+    // check the global notification level
+    if (Severity.getIndexFromSeverity(globalNotificationLevel) >=
+        Severity.getIndexFromSeverity(alertSeverity)) {
       int highestSettings = -1;
       for (Severity serv in selectedCategorySeverity) {
         // find the highest settings

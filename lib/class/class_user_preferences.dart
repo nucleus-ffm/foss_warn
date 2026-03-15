@@ -81,17 +81,45 @@ final userPreferencesProvider =
     fossPublicAlertServerUrl ??= "http://10.0.2.2:8000";
   }
 
-  var notificationSourceSettingString =
-      preferences.getString("notificationSourceSetting");
-  var notificationPreferences = NotificationPreferences(
+  var notificationDaySettingString =
+      preferences.getString("notificationDaySetting");
+  var notificationDayPreferences = NotificationPreferences(
     globalNotificationLevel: Severity.moderate,
     categoryNotificationLevel: {},
   );
-  if (notificationSourceSettingString != null) {
-    var notificationSourceSettingMap =
-        jsonDecode(notificationSourceSettingString) as Map<String, dynamic>;
-    notificationPreferences =
-        NotificationPreferences.fromJson(notificationSourceSettingMap);
+  if (notificationDaySettingString != null) {
+    var notificationDaySettingMap =
+        jsonDecode(notificationDaySettingString) as Map<String, dynamic>;
+    notificationDayPreferences =
+        NotificationPreferences.fromJson(notificationDaySettingMap);
+  }
+
+  var notificationNightSettingString =
+      preferences.getString("notificationNightSetting");
+  var notificationNightPreferences = NotificationPreferences(
+    globalNotificationLevel: Severity.moderate,
+    categoryNotificationLevel: {},
+  );
+  if (notificationNightSettingString != null) {
+    var notificationDaySettingMap =
+        jsonDecode(notificationNightSettingString) as Map<String, dynamic>;
+    notificationNightPreferences =
+        NotificationPreferences.fromJson(notificationDaySettingMap);
+  }
+
+  var speakerSettingsString = preferences.getString("speakerSettings");
+  Map<String, bool> speakerSettings;
+  if (speakerSettingsString != null) {
+    speakerSettings = Map<String, bool>.from(jsonDecode(speakerSettingsString));
+  } else {
+    speakerSettings = {
+      "severity": true,
+      "headline": true,
+      "description": true,
+      "instructions": false,
+      "category": false,
+      "sender": false
+    };
   }
 
   /// load the alerts from disk and deserialize it
@@ -109,53 +137,70 @@ final userPreferencesProvider =
 
   return UserPreferencesService(
     UserPreferences(
-        shouldNotifyGeneral: preferences.getBool("shouldNotifyGeneral") ?? true,
-        showStatusNotification:
-            preferences.getBool("showStatusNotification") ?? true,
-        showExtendedMetadata:
-            preferences.getBool("showExtendedMetaData") ?? false,
-        notificationSourceSetting: notificationPreferences,
-        selectedThemeMode: ThemeMode.values.byName(selectedThemeMode),
-        selectedLightTheme: availableLightThemes[selectedLightTheme],
-        selectedDarkTheme: availableDarkThemes[selectedDarkTheme],
-        startScreen: preferences.getInt("startScreen") ?? 0,
-        warningFontSize: preferences.getDouble("warningFontSize") ?? 14.0,
-        showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
-        sortWarningsBy: SortingCategories.values[selectedSorting],
-        isFirstStart: preferences.getBool("isFirstStart") ?? true,
-        areWarningsFromCache:
-            preferences.getBool("areWarningsFromCache") ?? false,
-        maxSizeOfSubscriptionBoundingBox:
-            preferences.getInt("maxSizeOfSubscriptionBoundingBox") ?? 20,
-        fossPublicAlertServerUrl: fossPublicAlertServerUrl,
-        fossPublicAlertServerOperator:
-            preferences.getString("fossPublicAlertServerOperator") ?? "KDE",
-        fossPublicAlertServerPrivacyNotice: preferences
-                .getString("fossPublicAlertServerPrivacyNotice") ??
-            "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Privacy",
-        fossPublicAlertServerTermsOfService: preferences
-                .getString("fossPublicAlertServerTermsOfService") ??
-            "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Terms-of-Service",
-        unifiedPushEndpoint: preferences.getString("unifiedPushEndpoint") ?? "",
-        unifiedPushRegistered:
-            preferences.getBool("unifiedPushRegistered") ?? false,
-        fossPublicAlertSubscriptionIdsToSubscribe: preferences
-                .getStringList("fossPublicAlertSubscriptionIdsToSubscribe") ??
-            [],
-        webPushVapidKey: preferences.getString("webPushVapidKey") ?? "",
-        webPushAuthKey: preferences.getString("webPushAuthKey") ?? "",
-        webPushPublicKey: preferences.getString("webPushPublicKey") ?? "",
-        previousInstalledVersionCode:
-            preferences.getInt("previousInstalledVersionCode") ?? -1,
-        subscribeForTestAlerts:
-            preferences.getBool("subscribeForTestAlerts") ?? false,
-        cachedAlerts: loadAlertsFromDisk(),
-        showDebugNotification:
-            preferences.getBool("showDebugNotification") ?? false,
-        enableFOSSWarnAtHome: preferences.getBool("enableFOSSWarnAtHome") ?? false,
-        fossWarnTVAddress: preferences.getString("fossWarnTVAddress") ?? "",
-        displayDurationOnTv: preferences.getInt("displayDurationOnTv") ?? 5,
-        enableFOSSWarnAtTv: preferences.getBool("enableFOSSWarnAtTv") ?? false),
+      shouldNotifyGeneral: preferences.getBool("shouldNotifyGeneral") ?? true,
+      showStatusNotification:
+          preferences.getBool("showStatusNotification") ?? true,
+      showExtendedMetadata:
+          preferences.getBool("showExtendedMetaData") ?? false,
+      notificationDaySetting: notificationDayPreferences,
+      notificationNightSetting: notificationNightPreferences,
+      selectedThemeMode: ThemeMode.values.byName(selectedThemeMode),
+      selectedLightTheme: availableLightThemes[selectedLightTheme],
+      selectedDarkTheme: availableDarkThemes[selectedDarkTheme],
+      startScreen: preferences.getInt("startScreen") ?? 0,
+      warningFontSize: preferences.getDouble("warningFontSize") ?? 14.0,
+      showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
+      sortWarningsBy: SortingCategories.values[selectedSorting],
+      isFirstStart: preferences.getBool("isFirstStart") ?? true,
+      areWarningsFromCache:
+          preferences.getBool("areWarningsFromCache") ?? false,
+      maxSizeOfSubscriptionBoundingBox:
+          preferences.getInt("maxSizeOfSubscriptionBoundingBox") ?? 20,
+      fossPublicAlertServerUrl: fossPublicAlertServerUrl,
+      fossPublicAlertServerOperator:
+          preferences.getString("fossPublicAlertServerOperator") ?? "KDE",
+      fossPublicAlertServerPrivacyNotice: preferences
+              .getString("fossPublicAlertServerPrivacyNotice") ??
+          "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Privacy",
+      fossPublicAlertServerTermsOfService: preferences
+              .getString("fossPublicAlertServerTermsOfService") ??
+          "https://invent.kde.org/webapps/foss-public-alert-server/-/wikis/Terms-of-Service",
+      unifiedPushEndpoint: preferences.getString("unifiedPushEndpoint") ?? "",
+      unifiedPushRegistered:
+          preferences.getBool("unifiedPushRegistered") ?? false,
+      fossPublicAlertSubscriptionIdsToSubscribe: preferences
+              .getStringList("fossPublicAlertSubscriptionIdsToSubscribe") ??
+          [],
+      webPushVapidKey: preferences.getString("webPushVapidKey") ?? "",
+      webPushAuthKey: preferences.getString("webPushAuthKey") ?? "",
+      webPushPublicKey: preferences.getString("webPushPublicKey") ?? "",
+      previousInstalledVersionCode:
+          preferences.getInt("previousInstalledVersionCode") ?? -1,
+      subscribeForTestAlerts:
+          preferences.getBool("subscribeForTestAlerts") ?? false,
+      cachedAlerts: loadAlertsFromDisk(),
+      showDebugNotification:
+          preferences.getBool("showDebugNotification") ?? false,
+      enableFOSSWarnAtHome:
+          preferences.getBool("enableFOSSWarnAtHome") ?? false,
+      fossWarnTVAddress: preferences.getString("fossWarnTVAddress") ?? "",
+      displayDurationOnTv: preferences.getInt("displayDurationOnTv") ?? 5,
+      enableFOSSWarnAtTvDay:
+          preferences.getBool("enableFOSSWarnAtTvDay") ?? false,
+      readOutAlertDay: preferences.getBool("readOutAlertDay") ?? false,
+      enableFOSSWarnAtTvNight:
+          preferences.getBool("enableFOSSWarnAtTvNight") ?? false,
+      readOutAlertNight: preferences.getBool("readOutAlertNight") ?? false,
+      startOfDay: preferences.getString("startOfDay") != null
+          ? TimeOfDay.fromDateTime(
+              DateTime.parse(preferences.getString("startOfDay")!))
+          : const TimeOfDay(hour: 8, minute: 0),
+      endOfDay: preferences.getString("endOfDay") != null
+          ? TimeOfDay.fromDateTime(
+              DateTime.parse(preferences.getString("endOfDay")!))
+          : const TimeOfDay(hour: 22, minute: 0),
+      speakerSettings: speakerSettings,
+    ),
     sharedPreferences: preferences,
   );
 });
@@ -183,12 +228,22 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     await _sharedPreferences.setBool("showExtendedMetaData", value);
   }
 
-  Future<void> setNotificationSourceSetting(
+  Future<void> setNotificationDaySetting(
     NotificationPreferences value,
   ) async {
-    state = state.copyWith(notificationSourceSetting: value);
+    state = state.copyWith(notificationDaySetting: value);
     await _sharedPreferences.setString(
-      "notificationSourceSetting",
+      "notificationDaySetting",
+      jsonEncode(value),
+    );
+  }
+
+  Future<void> setNotificationNightSetting(
+    NotificationPreferences value,
+  ) async {
+    state = state.copyWith(notificationNightSetting: value);
+    await _sharedPreferences.setString(
+      "notificationNightSetting",
       jsonEncode(value),
     );
   }
@@ -359,9 +414,56 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     await _sharedPreferences.setInt("displayDurationOnTV", value);
   }
 
-  Future<void> setEnableFOSSWarnAtTv(bool value) async {
-    state = state.copyWith(enableFOSSWarnAtTv: value);
-    await _sharedPreferences.setBool("enableFOSSWarnAtTv", value);
+  Future<void> setEnableFOSSWarnAtTvDay(bool value) async {
+    state = state.copyWith(enableFOSSWarnAtTvDay: value);
+    await _sharedPreferences.setBool("enableFOSSWarnAtTvDay", value);
+  }
+
+  Future<void> setReadOutAlertDay(bool value) async {
+    state = state.copyWith(readOutAlertDay: value);
+    await _sharedPreferences.setBool("readOutAlertDay", value);
+  }
+
+  Future<void> setEnableFOSSWarnAtTvNight(bool value) async {
+    state = state.copyWith(enableFOSSWarnAtTvNight: value);
+    await _sharedPreferences.setBool("enableFOSSWarnAtTvNight", value);
+  }
+
+  Future<void> setReadOutAlertNight(bool value) async {
+    state = state.copyWith(readOutAlertNight: value);
+    await _sharedPreferences.setBool("readOutAlertNight", value);
+  }
+
+  Future<void> setStartOfDay(TimeOfDay value) async {
+    DateTime datetime = DateTime(
+      DateTime.now().year, // not relevant
+      DateTime.now().month, // not relevant
+      DateTime.now().day, // not relevant
+      value.hour,
+      value.minute,
+    );
+    state = state.copyWith(startOfDay: value);
+    await _sharedPreferences.setString(
+        "startOfDay", datetime.toIso8601String());
+  }
+
+  Future<void> setEndOfDay(TimeOfDay value) async {
+    // there is no direct to json/from json method for daytime so we are
+    // wrapping the daytime with a Datetime with some unused values for Y, M, D
+    DateTime datetime = DateTime(
+      DateTime.now().year, // not relevant
+      DateTime.now().month, // not relevant
+      DateTime.now().day, // not relevant
+      value.hour,
+      value.minute,
+    );
+    state = state.copyWith(endOfDay: value);
+    await _sharedPreferences.setString("endOfDay", datetime.toIso8601String());
+  }
+
+  Future<void> setSpeakerSettings(Map<String, bool> value) async {
+    state = state.copyWith(speakerSettings: value);
+    await _sharedPreferences.setString("speakerSettings", jsonEncode(value));
   }
 }
 
@@ -372,7 +474,8 @@ class UserPreferences {
     required this.shouldNotifyGeneral,
     required this.showStatusNotification,
     required this.showExtendedMetadata,
-    required this.notificationSourceSetting,
+    required this.notificationDaySetting,
+    required this.notificationNightSetting,
     required this.selectedThemeMode,
     required this.selectedLightTheme,
     required this.selectedDarkTheme,
@@ -400,7 +503,13 @@ class UserPreferences {
     required this.enableFOSSWarnAtHome,
     required this.fossWarnTVAddress,
     required this.displayDurationOnTv,
-    required this.enableFOSSWarnAtTv,
+    required this.enableFOSSWarnAtTvDay,
+    required this.readOutAlertDay,
+    required this.enableFOSSWarnAtTvNight,
+    required this.readOutAlertNight,
+    required this.startOfDay,
+    required this.endOfDay,
+    required this.speakerSettings,
   });
 
   final bool shouldNotifyGeneral;
@@ -408,7 +517,8 @@ class UserPreferences {
   final bool showExtendedMetadata;
   // to save the user settings for which source
   // the user would like to be notified
-  final NotificationPreferences notificationSourceSetting;
+  final NotificationPreferences notificationDaySetting;
+  final NotificationPreferences notificationNightSetting;
   final ThemeMode selectedThemeMode;
   final ThemeData selectedLightTheme;
   final ThemeData selectedDarkTheme;
@@ -436,7 +546,13 @@ class UserPreferences {
   final bool enableFOSSWarnAtHome;
   final String fossWarnTVAddress;
   final int displayDurationOnTv;
-  final bool enableFOSSWarnAtTv;
+  final bool enableFOSSWarnAtTvDay;
+  final bool readOutAlertDay;
+  final bool enableFOSSWarnAtTvNight;
+  final bool readOutAlertNight;
+  final TimeOfDay startOfDay;
+  final TimeOfDay endOfDay;
+  final Map<String, bool> speakerSettings;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
@@ -454,7 +570,8 @@ class UserPreferences {
     bool? shouldNotifyGeneral,
     bool? showStatusNotification,
     bool? showExtendedMetadata,
-    NotificationPreferences? notificationSourceSetting,
+    NotificationPreferences? notificationDaySetting,
+    NotificationPreferences? notificationNightSetting,
     ThemeMode? selectedThemeMode,
     ThemeData? selectedLightTheme,
     ThemeData? selectedDarkTheme,
@@ -482,15 +599,23 @@ class UserPreferences {
     bool? enableFOSSWarnAtHome,
     String? fossWarnTVAddress,
     int? displayDurationOnTv,
-    bool? enableFOSSWarnAtTv,
+    bool? enableFOSSWarnAtTvDay,
+    bool? readOutAlertDay,
+    bool? enableFOSSWarnAtTvNight,
+    bool? readOutAlertNight,
+    TimeOfDay? startOfDay,
+    TimeOfDay? endOfDay,
+    Map<String, bool>? speakerSettings,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
         showStatusNotification:
             showStatusNotification ?? this.showStatusNotification,
         showExtendedMetadata: showExtendedMetadata ?? this.showExtendedMetadata,
-        notificationSourceSetting:
-            notificationSourceSetting ?? this.notificationSourceSetting,
+        notificationDaySetting:
+            notificationDaySetting ?? this.notificationDaySetting,
+        notificationNightSetting:
+            notificationNightSetting ?? this.notificationNightSetting,
         selectedThemeMode: selectedThemeMode ?? this.selectedThemeMode,
         selectedLightTheme: selectedLightTheme ?? this.selectedLightTheme,
         selectedDarkTheme: selectedDarkTheme ?? this.selectedDarkTheme,
@@ -531,7 +656,15 @@ class UserPreferences {
         enableFOSSWarnAtHome: enableFOSSWarnAtHome ?? this.enableFOSSWarnAtHome,
         fossWarnTVAddress: fossWarnTVAddress ?? this.fossWarnTVAddress,
         displayDurationOnTv: displayDurationOnTv ?? this.displayDurationOnTv,
-        enableFOSSWarnAtTv: enableFOSSWarnAtTv ?? this.enableFOSSWarnAtTv,
+        enableFOSSWarnAtTvDay:
+            enableFOSSWarnAtTvDay ?? this.enableFOSSWarnAtTvDay,
+        readOutAlertDay: readOutAlertDay ?? this.readOutAlertDay,
+        enableFOSSWarnAtTvNight:
+            enableFOSSWarnAtTvNight ?? this.enableFOSSWarnAtTvNight,
+        readOutAlertNight: readOutAlertNight ?? this.readOutAlertNight,
+        startOfDay: startOfDay ?? this.startOfDay,
+        endOfDay: endOfDay ?? this.endOfDay,
+        speakerSettings: speakerSettings ?? this.speakerSettings,
       );
 
   /// the path and filename where the error log is saved

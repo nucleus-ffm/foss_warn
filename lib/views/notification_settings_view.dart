@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/daytime.dart';
@@ -21,7 +22,27 @@ class _NotificationSettingsViewState
     extends ConsumerState<NotificationSettingsView> {
   final EdgeInsets settingsTileListPadding =
       const EdgeInsets.fromLTRB(25, 2, 25, 2);
-  Daytime selectedMode = Daytime.day;
+
+  String findLabelForChip(String key) {
+    var localizations = context.localizations;
+
+    switch (key) {
+      //@TODO Translate
+      case "headline":
+        return "Title";
+      case "description":
+        return "Beschreibung";
+      case "severity":
+        return "Schweregrad";
+      case "category":
+        return "Katagorie";
+      case "instructions":
+        return "Handlungsempfehlung";
+      case "sender":
+        return "Absender";
+    }
+    return "Error";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,53 +100,109 @@ class _NotificationSettingsViewState
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 50),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Start of the day"),
-                  TextButton(
-                      onPressed: () async {
-                        TimeOfDay? newStartTime = await showTimePicker(
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.sunny,
+                      size: IconTheme.of(context).size,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                          localizations.notification_settings_start_of_the_day),
+                      TextButton(
+                        onPressed: () async {
+                          TimeOfDay? newStartTime = await showTimePicker(
+                              context: context,
+                              initialTime: const TimeOfDay(hour: 8, minute: 0));
+                          if (newStartTime != null) {
+                            ref
+                                .read(userPreferencesProvider.notifier)
+                                .setStartOfDay(newStartTime);
+                          }
+                        },
+                        child: Text(
+                          ref
+                              .watch(userPreferencesProvider)
+                              .startOfDay
+                              .format(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: Divider(
+                        height: 50,
+                        indent: 15,
+                        endIndent: 15,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(localizations.notification_settings_end_of_the_day),
+                      TextButton(
+                        onPressed: () async {
+                          TimeOfDay? newEndTime = await showTimePicker(
                             context: context,
-                            initialTime: TimeOfDay(hour: 8, minute: 0));
-                      },
-                      child: Text("08:00")),
-                ],
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("End of the day"),
-                  TextButton(
-                      onPressed: () async {
-                        TimeOfDay? newEndTime = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay(hour: 22, minute: 0));
-                      },
-                      child: Text("22:00")),
+                            initialTime: const TimeOfDay(hour: 22, minute: 0),
+                          );
+                          if (newEndTime != null) {
+                            ref
+                                .read(userPreferencesProvider.notifier)
+                                .setEndOfDay(newEndTime);
+                          }
+                        },
+                        child: Text(
+                          ref
+                              .watch(userPreferencesProvider)
+                              .endOfDay
+                              .format(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.nightlight,
+                      size: IconTheme.of(context).size,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
                 ],
               ),
 
               SegmentedButton(
                 onSelectionChanged: (Set<Daytime> newSelection) {
-                  selectedMode = newSelection.first;
-                  setState(() {});
+                  ;
+                  ref.read(selectedDayTimeProvider.notifier).state =
+                      newSelection.first;
                 },
-                segments: const [
+                segments: [
                   ButtonSegment(
                     value: Daytime.day,
-                    icon: Icon(Icons.sunny),
-                    label: Text("Day"),
+                    icon: const Icon(Icons.sunny),
+                    label: Text(localizations.notification_settings_day),
                   ),
                   ButtonSegment(
-                      value: Daytime.night,
-                      icon: Icon(Icons.nightlight),
-                      label: Text("Night")),
+                    value: Daytime.night,
+                    icon: const Icon(Icons.nightlight),
+                    label: Text(localizations.notification_settings_night),
+                  ),
                 ],
-                selected: <Daytime>{selectedMode},
+                selected: <Daytime>{ref.watch(selectedDayTimeProvider)},
               ),
 
               // generate the settings tiles
@@ -156,32 +233,55 @@ class _NotificationSettingsViewState
 
               const Divider(),
               ListTile(
-                title: Text("Enable FOSSWarn@TV"),
-                subtitle: Text(
-                    "If enabled FOSSWarn will show new alerts on your connected FOSSWarn@TV device"),
+                title: Text(
+                  localizations
+                      .notification_settings_enabled_foss_warn_tv_title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                subtitle: Text(localizations
+                    .notification_settings_enabled_foss_warn_tv_subtitle),
                 trailing: Switch(
-                  value: ref.watch(userPreferencesProvider.select(
-                      (userPreferences) => userPreferences.enableFOSSWarnAtTv)),
+                  value: ref.watch(selectedDayTimeProvider) == Daytime.day
+                      ? ref.watch(
+                          userPreferencesProvider.select(
+                            (userPreferences) =>
+                                userPreferences.enableFOSSWarnAtTvDay,
+                          ),
+                        )
+                      : ref.watch(
+                          userPreferencesProvider.select(
+                            (userPreferences) =>
+                                userPreferences.enableFOSSWarnAtTvNight,
+                          ),
+                        ),
                   onChanged: (value) {
-                    ref
-                        .read(userPreferencesProvider.notifier)
-                        .setEnableFOSSWarnAtTv(value);
+                    if (ref.watch(selectedDayTimeProvider) == Daytime.day) {
+                      ref
+                          .read(userPreferencesProvider.notifier)
+                          .setEnableFOSSWarnAtTvDay(value);
+                    } else {
+                      ref
+                          .read(userPreferencesProvider.notifier)
+                          .setEnableFOSSWarnAtTvNight(value);
+                    }
                   },
                 ),
               ),
 
               ListTile(
                 //contentPadding: settingsTileListPadding,
-                title: Text("Duration on TV",
-                    style: Theme.of(context).textTheme.titleMedium),
+                title: Text(
+                  localizations.notification_settings_duration_on_tv_title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            "Define how long the warning should be displayed on your TV before the TV turns off again."),
+                        Text(localizations
+                            .notification_settings_duration_on_tv_subtitle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.max,
@@ -227,6 +327,75 @@ class _NotificationSettingsViewState
                   ],
                 ),
               ),
+              ListTile(
+                title: Text(
+                  localizations.notification_settings_read_out_the_alert_title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                subtitle: Text(localizations
+                    .notification_settings_read_out_the_alert_subtitle),
+                trailing: Switch(
+                  value: ref.watch(selectedDayTimeProvider) == Daytime.day
+                      ? ref.watch(userPreferencesProvider.select(
+                          (userPreferences) => userPreferences.readOutAlertDay))
+                      : ref.watch(userPreferencesProvider.select(
+                          (userPreferences) =>
+                              userPreferences.readOutAlertNight)),
+                  onChanged: (value) {
+                    if (ref.watch(selectedDayTimeProvider) == Daytime.day) {
+                      ref
+                          .read(userPreferencesProvider.notifier)
+                          .setReadOutAlertDay(value);
+                    } else {
+                      ref
+                          .read(userPreferencesProvider.notifier)
+                          .setReadOutAlertNight(value);
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title:
+                    Text(localizations.notification_settings_speaker_settings),
+                subtitle: Wrap(
+                  children: ref
+                      .watch(userPreferencesProvider)
+                      .speakerSettings
+                      .entries
+                      .map(
+                        (chip) => Padding(
+                          padding: const EdgeInsets.all(1),
+                          child: FilterChip(
+                            tooltip:
+                                "", //findTooltipTranslation(chip.key, chip.value),
+                            label: Text(findLabelForChip(chip.key)),
+                            backgroundColor: Colors.transparent,
+                            shape: const StadiumBorder(side: BorderSide()),
+                            selected: chip.value,
+                            onSelected: (bool value) {
+                              setState(
+                                () {
+                                  Map<String, bool> updatedMap = ref
+                                      .read(userPreferencesProvider)
+                                      .speakerSettings;
+                                  updatedMap.update(
+                                    chip.key,
+                                    (value) => !value,
+                                  );
+                                  ref
+                                      .watch(userPreferencesProvider.notifier)
+                                      .setSpeakerSettings(
+                                        updatedMap,
+                                      );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              )
             ],
           ),
         ),

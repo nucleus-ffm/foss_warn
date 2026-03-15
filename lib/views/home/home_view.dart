@@ -171,17 +171,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
         actions: [
           // @TODO debug only, remove before release
           IconButton(
-            icon: const Icon(Icons.notifications_on_rounded),
+            icon: Icon(
+              Icons.notifications_on_rounded,
+              size: IconTheme.of(context).size,
+            ),
             tooltip: "show a test notification",
             onPressed: () {
               NotificationService.showNotification(
                 // generate from the warning in the List the notification id
                 // because the warning identifier is no int, we have to generate a hash code
                 id: 5,
-                title: "Test Notification for FOSSWarn Home",
-                body: "This is a test notification.",
+                title: "Test Benachrichtigung",
+                body: "Das ist eine Test Benachrichtigung",
                 payload: "",
                 channelId: "de.nucleus.foss_warn.notifications_moderate",
+                sender: "FOSSWarn",
+                severity: "Schwer",
+                instructions: "Bleiben sie Zuhause",
+                categories: ["Wetter"],
                 channelName: "Moderate",
                 userPreferences: ref.read(userPreferencesProvider),
                 alertID: "1f45a843-a391-4675-b4a0-91b077be028b",
@@ -189,18 +196,27 @@ class _HomeViewState extends ConsumerState<HomeView> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.sort),
+            icon: Icon(
+              Icons.sort,
+              size: IconTheme.of(context).size,
+            ),
             tooltip: localizations.main_app_bar_action_sort_tooltip,
             onPressed: onOpenSortDialog,
           ),
           IconButton(
             onPressed: places.isNotEmpty ? onMarkNotificationAsRead : null,
-            icon: const Icon(Icons.mark_chat_read),
+            icon: Icon(
+              Icons.mark_chat_read,
+              size: IconTheme.of(context).size,
+            ),
             tooltip:
                 localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
           ),
           PopupMenuButton<MainMenuItem>(
-            icon: const Icon(Icons.more_vert),
+            icon: Icon(
+              Icons.more_vert,
+              size: IconTheme.of(context).size,
+            ),
             onSelected: onPopupMenuPressed,
             itemBuilder: (context) => <PopupMenuEntry<MainMenuItem>>[
               PopupMenuItem(

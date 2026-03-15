@@ -21,7 +21,7 @@ void main() {
     NotificationPreferences notificationPreferences,
   ) {
     return UserPreferences(
-      notificationSourceSetting: notificationPreferences,
+      notificationDaySetting: notificationPreferences,
       shouldNotifyGeneral: true,
       showStatusNotification: true,
       showExtendedMetadata: true,
@@ -51,8 +51,15 @@ void main() {
       showDebugNotification: false,
       enableFOSSWarnAtHome: false,
       fossWarnTVAddress: "",
-      enableFOSSWarnAtTv: false,
+      enableFOSSWarnAtTvDay: false,
+      enableFOSSWarnAtTvNight: false,
+      endOfDay: const TimeOfDay(hour: 11, minute: 01),
+      startOfDay: const TimeOfDay(hour: 01, minute: 01),
+      speakerSettings: {},
       displayDurationOnTv: 5,
+      notificationNightSetting: notificationPreferences,
+      readOutAlertDay: false,
+      readOutAlertNight: false,
     );
   }
 
