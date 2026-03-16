@@ -96,7 +96,7 @@ class UnifiedPushHandler {
     var payload = utf8.decode(message.content);
     debugPrint("Received a notification. Message: $payload");
 
-    handleIncomingNotification(payload, ref);
+    handleIncomingNotification(payload, ref, context);
   }
 
   /// register for push notifications and keep registration up to date
