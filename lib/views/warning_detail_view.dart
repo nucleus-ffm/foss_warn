@@ -8,6 +8,8 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/extensions/list.dart';
+import 'package:foss_warn/routes.dart';
 import 'package:foss_warn/services/translate_and_colorize_warning.dart';
 import 'package:foss_warn/services/url_launcher.dart';
 import 'package:foss_warn/services/warnings.dart';
@@ -239,21 +241,23 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var warning = ref.read(processedAlertsProvider).firstWhere(
+      WarnMessage? warning = ref.read(processedAlertsProvider).firstWhereOrNull(
             (alert) =>
                 alert.fpasId == widget.warningFPASIdentifer &&
                 alert.placeSubscriptionId == widget.subscriptionId,
           );
 
-      // update the read state of the alert
-      var alertsService = ref.read(processedAlertsProvider.notifier);
-      alertsService.updateAlert(warning.copyWith(read: true));
-      ref.invalidate(alertsFutureProvider);
+      if (warning != null) {
+        // update the read state of the alert
+        var alertsService = ref.read(processedAlertsProvider.notifier);
+        alertsService.updateAlert(warning.copyWith(read: true));
+        ref.invalidate(alertsFutureProvider);
 
-      // cancel the notification
-      await NotificationService.cancelOneNotification(
-        warning.identifier.hashCode,
-      );
+        // cancel the notification
+        await NotificationService.cancelOneNotification(
+          warning.identifier.hashCode,
+        );
+      }
     });
   }
 
@@ -270,13 +274,31 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
 
     var userPreferences = ref.watch(userPreferencesProvider);
 
-    WarnMessage warning = ref.watch(
+    WarnMessage? warningRaw = ref.watch(
       processedAlertsProvider.select(
-        (value) => value.firstWhere(
+        (value) => value.firstWhereOrNull(
           (element) => element.fpasId == widget.warningFPASIdentifer,
         ),
       ),
     );
+    if (warningRaw == null) {
+      print("Alert gone, returning to main screen");
+      // alerts got removed, return to root page
+      //var routes = ref.read(routesProvider);
+      //routes.go("/");
+
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        var routes = ref.read(routesProvider);
+        routes.go("/");
+      });
+      return const Scaffold(
+        body: Center(
+          child: Text("No alert to display."),
+        ),
+      );
+    }
+
+    WarnMessage warning = warningRaw;
 
     List<String> areaDescriptionList = _generateAreaDescriptionList(
       alert: warning,
