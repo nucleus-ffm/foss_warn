@@ -83,10 +83,17 @@ Future<void> newAlertNotification(
         alert.info[0].category,
         userPreferences,
       )) {
+        // push app to the screen with the alert
+        var routes = ref.read(routesProvider);
+        routes.go("/alerts/${alert.fpasId}/1234");
         NotificationService.showNotification(
           id: alert.fpasId.hashCode,
-          title: "New alert",
-          body: alert.info.first.headline,
+          title: alert.info.first.headline,
+          body: alert.info.first.description,
+          severity: alert.info.first.severity.toString(),
+          instructions: alert.info.first.instruction,
+          categories: List<String>.from(alert.info.first.category),
+          sender: alert.sender,
           payload: "",
           channelId:
               "de.nucleus.foss_warn.notifications_${alert.info[0].severity.name}",
@@ -94,8 +101,6 @@ Future<void> newAlertNotification(
           userPreferences: ref.read(userPreferencesProvider),
           alertID: alert.fpasId,
         );
-        var routes = ref.read(routesProvider);
-        routes.go("/alerts/${alert.fpasId}/1234");
       }
     }
   } on AlertUnavailableError catch (e) {
