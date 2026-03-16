@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import '../class/class_warn_message.dart';
@@ -63,23 +64,30 @@ Future<void> handleRequest(HttpRequest request, WidgetRef ref) async {
    final int duration =  durationString != null? int.parse(durationString): defaultDuration;
 
     if (id != null) {
-      WarnMessage alert = await ref.read(alertApiProvider).getAlertDetail(
-            alertId: id,
-            placeSubscriptionId: "Manually added",
-          );
-      ref.read(processedAlertsProvider.notifier).updateAlert(alert);
+      try {
+        WarnMessage alert = await ref.read(alertApiProvider).getAlertDetail(
+          alertId: id,
+          placeSubscriptionId: "Manually added",
+        );
+        ref.read(processedAlertsProvider.notifier).updateAlert(alert);
 
-      var routes = ref.read(routesProvider);
+        var routes = ref.read(routesProvider);
 
-      routes.go("/alerts/${alert.identifier}/1234");
+        routes.go("/alerts/${alert.identifier}/1234");
 
-      request.response
-        ..statusCode = 200
-        ..write('Showing alert')
-        ..close();
+        request.response
+          ..statusCode = 200
+          ..write('Showing alert')
+          ..close();
 
-      // do not wait for TV commands to finish as they are long running
-      handleTVCommands(duration);
+        // do not wait for TV commands to finish as they are long running
+        handleTVCommands(duration);
+      } on AlertUnavailableError {
+        request.response
+          ..statusCode = 404
+          ..write('Alert not found. Is Id correct?')
+          ..close();
+      }
     } else {
       request.response
         ..statusCode = 400

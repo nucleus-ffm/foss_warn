@@ -888,8 +888,8 @@ class _Source extends ConsumerWidget {
 
     var userPreferences = ref.watch(userPreferencesProvider);
 
-    var publisher = alert.publisher.isNotEmpty
-        ? alert.publisher
+    var publisher = alert.sender.isNotEmpty
+        ? alert.sender
         : localizations.alert_publisher_unknown;
 
     return Column(
