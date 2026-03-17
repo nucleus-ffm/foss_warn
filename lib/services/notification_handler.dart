@@ -35,7 +35,9 @@ void handleIncomingNotification(var rawPayload, WidgetRef ref, BuildContext cont
       case NotificationMessageType.added:
         newAlertNotification(payload, ref, context);
       case NotificationMessageType.subscribe:
-        subscriptionConfirmationNotification(payload, ref);
+        // @TODO this is not required for the home setup for now
+        //subscriptionConfirmationNotification(payload, ref);
+        break;
       case NotificationMessageType.unsubscribe:
         break; //@TODO (Nucleus): implement
       case NotificationMessageType.update:
