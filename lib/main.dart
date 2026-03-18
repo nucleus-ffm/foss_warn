@@ -48,15 +48,25 @@ class FOSSWarn extends ConsumerWidget {
           .select((preferences) => preferences.selectedDarkTheme),
     );
 
-    return MaterialApp.router(
-      title: 'FOSS Warn',
-      theme: selectedLightTheme,
-      darkTheme: selectedDarkTheme,
-      themeMode: themeMode,
-      debugShowCheckedModeBanner: false,
-      routerConfig: routes,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+    const double scaleFactor = 2.0;
+
+    return Builder(
+      builder: (context) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(scaleFactor)),
+          child: MaterialApp.router(
+            title: 'FOSS Warn',
+            theme: selectedLightTheme,
+            darkTheme: selectedDarkTheme,
+            themeMode: themeMode,
+            debugShowCheckedModeBanner: false,
+            routerConfig: routes,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
+        );
+      },
     );
   }
 }

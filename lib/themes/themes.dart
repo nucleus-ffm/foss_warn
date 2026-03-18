@@ -18,6 +18,9 @@ final greenLightTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
   ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
+  ),
 );
 
 final greenLightThemeTV = ThemeData(
@@ -37,6 +40,9 @@ final greenLightThemeTV = ThemeData(
     ),
     bodyLarge: TextStyle(fontSize: 14.0, color: Colors.grey),
     displaySmall: TextStyle(fontSize: 14.0, color: Colors.white),
+  ),
+  iconTheme: const IconThemeData(
+    size: 24 * 1.5,
   ),
 );
 
