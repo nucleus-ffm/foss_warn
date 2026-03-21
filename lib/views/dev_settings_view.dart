@@ -18,6 +18,7 @@ import '../services/api_handler.dart';
 import '../services/list_handler.dart';
 import '../services/subscription_handler.dart';
 import '../widgets/dialogs/error_dialog.dart';
+import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/system_information_dialog.dart';
 
 class DevSettings extends ConsumerStatefulWidget {
@@ -226,7 +227,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   onChanged: (value) async {
                     String testAlertPlaceName = "Test Alerts - Point Nemo";
                     var api = ref.read(alertApiProvider);
-
                     if (value) {
                       try {
                         await subscribeForArea(
@@ -252,13 +252,13 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     } else {
                       // remove subscription for Point Nemo
                       var places = ref.read(myPlacesProvider.notifier);
-                      ref
-                          .read(appStateProvider.notifier)
-                          .setReSubscriptionInProgress(true);
                       Place? place = places.places.firstWhereOrNull(
                         (p) => p.name == testAlertPlaceName,
                       );
                       if (place != null) {
+                        ref
+                            .read(appStateProvider.notifier)
+                            .setReSubscriptionInProgress(true);
                         try {
                           await api.unregisterArea(
                             subscriptionId: place.subscriptionId,
@@ -266,9 +266,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                           await places.remove(place);
                           userPreferencesService
                               .setSubscribeForTestAlerts(value);
-                          ref
-                              .read(appStateProvider.notifier)
-                              .setReSubscriptionInProgress(false);
                         } on UnregisterAreaError {
                           // we currently can not unsubscribe - show a snack bar to inform the
                           // user to check their internet connection
@@ -283,6 +280,9 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                           );
                           scaffoldMessenger.showSnackBar(snackBar);
                         }
+                        ref
+                            .read(appStateProvider.notifier)
+                            .setReSubscriptionInProgress(false);
                       } else {
                         // place was manually removed by the user
                         userPreferencesService.setSubscribeForTestAlerts(value);
@@ -340,6 +340,17 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     }
                   },
                 ),
+              ),
+              ListTile(
+                title:
+                Text(localizations.dev_settings_troubleshoot_notifications),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                    const NotificationTroubleshootDialog(),
+                  );
+                },
               ),
             ],
           ),

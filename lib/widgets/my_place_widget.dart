@@ -69,6 +69,7 @@ class MyPlaceWidget extends ConsumerWidget {
                     icon: Icon(
                       Icons.location_city,
                       size: IconTheme.of(context).size,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -115,6 +116,7 @@ class MyPlaceWidget extends ConsumerWidget {
                         child: Icon(
                           Icons.check,
                           color: theme.colorScheme.onSecondary,
+                          size: IconTheme.of(context).size,
                         ),
                       )
                     : !warnings.any((warning) => !warning.read)

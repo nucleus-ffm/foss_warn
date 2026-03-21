@@ -142,17 +142,7 @@ class _SettingsState extends ConsumerState<Settings> {
               title: Text(localizations.settings_app_notification_settings),
               onTap: widget.onNotificationSettingsPressed,
             ),
-            ListTile(
-              title:
-                  Text(localizations.dev_settings_troubleshoot_notifications),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      const NotificationTroubleshootDialog(),
-                );
-              },
-            ),
+
             ListTile(
               title: Text(localizations.settings_select_push_service_title),
               subtitle:

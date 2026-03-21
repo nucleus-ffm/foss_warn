@@ -123,7 +123,7 @@ class NotificationService {
       settings.forEach((key, value) {
         if (key == "severity" && value)
           messageToRead += " mit Schweregrad $severity. ";
-        if (key == "headline" && value) messageToRead += "und Title: $title. ";
+        if (key == "headline" && value) messageToRead += "und Titel: $title. ";
         if (key == "description" && value) messageToRead += ". $body. ";
         if (key == "instruction" && value)
           messageToRead += ". Es wird folgendes empfohlen: $instructions.";

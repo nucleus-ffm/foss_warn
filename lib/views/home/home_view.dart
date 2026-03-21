@@ -170,12 +170,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
         title: const Text("FOSS Warn"),
         actions: [
           // @TODO debug only, remove before release
-          IconButton(
-            icon: Icon(
-              Icons.notifications_on_rounded,
-              size: IconTheme.of(context).size,
-            ),
-            tooltip: "show a test notification",
+
+          TextButton(
+            child: Text("Test alert"),
+            //tooltip: "show a test notification",
             onPressed: () {
               NotificationService.showNotification(
                 // generate from the warning in the List the notification id
@@ -195,24 +193,51 @@ class _HomeViewState extends ConsumerState<HomeView> {
               );
             },
           ),
-          IconButton(
-            icon: Icon(
-              Icons.sort,
-              size: IconTheme.of(context).size,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.sort,
+                size: IconTheme.of(context).size,
+              ),
+              tooltip: localizations.main_app_bar_action_sort_tooltip,
+              onPressed: onOpenSortDialog,
             ),
-            tooltip: localizations.main_app_bar_action_sort_tooltip,
-            onPressed: onOpenSortDialog,
           ),
-          IconButton(
-            onPressed: places.isNotEmpty ? onMarkNotificationAsRead : null,
-            icon: Icon(
-              Icons.mark_chat_read,
-              size: IconTheme.of(context).size,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: IconButton(
+              onPressed: places.isNotEmpty ? onMarkNotificationAsRead : null,
+              icon: Icon(
+                Icons.mark_chat_read,
+                size: IconTheme.of(context).size,
+              ),
+              tooltip:
+                  localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
             ),
-            tooltip:
-                localizations.main_app_bar_tooltip_mark_all_warnings_as_read,
           ),
-          PopupMenuButton<MainMenuItem>(
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: IconButton(
+              onPressed: widget.onSettingsPressed,
+              icon: Icon(
+                Icons.settings,
+                size: IconTheme.of(context).size,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: IconButton(
+              onPressed: widget.onAboutPressed,
+              icon: Icon(
+                Icons.info_outline,
+                size: IconTheme.of(context).size,
+              ),
+            ),
+          ),
+
+          /*PopupMenuButton<MainMenuItem>(
             icon: Icon(
               Icons.more_vert,
               size: IconTheme.of(context).size,
@@ -228,7 +253,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 child: Text(localizations.main_dot_menu_about),
               ),
             ],
-          ),
+          ),*/
         ],
       ),
       bottomNavigationBar: NavigationBar(

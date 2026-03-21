@@ -267,66 +267,82 @@ class _NotificationSettingsViewState
                   },
                 ),
               ),
-
-              ListTile(
-                //contentPadding: settingsTileListPadding,
-                title: Text(
-                  localizations.notification_settings_duration_on_tv_title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(localizations
-                            .notification_settings_duration_on_tv_subtitle),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            const Icon(
-                              Icons.tv,
-                              color: Colors.amber,
-                            ),
-                            Flexible(
-                              child: Slider(
-                                label: ref
-                                    .watch(userPreferencesProvider.select(
-                                        (userPreferences) => userPreferences
-                                            .displayDurationOnTv))
-                                    .toString(),
-                                divisions: 14,
-                                min: 1,
-                                max: 15,
-                                value: ref
-                                    .watch(userPreferencesProvider.select(
-                                        (userPreferences) => userPreferences
-                                            .displayDurationOnTv))
-                                    .toDouble(),
-                                onChanged: (value) {
-                                  ref
-                                      .read(userPreferencesProvider.notifier)
-                                      .setDisplayDurationOnTv(value.round());
-                                  setState(() {});
-                                },
-                                onChangeEnd: (value) {
-                                  ref
-                                      .read(userPreferencesProvider.notifier)
-                                      .setDisplayDurationOnTv(value.round());
-                                },
+              // only display duration slider if the TV option is enabled
+              ref.watch(userPreferencesProvider.select((userPreferences) =>
+                              userPreferences.enableFOSSWarnAtTvDay)) &&
+                          ref.watch(selectedDayTimeProvider) == Daytime.day ||
+                      ref.watch(userPreferencesProvider.select(
+                              (userPreferences) =>
+                                  userPreferences.enableFOSSWarnAtTvNight)) &&
+                          ref.watch(selectedDayTimeProvider) == Daytime.night
+                  ? ListTile(
+                      //contentPadding: settingsTileListPadding,
+                      title: Text(
+                        localizations
+                            .notification_settings_duration_on_tv_title,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(localizations
+                                  .notification_settings_duration_on_tv_subtitle),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Icon(
+                                    Icons.tv,
+                                    color: Colors.amber,
+                                  ),
+                                  Flexible(
+                                    child: Slider(
+                                      label: ref
+                                          .watch(userPreferencesProvider.select(
+                                              (userPreferences) =>
+                                                  userPreferences
+                                                      .displayDurationOnTv))
+                                          .toString(),
+                                      divisions: 14,
+                                      min: 1,
+                                      max: 15,
+                                      value: ref
+                                          .watch(userPreferencesProvider.select(
+                                              (userPreferences) =>
+                                                  userPreferences
+                                                      .displayDurationOnTv))
+                                          .toDouble(),
+                                      onChanged: (value) {
+                                        ref
+                                            .read(userPreferencesProvider
+                                                .notifier)
+                                            .setDisplayDurationOnTv(
+                                                value.round());
+                                        setState(() {});
+                                      },
+                                      onChangeEnd: (value) {
+                                        ref
+                                            .read(userPreferencesProvider
+                                                .notifier)
+                                            .setDisplayDurationOnTv(
+                                                value.round());
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                      "${ref.watch(userPreferencesProvider.select((userPreferences) => userPreferences.displayDurationOnTv))} min")
+                                ],
                               ),
-                            ),
-                            Text(
-                                "${ref.watch(userPreferencesProvider.select((userPreferences) => userPreferences.displayDurationOnTv))} min")
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
               ListTile(
                 title: Text(
                   localizations.notification_settings_read_out_the_alert_title,

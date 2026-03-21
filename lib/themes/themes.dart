@@ -134,6 +134,7 @@ final greenDarkTheme = ThemeData(
   ),
   iconTheme: const IconThemeData(
     size: 24 * 1.5,
+    color: Colors.white
   ),
 );
 
