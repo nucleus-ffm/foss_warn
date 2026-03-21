@@ -5,10 +5,11 @@ enum Category {
   geo, // Geophysical (inc. landslide)
   met, // Meteorological (inc. flood)
   safety, // General emergency and public safety
+  security, // Law enforcement, military, homeland and local/private security
   rescue, // Rescue and recovery
   fire, // Fire suppression and rescue
   health, //Medical and public health
-  env, //Pollution and other environmental
+  env, // Pollution and other environmental
   transport, //Public and private   transportation
   infra, //Utility, telecommunication, other  non-transport infrastructure
   cbrne, //Chemical, Biological, Radiological, Nuclear or High-Yield Explosive threat or attack
@@ -51,9 +52,10 @@ enum Category {
     var localizations = context.localizations;
 
     return switch (this) {
-      geo => localizations.explanation_environment,
+      geo => localizations.explanation_geophysical,
       met => localizations.explanation_weather,
       safety => localizations.explanation_safety,
+      security => localizations.explanation_security,
       rescue => localizations.explanation_rescue,
       fire => localizations.explanation_fire,
       health => localizations.explanation_health,
@@ -68,9 +70,10 @@ enum Category {
   String getLocalizedExplanation(BuildContext context) {
     var localizations = context.localizations;
     return switch (this) {
-      geo => localizations.explanation_environment_text,
+      geo => localizations.explanation_geophysical_text,
       met => localizations.explanation_weather_text,
       safety => localizations.explanation_safety_text,
+      security => localizations.explanation_security_text,
       rescue => localizations.explanation_rescue_text,
       fire => localizations.explanation_fire_text,
       health => localizations.explanation_health_text,
