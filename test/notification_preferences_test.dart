@@ -60,6 +60,7 @@ void main() {
       notificationNightSetting: notificationPreferences,
       readOutAlertDay: false,
       readOutAlertNight: false,
+      showUpdateDialog: false,
     );
   }
 

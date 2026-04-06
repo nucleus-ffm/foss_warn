@@ -433,7 +433,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 _Contact(alert: warning),
                 const SizedBox(height: 20),
               ],
-              if (warning.info[0].web != "") ...[
+              if (warning.info[0].web != "" && warning.info[0].web != null) ...[ //@TODO why check for ""?
                 _Web(alert: warning),
               ],
             ],
@@ -507,6 +507,7 @@ class _RegionState extends ConsumerState<_Region> {
         ),
         const SizedBox(height: 2),
         SelectableText(
+          enableInteractiveSelection: false,
           regionsString,
           style: TextStyle(fontSize: userPreferences.warningFontSize),
         ),
@@ -572,7 +573,7 @@ class _Tags extends ConsumerWidget {
             ),
             _TagButton(
               color: Colors.blueAccent,
-              eventType: "Category",
+              eventType: "Kategorie", //@TODO translate
               info: alert.info.first.category.first.getLocalizedName(context),
             ),
             _TagButton(
@@ -817,6 +818,7 @@ class _Description extends ConsumerWidget {
         ),
         const SizedBox(height: 2),
         SelectableText.rich(
+          enableInteractiveSelection: false,
           TextSpan(
             children: _htmlTextToTextSpans(alert.info[0].description),
             style: TextStyle(fontSize: userPreferences.warningFontSize),
@@ -903,6 +905,7 @@ class _Instruction extends ConsumerWidget {
         ),
         const SizedBox(height: 2),
         SelectableText.rich(
+          enableInteractiveSelection: false,
           TextSpan(
             children: _htmlTextToTextSpans(instruction),
             style: TextStyle(
@@ -1042,6 +1045,7 @@ class _Contact extends ConsumerWidget {
             const SizedBox(width: 15),
             Flexible(
               child: SelectableText.rich(
+                enableInteractiveSelection: false,
                 // key used by unit test
                 key: const Key('contactFieldKey'),
                 TextSpan(

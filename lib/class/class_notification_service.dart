@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
@@ -55,6 +57,7 @@ class NotificationService {
     String? instructions,
     String? severity,
     List<String>? categories,
+    WarnMessage? alert,
     required String channelId,
     required String channelName,
     required UserPreferences userPreferences,
@@ -93,10 +96,21 @@ class NotificationService {
       if (alertID != null &&
           userPreferences.fossWarnTVAddress != "" &&
           showOnTv) {
+
         // send request to TV
-        var url = Uri.parse(
-          "${userPreferences.fossWarnTVAddress}:8080/show_alert?id=$alertID?duration=${userPreferences.displayDurationOnTv}",
-        );
+        // @TODO improve hacky solution to allow displaying the test alerts on the TV
+        var url = Uri();
+        if(alert!=null) {
+          var alertJson = json.encode(alert);
+           url = Uri.parse(
+            "${userPreferences.fossWarnTVAddress}:8080/show_alert?alert=$alertJson&duration=${userPreferences.displayDurationOnTv}",
+          );
+        } else {
+          url = Uri.parse(
+            "${userPreferences.fossWarnTVAddress}:8080/show_alert?id=$alertID&duration=${userPreferences.displayDurationOnTv}",
+          );
+        }
+
         debugPrint("Sending command to TV on address $url");
 
         http.get(

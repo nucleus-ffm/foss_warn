@@ -152,7 +152,10 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
               alert.placeSubscriptionId == apiResult.subscriptionId,
         ) &&
         // this check is to allow adding alerts from the map view
-        alert.placeSubscriptionId != constants.noSubscriptionId) {
+        alert.placeSubscriptionId != constants.noSubscriptionId
+        // this check is to allow added demo alerts
+        && alert.fpasId != "-1"
+    ) {
       // the alert is not in the server response anymore, remove cached alert
       ref.read(processedAlertsProvider.notifier).deleteAlert(alert);
     }

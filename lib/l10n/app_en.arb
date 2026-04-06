@@ -918,7 +918,7 @@
     "update_dialog_body_v42": "Please take a second to verify your subscription areas. Due to a bug in version 1.0.0, your subscription area might be wrong. Please confirm that the subscription areas listed below are for the correct geographical location. If the bounding box is not the expected area, please remove the subscription and re-add it. If everything is alright, there is nothing to do.",
     "update_dialog_subscription_v42": "Your subscriptions",
     "update_dialog_confirmation_v42": "I've checked my areas",
-    "map_alert_sheet_title": "Alerts for this area"
+    "map_alert_sheet_title": "Alerts for this area",
     "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Registration for new distributor failed with a timeout. Please try again.",
     "help_button_tooltip": "Get help in the wiki."
 }

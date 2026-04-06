@@ -5,6 +5,7 @@ import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/services/demo_alerts.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/views/warnings_view.dart';
@@ -23,6 +24,15 @@ enum MainMenuItem {
   settings,
   about,
 }
+
+enum DemoAlertsMenuItem {
+  weatherWarning,
+  floodWarning,
+  bombFoundWarning,
+  thunderstormWarning,
+  removeWarning,
+}
+
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({
@@ -170,6 +180,26 @@ class _HomeViewState extends ConsumerState<HomeView> {
       }
     }
 
+    Future<void> onPopupDemoAlertPressed(DemoAlertsMenuItem item) async {
+      switch (item) {
+        case DemoAlertsMenuItem.weatherWarning:
+          injectWeatherWarning(ref, context);
+          break;
+        case DemoAlertsMenuItem.floodWarning:
+          injectFloodWarning(ref, context);
+          break;
+        case DemoAlertsMenuItem.bombFoundWarning:
+          injectBombWarning(ref, context);
+          break;
+        case DemoAlertsMenuItem.thunderstormWarning:
+          injectThunderstormWarning(ref, context);
+          break;
+        case DemoAlertsMenuItem.removeWarning:
+          removeDemoAlert(ref);
+          break;
+      }
+    }
+
     return Scaffold(
       // set to false to prevent the widget from jumping after closing the keyboard
       resizeToAvoidBottomInset: false,
@@ -178,11 +208,13 @@ class _HomeViewState extends ConsumerState<HomeView> {
         actions: [
           // @TODO debug only, remove before release
 
-          TextButton(
+          /*TextButton(
             child: Text("Test alert"),
             //tooltip: "show a test notification",
             onPressed: () {
-              NotificationService.showNotification(
+              //injectWarning(ref, context);
+
+              /*NotificationService.showNotification(
                 // generate from the warning in the List the notification id
                 // because the warning identifier is no int, we have to generate a hash code
                 id: 5,
@@ -197,9 +229,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 channelName: "Moderate",
                 userPreferences: ref.read(userPreferencesProvider),
                 alertID: "1f45a843-a391-4675-b4a0-91b077be028b",
-              );
+              );*/
             },
-          ),
+          ),*/
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: IconButton(
@@ -244,23 +276,35 @@ class _HomeViewState extends ConsumerState<HomeView> {
             ),
           ),
 
-          /*PopupMenuButton<MainMenuItem>(
+          PopupMenuButton<DemoAlertsMenuItem>(
             icon: Icon(
               Icons.more_vert,
               size: IconTheme.of(context).size,
             ),
-            onSelected: onPopupMenuPressed,
-            itemBuilder: (context) => <PopupMenuEntry<MainMenuItem>>[
+            onSelected: onPopupDemoAlertPressed,
+            itemBuilder: (context) => <PopupMenuEntry<DemoAlertsMenuItem>>[
               PopupMenuItem(
-                value: MainMenuItem.settings,
-                child: Text(localizations.main_dot_menu_settings),
+                value: DemoAlertsMenuItem.weatherWarning,
+                child: Text("Forst Warnung (1/4)"),
               ),
               PopupMenuItem(
-                value: MainMenuItem.about,
-                child: Text(localizations.main_dot_menu_about),
+                value: DemoAlertsMenuItem.thunderstormWarning,
+                child: Text("Gewitter Warnung (2/4)"),
+              ),
+              PopupMenuItem(
+                value: DemoAlertsMenuItem.bombFoundWarning,
+                child: Text("Bombenfund Warnung (3/4)"),
+              ),
+              PopupMenuItem(
+                value: DemoAlertsMenuItem.floodWarning,
+                child: Text("Hochwasser Warnung (4/4"),
+              ),
+              PopupMenuItem(
+                value: DemoAlertsMenuItem.removeWarning,
+                child: Text("Entferne Demo Warnung"),
               ),
             ],
-          ),*/
+          ),
         ],
       ),
       bottomNavigationBar: NavigationBar(
