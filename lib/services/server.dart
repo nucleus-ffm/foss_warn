@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -59,6 +60,7 @@ Future<void> handleRequest(HttpRequest request, WidgetRef ref) async {
   if (request.uri.path == '/show_alert') {
     final String? id = request.uri.queryParameters['id'];
     final String? durationString = request.uri.queryParameters['duration'];
+    final String? alertRaw = request.uri.queryParameters['alert'];
 
    int defaultDuration = 5;
    final int duration =  durationString != null? int.parse(durationString): defaultDuration;
@@ -88,6 +90,31 @@ Future<void> handleRequest(HttpRequest request, WidgetRef ref) async {
           ..write('Alert not found. Is Id correct?')
           ..close();
       }
+    } else if(alertRaw != null) {
+      try {
+        var alertJson = jsonDecode(alertRaw);
+        WarnMessage alert = WarnMessage.fromJson(alertJson, fpasId: "-1", placeSubscriptionId: "-1");
+        ref.read(processedAlertsProvider.notifier).updateAlert(alert);
+
+        var routes = ref.read(routesProvider);
+
+        routes.go("/alerts/${alert.identifier}/1234");
+
+        request.response
+          ..statusCode = 200
+          ..write('Showing alert')
+          ..close();
+
+        // do not wait for TV commands to finish as they are long running
+        handleTVCommands(duration);
+      } catch (e) {
+        print(e);
+        request.response
+          ..statusCode = 500
+          ..write('Error with parsing alert?')
+          ..close();
+      }
+
     } else {
       request.response
         ..statusCode = 400
