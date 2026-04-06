@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/warning_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +23,7 @@ class MapAlertSheet extends StatefulWidget {
 }
 
 class _MapAlertSheetState extends State<MapAlertSheet> {
-  late final Future<Widget?> _future;
+  Future<Widget?>? _future;
 
   /// Get the alerts for the selected point on the map
   Future<List<WarnMessage>> getAlerts(LatLng coordinates) async {
@@ -55,7 +56,7 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
         ],
       ).catchError((exception) {
         debugPrint(
-          "[map_widget] Something went wrong while fetching alert details $exception",
+          "[map_alert_sheet] Something went wrong while fetching alert details $exception",
         );
         return alerts;
       });
@@ -128,7 +129,12 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
   @override
   void initState() {
     super.initState();
-    _future = alertSelectionSheet(widget.latLng, context);
+  }
+
+  /// Either return the alertSelectionSheet or calculate if first
+  Future<Widget?> getAlertSelectionSheet() async {
+    _future ??= alertSelectionSheet(widget.latLng, context);
+    return _future!;
   }
 
   @override
@@ -155,11 +161,17 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Widget?>(
-      future: _future,
+      future: getAlertSelectionSheet(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) return snapshot.data!;
-          if (snapshot.hasError) return const SizedBox();
+          if (snapshot.hasError) {
+            debugPrint(
+                "[map_alert_sheet] Failed to build map alert sheet: error ${snapshot.error}");
+            ErrorLogger.writeErrorLog(
+                "map_alert_sheet", "build", snapshot.error.toString());
+            return const Text("Error :(");
+          }
         }
         return ConstrainedBox(
           constraints: BoxConstraints(
