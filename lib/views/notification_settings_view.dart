@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/daytime.dart';
@@ -24,10 +23,8 @@ class _NotificationSettingsViewState
       const EdgeInsets.fromLTRB(25, 2, 25, 2);
 
   String findLabelForChip(String key) {
-    var localizations = context.localizations;
-
     switch (key) {
-      //@TODO Translate
+      //@TODO(Nucleus): Translate
       case "headline":
         return "Title";
       case "description":
@@ -116,12 +113,14 @@ class _NotificationSettingsViewState
                   Column(
                     children: [
                       Text(
-                          localizations.notification_settings_start_of_the_day),
+                        localizations.notification_settings_start_of_the_day,
+                      ),
                       TextButton(
                         onPressed: () async {
                           TimeOfDay? newStartTime = await showTimePicker(
-                              context: context,
-                              initialTime: const TimeOfDay(hour: 8, minute: 0));
+                            context: context,
+                            initialTime: const TimeOfDay(hour: 8, minute: 0),
+                          );
                           if (newStartTime != null) {
                             ref
                                 .read(userPreferencesProvider.notifier)
@@ -186,7 +185,6 @@ class _NotificationSettingsViewState
 
               SegmentedButton(
                 onSelectionChanged: (Set<Daytime> newSelection) {
-                  ;
                   ref.read(selectedDayTimeProvider.notifier).state =
                       newSelection.first;
                 },
@@ -238,8 +236,10 @@ class _NotificationSettingsViewState
                       .notification_settings_enabled_foss_warn_tv_title,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                subtitle: Text(localizations
-                    .notification_settings_enabled_foss_warn_tv_subtitle),
+                subtitle: Text(
+                  localizations
+                      .notification_settings_enabled_foss_warn_tv_subtitle,
+                ),
                 trailing: Switch(
                   value: ref.watch(selectedDayTimeProvider) == Daytime.day
                       ? ref.watch(
@@ -268,15 +268,21 @@ class _NotificationSettingsViewState
                 ),
               ),
               // only display duration slider if the TV option is enabled
-              ref.watch(userPreferencesProvider.select((userPreferences) =>
-                              userPreferences.enableFOSSWarnAtTvDay)) &&
-                          ref.watch(selectedDayTimeProvider) == Daytime.day ||
-                      ref.watch(userPreferencesProvider.select(
+              ref.watch(
+                            userPreferencesProvider.select(
                               (userPreferences) =>
-                                  userPreferences.enableFOSSWarnAtTvNight)) &&
+                                  userPreferences.enableFOSSWarnAtTvDay,
+                            ),
+                          ) &&
+                          ref.watch(selectedDayTimeProvider) == Daytime.day ||
+                      ref.watch(
+                            userPreferencesProvider.select(
+                              (userPreferences) =>
+                                  userPreferences.enableFOSSWarnAtTvNight,
+                            ),
+                          ) &&
                           ref.watch(selectedDayTimeProvider) == Daytime.night
                   ? ListTile(
-                      //contentPadding: settingsTileListPadding,
                       title: Text(
                         localizations
                             .notification_settings_duration_on_tv_title,
@@ -288,8 +294,10 @@ class _NotificationSettingsViewState
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(localizations
-                                  .notification_settings_duration_on_tv_subtitle),
+                              Text(
+                                localizations
+                                    .notification_settings_duration_on_tv_subtitle,
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -302,39 +310,50 @@ class _NotificationSettingsViewState
                                   Flexible(
                                     child: Slider(
                                       label: ref
-                                          .watch(userPreferencesProvider.select(
+                                          .watch(
+                                            userPreferencesProvider.select(
                                               (userPreferences) =>
                                                   userPreferences
-                                                      .displayDurationOnTv))
+                                                      .displayDurationOnTv,
+                                            ),
+                                          )
                                           .toString(),
                                       divisions: 14,
                                       min: 1,
                                       max: 15,
                                       value: ref
-                                          .watch(userPreferencesProvider.select(
+                                          .watch(
+                                            userPreferencesProvider.select(
                                               (userPreferences) =>
                                                   userPreferences
-                                                      .displayDurationOnTv))
+                                                      .displayDurationOnTv,
+                                            ),
+                                          )
                                           .toDouble(),
                                       onChanged: (value) {
                                         ref
-                                            .read(userPreferencesProvider
-                                                .notifier)
+                                            .read(
+                                              userPreferencesProvider.notifier,
+                                            )
                                             .setDisplayDurationOnTv(
-                                                value.round());
+                                              value.round(),
+                                            );
                                         setState(() {});
                                       },
                                       onChangeEnd: (value) {
                                         ref
-                                            .read(userPreferencesProvider
-                                                .notifier)
+                                            .read(
+                                              userPreferencesProvider.notifier,
+                                            )
                                             .setDisplayDurationOnTv(
-                                                value.round());
+                                              value.round(),
+                                            );
                                       },
                                     ),
                                   ),
                                   Text(
-                                      "${ref.watch(userPreferencesProvider.select((userPreferences) => userPreferences.displayDurationOnTv))} min")
+                                    "${ref.watch(userPreferencesProvider.select((userPreferences) => userPreferences.displayDurationOnTv))} min",
+                                  ),
                                 ],
                               ),
                             ],
@@ -348,15 +367,24 @@ class _NotificationSettingsViewState
                   localizations.notification_settings_read_out_the_alert_title,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                subtitle: Text(localizations
-                    .notification_settings_read_out_the_alert_subtitle),
+                subtitle: Text(
+                  localizations
+                      .notification_settings_read_out_the_alert_subtitle,
+                ),
                 trailing: Switch(
                   value: ref.watch(selectedDayTimeProvider) == Daytime.day
-                      ? ref.watch(userPreferencesProvider.select(
-                          (userPreferences) => userPreferences.readOutAlertDay))
-                      : ref.watch(userPreferencesProvider.select(
-                          (userPreferences) =>
-                              userPreferences.readOutAlertNight)),
+                      ? ref.watch(
+                          userPreferencesProvider.select(
+                            (userPreferences) =>
+                                userPreferences.readOutAlertDay,
+                          ),
+                        )
+                      : ref.watch(
+                          userPreferencesProvider.select(
+                            (userPreferences) =>
+                                userPreferences.readOutAlertNight,
+                          ),
+                        ),
                   onChanged: (value) {
                     if (ref.watch(selectedDayTimeProvider) == Daytime.day) {
                       ref
@@ -411,7 +439,7 @@ class _NotificationSettingsViewState
                       )
                       .toList(),
                 ),
-              )
+              ),
             ],
           ),
         ),

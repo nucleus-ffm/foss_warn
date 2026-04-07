@@ -118,7 +118,7 @@ final userPreferencesProvider =
       "description": true,
       "instructions": false,
       "category": false,
-      "sender": false
+      "sender": false,
     };
   }
 
@@ -193,11 +193,13 @@ final userPreferencesProvider =
       readOutAlertNight: preferences.getBool("readOutAlertNight") ?? false,
       startOfDay: preferences.getString("startOfDay") != null
           ? TimeOfDay.fromDateTime(
-              DateTime.parse(preferences.getString("startOfDay")!))
+              DateTime.parse(preferences.getString("startOfDay")!),
+            )
           : const TimeOfDay(hour: 8, minute: 0),
       endOfDay: preferences.getString("endOfDay") != null
           ? TimeOfDay.fromDateTime(
-              DateTime.parse(preferences.getString("endOfDay")!))
+              DateTime.parse(preferences.getString("endOfDay")!),
+            )
           : const TimeOfDay(hour: 22, minute: 0),
       speakerSettings: speakerSettings,
       showUpdateDialog: preferences.getBool("showUpdateDialog") ?? false,
@@ -445,7 +447,9 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     );
     state = state.copyWith(startOfDay: value);
     await _sharedPreferences.setString(
-        "startOfDay", datetime.toIso8601String());
+      "startOfDay",
+      datetime.toIso8601String(),
+    );
   }
 
   Future<void> setEndOfDay(TimeOfDay value) async {

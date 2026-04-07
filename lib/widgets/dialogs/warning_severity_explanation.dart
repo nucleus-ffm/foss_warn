@@ -26,7 +26,12 @@ class _WarningSeverityExplanationState
           RichText(
             text: TextSpan(
               text: '',
-              style: theme.textTheme.bodyMedium,
+              //@TODO(Nucleus): quick fix only, implement correct font size scaling
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: MediaQuery.of(context)
+                    .textScaler
+                    .scale(theme.textTheme.bodyMedium!.fontSize!),
+              ),
               children: <TextSpan>[
                 TextSpan(
                   text: localizations.notification_settings_slidervalue_extreme,

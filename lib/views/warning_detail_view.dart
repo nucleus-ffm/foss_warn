@@ -283,11 +283,8 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
       ),
     );
     if (warningRaw == null) {
-      print("Alert gone, returning to main screen");
+      debugPrint("Alert gone, returning to main screen");
       // alerts got removed, return to root page
-      //var routes = ref.read(routesProvider);
-      //routes.go("/");
-
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         var routes = ref.read(routesProvider);
         routes.go("/");
@@ -433,7 +430,8 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 _Contact(alert: warning),
                 const SizedBox(height: 20),
               ],
-              if (warning.info[0].web != "" && warning.info[0].web != null) ...[ //@TODO why check for ""?
+              if (warning.info[0].web != "" && warning.info[0].web != null) ...[
+                //@TODO why check for ""?
                 _Web(alert: warning),
               ],
             ],

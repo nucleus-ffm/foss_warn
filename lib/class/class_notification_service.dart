@@ -9,7 +9,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart' as constants;
-import '../enums/category.dart';
 import 'class_error_logger.dart';
 import 'class_user_preferences.dart';
 
@@ -96,13 +95,12 @@ class NotificationService {
       if (alertID != null &&
           userPreferences.fossWarnTVAddress != "" &&
           showOnTv) {
-
         // send request to TV
         // @TODO improve hacky solution to allow displaying the test alerts on the TV
         var url = Uri();
-        if(alert!=null) {
+        if (alert != null) {
           var alertJson = json.encode(alert);
-           url = Uri.parse(
+          url = Uri.parse(
             "${userPreferences.fossWarnTVAddress}:8080/show_alert?alert=$alertJson&duration=${userPreferences.displayDurationOnTv}",
           );
         } else {
@@ -120,7 +118,7 @@ class NotificationService {
             'User-Agent': constants.httpUserAgent,
           },
         ).catchError((e) {
-          print("Can not send to Tv ${e.toString}");
+          debugPrint("Can not send to Tv ${e.toString}");
           return http.Response("body", 500);
         }).then((value) => debugPrint(value.toString()));
       }
@@ -135,12 +133,14 @@ class NotificationService {
 
       var settings = userPreferences.speakerSettings;
       settings.forEach((key, value) {
-        if (key == "severity" && value)
+        if (key == "severity" && value) {
           messageToRead += " mit Schweregrad $severity. ";
+        }
         if (key == "headline" && value) messageToRead += "und Titel: $title. ";
         if (key == "description" && value) messageToRead += ". $body. ";
-        if (key == "instruction" && value)
+        if (key == "instruction" && value) {
           messageToRead += ". Es wird folgendes empfohlen: $instructions.";
+        }
         if (key == "category" && value) {
           if (categories != null) {
             if (categories.length > 1) {
@@ -155,12 +155,12 @@ class NotificationService {
             }
           }
         }
-        ;
-        if (key == "sender" && value)
+        if (key == "sender" && value) {
           messageToRead += "Abgeschickt von $sender.";
+        }
       });
 
-      print(messageToRead);
+      debugPrint(messageToRead);
 
       final command =
           "source ~/global_venv/bin/activate && python ~/fosswarnhome/foss_warn-home/voice-app/generate_voice.py -m \"$messageToRead\"";

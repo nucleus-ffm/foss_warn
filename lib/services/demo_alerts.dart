@@ -17,7 +17,6 @@ import '../class/class_info.dart';
 import '../class/class_notification_preferences.dart';
 import '../class/class_notification_service.dart';
 import '../class/class_user_preferences.dart';
-import '../constants.dart' as constants;
 import '../routes.dart';
 
 // alert severity severe
@@ -437,7 +436,7 @@ WarnMessage createThunderstormMessage(String subscriptionId) {
     fpasId: "-1",
     identifier: "-1",
     placeSubscriptionId:
-    subscriptionId, //@TODO add hacky solution to avoid that the alert is deleted again
+        subscriptionId, //@TODO add hacky solution to avoid that the alert is deleted again
     publisher: "FOSSWarn_demo_alerts",
     sender: "FOSSWarn - Demo Warnung",
     sent: DateTime.now().toIso8601String(),
@@ -453,9 +452,9 @@ WarnMessage createThunderstormMessage(String subscriptionId) {
         certainty: Certainty.likely,
         headline: 'Warnung vor schwerem Gewitter',
         description:
-        'Es zieht ein schweres Gewitter über Darmstadt mit teilweise starkregen und Hagel.',
+            'Es zieht ein schweres Gewitter über Darmstadt mit teilweise starkregen und Hagel.',
         instruction:
-        'Bleiben Sie wenn möglich drinnen. Blitzschläge sind Lebensgefährlich.',
+            'Bleiben Sie wenn möglich drinnen. Blitzschläge sind Lebensgefährlich.',
         contact: "Deutscher Wetterdienst",
         area: [
           Area(
@@ -550,7 +549,10 @@ WarnMessage createThunderstormMessage(String subscriptionId) {
 ///
 /// 1. Add the alert to the list of alerts for the frist subscription
 Future<void> injectWarning(
-    WidgetRef ref, BuildContext context, WarnMessage alert) async {
+  WidgetRef ref,
+  BuildContext context,
+  WarnMessage alert,
+) async {
   // remove old alert first before creating a new one
   removeDemoAlert(ref);
   ref.read(processedAlertsProvider.notifier).updateAlert(alert);
@@ -578,14 +580,15 @@ Future<void> injectFloodWarning(WidgetRef ref, BuildContext context) async {
   injectWarning(ref, context, alert);
 }
 
-Future<void> injectThunderstormWarning(WidgetRef ref, BuildContext context) async {
+Future<void> injectThunderstormWarning(
+  WidgetRef ref,
+  BuildContext context,
+) async {
   var places = await ref.read(cachedPlacesProvider.future);
   WarnMessage alert = createThunderstormMessage(places.first.subscriptionId);
   if (!context.mounted) return;
   injectWarning(ref, context, alert);
 }
-
-
 
 /// remove the current demo alert again
 void removeDemoAlert(WidgetRef ref) {
@@ -598,9 +601,10 @@ void removeDemoAlert(WidgetRef ref) {
 
 /// trigger the same methods as if the alert would come as push notification
 void triggerNotificationForDemoAlert(
-    WarnMessage alert,
-    WidgetRef ref,
-    BuildContext context) {
+  WarnMessage alert,
+  WidgetRef ref,
+  BuildContext context,
+) {
   if (NotificationPreferences.checkIfEventShouldBeNotified(
     alert.info[0].severity,
     alert.info[0].category,

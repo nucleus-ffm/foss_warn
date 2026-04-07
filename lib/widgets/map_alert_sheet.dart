@@ -167,9 +167,13 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
           if (snapshot.hasData) return snapshot.data!;
           if (snapshot.hasError) {
             debugPrint(
-                "[map_alert_sheet] Failed to build map alert sheet: error ${snapshot.error}");
+              "[map_alert_sheet] Failed to build map alert sheet: error ${snapshot.error}",
+            );
             ErrorLogger.writeErrorLog(
-                "map_alert_sheet", "build", snapshot.error.toString());
+              "map_alert_sheet",
+              "build",
+              snapshot.error.toString(),
+            );
             return const Text("Error :(");
           }
         }

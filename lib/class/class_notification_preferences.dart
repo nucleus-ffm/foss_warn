@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
-import 'package:foss_warn/enums/daytime.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/category.dart';
 

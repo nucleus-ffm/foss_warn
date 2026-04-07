@@ -33,7 +33,6 @@ enum DemoAlertsMenuItem {
   removeWarning,
 }
 
-
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({
     required this.onAddPlacePressed,
@@ -169,17 +168,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
       scaffoldMessenger.showSnackBar(snackBar);
     }
 
-    Future<void> onPopupMenuPressed(MainMenuItem item) async {
-      switch (item) {
-        case MainMenuItem.settings:
-          widget.onSettingsPressed();
-          break;
-        case MainMenuItem.about:
-          widget.onAboutPressed();
-          break;
-      }
-    }
-
     Future<void> onPopupDemoAlertPressed(DemoAlertsMenuItem item) async {
       switch (item) {
         case DemoAlertsMenuItem.weatherWarning:
@@ -283,23 +271,23 @@ class _HomeViewState extends ConsumerState<HomeView> {
             ),
             onSelected: onPopupDemoAlertPressed,
             itemBuilder: (context) => <PopupMenuEntry<DemoAlertsMenuItem>>[
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: DemoAlertsMenuItem.weatherWarning,
                 child: Text("Forst Warnung (1/4)"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: DemoAlertsMenuItem.thunderstormWarning,
                 child: Text("Gewitter Warnung (2/4)"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: DemoAlertsMenuItem.bombFoundWarning,
                 child: Text("Bombenfund Warnung (3/4)"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: DemoAlertsMenuItem.floodWarning,
                 child: Text("Hochwasser Warnung (4/4"),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: DemoAlertsMenuItem.removeWarning,
                 child: Text("Entferne Demo Warnung"),
               ),

@@ -12,7 +12,6 @@ import '../services/url_launcher.dart';
 import '../widgets/dialogs/choose_theme_dialog.dart';
 
 import '../widgets/dialogs/font_size_dialog.dart';
-import '../widgets/dialogs/notification_troubleshoot_dialog.dart';
 import '../widgets/dialogs/change_unified_push_distributor_dialog.dart';
 import '../widgets/dialogs/sort_by_dialog.dart';
 
@@ -131,7 +130,8 @@ class _SettingsState extends ConsumerState<Settings> {
             Platform.isAndroid
                 ? ListTile(
                     title: Text(
-                        localizations.settings_android_notification_settings),
+                      localizations.settings_android_notification_settings,
+                    ),
                     onTap: () => _openNotificationSettings(),
                   )
                 : const SizedBox(),
@@ -139,7 +139,6 @@ class _SettingsState extends ConsumerState<Settings> {
               title: Text(localizations.settings_app_notification_settings),
               onTap: widget.onNotificationSettingsPressed,
             ),
-
             ListTile(
               title: Text(localizations.settings_select_push_service_title),
               subtitle:

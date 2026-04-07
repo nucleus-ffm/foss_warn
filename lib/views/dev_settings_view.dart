@@ -343,12 +343,12 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ),
               ListTile(
                 title:
-                Text(localizations.dev_settings_troubleshoot_notifications),
+                    Text(localizations.dev_settings_troubleshoot_notifications),
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) =>
-                    const NotificationTroubleshootDialog(),
+                        const NotificationTroubleshootDialog(),
                   );
                 },
               ),

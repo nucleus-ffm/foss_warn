@@ -11,13 +11,16 @@ import '../class/class_error_logger.dart';
 import '../class/class_notification_service.dart';
 import '../class/class_user_preferences.dart';
 import '../class/class_warn_message.dart';
-import '../enums/category.dart';
 import '../enums/notification_message_type.dart';
 import 'alert_api/fpas.dart';
 import 'api_handler.dart';
 
 /// handles the incoming push notifications
-void handleIncomingNotification(var rawPayload, WidgetRef ref, BuildContext context) {
+void handleIncomingNotification(
+  var rawPayload,
+  WidgetRef ref,
+  BuildContext context,
+) {
   // @TODO(Nucleus): This is not the perfect solution as we can not check for already read alerts or if the alert is just an update. It would be preferable if we could fetch all alerts like we did before. Currently, this results in a "concurrent modification during iteration" error if the app is launched by a notification.
 
   var userPreferences = ref.read(userPreferencesProvider);
@@ -71,7 +74,7 @@ void handleDebugNotification(String payload, WidgetRef ref) {
 Future<void> newAlertNotification(
   Map<String, dynamic> payload,
   WidgetRef ref,
-    BuildContext context,
+  BuildContext context,
 ) async {
   var userPreferences = ref.read(userPreferencesProvider);
   String? addedAlertId;
@@ -93,10 +96,10 @@ Future<void> newAlertNotification(
         routes.go("/alerts/${alert.fpasId}/1234");
 
         List<String> categories = [];
-        if(!context.mounted) {
+        if (!context.mounted) {
           return;
         }
-        for(var cat in alert.info.first.category) {
+        for (var cat in alert.info.first.category) {
           categories.add(cat.getLocalizedName(context));
         }
         NotificationService.showNotification(
