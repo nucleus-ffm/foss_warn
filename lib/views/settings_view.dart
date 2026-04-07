@@ -22,6 +22,7 @@ class Settings extends ConsumerStatefulWidget {
     required this.onNotificationSettingsPressed,
     required this.onIntroductionPressed,
     required this.onDevSettingsPressed,
+    required this.onMatterSetupPressed,
     super.key,
   });
 
@@ -29,6 +30,7 @@ class Settings extends ConsumerStatefulWidget {
   final VoidCallback onNotificationSettingsPressed;
   final VoidCallback onIntroductionPressed;
   final VoidCallback onDevSettingsPressed;
+  final VoidCallback onMatterSetupPressed;
 
   @override
   ConsumerState<Settings> createState() => _SettingsState();
@@ -103,14 +105,9 @@ class _SettingsState extends ConsumerState<Settings> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.open_in_new),
-              title: const Text("Open FOSSWarn Home Settings"),
-              onTap: () async {
-                const command =
-                    "wtype -M alt -d 120 -P tab -d 120 -p tab -d 120 -m alt";
-                print("run command $command"); //@TODO remove
-                var result = await Process.run('/bin/sh', ['-c', command]);
-              },
+              leading: const Icon(Icons.home),
+              title: const Text("Matter Einrichtung"), //@TODO translate
+              onTap: widget.onMatterSetupPressed,
             ),
             const Divider(
               height: 50,

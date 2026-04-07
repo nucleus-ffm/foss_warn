@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/add_my_place_with_map_view.dart';
 import 'package:foss_warn/views/alert_update_thread_view.dart';
@@ -8,6 +7,7 @@ import 'package:foss_warn/views/dev_settings_view.dart';
 import 'package:foss_warn/views/home/home_view.dart';
 import 'package:foss_warn/views/introduction/introduction_view.dart';
 import 'package:foss_warn/views/log_file_viewer.dart';
+import 'package:foss_warn/views/matter_setup_screen.dart';
 import 'package:foss_warn/views/my_place_detail_view.dart';
 import 'package:foss_warn/views/notification_selfcheck_view.dart';
 import 'package:foss_warn/views/notification_settings_view.dart';
@@ -74,6 +74,7 @@ final routesProvider = Provider<GoRouter>(
               onDevSettingsPressed: () => context.go('/settings/dev-settings'),
               onNotificationSelfCheckPressed: () =>
                   context.go('/settings/notification-self-check'),
+              onMatterSetupPressed: () => context.go("/settings/matter-setup"),
             ),
             routes: [
               GoRoute(
@@ -96,6 +97,10 @@ final routesProvider = Provider<GoRouter>(
                     builder: (context, state) => const LogFileViewer(),
                   ),
                 ],
+              ),
+              GoRoute(
+                path: 'matter-setup',
+                builder: (context, state) => const MatterSetupScreen(),
               ),
             ],
           ),
