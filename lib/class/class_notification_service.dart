@@ -138,7 +138,7 @@ class NotificationService {
         }
         if (key == "headline" && value) messageToRead += "und Titel: $title. ";
         if (key == "description" && value) messageToRead += ". $body. ";
-        if (key == "instruction" && value) {
+        if (key == "instructions" && value) {
           messageToRead += ". Es wird folgendes empfohlen: $instructions.";
         }
         if (key == "category" && value) {
