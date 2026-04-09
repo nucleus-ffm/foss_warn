@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_fpas_place.dart';
+import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 class DeletePlaceDialog extends ConsumerWidget {
   final Place myPlace;
@@ -24,10 +27,19 @@ class DeletePlaceDialog extends ConsumerWidget {
 
       // Unsubscribe from server
       debugPrint("unregister from server for place ${myPlace.name}");
+      ref.read(appStateProvider.notifier).setReSubscriptionInProgress(true);
       try {
         await alertApi.unregisterArea(
           subscriptionId: myPlace.subscriptionId,
         );
+        // delete every alert that was connected with the place that will be removed
+        List<WarnMessage> alertsToDelete = [];
+        for(var alert in ref.read(processedAlertsProvider)) {
+          if(alert.placeSubscriptionId == myPlace.subscriptionId) {
+            alertsToDelete.add(alert);
+          }
+        }
+        ref.read(processedAlertsProvider.notifier).deleteMultipleAlerts(alertsToDelete);
         ref.read(myPlacesProvider.notifier).remove(myPlace);
       } on UnregisterAreaError {
         // we currently can not unsubscribe - show a snack bar to inform the
@@ -41,6 +53,7 @@ class DeletePlaceDialog extends ConsumerWidget {
         );
         scaffoldMessenger.showSnackBar(snackBar);
       }
+      ref.read(appStateProvider.notifier).setReSubscriptionInProgress(false);
 
       if (!context.mounted) return;
       navigator.pop();
