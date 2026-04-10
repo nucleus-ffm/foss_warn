@@ -560,21 +560,22 @@ Future<void> injectWarning(
 }
 
 Future<void> injectBombWarning(WidgetRef ref, BuildContext context) async {
-  var places = await ref.read(cachedPlacesProvider.future);
+  var places = await ref.read(myPlacesProvider);
   WarnMessage alert = createBombFoundMessage(places.first.subscriptionId);
   if (!context.mounted) return;
   injectWarning(ref, context, alert);
 }
 
 Future<void> injectWeatherWarning(WidgetRef ref, BuildContext context) async {
-  var places = await ref.read(cachedPlacesProvider.future);
+  var places = await ref.read(myPlacesProvider);
+  print(places);
   WarnMessage alert = createWeatherMessage(places.first.subscriptionId);
   if (!context.mounted) return;
   injectWarning(ref, context, alert);
 }
 
 Future<void> injectFloodWarning(WidgetRef ref, BuildContext context) async {
-  var places = await ref.read(cachedPlacesProvider.future);
+  var places = await ref.read(myPlacesProvider);
   WarnMessage alert = createFloodMessage(places.first.subscriptionId);
   if (!context.mounted) return;
   injectWarning(ref, context, alert);
@@ -584,7 +585,7 @@ Future<void> injectThunderstormWarning(
   WidgetRef ref,
   BuildContext context,
 ) async {
-  var places = await ref.read(cachedPlacesProvider.future);
+  var places = await ref.read(myPlacesProvider);
   WarnMessage alert = createThunderstormMessage(places.first.subscriptionId);
   if (!context.mounted) return;
   injectWarning(ref, context, alert);
