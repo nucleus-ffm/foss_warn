@@ -32,7 +32,7 @@ class _NotificationSettingsViewState
       case "severity":
         return "Schweregrad";
       case "category":
-        return "Katagorie";
+        return "Kategorie";
       case "instructions":
         return "Handlungsempfehlung";
       case "sender":

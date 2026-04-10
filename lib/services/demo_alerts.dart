@@ -313,9 +313,9 @@ WarnMessage createFloodMessage(String subscriptionId) {
         certainty: Certainty.likely,
         headline: 'Warnung vor extremem Hochwasser',
         description:
-            'Infolge von Dauerregen und zusätzlichen Starkregenereignissen, ist mit einem starken Pegelanstiegs zu rechnen.',
+            'Infolge von Dauerregen und zusätzlichen Starkregenereignissen ist mit einem starken Pegelanstieg zu rechnen.',
         instruction:
-            'Bereiten Sie Sandsäcke vor und gehen Sie nicht in voll gelaufene Keller. ',
+            'Bereiten Sie Sandsäcke vor und gehen Sie nicht in vollgelaufene Keller. ',
         contact: "Landes Hochwasserportal Hessen",
         area: [
           Area(
@@ -452,9 +452,9 @@ WarnMessage createThunderstormMessage(String subscriptionId) {
         certainty: Certainty.likely,
         headline: 'Warnung vor schwerem Gewitter',
         description:
-            'Es zieht ein schweres Gewitter über Darmstadt mit teilweise starkregen und Hagel.',
+            'Es zieht ein schweres Gewitter über Darmstadt mit teilweise Starkregen und Hagel.',
         instruction:
-            'Bleiben Sie wenn möglich drinnen. Blitzschläge sind Lebensgefährlich.',
+            'Bleiben Sie wenn möglich drinnen. Blitzschläge sind lebensgefährlich.',
         contact: "Deutscher Wetterdienst",
         area: [
           Area(
