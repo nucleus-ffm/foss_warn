@@ -9,6 +9,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart' as constants;
+import '../enums/daytime.dart';
 import 'class_error_logger.dart';
 import 'class_user_preferences.dart';
 
@@ -72,8 +73,7 @@ class NotificationService {
     showGroupNotification();
     bool readOutAlert;
     bool showOnTv;
-    if (TimeOfDay.now().isAfter(userPreferences.startOfDay) &&
-        TimeOfDay.now().isBefore(userPreferences.endOfDay)) {
+    if (isDay(userPreferences.startOfDay, userPreferences.endOfDay)) {
       readOutAlert = userPreferences.readOutAlertDay;
       showOnTv = userPreferences.enableFOSSWarnAtTvDay;
     } else {

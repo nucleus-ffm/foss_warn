@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/category.dart';
+import 'package:foss_warn/enums/daytime.dart';
 
 /// to store the chosen notificationLevel for an alert category
 class NotificationPreferences {
@@ -84,25 +85,7 @@ class NotificationPreferences {
     return result;
   }
 
-  static int _dayTimeToMinutes(TimeOfDay time) {
-    return time.hour * 60 + time.minute;
-  }
 
-  /// returns if the users thinks it is day or night at the moment
-  /// convert to minutes first to check for wrapped around more easily
-  static bool _isDay(TimeOfDay startOfDay, TimeOfDay endOfDay) {
-    TimeOfDay now = TimeOfDay.now();
-
-    int nowMin = _dayTimeToMinutes(now);
-    int startMin = _dayTimeToMinutes(startOfDay);
-    int endMin = _dayTimeToMinutes(endOfDay);
-
-    if(startMin < endMin) {
-      return nowMin >= startMin && nowMin < endMin;
-    } else {
-      return nowMin >= startMin || nowMin < endMin;
-    }
-  }
 
   /// Return [true] if the user wants a notification - [false] if not.
   ///
@@ -122,11 +105,10 @@ class NotificationPreferences {
     List<Category> alertCategories,
     UserPreferences userPreferences,
   ) {
-    bool isDay = _isDay(userPreferences.startOfDay, userPreferences.endOfDay);
+    bool day = isDay(userPreferences.startOfDay, userPreferences.endOfDay);
     Severity globalNotificationLevel;
     List<Severity> selectedCategorySeverity;
-
-    if (isDay) {
+    if (day) {
       globalNotificationLevel =
           userPreferences.notificationDaySetting.globalNotificationLevel;
       selectedCategorySeverity = userPreferences.notificationDaySetting
