@@ -56,168 +56,6 @@ String _replaceHTMLTags(String text) {
   return replacedText;
 }
 
-/// returns the given text as List of TextSpans with clickable links and
-/// and removed/replaced HTML Tags
-List<TextSpan> _htmlTextToTextSpans(String text) {
-  text = _replaceHTMLTags(text);
-  List<TextSpan> returnList = [];
-  int pointer = 0;
-  int startPos = 0;
-  int endPos = 0;
-  // replace all tags
-  while (pointer < text.length) {
-    if (text[pointer] == "<" && text[pointer + 1] == "a") {
-      debugPrint("we found an <a>");
-      // we have an <a> Tag
-      endPos = text.indexOf("</a>", pointer) + 4;
-      debugPrint("a endet $endPos");
-      int urlStart = text.indexOf("http", pointer);
-      int urlEnds = text.indexOf("\"", urlStart + 1);
-      String url = "";
-      String urlDescription = "";
-
-      // add url only if there is an url (urlStart != -1)
-      if (urlStart != -1 && urlEnds != -1) {
-        url = text.substring(urlStart, urlEnds);
-        int desStart = text.indexOf(">", urlStart) + 1;
-        int desEnd = text.indexOf("<", urlStart + 1);
-        if (desEnd == -1) {
-          urlDescription = url;
-        } else {
-          urlDescription = text.substring(desStart, desEnd);
-        }
-
-        // generate TextSpan with clickable link
-        returnList.add(
-          TextSpan(
-            text: " $urlDescription ",
-            style: const TextStyle(color: Colors.blue),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                debugPrint("Link tapped");
-                launchUrlInBrowser(url);
-              },
-          ),
-        );
-        pointer = endPos;
-      } else {
-        // maybe it is an E-Mail?
-        int eMailStart = text.indexOf("mailto", pointer);
-        int eMailEnds =
-            eMailStart != -1 ? text.indexOf('"', eMailStart + 1) : -1;
-        String url = "";
-        String urlDescription = "";
-        if (eMailStart != -1 && eMailEnds != -1) {
-          url = text.substring(eMailStart, eMailEnds);
-          int desStart = text.indexOf(">", eMailStart) + 1;
-          int desEnd = text.indexOf("<", eMailStart + 1);
-          if (desEnd == -1) {
-            urlDescription = url;
-          } else {
-            urlDescription = text.substring(desStart, desEnd);
-          }
-
-          // generate TextSpan with clickable link
-          returnList.add(
-            TextSpan(
-              text: " $urlDescription ",
-              style: const TextStyle(color: Colors.blue),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  launchEmail(url);
-                },
-            ),
-          );
-          pointer = endPos;
-        }
-      }
-      pointer = endPos;
-    } else {
-      // it is not an <a>
-      // search for the next html tag
-      int prevStartPos = startPos;
-      startPos = text.indexOf("<", pointer);
-      if (startPos == prevStartPos) {
-        pointer++;
-      }
-      debugPrint("startPos $startPos");
-      if (startPos == -1) {
-        returnList.add(
-          TextSpan(
-            text: text.substring(pointer, text.length),
-          ),
-        );
-        pointer = text.length;
-      } else {
-        //@TODO(Nucleus): Refactor this. This does not work very well and is not really understandable
-        debugPrint("pointer: $pointer  startPos: $startPos");
-        returnList.add(
-          TextSpan(
-            text: text.substring(pointer, startPos),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                debugPrint("text tapped");
-              },
-          ),
-        );
-        pointer = startPos - 1;
-      }
-    }
-    pointer++;
-  }
-  return returnList;
-}
-
-/// returns a List of Buttons with links to embedded pictures
-List<Widget> _generateAssets(String text, {required BuildContext context}) {
-  var localizations = context.localizations;
-
-  List<Widget> widgetList = [];
-  bool searching = true;
-  int pointer = 0;
-
-  while (searching) {
-    int startPosition = text.indexOf("<img", pointer);
-    if (startPosition != -1) {
-      int beginImgSource = text.indexOf('src="', startPosition);
-      if (beginImgSource != -1) {
-        int endImgSource = text.indexOf('"', beginImgSource);
-        int endPosition = text.indexOf(">", startPosition + 1);
-
-        if (startPosition != -1 &&
-            endPosition != -1 &&
-            beginImgSource != -1 &&
-            endImgSource != -1) {
-          String url = text.substring(beginImgSource, endImgSource);
-          debugPrint("URL is: $url");
-          pointer = endPosition;
-
-          widgetList.add(
-            TextButton(
-              onPressed: () {
-                launchUrlInBrowser(url);
-              },
-              style: TextButton.styleFrom(backgroundColor: Colors.blue),
-              child: Text(
-                localizations.warning_open_picture_with_browser,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-          );
-        } else {
-          searching = false;
-        }
-      } else {
-        searching = false;
-      }
-    } else {
-      // there are no more images
-      searching = false;
-    }
-  }
-  return widgetList;
-}
-
 class DetailScreen extends ConsumerStatefulWidget {
   final String warningFPASIdentifer;
   final String subscriptionId;
@@ -282,11 +120,6 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     List<String> areaDescriptionList = _generateAreaDescriptionList(
       alert: warning,
       length: -1,
-    );
-
-    List<Widget> assets = _generateAssets(
-      warning.info[0].description,
-      context: context,
     );
 
     Future<void> onSharePressed() async {
@@ -397,10 +230,6 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 const SizedBox(height: 20),
               ],
               _Description(alert: warning),
-              if (assets.isNotEmpty) ...[
-                const SizedBox(height: 5),
-                _WarningAppendix(assets: assets),
-              ],
               if (warning.info[0].instruction != null) ...[
                 _Instruction(instruction: warning.info[0].instruction!),
               ],
@@ -791,50 +620,8 @@ class _Description extends ConsumerWidget {
         const SizedBox(height: 2),
         SelectableText.rich(
           TextSpan(
-            children: _htmlTextToTextSpans(alert.info[0].description),
+            text: alert.info[0].description,
             style: TextStyle(fontSize: userPreferences.warningFontSize),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _WarningAppendix extends ConsumerWidget {
-  const _WarningAppendix({required this.assets});
-
-  final List<Widget> assets;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var localizations = context.localizations;
-
-    var userPreferences = ref.watch(userPreferencesProvider);
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Icon(Icons.image),
-            const SizedBox(width: 5),
-            Text(
-              localizations.warning_appendix,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: userPreferences.warningFontSize + 5,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 100,
-          child: GridView.count(
-            primary: false,
-            padding: const EdgeInsets.all(5),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 4,
-            children: assets,
           ),
         ),
       ],
@@ -877,7 +664,7 @@ class _Instruction extends ConsumerWidget {
         const SizedBox(height: 2),
         SelectableText.rich(
           TextSpan(
-            children: _htmlTextToTextSpans(instruction),
+            text: instruction,
             style: TextStyle(
               fontSize: userPreferences.warningFontSize,
             ),
