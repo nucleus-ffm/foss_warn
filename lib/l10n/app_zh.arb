@@ -572,5 +572,12 @@
     "notification_settings_show_advanced_settings_title": "显示高级设置",
     "notification_settings_show_advanced_settings_subtitle": "高级通知设置可以为每个类别设置警告等级。",
     "notification_settings_global_warning_level": "全局设置",
-    "help_button_tooltip": "在 wiki 中获取帮助。"
+    "help_button_tooltip": "在 wiki 中获取帮助。",
+    "map_view_filter_chips_title": "显示选项",
+    "map_view_filter_chips_subscriptions": "订阅",
+    "update_dialog_title_v42": "检查订阅",
+    "update_dialog_body_v42": "请花一会儿时间验证订阅区域。由于 1.0.0 版的一处 bug，订阅区域可能是错的。请确认下方列出的订阅区域对应的是正确的地理位置。如果边界框不是预期的区域，请删除订阅重新添加它。如果一切正常则什么也不用做。",
+    "update_dialog_subscription_v42": "你的订阅",
+    "update_dialog_confirmation_v42": "检查过订阅区了",
+    "map_alert_sheet_title": "此区域的警报"
 }
