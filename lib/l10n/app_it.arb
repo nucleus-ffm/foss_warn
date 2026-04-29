@@ -1,1 +1,22 @@
-{}
+{
+    "main_nav_bar_map": "Mappa",
+    "main_dot_menu_settings": "Impostazioni",
+    "main_app_bar_tooltip_mark_all_warnings_as_read": "segna gli avvisi come letti",
+    "main_app_bar_tooltip_show_menu": "mostra menu",
+    "main_dialog_save": "Salva",
+    "main_dialog_close": "Chiudi",
+    "all_warnings_everything_ok": "Tutto apposto",
+    "all_warnings_reload": "Ricarica",
+    "settings": "Impostazioni",
+    "settings_notification": "Notifiche",
+    "settings_frequent_of_background_update_minute": "min",
+    "settings_color_schema_light": "Chiaro",
+    "settings_color_schema_dark": "Scuro",
+    "settings_color_schema_auto": "Automatico",
+    "settings_font_size": "Grandezza carattere",
+    "settings_sorting": "Ordine",
+    "settings_extended_settings": "Impostazioni avvanzate",
+    "settings_dev_settings": "Apri le impostazioni sviluppatore",
+    "settings_select_push_service_title": "Push Service",
+    "settings_select_push_service_subtitle": "Scegli quale servizio di push vuoi usare."
+}
