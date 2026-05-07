@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/views/about_view.dart';
 import 'package:foss_warn/views/add_my_place_with_map_view.dart';
+import 'package:foss_warn/views/alert_archive_view.dart';
 import 'package:foss_warn/views/alert_update_thread_view.dart';
 import 'package:foss_warn/views/dev_settings_view.dart';
 import 'package:foss_warn/views/home/home_view.dart';
@@ -74,6 +75,8 @@ final routesProvider = Provider<GoRouter>(
               onDevSettingsPressed: () => context.go('/settings/dev-settings'),
               onNotificationSelfCheckPressed: () =>
                   context.go('/settings/notification-self-check'),
+              onAlertArchivePressed: () =>
+                  context.go('/settings/alert-archive'),
             ),
             routes: [
               GoRoute(
@@ -83,6 +86,15 @@ final routesProvider = Provider<GoRouter>(
               GoRoute(
                 path: 'notifications',
                 builder: (context, state) => const NotificationSettingsView(),
+              ),
+              GoRoute(
+                path: 'alert-archive',
+                builder: (context, state) => AlertArchiveView(
+                  onAlertPressed: (String alertId, String subscriptionId) =>
+                      context.push('/alerts/$alertId/$subscriptionId'),
+                  onAlertUpdateThreadPressed: () =>
+                      context.go('/alerts/update'),
+                ),
               ),
               GoRoute(
                 path: 'dev-settings',
