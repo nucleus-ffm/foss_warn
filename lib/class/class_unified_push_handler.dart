@@ -12,6 +12,7 @@ import 'package:foss_warn/services/warnings.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 import '../services/alert_api/fpas.dart';
 import '../services/notification_handler.dart';
+import '../services/subscription_handler.dart';
 import '../widgets/dialogs/no_up_distributor_found_dialog.dart';
 import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
 
@@ -37,7 +38,11 @@ class UnifiedPushHandler {
 
   /// Callback function for the UnifiedPush  plugin
   /// this method gets called when a new endpoint is selected
-  void onNewEndpoint(PushEndpoint endpoint, String instance) {
+  void onNewEndpoint({
+    required PushEndpoint endpoint,
+    required String instance,
+    required WidgetRef ref,
+  }) {
     debugPrint("new Endpoint:${endpoint.url}");
     if (instance != UserPreferences.unifiedPushInstance) return;
 
@@ -48,10 +53,11 @@ class UnifiedPushHandler {
       _preferencesService.setWebPushAuthKey(endpoint.pubKeySet!.auth);
     }
     _preferencesService.setUnifiedPushRegistered(true);
-    //@TODO(Nucleus): we need to update the subscriptions and send the new endpoint to the server
+
+    updatePushNotificationConfigForSubscription(endpoint, ref);
   }
 
-  /// Callback for the UnfiedPush plugin
+  /// Callback for the UnifiedPush plugin
   /// This method gets called with the registration failed
   /// For now we are just logging that error
   void onRegistrationFailed(FailedReason failedReason, String instance) {

@@ -149,6 +149,18 @@ abstract class AlertAPI {
   /// Throws a [PlaceSubscriptionError] when the server doesn't know the subscription.
   Future<void> updateSubscription({required String subscriptionId});
 
+  /// Update the push notification config of every subscription.
+  /// [subscriptionId] is the ID of the subscription to send a heartbeat for.
+  /// [token] is the updated push token
+  /// [webPushPublicKey] is the updated web push key
+  /// [webPushAuthKey] is the updated auth key
+  Future<void> updateSubscriptionPushNotificationConfig({
+    required String subscriptionId,
+    required String token,
+    required String webPushPublicKey,
+    required String webPushAuthKey,
+  });
+
   /// Subscribe to alerts from a specific area.
   /// Make sure the application has been registered to UnifiedPush first as the server requires it.
   /// [boundingBox] is the area to register to receive alerts for.

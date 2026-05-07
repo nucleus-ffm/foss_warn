@@ -66,7 +66,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
         // init unified push
         // In a dev environment with multiple hot restarts, this registers multiple callbacks
         UnifiedPush.initialize(
-          onNewEndpoint: unifiedPushHandler.onNewEndpoint,
+          onNewEndpoint: (PushEndpoint endpoint, String instance) =>
+              unifiedPushHandler.onNewEndpoint(
+            endpoint: endpoint,
+            instance: instance,
+            ref: ref,
+          ),
           onRegistrationFailed: unifiedPushHandler.onRegistrationFailed,
           onUnregistered: unifiedPushHandler.onUnregistered,
           linuxOptions: LinuxOptions(

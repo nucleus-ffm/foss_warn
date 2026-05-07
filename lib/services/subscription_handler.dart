@@ -14,6 +14,7 @@ import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/widgets/dialogs/loading_screen.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
+import 'package:unifiedpush_platform_interface/data/push_endpoint.dart';
 import 'package:uuid/uuid.dart';
 
 import '../class/class_app_state.dart';
@@ -500,6 +501,8 @@ Future<void> updateAllSubscriptions(WidgetRef ref) async {
   }
 }
 
+/// Similar to [updateAllSubscriptions] but with using a ProviderContainer to
+/// be able to call this from background.
 Future<void> updateAllSubscriptionsFromBackground(ProviderContainer ref) async {
   debugPrint("UpdateAllSubscriptionFromBackground");
 
@@ -520,6 +523,34 @@ Future<void> updateAllSubscriptionsFromBackground(ProviderContainer ref) async {
         "updateAllSubscriptions",
         e.toString(),
       );
+    }
+  }
+}
+
+/// Update the subscription with an updated push notification endpoint
+/// This requires the latest version of the server.
+Future<void> updatePushNotificationConfigForSubscription(
+  PushEndpoint endpoint,
+  WidgetRef ref,
+) async {
+  var subscriptions = ref.read(myPlacesProvider);
+  var alertAPI = ref.read(alertApiProvider);
+  for (Place place in subscriptions) {
+    try {
+      // only update the push notification config, if it is a push notification
+      // subscription and the pubkey is not null.
+      // If the key is null, it is not an encrypted setup which we will
+      // deprecate in the future.
+      if (place.subscriptionId != null && endpoint.pubKeySet != null) {
+        await alertAPI.updateSubscriptionPushNotificationConfig(
+          subscriptionId: place.subscriptionId!,
+          token: endpoint.url,
+          webPushPublicKey: endpoint.pubKeySet!.pubKey,
+          webPushAuthKey: endpoint.pubKeySet!.auth,
+        );
+      }
+    } on RegisterAreaError {
+      debugPrint("Failed to update subscription");
     }
   }
 }
