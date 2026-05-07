@@ -915,7 +915,9 @@
     "help_button_tooltip": "Get help in the wiki.",
     "confirmation_dialog_confirm": "I understand and want to proceed",
     "confirmation_dialog_cancel": "Cancel",
-    "confirm_no_push_subscription_body": "FOSSWarn could not register for push notifications. If you proceed, FOSSWarn will use legacy polling instead. This will delay notification quite a bit, but requires no additional setup. If you instead want to receive near real-time notifications (recommended), please follow the instructions in the wiki for setting that up.",
+    "confirm_no_push_subscription_body_push": "FOSSWarn could not register for push notifications, and no alternative alert service is selected. You will not receive notifications. If you want to receive push notifications, please check your configuration or follow the instructions in the wiki.",
+    "confirm_no_push_subscription_body_polling": "FOSSWarn could not register for push notifications. If you proceed, FOSSWarn will use legacy polling instead. This will delay notification quite a bit, but requires no additional setup. If you instead want to receive near real-time notifications (recommended), please follow the instructions in the wiki for setting that up.",
+    "confirm_no_push_subscription_body_nothing": "FOSSWarn could not register for push notifications, and background polling is disabled. You will not receive any background notifications. If you instead want to receive notifications (recommended), please select another alert service in the settings or follow the instructions in the wiki.",
     "confirm_no_push_subscription_headline": "No push-notification configured - continue?",
 
     "location_tracking_permission_dialog_body": "FOSSWarn can automatically track your current location and send you alerts for where you are next to your subscriptions. FOSSWarn will now ask for your permission to access your location. Please select 'While using the app'. Your location is shared only with your selected instance of the FOSS Public Alert Server and is stored only as long as your subscription is active, or your location has changed.",

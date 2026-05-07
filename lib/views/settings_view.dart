@@ -24,6 +24,7 @@ class Settings extends ConsumerStatefulWidget {
     required this.onNotificationSettingsPressed,
     required this.onIntroductionPressed,
     required this.onDevSettingsPressed,
+    required this.onAlertArchivePressed,
     super.key,
   });
 
@@ -31,6 +32,7 @@ class Settings extends ConsumerStatefulWidget {
   final VoidCallback onNotificationSettingsPressed;
   final VoidCallback onIntroductionPressed;
   final VoidCallback onDevSettingsPressed;
+  final VoidCallback onAlertArchivePressed;
 
   @override
   ConsumerState<Settings> createState() => _SettingsState();
@@ -403,6 +405,24 @@ class _SettingsState extends ConsumerState<Settings> {
               title: Text((localizations.settings_show_welcome_dialog)),
               onTap: widget.onIntroductionPressed,
             ),
+            ListTile(
+              title: Text(localizations.settings_alert_archive_title),
+              subtitle: Text(
+                localizations.settings_alert_archive_subtitle,
+              ),
+              trailing: Switch(
+                value: userPreferences.alertArchive,
+                onChanged: (value) {
+                  userPreferencesService.setAlertArchive(value);
+                },
+              ),
+            ),
+            userPreferences.alertArchive
+                ? ListTile(
+                    title: Text(localizations.settings_alert_archive_open),
+                    onTap: widget.onAlertArchivePressed,
+                  )
+                : const SizedBox(),
             ListTile(
               title: Text(localizations.settings_dev_settings),
               onTap: widget.onDevSettingsPressed,
