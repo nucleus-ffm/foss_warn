@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_app_state.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/constants.dart' as constants;
@@ -192,22 +193,66 @@ class FPASApi implements AlertAPI {
     var url = Uri.parse(
       "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
     );
-    //@TODO can throw an SocketException
-    var response = await http.put(
-      url,
-      headers: {
-        "Content-Type": "application/json",
-        'User-Agent': constants.httpUserAgent,
-      },
+    try {
+      var response = await http.put(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          'User-Agent': constants.httpUserAgent,
+        },
+      );
+      if (response.statusCode == 404) {
+        // subscription has expired, we have to register again
+        throw InvalidSubscriptionError();
+      }
+
+      if (response.statusCode != 200) {
+        throw PlaceSubscriptionError();
+      }
+    } on SocketException {
+      ErrorLogger.writeErrorLog(
+        "fpas.dart",
+        "updateSubscription",
+        "Failed to update subscription due to a socketException",
+      );
+      throw PlaceSubscriptionError();
+    }
+  }
+
+  @override
+  Future<void> updateSubscriptionPushNotificationConfig({
+    required String subscriptionId,
+    required String token,
+    required String webPushPublicKey,
+    required String webPushAuthKey,
+  }) async {
+    debugPrint("Update subscription push notification config");
+    var url = Uri.parse(
+      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId&token=$token&p256dh_key=$webPushPublicKey&auth_key=$webPushAuthKey}",
     );
 
-    if (response.statusCode == 404) {
-      // subscription has expired, we have to register again
-      throw InvalidSubscriptionError();
-    }
+    try {
+      var response = await http.put(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          'User-Agent': constants.httpUserAgent,
+        },
+      );
 
-    if (response.statusCode != 200) {
-      throw PlaceSubscriptionError();
+      if (response.statusCode != 200) {
+        throw RegisterAreaError(
+          //@TODO maybe add a custom error type here
+          statusCode: response.statusCode,
+          message: response.body,
+        );
+      }
+    } on SocketException {
+      ErrorLogger.writeErrorLog(
+        "fpas.dart",
+        "UpdateSubscriptionPushNotificationConfig",
+        "Can not update subscription due to a SocketException",
+      );
     }
   }
 
