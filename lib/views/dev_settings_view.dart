@@ -261,9 +261,6 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                           await places.remove(place);
                           userPreferencesService
                               .setSubscribeForTestAlerts(value);
-                          ref
-                              .read(appStateProvider.notifier)
-                              .setReSubscriptionInProgress(false);
                         } on UnregisterAreaError {
                           // we currently can not unsubscribe - show a snack bar to inform the
                           // user to check their internet connection
@@ -282,6 +279,9 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                         // place was manually removed by the user
                         userPreferencesService.setSubscribeForTestAlerts(value);
                       }
+                      ref
+                          .read(appStateProvider.notifier)
+                          .setReSubscriptionInProgress(false);
                     }
                   },
                 ),
