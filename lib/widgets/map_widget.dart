@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
+import 'package:foss_warn/class/class_location_tracker.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
 import 'package:foss_warn/widgets/map_alert_sheet.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'package:vector_map_tiles/vector_map_tiles.dart';
 
@@ -23,6 +26,7 @@ class MapWidget extends ConsumerStatefulWidget {
   final CameraFit initialCameraFit;
   final bool displayAllWarnings;
   final bool smallAttribution;
+  final bool displayCurrentLocation;
 
   const MapWidget({
     super.key,
@@ -34,6 +38,7 @@ class MapWidget extends ConsumerStatefulWidget {
     required this.initialCameraFit,
     this.smallAttribution = false,
     this.displayAllWarnings = false,
+    this.displayCurrentLocation = false,
   });
 
   /// create polygon layer for my places alerts
@@ -82,6 +87,7 @@ class MapWidget extends ConsumerStatefulWidget {
 class _MapWidgetState extends ConsumerState<MapWidget> {
   Style? _style;
   bool styleRequested = false;
+  MarkerLayer? currentLocationMakerLayer;
 
   /// Fetch the map style for the all alerts map
   Future<void> _initMapStyle(FPASApi alertAPI) async {
@@ -113,6 +119,27 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
     }
   }
 
+  /// fetch the current position and if available build markerLayer with it
+  Future<void> _buildPositionMarkerLayer() async {
+    var locationTracker = ref.read(locationTrackerProvider);
+    LocationTracker.checkLocationPermission(context);
+    Position? pos = await locationTracker.determinePosition();
+    if (pos != null) {
+      LatLng currentLocation = LatLng(pos.latitude, pos.longitude);
+      currentLocationMakerLayer = MarkerLayer(
+        markers: [
+          Marker(
+            point: currentLocation,
+            child: const Icon(
+              Icons.circle,
+              color: Colors.blueAccent,
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -127,6 +154,10 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
       _initMapStyle(ref.read(alertApiProvider));
       // to avoid requesting the style multiple times
       styleRequested = true;
+    }
+
+    if (widget.displayCurrentLocation) {
+      _buildPositionMarkerLayer();
     }
 
     return FlutterMap(
@@ -176,6 +207,9 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
         ...widget.polygonLayers ?? [],
         ...widget.markerLayers ?? [],
         ...widget.widgets ?? [],
+        widget.displayCurrentLocation
+            ? currentLocationMakerLayer ?? const SizedBox()
+            : const SizedBox(),
         // allow to hide the attribution text for widgets
         widget.smallAttribution
             ? const SimpleAttributionWidget(

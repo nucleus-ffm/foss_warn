@@ -638,6 +638,7 @@
   "map_view_filter_chips_tooltip_hide": "hide",
   "@map_view_filter_chips_tooltip_hide": {},
   "map_view_filter_chips_subscriptions": "Subscriptions",
+  "map_view_filter_chips_location": "My location",
   "my_places_view_add_new_place_button_tooltip": "open new page to add a place",
   "@my_places_view_add_new_place_button_tooltip": {},
   "warning_detail_view_map_center_map_button_tooltip": "Center map",
