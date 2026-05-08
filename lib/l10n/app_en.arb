@@ -704,6 +704,16 @@
   "@settings_foss_public_alert_server_enter_url_label_text": {},
   "settings_foss_public_alert_server_enter_url_error": "Invalid Server URL",
   "@settings_foss_public_alert_server_enter_url_error": {},
+  "settings_foss_public_alert_server_terms_of_service": "Server Terms of Service",
+  "settings_foss_public_alert_server_privacy": "Server privacy",
+  "settings_foss_public_alert_server_operator": "Server Operator: {operator}",
+  "@settings_foss_public_alert_server_operator": {
+      "placeholders": {
+              "operator": {
+                  "type": "String"
+              }
+          }
+      },
   "settings_alert_archive_title": "Enable alert archive - Experimental",
   "settings_alert_archive_subtitle": "Store every alert in a local permanent archive.",
   "settings_alert_archive_open": "Open alert archive",
@@ -920,7 +930,6 @@
     "confirm_no_push_subscription_body_polling": "FOSSWarn could not register for push notifications. If you proceed, FOSSWarn will use legacy polling instead. This will delay notification quite a bit, but requires no additional setup. If you instead want to receive near real-time notifications (recommended), please follow the instructions in the wiki for setting that up.",
     "confirm_no_push_subscription_body_nothing": "FOSSWarn could not register for push notifications, and background polling is disabled. You will not receive any background notifications. If you instead want to receive notifications (recommended), please select another alert service in the settings or follow the instructions in the wiki.",
     "confirm_no_push_subscription_headline": "No push-notification configured - continue?",
-
     "location_tracking_permission_dialog_body": "FOSSWarn can automatically track your current location and send you alerts for where you are next to your subscriptions. FOSSWarn will now ask for your permission to access your location. Please select 'While using the app'. Your location is shared only with your selected instance of the FOSS Public Alert Server and is stored only as long as your subscription is active, or your location has changed.",
     "location_tracking_permission_dialog_title": "FOSSWarn needs your permission",
     "location_tracking_permission_background_dialog_title": "One more step...",

@@ -198,13 +198,17 @@ class _NotificationSelfCheckState
       );
     }
 
-    bool successfullyNotification =
-        await NotificationService.isNotificationActive(
-      confirmationId.hashCode,
-    ); //@TODO check if this could be an issue
-    notificationState = successfullyNotification
-        ? SelfCheckState.passed
-        : SelfCheckState.notPassed;
+    try {
+      bool successfullyNotification =
+          await NotificationService.isNotificationActive(
+        confirmationId.hashCode,
+      );
+      notificationState = successfullyNotification
+          ? SelfCheckState.passed
+          : SelfCheckState.notPassed;
+    } on UnimplementedError {
+      // can happen on Linux, the state will stay on Unknown
+    }
 
     // @TODO (Nucleus): An useful addition would be to check if the notification arrived and let the user click on the notification
 
@@ -232,10 +236,8 @@ class _NotificationSelfCheckState
     ref.read(appStateProvider.notifier).setReSubscriptionInProgress(false);
 
     return (
-      subscriptionState: SelfCheckState.passed,
-      notificationState: successfullyNotification
-          ? SelfCheckState.passed
-          : SelfCheckState.notPassed
+      subscriptionState: subscriptionState,
+      notificationState: notificationState
     );
   }
 

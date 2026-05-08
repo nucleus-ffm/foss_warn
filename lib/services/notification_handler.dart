@@ -109,12 +109,15 @@ void subscriptionConfirmationNotification(
 ) {
   String confirmationId = payload["confirmation_id"];
 
-  NotificationService.showNotification(
-    id: confirmationId.hashCode,
-    title: "Successfully subscribed",
-    body: "You have successfully subscribed",
-    payload: confirmationId,
-    channelId: "de.nucleus.foss_warn.notifications_other",
-    channelName: "",
-  );
+  // only show this notification when the user wants to receive debug notifications
+  if (ref.read(userPreferencesProvider).showDebugNotification) {
+    NotificationService.showNotification(
+      id: confirmationId.hashCode,
+      title: "Successfully subscribed",
+      body: "You have successfully subscribed",
+      payload: confirmationId,
+      channelId: "de.nucleus.foss_warn.notifications_other",
+      channelName: "",
+    );
+  }
 }

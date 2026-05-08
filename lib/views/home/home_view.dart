@@ -54,6 +54,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
   late int selectedIndex;
   late bool startedWithIntroduction;
 
+  /// setup push notifications and alarm manager
+  ///
+  /// This method won't do anything if it is called
+  /// when the user is currently seeing the welcome screen
   void setup() {
     var userPreferences = ref.read(userPreferencesProvider);
 
@@ -108,10 +112,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
       if (userPreferences.alertService == AlertService.poll ||
           userPreferences.alertService == AlertService.pushAndPoll) {
-        if (userPreferences.alertService == AlertService.poll ||
-            userPreferences.alertService == AlertService.pushAndPoll) {
-          AlarmManager().initialize();
-        }
+        AlarmManager().initialize();
       }
     }
   }
@@ -132,9 +133,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
       }
     });
 
-    if(userPreferences.legacyPolling){
-      AlarmManager().initialize();
-    }
     setup();
   }
 

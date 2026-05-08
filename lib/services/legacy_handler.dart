@@ -16,7 +16,6 @@ Future<void> legacyHandler() async {
       int previousVersionCode =
           preferences.getInt("previousInstalledVersionCode")!;
       if (previousVersionCode < UserPreferences.currentVersionCode) {
-        //@TODO(Nucleus): handle update migration if necessary and show notification afterwards
         if (previousVersionCode <= 33) {
           //version 8.x.x or smaller
           // this is a major update. This requires user attention and we need to reset the entire app
