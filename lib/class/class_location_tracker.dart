@@ -94,9 +94,9 @@ class LocationTracker {
         builder: (BuildContext context) {
           return GenericDialog(
             title: localisation
-                .location_tracking_permission_missing_forever_dialog_body,
-            content: localisation
                 .location_tracking_permission_missing_forever_dialog_title,
+            content: localisation
+                .location_tracking_permission_missing_forever_dialog_body,
           );
         },
       );
@@ -217,7 +217,7 @@ class LocationTracker {
       BoundingBox boundingBox =
           BoundingBox.buildAroundCenterPoint(center, 5, 4);
 
-      subscribeForAreaInBackground(
+      await subscribeForAreaInBackground(
         boundingBox: boundingBox,
         selectedPlaceName: "Current Location",
         ref: ref,

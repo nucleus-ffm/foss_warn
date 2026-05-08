@@ -26,7 +26,7 @@ class DeletePlaceDialog extends ConsumerWidget {
       // Unsubscribe from server
       debugPrint("unregister from server for place ${myPlace.name}");
       if (myPlace.subscriptionId == null) {
-        ref.read(myPlacesProvider.notifier).remove(myPlace);
+        await ref.read(myPlacesProvider.notifier).remove(myPlace);
       } else {
         var appSate = ref.read(appStateProvider.notifier);
         appSate.setReSubscriptionInProgress(true);
@@ -34,7 +34,7 @@ class DeletePlaceDialog extends ConsumerWidget {
           await alertApi.unregisterArea(
             subscriptionId: myPlace.subscriptionId!,
           );
-          ref.read(myPlacesProvider.notifier).remove(myPlace);
+          await ref.read(myPlacesProvider.notifier).remove(myPlace);
         } on UnregisterAreaError {
           // we currently can not unsubscribe - show a snack bar to inform the
           // user to check their internet connection

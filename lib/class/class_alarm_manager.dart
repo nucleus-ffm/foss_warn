@@ -20,6 +20,12 @@ Future<void> backgroundPollingCallback() async {
   try {
     await SharedPreferencesState.initialize();
   } catch (e) {
+    ErrorLogger.writeErrorLog(
+      "class_alarm_manager.dart",
+      "BackgroundPollingCallback",
+      "Failed to initialize shared preferences state: $e",
+    );
+
     debugPrint("shared Prefs error $e");
   }
 
@@ -75,7 +81,7 @@ Future<void> backgroundPollingCallback() async {
 Future<void> backgroundLocationUpdateCallback() async {
   final container = ProviderContainer();
   var locationTracker = container.read(locationTrackerProvider);
-  locationTracker.subscribeForCurrentLocation();
+  await locationTracker.subscribeForCurrentLocation();
 }
 
 @pragma('vm:entry-point', true)

@@ -135,7 +135,7 @@ abstract class AlertAPI {
 
   /// Get detail of an alert.
   /// [alertId] is the ID of an alert to retrieve details for.
-  /// [placeSubscriptionId] is the ID of the place subscription this alert belongs too.
+  /// [placeId] is the ID of the place this alert belongs too.
   ///
   /// Returns a [WarnMessage] containing the detail of the alert.
   Future<WarnMessage> getAlertDetail({
