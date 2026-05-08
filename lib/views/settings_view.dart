@@ -221,7 +221,7 @@ class _SettingsState extends ConsumerState<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                "FOSS Public Alert Server", //@todo translate
+                "FOSS Public Alert Server",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -278,14 +278,19 @@ class _SettingsState extends ConsumerState<Settings> {
                 ? ListTile(
                     leading: const Icon(Icons.account_balance),
                     title: Text(
-                      "Server Operator: ${userPreferences.fossPublicAlertServerOperator}",
+                      localizations.settings_foss_public_alert_server_operator(
+                        userPreferences.fossPublicAlertServerOperator,
+                      ),
                     ),
                   )
                 : const SizedBox(),
             userPreferences.fossPublicAlertServerTermsOfService != ""
                 ? ListTile(
                     leading: const Icon(Icons.open_in_new),
-                    title: const Text("Server Terms of Service"),
+                    title: Text(
+                      localizations
+                          .settings_foss_public_alert_server_terms_of_service,
+                    ),
                     onTap: () {
                       launchUrlInBrowser(
                         userPreferences.fossPublicAlertServerTermsOfService,
@@ -296,7 +301,9 @@ class _SettingsState extends ConsumerState<Settings> {
             userPreferences.fossPublicAlertServerPrivacyNotice != ""
                 ? ListTile(
                     leading: const Icon(Icons.open_in_new),
-                    title: const Text("Server Privacy"),
+                    title: Text(
+                      localizations.settings_foss_public_alert_server_privacy,
+                    ),
                     onTap: () {
                       launchUrlInBrowser(
                         userPreferences.fossPublicAlertServerPrivacyNotice,
