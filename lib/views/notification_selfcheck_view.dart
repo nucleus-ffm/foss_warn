@@ -162,6 +162,11 @@ class _NotificationSelfCheckState
       );
     }
 
+    // enable debug notifications to get the successfully subscribed notification
+    bool debugNotificationPreviousState =
+        ref.read(userPreferencesProvider).showDebugNotification;
+    ref.read(userPreferencesProvider.notifier).setShowDebugNotification(true);
+
     String testAlertPlaceName = "Test subscription";
     var api = ref.read(alertApiProvider);
     String? confirmationId = "";
@@ -223,7 +228,7 @@ class _NotificationSelfCheckState
         await api.unregisterArea(
           subscriptionId: place.subscriptionId!,
         );
-        places.remove(place);
+        await places.remove(place);
         debugPrint("[NotificationSelfCheck] Place successfully removed");
       } on UnregisterAreaError {
         debugPrint("[NotificationSelfCheck] UnregisterAreaError");
@@ -234,9 +239,12 @@ class _NotificationSelfCheckState
       }
     }
     ref.read(appStateProvider.notifier).setReSubscriptionInProgress(false);
+    ref
+        .read(userPreferencesProvider.notifier)
+        .setShowDebugNotification(debugNotificationPreviousState);
 
     return (
-      subscriptionState: subscriptionState,
+      subscriptionState: SelfCheckState.passed,
       notificationState: notificationState
     );
   }

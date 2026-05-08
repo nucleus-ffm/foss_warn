@@ -25,6 +25,7 @@ class MyPlaceDetailScreen extends ConsumerWidget {
     var localizations = context.localizations;
     var scaffoldMessenger = ScaffoldMessenger.of(context);
 
+    //@TODO(Nucleus): Handle error case there is no place with that ID
     var place = ref.read(
       myPlacesProvider.select(
         (value) => value.firstWhere(

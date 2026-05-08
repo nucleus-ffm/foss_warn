@@ -103,7 +103,6 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     [
       for (var alert in newAlerts) ...[
         alertApi.getAlertDetail(
-          //@TODO we need to call another method for places without subscription
           alertId: alert.alertId,
           placeId: alert.placeId,
         ),
@@ -118,7 +117,6 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
       newAlertsDetails = value;
     },
     onError: (exception) {
-      //@TODO this on error call returns something wrong
       ErrorLogger.writeErrorLog(
         "warnings.dart",
         "Get new alert details",
@@ -127,7 +125,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
 
       var appStateService = ref.read(appStateProvider.notifier);
       appStateService.setError(true);
-      return "";
+      return [];
     },
   ).catchError((exception) {
     ErrorLogger.writeErrorLog(
@@ -279,9 +277,14 @@ void showNotification(
   var localisations = context.localizations;
 
   for (WarnMessage warning in alerts) {
-    var place = places.firstWhere(
-      (place) => place.subscriptionId == warning.placeId,
+    String placeName = "";
+    Place? place = places.firstWhereOrNull(
+      (place) => place.id == warning.placeId,
     );
+
+    if (place != null) {
+      placeName = place.name;
+    }
 
     if ((!warning.read &&
             !warning.notified &&
@@ -295,9 +298,9 @@ void showNotification(
         // generate from the warning in the List the notification id
         // because the warning identifier is no int, we have to generate a hash code
         id: warning.fpasId.hashCode,
-        title: localisations.notification_alert_new_title(place.name),
+        title: localisations.notification_alert_new_title(placeName),
         body: warning.info[0].headline,
-        payload: place.name,
+        payload: placeName,
         channelId:
             "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
         channelName: warning.info[0].severity.getLocalizedName(context),
@@ -313,9 +316,9 @@ void showNotification(
         // generate from the warning in the List the notification id
         // because the warning identifier is no int, we have to generate a hash code
         id: warning.identifier.hashCode,
-        title: localisations.notification_alert_update_title(place.name),
+        title: localisations.notification_alert_update_title(placeName),
         body: warning.info[0].headline,
-        payload: place.name,
+        payload: placeName,
         channelId: "de.nucleus.foss_warn.notifications_update",
         channelName: "update",
       );

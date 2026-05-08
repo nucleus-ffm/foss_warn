@@ -49,10 +49,6 @@ Future<String> _subscribeForAreaWithPushNotifications({
   // subscribe for new area and create new place
   // with the returned subscription id
   if (!context.mounted) return "";
-  LoadingScreen.instance().show(
-    context: context,
-    text: localizations.loading_screen_loading,
-  );
 
   LoadingScreen.instance().show(
     context: context,
@@ -282,7 +278,7 @@ Future<Null> _subscribeForAreaNoPushBackground({
   places.add(newPlace);
 }
 
-/// Register for push notification or is [noPushNotification] is set to true
+/// Register for push notification or if [noPushNotification] is set to true
 /// just adds a new place with the selected bounding box
 Future<String?> subscribeForArea({
   required BoundingBox boundingBox,
@@ -294,13 +290,13 @@ Future<String?> subscribeForArea({
 }) async {
   switch (noPushNotification) {
     case true:
-      return _subscribeForAreaNoPush(
+      return await _subscribeForAreaNoPush(
         boundingBox: boundingBox,
         selectedPlaceName: selectedPlaceName,
         ref: ref,
       );
     case false:
-      return _subscribeForAreaWithPushNotifications(
+      return await _subscribeForAreaWithPushNotifications(
         boundingBox: boundingBox,
         selectedPlaceName: selectedPlaceName,
         context: context,
@@ -345,8 +341,8 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
   var alertApi = ref.read(alertApiProvider);
   var places = ref.read(myPlacesProvider);
   var userPreferences = ref.read(userPreferencesProvider);
-  var appStateSevice = ref.read(appStateProvider.notifier);
-  appStateSevice.setReSubscriptionInProgress(true);
+  var appStateService = ref.read(appStateProvider.notifier);
+  appStateService.setReSubscriptionInProgress(true);
   debugPrint("[resubscribeForAllArea] Resubscribing...");
 
   LoadingScreen.instance().show(
@@ -396,7 +392,7 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
               ),
         );
   }
-  appStateSevice.setReSubscriptionInProgress(false);
+  appStateService.setReSubscriptionInProgress(false);
   LoadingScreen.instance().hide();
 }
 
