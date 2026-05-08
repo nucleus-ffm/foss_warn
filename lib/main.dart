@@ -15,8 +15,6 @@ Future<void> main() async {
   await SharedPreferencesState.initialize();
   await legacyHandler();
 
-  //await AlarmManager().initialize();
-
   var showWelcomeScreen =
       SharedPreferencesState.instance.getBool("showWelcomeScreen") ?? true;
 

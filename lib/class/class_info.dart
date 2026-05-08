@@ -122,7 +122,8 @@ class Info {
       onset: json['onset'],
       expires: json['expires'],
       headline: json['headline'] ?? "",
-      description: json['description'] ?? "", //@todo can also be null
+      description: json['description'] ??
+          "", //@TODO can also be null, change to `String?`
       instruction: json['instruction'],
       area: areas,
       contact: json['contact'],
@@ -139,7 +140,7 @@ class Info {
         'severity': severity,
         'certainty': certainty,
         'audience': audience,
-        'eventCode': jsonEncode(eventCode), //@TODO nötig?
+        'eventCode': jsonEncode(eventCode), //@TODO verify that this is required
         'effective': effective,
         'onset': onset,
         'expires': expires,

@@ -166,7 +166,7 @@ class Area {
         //         [[45.0, -179.99], [45.0, 179.99], [89.99, 179.9], [89.99, -179.99], [45.0, -179.99]]
         //     ]
         // }
-        // split with spaces and remove all [ ] which are maybe a result of .toString @todo
+        // @TODO: split with spaces and remove all [ ] which are maybe a result of .toString
         var coordinates =
             (data["polygon"].toString().replaceAll("[", "").replaceAll("]", ""))
                 .split(" ");
