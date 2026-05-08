@@ -16,7 +16,8 @@ class UpdateDialog extends ConsumerStatefulWidget {
 class _UpdateDialogState extends ConsumerState<UpdateDialog> {
   final MapController mapController = MapController();
 
-  Widget buildSubscriptionAreaOverview() {
+  Widget buildSubscriptionAreaOverview(BuildContext context) {
+    var localizations = context.localizations;
     var subscriptions = ref.read(myPlacesProvider);
     List<Widget> result = [];
     for (var subscription in subscriptions) {
@@ -38,7 +39,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
                   ),
                 );
               },
-              child: const Text("View area"),
+              child: Text(localizations.update_dialog_view_area_v42),
             ),
           ],
         ),
@@ -69,7 +70,7 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
             localizations.update_dialog_subscription_v42,
             style: Theme.of(context).textTheme.displayMedium,
           ),
-          buildSubscriptionAreaOverview(),
+          buildSubscriptionAreaOverview(context),
           const SizedBox(
             height: 10,
           ),
