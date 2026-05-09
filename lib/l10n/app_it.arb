@@ -18,5 +18,14 @@
     "settings_extended_settings": "Impostazioni avvanzate",
     "settings_dev_settings": "Apri le impostazioni sviluppatore",
     "settings_select_push_service_title": "Push Service",
-    "settings_select_push_service_subtitle": "Scegli quale servizio di push vuoi usare."
+    "settings_select_push_service_subtitle": "Scegli quale servizio di push vuoi usare.",
+    "warning_status": "Stato",
+    "warning_reference": "Referenza",
+    "warning_restriction": "Restrizione",
+    "warning_note": "Nota",
+    "warning_show_more": "Mostra altro",
+    "warning_show_less": "Mostra meno",
+    "warning_appendix": "Appendice",
+    "warning_website": "Sito web",
+    "add_new_place_place_name": "Aggiungi un nuovo luogo"
 }
