@@ -579,5 +579,33 @@
     "update_dialog_body_v42": "请花一会儿时间验证订阅区域。由于 1.0.0 版的一处 bug，订阅区域可能是错的。请确认下方列出的订阅区域对应的是正确的地理位置。如果边界框不是预期的区域，请删除订阅重新添加它。如果一切正常则什么也不用做。",
     "update_dialog_subscription_v42": "你的订阅",
     "update_dialog_confirmation_v42": "检查过订阅区了",
-    "map_alert_sheet_title": "此区域的警报"
+    "map_alert_sheet_title": "此区域的警报",
+    "settings_location_settings": "位置设置",
+    "settings_location_tracking_title": "接收当前位置的警报",
+    "settings_location_tracking_subtitle": "实验性。需要推送通知和定位权限。",
+    "settings_select_alert_service_title": "选择警报服务",
+    "settings_select_alert_service_subtitle": "决定如何接收警报",
+    "map_view_filter_chips_location": "我的位置",
+    "settings_foss_public_alert_server_terms_of_service": "服务器的服务条款",
+    "settings_foss_public_alert_server_privacy": "服务器隐私政策",
+    "settings_foss_public_alert_server_operator": "服务器运营方：{operator}",
+    "@settings_foss_public_alert_server_operator": {
+        "placeholders": {
+            "operator": {
+                "type": "String"
+            }
+        }
+    },
+    "settings_alert_archive_title": "开启警报存档 — 实验性",
+    "settings_alert_archive_subtitle": "在本地永久性存档中存储每一则警报。",
+    "settings_alert_archive_open": "打开警报存档",
+    "notification_self_check_exact_alarm_permission_check_title": "安排精确闹钟权限检查时间",
+    "notification_self_check_exact_alarm_permission_check_subtitle_passed": "已授予权限",
+    "notification_self_check_exact_alarm_permission_check_subtitle_not_passed": "未授予权限",
+    "notification_self_check_exact_alarm_permission_check_subtitle_unknown": "正等待检查结果",
+    "confirmation_dialog_confirm": "我理解并想要继续",
+    "confirmation_dialog_cancel": "取消",
+    "confirm_no_push_subscription_body_push": "FOSSWarn 无法注册推送通知，且你未选择替代警报服务。 你不会收到通知。 如果想要接收推送通知，请检查你的配置并按照 wiki 中的操作指南去做。",
+    "confirm_no_push_subscription_body_polling": "FOSSWarn 无法注册推送通知。 如果继续，FOSSWarn 会使用旧轮询方式。 这会使通知延后不少，但毋须另外设置。 如果想接收接近实时的通知（推荐），请按照 wiki 中的操作指南去设置。",
+    "confirm_no_push_subscription_body_nothing": "FOSSWarn 无法注册推送通知，且后台轮询被禁用。你不会收到任何后台通知。如果想接收通知（推荐），请在设置中另选一个警报服务或按照 wiki 中的操作指南去做。"
 }
