@@ -25,6 +25,7 @@
 .pub/
 /build/
 /coverage/
+lib/l10n/*.dart
 
 # Windows symlinks
 /windows/flutter/ephemeral/.plugin_symlinks

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/routes.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/l10n/app_localizations.dart';
 import 'package:foss_warn/services/legacy_handler.dart';
 
 import 'class/class_notification_service.dart';
