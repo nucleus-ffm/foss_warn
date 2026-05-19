@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/extensions/context.dart';
 import '../../class/class_unified_push_handler.dart';
 import '../../services/subscription_handler.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:foss_warn/l10n/app_localizations.dart';
 
 import 'loading_screen.dart';
 
