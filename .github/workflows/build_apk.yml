@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
   
 env:
-  JAVA_VERSION: "17.x"
-  FLUTTER_VERSION: "3.29.0"
+  JAVA_VERSION: "21.x"
+  FLUTTER_VERSION: "3.41.9"
   FLUTTER_CHANNEL: 'stable'
   PROPERTIES_PATH: "./android/key.properties"
   STOREFILE_PATH: "key.jks"
