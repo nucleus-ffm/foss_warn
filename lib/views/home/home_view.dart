@@ -112,7 +112,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
       if (userPreferences.alertService == AlertService.poll ||
           userPreferences.alertService == AlertService.pushAndPoll) {
-        AlarmManager().initialize();
+        AlarmManager.registerBackgroundPollingTask();
+      }
+      if (userPreferences.locationTracking) {
+        AlarmManager.registerBackgroundLocationTask();
       }
     }
   }

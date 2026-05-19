@@ -196,7 +196,6 @@ class _SettingsState extends ConsumerState<Settings> {
                     var locationTracker = ref.read(locationTrackerProvider);
                     locationTracker.init(context);
                     locationTracker.subscribeForCurrentLocation();
-                    AlarmManager.requestAlarmPermission();
                     AlarmManager.registerBackgroundLocationTask();
                   } else {
                     ref
