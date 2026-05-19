@@ -68,7 +68,7 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 onTap: () {
                   userPreferencesService.setAlertService(AlertService.poll);
                   navigator.pop();
-                  AlarmManager().initialize();
+                  AlarmManager.registerBackgroundPollingTask();
                 },
               ),
               ListTile(
@@ -86,7 +86,7 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                   userPreferencesService
                       .setAlertService(AlertService.pushAndPoll);
                   navigator.pop();
-                  AlarmManager().initialize();
+                  AlarmManager.registerBackgroundPollingTask();
                 },
               ),
               ListTile(

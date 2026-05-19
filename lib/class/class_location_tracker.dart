@@ -190,7 +190,7 @@ class LocationTracker {
   /// Check if there is a subscription for the current location
   /// and if yes unsubscribe and remove that place
   Future<void> removeCurrentLocationSubscription() async {
-    List<Place> places = ref.read(myPlacesProvider);
+    List<Place> places = await ref.read(cachedPlacesProvider.future);
 
     Place? currentLocationPlace = places
         .firstWhereOrNull((places) => places.isForCurrentLocation ?? false);
@@ -207,11 +207,10 @@ class LocationTracker {
 
   /// subscribe for the current location
   Future<void> subscribeForCurrentLocation() async {
-    await removeCurrentLocationSubscription();
-
     // subscribe for current location
     Position? position = await determinePosition();
     if (position != null) {
+      await removeCurrentLocationSubscription();
       LatLng center = LatLng(position.latitude, position.longitude);
 
       BoundingBox boundingBox =

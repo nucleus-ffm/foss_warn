@@ -79,21 +79,58 @@ Future<void> backgroundPollingCallback() async {
 // avoids issues in release mode on Flutter >= 3.3.0
 @pragma('vm:entry-point', true)
 Future<void> backgroundLocationUpdateCallback() async {
+  try {
+    await SharedPreferencesState.initialize();
+  } catch (e) {
+    ErrorLogger.writeErrorLog(
+      "class_alarm_manager.dart",
+      "BackgroundPollingCallback",
+      "Failed to initialize shared preferences state: $e",
+    );
+
+    debugPrint("shared Prefs error $e");
+  }
+
+  await NotificationService().init();
+
+  final DateTime now = DateTime.now();
+
   final container = ProviderContainer();
+  ErrorLogger.writeErrorLog(
+    "alarm_manager.dart",
+    "Background location update info",
+    "Background location update has started at $now",
+  );
+
   var locationTracker = container.read(locationTrackerProvider);
   await locationTracker.subscribeForCurrentLocation();
+
+  ErrorLogger.writeErrorLog(
+    "alarm_manager.dart",
+    "Background location update info",
+    "Background location update has ended at $now",
+  );
+  container.dispose();
 }
 
 @pragma('vm:entry-point', true)
 class AlarmManager {
   /// [Android only]
-  /// Start and register a new periodic task to
-  /// check for alerts in background
-  Future<void> initialize() async {
+  /// creates a new background task to call the APIs
+  static Future<void> registerBackgroundPollingTask() async {
     if (!Platform.isAndroid) return;
     await AndroidAlarmManager.initialize();
     if (await AlarmManager.requestAlarmPermission()) {
-      AlarmManager.registerBackgroundPollingTask();
+      await AndroidAlarmManager.periodic(
+        const Duration(minutes: 15),
+        constants.alarmManagerTaskIdPolling,
+        backgroundPollingCallback,
+        exact: true,
+        rescheduleOnReboot: true,
+        allowWhileIdle: true,
+        wakeup: true,
+      );
+      debugPrint("AlarmManager notification successfully started");
     } else {
       debugPrint(
         "Can not register background task due to missing alarm permission",
@@ -101,37 +138,31 @@ class AlarmManager {
     }
   }
 
-  /// creates a new background task to call the APIs
-  static Future<void> registerBackgroundPollingTask() async {
-    if (!Platform.isAndroid) return;
-    await AndroidAlarmManager.periodic(
-      const Duration(minutes: 15),
-      constants.alarmManagerTaskIdPolling,
-      backgroundPollingCallback,
-      exact: true,
-      rescheduleOnReboot: true,
-      allowWhileIdle: true,
-      wakeup: true,
-    );
-    debugPrint("AlarmManager notification successfully started");
-  }
-
+  /// [Android only]
   /// creates a new background task to call the APIs
   static Future<void> registerBackgroundLocationTask() async {
     if (!Platform.isAndroid) return;
-    await AndroidAlarmManager.periodic(
-      // @TODO in a future version we can let the user decide for the update periode
-      const Duration(hours: 1, minutes: 30),
-      constants.alarmManagerTaskIdLocation,
-      backgroundLocationUpdateCallback,
-      exact: false,
-      rescheduleOnReboot: true,
-      allowWhileIdle: true,
-      wakeup: true,
-    );
-    debugPrint("AlarmManager task location successfully started");
+    if (await AndroidAlarmManager.initialize()) {
+      await AndroidAlarmManager.periodic(
+        // @TODO in a future version we can let the user decide for the update period
+        const Duration(
+          hours: 1,
+          minutes: 30,
+        ),
+        constants.alarmManagerTaskIdLocation,
+        backgroundLocationUpdateCallback,
+        exact:
+            false, // an exact execution is not required here, with this we do not need the setExactAlarm permission
+        rescheduleOnReboot: true,
+        allowWhileIdle: true,
+        wakeup: true,
+      );
+    } else {
+      debugPrint("Failed to initialize AndroidAlarmManager");
+    }
   }
 
+  /// [Android only]
   /// cancel the periodic task
   static Future<void> cancelBackgroundPollingTask() async {
     if (!Platform.isAndroid) return;
@@ -139,14 +170,23 @@ class AlarmManager {
     debugPrint("AlarmManager polling task canceled");
   }
 
+  /// [Android only]
+  /// Cancel the background location task
   static Future<void> cancelBackgroundLocationTask() async {
     if (!Platform.isAndroid) return;
-    await AndroidAlarmManager.cancel(constants.alarmManagerTaskIdLocation);
-    debugPrint("AlarmManager location task canceled");
+    if (await AndroidAlarmManager.cancel(
+      constants.alarmManagerTaskIdLocation,
+    )) {
+      debugPrint("AlarmManager location task canceled");
+    } else {
+      debugPrint("Failed to cancel AlarmManager location task");
+    }
   }
 
+  /// [Android only]
   /// request alarm permission and return the state afterwards
   static Future<bool> requestAlarmPermission() async {
+    if (!Platform.isAndroid) return false;
     return await Permission.scheduleExactAlarm.request().isGranted;
   }
 }
