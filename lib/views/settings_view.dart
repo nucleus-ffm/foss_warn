@@ -73,6 +73,7 @@ class _SettingsState extends ConsumerState<Settings> {
     var theme = Theme.of(context);
 
     const double indentOfCategoriesTitles = 15;
+    double trailingTextWidth = MediaQuery.of(context).size.width / 3;
 
     final Map<int, String> startViewLabels = {
       0: localizations.settings_start_view_all_warnings,
@@ -118,8 +119,12 @@ class _SettingsState extends ConsumerState<Settings> {
               title: Text(localizations.settings_select_alert_service_title),
               subtitle:
                   Text(localizations.settings_select_alert_service_subtitle),
-              trailing:
-                  Text(userPreferences.alertService.getLocalizedName(context)),
+              trailing: SizedBox(
+                width: trailingTextWidth,
+                child: Text(
+                  userPreferences.alertService.getLocalizedName(context),
+                ),
+              ),
               onTap: () {
                 showDialog(
                   context: context,
@@ -140,7 +145,10 @@ class _SettingsState extends ConsumerState<Settings> {
                         subtitle: Text(
                           localizations.settings_select_push_service_subtitle,
                         ),
-                        trailing: Text(selectedDistributor),
+                        trailing: SizedBox(
+                          width: trailingTextWidth,
+                          child: Text(selectedDistributor),
+                        ),
                         onTap: () async {
                           String? picked = await showDialog(
                             context: context,
