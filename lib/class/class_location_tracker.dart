@@ -8,6 +8,7 @@ import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
 
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/subscription_handler.dart';
 import 'package:foss_warn/widgets/dialogs/generic_dialog.dart';
@@ -218,10 +219,14 @@ class LocationTracker {
     // if we already subscribed for a place, remove this subscription first
     if (currentLocationPlace != null) {
       var alertAPi = ref.read(alertApiProvider);
-      alertAPi.unregisterArea(
-        subscriptionId: currentLocationPlace.subscriptionId!,
-      );
-      await ref.read(myPlacesProvider.notifier).remove(currentLocationPlace);
+      try {
+        alertAPi.unregisterArea(
+          subscriptionId: currentLocationPlace.subscriptionId!,
+        );
+        await ref.read(myPlacesProvider.notifier).remove(currentLocationPlace);
+      } on RegisterAreaError {
+        debugPrint("Failed to unregister");
+      }
     }
   }
 
