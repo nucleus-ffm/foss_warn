@@ -635,5 +635,6 @@
     "location_tracking_permission_missing_forever_dialog_title": "Õigused puuduvad",
     "location_tracking_permission_missing_forever_dialog_body": "Sa keelasid FOSSWarnil sinu asukohta taustal tuvastada. Sa ei saa seda funktsionaalsust kasutada. Kui siiski soovid, siis võid teha seda järgnevates süsteemi seadistustes.",
     "location_tracking_permission_only_while_using_dialog_title": "Puudub õigus taustal töötamiseks",
-    "update_dialog_view_area_v42": "Vaata piirkonda"
+    "update_dialog_view_area_v42": "Vaata piirkonda",
+    "map_view_current_location_button_tooltip": "Näita praegust asukohta"
 }
