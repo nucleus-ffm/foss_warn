@@ -570,6 +570,7 @@ class _Map extends StatelessWidget {
     return SizedBox(
       height: 200,
       child: MapWidget(
+        smallAttribution: true,
         mapController: mapController,
         initialCameraFit: createInitCameraFit(),
         polygonLayers: [

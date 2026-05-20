@@ -5,6 +5,7 @@ import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_location_tracker.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/constants.dart' as constants;
+import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/map_alert_sheet.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -88,6 +89,7 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
   Style? _style;
   bool styleRequested = false;
   MarkerLayer? currentLocationMakerLayer;
+  bool locationLookupInProgress = false;
 
   /// Fetch the map style for the all alerts map
   Future<void> _initMapStyle(FPASApi alertAPI) async {
@@ -121,9 +123,12 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
 
   /// fetch the current position and if available build markerLayer with it
   Future<void> _buildPositionMarkerLayer() async {
+    setState(() {
+      locationLookupInProgress = true;
+    });
     var locationTracker = ref.read(locationTrackerProvider);
     LocationTracker.checkLocationPermission(context);
-    Position? pos = await locationTracker.determinePosition();
+    Position? pos = await locationTracker.determinePosition(exactPositon: true);
     if (pos != null) {
       LatLng currentLocation = LatLng(pos.latitude, pos.longitude);
       currentLocationMakerLayer = MarkerLayer(
@@ -138,6 +143,9 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
         ],
       );
     }
+    setState(() {
+      locationLookupInProgress = false;
+    });
   }
 
   @override
@@ -148,16 +156,13 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
   @override
   Widget build(BuildContext context) {
     var userPreferences = ref.watch(userPreferencesProvider);
+    var localizations = context.localizations;
 
     // load the map style in case we need it and we don't have it already
     if (widget.displayAllWarnings && _style == null && !styleRequested) {
       _initMapStyle(ref.read(alertApiProvider));
       // to avoid requesting the style multiple times
       styleRequested = true;
-    }
-
-    if (widget.displayCurrentLocation) {
-      _buildPositionMarkerLayer();
     }
 
     return FlutterMap(
@@ -207,9 +212,7 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
         ...widget.polygonLayers ?? [],
         ...widget.markerLayers ?? [],
         ...widget.widgets ?? [],
-        widget.displayCurrentLocation
-            ? currentLocationMakerLayer ?? const SizedBox()
-            : const SizedBox(),
+        currentLocationMakerLayer ?? const SizedBox(),
         // allow to hide the attribution text for widgets
         widget.smallAttribution
             ? const SimpleAttributionWidget(
@@ -220,6 +223,24 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
                   'OpenStreetMap contributors',
                 ),
               ),
+        !widget.smallAttribution
+            ? Positioned(
+                bottom: 35,
+                right: 10,
+                child: FloatingActionButton(
+                  tooltip:
+                      localizations.map_view_current_location_button_tooltip,
+                  onPressed: () {
+                    if (!locationLookupInProgress) {
+                      _buildPositionMarkerLayer();
+                    }
+                  },
+                  child: locationLookupInProgress
+                      ? const CircularProgressIndicator()
+                      : const Icon(Icons.gps_fixed),
+                ),
+              )
+            : const SizedBox(),
       ],
     );
   }

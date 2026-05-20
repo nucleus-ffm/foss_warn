@@ -30,12 +30,26 @@ class LocationTracker {
   LocationSettings get locationSettings {
     if (Platform.isAndroid) {
       return AndroidSettings(
-        accuracy: LocationAccuracy.high,
+        accuracy: LocationAccuracy.medium,
         distanceFilter: 10000, // 10km
       );
     } else {
       return const LocationSettings(
-        accuracy: LocationAccuracy.high,
+        accuracy: LocationAccuracy.medium,
+        distanceFilter: 10000, // 10km
+      );
+    }
+  }
+
+  LocationSettings get locationSettingsExact {
+    if (Platform.isAndroid) {
+      return AndroidSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 10000, // 10km
+      );
+    } else {
+      return const LocationSettings(
+        accuracy: LocationAccuracy.best,
         distanceFilter: 10000, // 10km
       );
     }
@@ -160,7 +174,7 @@ class LocationTracker {
   ///
   /// When the location services are not enabled or permissions
   /// are denied the `Future` will return an error.
-  Future<Position?> determinePosition() async {
+  Future<Position?> determinePosition({bool exactPositon = false}) async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -179,9 +193,15 @@ class LocationTracker {
     }
 
     try {
-      return await Geolocator.getCurrentPosition(
-        locationSettings: locationSettings,
-      );
+      if (exactPositon) {
+        return await Geolocator.getCurrentPosition(
+          locationSettings: locationSettingsExact,
+        );
+      } else {
+        return await Geolocator.getCurrentPosition(
+          locationSettings: locationSettings,
+        );
+      }
     } catch (e) {
       return await Geolocator.getLastKnownPosition();
     }

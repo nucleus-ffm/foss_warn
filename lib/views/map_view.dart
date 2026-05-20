@@ -20,7 +20,6 @@ class _MapViewState extends ConsumerState<MapView> {
     // server can not handle enough requests
     // "map_view_filter_chip_all_alerts": false,
     "map_view_filter_chip_subscriptions": false,
-    "map_view_current_location": false,
   };
 
   final MapController mapController = MapController();
@@ -35,8 +34,6 @@ class _MapViewState extends ConsumerState<MapView> {
         return localizations.main_nav_bar_my_places;
       case "map_view_filter_chip_subscriptions":
         return localizations.map_view_filter_chips_subscriptions;
-      case "map_view_current_location":
-        return localizations.map_view_filter_chips_location;
     }
     return "Error";
   }
@@ -125,7 +122,6 @@ class _MapViewState extends ConsumerState<MapView> {
         // this feature is still displayed
         displayAllWarnings:
             false, // filterChips["map_view_filter_chip_all_alerts"]!,
-        displayCurrentLocation: filterChips["map_view_current_location"]!,
       ),
     );
   }
