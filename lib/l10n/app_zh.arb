@@ -634,5 +634,6 @@
     "update_dialog_view_area_v42": "查看区域",
     "alert_archive_view_title": "警报存档",
     "alert_archive_view_subtitle": "这给予你 FOSSWarn 收到的之前的每则警报。",
-    "alert_archive_no_alert": "此处还什么都没有。正等待存档第一则警报…"
+    "alert_archive_no_alert": "此处还什么都没有。正等待存档第一则警报…",
+    "map_view_current_location_button_tooltip": "显示当前位置"
 }
