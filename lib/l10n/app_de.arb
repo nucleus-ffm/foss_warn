@@ -585,5 +585,6 @@
     "map_alert_sheet_title": "Warnungen für dieses Gebiet",
     "alert_archive_view_title": "Warnungsarchive",
     "alert_archive_view_subtitle": "Hier werden alle bisherigen Warnungen angezeigt, die FOSSWarn erhalten hat.",
-    "alert_archive_no_alert": "Hier gibt es noch nichts zu sehen. Warte auf die erste Warnung zum Archivieren."
+    "alert_archive_no_alert": "Hier gibt es noch nichts zu sehen. Warte auf die erste Warnung zum Archivieren.",
+    "map_view_current_location_button_tooltip": "Aktuellen Standort anzeigen"
 }
