@@ -26,6 +26,9 @@
 /build/
 /coverage/
 lib/l10n/*.dart
+/android/app/.cxx/
+/android/build/
+
 
 # Windows symlinks
 /windows/flutter/ephemeral/.plugin_symlinks
@@ -44,3 +47,9 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Mkdocs
+/docs/site/
+/docs/.venv/
+/docs/.cache/
+/docs/.python-version
