@@ -1,0 +1,22 @@
+{# base partial from:
+github.com/squidfunk/mkdocs-material/material/templates/partials/copyright.html
+#}
+<div class="md-copyright">
+    
+<div class="md-copyright__highlight">
+        {% for link in config.extra.footer_links %}
+            
+            <a href="{{ link.href }}" target="_blank" rel="noopener">{{ link.text }}</a>
+            &nbsp; &nbsp;
+        {% endfor %}
+    
+</div>
+    {% if not config.extra.generator == false %}
+    Made with
+    
+<a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+        Material for MkDocs
+    
+</a>
+    {% endif %}
+</div>

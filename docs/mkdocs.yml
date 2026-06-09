@@ -1,0 +1,136 @@
+site_name: "FOSSWarn Docs"
+site_description: "Official docuumentation for FOSSWarn "
+site_url: "https://docs.fosswarn.org"
+repo_url: "https://github.com/nucleus-ffm/foss_warn"
+edit_uri: "edit/main/docs/"  # "Edit on GitHub"-Link
+
+theme:
+  name: material
+  language: en 
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+  logo: assets/logos/foss_warn_app_icon.png
+  favicon: assets/logos/foss_warn_app_icon.png
+  custom_dir: overrides
+
+
+nav:
+  - Getting Started: index.md
+  - Installation:
+      - Android: installation/android.md
+      - Linux: installation/linux.md
+  - Features:
+      - Alert Server: features/alert_server.md
+      - Alert Services: features/alert_services.md
+      - Push Services: features/push_services.md
+      - Alert Archive: features/alert_archive.md
+      - Location Tracking: features/location_tracking.md
+      - Notification Setting: features/notification_settings.md
+      - Notification Self Check: features/notification_self_check.md
+  - FAQ: faq.md
+  - Contribute: contribute.md
+
+
+# Plugins
+plugins:
+  - search
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: de
+          name: Deutsch
+          build: true
+          # Navigation (EN) – Übersetzungen
+          nav_translations:
+            Getting Started: Einführung
+            Installtion: Installation
+            Android: Android
+            iOS: iOS
+            Features: Funktionen
+            Alert Server: Warnungsserver
+            Alert Services: Benachrichtigungsdienste
+            Alert Archive: Warnungs Archive
+            Location Tracking: Positions Verfolgung
+            Notification Setting: Benachrichtigungseinstellungen
+            Notification Self Check: Benachrichtigungs Selbsttest
+            Push Services: Push Dienste
+            FAQ: FAQ
+      material_alternate: true  # Sprachumschalter im Theme
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - privacy
+
+
+# Erweiterte Einstellungen
+extra:
+  alternate:
+    - name: English
+      link: /
+      lang: en
+
+    - name: Deutsch
+      link: /de/
+      lang: de
+    
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/nucleus-ffm/foss_warn"
+    - icon: fontawesome/brands/mastodon
+      link: https://social.tchncs.de/@foss_warn
+    # - icon: fontawesome/brands/mastodon
+    #  link: https://floss.social/deck/@foss_public_alert_server
+  version:
+    provider: mike  # Für Versionsverwaltung (z. B. v1.0, v2.0)
+  footer_links:
+    - text: "Privacy Policy"
+      href: "/legal/privacy_policy"
+    - text: "Imprint"
+      href: "/legal/imprint"
+
+# Markdown-Erweiterungen
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+
+#copyright: Legal
