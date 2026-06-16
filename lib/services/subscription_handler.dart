@@ -550,3 +550,46 @@ Future<void> updatePushNotificationConfigForSubscription(
     }
   }
 }
+
+/// Remove the subscription for the given place
+Future<void> removeSubscription(Place place, WidgetRef ref, BuildContext context) async {
+  var alertApi = ref.read(alertApiProvider);
+  var localizations = context.localizations;
+  var theme = Theme.of(context);
+  var scaffoldMessenger = ScaffoldMessenger.of(context);
+
+  // Unsubscribe from server
+  debugPrint("unregister from server for place ${place.name}");
+  if (place.subscriptionId == null) {
+    await ref.read(myPlacesProvider.notifier).remove(place);
+  } else {
+    var appSate = ref.read(appStateProvider.notifier);
+    appSate.setReSubscriptionInProgress(true);
+    try {
+      await alertApi.unregisterArea(
+        subscriptionId: place.subscriptionId!,
+      );
+      await ref.read(myPlacesProvider.notifier).remove(place);
+    } on UnregisterAreaError {
+      // we currently can not unsubscribe - show a snack bar to inform the
+      // user to check their internet connection
+      final snackBar = SnackBar(
+        content: Text(
+          localizations.delete_place_error,
+          style: TextStyle(color: theme.colorScheme.onErrorContainer),
+        ),
+        backgroundColor: theme.colorScheme.errorContainer,
+      );
+      scaffoldMessenger.showSnackBar(snackBar);
+    }
+    appSate.setReSubscriptionInProgress(false);
+  }
+}
+
+/// Remove and unsubscribe for all stored places
+Future<void> removeAllPlaces(WidgetRef ref, BuildContext context) async {
+  var places = ref.read(myPlacesProvider);
+  for(Place place in places) {
+    await removeSubscription(place, ref, context);
+  }
+}
