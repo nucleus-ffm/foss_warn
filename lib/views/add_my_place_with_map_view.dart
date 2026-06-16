@@ -244,8 +244,12 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
   Future<List<NovatimResponse>> requestNovatimData(
     String requestString,
   ) async {
+    String featureType = "";
+    if(ref.read(userPreferencesProvider).restrictSearchToCities) {
+      featureType = "&featureType=city";
+    }
     Uri requestURL = Uri.parse(
-      "https://nominatim.openstreetmap.org/search?q=$requestString&format=json&featureType=city",
+      "https://nominatim.openstreetmap.org/search?q=$requestString&format=json$featureType",
     );
 
     UserAgentHttpClient client =
