@@ -60,7 +60,7 @@ class _LogFileViewerState extends State<LogFileViewer> {
                             child: Divider(),
                           ),
                           SizedBox(
-                            height: 500,
+                            height: MediaQuery.of(context).size.height*0.71,
                             child: Scrollbar(
                               controller: _horizontal,
                               thumbVisibility: true,
@@ -68,6 +68,7 @@ class _LogFileViewerState extends State<LogFileViewer> {
                               notificationPredicate: (notify) =>
                                   notify.depth == 1,
                               child: SingleChildScrollView(
+                                reverse: true,
                                 controller: _vertical,
                                 scrollDirection: Axis.vertical,
                                 child: SingleChildScrollView(

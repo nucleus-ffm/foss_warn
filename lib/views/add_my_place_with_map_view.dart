@@ -313,6 +313,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                       )
                     : const PolygonLayer(polygons: []),
               ],
+              smallAttribution: true,
             ),
           ),
           Positioned(
