@@ -7,6 +7,8 @@ import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 
+import '../../services/subscription_handler.dart';
+
 class DeletePlaceDialog extends ConsumerWidget {
   final Place myPlace;
   const DeletePlaceDialog({super.key, required this.myPlace});
@@ -17,39 +19,8 @@ class DeletePlaceDialog extends ConsumerWidget {
     var theme = Theme.of(context);
     var navigator = Navigator.of(context);
 
-    var alertApi = ref.read(alertApiProvider);
-    var scaffoldMessenger = ScaffoldMessenger.of(context);
-
     Future<void> onDeletePlacePressed() async {
-      // remove place from list and update view
-
-      // Unsubscribe from server
-      debugPrint("unregister from server for place ${myPlace.name}");
-      if (myPlace.subscriptionId == null) {
-        await ref.read(myPlacesProvider.notifier).remove(myPlace);
-      } else {
-        var appSate = ref.read(appStateProvider.notifier);
-        appSate.setReSubscriptionInProgress(true);
-        try {
-          await alertApi.unregisterArea(
-            subscriptionId: myPlace.subscriptionId!,
-          );
-          await ref.read(myPlacesProvider.notifier).remove(myPlace);
-        } on UnregisterAreaError {
-          // we currently can not unsubscribe - show a snack bar to inform the
-          // user to check their internet connection
-          final snackBar = SnackBar(
-            content: Text(
-              localizations.delete_place_error,
-              style: TextStyle(color: theme.colorScheme.onErrorContainer),
-            ),
-            backgroundColor: theme.colorScheme.errorContainer,
-          );
-          scaffoldMessenger.showSnackBar(snackBar);
-        }
-        appSate.setReSubscriptionInProgress(false);
-      }
-
+      await removeSubscription(myPlace, ref, context);
       if (!context.mounted) return;
       navigator.pop();
     }
