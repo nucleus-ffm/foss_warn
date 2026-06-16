@@ -310,6 +310,19 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   );
                 },
               ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title:
+                Text(localizations.dev_settings_restrict_search_to_cities),
+                trailing: Switch(
+                  value: userPreferences.restrictSearchToCities,
+                  onChanged: (value) async {
+                    userPreferencesService.setRestrictSearchToCities(
+                      !userPreferences.restrictSearchToCities,
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),

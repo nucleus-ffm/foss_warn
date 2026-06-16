@@ -33,6 +33,7 @@ final List<ThemeData> availableDarkThemes = [
 
 class SharedPreferencesState {
   static late final SharedPreferencesWithCache _preferences;
+  static bool _initialized = false;
 
   SharedPreferencesState._();
 
@@ -40,10 +41,15 @@ class SharedPreferencesState {
     return _preferences;
   }
 
+  /// Initialized the sharedPreferences
+  ///
+  /// if called multiple times, nothing changes
   static Future<void> initialize() async {
+    if (_initialized) return;
     _preferences = await SharedPreferencesWithCache.create(
       cacheOptions: const SharedPreferencesWithCacheOptions(),
     );
+    _initialized = true;
   }
 }
 
@@ -158,6 +164,8 @@ final userPreferencesProvider =
       locationTracking: preferences.getBool("locationTracking") ?? false,
       alertService: AlertService.values[alertService],
       alertArchive: preferences.getBool("alertArchive") ?? false,
+      restrictSearchToCities:
+          preferences.getBool("restrictSearchToCities") ?? true,
     ),
     sharedPreferences: preferences,
   );
@@ -367,6 +375,11 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
     state = state.copyWith(alertArchive: value);
     await _sharedPreferences.setBool("alertArchive", value);
   }
+
+  Future<void> setRestrictSearchToCities(bool value) async {
+    state = state.copyWith(restrictSearchToCities: value);
+    await _sharedPreferences.setBool("restrictSearchToCities", value);
+  }
 }
 
 /// handle user preferences. The values written here are default values
@@ -405,6 +418,7 @@ class UserPreferences {
     required this.locationTracking,
     required this.alertService,
     required this.alertArchive,
+    required this.restrictSearchToCities,
   });
 
   final bool shouldNotifyGeneral;
@@ -441,13 +455,14 @@ class UserPreferences {
   final bool locationTracking;
   final AlertService alertService;
   final bool alertArchive;
+  final bool restrictSearchToCities;
 
   // Version of the application, shown in the about view
   // TODO(PureTryOut): get this from package_info_plus instead
   // That way we only need to keep track of one number.
-  static const String versionNumber = "1.1.0-alpha1";
+  static const String versionNumber = "1.1.0-alpha2";
 
-  static const int currentVersionCode = 43;
+  static const int currentVersionCode = 44;
   final int previousInstalledVersionCode;
 
   static const String unifiedPushInstance = "FOSSWarn";
@@ -487,6 +502,7 @@ class UserPreferences {
     bool? locationTracking,
     AlertService? alertService,
     bool? alertArchive,
+    bool? restrictSearchToCities,
   }) =>
       UserPreferences(
         shouldNotifyGeneral: shouldNotifyGeneral ?? this.shouldNotifyGeneral,
@@ -536,6 +552,8 @@ class UserPreferences {
         locationTracking: locationTracking ?? this.locationTracking,
         alertService: alertService ?? this.alertService,
         alertArchive: alertArchive ?? this.alertArchive,
+        restrictSearchToCities:
+            restrictSearchToCities ?? this.restrictSearchToCities,
       );
 
   /// the path and filename where the error log is saved
