@@ -10,6 +10,7 @@ import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../class/class_alarm_manager.dart';
 import '../class/class_bounding_box.dart';
 import '../class/class_fpas_place.dart';
 import '../class/class_unified_push_handler.dart';
@@ -322,6 +323,14 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                     );
                   },
                 ),
+              ),
+              ListTile(
+                contentPadding: _settingsTileListPadding,
+                title: const Text("Cancel background tasks"),
+                onTap: () {
+                  AlarmManager.cancelBackgroundPollingTask();
+                  AlarmManager.cancelBackgroundLocationTask();
+                },
               ),
             ],
           ),
