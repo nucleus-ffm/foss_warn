@@ -4,7 +4,11 @@ import 'package:foss_warn/class/class_alert_archive.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/warning_widget.dart';
 
-class AlertArchiveView extends ConsumerStatefulWidget {
+final alertArchiveProvider = FutureProvider<AlertArchive>((ref) async {
+  return await AlertArchive.create(ref);
+});
+
+class AlertArchiveView extends ConsumerWidget {
   const AlertArchiveView({
     super.key,
     required this.onAlertPressed,
@@ -15,25 +19,30 @@ class AlertArchiveView extends ConsumerStatefulWidget {
   final void Function() onAlertUpdateThreadPressed;
 
   @override
-  ConsumerState<AlertArchiveView> createState() => _AlertArchiveViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    var localization = context.localizations;
 
-class _AlertArchiveViewState extends ConsumerState<AlertArchiveView> {
-  late AlertArchive alertArchive;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+    final archiveAsync = ref.watch(alertArchiveProvider);
     ref.watch(alertArchiveCleanupProvider);
 
-    var localization = context.localizations;
     return Scaffold(
       appBar: AppBar(
         title: Text(localization.alert_archive_view_title),
+        actions: [
+          if (archiveAsync.hasValue)
+            IconButton(
+              icon: const Icon(
+                Icons.delete,
+                semanticLabel: "Delete alert archive",
+              ),
+              tooltip: localization
+                  .error_log_button_delete, //@TODO add better tooltip
+              onPressed: () async {
+                await archiveAsync.value!.deleteArchive();
+                ref.invalidate(alertArchiveProvider);
+              },
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -42,71 +51,40 @@ class _AlertArchiveViewState extends ConsumerState<AlertArchiveView> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(localization.alert_archive_view_subtitle),
-              FutureBuilder<AlertArchive>(
-                future: AlertArchive.create(ref),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      alertArchive = snapshot.data!;
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Divider(),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    snapshot.data!.deleteArchive();
-                                    setState(() {});
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.error,
-                                  ),
-                                  child: Text(
-                                    localization.error_log_button_delete,
-                                    style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.onError,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            alertArchive.alertArchive.isEmpty
-                                ? Text(localization.alert_archive_no_alert)
-                                : const SizedBox(),
-                            ...alertArchive.alertArchive.map(
-                              (alert) => WarningWidget(
-                                warnMessage: alert,
-                                isMyPlaceWarning: false,
-                                onAlertPressed: widget.onAlertPressed,
-                                onAlertUpdateThreadPressed:
-                                    widget.onAlertUpdateThreadPressed,
-                              ),
-                            ),
-                          ],
+
+              // Use .when to handle Loading, Error, and Data states cleanly
+              archiveAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (err, stack) => Text(
+                  "Error while loading alert archive, sorry.",
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+                data: (alertArchive) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Divider(),
                         ),
-                      );
-                    } else {
-                      debugPrint(
-                        "Error loading alert archive: ${snapshot.error}",
-                      );
-                      return const Text(
-                        "Error while loading alert archive, sorry.",
-                        style: TextStyle(color: Colors.red),
-                      );
-                    }
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
+                        alertArchive.alertArchive.isEmpty
+                            ? Text(localization.alert_archive_no_alert)
+                            : const SizedBox(),
+                        ...alertArchive.alertArchive.map(
+                          (alert) => WarningWidget(
+                            warnMessage: alert,
+                            isMyPlaceWarning: false,
+                            onAlertPressed: onAlertPressed,
+                            onAlertUpdateThreadPressed:
+                                onAlertUpdateThreadPressed,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
             ],
