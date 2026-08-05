@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_bounding_box.dart';
+import 'package:foss_warn/class/class_error_logger.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
 
@@ -33,11 +36,13 @@ class LocationTracker {
       return AndroidSettings(
         accuracy: LocationAccuracy.medium,
         distanceFilter: 10000, // 10km
+        timeLimit: const Duration(minutes: 1),
       );
     } else {
       return const LocationSettings(
         accuracy: LocationAccuracy.medium,
         distanceFilter: 10000, // 10km
+        timeLimit: Duration(minutes: 1),
       );
     }
   }
@@ -47,11 +52,13 @@ class LocationTracker {
       return AndroidSettings(
         accuracy: LocationAccuracy.best,
         distanceFilter: 10000, // 10km
+        timeLimit: const Duration(minutes: 1),
       );
     } else {
       return const LocationSettings(
         accuracy: LocationAccuracy.best,
         distanceFilter: 10000, // 10km
+        timeLimit: Duration(minutes: 1),
       );
     }
   }
@@ -211,42 +218,77 @@ class LocationTracker {
   /// Check if there is a subscription for the current location
   /// and if yes unsubscribe and remove that place
   Future<void> removeCurrentLocationSubscription() async {
-    List<Place> places = await ref.read(cachedPlacesProvider.future);
+    List<Place> places = await ref.refresh(cachedPlacesProvider.future);
 
     Place? currentLocationPlace = places
         .firstWhereOrNull((places) => places.isForCurrentLocation ?? false);
 
     // if we already subscribed for a place, remove this subscription first
     if (currentLocationPlace != null) {
-      var alertAPi = ref.read(alertApiProvider);
-      try {
-        alertAPi.unregisterArea(
-          subscriptionId: currentLocationPlace.subscriptionId!,
-        );
+      // only unsubscribe if the place is not a local subscription
+      if (currentLocationPlace.subscriptionId != null) {
+        var alertAPi = ref.read(alertApiProvider);
+        try {
+          alertAPi.unregisterArea(
+            subscriptionId: currentLocationPlace.subscriptionId!,
+          );
+          await ref
+              .read(myPlacesProvider.notifier)
+              .remove(currentLocationPlace);
+        } on UnregisterAreaError {
+          ErrorLogger.writeLog(
+            "class_location_tracker",
+            "remove current subscription",
+            "Failed to unregister for ${currentLocationPlace.subscriptionId}",
+          );
+          debugPrint(
+            "Failed to unregister for ${currentLocationPlace.subscriptionId}",
+          );
+          rethrow;
+        }
+      } else {
         await ref.read(myPlacesProvider.notifier).remove(currentLocationPlace);
-      } on RegisterAreaError {
-        debugPrint("Failed to unregister");
       }
     }
   }
 
-  /// subscribe for the current location
+  /// Subscribe for the current location
+  ///
+  /// This tries to fetch the current position, removes the old subscription
+  /// and subscribes for the new subscription
   Future<void> subscribeForCurrentLocation() async {
-    // subscribe for current location
-    Position? position = await determinePosition();
-    if (position != null) {
-      await removeCurrentLocationSubscription();
-      LatLng center = LatLng(position.latitude, position.longitude);
-
-      BoundingBox boundingBox =
-          BoundingBox.buildAroundCenterPoint(center, 5, 4);
-
-      await subscribeForAreaInBackground(
-        boundingBox: boundingBox,
-        selectedPlaceName: "Current Location",
-        ref: ref,
-        isForCurrentLocation: true,
-      );
+    try {
+      // fetch current location
+      Position? position = await determinePosition();
+      if (position != null) {
+        ErrorLogger.writeLog(
+          "class_location_tracker.dart",
+          "subscribeForCurrentLocation",
+          "Found new location $position",
+        );
+        // remove old subscription
+        await removeCurrentLocationSubscription();
+        LatLng center = LatLng(position.latitude, position.longitude);
+        BoundingBox boundingBox =
+            BoundingBox.buildAroundCenterPoint(center, 5, 4);
+        bool usePolling =
+            ref.read(userPreferencesProvider).alertService == AlertService.poll;
+        // subscribe for new location
+        await subscribeForAreaInBackground(
+          boundingBox: boundingBox,
+          selectedPlaceName: "Current Location",
+          ref: ref,
+          isForCurrentLocation: true,
+          noPushNotification: usePolling,
+        );
+      }
+    } on UnregisterAreaError {
+      // We can not unregister the old subscription,
+      // do not register new one.
+    } on RegisterAreaError {
+      // We can not subscribe for for the current location
+      // We try it again with the next interval
+      // @TODO: There is a small risk of removing the old subscription and failing and subscribing for new one resulting in no subscription. We should think about mitigating that risk somehow.
     }
   }
 }
