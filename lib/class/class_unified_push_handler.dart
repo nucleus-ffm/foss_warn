@@ -10,6 +10,10 @@ import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
 import 'package:unifiedpush/unifiedpush.dart';
+import 'package:unifiedpush_platform_interface/unifiedpush_platform_interface.dart';
+import 'package:unifiedpush_storage_shared_preferences/storage.dart';
+import '../constants.dart' as constants;
+import '../enums/alert_service.dart';
 import '../services/alert_api/fpas.dart';
 import '../services/notification_handler.dart';
 import '../services/subscription_handler.dart';
@@ -18,6 +22,8 @@ import '../widgets/dialogs/select_unified_push_distributor_dialog.dart';
 
 /// Thrown when a UnifiedPush registration failed with a timeout
 class UnifiedPushRegistrationTimeoutError implements Exception {}
+
+class UnifiedPushRegistrationError implements Exception {}
 
 final unifiedPushHandlerProvider = Provider(
   (ref) => UnifiedPushHandler(
@@ -36,6 +42,7 @@ class UnifiedPushHandler {
   final UserPreferencesService _preferencesService;
   final UserPreferences _userPreferences;
 
+  // ------------------------------- callback ------------------------------------
   /// Callback function for the UnifiedPush  plugin
   /// this method gets called when a new endpoint is selected
   void onNewEndpoint({
@@ -43,8 +50,8 @@ class UnifiedPushHandler {
     required String instance,
     required WidgetRef ref,
   }) {
-    debugPrint("new Endpoint:${endpoint.url}");
-    if (instance != UserPreferences.unifiedPushInstance) return;
+    debugPrint("new Endpoint:${endpoint.url} for instance $instance");
+    if (instance != constants.unifiedPushInstance) return;
 
     // update preferences with the new URL and Keys
     _preferencesService.setUnifiedpushEndpoint(endpoint.url);
@@ -61,7 +68,7 @@ class UnifiedPushHandler {
   /// This method gets called with the registration failed
   /// For now we are just logging that error
   void onRegistrationFailed(FailedReason failedReason, String instance) {
-    if (instance != UserPreferences.unifiedPushInstance) return;
+    if (instance != constants.unifiedPushInstance) return;
     // @todo error handling
     ErrorLogger.writeLog(
       "class_unifiedPushHandler",
@@ -75,8 +82,8 @@ class UnifiedPushHandler {
   /// This method gets called when the client unregisters from the distributor
   /// This updates the state in the preferences
   void onUnregistered(String instance) {
-    debugPrint("onUnregistered called");
-    if (instance != UserPreferences.unifiedPushInstance) return;
+    debugPrint("onUnregistered called for instance $instance");
+    if (instance != constants.unifiedPushInstance) return;
 
     debugPrint("onUnregistered called");
     _preferencesService.setUnifiedpushEndpoint("");
@@ -97,12 +104,75 @@ class UnifiedPushHandler {
     required WidgetRef ref,
     required BuildContext context,
   }) async {
-    if (instance != UserPreferences.unifiedPushInstance) return;
-
+    if (instance != constants.unifiedPushInstance) return;
     var payload = utf8.decode(message.content);
     debugPrint("Received a notification. Message: $payload");
-
     handleIncomingNotification(payload, ref);
+  }
+
+  // ------------------------- End callbacks --------------------------------//
+
+  /// Initialize UnifiedPush
+  Future<void> initialize(WidgetRef ref, BuildContext context) async {
+    // init unified push
+    // In a dev environment with multiple hot restarts, this registers multiple callbacks
+    UnifiedPush.initialize(
+      onNewEndpoint: (PushEndpoint endpoint, String instance) => onNewEndpoint(
+        endpoint: endpoint,
+        instance: instance,
+        ref: ref,
+      ),
+      onRegistrationFailed: onRegistrationFailed,
+      onUnregistered: onUnregistered,
+      linuxOptions: LinuxOptions(
+        dbusName: "de.nucleus.foss_warn",
+        storage: UnifiedPushStorageSharedPreferences(),
+        background: false,
+      ),
+      onMessage: (message, instance) => onMessage(
+        message: message,
+        instance: instance,
+        ref: ref,
+        alertApi: ref.read(alertApiProvider),
+        myPlacesService: ref.read(myPlacesProvider.notifier),
+        warningService: ref.read(processedAlertsProvider.notifier),
+        context: context,
+      ),
+    ).then((registered) async {
+      var userPreferences = ref.read(userPreferencesProvider);
+      if (registered) {
+        // as we are already registered, we don't have to call setupUnifiedPush
+        await registerDistributor();
+      } else if (!registered &&
+          (userPreferences.alertService == AlertService.push ||
+              userPreferences.alertService == AlertService.pushAndPoll)) {
+        // we are not already registered and the user wants to use push services
+        if (!context.mounted) {
+          return;
+        }
+        // setup unifiedPush if the app is not already registered
+        setupUnifiedPush(context, ref);
+      }
+    });
+  }
+
+  /// register for UnifiedPush at the saved distributor
+  ///
+  /// [vapidKey] used if provided, otherwise, the stored key is used
+  Future<void> registerDistributor({String? vapidKey}) async {
+    await UnifiedPush.register(
+      // Optional String, to get multiple endpoints (one per instance)
+      instance: constants.unifiedPushInstance,
+      messageForDistributor: constants.unifiedPushMessageForDistributor,
+      vapid: vapidKey ?? _userPreferences.webPushVapidKey,
+    ).timeout(const Duration(seconds: 10));
+  }
+
+  /// unregisters the current distributor and sets the unifiedPush
+  /// registered flag in the setting to false
+  Future<void> unregisterDistributor() async {
+    UnifiedPush.unregister(constants.unifiedPushInstance);
+    await _preferencesService.setUnifiedPushRegistered(false);
   }
 
   /// register for push notifications and keep registration up to date
@@ -136,20 +206,15 @@ class UnifiedPushHandler {
         ErrorLogger.writeLog(
           "class_unified_push_handler.dart",
           "setup unifiedPush",
-          "Failed to fetch VAPID key for webpush",
+          "Failed to fetch VAPID key for webPush",
         );
+        throw UnifiedPushRegistrationError;
       }
     }
 
+    // Only register if not already registered
     if (await UnifiedPush.getDistributor() != null) {
-      // already registered - just register again without changing anything
-      // register UnifiedPush with same distributor url and token as
-      // this is required by the unifiedPush plugin
-      await UnifiedPush.register(
-        instance: UserPreferences
-            .unifiedPushInstance, // Optional String, to get multiple endpoints (one per instance)
-        vapid: tempVapidKey ?? _userPreferences.webPushVapidKey,
-      );
+      // already registered - skip
     } else {
       // Get a list of distributors that are available
       List<String> distributors = await UnifiedPush.getDistributors(
@@ -166,24 +231,21 @@ class UnifiedPushHandler {
         return;
       }
 
+      // there are distributors installed, let the user choose one
       if (!context.mounted) return;
       String? picked = await showDialog<String>(
         context: context,
         builder: selectUnifiedPushDistributorDialog(distributors),
       );
 
-      // save the distributor
+      // save the selected distributor
       await UnifiedPush.saveDistributor(picked ?? distributors.first);
-      // register your app to the distributor
+      // register the app to the selected distributor
       try {
-        await UnifiedPush.register(
-          instance: UserPreferences.unifiedPushInstance,
-          // optional String, to get multiple endpoints (one per instance)
-          vapid: tempVapidKey ?? _userPreferences.webPushVapidKey,
-        );
+        await registerDistributor();
       } on MissingPluginException catch (e) {
-        debugPrint("error while registering UnifiedPush: $e");
-        return;
+        debugPrint("Error while registering UnifiedPush: $e");
+        throw UnifiedPushRegistrationError;
       }
       return;
     }
@@ -200,9 +262,9 @@ class UnifiedPushHandler {
     String selectedDistributor,
     WidgetRef ref,
   ) async {
-    await unregisterDistributor(ref);
-    await registerDistributor(selectedDistributor, ref);
-    // wait until the registration is finished we have a new endpoint
+    await unregisterDistributor();
+    await saveDistributor(selectedDistributor, ref);
+    // wait until the registration is finished and we have a new endpoint
     await Future.doWhile(() async {
       await Future.delayed(const Duration(microseconds: 1));
       UserPreferences userPreferences = ref.read(userPreferencesProvider);
@@ -218,20 +280,15 @@ class UnifiedPushHandler {
     );
   }
 
-  /// unregisters the current distributor and sets the unifiedPush
-  /// registered flag in the setting to false
-  Future<void> unregisterDistributor(WidgetRef ref) async {
-    UnifiedPush.unregister(UserPreferences.unifiedPushInstance);
-    await _preferencesService.setUnifiedPushRegistered(false);
-  }
-
   /// Register for notifications with the given distributor
-  Future<void> registerDistributor(
+  ///
+  /// Fetch the Vapid key from the server, if not already stored in the settings
+  Future<void> saveDistributor(
     String selectedDistributor,
     WidgetRef ref,
   ) async {
     debugPrint(
-      "[unifiedPushHandler] register new distributor $selectedDistributor",
+      "[unifiedPushHandler] save new distributor $selectedDistributor",
     );
     await UnifiedPush.saveDistributor(selectedDistributor);
     String? tempVapidKey;
@@ -251,18 +308,7 @@ class UnifiedPushHandler {
         }
       }
     }
-
-    // register your app to the distributor
-    try {
-      await UnifiedPush.register(
-        instance: UserPreferences.unifiedPushInstance,
-        vapid: tempVapidKey ?? _userPreferences.webPushVapidKey,
-      );
-    } on MissingPluginException catch (e) {
-      //@TODO (Nucleus) do not catch this exception here
-      debugPrint("error while registering UnifiedPush: $e");
-      return;
-    }
+    await registerDistributor(vapidKey: tempVapidKey);
   }
 
   Future<List<Map<String, String>>> getListOfDistributors() async {
