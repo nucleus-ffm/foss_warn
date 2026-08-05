@@ -38,7 +38,8 @@ class ErrorLogger {
     try {
       final file = await _localFile;
       // Read the file
-      return await file.readAsString();
+      var log = await file.readAsString();
+      return log;
     } catch (e) {
       // If encountering an error, return 0
       debugPrint("Error while reading logfile: ${e.toString()}");
@@ -48,29 +49,32 @@ class ErrorLogger {
 
   static String _generateLogContent(
     String fileContext,
-    String errorContext,
-    String errorMessage,
+    String logContext,
+    String logMessage,
   ) {
-    return "${DateTime.now().toString()} | FileContext: $fileContext |  ErrorContext: $errorContext | ErrorMessage: $errorMessage \n";
+    return "${DateTime.now().toString()} | FileContext: $fileContext |  Context: $logContext | Message: $logMessage \n\n";
   }
 
-  /// write error to logfile
-  /// errorContext: In which context the error occur. e.g. json parsing in class xy
-  /// errorMessage: the Message to log e.g. the thrown exception
-  static Future<void> writeErrorLog(
+  /// write message to logfile
+  /// loContext: In which context the message or error occurred. e.g. json parsing in class xy
+  /// logMessage: the Message to log e.g. the thrown exception
+  static Future<void> writeLog(
     String fileContext,
-    String errorContext,
-    String errorMessage,
+    String logContext,
+    String logMessage,
   ) async {
+    final file = await _localFile;
+    final raf = await file.open(mode: FileMode.append);
+    await raf.lock(FileLock.exclusive);
     try {
-      final file = await _localFile;
-      // print(errorMessage);
-      file.writeAsString(
-        _generateLogContent(fileContext, errorContext, errorMessage),
-        mode: FileMode.append,
+      await raf.writeString(
+        _generateLogContent(fileContext, logContext, logMessage.toString()),
       );
     } catch (e) {
-      debugPrint("Error while writing error log ${e.toString()}");
+      debugPrint("Error while writing log ${e.toString()}");
+    } finally {
+      await raf.unlock();
+      await raf.close();
     }
   }
 }

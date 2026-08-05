@@ -94,7 +94,7 @@ Future<void> newAlertNotification(
     }
   } on AlertUnavailableError catch (e) {
     debugPrint("Alert is not available anymore: $e");
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "class_unified_push_handler.dart",
       "onMessage",
       "Alert $addedAlertId is not available anymore",

@@ -235,7 +235,7 @@ class Area {
       result.addAll(myGeoJson.polygons);
       return result;
     } catch (e) {
-      ErrorLogger.writeErrorLog(
+      ErrorLogger.writeLog(
         "MapWidget",
         "Error while parsing geoJson",
         e.toString(),

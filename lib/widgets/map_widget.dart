@@ -99,7 +99,7 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
       debugPrint(
         "[map_widget.dart] Error while loading map style ${e.toString()}",
       );
-      ErrorLogger.writeErrorLog(
+      ErrorLogger.writeLog(
         "map_widget.dart",
         "initMapStyle",
         e.toString(),

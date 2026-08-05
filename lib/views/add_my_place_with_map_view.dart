@@ -377,7 +377,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                         }
                       } catch (e) {
                         debugPrint("Novatim search failed: ${e.toString()}");
-                        ErrorLogger.writeErrorLog(
+                        ErrorLogger.writeLog(
                           "AddMyPlaceWithMapView.dart",
                           "Error while requesting NovatimData",
                           e.toString(),
