@@ -76,21 +76,9 @@ Future<void> newAlertNotification(
             alertId: addedAlertId,
             placeId: "Not used",
           );
-      if (NotificationPreferences.checkIfEventShouldBeNotified(
-        alert.info[0].severity,
-        alert.info[0].category,
-        userPreferences,
-      )) {
-        NotificationService.showNotification(
-          id: alert.fpasId.hashCode,
-          title: "New alert",
-          body: alert.info.first.headline,
-          payload: "",
-          channelId:
-              "de.nucleus.foss_warn.notifications_${alert.info[0].severity.name}",
-          channelName: "",
-        );
-      }
+      var places = ref.read(myPlacesProvider);
+      var alerts = ref.read(processedAlertsProvider.notifier);
+      showNotification([alert], places, userPreferences, alerts);
     }
   } on AlertUnavailableError catch (e) {
     debugPrint("Alert is not available anymore: $e");
