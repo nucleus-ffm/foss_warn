@@ -460,7 +460,6 @@ class UserPreferences {
   // used to compare against currently installed version
   final int previousInstalledVersionCode;
 
-  static const String unifiedPushInstance = "FOSSWarn";
   static const String osmTileServerURL =
       "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 

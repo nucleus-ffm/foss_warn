@@ -11,3 +11,6 @@ const String localOnlyId = "-1";
 
 const int alarmManagerTaskIdPolling = 1;
 const int alarmManagerTaskIdLocation = 2;
+
+const String unifiedPushInstance = "FOSSWarn";
+const String unifiedPushMessageForDistributor = "FOSSWarn notifications";
