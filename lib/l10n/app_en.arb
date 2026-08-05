@@ -53,9 +53,9 @@
     "settings_select_push_service_subtitle": "Choose which push service you want to use.",
     "settings_self_check_title": "Self check",
     "settings_self_check_subtitle": "Run a self check for the notification setup",
-    "settings_location_settings": "Location settings",
+    "settings_location_settings": "Location",
     "settings_location_tracking_title": "Receive alerts for your current location",
-    "settings_location_tracking_subtitle": "Experimental. Requires push notifications and location access.",
+    "settings_location_tracking_subtitle": "Experimental. Requires location access.",
     "settings_select_alert_service_title": "Select alert service",
     "settings_select_alert_service_subtitle": "Decide how you want to receive alerts",
     "warning_tags": "Tags",
@@ -425,7 +425,7 @@
             }
         }
     },
-    "settings_alert_archive_title": "Enable alert archive - Experimental",
+    "settings_alert_archive_title": "Enable alert archive",
     "settings_alert_archive_subtitle": "Store every alert in a local permanent archive.",
     "settings_alert_archive_open": "Open alert archive",
     "welcome_view_foss_public_alert_server_server_operator": "This server is operated by:",
