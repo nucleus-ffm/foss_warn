@@ -457,12 +457,7 @@ class UserPreferences {
   final bool alertArchive;
   final bool restrictSearchToCities;
 
-  // Version of the application, shown in the about view
-  // TODO(PureTryOut): get this from package_info_plus instead
-  // That way we only need to keep track of one number.
-  static const String versionNumber = "1.1.0-alpha2";
-
-  static const int currentVersionCode = 44;
+  // used to compare against currently installed version
   final int previousInstalledVersionCode;
 
   static const String unifiedPushInstance = "FOSSWarn";

@@ -1,19 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/dialogs/disclaimer_dialog.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/missing_imprint_dialog.dart';
 import '../widgets/dialogs/privacy_dialog.dart';
 import '../widgets/dialogs/change_log_dialog.dart';
 
-class AboutView extends StatelessWidget {
+class AboutView extends StatefulWidget {
   const AboutView({
     required this.onShowLicensePressed,
     super.key,
   });
 
   final VoidCallback onShowLicensePressed;
+
+  @override
+  State<AboutView> createState() => _AboutViewState();
+}
+
+class _AboutViewState extends State<AboutView> {
+  String versioncode = "";
+  String buildNumber = "";
+
+  /// read the package information
+  Future<void> readPackageDetails() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    versioncode = packageInfo.version;
+    buildNumber = packageInfo.buildNumber;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      readPackageDetails();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +80,7 @@ class AboutView extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 10, left: 10, right: 10),
             child: Center(
               child: Text(
-                "This project is funded by NLnet.", //@todo translate
+                "This project was funded by NLnet.",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -171,7 +195,7 @@ class AboutView extends StatelessWidget {
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "${UserPreferences.versionNumber} (beta)",
+              "$versioncode ($buildNumber)",
               style: theme.textTheme.bodyLarge,
             ),
             onTap: () {
@@ -202,7 +226,7 @@ class AboutView extends StatelessWidget {
               localizations.about_other_license_subtitle,
               style: theme.textTheme.bodyLarge,
             ),
-            onTap: onShowLicensePressed,
+            onTap: widget.onShowLicensePressed,
           ),
           ListTile(
             leading: const Icon(Icons.group_outlined),

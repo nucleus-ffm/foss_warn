@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_error_logger.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../widgets/dialogs/update_dialog.dart';
 
@@ -10,12 +11,15 @@ import '../widgets/dialogs/update_dialog.dart';
 /// After a reset, the user should be informed.
 Future<void> legacyHandler() async {
   var preferences = SharedPreferencesState.instance;
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  int currentVersionCode = int.parse(packageInfo.buildNumber);
   try {
     if (preferences.containsKey("previousInstalledVersionCode")) {
       // we have a version information. This is an update
+
       int previousVersionCode =
           preferences.getInt("previousInstalledVersionCode")!;
-      if (previousVersionCode < UserPreferences.currentVersionCode) {
+      if (previousVersionCode < currentVersionCode) {
         if (previousVersionCode <= 33) {
           //version 8.x.x or smaller
           // this is a major update. This requires user attention and we need to reset the entire app
@@ -29,7 +33,7 @@ Future<void> legacyHandler() async {
     // migration complete or new installation. Set previousInstalledVersionCode to current version
     preferences.setInt(
       "previousInstalledVersionCode",
-      UserPreferences.currentVersionCode,
+      currentVersionCode,
     );
   } catch (e) {
     // catch everything from the legacy handler to prevent interrupting the user
