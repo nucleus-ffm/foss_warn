@@ -13,8 +13,7 @@ class LogFileViewer extends StatefulWidget {
 
 class _LogFileViewerState extends State<LogFileViewer> {
   // used to scroll horizontal and vertical at the same time
-  final ScrollController _horizontal = ScrollController(),
-      _vertical = ScrollController();
+  final ScrollController _vertical = ScrollController();
 
   Future<void> shareText(
     BuildContext context,
@@ -60,23 +59,12 @@ class _LogFileViewerState extends State<LogFileViewer> {
                             child: Divider(),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height*0.71,
-                            child: Scrollbar(
-                              controller: _horizontal,
-                              thumbVisibility: true,
-                              trackVisibility: true,
-                              notificationPredicate: (notify) =>
-                                  notify.depth == 1,
-                              child: SingleChildScrollView(
-                                reverse: true,
-                                controller: _vertical,
-                                scrollDirection: Axis.vertical,
-                                child: SingleChildScrollView(
-                                  controller: _horizontal,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(log),
-                                ),
-                              ),
+                            height: MediaQuery.of(context).size.height * 0.71,
+                            child: SingleChildScrollView(
+                              reverse: true,
+                              controller: _vertical,
+                              scrollDirection: Axis.vertical,
+                              child: Text(log),
                             ),
                           ),
                           Row(
@@ -118,6 +106,12 @@ class _LogFileViewerState extends State<LogFileViewer> {
                                         Theme.of(context).colorScheme.onError,
                                   ),
                                 ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {});
+                                },
+                                child: const Text("Refresh"),
                               ),
                             ],
                           ),
