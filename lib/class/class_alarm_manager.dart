@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,7 @@ import '../services/warnings.dart';
 import 'package:foss_warn/constants.dart' as constants;
 
 // avoids issues in release mode on Flutter >= 3.3.0
-@pragma('vm:entry-point', true)
+@pragma('vm:entry-point')
 Future<void> backgroundPollingCallback() async {
   try {
     await SharedPreferencesState.initialize();
@@ -25,59 +26,59 @@ Future<void> backgroundPollingCallback() async {
       "BackgroundPollingCallback",
       "Failed to initialize shared preferences state: $e",
     );
-
-    debugPrint("shared Prefs error $e");
   }
 
   await NotificationService().init();
 
-  final DateTime now = DateTime.now();
+  final DateTime startTime = DateTime.now();
+  final int isolateId = Isolate.current.hashCode;
 
   final container = ProviderContainer();
 
-  ErrorLogger.writeErrorLog(
-    "alarm_manager.dart",
-    "Background update info",
-    "Background update has started at $now",
-  );
-
-  container.read(userPreferencesProvider);
-  container.invalidate(alertsFutureProvider);
-  var alerts = container.read(processedAlertsProvider);
-
-  for (WarnMessage alert in alerts) {
-    if (!alert.notified) {
-      if (NotificationPreferences.checkIfEventShouldBeNotified(
-        alert.info.first.severity,
-        alert.info.first.category,
-        container.read(userPreferencesProvider),
-      )) {
-        NotificationService.showNotification(
-          id: alert.identifier.hashCode,
-          title: "New alert: ${alert.info.first.headline}",
-          body: alert.info.first.description.substring(0, 100),
-          channelId:
-              "de.nucleus.foss_warn.notifications_${alert.info.first.severity.name}",
-          channelName: "",
-        );
-        container
-            .read(processedAlertsProvider.notifier)
-            .updateAlert(alert.copyWith(notified: true));
+  try {
+    var alerts = await container.refresh(alertsFutureProvider.future);
+    for (WarnMessage alert in alerts) {
+      if (!alert.notified) {
+        if (NotificationPreferences.checkIfEventShouldBeNotified(
+          alert.info.first.severity,
+          alert.info.first.category,
+          container.read(userPreferencesProvider),
+        )) {
+          await NotificationService.showNotification(
+            id: alert.identifier.hashCode,
+            title: "New alert: ${alert.info.first.headline}",
+            body: alert.info.first.description.substring(0, 100),
+            channelId:
+                "de.nucleus.foss_warn.notifications_${alert.info.first.severity.name}",
+            channelName: "",
+          );
+          container
+              .read(processedAlertsProvider.notifier)
+              .updateAlert(alert.copyWith(notified: true));
+        }
       }
     }
+  } catch (e, stack) {
+    final DateTime endTime = DateTime.now();
+    await ErrorLogger.writeLog(
+      "alarm_manager.dart",
+      "Background update info",
+      "Background update has failed at $endTime after ${endTime.difference(startTime)} in isolate $isolateId dues to $e \n $stack",
+    );
+  } finally {
+    container.dispose();
+    final DateTime endTime = DateTime.now();
+    await ErrorLogger.writeLog(
+      "alarm_manager.dart",
+      "Background update info",
+      "Background update has finished at $endTime after ${endTime.difference(startTime)} in isolate $isolateId.",
+    );
   }
-
-  container.dispose();
-  ErrorLogger.writeErrorLog(
-    "alarm_manager.dart",
-    "Background update info",
-    "Background update has finished at $now",
-  );
 }
 
 /// callback task for updating the current location
 // avoids issues in release mode on Flutter >= 3.3.0
-@pragma('vm:entry-point', true)
+@pragma('vm:entry-point')
 Future<void> backgroundLocationUpdateCallback() async {
   try {
     await SharedPreferencesState.initialize();
@@ -87,13 +88,11 @@ Future<void> backgroundLocationUpdateCallback() async {
       "BackgroundPollingCallback",
       "Failed to initialize shared preferences state: $e",
     );
-
-    debugPrint("shared Prefs error $e");
   }
 
   await NotificationService().init();
-
-  final DateTime now = DateTime.now();
+  final DateTime startTime = DateTime.now();
+  final int isolateId = Isolate.current.hashCode;
 
   final container = ProviderContainer();
 
@@ -104,18 +103,29 @@ Future<void> backgroundLocationUpdateCallback() async {
       "Background location update has started at $startTime in isolate $isolateId",
     );
 
-  var locationTracker = container.read(locationTrackerProvider);
-  await locationTracker.subscribeForCurrentLocation();
-
-  ErrorLogger.writeErrorLog(
-    "alarm_manager.dart",
-    "Background location update info",
-    "Background location update has ended at $now",
-  );
-  container.dispose();
+    var locationTracker = container.read(locationTrackerProvider);
+    // location access will timeout after 1 min, so we grant the entire call 1,5m as timeout
+    await locationTracker
+        .subscribeForCurrentLocation()
+        .timeout(const Duration(minutes: 1, seconds: 30));
+  } catch (e, stack) {
+    final DateTime endTime = DateTime.now();
+    ErrorLogger.writeLog(
+      "alarm_manager.dart",
+      "Background location update info",
+      "Background location update has ended $endTime after ${endTime.difference(startTime)} in isolate $isolateId dues to $e \n $stack",
+    );
+  } finally {
+    container.dispose();
+    final DateTime endTime = DateTime.now();
+    ErrorLogger.writeLog(
+      "alarm_manager.dart",
+      "Background location update info",
+      "Background location update has ended at $endTime after ${endTime.difference(startTime)} in isolate $isolateId",
+    );
+  }
 }
 
-@pragma('vm:entry-point', true)
 class AlarmManager {
   /// [Android only]
   /// creates a new background task to call the APIs
@@ -146,15 +156,15 @@ class AlarmManager {
     if (!Platform.isAndroid) return;
     if (await AndroidAlarmManager.initialize()) {
       await AndroidAlarmManager.periodic(
-        // @TODO in a future version we can let the user decide for the update period
         const Duration(
+          //@TODO make delay configurable via Ui
           hours: 1,
           minutes: 30,
         ),
         constants.alarmManagerTaskIdLocation,
         backgroundLocationUpdateCallback,
         exact:
-            false, // an exact execution is not required here, with this we do not need the setExactAlarm permission
+            false, // an exact execution is not required here. Without we do not need the setExactAlarm permission
         rescheduleOnReboot: true,
         allowWhileIdle: true,
         wakeup: true,
