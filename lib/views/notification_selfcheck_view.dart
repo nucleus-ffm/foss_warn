@@ -201,6 +201,12 @@ class _NotificationSelfCheckState
         subscriptionState: SelfCheckState.notPassed,
         notificationState: SelfCheckState.unknown
       );
+    } on UnifiedPushRegistrationError {
+      // do not set the switch to true
+      return (
+        subscriptionState: SelfCheckState.notPassed,
+        notificationState: SelfCheckState.unknown
+      );
     }
 
     try {
