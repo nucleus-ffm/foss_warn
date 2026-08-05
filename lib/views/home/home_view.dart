@@ -4,16 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_unified_push_handler.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
-import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/views/warnings_view.dart';
 import 'package:foss_warn/views/map_view.dart';
 import 'package:foss_warn/views/my_places_view.dart';
 import 'package:foss_warn/widgets/dialogs/sort_by_dialog.dart';
-import 'package:unifiedpush/unifiedpush.dart';
-import 'package:unifiedpush_platform_interface/unifiedpush_platform_interface.dart';
-import 'package:unifiedpush_storage_shared_preferences/storage.dart';
 
 import '../../services/legacy_handler.dart';
 import '../../class/class_alarm_manager.dart';
@@ -58,54 +54,20 @@ class _HomeViewState extends ConsumerState<HomeView> {
   ///
   /// This method won't do anything if it is called
   /// when the user is currently seeing the welcome screen
-  void setup() {
+  Future<void> setup() async {
     var userPreferences = ref.read(userPreferencesProvider);
 
-    var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
-
     // only init after the welcome screen to avoid overwhelming the user at first start
+    // check the app state if we UnifiedPush is already registered for avoid doing that multiple times
     if (!userPreferences.showWelcomeScreen) {
+      var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+      // init registers the callbacks and if push is enabled it also setups
+      // UP, if not enabled, this has to happen later
+      await unifiedPushHandler.initialize(ref, context);
+
+      // update the subscription only if push is enabled
       if (userPreferences.alertService == AlertService.push ||
           userPreferences.alertService == AlertService.pushAndPoll) {
-        // init unified push
-        // In a dev environment with multiple hot restarts, this registers multiple callbacks
-        UnifiedPush.initialize(
-          onNewEndpoint: (PushEndpoint endpoint, String instance) =>
-              unifiedPushHandler.onNewEndpoint(
-            endpoint: endpoint,
-            instance: instance,
-            ref: ref,
-          ),
-          onRegistrationFailed: unifiedPushHandler.onRegistrationFailed,
-          onUnregistered: unifiedPushHandler.onUnregistered,
-          linuxOptions: LinuxOptions(
-            dbusName: "de.nucleus.foss_warn",
-            storage: UnifiedPushStorageSharedPreferences(),
-            background: false,
-          ),
-          onMessage: (message, instance) => unifiedPushHandler.onMessage(
-            message: message,
-            instance: instance,
-            ref: ref,
-            alertApi: ref.read(alertApiProvider),
-            myPlacesService: ref.read(myPlacesProvider.notifier),
-            warningService: ref.read(processedAlertsProvider.notifier),
-            context: context,
-          ),
-        ).then((registered) {
-          if (registered) {
-            // as we are already registered, we don't have to call setupUnifiedPush
-            UnifiedPush.register(
-              instance: UserPreferences.unifiedPushInstance,
-            );
-          } else {
-            if (!mounted) {
-              return;
-            }
-            // setup unifiedPush at every startup
-            unifiedPushHandler.setupUnifiedPush(context, ref);
-          }
-        });
         // update all subscriptions
         updateAllSubscriptions(ref);
       }
@@ -135,7 +97,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
         showUpdateDialog(context, ref);
       }
     });
-
     setup();
   }
 
