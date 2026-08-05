@@ -63,7 +63,7 @@ class UnifiedPushHandler {
   void onRegistrationFailed(FailedReason failedReason, String instance) {
     if (instance != UserPreferences.unifiedPushInstance) return;
     // @todo error handling
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "class_unifiedPushHandler",
       "UnifiedPush registration failed",
       failedReason.name,
@@ -133,7 +133,7 @@ class UnifiedPushHandler {
         _preferencesService.setWebPushVapidKey(tempVapidKey);
       } on VapidKeyException {
         isEncryptedUnifiedPushSupported = false;
-        ErrorLogger.writeErrorLog(
+        ErrorLogger.writeLog(
           "class_unified_push_handler.dart",
           "setup unifiedPush",
           "Failed to fetch VAPID key for webpush",
@@ -243,7 +243,7 @@ class UnifiedPushHandler {
           tempVapidKey = await alertAPI.fetchVapidKeyForWebPush();
           _preferencesService.setWebPushVapidKey(tempVapidKey);
         } on VapidKeyException {
-          ErrorLogger.writeErrorLog(
+          ErrorLogger.writeLog(
             "class_unified_push_handler.dart",
             "setup unifiedPush",
             "Failed to fetch VAPID key for webpush",

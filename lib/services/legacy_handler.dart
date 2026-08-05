@@ -38,7 +38,7 @@ Future<void> legacyHandler() async {
   } catch (e) {
     // catch everything from the legacy handler to prevent interrupting the user
     debugPrint("[legacyHandler] Error: ${e.toString()}");
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "legacyhandler.dart",
       "migration from version < 32",
       e.toString(),

@@ -210,7 +210,7 @@ class FPASApi implements AlertAPI {
         throw PlaceSubscriptionError();
       }
     } on SocketException {
-      ErrorLogger.writeErrorLog(
+      ErrorLogger.writeLog(
         "fpas.dart",
         "updateSubscription",
         "Failed to update subscription due to a socketException",
@@ -248,7 +248,7 @@ class FPASApi implements AlertAPI {
         );
       }
     } on SocketException {
-      ErrorLogger.writeErrorLog(
+      ErrorLogger.writeLog(
         "fpas.dart",
         "UpdateSubscriptionPushNotificationConfig",
         "Can not update subscription due to a SocketException",

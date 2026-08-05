@@ -89,7 +89,7 @@ Future<String> _subscribeForAreaWithPushNotifications({
     confirmationId = result.confirmationId;
   } on RegisterAreaError catch (e) {
     debugPrint("Error: ${e.toString()}");
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "subscribe for area - RegisterAreaError",
       e.toString(),
@@ -103,7 +103,7 @@ Future<String> _subscribeForAreaWithPushNotifications({
     );
     rethrow;
   } on SocketException catch (e) {
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "subscribe for area - SocketException",
       e.toString(),
@@ -180,7 +180,7 @@ Future<String> _subscribeForAreaWithPushNotificationsBackground({
   );
   // wait for the registration to finish.
   if (!userPreferences.unifiedPushRegistered) {
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "subscribe for area in background - UnifiedPush not registered",
       "UnifiedPush not registered, can not continue in background",
@@ -201,14 +201,14 @@ Future<String> _subscribeForAreaWithPushNotificationsBackground({
     confirmationId = result.confirmationId;
   } on RegisterAreaError catch (e) {
     debugPrint("Error: ${e.toString()}");
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "subscribe for area - RegisterAreaError",
       e.toString(),
     );
     rethrow;
   } on SocketException catch (e) {
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "subscribe for area - SocketException",
       e.toString(),
@@ -411,14 +411,14 @@ Future<void> resubscribeForOneAreaInBackground(
       unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
     );
     newSubscriptionId = result.subscriptionId;
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "Info message",
       "Resubscribe for ${place.name} - subscription ID changed from ${place.id} to $newSubscriptionId",
     );
   } on RegisterAreaError catch (e) {
     debugPrint("RegisterAreaError $e");
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "resubscribeForOneAreaInBackground",
       e.toString(),
@@ -452,7 +452,7 @@ Future<void> resubscribeForOneAreaInBackgroundFromBackground(
     newSubscriptionId = result.subscriptionId;
   } on RegisterAreaError catch (e) {
     debugPrint("RegisterAreaError $e");
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "subscription_handler.dart",
       "resubscribeForOneAreaInBackground",
       e.toString(),
@@ -488,7 +488,7 @@ Future<void> updateAllSubscriptions(WidgetRef ref) async {
       resubscribeForOneAreaInBackground(ref, place);
     } on RegisterAreaError catch (e) {
       debugPrint("Failed to update all subscriptions due to $e");
-      ErrorLogger.writeErrorLog(
+      ErrorLogger.writeLog(
         "subscription_handler.dart",
         "updateAllSubscriptions",
         e.toString(),
@@ -514,7 +514,7 @@ Future<void> updateAllSubscriptionsFromBackground(ProviderContainer ref) async {
       await resubscribeForOneAreaInBackgroundFromBackground(ref, place);
     } on RegisterAreaError catch (e) {
       debugPrint("Failed to update all subscriptions due to $e");
-      ErrorLogger.writeErrorLog(
+      ErrorLogger.writeLog(
         "subscription_handler.dart",
         "updateAllSubscriptions",
         e.toString(),

@@ -97,6 +97,11 @@ class AlertArchive {
     } catch (e) {
       // If encountering an error, return 0
       debugPrint("Error while reading archive: ${e.toString()}");
+      ErrorLogger.writeLog(
+        "class_alert_archive",
+        "Error while reading archive",
+        e.toString(),
+      );
       return [];
     }
   }
@@ -114,7 +119,12 @@ class AlertArchive {
         mode: FileMode.append,
       );
     } catch (e) {
-      debugPrint("Error while writing error log ${e.toString()}");
+      debugPrint("Error while writing archive ${e.toString()}");
+      ErrorLogger.writeLog(
+        "class_alert_archive.dart",
+        "writeAlertToArchive",
+        "Error while writing archive ${e.toString()}",
+      );
     }
   }
 }

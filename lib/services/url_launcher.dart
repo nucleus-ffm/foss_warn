@@ -111,7 +111,7 @@ Future<bool> makePhoneCall(String url) async {
     return true;
   } else {
     debugPrint("No valid phone number found: $uri");
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "urlLauncher.dart",
       "No valid phone number found",
       uri.toString(),

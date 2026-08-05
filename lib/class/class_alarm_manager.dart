@@ -20,7 +20,7 @@ Future<void> backgroundPollingCallback() async {
   try {
     await SharedPreferencesState.initialize();
   } catch (e) {
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "class_alarm_manager.dart",
       "BackgroundPollingCallback",
       "Failed to initialize shared preferences state: $e",
@@ -82,7 +82,7 @@ Future<void> backgroundLocationUpdateCallback() async {
   try {
     await SharedPreferencesState.initialize();
   } catch (e) {
-    ErrorLogger.writeErrorLog(
+    ErrorLogger.writeLog(
       "class_alarm_manager.dart",
       "BackgroundPollingCallback",
       "Failed to initialize shared preferences state: $e",
@@ -96,11 +96,13 @@ Future<void> backgroundLocationUpdateCallback() async {
   final DateTime now = DateTime.now();
 
   final container = ProviderContainer();
-  ErrorLogger.writeErrorLog(
-    "alarm_manager.dart",
-    "Background location update info",
-    "Background location update has started at $now",
-  );
+
+  try {
+    ErrorLogger.writeLog(
+      "alarm_manager.dart",
+      "Background location update info",
+      "Background location update has started at $startTime in isolate $isolateId",
+    );
 
   var locationTracker = container.read(locationTrackerProvider);
   await locationTracker.subscribeForCurrentLocation();

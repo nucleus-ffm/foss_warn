@@ -37,7 +37,7 @@ class BoundingBox {
       };
     } catch (e) {
       debugPrint("Error BoundingBox to json: $e");
-      ErrorLogger.writeErrorLog(
+      ErrorLogger.writeLog(
         "class_BoundingBox.dart",
         "Can not serialize BoundingBox",
         e.toString(),

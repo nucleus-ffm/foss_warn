@@ -171,7 +171,7 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
             debugPrint(
               "[map_alert_sheet] Failed to build map alert sheet: error ${snapshot.error}",
             );
-            ErrorLogger.writeErrorLog(
+            ErrorLogger.writeLog(
               "map_alert_sheet",
               "build",
               snapshot.error.toString(),

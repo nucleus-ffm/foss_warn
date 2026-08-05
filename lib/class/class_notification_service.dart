@@ -272,7 +272,7 @@ class NotificationService {
         }
       } catch (e) {
         debugPrint("Error while creating notification channels: $e");
-        ErrorLogger.writeErrorLog(
+        ErrorLogger.writeLog(
           "class_NotificationService.dart",
           "Error while creating notification channels",
           e.toString(),
