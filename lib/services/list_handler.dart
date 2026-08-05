@@ -27,6 +27,14 @@ final cachedPlacesProvider = FutureProvider<List<Place>>((ref) async {
   return [];
 });
 
+final myPlacesProviderAsync =
+    AsyncNotifierProvider<MyPlacesNotifier, List<Place>>(
+  MyPlacesNotifier.new,
+);
+
+@Deprecated(
+  "Should be replaces with 'myPlacesProviderAsync' as StateNotifierProvider is legacy and replaced by AsyncNotifier.",
+)
 final myPlacesProvider = StateNotifierProvider<MyPlacesService, List<Place>>(
   (ref) {
     var placesSnapshot = ref.watch(cachedPlacesProvider);
@@ -40,6 +48,10 @@ final myPlacesProvider = StateNotifierProvider<MyPlacesService, List<Place>>(
   },
 );
 
+@Deprecated(
+  "Should be replaces with myPlacesProviderNew as StateNotifierProvider is legacy and replaced by AsyncNotifier.",
+)
+// migrate to myPlacesProviderNew
 class MyPlacesService extends StateNotifier<List<Place>> {
   MyPlacesService(super.state);
 
@@ -69,6 +81,41 @@ class MyPlacesService extends StateNotifier<List<Place>> {
   }
 
   List<Place> get places => state;
+}
+
+class MyPlacesNotifier extends AsyncNotifier<List<Place>> {
+  @override
+  Future<List<Place>> build() async {
+    final places = await ref.watch(cachedPlacesProvider.future);
+    return places;
+  }
+
+  Future<void> add(Place place) async {
+    final places = state.value ?? [];
+    places.add(place);
+    await set(places);
+  }
+
+  Future<void> set(List<Place> places) async {
+    SharedPreferencesWithCache preferences =
+        await SharedPreferencesWithCache.create(
+      cacheOptions: const SharedPreferencesWithCacheOptions(),
+    );
+
+    preferences.setString("MyPlacesListAsJson", jsonEncode(places));
+
+    state = AsyncData(places);
+  }
+
+  Future<void> remove(Place place) async {
+    final places = state.value ?? [];
+    //var places = List<Place>.from(state);
+    places.remove(place);
+
+    await set(places);
+  }
+
+  List<Place> get places => state.value ?? [];
 }
 
 extension UpdateListEntry<T> on List<T> {
