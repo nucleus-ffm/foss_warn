@@ -9,6 +9,7 @@ final appStateProvider =
       areWarningsFromCache: false,
       reSubscriptionInProgress: false,
       pushNotificationSetupError: false,
+      unifiedPushRegistered: false,
     ),
   );
 });
@@ -37,6 +38,11 @@ class AppStateService extends StateNotifier<AppState> {
   void setReSubscriptionInProgress(bool value) {
     state = state.copyWith(reSubscriptionInProgress: value);
   }
+
+  void setUnifiedPushRegistered(bool value) {
+    state = state.copyWith(unifiedPushRegistered: value);
+  }
+
 }
 
 class AppState {
@@ -59,12 +65,17 @@ class AppState {
   /// the old subscriptions and not yet have resubscribed.
   final bool reSubscriptionInProgress;
 
+  /// flag to prevent multiple UnifiedPush registrations resulting in
+  /// duplicated callback calls
+  final bool unifiedPushRegistered;
+
   AppState({
     required this.error,
     required this.areWarningsFromCache,
     required this.isFirstFetch,
     required this.pushNotificationSetupError,
     required this.reSubscriptionInProgress,
+    required this.unifiedPushRegistered,
   });
 
   AppState copyWith({
@@ -73,6 +84,7 @@ class AppState {
     bool? isFirstFetch,
     bool? pushNotificationSetupError,
     bool? reSubscriptionInProgress,
+    bool? unifiedPushRegistered,
   }) =>
       AppState(
         error: error ?? this.error,
@@ -82,5 +94,7 @@ class AppState {
             pushNotificationSetupError ?? this.pushNotificationSetupError,
         reSubscriptionInProgress:
             reSubscriptionInProgress ?? this.reSubscriptionInProgress,
+        unifiedPushRegistered:
+            unifiedPushRegistered ?? this.unifiedPushRegistered,
       );
 }
