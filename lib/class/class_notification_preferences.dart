@@ -86,8 +86,10 @@ class NotificationPreferences {
   /// Return [true] if the user wants a notification - [false] if not.
   ///
   /// If the user selected a category setting, this setting is applied. In every
-  /// other case, the global setting is applied. The global setting will always override
-  /// the category setting.
+  /// other case, the global setting is applied. The a lower global setting will always override
+  /// the a higher category setting.
+  ///
+  /// A low severity index is a higher danger. Extreme = 0, minor = 3
   ///
   /// example:
   /// ```
@@ -101,34 +103,38 @@ class NotificationPreferences {
     List<Category> alertCategories,
     UserPreferences userPreferences,
   ) {
-    // check the global notification level
-    if (Severity.getIndexFromSeverity(
-          userPreferences.notificationSourceSetting.globalNotificationLevel,
-        ) >=
-        Severity.getIndexFromSeverity(alertSeverity)) {
-      List<Severity> selectedCategorySeverity = userPreferences
-          .notificationSourceSetting
-          .getSeverityLevelForMultipleCategories(alertCategories);
+    final notificationSettings = userPreferences.notificationSourceSetting;
+    final alertSeverityIndex = Severity.getIndexFromSeverity(alertSeverity);
+    final globalNotificationLevel = Severity.getIndexFromSeverity(
+      notificationSettings.globalNotificationLevel,
+    );
 
-      int highestSettings = -1;
-      for (Severity serv in selectedCategorySeverity) {
-        // find the highest settings
-        if (serv != Severity.unknown &&
-            highestSettings < Severity.getIndexFromSeverity(serv)) {
-          highestSettings = Severity.getIndexFromSeverity(serv);
-        }
-      }
+    if (globalNotificationLevel < alertSeverityIndex) {
+      // the global level is higher than the alert severity -> no notification
+      return false;
+    }
 
-      if (highestSettings != -1) {
-        // check if the user selected a setting for this category
-        if (highestSettings >= Severity.getIndexFromSeverity(alertSeverity)) {
-          return true;
+    final List<Severity> selectedCategorySeverity = userPreferences
+        .notificationSourceSetting
+        .getSeverityLevelForMultipleCategories(alertCategories);
+
+    // find the highest selected value
+    int highestSettingsLevel = -1;
+    for (final severity in selectedCategorySeverity) {
+      if (severity != Severity.unknown) {
+        final index = Severity.getIndexFromSeverity(severity);
+        if (index > highestSettingsLevel) {
+          highestSettingsLevel = index;
         }
-      } else {
-        // There is not category specific setting, apply the global setting
-        return true;
       }
     }
-    return false;
+
+    if (highestSettingsLevel == -1) {
+      // no specific category found, use global value
+      return true;
+    }
+
+    // apply category setting
+    return highestSettingsLevel >= alertSeverityIndex;
   }
 }
