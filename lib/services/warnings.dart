@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_alert_archive.dart';
@@ -9,7 +11,6 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
-import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
@@ -326,7 +327,7 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
   final UserPreferencesService userPreferencesService;
   final List<Place> places;
 
-  Future<void> _loadAlertsFromDisk() async {
+  void _loadAlertsFromDisk() {
     state = userPreferences.cachedAlerts;
   }
 

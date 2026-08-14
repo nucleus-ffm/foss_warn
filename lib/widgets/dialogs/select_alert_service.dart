@@ -5,7 +5,6 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/url_launcher.dart';
-import 'package:unifiedpush/unifiedpush.dart';
 
 import '../../class/class_alarm_manager.dart';
 import '../../constants.dart' as constants;
@@ -48,9 +47,11 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 },
                 child: Text(localizations.alert_service_dialog_help_text),
               ),
-
               ListTile(
-                title: Text(localizations.alert_service_push, style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(
+                  localizations.alert_service_push,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 subtitle: Text(localizations.alert_service_push_description),
                 leading: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -59,6 +60,10 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 selectedColor: theme.colorScheme.primary,
                 selected: userPreferences.alertService == AlertService.push,
                 onTap: () async {
+                  // for the case that the user started the app without push services enabled
+                  // we have to setup UnifiedPush now
+                  var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                  unifiedPushHandler.setupUnifiedPush(context, ref);
                   userPreferencesService.setAlertService(AlertService.push);
                   await removeAllPlaces(ref, context);
                   navigator.pop();
@@ -66,7 +71,10 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 },
               ),
               ListTile(
-                title: Text(localizations.alert_service_poll, style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(
+                  localizations.alert_service_poll,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 subtitle: Text(localizations.alert_service_poll_description),
                 leading: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -78,10 +86,8 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                   userPreferencesService.setAlertService(AlertService.poll);
 
                   AlarmManager.registerBackgroundPollingTask();
-                  UnifiedPush.unregister(
-                    UserPreferences.unifiedPushInstance,
-                  );
                   var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                  unifiedPushHandler.unregisterDistributor();
                   // @TODO(Nucleus): Calling onUnregistered shouldn't be necessary, but it currently is
                   unifiedPushHandler
                       .onUnregistered(constants.unifiedPushInstance);
@@ -90,7 +96,10 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 },
               ),
               ListTile(
-                title: Text(localizations.alert_service_push_and_poll, style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(
+                  localizations.alert_service_push_and_poll,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 subtitle:
                     Text(localizations.alert_service_push_and_poll_description),
                 leading: const Padding(
@@ -101,15 +110,21 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 selected:
                     userPreferences.alertService == AlertService.pushAndPoll,
                 onTap: () async {
+                  var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                  unifiedPushHandler.setupUnifiedPush(context, ref);
                   userPreferencesService
                       .setAlertService(AlertService.pushAndPoll);
+                  if (!context.mounted) return;
                   await removeAllPlaces(ref, context);
                   navigator.pop();
                   AlarmManager.registerBackgroundPollingTask();
                 },
               ),
               ListTile(
-                title: Text(localizations.alert_service_nothing, style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(
+                  localizations.alert_service_nothing,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 subtitle: Text(localizations.alert_service_nothing_description),
                 leading: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -119,9 +134,7 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 selected: userPreferences.alertService == AlertService.nothing,
                 onTap: () async {
                   userPreferencesService.setAlertService(AlertService.nothing);
-                  ref
-                      .read(unifiedPushHandlerProvider)
-                      .unregisterDistributor(ref);
+                  ref.read(unifiedPushHandlerProvider).unregisterDistributor();
                   await removeAllPlaces(ref, context);
                   navigator.pop();
                   AlarmManager.cancelBackgroundPollingTask();

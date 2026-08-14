@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
@@ -39,10 +38,20 @@ Future<String> _subscribeForAreaWithPushNotifications({
   required WidgetRef ref,
   bool? currentLocation,
 }) async {
-  //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
-  await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
-  if (!context.mounted) return "";
   var localizations = context.localizations;
+  //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
+  try {
+    await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
+  } on UnifiedPushRegistrationError {
+    LoadingScreen.instance().showResult(
+      text:
+          localizations.add_my_place_with_map_loading_screen_subscription_error(
+        "Failed to setup UnifiedPush",
+      ),
+    );
+    rethrow;
+  }
+
   var alertApi = ref.read(alertApiProvider);
   var uuid = const Uuid();
 
@@ -167,7 +176,7 @@ Future<String> _subscribeForAreaWithPushNotificationsBackground({
   required BoundingBox boundingBox,
   required String selectedPlaceName,
   required Ref ref,
-  bool? currentLocation,
+  bool? isForCurrentLocation,
 }) async {
   var alertApi = ref.read(alertApiProvider);
   var uuid = const Uuid();
@@ -221,7 +230,7 @@ Future<String> _subscribeForAreaWithPushNotificationsBackground({
       boundingBox: boundingBox,
       subscriptionId: subscriptionId,
       name: selectedPlaceName,
-      isForCurrentLocation: currentLocation,
+      isForCurrentLocation: isForCurrentLocation,
     );
 
     var places = ref.read(myPlacesProvider.notifier);
@@ -265,21 +274,24 @@ Future<Null> _subscribeForAreaNoPushBackground({
   required BoundingBox boundingBox,
   required String selectedPlaceName,
   required Ref ref,
+  required bool isForCurrentLocation,
 }) async {
   var uuid = const Uuid();
   Place newPlace = Place(
     id: uuid.v4(),
     boundingBox: boundingBox,
     name: selectedPlaceName,
+    isForCurrentLocation: isForCurrentLocation,
   );
 
-  var places = ref.read(myPlacesProvider.notifier);
+  var places = ref.watch(myPlacesProvider.notifier);
 
-  places.add(newPlace);
+  await places.add(newPlace);
 }
 
 /// Register for push notification or if [noPushNotification] is set to true
 /// just adds a new place with the selected bounding box
+/// can throw exceptions if subscribing failed
 Future<String?> subscribeForArea({
   required BoundingBox boundingBox,
   required String selectedPlaceName,
@@ -322,13 +334,14 @@ Future<String?> subscribeForAreaInBackground({
         boundingBox: boundingBox,
         selectedPlaceName: selectedPlaceName,
         ref: ref,
+        isForCurrentLocation: isForCurrentLocation,
       );
     case false:
       return _subscribeForAreaWithPushNotificationsBackground(
         boundingBox: boundingBox,
         selectedPlaceName: selectedPlaceName,
         ref: ref,
-        currentLocation: isForCurrentLocation,
+        isForCurrentLocation: isForCurrentLocation,
       );
   }
   return null;
@@ -552,7 +565,11 @@ Future<void> updatePushNotificationConfigForSubscription(
 }
 
 /// Remove the subscription for the given place
-Future<void> removeSubscription(Place place, WidgetRef ref, BuildContext context) async {
+Future<void> removeSubscription(
+  Place place,
+  WidgetRef ref,
+  BuildContext context,
+) async {
   var alertApi = ref.read(alertApiProvider);
   var localizations = context.localizations;
   var theme = Theme.of(context);
@@ -595,7 +612,7 @@ Future<void> removeSubscription(Place place, WidgetRef ref, BuildContext context
 /// Remove and unsubscribe for all stored places
 Future<void> removeAllPlaces(WidgetRef ref, BuildContext context) async {
   var places = ref.read(myPlacesProvider);
-  for(Place place in places) {
+  for (Place place in places) {
     await removeSubscription(place, ref, context);
   }
 }
