@@ -67,6 +67,36 @@ class _SettingsState extends ConsumerState<Settings> {
     super.initState();
   }
 
+  Widget _settingsTag(String message) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 1),
+      padding: const EdgeInsets.only(left: 5, right: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).colorScheme.tertiary,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.new_releases,
+            color: Theme.of(context).colorScheme.onTertiary,
+          ),
+          const SizedBox(
+            width: 5,
+          ),
+          Text(
+            message,
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              color: Theme.of(context).colorScheme.onTertiary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var localizations = context.localizations;
@@ -178,7 +208,7 @@ class _SettingsState extends ConsumerState<Settings> {
             Padding(
               padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
               child: Text(
-                "${localizations.settings_location_settings} - Experimental",
+                localizations.settings_location_settings,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -187,7 +217,15 @@ class _SettingsState extends ConsumerState<Settings> {
               ),
             ),
             ListTile(
-              title: Text(localizations.settings_location_tracking_title),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _settingsTag("Experimental"),
+                  Text(
+                    localizations.settings_location_tracking_title,
+                  ),
+                ],
+              ),
               subtitle: Text(localizations.settings_location_tracking_subtitle),
               trailing: Switch(
                 value: userPreferences.locationTracking,
@@ -419,8 +457,15 @@ class _SettingsState extends ConsumerState<Settings> {
               title: Text((localizations.settings_show_welcome_dialog)),
               onTap: widget.onIntroductionPressed,
             ),
+            /* // disabled for now due to race condition issues while writing the archive file
             ListTile(
-              title: Text(localizations.settings_alert_archive_title),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _settingsTag("Experimental"),
+                  Text(localizations.settings_alert_archive_title),
+                ],
+              ),
               subtitle: Text(
                 localizations.settings_alert_archive_subtitle,
               ),
@@ -430,7 +475,7 @@ class _SettingsState extends ConsumerState<Settings> {
                   userPreferencesService.setAlertArchive(value);
                 },
               ),
-            ),
+            ),*/
             userPreferences.alertArchive
                 ? ListTile(
                     title: Text(localizations.settings_alert_archive_open),
