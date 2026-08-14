@@ -36,8 +36,14 @@ final processedAlertsProvider =
 /// Any new alerts will be fetched completely, any we already know about
 /// will be retrieved from cache instead.
 final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
-  var alertApi = ref.watch(alertApiProvider);
-  var places = ref.watch(myPlacesProvider);
+  var alertApi = ref.read(alertApiProvider);
+  List<Place> places = [];
+  places = ref.read(myPlacesProvider);
+  if (places.isEmpty) {
+    // make sure that we can wait until we get some places back
+    // as fallback and for the background process
+    places = await ref.read(cachedPlacesProvider.future);
+  }
 
   if (places.isEmpty) return [];
 
