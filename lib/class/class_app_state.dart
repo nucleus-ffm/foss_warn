@@ -42,7 +42,6 @@ class AppStateService extends StateNotifier<AppState> {
   void setUnifiedPushRegistered(bool value) {
     state = state.copyWith(unifiedPushRegistered: value);
   }
-
 }
 
 class AppState {

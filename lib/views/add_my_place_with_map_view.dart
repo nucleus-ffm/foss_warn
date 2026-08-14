@@ -245,7 +245,7 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
     String requestString,
   ) async {
     String featureType = "";
-    if(ref.read(userPreferencesProvider).restrictSearchToCities) {
+    if (ref.read(userPreferencesProvider).restrictSearchToCities) {
       featureType = "&featureType=city";
     }
     Uri requestURL = Uri.parse(
@@ -558,6 +558,8 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   // subscription failed
                                 } on SocketException {
                                   // subscription failed
+                                } on UnifiedPushRegistrationError {
+                                  // something went wrong with UnifiedPush
                                 }
                               }
                             } else {

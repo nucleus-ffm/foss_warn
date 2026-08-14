@@ -3,7 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/class/class_notification_preferences.dart';
+import 'package:foss_warn/services/list_handler.dart';
+import 'package:foss_warn/services/warnings.dart';
 
 import '../class/class_error_logger.dart';
 import '../class/class_notification_service.dart';

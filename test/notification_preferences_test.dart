@@ -54,6 +54,7 @@ void main() {
       locationTracking: false,
       alertService: AlertService.push,
       alertArchive: false,
+      restrictSearchToCities: false,
     );
   }
 

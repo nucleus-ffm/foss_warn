@@ -244,6 +244,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                         // do not set the switch to true
                       } on UnifiedPushRegistrationTimeoutError {
                         // do not se the switch to true
+                      } on UnifiedPushRegistrationError {
+                        // do not se the switch to true
                       }
                     } else {
                       // remove subscription for Point Nemo
@@ -314,7 +316,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
               ListTile(
                 contentPadding: _settingsTileListPadding,
                 title:
-                Text(localizations.dev_settings_restrict_search_to_cities),
+                    Text(localizations.dev_settings_restrict_search_to_cities),
                 trailing: Switch(
                   value: userPreferences.restrictSearchToCities,
                   onChanged: (value) async {
