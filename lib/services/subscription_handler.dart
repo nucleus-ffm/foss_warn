@@ -565,22 +565,28 @@ Future<void> removeSubscription(Place place, WidgetRef ref, BuildContext context
   } else {
     var appSate = ref.read(appStateProvider.notifier);
     appSate.setReSubscriptionInProgress(true);
-    try {
-      await alertApi.unregisterArea(
-        subscriptionId: place.subscriptionId!,
-      );
+
+    // only unsubscribe from server if the subscriptions isn't a local subscription
+    if (place.subscriptionId != null) {
+      try {
+        await alertApi.unregisterArea(
+          subscriptionId: place.subscriptionId!,
+        );
+        await ref.read(myPlacesProvider.notifier).remove(place);
+      } on UnregisterAreaError {
+        // we currently can not unsubscribe - show a snack bar to inform the
+        // user to check their internet connection
+        final snackBar = SnackBar(
+          content: Text(
+            localizations.delete_place_error,
+            style: TextStyle(color: theme.colorScheme.onErrorContainer),
+          ),
+          backgroundColor: theme.colorScheme.errorContainer,
+        );
+        scaffoldMessenger.showSnackBar(snackBar);
+      }
+    } else {
       await ref.read(myPlacesProvider.notifier).remove(place);
-    } on UnregisterAreaError {
-      // we currently can not unsubscribe - show a snack bar to inform the
-      // user to check their internet connection
-      final snackBar = SnackBar(
-        content: Text(
-          localizations.delete_place_error,
-          style: TextStyle(color: theme.colorScheme.onErrorContainer),
-        ),
-        backgroundColor: theme.colorScheme.errorContainer,
-      );
-      scaffoldMessenger.showSnackBar(snackBar);
     }
     appSate.setReSubscriptionInProgress(false);
   }
