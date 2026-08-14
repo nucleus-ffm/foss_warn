@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/extensions/context.dart';
-import 'package:unifiedpush/unifiedpush.dart';
 import '../../class/class_unified_push_handler.dart';
+import '../../constants.dart' as constants;
 import '../../services/subscription_handler.dart';
 import '../../services/url_launcher.dart';
 import 'loading_screen.dart';
@@ -58,13 +58,11 @@ class _NotificationTroubleshootDialogState
             ),
             ElevatedButton(
               onPressed: () async {
-                await UnifiedPush.unregister(
-                  UserPreferences.unifiedPushInstance,
-                );
                 var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
                 // @TODO(Nucleus): Calling onUnregistered shouldn't be necessary, but it currently is
+                await unifiedPushHandler.unregisterDistributor();
                 unifiedPushHandler
-                    .onUnregistered(UserPreferences.unifiedPushInstance);
+                    .onUnregistered(constants.unifiedPushInstance);
               },
               child: Text(
                 localizations.troubleshoot_notification_unregister_for_push,
@@ -81,12 +79,10 @@ class _NotificationTroubleshootDialogState
             ),
             ElevatedButton(
               onPressed: () async {
-                await UnifiedPush.unregister(
-                  UserPreferences.unifiedPushInstance,
-                );
                 var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                unifiedPushHandler.unregisterDistributor();
                 unifiedPushHandler
-                    .onUnregistered(UserPreferences.unifiedPushInstance);
+                    .onUnregistered(constants.unifiedPushInstance);
                 if (!context.mounted) return;
                 unifiedPushHandler.setupUnifiedPush(context, ref);
               },

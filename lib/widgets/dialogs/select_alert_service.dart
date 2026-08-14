@@ -8,6 +8,7 @@ import 'package:foss_warn/services/url_launcher.dart';
 import 'package:unifiedpush/unifiedpush.dart';
 
 import '../../class/class_alarm_manager.dart';
+import '../../constants.dart' as constants;
 import '../../services/subscription_handler.dart';
 
 class SelectAlertServiceDialog extends ConsumerStatefulWidget {
@@ -83,7 +84,7 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                   var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
                   // @TODO(Nucleus): Calling onUnregistered shouldn't be necessary, but it currently is
                   unifiedPushHandler
-                      .onUnregistered(UserPreferences.unifiedPushInstance);
+                      .onUnregistered(constants.unifiedPushInstance);
                   await removeAllPlaces(ref, context);
                   navigator.pop();
                 },
