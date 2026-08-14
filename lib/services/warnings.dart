@@ -260,15 +260,12 @@ void markAllWarningsAsRead(WidgetRef ref) {
 }
 
 /// show notifications for alerts
-void showNotification(
+Future<void> showNotification(
   List<WarnMessage> alerts,
   List<Place> places,
   UserPreferences userPreferences,
-  BuildContext context,
   WarningService alertService,
-) {
-  var localisations = context.localizations;
-
+) async {
   for (WarnMessage warning in alerts) {
     String placeName = "";
     Place? place = places.firstWhereOrNull(
@@ -279,42 +276,39 @@ void showNotification(
       placeName = place.name;
     }
 
-    if ((!warning.read &&
-            !warning.notified &&
-            !warning.isUpdateOfAlreadyNotifiedWarning) &&
-        NotificationPreferences.checkIfEventShouldBeNotified(
+    if (NotificationPreferences.checkIfEventShouldBeNotified(
           warning.info[0].severity,
           warning.info[0].category,
           userPreferences,
-        )) {
-      NotificationService.showNotification(
-        // generate from the warning in the List the notification id
-        // because the warning identifier is no int, we have to generate a hash code
-        id: warning.fpasId.hashCode,
-        title: localisations.notification_alert_new_title(placeName),
-        body: warning.info[0].headline,
-        payload: placeName,
-        channelId:
-            "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
-        channelName: warning.info[0].severity.getLocalizedName(context),
-      );
-      // update notification status for alert
+        ) &&
+        !warning.read &&
+        !warning.notified) {
+      if (!warning.isUpdateOfAlreadyNotifiedWarning) {
+        // show notification with sound
+        await NotificationService.showNotification(
+          id: warning.fpasId.hashCode,
+          title: "$placeName: ${warning.info[0].headline}",
+          body: warning.info[0].description
+              .substring(0, min(150, warning.info[0].description.length)),
+          payload: placeName,
+          channelId:
+              "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
+          channelName: "",
+        );
+      } else {
+        await NotificationService.showNotification(
+          // show notification as update only -> less distributive
+          id: warning.identifier.hashCode,
+          title: "$placeName: ${warning.info[0].headline}",
+          body: warning.info[0].headline,
+          payload: placeName,
+          channelId: "de.nucleus.foss_warn.notifications_update",
+          channelName: "",
+        );
+      }
       //@TODO(Nucleus): This should be fixed as we are using an ProviderContainer now, but check required. Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
       if (!alertService.mounted) return;
       alertService.updateAlert(warning.copyWith(notified: true));
-    } else if (warning.isUpdateOfAlreadyNotifiedWarning &&
-        !warning.notified &&
-        !warning.read) {
-      NotificationService.showNotification(
-        // generate from the warning in the List the notification id
-        // because the warning identifier is no int, we have to generate a hash code
-        id: warning.identifier.hashCode,
-        title: localisations.notification_alert_update_title(placeName),
-        body: warning.info[0].headline,
-        payload: placeName,
-        channelId: "de.nucleus.foss_warn.notifications_update",
-        channelName: "update",
-      );
     }
   }
 }
