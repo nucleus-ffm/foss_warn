@@ -98,44 +98,31 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   }
 
   // Only get detail for new results
-  List<WarnMessage> newAlertsDetails = [];
-  await Future.wait(
-    [
-      for (var alert in newAlerts) ...[
-        alertApi.getAlertDetail(
+  // fetch all alerts in parallel and skip failed alerts
+  final List<WarnMessage> newAlertsDetails = (await Future.wait(
+    newAlerts.map((alert) async {
+      try {
+        return await alertApi.getAlertDetail(
           alertId: alert.alertId,
           placeId: alert.placeId,
-        ),
-      ],
-    ],
-    // cleanup is called in case there was an error in one of the futures
-    cleanUp: (value) {
-      newAlertsDetails.add(value);
-    },
-  ).then(
-    (value) {
-      newAlertsDetails = value;
-    },
-    onError: (exception) {
-      ErrorLogger.writeErrorLog(
-        "warnings.dart",
-        "Get new alert details",
-        exception.toString(),
-      );
+        );
+      } catch (e) {
+        ErrorLogger.writeLog(
+          "warnings.dart",
+          "Get alert detail (${alert.alertId}) failed",
+          e.toString(),
+        );
 
-      var appStateService = ref.read(appStateProvider.notifier);
-      appStateService.setError(true);
-      return [];
-    },
-  ).catchError((exception) {
-    ErrorLogger.writeErrorLog(
-      "warnings.dart",
-      "Get new alert details",
-      exception.toString(),
-    );
-    var appStateService = ref.read(appStateProvider.notifier);
-    appStateService.setError(true);
-  });
+        return null;
+      }
+    }),
+  ))
+      .whereType<WarnMessage>()
+      .toList();
+
+  if (newAlertsDetails.length != newAlerts.length) {
+    ref.read(appStateProvider.notifier).setError(true);
+  }
 
   var result = newAlertsDetails + previouslyCachedAlerts;
 
