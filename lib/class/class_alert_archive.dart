@@ -61,7 +61,7 @@ class AlertArchive {
     try {
       final file = await _localFile;
       // delete the file
-      file.delete();
+      await file.delete();
       return true;
     } catch (e) {
       // If encountering an error, return 0
