@@ -54,8 +54,8 @@ When running the application on Linux, make sure you have the following installe
 Install the DBus service (`linux/de.nucleus.foss_warn.service`) file to `/usr/share/dbus-1/services/` to be able to retrieve background notifications.
 Edit the `Exec=` line where necessary.
 
-## FAQ
-See https://github.com/nucleus-ffm/foss_warn/wiki/FAQ
+## Documentation
+Can be found here: https://docs.fosswarn.org
 
 ## Contribute
 FOSS Warn is developed by a very small team. So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon. Checkout the [onboarding document](https://github.com/nucleus-ffm/foss_warn/wiki/Onboarding-document) to learn more about our work.

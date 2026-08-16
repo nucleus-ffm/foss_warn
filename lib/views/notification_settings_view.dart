@@ -31,7 +31,7 @@ class _NotificationSettingsViewState
           IconButton(
             onPressed: () {
               launchUrlInBrowser(
-                'https://github.com/nucleus-ffm/foss_warn/wiki/Notification-Settings',
+                'https://docs.fosswarn.org/features/notification_settings/',
               );
             },
             icon: const Icon(Icons.help),

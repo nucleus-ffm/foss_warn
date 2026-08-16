@@ -3,7 +3,6 @@ import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/dialogs/disclaimer_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../services/url_launcher.dart';
-import '../widgets/dialogs/missing_imprint_dialog.dart';
 import '../widgets/dialogs/privacy_dialog.dart';
 import '../widgets/dialogs/change_log_dialog.dart';
 
@@ -124,17 +123,31 @@ class _AboutViewState extends State<AboutView> {
             onTap: () => launchEmail('mailto:foss-warn@posteo.de'),
           ),
           ListTile(
+            leading: const Icon(Icons.help),
+            title: Text(
+              localizations.about_docs,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              "https://docs.fosswarn.org/",
+              style: theme.textTheme.bodyLarge,
+            ),
+            onTap: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/',
+            ),
+          ),
+          ListTile(
             leading: const Icon(Icons.question_mark),
             title: Text(
               localizations.about_faq,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              "https://github.com/nucleus-ffm/foss_warn/wiki/FAQ",
+              "https://docs.fosswarn.org/faq/",
               style: theme.textTheme.bodyLarge,
             ),
             onTap: () => launchUrlInBrowser(
-              'https://github.com/nucleus-ffm/foss_warn/wiki/FAQ',
+              'https://docs.fosswarn.org/faq/',
             ),
           ),
           ListTile(
@@ -147,12 +160,9 @@ class _AboutViewState extends State<AboutView> {
               localizations.about_imprint_subtitle,
               style: theme.textTheme.bodyLarge,
             ),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => const MissingImprintDialog(),
-              );
-            },
+            onTap: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/legal/imprint/',
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.privacy_tip_outlined),
@@ -240,6 +250,20 @@ class _AboutViewState extends State<AboutView> {
             ),
             onTap: () => launchUrlInBrowser(
               'https://github.com/nucleus-ffm/foss_warn/blob/main/README.md#contributors',
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.support),
+            title: Text(
+              localizations.about_contribute,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              localizations.about_contribute_subtitle,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            onTap: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/contribute/',
             ),
           ),
           ListTile(

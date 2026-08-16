@@ -5,12 +5,7 @@ Gehe in die App-Einstellungen und drücke `open android notification settings` -
 
 <details>
 <summary>Wie empfange ich Benachrichtigungen?</summary>
-FOSS Warn verwendet UnifiedPush zusammen mit dem FOSS Public Alert Server, um Push-Benachrichtigungen zu empfangen. Weitere Informationen zu UnifiedPush findest du unter https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor
-</details>
-
-<details>
-<summary>Hast du ein eigenes F-Droid-Repo?</summary>
-Ja, aber du solltest den Download über F-Droid bevorzugen. Aufgrund des zusätzlichen Aufwands ist die Version in meinem Repo nicht die aktuellste. Du kannst mein benutzerdefiniertes Repo zu F-Droid hinzufügen und das neueste GitHub-Release mit deinem F-Droid-Client installieren. Alle Infos <a href="https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo">hier </a>.
+FOSS Warn verwendet UnifiedPush zusammen mit dem FOSS Public Alert Server, um Push-Benachrichtigungen zu empfangen. Weitere Informationen zu UnifiedPush findest du [hier](/features/push_services/)
 </details>
 
 <details>

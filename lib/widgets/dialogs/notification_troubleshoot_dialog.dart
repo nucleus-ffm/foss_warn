@@ -110,7 +110,7 @@ class _NotificationTroubleshootDialogState
                   fit: FlexFit.loose,
                   child: TextButton(
                     onPressed: () => launchUrlInBrowser(
-                      'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor',
+                      'https://docs.fosswarn.org/features/push_services/',
                     ),
                     child: Text(
                       localizations

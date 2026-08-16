@@ -5,6 +5,7 @@ import '../../class/class_unified_push_handler.dart';
 import '../../services/subscription_handler.dart';
 import 'package:foss_warn/l10n/app_localizations.dart';
 
+import '../../services/url_launcher.dart';
 import 'loading_screen.dart';
 
 class ChangeUnifiedPushDistributorDialog extends ConsumerStatefulWidget {
@@ -69,7 +70,23 @@ class _ChangeUnifiedPushDistributorDialogState
     AppLocalizations localizations,
   ) {
     return SimpleDialog(
-      title: Text(localizations.change_unified_push_distributor_dialog_title),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Text(
+              localizations.change_unified_push_distributor_dialog_title,
+            ),
+          ),
+          IconButton(
+            onPressed: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/features/push_services/#select-your-push-service',
+            ),
+            icon: const Icon(Icons.help),
+            tooltip: localizations.alert_service_dialog_help_text,
+          ),
+        ],
+      ),
       children: [
         Column(
           children: [

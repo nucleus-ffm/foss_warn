@@ -1,16 +1,34 @@
 import 'package:flutter/material.dart';
 
+import '../../extensions/context.dart';
+import '../../services/url_launcher.dart';
+
 Widget Function(BuildContext) selectUnifiedPushDistributorDialog(
   List<String> distributors,
 ) {
   return (BuildContext context) {
+    var localizations = context.localizations;
     return SimpleDialog(
-      title: const Text('Select push distributor'),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(localizations.select_unified_push_distributor_title),
+          ),
+          IconButton(
+            onPressed: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/features/push_services/#select-your-push-service',
+            ),
+            icon: const Icon(Icons.help),
+            tooltip: localizations.alert_service_dialog_help_text,
+          ),
+        ],
+      ),
       children: [
-        const Padding(
-          padding: EdgeInsets.all(12.0),
+        Padding(
+          padding: const EdgeInsets.all(12.0),
           child: Text(
-            "Please select the UnifiedPush distributor which FOSSWarn should use.",
+            localizations.select_unified_push_distributor_subtitle,
           ),
         ),
         ...distributors.map<Widget>(

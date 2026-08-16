@@ -7,12 +7,7 @@ Go to the app settings and press `open android notification settings` -> select 
 
 <details>
 <summary>How do I receive notifications?</summary>
-FOSS Warn uses UnifiedPush together with the FOSS Public Alert Server to receive push notifications. For more information about UnifiedPush please read https://github.com/nucleus-ffm/foss_warn/wiki/What-is-UnifiedPush-and-how-to-select-a-distributor
-</details>
-
-<details>
-<summary>Do you have a custom F-Droid repo?</summary>
-Yes, but you should prefer to download via F-Droid. Because of the extra work, the version in my repo is not the latest. You can add my custom repo to F-Droid and install the latest Github release with your F-Droid client. All info <a href="https://github.com/nucleus-ffm/Nucleus-F-Droid-Repo">here </a>.
+FOSS Warn uses UnifiedPush together with the FOSS Public Alert Server to receive push notifications. For more information about UnifiedPush please read [this help page](/features/push_services/)
 </details>
 
 <details>
