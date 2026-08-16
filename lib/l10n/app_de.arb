@@ -355,7 +355,7 @@
     "error_dialog_copy_success": "Kopiert",
     "error_log_viewer_title": "Protokolldatei Betrachter",
     "error_log_viewer_headline": "Hier kannst du das Fehlerprotokoll von FOSS Warn lesen",
-    "error_log_button_delete": "Löschen",
+    "error_log_button_delete": "Warnungsarchiv löschen",
     "error_log_button_share": "Protokoll teilen",
     "error_log_share_info": "Fehlerprotokoll geteilt von FOSS Warn",
     "dev_settings_subscribe_for_test_alert": "Technische Testmeldungen vom FOSS Public Alert Server abonnieren",
@@ -438,8 +438,8 @@
     "troubleshoot_notification_unregister_for_push": "Abmelden",
     "troubleshoot_notification_resubscribe": "Orte mit neuer Push-Konfiguration erneut abonnieren",
     "no_up_distributor_found_dialog_title": "Kein Push-Verteiler gefunden",
-    "no_up_distributor_found_dialog_explanation": "FOSSWarn konnte keinen UnifiedPush- Anbieter auf Ihrem Gerät finden. Um einen Bereich zu abonnieren, musst du einen installiert haben, sonst bekommst du keine Benachrichtigungen. Bitte installiere einen Anbieter und versuche das Abonnement erneut.",
-    "no_up_distributor_found_up_explanation_button": "Was ist UnifiedPush und wie installiert man einen Anbieter?",
+    "no_up_distributor_found_dialog_explanation": "FOSSWarn konnte keinen UnifiedPush-Verteiler auf deinem Gerät finden. Um einen Bereich zu abonnieren, musst du einen installiert haben, sonst bekommst du keine Benachrichtigungen. Bitte installiere einen Verteiler und versuche das Abonnement erneut.",
+    "no_up_distributor_found_up_explanation_button": "Was ist UnifiedPush und wie installiert man einen Verteiler?",
     "no_up_distributor_found_direct_link_to_ntfy": "Für die Schnellen: ntfy auf F-Droid (erfordert eine Änderung des Standardservers)",
     "settings_select_push_service_title": "Push-Dienst",
     "settings_select_push_service_subtitle": "Wähle den Push-Dienst aus, den du verwenden möchtest.",
@@ -457,7 +457,7 @@
     "notification_self_check_notification_permission_subtitle_passed": "FOSSWarn darf dir Benachrichtigungen schicken.",
     "notification_self_check_notification_permission_subtitle_not_passed": "FOSSWarn benötigt deine Erlaubnis, um dir Benachrichtigungen zu senden. Tippe hier, um die Erlaubnis anzufordern.",
     "notification_self_check_notification_permission_unknown": "FOSSWarn überprüft den Status der Benachrichtigungsberechtigung. Bitte warten.",
-    "notification_self_check_installed_distributors_title": "UnifiedPush-Anbieter",
+    "notification_self_check_installed_distributors_title": "UnifiedPush-Verteiler",
     "notification_self_check_installed_distributors_subtitle_passed": "Gefunden \n {key}",
     "@notification_self_check_installed_distributors_subtitle_passed": {
         "description": "The list of installed distributor ",
@@ -467,10 +467,10 @@
             }
         }
     },
-    "notification_self_check_installed_distributors_subtitle_not_passed": "Keinen Anbieter gefunden. Bitte Installiere mindestens einen auf deinem Gerät.",
-    "notification_self_check_installed_distributors_subtitle_unknown": "FOSSWarn sucht nach UnifiedPush-Anbietern auf deinem Gerät. Bitte warte.",
-    "notification_self_check_selected_distributor_title": "Anbieter auswählen",
-    "notification_self_check_selected_distributor_subtitle_passed": "Dein aktuell ausgewählter Anbieter ist {key}",
+    "notification_self_check_installed_distributors_subtitle_not_passed": "Keinen Verteiler gefunden. Bitte Installiere mindestens einen auf deinem Gerät.",
+    "notification_self_check_installed_distributors_subtitle_unknown": "FOSSWarn sucht nach UnifiedPush-Verteilern auf deinem Gerät. Bitte warte.",
+    "notification_self_check_selected_distributor_title": "Ausgewählter Verteiler",
+    "notification_self_check_selected_distributor_subtitle_passed": "Dein aktuell ausgewählter Verteiler ist {key}",
     "@notification_self_check_selected_distributor_subtitle_passed": {
         "description": "The selected distributor ",
         "placeholder": {
@@ -479,8 +479,8 @@
             }
         }
     },
-    "notification_self_check_selected_distributor_subtitle_not_passed": "Du hast keinen Anbieter ausgewählt. Bitte geh zu den Einstellungen und wähle einen Push-Dienst aus.",
-    "notification_self_check_selected_distributor_subtitle_unknown": "FOSSWarn sucht nach dem von dir ausgewählten UnifiedPush- Anbieter. Bitte warte.",
+    "notification_self_check_selected_distributor_subtitle_not_passed": "Du hast keinen Verteiler ausgewählt. Bitte geh zu den Einstellungen und wähle einen Push-Dienst aus.",
+    "notification_self_check_selected_distributor_subtitle_unknown": "FOSSWarn sucht nach dem von dir ausgewählten UnifiedPush- Verteiler. Bitte warte.",
     "notification_self_check_current_endpoint_title": "Aktueller Endpunkt",
     "notification_self_check_current_endpoint_subtitle_passed": "Dein Endpunkt {key}",
     "@notification_self_check_current_endpoint_subtitle_passed": {
@@ -506,11 +506,11 @@
     "notification_self_check_notification_check_subtitle_passed": "Benachrichtigung erfolgreich empfangen",
     "notification_self_check_notification_check_subtitle_not_passed": "Die Benachrichtigung wurde nicht empfangen. Bitte überprüfe deine Einstellungen erneut.",
     "notification_self_check_notification_check_subtitle_unknown": "Warte auf eine neue Benachrichtigung.",
-    "change_unified_push_distributor_dialog_title": "UnifiedPush-Anbieter ändern",
-    "change_unified_push_distributor_dialog_body": "Bitte wähle den UnifiedPush-Anbieter aus, den FOSSWarn verwenden soll.",
-    "change_unified_push_distributor_dialog_body_no_distributor_found": "Kein Anbieter gefunden",
-    "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Ändere den Anbieter. Bitte warten...",
-    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Die Registrierung für einen neuen Anbieter ist wegen einer Zeitüberschreitung fehlgeschlagen. Bitte versuchs nochmal.",
+    "change_unified_push_distributor_dialog_title": "UnifiedPush-Verteiler ändern",
+    "change_unified_push_distributor_dialog_body": "Bitte wähle den un UnifiedPush-Verteiler aus, den FOSSWarn verwenden soll.",
+    "change_unified_push_distributor_dialog_body_no_distributor_found": "Kein Verteiler gefunden",
+    "change_unified_push_distributor_dialog_loading_screen_change_distributor": "Verteiler wird geändert. Bitte warten...",
+    "change_unified_push_distributor_dialog_loading_screen_timeout_error": "Die Registrierung für einen neuen Verteilerr ist wegen einer Zeitüberschreitung fehlgeschlagen. Bitte versuchs nochmal.",
     "warning_reference": "Referenz",
     "warning_restriction": "Einschränkung",
     "warning_addresses": "Adressen",
@@ -523,10 +523,10 @@
     "explanation_rescue_text": "Informationen zu Rettung und Bergung",
     "notification_settings_show_advanced_settings_subtitle": "Mit den erweiterten Benachrichtigungseinstellungen kannst du für jede Kategorie eine Warnstufe festlegen.",
     "help_button_tooltip": "Hilfe findest du im Wiki.",
-    "settings_location_settings": "Standort Einstellungen",
+    "settings_location_settings": "Standort",
     "settings_location_tracking_title": "Erhalte Warnungen für deinen aktuellen Standort",
-    "settings_location_tracking_subtitle": "Experimentell. Benötigt Push-Benachrichtigungen und Standortzugriff.",
-    "settings_select_alert_service_title": "Wähle den Benachrichtigungsdienst",
+    "settings_location_tracking_subtitle": "Experimentell. Benötigt Standortzugriff.",
+    "settings_select_alert_service_title": "Benachrichtigungsdienst wählen",
     "settings_select_alert_service_subtitle": "Entscheide wie du Warnungen erhalten möchtest",
     "map_view_filter_chips_title": "Anzeigeoptionen",
     "map_view_filter_chips_subscriptions": "Abonnements",
@@ -541,7 +541,7 @@
             }
         }
     },
-    "settings_alert_archive_title": "Aktiviere Warnungsarchive - Experimentell",
+    "settings_alert_archive_title": "Warnungsarchiv aktivieren",
     "settings_alert_archive_subtitle": "Speichert jede Warnung in einem lokalen permanenten Archive.",
     "settings_alert_archive_open": "Öffne Warnungsarchive",
     "notification_self_check_exact_alarm_permission_check_title": "Berechtigung zum Einrichten eines genauen Alarms",
@@ -568,7 +568,7 @@
     "location_tracking_permission_confirm_changed_body": "Wenn du die Berechtigungen geändert hast, fahre fort.",
     "location_tracking_place_name": "Aktuelle Position",
     "alert_service_dialog_title": "Wähle einen Benachrichtigungsdienst",
-    "alert_service_dialog_help_text": "Unsicher, was du wählen sollst? Erfahre mehr im Wiki.",
+    "alert_service_dialog_help_text": "Unsicher, was du wählen sollst? Erfahre mehr in den Doks.",
     "alert_service_push": "Push-Benachrichtigungen (empfohlen)",
     "alert_service_push_description": "Erhalte Push-Benachrichtigungen in nahezu Echtzeit und lass den Server dir Benachrichtigungen senden. Das erfordert die Einrichtung von UnifiedPush.",
     "alert_service_poll": "alte Hintergrundabfrage",
@@ -586,5 +586,13 @@
     "alert_archive_view_title": "Warnungsarchive",
     "alert_archive_view_subtitle": "Hier werden alle bisherigen Warnungen angezeigt, die FOSSWarn erhalten hat.",
     "alert_archive_no_alert": "Hier gibt es noch nichts zu sehen. Warte auf die erste Warnung zum Archivieren.",
-    "map_view_current_location_button_tooltip": "Aktuellen Standort anzeigen"
+    "map_view_current_location_button_tooltip": "Aktuellen Standort anzeigen",
+    "about_contribute": "Beitragen",
+    "about_contribute_subtitle": "Erfahre, wie du dieses Projekt unterstützen kannst",
+    "about_docs": "Dokumentation",
+    "dev_settings_restrict_search_to_cities": "Suche auf Städte einschränken",
+    "alert_service_dialog_notice": "Wenn du den Benachrichtigungsdienst änderst, werden die aktuell ausgewählten Orte entfernt.",
+    "help_tooltip": "Erfahre mehr in den Doks",
+    "select_unified_push_distributor_title": "Push-Verteiler auswählen",
+    "select_unified_push_distributor_subtitle": "Bitte wähle den UnifiedPush-Verteiler aus, den FOSSWarn verwenden soll."
 }
