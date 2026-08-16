@@ -579,9 +579,9 @@
     "update_dialog_subscription_v42": "你的订阅",
     "update_dialog_confirmation_v42": "检查过订阅区了",
     "map_alert_sheet_title": "此区域的警报",
-    "settings_location_settings": "位置设置",
+    "settings_location_settings": "位置",
     "settings_location_tracking_title": "接收当前位置的警报",
-    "settings_location_tracking_subtitle": "实验性。需要推送通知和定位权限。",
+    "settings_location_tracking_subtitle": "实验性，需要定位权限。",
     "settings_select_alert_service_title": "选择警报服务",
     "settings_select_alert_service_subtitle": "决定如何接收警报",
     "map_view_filter_chips_location": "我的位置",
@@ -595,7 +595,7 @@
             }
         }
     },
-    "settings_alert_archive_title": "开启警报存档 — 实验性",
+    "settings_alert_archive_title": "开启警报存档",
     "settings_alert_archive_subtitle": "在本地永久性存档中存储每一则警报。",
     "settings_alert_archive_open": "打开警报存档",
     "notification_self_check_exact_alarm_permission_check_title": "安排精确闹钟权限检查时间",
@@ -635,5 +635,7 @@
     "alert_archive_view_title": "警报存档",
     "alert_archive_view_subtitle": "这给予你 FOSSWarn 收到的之前的每则警报。",
     "alert_archive_no_alert": "此处还什么都没有。正等待存档第一则警报…",
-    "map_view_current_location_button_tooltip": "显示当前位置"
+    "map_view_current_location_button_tooltip": "显示当前位置",
+    "dev_settings_restrict_search_to_cities": "限制搜索范围为城市",
+    "alert_service_dialog_notice": "更改警报服务会删除当前选中的地点。"
 }
