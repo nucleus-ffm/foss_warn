@@ -208,7 +208,7 @@ class UnifiedPushHandler {
           "setup unifiedPush",
           "Failed to fetch VAPID key for webPush",
         );
-        throw UnifiedPushRegistrationError;
+        throw UnifiedPushRegistrationError();
       }
     }
 
@@ -245,7 +245,7 @@ class UnifiedPushHandler {
         await registerDistributor();
       } on MissingPluginException catch (e) {
         debugPrint("Error while registering UnifiedPush: $e");
-        throw UnifiedPushRegistrationError;
+        throw UnifiedPushRegistrationError();
       }
       return;
     }
