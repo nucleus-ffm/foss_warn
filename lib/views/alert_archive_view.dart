@@ -4,6 +4,8 @@ import 'package:foss_warn/class/class_alert_archive.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/widgets/warning_widget.dart';
 
+import '../services/url_launcher.dart';
+
 final alertArchiveProvider = FutureProvider<AlertArchive>((ref) async {
   return await AlertArchive.create(ref);
 });
@@ -35,13 +37,19 @@ class AlertArchiveView extends ConsumerWidget {
                 Icons.delete,
                 semanticLabel: "Delete alert archive",
               ),
-              tooltip: localization
-                  .error_log_button_delete, //@TODO add better tooltip
+              tooltip: localization.error_log_button_delete,
               onPressed: () async {
                 await archiveAsync.value!.deleteArchive();
                 ref.invalidate(alertArchiveProvider);
               },
             ),
+          IconButton(
+            onPressed: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/features/alert_archive/',
+            ),
+            icon: const Icon(Icons.help),
+            tooltip: localization.help_tooltip,
+          ),
         ],
       ),
       body: SingleChildScrollView(

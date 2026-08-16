@@ -205,15 +205,22 @@ class _SettingsState extends ConsumerState<Settings> {
               indent: 15.0,
               endIndent: 15.0,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
-              child: Text(
+            ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              title: Text(
                 localizations.settings_location_settings,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.primary,
                 ),
+              ),
+              trailing: IconButton(
+                onPressed: () => launchUrlInBrowser(
+                  'https://docs.fosswarn.org/features/location_tracking/',
+                ),
+                icon: const Icon(Icons.help),
               ),
             ),
             ListTile(
@@ -263,15 +270,22 @@ class _SettingsState extends ConsumerState<Settings> {
               indent: 15.0,
               endIndent: 15.0,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: indentOfCategoriesTitles),
-              child: Text(
+            ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              title: Text(
                 "FOSS Public Alert Server",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.primary,
                 ),
+              ),
+              trailing: IconButton(
+                onPressed: () => launchUrlInBrowser(
+                  'https://docs.fosswarn.org/features/alert_server/',
+                ),
+                icon: const Icon(Icons.help),
               ),
             ),
             ListTile(
@@ -457,8 +471,8 @@ class _SettingsState extends ConsumerState<Settings> {
               title: Text((localizations.settings_show_welcome_dialog)),
               onTap: widget.onIntroductionPressed,
             ),
-            /* // disabled for now due to race condition issues while writing the archive file
-            ListTile(
+            // disabled for now due to race condition issues while writing the archive file
+            /*ListTile(
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

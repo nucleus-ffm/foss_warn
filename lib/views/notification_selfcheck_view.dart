@@ -370,7 +370,7 @@ class _NotificationSelfCheckState
           IconButton(
             onPressed: () {
               launchUrlInBrowser(
-                "https://github.com/nucleus-ffm/foss_warn/wiki/Notification-self-check",
+                "https://docs.fosswarn.org/features/notification_self_check/",
               );
             },
             tooltip: localizations.help_button_tooltip,

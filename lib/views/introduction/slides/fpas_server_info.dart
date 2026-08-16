@@ -11,7 +11,7 @@ class IntroductionFPASServerInfoSlide extends StatelessWidget {
   Widget build(BuildContext context) {
     var localizations = context.localizations;
     const fpasServerExplanationURL =
-        'https://github.com/nucleus-ffm/foss_warn/wiki/What-is-the-FOSS-Public-Alert-Server-and-why-do-I-have-to-select-a-server%3F';
+        'https://docs.fosswarn.org/features/push_services/';
 
     return IntroductionBaseSlide(
       imagePath: "fpas_logo.png",

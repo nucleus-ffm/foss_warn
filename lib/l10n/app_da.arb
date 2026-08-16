@@ -85,7 +85,6 @@
     "about_source": "Kilde",
     "about_author_subtitle": "ikke brugt",
     "about_official_source": "Officiel kilde",
-    "about_imprint": "Imprint?",
-    "about_contact_subtitle": "ikke brugt",
-    "about_imprint_subtitle": "skal der være et imprint her?"
+    "about_imprint": "Imprint",
+    "about_contact_subtitle": "ikke brugt"
 }

@@ -29,7 +29,19 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
     var userPreferencesService = ref.read(userPreferencesProvider.notifier);
 
     return SimpleDialog(
-      title: Text(localizations.alert_service_dialog_title),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(localizations.alert_service_dialog_title),
+          IconButton(
+            onPressed: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/features/alert_services/',
+            ),
+            icon: const Icon(Icons.help),
+            tooltip: localizations.alert_service_dialog_help_text,
+          ),
+        ],
+      ),
       children: [
         SingleChildScrollView(
           child: Column(
@@ -38,14 +50,6 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                 child: Text(localizations.alert_service_dialog_notice),
-              ),
-              TextButton(
-                onPressed: () {
-                  launchUrlInBrowser(
-                    "https://github.com/nucleus-ffm/foss_warn/wiki/Alert-Services",
-                  );
-                },
-                child: Text(localizations.alert_service_dialog_help_text),
               ),
               ListTile(
                 title: Text(
