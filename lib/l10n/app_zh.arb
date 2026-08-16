@@ -413,7 +413,7 @@
     "error_dialog_copy_success": "已复制",
     "error_log_viewer_title": "日志文件查看器",
     "error_log_viewer_headline": "可以在此阅读 FOSSWarn 的错误日志",
-    "error_log_button_delete": "删除",
+    "error_log_button_delete": "删除警报存档",
     "error_log_button_share": "分享日志文件",
     "error_log_share_info": "分享自 FOSSWarn 的错误日志",
     "dev_settings_subscribe_for_test_alert": "订阅来自 FOSS 公共警报服务器的技术测试警报",
@@ -622,7 +622,7 @@
     "location_tracking_permission_confirm_changed_body": "如果你更改了权限，请继续。",
     "location_tracking_place_name": "当前位置",
     "alert_service_dialog_title": "选择警报服务",
-    "alert_service_dialog_help_text": "不确定选哪个？在 wiki 中获取更多信息。",
+    "alert_service_dialog_help_text": "不确定选哪个？在文档中获取更多信息。",
     "alert_service_push": "推送通知（推荐）",
     "alert_service_push_description": "近乎实时地接收推送通知并让服务器给你发送通知。这需要设置 UnifiedPush。",
     "alert_service_poll": "旧的轮询方法",
@@ -637,5 +637,12 @@
     "alert_archive_no_alert": "此处还什么都没有。正等待存档第一则警报…",
     "map_view_current_location_button_tooltip": "显示当前位置",
     "dev_settings_restrict_search_to_cities": "限制搜索范围为城市",
-    "alert_service_dialog_notice": "更改警报服务会删除当前选中的地点。"
+    "alert_service_dialog_notice": "更改警报服务会删除当前选中的地点。",
+    "about_imprint_subtitle": "法律信息",
+    "about_contribute": "贡献",
+    "about_contribute_subtitle": "了解如何支持此项目",
+    "about_docs": "文档",
+    "help_tooltip": "在文档中了解更多信息",
+    "select_unified_push_distributor_title": "选择推送分发程序",
+    "select_unified_push_distributor_subtitle": "请选择 FOSSWarn 应使用的 UnifiedPush 分发程序。"
 }
