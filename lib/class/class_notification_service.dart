@@ -1,34 +1,70 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 
+import '../enums/notification_channel.dart';
 import 'class_error_logger.dart';
 
-///
+/// Notification channel group ids
+const String notificationChannelGroupAlerts =
+    "de.nucleus.foss_warn.notification__channel_group_alerts";
+const String notificationChannelGroupOther =
+    "de.nucleus.foss_warn.notification_channel_group_other";
+
+/// key that is used to group multiple notifications
+const String notificationGroupKey =
+    "de.nucleus.foss_warn.notification_group_key";
+
+/// ID 0: Notification summary
 /// ID 2: Status notification
 /// ID 3: No Places selected warning
 /// ID 4: legacy warning
 /// ID 5: subscription error
 class NotificationService {
-  static String notificationGroupKey = "FOSSWarnNotifications";
   static final _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   static final onNotification = BehaviorSubject<String?>();
 
-  static NotificationDetails _notificationsDetails(
-    String channelId,
-    String channelName,
+  /// Build the notification Details for the given channel id and name
+  static NotificationDetails _getNotificationsDetails(
+    NotificationChannel notificationChannel,
   ) {
     return NotificationDetails(
       android: AndroidNotificationDetails(
-        channelId,
-        channelName,
+        notificationChannel.channelId,
+        "", //@TODO: Add a defensive default here
         groupKey: notificationGroupKey,
         category: AndroidNotificationCategory.message,
         priority: Priority.max,
+
+        // enable multiline notification
+        styleInformation: const BigTextStyleInformation(''),
+        color: Colors.red, // makes the icon red,
+        ledColor: Colors.red,
+        ledOffMs: 100,
+        ledOnMs: 100,
+      ),
+      linux: const LinuxNotificationDetails(),
+    );
+  }
+
+  /// Notification summary details
+  static NotificationDetails _getNotificationSummaryDetails() {
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        NotificationChannel.summary.channelId,
+        "",
+        channelDescription: '',
+        groupKey: notificationGroupKey,
+        setAsGroupSummary: true,
+        importance: Importance.max,
+        priority: Priority.max,
+        playSound: false,
 
         // enable multiline notification
         styleInformation: const BigTextStyleInformation(''),
@@ -47,46 +83,49 @@ class NotificationService {
     String? title,
     String? body,
     String? payload,
-    required String channelId,
-    required String channelName,
+    required NotificationChannel channel,
   }) async {
     _flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
-      _notificationsDetails(channelId, channelName),
+      _getNotificationsDetails(channel),
       payload: payload,
     );
-    showGroupNotification();
+    showNotificationSummary();
   }
 
-  // @TODO(Nucleus): refactor this
-  static Future<void> showGroupNotification() async {
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'foss_warn',
-        'Notifications',
-        channelDescription: 'FOSSWarn Notifications',
-        groupKey: notificationGroupKey,
-        setAsGroupSummary: true,
-        importance: Importance.max,
-        priority: Priority.max,
-        playSound: false,
+  /// Show a notification summary. This is used on Android < 7.0 instead of the collabsed
+  /// notification. On Android 7.0+ the text of this notification is not shown
+  static Future<void> showNotificationSummary() async {
+    List<ActiveNotification>? activeNotifications = [];
+    try {
+      activeNotifications = await _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.getActiveNotifications();
+    } on PlatformException {
+      // not supported on this platform
+    }
+    // build a short summary of every active notification
+    String notificationBody = "";
+    if (activeNotifications != null && activeNotifications.isNotEmpty) {
+      for (ActiveNotification notification in activeNotifications) {
+        notificationBody += notification.title ?? "";
+        notificationBody += " ";
+        if (notification.body != null) {
+          notificationBody += notification.body!
+              .substring(0, min(notification.body!.length, 50));
+        }
+        notificationBody += "\n";
+      }
+    }
 
-        // enable multiline notification
-        styleInformation: const BigTextStyleInformation(''),
-        color: Colors.red, // makes the icon red,
-        ledColor: Colors.red,
-        ledOffMs: 100,
-        ledOnMs: 100,
-      ),
-      linux: const LinuxNotificationDetails(),
-    );
     await _flutterLocalNotificationsPlugin.show(
       0,
-      "Alerts",
-      "There are multiple alerts",
-      notificationDetails,
+      null, // we do not need a title here
+      notificationBody,
+      _getNotificationSummaryDetails(),
     );
   }
 
@@ -118,7 +157,7 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
-    ); //onSelectNotification
+    );
   }
 
   /// [Android only]
@@ -157,25 +196,18 @@ class NotificationService {
     }
     debugPrint("Check notification channels and remove deprecated ones");
     List<String> currentNotificationChannelIds = [];
-    currentNotificationChannelIds
-        .add("de.nucleus.foss_warn.notifications_minor");
-    currentNotificationChannelIds
-        .add("de.nucleus.foss_warn.notifications_moderate");
-    currentNotificationChannelIds
-        .add("de.nucleus.foss_warn.notifications_severe");
-    currentNotificationChannelIds
-        .add("de.nucleus.foss_warn.notifications_extreme");
-    currentNotificationChannelIds
-        .add("de.nucleus.foss_warn.notifications_other");
-    currentNotificationChannelIds
-        .add("de.nucleus.foss_warn.notifications_update");
+
+    for (var e in NotificationChannel.values) {
+      currentNotificationChannelIds.add(e.channelId);
+    }
 
     List<AndroidNotificationChannel>? notificationChannels =
         (await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.getNotificationChannels());
-    for (AndroidNotificationChannel channel in notificationChannels!) {
+    for (AndroidNotificationChannel channel
+        in notificationChannels ?? const []) {
       debugPrint("Checking channel with id: ${channel.id}}");
       if (currentNotificationChannelIds.contains(channel.id)) {
         debugPrint("Channel ${channel.id} is correct and not deleted");
@@ -196,55 +228,72 @@ class NotificationService {
     if (!Platform.isAndroid) {
       return;
     }
-
     var localizations = context.localizations;
-
+    // create list of channel we want to have
+    // split channels into two groups:
+    //      notificationChannelGroupAlerts => every channel that publishes alerts
+    //      notificationChannelGroupOther => every other channel
     List<AndroidNotificationChannel> notificationChannels = [
       AndroidNotificationChannel(
-        "de.nucleus.foss_warn.notifications_minor",
-        localizations.notification_settings_notify_by_minor,
+        NotificationChannel.minor.channelId,
+        NotificationChannel.minor.getLocalizedName(context),
+        description: NotificationChannel.minor.getLocalizedDescription(context),
+        groupId: notificationChannelGroupAlerts,
+        importance: Importance.high,
+      ),
+      AndroidNotificationChannel(
+        NotificationChannel.moderate.channelId,
+        NotificationChannel.moderate.getLocalizedName(context),
         description:
-            localizations.warning_severity_explanation_dialog_minor_description,
-        groupId: "de.nucleus.foss_warn.notification_group",
+            NotificationChannel.moderate.getLocalizedDescription(context),
+        groupId: notificationChannelGroupAlerts,
         importance: Importance.max,
       ),
       AndroidNotificationChannel(
-        "de.nucleus.foss_warn.notifications_moderate",
-        localizations.notification_settings_notify_by_moderate,
-        description: localizations
-            .warning_severity_explanation_dialog_moderate_description,
-        groupId: "de.nucleus.foss_warn.notification_group",
-        importance: Importance.max,
-      ),
-      AndroidNotificationChannel(
-        "de.nucleus.foss_warn.notifications_severe",
-        localizations.notification_settings_notify_by_severe,
+        NotificationChannel.severe.channelId,
+        NotificationChannel.severe.getLocalizedName(context),
         description:
-            localizations.warning_severity_explanation_dialog_minor_description,
-        groupId: "de.nucleus.foss_warn.notification_group",
+            NotificationChannel.severe.getLocalizedDescription(context),
+        groupId: notificationChannelGroupAlerts,
         importance: Importance.max,
       ),
       AndroidNotificationChannel(
-        "de.nucleus.foss_warn.notifications_extreme",
-        localizations.notification_settings_notify_by_extreme,
-        description: localizations
-            .warning_severity_explanation_dialog_extreme_description,
-        groupId: "de.nucleus.foss_warn.notification_group",
+        NotificationChannel.extreme.channelId,
+        NotificationChannel.extreme.getLocalizedName(context),
+        description:
+            NotificationChannel.extreme.getLocalizedDescription(context),
+        groupId: notificationChannelGroupAlerts,
         importance: Importance.max,
       ),
       AndroidNotificationChannel(
-        "de.nucleus.foss_warn.notifications_update",
-        localizations.notification_settings_notify_by_update,
-        description: localizations
-            .warning_severity_explanation_dialog_update_description,
-        groupId: "de.nucleus.foss_warn.notification_group",
+        NotificationChannel.update.channelId,
+        NotificationChannel.update.getLocalizedName(context),
+        description:
+            NotificationChannel.update.getLocalizedDescription(context),
+        groupId: notificationChannelGroupAlerts,
         importance: Importance.low,
       ),
       AndroidNotificationChannel(
-        "de.nucleus.foss_warn.notifications_other",
-        localizations.notification_channel_other_name,
-        description: localizations.notification_channel_other_description,
-        groupId: "de.nucleus.foss_warn.notification_group",
+        NotificationChannel.summary.channelId,
+        NotificationChannel.summary.getLocalizedName(context),
+        description:
+            NotificationChannel.summary.getLocalizedDescription(context),
+        groupId: notificationChannelGroupAlerts,
+        importance: Importance.low,
+      ),
+      // Channel for general purpose notification, not used for alerts
+      AndroidNotificationChannel(
+        NotificationChannel.other.channelId,
+        NotificationChannel.other.getLocalizedName(context),
+        description: NotificationChannel.other.getLocalizedDescription(context),
+        groupId: notificationChannelGroupOther,
+        importance: Importance.defaultImportance,
+      ),
+      AndroidNotificationChannel(
+        NotificationChannel.debug.channelId,
+        NotificationChannel.debug.getLocalizedName(context),
+        description: NotificationChannel.debug.getLocalizedDescription(context),
+        groupId: notificationChannelGroupOther,
         importance: Importance.defaultImportance,
       ),
     ];
@@ -255,12 +304,21 @@ class NotificationService {
     if (androidNotificationPlugin != null) {
       // init the different notifications channels/groups
       try {
-        // create notification group for grouping multiple notifications
+        // create notification group for grouping multiple notification channels
         await androidNotificationPlugin.createNotificationChannelGroup(
           AndroidNotificationChannelGroup(
-            "de.nucleus.foss_warn.notification_group",
-            localizations.notification_group_name,
-            description: localizations.notification_group_description,
+            notificationChannelGroupAlerts,
+            localizations.notification_channel_group_alerts_name,
+            description:
+                localizations.notification_channel_group_alerts_description,
+          ),
+        );
+        await androidNotificationPlugin.createNotificationChannelGroup(
+          AndroidNotificationChannelGroup(
+            notificationChannelGroupOther,
+            localizations.notification_channel_group_other_name,
+            description:
+                localizations.notification_channel_group_other_description,
           ),
         );
 
@@ -290,26 +348,19 @@ class NotificationService {
   }
 
   /// cancel one notification with the given id
-  static Future<void> cancelOneNotification(id) async {
+  static Future<void> cancelOneNotification(int id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
 
     // cancel summery notification if it is the last one
-    List<ActiveNotification>? activeNotifications =
-        await _flutterLocalNotificationsPlugin
+    final active = await _flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()
-            ?.getActiveNotifications();
-
-    if (activeNotifications != null &&
-        activeNotifications.length == 2 &&
-        activeNotifications.any(
-          (element) =>
-              element.channelId == "de.nucleus.foss_warn.notifications_state",
-        )) {
-      if (activeNotifications[0].id == 0) {
-        // summery notification has id 0
-        cancelOneNotification(0);
-      }
+            ?.getActiveNotifications() ??
+        const [];
+    // only the summary (id 0) is left -> remove it as well
+    final remaining = active.where((n) => n.id != 0);
+    if (remaining.isEmpty) {
+      await _flutterLocalNotificationsPlugin.cancel(0);
     }
   }
 

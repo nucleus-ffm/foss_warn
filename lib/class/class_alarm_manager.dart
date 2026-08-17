@@ -12,6 +12,7 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../enums/notification_channel.dart';
 import '../services/warnings.dart';
 import 'package:foss_warn/constants.dart' as constants;
 
@@ -48,9 +49,8 @@ Future<void> backgroundPollingCallback() async {
             id: alert.identifier.hashCode,
             title: "New alert: ${alert.info.first.headline}",
             body: alert.info.first.description.substring(0, 100),
-            channelId:
-                "de.nucleus.foss_warn.notifications_${alert.info.first.severity.name}",
-            channelName: "",
+            channel:
+                NotificationChannel.fromSeverity(alert.info.first.severity),
           );
           container
               .read(processedAlertsProvider.notifier)

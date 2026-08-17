@@ -9,6 +9,7 @@ import 'package:foss_warn/class/class_notification_preferences.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
+import 'package:foss_warn/enums/notification_channel.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/extensions/list.dart';
@@ -292,9 +293,8 @@ Future<void> showNotification(
           body: warning.info[0].description
               .substring(0, min(150, warning.info[0].description.length)),
           payload: placeName,
-          channelId:
-              "de.nucleus.foss_warn.notifications_${warning.info[0].severity.name}",
-          channelName: "",
+          channel:
+              NotificationChannel.fromSeverity(warning.info.first.severity),
         );
       } else {
         await NotificationService.showNotification(
@@ -303,8 +303,7 @@ Future<void> showNotification(
           title: "$placeName: ${warning.info[0].headline}",
           body: warning.info[0].headline,
           payload: placeName,
-          channelId: "de.nucleus.foss_warn.notifications_update",
-          channelName: "",
+          channel: NotificationChannel.update,
         );
       }
       //@TODO(Nucleus): This should be fixed as we are using an ProviderContainer now, but check required. Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
