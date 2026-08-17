@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:foss_warn/services/update_loop.dart';
 
 import '../class/class_app_state.dart';
 import '../class/class_user_preferences.dart';
@@ -33,10 +32,14 @@ bool backgroundSelfCheck(UserPreferences userPreferences) {
   return false;
 }
 
+final pollingProvider = StreamProvider.autoDispose(
+  (ref) => Stream.periodic(const Duration(seconds: 30)),
+);
+
 /// Provider to periodically check in the background the push  notification setup
 /// detect errors
 final selfCheckProvider = Provider<void>((ref) {
-  ref.listen(tickingChangeProvider(250), (_, event) {
+  ref.listen(pollingProvider, (_, __) {
     var appStateService = ref.read(appStateProvider.notifier);
     appStateService.setPushNotificationSetupError(
       backgroundSelfCheck(ref.read(userPreferencesProvider)),
