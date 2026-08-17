@@ -36,7 +36,7 @@ void main() {
       isFirstStart: false,
       areWarningsFromCache: false,
       maxSizeOfSubscriptionBoundingBox: 12,
-      fossPublicAlertServerUrl: "http://example.com",
+      fossPublicAlertServerUrl: "example.com",
       fossPublicAlertServerOperator: "Example",
       fossPublicAlertServerPrivacyNotice: "http://example.com/",
       fossPublicAlertServerTermsOfService: "http://example.com",

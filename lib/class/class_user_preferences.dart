@@ -86,7 +86,8 @@ final userPreferencesProvider =
   } else {
     // in DEBUG mode set to local server but also
     // allow to change the default server
-    fossPublicAlertServerUrl ??= "http://10.0.2.2:8000";
+    fossPublicAlertServerUrl ??=
+        "10.0.2.2:8000"; //@TODO handle debug https vs http
   }
 
   var notificationSourceSettingString =
