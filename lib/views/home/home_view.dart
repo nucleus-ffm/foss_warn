@@ -79,6 +79,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
       if (userPreferences.locationTracking) {
         AlarmManager.registerBackgroundLocationTask();
       }
+      if (!mounted) return;
+      // create notification channels. If they already exist, nothing happens
+      await NotificationService.createNotificationChannels(
+        context,
+      );
+      NotificationService.cleanUpNotificationChannels();
     }
   }
 

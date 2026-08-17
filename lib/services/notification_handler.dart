@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foss_warn/enums/notification_channel.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
@@ -57,8 +58,7 @@ void handleDebugNotification(String payload, WidgetRef ref) {
       title: "DEBUG Notification",
       body: "FOSSWarn has received a push notification with content: $payload",
       payload: "",
-      channelId: "de.nucleus.foss_warn.notifications_other",
-      channelName: "Debug notifications",
+      channel: NotificationChannel.debug,
     );
   }
 }
@@ -105,8 +105,7 @@ void subscriptionConfirmationNotification(
       title: "Successfully subscribed",
       body: "You have successfully subscribed",
       payload: confirmationId,
-      channelId: "de.nucleus.foss_warn.notifications_other",
-      channelName: "",
+      channel: NotificationChannel.other,
     );
   }
 }
