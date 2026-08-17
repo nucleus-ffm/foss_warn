@@ -16,7 +16,6 @@ import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
-import 'package:foss_warn/services/update_loop.dart';
 import 'package:foss_warn/constants.dart' as constants;
 
 import '../class/class_error_logger.dart';
@@ -162,17 +161,21 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   return result;
 });
 
+final alertPollingProvider = StreamProvider.autoDispose(
+  (ref) => Stream.periodic(const Duration(seconds: 5)),
+);
+
 /// Provides a complete list of all warnings for subscribed places.
 ///
 /// It polls for new alerts and merges the result with any locally processed/modified alerts.
 /// Any processing off alerts has to be done through [processedAlertsProvider].
 final alertsProvider = Provider<List<WarnMessage>>((ref) {
-  ref.listen(tickingChangeProvider(50), (_, event) {
+  ref.listen(alertPollingProvider, (_, __) {
     ref.invalidate(alertsFutureProvider);
   });
+  // @TODO pause polling if app is in background
 
   var userPreferences = ref.watch(userPreferencesProvider);
-
   var alertsSnapshot = ref.watch(alertsFutureProvider);
 
   if (!alertsSnapshot.hasValue) return [];
