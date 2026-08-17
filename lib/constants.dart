@@ -1,4 +1,4 @@
-const String defaultFPASServerUrl = "https://alerts.kde.org";
+const String defaultFPASServerUrl = "alerts.kde.org";
 const String httpUserAgent =
     "FOSSWarn/1.0.1 (Android)"; //@TODO (Nucleus) fetch data automatically
 const List<String> serverThatAreNotWorking = ["ntfy.sh"];

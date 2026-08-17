@@ -27,6 +27,15 @@ Future<void> legacyHandler() async {
           preferences.clear();
         } else if (previousVersionCode < 42) {
           preferences.setBool("showUpdateDialog", true);
+        } else if (previousVersionCode < 45) {
+          // we let the software handle https now so the user don't has to deal with that anymore
+          // but we need to adapt the stored address to remove the http scheme
+          String? serverUrl = preferences.getString("fossPublicAlertServerUrl");
+          if (serverUrl != null && serverUrl.toLowerCase().startsWith("http")) {
+            serverUrl = serverUrl.replaceAll("http://", "");
+            serverUrl = serverUrl.replaceAll("https://", "");
+            preferences.setString("fossPublicAlertServerUrl", serverUrl);
+          }
         }
       }
     }

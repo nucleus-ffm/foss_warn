@@ -29,8 +29,9 @@ class FPASApi implements AlertAPI {
 
   @override
   Future<ServerSettings> fetchServerSettings({String? overrideUrl}) async {
-    var url = Uri.parse(
-      "${overrideUrl ?? _userPreferences.fossPublicAlertServerUrl}/config/server_status",
+    var url = Uri.https(
+      overrideUrl ?? _userPreferences.fossPublicAlertServerUrl,
+      "/config/server_status",
     );
     var response = await http.get(
       url,
@@ -68,8 +69,10 @@ class FPASApi implements AlertAPI {
       return [];
     }
 
-    var url = Uri.parse(
-      "${_userPreferences.fossPublicAlertServerUrl}/alert/all?subscription_id=$subscriptionId",
+    var url = Uri.https(
+      _userPreferences.fossPublicAlertServerUrl,
+      "/alert/all",
+      {"subscription_id": subscriptionId},
     );
 
     var response = await http.get(
@@ -101,9 +104,13 @@ class FPASApi implements AlertAPI {
     required String placeId,
     required BoundingBox boundingBox,
   }) async {
-    var url = Uri.parse(
-      "${_userPreferences.fossPublicAlertServerUrl}/alert/area?min_lat=${boundingBox.minLatLng.latitude}&max_lat=${boundingBox.maxLatLng.latitude}&min_lon=${boundingBox.minLatLng.longitude}&max_lon=${boundingBox.maxLatLng.longitude}",
-    );
+    var url =
+        Uri.https(_userPreferences.fossPublicAlertServerUrl, "/alert/area", {
+      "min_lat": boundingBox.minLatLng.latitude.toString(),
+      "max_lat": boundingBox.maxLatLng.latitude.toString(),
+      "min_lon": boundingBox.minLatLng.longitude.toString(),
+      "max_lon": boundingBox.maxLatLng.longitude.toString(),
+    });
     var response = await http.get(
       url,
       headers: {
@@ -150,9 +157,8 @@ class FPASApi implements AlertAPI {
     required String alertId,
     required String placeId,
   }) async {
-    var url = Uri.parse(
-      "${_userPreferences.fossPublicAlertServerUrl}/alert/$alertId",
-    );
+    var url =
+        Uri.https(_userPreferences.fossPublicAlertServerUrl, "/alert/$alertId");
 
     var response = await http.get(
       url,
@@ -190,8 +196,10 @@ class FPASApi implements AlertAPI {
   @override
   Future<void> updateSubscription({required String subscriptionId}) async {
     debugPrint("Update subscription");
-    var url = Uri.parse(
-      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
+    var url = Uri.https(
+      _userPreferences.fossPublicAlertServerUrl,
+      "/subscription/",
+      {"subscription_id": subscriptionId},
     );
     try {
       var response = await http.put(
@@ -227,8 +235,16 @@ class FPASApi implements AlertAPI {
     required String webPushAuthKey,
   }) async {
     debugPrint("Update subscription push notification config");
-    var url = Uri.parse(
-      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId&token=$token&p256dh_key=$webPushPublicKey&auth_key=$webPushAuthKey}",
+
+    var url = Uri.https(
+      _userPreferences.fossPublicAlertServerUrl,
+      "/subscription/",
+      {
+        'subscription_id': subscriptionId,
+        'token': token,
+        "p256dh_key": webPushPublicKey,
+        "auth_key": webPushAuthKey,
+      },
     );
 
     try {
@@ -253,6 +269,11 @@ class FPASApi implements AlertAPI {
         "UpdateSubscriptionPushNotificationConfig",
         "Can not update subscription due to a SocketException",
       );
+      throw RegisterAreaError(
+        //@TODO maybe add a custom error type here
+        statusCode: 400, // not correct, but a placeholder for now
+        message: "Socket exception",
+      );
     }
   }
 
@@ -262,7 +283,7 @@ class FPASApi implements AlertAPI {
     required String unifiedPushEndpoint,
   }) async {
     var url =
-        Uri.parse("${_userPreferences.fossPublicAlertServerUrl}/subscription/");
+        Uri.https(_userPreferences.fossPublicAlertServerUrl, "/subscription/");
 
     ServerSettings serverSettings = await fetchServerSettings();
     // check if webpush / encrypted UP is supported
@@ -315,8 +336,10 @@ class FPASApi implements AlertAPI {
 
   @override
   Future<void> unregisterArea({required String subscriptionId}) async {
-    var url = Uri.parse(
-      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?subscription_id=$subscriptionId",
+    var url = Uri.https(
+      _userPreferences.fossPublicAlertServerUrl,
+      "/subscription/",
+      {"subscription_id": subscriptionId},
     );
 
     try {
@@ -344,8 +367,10 @@ class FPASApi implements AlertAPI {
 
   @override
   Future<String> fetchVapidKeyForWebPush() async {
-    var url = Uri.parse(
-      "${_userPreferences.fossPublicAlertServerUrl}/subscription/?type=webpush",
+    var url = Uri.https(
+      _userPreferences.fossPublicAlertServerUrl,
+      "/subscription/",
+      {"type": "webpush"},
     );
 
     var response = await http.get(
@@ -366,9 +391,12 @@ class FPASApi implements AlertAPI {
 
   @override
   Future<Style> getMapStyle() {
+    var url = Uri.https(
+      _userPreferences.fossPublicAlertServerUrl,
+      "/static/map_style_alerts_only.json",
+    );
     return StyleReader(
-      uri:
-          "${_userPreferences.fossPublicAlertServerUrl}/static/map_style_alerts_only.json",
+      uri: url.toString(),
       // ignore: undefined_identifier
       logger: const vector_title.Logger.console(),
     ).read();
