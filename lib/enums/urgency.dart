@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/extensions/context.dart';
 
 enum Urgency {
-  immediate, // Responsive action SHOULD be taken immediately
-  expected, // Responsive action SHOULD be taken soon (within next hour)
-  future, // Responsive action SHOULD be taken in the near future
-  past, // Responsive action is no longer required
-  unknown; // Urgency not known
+  /// Responsive action SHOULD be taken immediately
+  immediate,
+
+  /// Responsive action SHOULD be taken soon (within next hour)
+  expected,
+
+  /// Responsive action SHOULD be taken in the near future
+  future,
+
+  /// Responsive action is no longer required
+  past,
+
+  /// Urgency not known
+  unknown;
 
   String toJson() => name;
   static Urgency fromJson(String? json) {

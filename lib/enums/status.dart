@@ -2,12 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/extensions/context.dart';
 
 enum Status {
-  actual, // Actionable by all targeted recipients
-  exercise, // Actionable only by designated exercise participants
-  system, // For messages that support alert network internal functions
-  test, // Technical testing only, all recipients disregard
-  draft, // A preliminary template or draft, not actionable in its current form
-  unknown; // fallback field when the value from the alert is not valid
+  /// Actionable by all targeted recipients
+  actual,
+
+  /// Actionable only by designated exercise participants
+  exercise,
+
+  /// For messages that support alert network internal functions
+  system,
+
+  /// Technical testing only, all recipients disregard
+  test,
+
+  /// A preliminary template or draft, not actionable in its current form
+  draft,
+
+  /// fallback field when the value from the alert is not valid
+  unknown;
 
   String toJson() => name;
   static Status fromJson(String? json) {

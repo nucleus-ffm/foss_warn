@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/extensions/context.dart';
 
 enum Scope {
-  public, // For general dissemination to unrestricted audiences
-  restricted, // For dissemination only to users with a known operational requirement (see <restriction>, below)
-  private, // For dissemination only to specified addresses (see <addresses>, below)
-  unknown; // Fallback field if the value from the alert is not valid
+  /// For general dissemination to unrestricted audiences
+  public,
+
+  /// For dissemination only to users with a known operational requirement (see `<restriction>`, below)
+  restricted,
+
+  /// For dissemination only to specified addresses (see `<addresses>`, below)
+  private,
+
+  /// Fallback field if the value from the alert is not valid
+  unknown;
 
   String toJson() => name;
   static Scope fromJson(String? json) {

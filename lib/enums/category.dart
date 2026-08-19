@@ -2,17 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/extensions/context.dart';
 
 enum Category {
-  geo, // Geophysical (inc. landslide)
-  met, // Meteorological (inc. flood)
-  safety, // General emergency and public safety
-  rescue, // Rescue and recovery
-  fire, // Fire suppression and rescue
-  health, //Medical and public health
-  env, //Pollution and other environmental
-  transport, //Public and private   transportation
-  infra, //Utility, telecommunication, other  non-transport infrastructure
-  cbrne, //Chemical, Biological, Radiological, Nuclear or High-Yield Explosive threat or attack
-  other; // Other events
+  /// Geophysical (inc. landslide)
+  geo,
+
+  /// Meteorological (inc. flood)
+  met,
+
+  /// General emergency and public safety
+  safety,
+
+  /// Rescue and recovery
+  rescue,
+
+  /// Fire suppression and rescue
+  fire,
+
+  /// Medical and public health
+  health,
+
+  /// Pollution and other environmental
+  env,
+
+  /// Public and private   transportation
+  transport,
+
+  /// Utility, telecommunication, other  non-transport infrastructure
+  infra,
+
+  /// Chemical, Biological, Radiological, Nuclear or High-Yield Explosive threat or attack
+  cbrne,
+
+  /// Other events
+  other;
 
   String toJson() => name;
   // static Category fromJson(String json) => values.byName(json);
