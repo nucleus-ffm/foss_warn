@@ -244,12 +244,12 @@ class _SettingsState extends ConsumerState<Settings> {
                     // was successful
                     if (result) {
                       userPreferencesService.setLocationTracking(value);
+                      if (!context.mounted) return;
+                      var locationTracker = ref.read(locationTrackerProvider);
+                      locationTracker.init(context);
+                      await locationTracker.subscribeForCurrentLocation();
+                      await AlarmManager.registerBackgroundLocationTask();
                     }
-                    if (!context.mounted) return;
-                    var locationTracker = ref.read(locationTrackerProvider);
-                    locationTracker.init(context);
-                    locationTracker.subscribeForCurrentLocation();
-                    AlarmManager.registerBackgroundLocationTask();
                   } else {
                     ref
                         .read(appStateProvider.notifier)
