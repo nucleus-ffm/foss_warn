@@ -525,12 +525,13 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                   .unifiedPushRegistered) {
                                 // ask if the user really wants to subscribe without push notifications
 
-                                bool result = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const ConfirmNoPushDialog();
-                                  },
-                                );
+                                bool result = await showDialog<bool>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return const ConfirmNoPushDialog();
+                                      },
+                                    ) ??
+                                    false;
                                 if (!context.mounted) return;
                                 if (result) {
                                   await subscribeForArea(
@@ -540,8 +541,8 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
                                     ref: ref,
                                     noPushNotification: true,
                                   );
+                                  widget.onPlaceAdded();
                                 }
-                                widget.onPlaceAdded();
                               } else {
                                 // subscribe normally with push notifications
                                 try {
