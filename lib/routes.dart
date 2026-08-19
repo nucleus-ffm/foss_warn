@@ -27,7 +27,8 @@ final routesProvider = Provider<GoRouter>(
             .select((preferences) => preferences.showWelcomeScreen),
       );
 
-      if (showWelcomeScreen) {
+      // show introduction on first start, but prevent routing loops
+      if (showWelcomeScreen && state.uri.path != '/introduction') {
         return "/introduction";
       }
       return null;
@@ -49,25 +50,25 @@ final routesProvider = Provider<GoRouter>(
         ),
         routes: [
           GoRoute(
-            path: '/introduction',
+            path: 'introduction',
             builder: (context, state) => IntroductionView(
               onFinished: () => context.go('/'),
             ),
           ),
           GoRoute(
-            path: '/about',
+            path: 'about',
             builder: (context, state) => AboutView(
               onShowLicensePressed: () => context.go('/about/license'),
             ),
             routes: [
               GoRoute(
-                path: '/license',
+                path: 'license',
                 builder: (context, state) => const LicensePage(),
               ),
             ],
           ),
           GoRoute(
-            path: '/settings',
+            path: 'settings',
             builder: (context, state) => Settings(
               onNotificationSettingsPressed: () =>
                   context.go('/settings/notifications'),
@@ -104,7 +105,7 @@ final routesProvider = Provider<GoRouter>(
                 ),
                 routes: [
                   GoRoute(
-                    path: '/log-file-viewer',
+                    path: 'log-file-viewer',
                     builder: (context, state) => const LogFileViewer(),
                   ),
                 ],
@@ -112,7 +113,7 @@ final routesProvider = Provider<GoRouter>(
             ],
           ),
           GoRoute(
-            path: '/places',
+            path: 'places',
             redirect: (context, state) => null,
             routes: [
               GoRoute(
@@ -137,7 +138,7 @@ final routesProvider = Provider<GoRouter>(
             ],
           ),
           GoRoute(
-            path: '/alerts',
+            path: 'alerts',
             redirect: (context, state) => null,
             routes: [
               GoRoute(
