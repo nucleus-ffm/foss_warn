@@ -9,6 +9,7 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
+import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/translate_and_colorize_warning.dart';
 import 'package:foss_warn/services/url_launcher.dart';
 import 'package:foss_warn/services/warnings.dart';
@@ -17,6 +18,8 @@ import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:share_plus/share_plus.dart';
+
+import '../routes.dart';
 
 List<String> _generateAreaDescriptionList({
   required WarnMessage alert,
@@ -79,21 +82,23 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var warning = ref.read(processedAlertsProvider).firstWhere(
+      var warning = ref.read(processedAlertsProvider).firstWhereOrNull(
             (alert) =>
                 alert.fpasId == widget.warningFPASIdentifer &&
                 alert.placeId == widget.subscriptionId,
           );
 
-      // update the read state of the alert
-      var alertsService = ref.read(processedAlertsProvider.notifier);
-      alertsService.updateAlert(warning.copyWith(read: true));
-      ref.invalidate(alertsFutureProvider);
+      if (warning != null) {
+        // update the read state of the alert
+        var alertsService = ref.read(processedAlertsProvider.notifier);
+        alertsService.updateAlert(warning.copyWith(read: true));
+        ref.invalidate(alertsFutureProvider);
 
-      // cancel the notification
-      await NotificationService.cancelOneNotification(
-        warning.fpasId.hashCode,
-      );
+        // cancel the notification
+        await NotificationService.cancelOneNotification(
+          warning.fpasId.hashCode,
+        );
+      }
     });
   }
 
@@ -110,13 +115,29 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
 
     var userPreferences = ref.watch(userPreferencesProvider);
 
-    WarnMessage warning = ref.watch(
+    WarnMessage? warning = ref.watch(
       processedAlertsProvider.select(
-        (value) => value.firstWhere(
-          (element) => element.fpasId == widget.warningFPASIdentifer,
+        (value) => value.firstWhereOrNull(
+          (alert) =>
+              alert.fpasId == widget.warningFPASIdentifer &&
+              alert.placeId == widget.subscriptionId,
         ),
       ),
     );
+
+    // check if the waring still exists, and return user to home screen if not
+    if (warning == null) {
+      debugPrint("Alert gone, returning to home screen");
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        var routes = ref.read(routesProvider);
+        routes.go("/");
+      });
+      return const Scaffold(
+        body: Center(
+          child: Text("No alert to display."),
+        ),
+      );
+    }
 
     List<String> areaDescriptionList = _generateAreaDescriptionList(
       alert: warning,
