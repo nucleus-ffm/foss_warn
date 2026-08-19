@@ -357,7 +357,7 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
   }
 
   Future<void> setShowUpdateDialog(bool value) async {
-    state = state.copyWith(showDebugNotification: value);
+    state = state.copyWith(showUpdateDialog: value);
     await _sharedPreferences.setBool("showUpdateDialog", value);
   }
 
