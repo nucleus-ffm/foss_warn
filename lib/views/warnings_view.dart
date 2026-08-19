@@ -27,7 +27,8 @@ class WarningsView extends ConsumerWidget {
 
     // just to keep the timer running
     ref.watch(alertsProvider);
-    var processedAlerts = ref.watch(processedAlertsProvider);
+    var processedAlerts = ref.watch(
+        processedAlertsProvider); // @TODO this ignores the sorting preference
 
     // Just to detect if we have an error while polling for alerts.
     // We don't actually use the value otherwise.
@@ -41,7 +42,6 @@ class WarningsView extends ConsumerWidget {
               (warning) => warning.placeId == place.id,
             )) ...[
               WarningWidget(
-                place: place,
                 warnMessage: warning,
                 isMyPlaceWarning: true,
                 onAlertPressed: onAlertPressed,
