@@ -105,6 +105,7 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
         e.toString(),
       );
     }
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -127,7 +128,7 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
       locationLookupInProgress = true;
     });
     var locationTracker = ref.read(locationTrackerProvider);
-    LocationTracker.checkLocationPermission(context);
+    await LocationTracker.checkLocationPermission(context);
     Position? pos = await locationTracker.determinePosition(exactPositon: true);
     if (pos != null) {
       LatLng currentLocation = LatLng(pos.latitude, pos.longitude);
@@ -143,6 +144,7 @@ class _MapWidgetState extends ConsumerState<MapWidget> {
         ],
       );
     }
+    if (!mounted) return;
     setState(() {
       locationLookupInProgress = false;
     });

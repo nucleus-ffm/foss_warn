@@ -85,6 +85,7 @@ class _VectorMapWidgetState extends State<VectorMapWidget> {
       // ignore: avoid_print
       print(stack);
     }
+    if (!mounted) return;
     setState(() {});
   }
 
