@@ -229,7 +229,7 @@ class LocationTracker {
       if (currentLocationPlace.subscriptionId != null) {
         var alertAPi = ref.read(alertApiProvider);
         try {
-          alertAPi.unregisterArea(
+          await alertAPi.unregisterArea(
             subscriptionId: currentLocationPlace.subscriptionId!,
           );
           await ref
