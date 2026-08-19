@@ -178,7 +178,7 @@ class WarningWidget extends ConsumerWidget {
                       child: Row(
                         children: [
                           Text(
-                            formatSentDate(_warnMessage.sent),
+                            formatSentDate(_warnMessage.sent, context),
                             style: const TextStyle(fontSize: 12),
                           ),
                           const SizedBox(width: 20),

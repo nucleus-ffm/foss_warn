@@ -147,7 +147,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     Future<void> onSharePressed() async {
       var shareText = warning.info[0].headline;
       shareText +=
-          "\n\n${localizations.warning_from(formatSentDate(warning.sent))}";
+          "\n\n${localizations.warning_from(formatSentDate(warning.sent, context))}";
       shareText += "\n\n${localizations.warning_context_information}";
       shareText +=
           "\n${localizations.warning_type(warning.messageType.getLocalizedName(context))}";
@@ -196,7 +196,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
               ),
               const SizedBox(height: 10),
               Text(
-                "${localizations.warning_from_title}: ${formatSentDate(warning.sent)}",
+                "${localizations.warning_from_title}: ${formatSentDate(warning.sent, context)}",
                 style: TextStyle(
                   fontSize: userPreferences.warningFontSize,
                   fontWeight: FontWeight.bold,
@@ -206,7 +206,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 1),
                   child: Text(
-                    "${localizations.warning_effective} ${formatSentDate(warning.info[0].effective ?? "n.a.")}",
+                    "${localizations.warning_effective} ${formatSentDate(warning.info[0].effective ?? "n.a.", context)}",
                     style: TextStyle(
                       fontSize: userPreferences.warningFontSize,
                       fontWeight: FontWeight.bold,
@@ -218,7 +218,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 1, bottom: 1),
                   child: Text(
-                    "${localizations.warning_onset} ${formatSentDate(warning.info[0].onset ?? "n.a.")}",
+                    "${localizations.warning_onset} ${formatSentDate(warning.info[0].onset ?? "n.a.", context)}",
                     style: TextStyle(
                       fontSize: userPreferences.warningFontSize,
                       fontWeight: FontWeight.bold,
@@ -230,7 +230,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 1, bottom: 1),
                   child: Text(
-                    "${localizations.warning_expires} ${formatSentDate(warning.info[0].expires ?? "n.a.")}",
+                    "${localizations.warning_expires} ${formatSentDate(warning.info[0].expires ?? "n.a.", context)}",
                     style: TextStyle(
                       fontSize: userPreferences.warningFontSize,
                       fontWeight: FontWeight.bold,
