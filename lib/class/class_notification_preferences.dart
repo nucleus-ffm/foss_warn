@@ -104,7 +104,10 @@ class NotificationPreferences {
     UserPreferences userPreferences,
   ) {
     final notificationSettings = userPreferences.notificationSourceSetting;
-    final alertSeverityIndex = Severity.getIndexFromSeverity(alertSeverity);
+    // An unknown severity must not silently drop the alert.
+    final effectiveSeverity =
+        alertSeverity == Severity.unknown ? Severity.moderate : alertSeverity;
+    final alertSeverityIndex = Severity.getIndexFromSeverity(effectiveSeverity);
     final globalNotificationLevel = Severity.getIndexFromSeverity(
       notificationSettings.globalNotificationLevel,
     );

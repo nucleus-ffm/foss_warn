@@ -166,4 +166,22 @@ void main() {
       }
     },
   );
+
+  test('test for unknown severity', () {
+    Map<Category, Severity> catLevelMap = {};
+    NotificationPreferences notificationPreferences =
+        createNotificationPreferences(Severity.minor, catLevelMap);
+    UserPreferences userPreferences =
+        createUserPreferences(notificationPreferences);
+    expect(
+      NotificationPreferences.checkIfEventShouldBeNotified(
+        Severity.unknown,
+        [Category.other],
+        userPreferences,
+      ),
+      true,
+      reason:
+          "We should get a notification for alerts fro which we don't know the severity level",
+    );
+  });
 }

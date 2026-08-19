@@ -358,6 +358,7 @@
     "warning_status_system": "system",
     "warning_status_test": "test",
     "warning_status_draft": "draft",
+    "warning_status_unknown": "unknown",
     "warning_urgency_immediate": "immediate",
     "warning_urgency_expected": "expected",
     "warning_urgency_future": "future",
