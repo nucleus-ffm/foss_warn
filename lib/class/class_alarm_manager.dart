@@ -47,7 +47,7 @@ Future<void> backgroundPollingCallback() async {
           container.read(userPreferencesProvider),
         )) {
           await NotificationService.showNotification(
-            id: alert.identifier.hashCode,
+            id: alert.fpasId.hashCode,
             title: "New alert: ${alert.info.first.headline}",
             body: alert.info.first.description
                 .substring(0, min(alert.info.first.description.length, 150)),

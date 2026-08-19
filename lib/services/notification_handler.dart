@@ -54,7 +54,8 @@ void handleDebugNotification(String payload, WidgetRef ref) {
 
   if (userPreferences.showDebugNotification) {
     NotificationService.showNotification(
-      id: Random().nextInt(100),
+      // ensure that the first 10 ids are not used, as there are used for other notifications
+      id: Random().nextInt(100) + 10,
       title: "DEBUG Notification",
       body: "FOSSWarn has received a push notification with content: $payload",
       payload: "",

@@ -302,7 +302,7 @@ Future<void> showNotification(
       } else {
         await NotificationService.showNotification(
           // show notification as update only -> less distributive
-          id: warning.identifier.hashCode,
+          id: warning.fpasId.hashCode,
           title: "$placeName: ${warning.info[0].headline}",
           body: warning.info[0].headline,
           payload: placeName,
