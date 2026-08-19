@@ -652,5 +652,10 @@
     "alert_archive_no_alert": "Nothing here yet. Waiting for the first alert to archive...",
     "help_tooltip": "Learn more in the docs",
     "select_unified_push_distributor_title": "Select push distributor",
-    "select_unified_push_distributor_subtitle": "Please select the UnifiedPush distributor which FOSSWarn should use."
+    "select_unified_push_distributor_subtitle": "Please select the UnifiedPush distributor which FOSSWarn should use.",
+    "system_information_dialog_title": "System information",
+    "system_information_copy_action": "Copy",
+    "system_information_copy_confirmation": "Copied",
+    "collect_system_information_system_information": "System information",
+    "collect_system_information_battery_optimization": "Battery optimization"
 }
