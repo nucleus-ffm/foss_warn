@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -265,19 +266,26 @@ class UnifiedPushHandler {
     await unregisterDistributor();
     await saveDistributor(selectedDistributor, ref);
     // wait until the registration is finished and we have a new endpoint
-    await Future.doWhile(() async {
-      await Future.delayed(const Duration(microseconds: 1));
-      UserPreferences userPreferences = ref.read(userPreferencesProvider);
-      return !userPreferences.unifiedPushRegistered;
-    }).timeout(
-      const Duration(seconds: 20),
-      onTimeout: () {
-        debugPrint(
-          "Timeout waiting for unifiedPushRegistered to be set to true.",
-        );
-        throw UnifiedPushRegistrationTimeoutError();
-      },
-    );
+
+    final completer = Completer<void>();
+    final sub = ref.listenManual(userPreferencesProvider, (_, next) {
+      if (next.unifiedPushRegistered && !completer.isCompleted) {
+        completer.complete();
+      }
+    });
+    try {
+      await completer.future.timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          debugPrint(
+            "Timeout waiting for unifiedPushRegistered to be set to true.",
+          );
+          throw UnifiedPushRegistrationTimeoutError();
+        },
+      );
+    } finally {
+      sub.close();
+    }
   }
 
   /// Register for notifications with the given distributor

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -70,19 +71,25 @@ Future<String> _subscribeForAreaWithPushNotifications({
   );
   // wait for the registration to finish.
   if (!userPreferences.unifiedPushRegistered) {
-    await Future.doWhile(() async {
-      await Future.delayed(const Duration(microseconds: 1));
-      userPreferences = ref.read(userPreferencesProvider);
-      return !userPreferences.unifiedPushRegistered;
-    }).timeout(
-      const Duration(seconds: 20),
-      onTimeout: () {
-        debugPrint(
-          "Timeout waiting for unifiedPushRegistered to be set to true.",
-        );
-        throw UnifiedPushRegistrationTimeoutError();
-      },
-    );
+    final completer = Completer<void>();
+    final sub = ref.listenManual(userPreferencesProvider, (_, next) {
+      if (next.unifiedPushRegistered && !completer.isCompleted) {
+        completer.complete();
+      }
+    });
+    try {
+      await completer.future.timeout(
+        const Duration(seconds: 20),
+        onTimeout: () {
+          debugPrint(
+            "Timeout waiting for unifiedPushRegistered to be set to true.",
+          );
+          throw UnifiedPushRegistrationTimeoutError();
+        },
+      );
+    } finally {
+      sub.close();
+    }
   }
 
   // subscribe for new area and create new place
