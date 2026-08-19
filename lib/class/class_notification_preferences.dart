@@ -16,7 +16,7 @@ class NotificationPreferences {
 
   factory NotificationPreferences.fromJson(Map<String, dynamic> json) {
     return NotificationPreferences(
-      disabled: json['disabled'],
+      disabled: json['disabled'] ?? false,
       globalNotificationLevel: Severity.fromJson(json['notificationLevel']),
       categoryNotificationLevel: json['categoryNotificationLevel'] != null
           ? _parseCategoryNotificationLevelList(
