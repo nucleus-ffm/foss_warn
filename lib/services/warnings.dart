@@ -184,13 +184,16 @@ final alertsProvider = Provider<List<WarnMessage>>((ref) {
   List<WarnMessage> sortWarnings(List<WarnMessage> warnings) {
     var sortedWarnings = List<WarnMessage>.of(warnings);
 
-    if (userPreferences.sortWarningsBy == SortingCategories.severity) {
-      sortedWarnings.sort(
-        (a, b) => Severity.getIndexFromSeverity(a.info[0].severity)
-            .compareTo(Severity.getIndexFromSeverity(b.info[0].severity)),
-      );
-    } else if (userPreferences.sortWarningsBy == SortingCategories.data) {
-      sortedWarnings.sort((a, b) => b.sent.compareTo(a.sent));
+    switch (userPreferences.sortWarningsBy) {
+      case SortingCategories.severity:
+        sortedWarnings.sort(
+          (a, b) => Severity.getIndexFromSeverity(a.info[0].severity)
+              .compareTo(Severity.getIndexFromSeverity(b.info[0].severity)),
+        );
+      case SortingCategories.data:
+        sortedWarnings.sort((a, b) => b.sent.compareTo(a.sent));
+      case SortingCategories.source:
+        sortedWarnings.sort((a, b) => b.sender.compareTo(a.sender));
     }
 
     return sortedWarnings;

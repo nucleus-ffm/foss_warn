@@ -159,7 +159,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
           "\n\n${localizations.warning_description(_replaceHTMLTags(warning.info[0].description))}";
       shareText +=
           "\n\n${localizations.warning_recommended_action(_replaceHTMLTags(warning.info[0].instruction ?? "n.a."))}";
-      shareText += "\n\n${localizations.warning_source(warning.publisher)}";
+      shareText += "\n\n${localizations.warning_source(warning.sender)}";
       shareText += "\n\n-- ${localizations.warning_shared_by_foss_warn} --";
       String shareSubject = warning.info[0].headline;
 
