@@ -21,7 +21,7 @@ enum ResponseType {
   //assess,
 
   /// The subject event no longer poses a threat or concern and any follow action is described in `<instruction>`
-  allClear,
+  allclear,
 
   /// No action recommended
   none,

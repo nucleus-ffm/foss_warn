@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../enums/category.dart';
 import '../enums/certainty.dart';
 import '../enums/response_type.dart';
@@ -51,6 +49,10 @@ class Info {
   final List<Area> area;
 
   Info({
+    this.language,
+    this.responseType,
+    this.audience,
+    this.eventCode,
     required this.category,
     required this.event,
     required this.urgency,
@@ -69,6 +71,10 @@ class Info {
 
   factory Info.fromJson(Map<String, dynamic> json) {
     return Info(
+      language: json['language'],
+      responseType: ResponseType.fromJson(json['responseType']),
+      audience: json['audience'],
+      //eventCode: json['eventCode'], // @TODO check that again
       category: Category.categoryListFromJson(
         (json['category'] as List).map((e) => e as String).toList(),
       ),
@@ -113,6 +119,10 @@ class Info {
     }
 
     return Info(
+      language: json['language'],
+      responseType: ResponseType.fromJson(json['responseType']),
+      audience: json['audience'],
+      //eventCode: json['eventCode'], //@TODO check that again
       category: categories,
       event: json['event'],
       urgency: Urgency.fromJson(json['urgency']),
@@ -135,12 +145,12 @@ class Info {
         'language': language,
         'event': event,
         'category': category,
-        'responseType': responseType,
+        'responseType': responseType?.toJson(),
         'urgency': urgency,
         'severity': severity,
         'certainty': certainty,
         'audience': audience,
-        'eventCode': jsonEncode(eventCode), //@TODO verify that this is required
+        //'eventCode': jsonEncode(eventCode), //@TODO verify that this is required
         'effective': effective,
         'onset': onset,
         'expires': expires,
