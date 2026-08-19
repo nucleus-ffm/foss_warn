@@ -7,16 +7,19 @@ Uri? extractWebAddress(String text) {
     // extract address from HTML-formatted tag
     int beginIndex = text.indexOf("href=\"") + 6;
     int endIndex = text.indexOf("\"", beginIndex);
-    text = text.substring(beginIndex, endIndex);
+    if (beginIndex != -1 && endIndex != -1) {
+      text = text.substring(beginIndex, endIndex);
+    }
   }
 
   // if the url is an email address, try adding a mailto and launch this
   final RegExp emailAddressRegEx = RegExp(
     r"""(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])""",
   );
-  if (emailAddressRegEx.firstMatch(text) != null) {
+  RegExpMatch? match = emailAddressRegEx.firstMatch(text);
+  if (match != null) {
     if (!text.startsWith("mailto:")) {
-      text = "mailto:$text";
+      text = "mailto:${match.group(0)}";
     }
 
     return Uri.parse(text);
@@ -24,7 +27,7 @@ Uri? extractWebAddress(String text) {
 
   // if the url does not have a protocol, we use http
   // e.g. www.example.de -> http://www.example.de, example.de -> http://example.de
-  if (!(text.startsWith("http") || text.startsWith("https"))) {
+  if (!text.startsWith("http")) {
     text = "http://$text";
   }
 
@@ -32,9 +35,9 @@ Uri? extractWebAddress(String text) {
     r"((http|https)://)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)",
   );
 
-  final RegExpMatch? match = webAddressRegEx.firstMatch(text);
-  if (match != null && match.start == 0 && match.end == text.length) {
-    return Uri.parse(text);
+  match = webAddressRegEx.firstMatch(text);
+  if (match != null && match.group(0) != null) {
+    return Uri.parse(match.group(0)!);
   }
 
   return null;
@@ -87,8 +90,8 @@ String? extractPhoneNumber(String text) {
   );
 
   final RegExpMatch? match = phoneNumberRegex.firstMatch(text);
-  if (match != null && match.start != -1 && match.end != -1) {
-    return text.substring(match.start, match.end);
+  if (match != null && match.group(0) != null) {
+    return match.group(0)!;
   }
 
   return null;
