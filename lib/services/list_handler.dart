@@ -124,6 +124,8 @@ extension UpdateListEntry<T> on List<T> {
   List<T> updateEntry(T element) {
     int index = indexOf(element);
 
+    // Catch element not found case. This should not happen, but just to be sure
+    if (index == -1) return [...this, element];
     return [
       ...sublist(0, index),
       element,
