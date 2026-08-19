@@ -52,7 +52,7 @@ android {
     defaultConfig {
         applicationId "de.nucleus.foss_warn"
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
