@@ -92,7 +92,6 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
         // update the read state of the alert
         var alertsService = ref.read(processedAlertsProvider.notifier);
         alertsService.updateAlert(warning.copyWith(read: true));
-        ref.invalidate(alertsFutureProvider);
 
         // cancel the notification
         await NotificationService.cancelOneNotification(
