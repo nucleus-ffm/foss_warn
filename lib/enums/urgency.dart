@@ -9,7 +9,13 @@ enum Urgency {
   unknown; // Urgency not known
 
   String toJson() => name;
-  static Urgency fromJson(String json) => values.byName(json.toLowerCase());
+  static Urgency fromJson(String? json) {
+    try {
+      return values.byName(json!.toLowerCase());
+    } catch (e) {
+      return unknown;
+    }
+  }
 
   /// extract the urgency from the string and return the corresponding enum
   static Urgency fromString(String urgency) {

@@ -7,11 +7,17 @@ enum ResponseType {
   monitor, // Attend to information sources as described in <instruction>
   // assess, // Evaluate the information in this  message. (This value SHOULD NOT beused in public warning applications.)
   allClear, // The subject event no longer poses a threat or concern and any followon action is described in <instruction>
-  none; // No action recommended
+  none, // No action recommended
+  unknown; // Fallback value if the value in the alert is valid
 
   String toJson() => name;
-  static ResponseType fromJson(String json) =>
-      values.byName(json.toLowerCase());
+  static ResponseType fromJson(String? json) {
+    try {
+      return values.byName(json!.toLowerCase());
+    } catch (e) {
+      return unknown;
+    }
+  }
 
   /// extract the severity from the string and return the corresponding enum
   static ResponseType fromString(String responseType) {

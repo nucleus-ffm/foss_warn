@@ -6,10 +6,17 @@ enum Status {
   exercise, // Actionable only by designated exercise participants
   system, // For messages that support alert network internal functions
   test, // Technical testing only, all recipients disregard
-  draft; // A preliminary template or draft, not actionable in its current form
+  draft, // A preliminary template or draft, not actionable in its current form
+  unknown; // fallback field when the value from the alert is not valid
 
   String toJson() => name;
-  static Status fromJson(String json) => values.byName(json.toLowerCase());
+  static Status fromJson(String? json) {
+    try {
+      return values.byName(json!.toLowerCase());
+    } catch (e) {
+      return unknown;
+    }
+  }
 
   /// extract the severity from the string and return the corresponding enum
   static Status fromString(String status) {
@@ -30,6 +37,7 @@ enum Status {
       system => localizations.warning_status_system,
       test => localizations.warning_status_test,
       draft => localizations.warning_status_draft,
+      unknown => localizations.warning_status_unknown,
     };
   }
 }

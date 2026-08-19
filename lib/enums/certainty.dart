@@ -10,7 +10,13 @@ enum Certainty {
   other; // not part of CAP
 
   String toJson() => name;
-  static Certainty fromJson(String json) => values.byName(json.toLowerCase());
+  static Certainty fromJson(String? json) {
+    try {
+      return values.byName(json!.toLowerCase());
+    } catch (e) {
+      return unknown;
+    }
+  }
 
   String getLocalizedName(BuildContext context) {
     var localizations = context.localizations;

@@ -9,9 +9,9 @@ enum Severity {
   unknown; // Severity unknown
 
   String toJson() => name;
-  static Severity fromJson(String json) {
+  static Severity fromJson(String? json) {
     try {
-      return values.byName(json.toLowerCase());
+      return values.byName(json!.toLowerCase());
     } catch (e) {
       debugPrint("[Severity] no value found: $e");
       return Severity.unknown;
@@ -21,7 +21,7 @@ enum Severity {
   /// extract the severity from the string and return the corresponding enum
   static Severity fromString(String severity) {
     for (Severity sev in Severity.values) {
-      if (sev.name == severity) {
+      if (sev.name == severity.toLowerCase()) {
         return sev;
       }
     }

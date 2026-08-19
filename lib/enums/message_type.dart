@@ -6,10 +6,17 @@ enum MessageType {
   update, // Updates and supercedes the earlier message(s) identified in <references>
   cancel, // Cancels the earlier message(s) identified in <references>
   ack, // Acknowledges receipt and acceptance of the message(s) identified in <references>
-  error; // Indicates rejection of the message(s) identified in <references>; explanation SHOULD appear in <note>
+  error, // Indicates rejection of the message(s) identified in <references>; explanation SHOULD appear in <note>
+  unknown; // Fallback field if the value from the alert is not valid
 
   String toJson() => name;
-  static MessageType fromJson(String json) => values.byName(json.toLowerCase());
+  static MessageType fromJson(String? json) {
+    try {
+      return values.byName(json!.toLowerCase());
+    } catch (e) {
+      return unknown;
+    }
+  }
 
   /// extract the severity from the string and return the corresponding enum
   static MessageType fromString(String messageType) {
@@ -30,6 +37,7 @@ enum MessageType {
       cancel => localizations.explanation_warning_level_all_clear,
       ack => localizations.explanation_warning_level_ack,
       error => localizations.explanation_warning_level_error,
+      unknown => localizations.warning_status_unknown,
     };
   }
 
