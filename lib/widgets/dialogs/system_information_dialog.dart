@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foss_warn/extensions/context.dart';
 import '../../services/collect_system_info.dart';
 
 class SystemInformationDialog extends StatefulWidget {
@@ -13,15 +14,16 @@ class SystemInformationDialog extends StatefulWidget {
 class _SystemInformationDialogState extends State<SystemInformationDialog> {
   @override
   Widget build(BuildContext context) {
+    var localization = context.localizations;
     return FutureBuilder<String>(
-      future: collectSystemInfo(),
+      future: collectSystemInfo(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
             final String data = snapshot.data!;
             debugPrint(data);
             return AlertDialog(
-              title: const Text("Systeminformationen"),
+              title: Text(localization.system_information_dialog_title),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -35,9 +37,9 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: data));
                     final snackBar = SnackBar(
-                      content: const Text(
-                        "Kopiert",
-                        style: TextStyle(color: Colors.black),
+                      content: Text(
+                        localization.system_information_copy_confirmation,
+                        style: const TextStyle(color: Colors.black),
                       ),
                       backgroundColor: Colors.green[100],
                     );
@@ -45,7 +47,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   child: Text(
-                    "Kopieren",
+                    localization.system_information_copy_action,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -56,7 +58,7 @@ class _SystemInformationDialogState extends State<SystemInformationDialog> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    "Schließen",
+                    localization.main_dialog_close,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
