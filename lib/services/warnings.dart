@@ -88,6 +88,8 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
         alertsForPlaces.reduce((value, element) => value + element);
   } catch (e) {
     debugPrint("[warnings] Tried to get alerts forPlaces and failed with $e");
+    var userPreferencesNotifier = ref.read(userPreferencesProvider.notifier);
+    userPreferencesNotifier.setAreWarningsFromCache(true);
     throw AlertRetrievalError();
   }
 
