@@ -67,6 +67,13 @@ class _SettingsState extends ConsumerState<Settings> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    frequencyController.dispose();
+    fpasServerURLController.dispose();
+    super.dispose();
+  }
+
   Widget _settingsTag(String message) {
     return Container(
       margin: const EdgeInsets.only(bottom: 1),

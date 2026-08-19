@@ -42,8 +42,8 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
 
   @override
   void dispose() {
-    super.dispose();
     maxSizeOfSubscriptionBoundingBox.dispose();
+    super.dispose();
   }
 
   @override
