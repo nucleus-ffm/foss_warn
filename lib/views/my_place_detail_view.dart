@@ -101,7 +101,6 @@ class MyPlaceDetailScreen extends ConsumerWidget {
               onAlertPressed: onAlertPressed,
               onAlertUpdateThreadPressed: onAlertUpdateThreadPressed,
               warnMessage: listWarn[0],
-              place: place,
               updateThread: listWarn,
               isMyPlaceWarning: true,
             ),

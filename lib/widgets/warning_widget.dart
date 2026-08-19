@@ -17,7 +17,6 @@ class WarningWidget extends ConsumerWidget {
     required bool isMyPlaceWarning,
     required this.onAlertPressed,
     required this.onAlertUpdateThreadPressed,
-    Place? place,
     List<WarnMessage>? updateThread,
     super.key,
   })  : _warnMessage = warnMessage,
