@@ -657,5 +657,16 @@
     "system_information_copy_action": "Copy",
     "system_information_copy_confirmation": "Copied",
     "collect_system_information_system_information": "System information",
-    "collect_system_information_battery_optimization": "Battery optimization"
+    "collect_system_information_battery_optimization": "Battery optimization",
+    "alert_update_thread_title": "Update thread for {alert}",
+    "@alert_update_thread_title": {
+            "description": "The alert of the thread",
+            "placeholder": {
+                "alert": {
+                    "type": "String"
+                }
+            }
+        },
+    "alert_update_thread_latest_version": "latest version of the alert",
+    "alert_update_thread_previous_updates": "previous updates of this alert"
 }

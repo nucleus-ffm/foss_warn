@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
+import 'package:foss_warn/extensions/context.dart';
 
 import '../widgets/warning_widget.dart';
 
@@ -35,6 +36,7 @@ class AlertUpdateThreadView extends ConsumerStatefulWidget {
 class _AlertUpdateThreadViewState extends ConsumerState<AlertUpdateThreadView> {
   @override
   Widget build(BuildContext context) {
+    var localization = context.localizations;
     var alertUpdateThreadViewModel =
         ref.read(alertUpdateThreadViewModelProvider)!;
     var latestAlert = alertUpdateThreadViewModel.latestAlert;
@@ -43,12 +45,14 @@ class _AlertUpdateThreadViewState extends ConsumerState<AlertUpdateThreadView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update thread for ${latestAlert.identifier}"),
+        title: Text(
+          localization.alert_update_thread_title(latestAlert.identifier),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Text("latest version of the alert"),
+            Text(localization.alert_update_thread_latest_version),
             WarningWidget(
               onAlertPressed: widget.onAlertPressed,
               onAlertUpdateThreadPressed: widget.onAlertUpdateThreadPressed,
@@ -58,7 +62,7 @@ class _AlertUpdateThreadViewState extends ConsumerState<AlertUpdateThreadView> {
             const SizedBox(
               height: 10,
             ),
-            const Text("previous updates of this alert"),
+            Text(localization.alert_update_thread_previous_updates),
             const SizedBox(
               height: 10,
             ),
