@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/extensions/context.dart';
 
 enum Severity {
-  extreme, // Extraordinary threat to life or property
-  severe, // Significant threat to life or property
-  moderate, // Possible threat to life or property
-  minor, // Minimal to no known threat to life or property
-  unknown; // Severity unknown
+  /// Extraordinary threat to life or property
+  extreme,
+
+  /// Significant threat to life or property
+  severe,
+
+  /// Possible threat to life or property
+  moderate,
+
+  /// Minimal to no known threat to life or property
+  minor,
+
+  /// Severity unknown
+  unknown;
 
   String toJson() => name;
   static Severity fromJson(String? json) {

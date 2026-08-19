@@ -2,12 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:foss_warn/extensions/context.dart';
 
 enum Certainty {
-  observed, // Determined to have occurred or to be ongoing
-  likely, // Likely (p > ~50%)
-  possible, // Possible but not likely (p <=  ~50%)
-  unlikely, // Not expected to occur (p ~ 0)
-  unknown, // Certainty unknown
-  other; // not part of CAP
+  /// Determined to have occurred or to be ongoing
+  observed,
+
+  /// Likely (p > ~50%)
+  likely,
+
+  /// Possible but not likely (p <=  ~50%)
+  possible,
+
+  /// Not expected to occur (p ~ 0)
+  unlikely,
+
+  /// Certainty unknown
+  unknown,
+
+  /// not part of CAP
+  other;
 
   String toJson() => name;
   static Certainty fromJson(String? json) {
