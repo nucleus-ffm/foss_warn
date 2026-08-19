@@ -92,7 +92,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
 
       // cancel the notification
       await NotificationService.cancelOneNotification(
-        warning.identifier.hashCode,
+        warning.fpasId.hashCode,
       );
     });
   }
