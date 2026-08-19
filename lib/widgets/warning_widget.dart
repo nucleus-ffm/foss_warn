@@ -68,7 +68,6 @@ class WarningWidget extends ConsumerWidget {
           var alertsService = ref.read(processedAlertsProvider.notifier);
           alertsService
               .updateAlert(_warnMessage.copyWith(read: !_warnMessage.read));
-          ref.invalidate(alertsFutureProvider);
         },
         icon: _warnMessage.read
             ? const Icon(
