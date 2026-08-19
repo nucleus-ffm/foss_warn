@@ -85,14 +85,14 @@ class NotificationService {
     String? payload,
     required NotificationChannel channel,
   }) async {
-    _flutterLocalNotificationsPlugin.show(
+    await _flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
       _getNotificationsDetails(channel),
       payload: payload,
     );
-    showNotificationSummary();
+    await showNotificationSummary();
   }
 
   /// Show a notification summary. This is used on Android < 7.0 instead of the collabsed
