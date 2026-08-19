@@ -21,7 +21,7 @@ class ConnectionError extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var localizations = context.localizations;
-    var myPlaceProvider = ref.watch(myPlacesProvider.notifier);
+    var places = ref.watch(myPlacesProvider);
     var appState = ref.watch(appStateProvider);
     var theme = Theme.of(context);
 
@@ -103,7 +103,7 @@ class ConnectionError extends ConsumerWidget {
       );
     }
 
-    if (myPlaceProvider.places.hasExpiredPlaces) {
+    if (places.hasExpiredPlaces) {
       return InkWell(
         onTap: () => showDialog(
           context: context,
