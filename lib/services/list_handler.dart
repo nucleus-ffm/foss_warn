@@ -134,7 +134,5 @@ extension UpdateListEntry<T> on List<T> {
   }
 }
 
-List<String> notificationSettingsImportance = [];
 // used if showAllWarnings is enabled to store all warnings
 List<WarnMessage> mapWarningsList = [];
-List<Place> allAvailablePlacesNames = [];
