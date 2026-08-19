@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:foss_warn/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,6 +51,7 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   late int selectedIndex;
   late bool startedWithIntroduction;
+  StreamSubscription<String?>? _notificationSubscription;
 
   /// setup push notifications and alarm manager
   ///
@@ -95,8 +98,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
     var userPreferences = ref.read(userPreferencesProvider);
     selectedIndex = userPreferences.startScreen;
 
-    NotificationService.onNotification.stream.listen(onClickedNotification);
-    startedWithIntroduction = userPreferences.showWelcomeScreen;
+    _notificationSubscription =
+        NotificationService.onNotification.stream.listen(onClickedNotification);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (userPreferences.showUpdateDialog) {
@@ -106,9 +109,16 @@ class _HomeViewState extends ConsumerState<HomeView> {
     setup();
   }
 
+  @override
+  void dispose() {
+    _notificationSubscription?.cancel();
+    super.dispose();
+  }
+
   void onClickedNotification(String? payload) {
     // Change view to "MyPlaces"
     selectedIndex = 1;
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -120,13 +130,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
     // this checks if the state of the showIntroductionScreen changed since
     // creating this widget and if yes, the introduction is done
     // and we can setup UnifiedPush etc.
-    bool startedWithIntroductionNow = ref.watch(
+    // the state of showWelcomeScreen is updated at the end of the introduction view
+    ref.listen(
       userPreferencesProvider
           .select((userPreferences) => userPreferences.showWelcomeScreen),
+      (_, __) => unawaited(setup()),
     );
-    if (startedWithIntroduction != startedWithIntroductionNow) {
-      setup();
-    }
 
     var places = ref.watch(myPlacesProvider);
     ref.watch(selfCheckProvider);
