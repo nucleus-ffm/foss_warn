@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:math';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +49,8 @@ Future<void> backgroundPollingCallback() async {
           await NotificationService.showNotification(
             id: alert.identifier.hashCode,
             title: "New alert: ${alert.info.first.headline}",
-            body: alert.info.first.description.substring(0, 100),
+            body: alert.info.first.description
+                .substring(0, min(alert.info.first.description.length, 150)),
             channel:
                 NotificationChannel.fromSeverity(alert.info.first.severity),
           );
