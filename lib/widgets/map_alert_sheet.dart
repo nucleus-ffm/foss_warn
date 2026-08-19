@@ -34,11 +34,11 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
     // the alerts for this area
     BoundingBox boundingBox = BoundingBox(
       minLatLng: LatLng(
-        coordinates.latitude + areaSelectionRadius,
+        coordinates.latitude - areaSelectionRadius,
         coordinates.longitude - areaSelectionRadius,
       ),
       maxLatLng: LatLng(
-        coordinates.latitude - areaSelectionRadius,
+        coordinates.latitude + areaSelectionRadius,
         coordinates.longitude + areaSelectionRadius,
       ),
     );
@@ -46,7 +46,7 @@ class _MapAlertSheetState extends State<MapAlertSheet> {
       placeId: constants.noPlaceId,
       boundingBox: boundingBox,
     );
-    if (results != []) {
+    if (results.isNotEmpty) {
       alerts = await Future.wait(
         [
           for (var alert in results) ...[
