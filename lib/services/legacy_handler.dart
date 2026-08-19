@@ -12,8 +12,8 @@ import '../widgets/dialogs/update_dialog.dart';
 Future<void> legacyHandler() async {
   var preferences = SharedPreferencesState.instance;
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  int currentVersionCode = int.parse(packageInfo.buildNumber);
   try {
+    int currentVersionCode = int.parse(packageInfo.buildNumber);
     if (preferences.containsKey("previousInstalledVersionCode")) {
       // we have a version information. This is an update
 
