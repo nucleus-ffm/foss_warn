@@ -22,21 +22,27 @@ import '../class/class_error_logger.dart';
 
 class AlertRetrievalError implements Exception {}
 
+/// The alerts we know about.
+///
+/// This is the single source of truth: it is seeded from disk, persisted on
+/// every change and holds the state the user and the app change over time
+/// (`read` and `notified`). Everything that modifies an alert goes through the
+/// notifier of this provider.
+///
+/// Anything derived from the alerts - the update relations and the sorting -
+/// belongs in [alertsProvider], which is what the views render.
 final processedAlertsProvider =
     StateNotifierProvider<WarningService, List<WarnMessage>>(
-  (ref) {
-    return WarningService(
-      userPreferences: ref.watch(userPreferencesProvider),
-      userPreferencesService: ref.watch(userPreferencesProvider.notifier),
-      places: ref.watch(myPlacesProvider),
-    );
-  },
+  WarningService.new,
 );
 
-/// Fetches alerts for all subscriptions.
+/// Fetches alerts for all subscriptions and reconciles them with the store.
+///
 /// Any new alerts will be fetched completely, any we already know about
-/// will be retrieved from cache instead.
-final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
+/// will be retrieved from cache instead. The result of the fetch lands in
+/// [processedAlertsProvider]; this provider returns nothing and only exists so
+/// the UI can watch its [AsyncValue] for the loading and error state.
+final alertsFutureProvider = FutureProvider<void>((ref) async {
   var alertApi = ref.read(alertApiProvider);
   List<Place> places = [];
   places = ref.read(myPlacesProvider);
@@ -46,7 +52,11 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
     places = await ref.read(cachedPlacesProvider.future);
   }
 
-  if (places.isEmpty) return [];
+  if (places.isEmpty) {
+    // nothing to fetch, so nothing can be out of date either
+    ref.read(appStateProvider.notifier).setAreWarningsFromCache(false);
+    return;
+  }
 
   // Fetch all available alerts
   List<AlertApiResult> retrievedAlerts;
@@ -128,11 +138,11 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
       .whereType<WarnMessage>()
       .toList();
 
-  if (newAlertsDetails.length != newAlerts.length) {
-    ref.read(appStateProvider.notifier).setError(true);
-  }
-
-  var result = newAlertsDetails + previouslyCachedAlerts;
+  // report a failed detail fetch, but do not keep the error around once a
+  // later cycle went through cleanly
+  ref
+      .read(appStateProvider.notifier)
+      .setError(newAlertsDetails.length != newAlerts.length);
 
   // add new alert to the processed alerts
   for (WarnMessage alert in newAlertsDetails) {
@@ -160,102 +170,128 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   appStateService.setIsFirstFetch(false);
   // reset no internet flag
   ref.read(appStateProvider.notifier).setAreWarningsFromCache(false);
-
-  return result;
 });
 
 final alertPollingProvider = StreamProvider.autoDispose(
   (ref) => Stream.periodic(const Duration(seconds: 5)),
 );
 
-/// Provides a complete list of all warnings for subscribed places.
+/// Provides the complete list of alerts for subscribed places, ready to be
+/// displayed: the update relations are applied and the list is sorted
+/// according to the user preference.
 ///
-/// It polls for new alerts and merges the result with any locally processed/modified alerts.
-/// Any processing off alerts has to be done through [processedAlertsProvider].
+/// This is what the views render. Modifying an alert still goes through
+/// [processedAlertsProvider], and the derived flags are recomputed from there.
 final alertsProvider = Provider<List<WarnMessage>>((ref) {
   ref.listen(alertPollingProvider, (_, __) {
     ref.invalidate(alertsFutureProvider);
   });
   // @TODO pause polling if app is in background
 
-  var userPreferences = ref.watch(userPreferencesProvider);
-  var alertsSnapshot = ref.watch(alertsFutureProvider);
+  // keep the fetch alive - its AsyncValue drives the connection error widget
+  ref.watch(alertsFutureProvider);
 
-  if (!alertsSnapshot.hasValue) return [];
-  var alerts = alertsSnapshot.requireValue;
+  var alerts = ref.watch(processedAlertsProvider);
+  var sortWarningsBy = ref.watch(
+    userPreferencesProvider.select((preferences) => preferences.sortWarningsBy),
+  );
 
-  List<WarnMessage> sortWarnings(List<WarnMessage> warnings) {
-    var sortedWarnings = List<WarnMessage>.of(warnings);
-
-    switch (userPreferences.sortWarningsBy) {
-      case SortingCategories.severity:
-        sortedWarnings.sort(
-          (a, b) => Severity.getIndexFromSeverity(a.info[0].severity)
-              .compareTo(Severity.getIndexFromSeverity(b.info[0].severity)),
-        );
-      case SortingCategories.data:
-        sortedWarnings.sort((a, b) => b.sent.compareTo(a.sent));
-      case SortingCategories.source:
-        sortedWarnings.sort((a, b) => b.sender.compareTo(a.sender));
-    }
-
-    return sortedWarnings;
-  }
-
-  /// Check if the given alert is an update of a previous alert.
-  /// Returns the notified status of the original alert if the severity hasn't increased
-  bool isAlertAnUpdate({
-    required List<WarnMessage> existingWarnings,
-    required WarnMessage newWarning,
-  }) {
-    // check if there is a referenced warning
-    if (newWarning.references != null) {
-      // check if one of the referenced alerts is already in the warnings list
-      for (var warning in existingWarnings) {
-        if (newWarning.references!.identifier
-            .any((identifier) => warning.identifier == identifier)) {
-          // if there is a referenced alert, used the same value for notified.
-          // use the notified value of the referenced warning, but only if the severity is still the same or lesser
-          if (newWarning.info[0].severity.index >=
-              warning.info[0].severity.index) {
-            return warning.notified;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  // Determine which alert is an update of a previous one
-  var updatedWarnings = <WarnMessage>[];
-  for (var alert in alerts) {
-    updatedWarnings.add(
-      alert.copyWith(
-        isUpdateOfAlreadyNotifiedWarning: isAlertAnUpdate(
-          existingWarnings: alerts,
-          newWarning: alert,
-        ),
-      ),
-    );
-  }
-  for (var warning in updatedWarnings) {
-    if (warning.references == null) continue;
-    // The alert contains a reference, so it is an update of an previous alert
-    for (String referenceId in warning.references!.identifier) {
-      // Check all alerts for references
-      var old =
-          alerts.firstWhereOrNull((alert) => alert.identifier == referenceId);
-      // if alert exist, set update flag to true
-      if (old != null) {
-        alerts = alerts.updateEntry(
-          old.copyWith(hideWarningBecauseThereIsANewerVersion: true),
-        );
-      }
-    }
-  }
-
-  return sortWarnings(alerts);
+  return sortAlerts(applyUpdateRelations(alerts), sortWarningsBy);
 });
+
+/// The severity an alert is sorted and compared by.
+///
+/// An alert without an info block cannot state a severity, so it is treated
+/// like an alert of unknown severity instead of crashing the whole list.
+Severity _severityOf(WarnMessage alert) =>
+    alert.info.isEmpty ? Severity.unknown : alert.info.first.severity;
+
+/// Apply the relations between an alert and the alerts it references.
+///
+/// Sets, for every alert:
+///   - [WarnMessage.hideWarningBecauseThereIsANewerVersion] when another alert
+///     in [alerts] references it, so only the newest version is listed and the
+///     older ones stay reachable through the update thread.
+///   - [WarnMessage.isUpdateOfAlreadyNotifiedWarning] when the alert updates an
+///     alert we already notified about and did not become more severe. Those
+///     are shown on the quiet update channel instead of alerting again.
+///
+/// Both flags are always written, so an alert stops being hidden as soon as the
+/// alert that superseded it is gone.
+List<WarnMessage> applyUpdateRelations(List<WarnMessage> alerts) {
+  // The identifier should be unique, but in reality it isn't, so keep the
+  // first alert we saw for an identifier.
+  final Map<String, WarnMessage> alertsByIdentifier = {};
+  for (final alert in alerts) {
+    alertsByIdentifier.putIfAbsent(alert.identifier, () => alert);
+  }
+
+  // every identifier that another alert refers to has a newer version
+  final Set<String> supersededIdentifiers = {};
+  for (final alert in alerts) {
+    final references = alert.references;
+    if (references == null) continue;
+    for (final identifier in references.identifier) {
+      if (alertsByIdentifier.containsKey(identifier)) {
+        supersededIdentifiers.add(identifier);
+      }
+    }
+  }
+
+  return [
+    for (final alert in alerts)
+      alert.copyWith(
+        isUpdateOfAlreadyNotifiedWarning:
+            _isUpdateOfNotifiedAlert(alert, alertsByIdentifier),
+        hideWarningBecauseThereIsANewerVersion:
+            supersededIdentifiers.contains(alert.identifier),
+      ),
+  ];
+}
+
+/// Returns the notified state of the alert [alert] updates, as long as the
+/// alert did not become more severe. A severity increase has to alert the user
+/// again, even if the previous version was already notified.
+bool _isUpdateOfNotifiedAlert(
+  WarnMessage alert,
+  Map<String, WarnMessage> alertsByIdentifier,
+) {
+  final references = alert.references;
+  if (references == null) return false;
+
+  for (final identifier in references.identifier) {
+    final referenced = alertsByIdentifier[identifier];
+    if (referenced == null) continue;
+
+    // a low index means a high danger, so ">=" means "not more severe"
+    if (_severityOf(alert).index >= _severityOf(referenced).index) {
+      return referenced.notified;
+    }
+  }
+  return false;
+}
+
+/// Sort [alerts] by the given user preference. Returns a new list.
+List<WarnMessage> sortAlerts(
+  List<WarnMessage> alerts,
+  SortingCategories sortWarningsBy,
+) {
+  var sortedWarnings = List<WarnMessage>.of(alerts);
+
+  switch (sortWarningsBy) {
+    case SortingCategories.severity:
+      sortedWarnings.sort(
+        (a, b) => Severity.getIndexFromSeverity(_severityOf(a))
+            .compareTo(Severity.getIndexFromSeverity(_severityOf(b))),
+      );
+    case SortingCategories.data:
+      sortedWarnings.sort((a, b) => b.sent.compareTo(a.sent));
+    case SortingCategories.source:
+      sortedWarnings.sort((a, b) => b.sender.compareTo(a.sender));
+  }
+
+  return sortedWarnings;
+}
 
 /// set the read status from all warnings to true
 /// @ref to update view
@@ -286,6 +322,15 @@ Future<void> showNotification(
       placeName = place.name;
     }
 
+    if (warning.info.isEmpty) {
+      await ErrorLogger.writeLog(
+        "warnings.dart",
+        "showNotification",
+        "Alert ${warning.fpasId} has no info block and is not notified",
+      );
+      continue;
+    }
+
     if (NotificationPreferences.checkIfEventShouldBeNotified(
           warning.info[0].severity,
           warning.info[0].category,
@@ -314,46 +359,42 @@ Future<void> showNotification(
           channel: NotificationChannel.update,
         );
       }
-      //@TODO(Nucleus): This should be fixed as we are using an ProviderContainer now, but check required. Can raise an "Tried to use WarningService after `dispose` was called. Consider checking `mounted`. error
-      if (!alertService.mounted) return;
       alertService.updateAlert(warning.copyWith(notified: true));
     }
   }
 }
 
+/// Holds the alerts and persists them.
+///
+/// The service reads the user preferences through [Ref] instead of watching
+/// them: writing an alert stores the list in the preferences, and watching them
+/// here would dispose and recreate this notifier on its own write.
 class WarningService extends StateNotifier<List<WarnMessage>> {
-  WarningService({
-    required this.userPreferences,
-    required this.userPreferencesService,
-    required this.places,
-  }) : super([]) {
-    _loadAlertsFromDisk();
-  }
+  WarningService(Ref ref)
+      : _ref = ref,
+        super(ref.read(userPreferencesProvider).cachedAlerts);
 
-  final UserPreferences userPreferences;
-  final UserPreferencesService userPreferencesService;
-  final List<Place> places;
-
-  void _loadAlertsFromDisk() {
-    state = userPreferences.cachedAlerts;
-  }
+  final Ref _ref;
 
   Future<void> _saveAlertsToDisk() async {
-    userPreferencesService.setCachedAlerts(state);
+    await _ref.read(userPreferencesProvider.notifier).setCachedAlerts(state);
   }
 
-  bool hasWarningToNotify() =>
-      state.isNotEmpty &&
-      state.any(
-        (element) =>
-            !element.notified &&
-            !element.hideWarningBecauseThereIsANewerVersion &&
-            NotificationPreferences.checkIfEventShouldBeNotified(
-              element.info[0].severity,
-              element.info[0].category,
-              userPreferences,
-            ),
-      );
+  bool hasWarningToNotify() {
+    var userPreferences = _ref.read(userPreferencesProvider);
+
+    return applyUpdateRelations(state).any(
+      (alert) =>
+          !alert.notified &&
+          !alert.hideWarningBecauseThereIsANewerVersion &&
+          alert.info.isNotEmpty &&
+          NotificationPreferences.checkIfEventShouldBeNotified(
+            alert.info[0].severity,
+            alert.info[0].category,
+            userPreferences,
+          ),
+    );
+  }
 
   /// Updates the given alert or add the alert if not in the list of alerts
   void updateAlert(WarnMessage alert) {
@@ -393,9 +434,14 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
     _saveAlertsToDisk();
   }
 
+  /// remove every alert from the list and from the disk cache
+  void deleteAllAlerts() {
+    state = [];
+    _saveAlertsToDisk();
+  }
+
   /// set the read and notified status from all warnings to false
   /// used for debug purpose
-  /// [@ref] to update view
   void resetReadAndNotificationStatusForAllWarnings() {
     state = [
       for (var alert in state) ...[
@@ -405,5 +451,6 @@ class WarningService extends StateNotifier<List<WarnMessage>> {
         ),
       ],
     ];
+    _saveAlertsToDisk();
   }
 }

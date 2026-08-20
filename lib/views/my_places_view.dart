@@ -42,7 +42,8 @@ class _MyPlacesState extends ConsumerState<MyPlacesView>
     var localizations = context.localizations;
 
     var places = ref.watch(myPlacesProvider);
-    // we have to watch the alertsProvider to keep the timer running
+    // watching the alerts keeps the polling timer running and feeds the
+    // alert count of every place widget
     ref.watch(alertsProvider);
 
     return Stack(

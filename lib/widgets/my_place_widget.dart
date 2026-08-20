@@ -23,13 +23,16 @@ class MyPlaceWidget extends ConsumerWidget {
     var mediaQuery = MediaQuery.of(context);
     var localizations = context.localizations;
 
-    var warnings = ref.watch(
-      processedAlertsProvider.select(
-        (alerts) => alerts.where(
-          (alert) => alert.placeId == place.id,
-        ),
-      ),
-    );
+    // the alerts this place shows when it is opened: superseded alerts are
+    // only listed inside the update thread of their newer version
+    var warnings = ref
+        .watch(alertsProvider)
+        .where(
+          (alert) =>
+              alert.placeId == place.id &&
+              !alert.hideWarningBecauseThereIsANewerVersion,
+        )
+        .toList();
 
     return Card(
       color:

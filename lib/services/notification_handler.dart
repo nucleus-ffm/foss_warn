@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:foss_warn/enums/notification_channel.dart';
+import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/services/warnings.dart';
 
@@ -79,8 +80,21 @@ Future<void> newAlertNotification(
             placeId: "Not used",
           );
       var places = ref.read(myPlacesProvider);
-      var alerts = ref.read(processedAlertsProvider.notifier);
-      showNotification([alert], places, userPreferences, alerts);
+      var alertsService = ref.read(processedAlertsProvider.notifier);
+
+      // apply the update relations against the alerts we already know, so an
+      // update of an alert we notified about uses the quiet update channel
+      var knownAlerts = ref.read(processedAlertsProvider).updateEntry(alert);
+      var alertToNotify = applyUpdateRelations(knownAlerts).firstWhereOrNull(
+        (element) => element == alert,
+      );
+
+      await showNotification(
+        [if (alertToNotify != null) alertToNotify],
+        places,
+        userPreferences,
+        alertsService,
+      );
     }
   } on AlertUnavailableError catch (e) {
     debugPrint("Alert is not available anymore: $e");

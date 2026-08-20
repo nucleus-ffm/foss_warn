@@ -38,9 +38,19 @@ Future<void> backgroundPollingCallback() async {
   final container = ProviderContainer();
 
   try {
-    var alerts = await container.refresh(alertsFutureProvider.future);
+    // fetch and reconcile, then notify for everything that is still unnotified
+    await container.refresh(alertsFutureProvider.future);
+    var alerts = applyUpdateRelations(container.read(processedAlertsProvider));
     for (WarnMessage alert in alerts) {
-      if (!alert.notified) {
+      if (alert.info.isEmpty) {
+        await ErrorLogger.writeLog(
+          "class_alarm_manager.dart",
+          "BackgroundPollingCallback",
+          "Alert ${alert.fpasId} has no info block and is not notified",
+        );
+        continue;
+      }
+      if (!alert.notified && !alert.hideWarningBecauseThereIsANewerVersion) {
         if (NotificationPreferences.checkIfEventShouldBeNotified(
           alert.info.first.severity,
           alert.info.first.category,
@@ -51,8 +61,9 @@ Future<void> backgroundPollingCallback() async {
             title: "New alert: ${alert.info.first.headline}",
             body: alert.info.first.description
                 .substring(0, min(alert.info.first.description.length, 150)),
-            channel:
-                NotificationChannel.fromSeverity(alert.info.first.severity),
+            channel: alert.isUpdateOfAlreadyNotifiedWarning
+                ? NotificationChannel.update
+                : NotificationChannel.fromSeverity(alert.info.first.severity),
           );
           container
               .read(processedAlertsProvider.notifier)

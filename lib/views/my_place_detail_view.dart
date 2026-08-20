@@ -34,13 +34,10 @@ class MyPlaceDetailScreen extends ConsumerWidget {
       ),
     );
 
-    var warnings = ref.watch(
-      processedAlertsProvider.select(
-        (warnings) => warnings.where(
-          (warning) => warning.placeId == place.id,
-        ),
-      ),
-    );
+    var warnings = ref
+        .watch(alertsProvider)
+        .where((warning) => warning.placeId == place.id)
+        .toList();
 
     /// generate a threaded list of alerts with updates of alert as thread
     /// the returned data has the structure:

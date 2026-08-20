@@ -103,7 +103,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
                   localizations.dev_settings_remove_cached_alerts,
                 ),
                 onTap: () {
-                  userPreferencesService.setCachedAlerts([]);
+                  warningService.deleteAllAlerts();
 
                   final snackBar = SnackBar(
                     content: Text(
