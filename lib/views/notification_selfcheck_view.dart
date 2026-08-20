@@ -207,6 +207,10 @@ class _NotificationSelfCheckState
         subscriptionState: SelfCheckState.notPassed,
         notificationState: SelfCheckState.unknown
       );
+    } finally {
+      ref
+          .read(userPreferencesProvider.notifier)
+          .setShowDebugNotification(debugNotificationPreviousState);
     }
 
     try {
@@ -245,9 +249,6 @@ class _NotificationSelfCheckState
       }
     }
     ref.read(appStateProvider.notifier).setReSubscriptionInProgress(false);
-    ref
-        .read(userPreferencesProvider.notifier)
-        .setShowDebugNotification(debugNotificationPreviousState);
 
     return (
       subscriptionState: SelfCheckState.passed,
