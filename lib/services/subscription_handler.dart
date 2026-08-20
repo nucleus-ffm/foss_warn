@@ -385,35 +385,30 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
         unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
       );
       newSubscriptionId = result.subscriptionId;
+
+      // replace the old subscription id with the new one
+      ref.read(myPlacesProvider.notifier).set(
+            ref.read(myPlacesProvider).updateEntry(
+                  place.copyWith(
+                    subscriptionId: newSubscriptionId,
+                  ),
+                ),
+          );
     } on RegisterAreaError catch (e) {
       if (!context.mounted) return;
-      LoadingScreen.instance().show(
-        context: context,
+      LoadingScreen.instance().showResult(
         text: "Failed to register for area. The server responded with $e",
       );
-      LoadingScreen.instance().hide();
-      return;
     } on UnregisterAreaError catch (e) {
       if (!context.mounted) return;
-      LoadingScreen.instance().show(
-        context: context,
+      LoadingScreen.instance().showResult(
         text: "Failed to unregister for area. The server responded with $e",
       );
+    } finally {
+      appStateService.setReSubscriptionInProgress(false);
       LoadingScreen.instance().hide();
-      return;
     }
-
-    // replace the old subscription id with the new one
-    ref.read(myPlacesProvider.notifier).set(
-          ref.read(myPlacesProvider).updateEntry(
-                place.copyWith(
-                  subscriptionId: newSubscriptionId,
-                ),
-              ),
-        );
   }
-  appStateService.setReSubscriptionInProgress(false);
-  LoadingScreen.instance().hide();
 }
 
 /// Resubscribe for a place in case of expired subscription
