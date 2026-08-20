@@ -239,16 +239,15 @@ final alertsProvider = Provider<List<WarnMessage>>((ref) {
   }
   for (var warning in updatedWarnings) {
     if (warning.references == null) continue;
-
     // The alert contains a reference, so it is an update of an previous alert
     for (String referenceId in warning.references!.identifier) {
       // Check all alerts for references
-      var alWm =
+      var old =
           alerts.firstWhereOrNull((alert) => alert.identifier == referenceId);
       // if alert exist, set update flag to true
-      if (alWm != null) {
-        alerts.updateEntry(
-          alWm.copyWith(hideWarningBecauseThereIsANewerVersion: true),
+      if (old != null) {
+        alerts = alerts.updateEntry(
+          old.copyWith(hideWarningBecauseThereIsANewerVersion: true),
         );
       }
     }
