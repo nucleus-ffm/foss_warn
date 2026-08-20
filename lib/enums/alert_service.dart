@@ -8,8 +8,15 @@ enum AlertService {
   nothing;
 
   String toJson() => name;
-  static AlertService fromJson(String json) =>
-      values.byName(json.toLowerCase());
+
+  /// Parse a value written by [toJson].
+  ///
+  /// The lookup is case insensitive because the stored value is compared
+  /// against the enum name, and `pushAndPoll` does not survive a plain
+  /// `byName(json.toLowerCase())` lookup.
+  static AlertService fromJson(String json) => values.firstWhere(
+        (value) => value.name.toLowerCase() == json.toLowerCase(),
+      );
 
   String getLocalizedName(BuildContext context) {
     var localizations = context.localizations;
