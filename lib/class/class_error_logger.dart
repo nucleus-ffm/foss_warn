@@ -24,7 +24,7 @@ class ErrorLogger {
     try {
       final file = await _localFile;
       // delete the file
-      file.delete();
+      await file.delete();
       return true;
     } catch (e) {
       // If encountering an error, return 0
@@ -65,15 +65,16 @@ class ErrorLogger {
   ) async {
     final file = await _localFile;
     final raf = await file.open(mode: FileMode.append);
-    await raf.lock(FileLock.exclusive);
+    // use blockingExclusive to be able to wait for the file to be free
+    await raf.lock(FileLock.blockingExclusive);
     try {
       await raf.writeString(
         _generateLogContent(fileContext, logContext, logMessage.toString()),
       );
+      await raf.unlock();
     } catch (e) {
       debugPrint("Error while writing log ${e.toString()}");
     } finally {
-      await raf.unlock();
       await raf.close();
     }
   }
