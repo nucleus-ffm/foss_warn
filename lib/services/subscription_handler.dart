@@ -376,44 +376,46 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
     context: context,
     text: "Resubscribing for all of your areas. Please wait.",
   );
+  String? failure;
+  try {
+    for (Place place in places) {
+      String newSubscriptionId = "";
+      // register again
+      if (place.subscriptionId == null) {
+        continue;
+      }
+      try {
+        // remove old subscription, if the subscription is already deleted nothing changes
+        await alertApi.unregisterArea(subscriptionId: place.subscriptionId!);
 
-  for (Place place in places) {
-    String newSubscriptionId = "";
-    // register again
-    if (place.subscriptionId == null) {
-      continue;
-    }
-    try {
-      // remove old subscription, if the subscription is already deleted nothing changes
-      await alertApi.unregisterArea(subscriptionId: place.subscriptionId!);
+        SubscriptionApiResult result = await alertApi.registerArea(
+          boundingBox: place.boundingBox,
+          unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
+        );
+        newSubscriptionId = result.subscriptionId;
 
-      SubscriptionApiResult result = await alertApi.registerArea(
-        boundingBox: place.boundingBox,
-        unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
-      );
-      newSubscriptionId = result.subscriptionId;
-
-      // replace the old subscription id with the new one
-      ref.read(myPlacesProvider.notifier).set(
-            ref.read(myPlacesProvider).updateEntry(
-                  place.copyWith(
-                    subscriptionId: newSubscriptionId,
+        // replace the old subscription id with the new one
+        ref.read(myPlacesProvider.notifier).set(
+              ref.read(myPlacesProvider).updateEntry(
+                    place.copyWith(
+                      subscriptionId: newSubscriptionId,
+                    ),
                   ),
-                ),
-          );
-    } on RegisterAreaError catch (e) {
-      if (!context.mounted) return;
-      LoadingScreen.instance().showResult(
-        text: "Failed to register for area. The server responded with $e",
-      );
-    } on UnregisterAreaError catch (e) {
-      if (!context.mounted) return;
-      LoadingScreen.instance().showResult(
-        text: "Failed to unregister for area. The server responded with $e",
-      );
-    } finally {
-      appStateService.setReSubscriptionInProgress(false);
+            );
+      } on RegisterAreaError catch (e) {
+        if (!context.mounted) return;
+        failure = "Failed to register for area. The server responded with $e";
+      } on UnregisterAreaError catch (e) {
+        if (!context.mounted) return;
+        failure = "Failed to unregister for area. The server responded with $e";
+      }
+    }
+  } finally {
+    appStateService.setReSubscriptionInProgress(false);
+    if (failure == null) {
       LoadingScreen.instance().hide();
+    } else {
+      LoadingScreen.instance().showResult(text: failure);
     }
   }
 }
