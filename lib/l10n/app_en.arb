@@ -284,6 +284,8 @@
     "explanation_CBRNE_text": "Information in the event of incidents involving chemical, biological, radiological, nuclear and explosive substances.",
     "explanation_environment": "Environment",
     "explanation_environment_text": "Information during natural events such as storm surges",
+    "explanation_geophysical": "Geophysical",
+    "explanation_geophysical_text": "Information during geophysical events (inc. landslide)",
     "explanation_weather": "Weather",
     "explanation_weather_text": "Information in case of meteorological events such as storm squalls and floods.",
     "explanation_safety": "Safety",
