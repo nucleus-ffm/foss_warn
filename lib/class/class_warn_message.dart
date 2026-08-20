@@ -138,6 +138,10 @@ class WarnMessage {
             : References.fromStringOrJson(json['references']),
         notified: json['notified'] ?? false,
         read: json['read'] ?? false,
+        isUpdateOfAlreadyNotifiedWarning:
+            json['isUpdateOfAlreadyNotifiedWarning'] ?? false,
+        hideWarningBecauseThereIsANewerVersion:
+            json['hideWarningBecauseThereIsANewerVersion'] ?? false,
       );
 
   factory WarnMessage.fromJsonFromStorage(
