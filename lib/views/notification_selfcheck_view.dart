@@ -246,9 +246,10 @@ class _NotificationSelfCheckState
           subscriptionState: SelfCheckState.notPassed,
           notificationState: SelfCheckState.unknown
         );
+      } finally {
+        ref.read(appStateProvider.notifier).setReSubscriptionInProgress(false);
       }
     }
-    ref.read(appStateProvider.notifier).setReSubscriptionInProgress(false);
 
     return (
       subscriptionState: SelfCheckState.passed,
