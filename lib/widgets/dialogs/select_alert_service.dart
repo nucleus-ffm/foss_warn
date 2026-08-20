@@ -5,6 +5,7 @@ import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/enums/alert_service.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/services/url_launcher.dart';
+import 'package:foss_warn/widgets/dialogs/generic_dialog.dart';
 
 import '../../class/class_alarm_manager.dart';
 import '../../constants.dart' as constants;
@@ -64,9 +65,22 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 selectedColor: theme.colorScheme.primary,
                 selected: userPreferences.alertService == AlertService.push,
                 onTap: () async {
+                  // ask for confirmation
+                  final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (_) => GenericDialog(
+                          title: localizations.alert_service_dialog_title,
+                          content: localizations
+                              .alert_service_change_removes_places_warning,
+                          confirmation: true,
+                        ),
+                      ) ??
+                      false;
+                  if (!confirmed) return;
                   // for the case that the user started the app without push services enabled
                   // we have to setup UnifiedPush now
                   var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                  if (!context.mounted) return;
                   unifiedPushHandler.setupUnifiedPush(context, ref);
                   userPreferencesService.setAlertService(AlertService.push);
                   await removeAllPlaces(ref, context);
@@ -87,14 +101,26 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 selectedColor: theme.colorScheme.primary,
                 selected: userPreferences.alertService == AlertService.poll,
                 onTap: () async {
+                  // ask for confirmation
+                  final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (_) => GenericDialog(
+                          title: localizations.alert_service_dialog_title,
+                          content: localizations
+                              .alert_service_change_removes_places_warning,
+                          confirmation: true,
+                        ),
+                      ) ??
+                      false;
+                  if (!confirmed) return;
                   userPreferencesService.setAlertService(AlertService.poll);
-
                   AlarmManager.registerBackgroundPollingTask();
                   var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
                   unifiedPushHandler.unregisterDistributor();
                   // @TODO(Nucleus): Calling onUnregistered shouldn't be necessary, but it currently is
                   unifiedPushHandler
                       .onUnregistered(constants.unifiedPushInstance);
+                  if (!context.mounted) return;
                   await removeAllPlaces(ref, context);
                   navigator.pop();
                 },
@@ -114,7 +140,20 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 selected:
                     userPreferences.alertService == AlertService.pushAndPoll,
                 onTap: () async {
+                  // ask for confirmation
+                  final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (_) => GenericDialog(
+                          title: localizations.alert_service_dialog_title,
+                          content: localizations
+                              .alert_service_change_removes_places_warning,
+                          confirmation: true,
+                        ),
+                      ) ??
+                      false;
+                  if (!confirmed) return;
                   var unifiedPushHandler = ref.read(unifiedPushHandlerProvider);
+                  if (!context.mounted) return;
                   unifiedPushHandler.setupUnifiedPush(context, ref);
                   userPreferencesService
                       .setAlertService(AlertService.pushAndPoll);
@@ -137,8 +176,21 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
                 selectedColor: theme.colorScheme.primary,
                 selected: userPreferences.alertService == AlertService.nothing,
                 onTap: () async {
+                  // ask for confirmation
+                  final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (_) => GenericDialog(
+                          title: localizations.alert_service_dialog_title,
+                          content: localizations
+                              .alert_service_change_removes_places_warning,
+                          confirmation: true,
+                        ),
+                      ) ??
+                      false;
+                  if (!confirmed) return;
                   userPreferencesService.setAlertService(AlertService.nothing);
                   ref.read(unifiedPushHandlerProvider).unregisterDistributor();
+                  if (!context.mounted) return;
                   await removeAllPlaces(ref, context);
                   navigator.pop();
                   AlarmManager.cancelBackgroundPollingTask();
