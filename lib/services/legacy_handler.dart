@@ -25,9 +25,13 @@ Future<void> legacyHandler() async {
           // this is a major update. This requires user attention and we need to reset the entire app
           // clear all old settings to make place for the new app version
           preferences.clear();
-        } else if (previousVersionCode < 42) {
+        }
+
+        if (previousVersionCode < 42) {
           preferences.setBool("showUpdateDialog", true);
-        } else if (previousVersionCode < 45) {
+        }
+
+        if (previousVersionCode < 45) {
           // we let the software handle https now so the user don't has to deal with that anymore
           // but we need to adapt the stored address to remove the http scheme
           String? serverUrl = preferences.getString("fossPublicAlertServerUrl");
