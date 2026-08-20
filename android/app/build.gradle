@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "de.nucleus.foss_warn"
+    namespace = "de.nucleus.foss_warn"
     compileSdk 36
 
     compileOptions {
@@ -38,7 +38,7 @@ android {
         targetCompatibility JavaVersion.VERSION_21
 
         // for flutter_local_notification: Flag to enable support for the new language APIs
-        coreLibraryDesugaringEnabled true
+        coreLibraryDesugaringEnabled = true
     }
 
     kotlin {
@@ -68,20 +68,20 @@ android {
 
     buildTypes {
         debug {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled = false
+            shrinkResources = false
         }
 
         release {
             if(keystorePropertiesFile.exists()) {
                 project.logger.quiet("Using ${keystorePropertiesFile.path} to sign the app in release mode.")
-                signingConfig signingConfigs.release
+                signingConfig = signingConfigs.release
             } else {
                 project.logger.quiet("Using a debug key to sign the app in release mode.")
-                signingConfig signingConfigs.debug
+                signingConfig = signingConfigs.debug
             }
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
@@ -91,7 +91,7 @@ android {
 }
 
 flutter {
-    source "../.."
+    source = "../.."
 }
 
 dependencies {
