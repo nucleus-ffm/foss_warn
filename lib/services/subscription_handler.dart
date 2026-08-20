@@ -417,6 +417,8 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
 }
 
 /// Resubscribe for a place in case of expired subscription
+/// takes a WidgetRef as parameter, the rest is
+/// the same as `resubscribeForOneAreaInBackgroundFromBackground`
 Future<void> resubscribeForOneAreaInBackground(
   WidgetRef ref,
   Place place,
@@ -431,31 +433,32 @@ Future<void> resubscribeForOneAreaInBackground(
       unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
     );
     newSubscriptionId = result.subscriptionId;
-    ErrorLogger.writeLog(
+    await ErrorLogger.writeLog(
       "subscription_handler.dart",
       "Info message",
-      "Resubscribe for ${place.name} - subscription ID changed from ${place.id} to $newSubscriptionId",
+      "Resubscribe for ${place.name} - subscription ID changed from ${place.subscriptionId} to $newSubscriptionId",
     );
+    ref.read(myPlacesProvider.notifier).set(
+          ref.read(myPlacesProvider).updateEntry(
+                place.copyWith(
+                  subscriptionId: newSubscriptionId,
+                  isExpired: false,
+                ),
+              ),
+        );
   } on RegisterAreaError catch (e) {
     debugPrint("RegisterAreaError $e");
-    ErrorLogger.writeLog(
+    await ErrorLogger.writeLog(
       "subscription_handler.dart",
       "resubscribeForOneAreaInBackground",
       e.toString(),
     );
   }
-
-  ref.read(myPlacesProvider.notifier).set(
-        ref.read(myPlacesProvider).updateEntry(
-              place.copyWith(
-                subscriptionId: newSubscriptionId,
-                isExpired: false,
-              ),
-            ),
-      );
 }
 
 /// Resubscribe for a place in case of expired subscription
+/// takes a ProviderContainer instead of a WidgetRef,
+/// the rest is the same as `resubscribeForOneAreaInBackground`
 Future<void> resubscribeForOneAreaInBackgroundFromBackground(
   ProviderContainer ref,
   Place place,
@@ -470,23 +473,27 @@ Future<void> resubscribeForOneAreaInBackgroundFromBackground(
       unifiedPushEndpoint: userPreferences.unifiedPushEndpoint,
     );
     newSubscriptionId = result.subscriptionId;
+    await ErrorLogger.writeLog(
+      "subscription_handler.dart",
+      "Info message",
+      "Resubscribe for ${place.name} - subscription ID changed from ${place.subscriptionId} to $newSubscriptionId",
+    );
+    await ref.read(myPlacesProvider.notifier).set(
+          ref.read(myPlacesProvider).updateEntry(
+                place.copyWith(
+                  subscriptionId: newSubscriptionId,
+                  isExpired: false,
+                ),
+              ),
+        );
   } on RegisterAreaError catch (e) {
     debugPrint("RegisterAreaError $e");
-    ErrorLogger.writeLog(
+    await ErrorLogger.writeLog(
       "subscription_handler.dart",
       "resubscribeForOneAreaInBackground",
       e.toString(),
     );
   }
-
-  await ref.read(myPlacesProvider.notifier).set(
-        ref.read(myPlacesProvider).updateEntry(
-              place.copyWith(
-                subscriptionId: newSubscriptionId,
-                isExpired: false,
-              ),
-            ),
-      );
 }
 
 /// Send an update message to the server to keep the subscriptions alive
