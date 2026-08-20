@@ -48,36 +48,35 @@ Future<String> _subscribeForAreaWithPushNotifications({
       completer.complete();
     }
   });
-
-  //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
-  try {
-    await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
-  } on UnifiedPushRegistrationError {
-    LoadingScreen.instance().showResult(
-      text:
-          localizations.add_my_place_with_map_loading_screen_subscription_error(
-        "Failed to setup UnifiedPush",
-      ),
-    );
-    rethrow;
-  }
-
-  // subscribe for new area and create new place
-  // with the returned subscription id
-  if (!context.mounted) return "";
-
-  LoadingScreen.instance().show(
-    context: context,
-    text: localizations.loading_screen_wait_for_push_to_complete,
-  );
-
   var userPreferences = ref.read(userPreferencesProvider);
-  debugPrint(
-    "wait for registration state=${userPreferences.unifiedPushRegistered}",
-  );
-
-  // wait for the registration to finish.
   try {
+    //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
+    try {
+      await ref.read(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
+    } on UnifiedPushRegistrationError {
+      LoadingScreen.instance().showResult(
+        text: localizations
+            .add_my_place_with_map_loading_screen_subscription_error(
+          "Failed to setup UnifiedPush",
+        ),
+      );
+      rethrow;
+    }
+
+    // subscribe for new area and create new place
+    // with the returned subscription id
+    if (!context.mounted) return "";
+
+    LoadingScreen.instance().show(
+      context: context,
+      text: localizations.loading_screen_wait_for_push_to_complete,
+    );
+
+    debugPrint(
+      "wait for registration state=${userPreferences.unifiedPushRegistered}",
+    );
+
+    // wait for the registration to finish.
     // check if already done before we started listening
     if (ref.read(userPreferencesProvider).unifiedPushRegistered &&
         !completer.isCompleted) {
@@ -93,6 +92,7 @@ Future<String> _subscribeForAreaWithPushNotifications({
       },
     );
   } finally {
+    // make sure we close the completer even with the early returns
     sub.close();
   }
 
