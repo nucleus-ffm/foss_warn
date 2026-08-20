@@ -91,8 +91,8 @@ class Info {
       area: Area.areaListFromJson(
         (json['area'] as List).map((e) => e as Map<String, dynamic>).toList(),
       ),
-      contact: json['contact'] ?? "",
-      web: json['web'] ?? "",
+      contact: json['contact'],
+      web: json['web'],
     );
   }
 
@@ -137,7 +137,7 @@ class Info {
       instruction: json['instruction'],
       area: areas,
       contact: json['contact'],
-      web: json['web'] ?? "",
+      web: json['web'],
     );
   }
 
