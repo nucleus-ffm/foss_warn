@@ -407,7 +407,7 @@ class _Tags extends ConsumerWidget {
               color: Severity.getColorForSeverity(alert.info[0].severity),
               eventType: localizations.warning_severity_title,
               info: alert.info[0].severity.getLocalizedName(context),
-              action: () => const WarningSeverityExplanation(),
+              dialogAction: () => const WarningSeverityExplanation(),
             ),
             // display more metadata button if enabled in the settings
             if (userPreferences.showExtendedMetadata) ...[
@@ -479,7 +479,16 @@ class _Tags extends ConsumerWidget {
                     info: alert.fpasId,
                     action: () {
                       Clipboard.setData(ClipboardData(text: alert.fpasId));
-                      return const SizedBox();
+                      var scaffoldMessenger = ScaffoldMessenger.of(context);
+                      final snackBar = SnackBar(
+                        content: Text(
+                          localizations.dev_settings_success,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        backgroundColor: Colors.green[100],
+                      );
+
+                      scaffoldMessenger.showSnackBar(snackBar);
                     },
                   ),
                 ],
@@ -497,11 +506,13 @@ class _TagButton extends ConsumerWidget {
     required this.color,
     required this.eventType,
     required this.info,
+    this.dialogAction,
     this.action,
   });
 
   final Color color;
-  final Widget Function()? action;
+  final Widget Function()? dialogAction;
+  final void Function()? action;
   final String eventType;
   final String info;
 
@@ -510,12 +521,16 @@ class _TagButton extends ConsumerWidget {
     var userPreferences = ref.watch(userPreferencesProvider);
 
     Future<void> onPressed() async {
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return action!();
-        },
-      );
+      if (dialogAction != null) {
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return dialogAction!();
+          },
+        );
+      } else if (action != null) {
+        return action?.call();
+      }
     }
 
     // hide buttons without values
@@ -529,7 +544,7 @@ class _TagButton extends ConsumerWidget {
       ),
     );
 
-    if (action != null) {
+    if (dialogAction != null || action != null) {
       body = InkWell(
         onTap: onPressed,
         child: Text(
