@@ -4,7 +4,13 @@ import 'package:foss_warn/extensions/context.dart';
 class GenericDialog extends StatefulWidget {
   final String title;
   final String content;
-  const GenericDialog({super.key, required this.title, required this.content});
+  final bool? confirmation;
+  const GenericDialog({
+    super.key,
+    required this.title,
+    required this.content,
+    this.confirmation,
+  });
 
   @override
   State<GenericDialog> createState() => _GenericDialogState();
@@ -23,12 +29,24 @@ class _GenericDialogState extends State<GenericDialog> {
         ),
       ),
       actions: <Widget>[
+        (widget.confirmation ?? false)
+            ? TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text(
+                  localisation.main_dialog_abort,
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
+                ),
+              )
+            : const SizedBox(),
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
           child: Text(
-            localisation.main_dialog_understand,
+            localisation.main_dialog_ok,
             style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
         ),
