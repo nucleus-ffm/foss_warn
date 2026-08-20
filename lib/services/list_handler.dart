@@ -2,15 +2,16 @@ import 'dart:convert';
 
 import 'package:foss_warn/class/class_fpas_place.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:foss_warn/class/class_user_preferences.dart';
 
 import '../class/class_warn_message.dart';
 
+/// The places as they are stored on disk.
+///
+/// This resolves once and is not refreshed afterwards, so it is only good for
+/// the initial load. The current places are in [myPlacesProvider].
 final cachedPlacesProvider = FutureProvider<List<Place>>((ref) async {
-  SharedPreferencesWithCache preferences =
-      await SharedPreferencesWithCache.create(
-    cacheOptions: const SharedPreferencesWithCacheOptions(),
-  );
+  final preferences = SharedPreferencesState.instance;
 
   if (preferences.containsKey("MyPlacesListAsJson")) {
     List<dynamic> data =
@@ -63,14 +64,13 @@ class MyPlacesService extends StateNotifier<List<Place>> {
   }
 
   Future<void> set(List<Place> places) async {
-    SharedPreferencesWithCache preferences =
-        await SharedPreferencesWithCache.create(
-      cacheOptions: const SharedPreferencesWithCacheOptions(),
-    );
-
-    preferences.setString("MyPlacesListAsJson", jsonEncode(places));
-
+    // Assign the state before persisting: writing to disk contains an await,
+    // and callers that read the list, change it and write it back must not
+    // interleave with each other.
     state = places;
+
+    await SharedPreferencesState.instance
+        .setString("MyPlacesListAsJson", jsonEncode(places));
   }
 
   Future<void> remove(Place place) async {
@@ -97,14 +97,9 @@ class MyPlacesNotifier extends AsyncNotifier<List<Place>> {
   }
 
   Future<void> set(List<Place> places) async {
-    SharedPreferencesWithCache preferences =
-        await SharedPreferencesWithCache.create(
-      cacheOptions: const SharedPreferencesWithCacheOptions(),
-    );
-
-    preferences.setString("MyPlacesListAsJson", jsonEncode(places));
-
     state = AsyncData(places);
+    await SharedPreferencesState.instance
+        .setString("MyPlacesListAsJson", jsonEncode(places));
   }
 
   Future<void> remove(Place place) async {
