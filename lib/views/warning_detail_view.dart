@@ -261,7 +261,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                 _Contact(alert: warning),
                 const SizedBox(height: 20),
               ],
-              if (warning.info[0].web != "") ...[
+              if (warning.info[0].web != null) ...[
                 _Web(alert: warning),
               ],
             ],
