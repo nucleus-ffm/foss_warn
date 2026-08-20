@@ -25,11 +25,12 @@ class WarningsView extends ConsumerWidget {
     var places = ref.watch(myPlacesProvider);
     var appState = ref.watch(appStateProvider);
 
-    // just to keep the timer running
-    ref.watch(alertsProvider);
-    var processedAlerts = ref.watch(
-      processedAlertsProvider,
-    ); // @TODO this ignores the sorting preference
+    // the sorted alerts, with the update relations applied: an alert that has
+    // a newer version is only listed inside the update thread of that version
+    var alerts = ref
+        .watch(alertsProvider)
+        .where((alert) => !alert.hideWarningBecauseThereIsANewerVersion)
+        .toList();
 
     // Just to detect if we have an error while polling for alerts.
     // We don't actually use the value otherwise.
@@ -39,7 +40,7 @@ class WarningsView extends ConsumerWidget {
       child: Column(
         children: [
           for (var place in places) ...[
-            for (var warning in processedAlerts.where(
+            for (var warning in alerts.where(
               (warning) => warning.placeId == place.id,
             )) ...[
               WarningWidget(
@@ -54,7 +55,7 @@ class WarningsView extends ConsumerWidget {
       ),
     );
 
-    if (processedAlerts.isEmpty) {
+    if (alerts.isEmpty) {
       body = const _NoWarnings();
     }
 
