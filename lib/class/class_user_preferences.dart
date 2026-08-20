@@ -132,8 +132,6 @@ final userPreferencesProvider =
       showWelcomeScreen: preferences.getBool("showWelcomeScreen") ?? true,
       sortWarningsBy: SortingCategories.values[selectedSorting],
       isFirstStart: preferences.getBool("isFirstStart") ?? true,
-      areWarningsFromCache:
-          preferences.getBool("areWarningsFromCache") ?? false,
       maxSizeOfSubscriptionBoundingBox:
           preferences.getInt("maxSizeOfSubscriptionBoundingBox") ?? 20,
       fossPublicAlertServerUrl: fossPublicAlertServerUrl,
@@ -246,11 +244,6 @@ class UserPreferencesService extends StateNotifier<UserPreferences> {
   Future<void> setIsFirstStart(bool value) async {
     state = state.copyWith(isFirstStart: value);
     await _sharedPreferences.setBool("isFirstStart", value);
-  }
-
-  Future<void> setAreWarningsFromCache(bool value) async {
-    state = state.copyWith(areWarningsFromCache: value);
-    await _sharedPreferences.setBool("areWarningsFromCache", value);
   }
 
   Future<void> setMaxSizeOfSubscriptionBoundingBox(int value) async {
@@ -399,7 +392,6 @@ class UserPreferences {
     required this.showWelcomeScreen,
     required this.sortWarningsBy,
     required this.isFirstStart,
-    required this.areWarningsFromCache,
     required this.maxSizeOfSubscriptionBoundingBox,
     required this.fossPublicAlertServerUrl,
     required this.fossPublicAlertServerOperator,
@@ -436,7 +428,6 @@ class UserPreferences {
   final bool showWelcomeScreen;
   final SortingCategories sortWarningsBy;
   final bool isFirstStart;
-  final bool areWarningsFromCache;
   final int maxSizeOfSubscriptionBoundingBox;
 
   final String fossPublicAlertServerUrl;
@@ -477,7 +468,6 @@ class UserPreferences {
     bool? showWelcomeScreen,
     SortingCategories? sortWarningsBy,
     bool? isFirstStart,
-    bool? areWarningsFromCache,
     int? maxSizeOfSubscriptionBoundingBox,
     String? fossPublicAlertServerUrl,
     String? fossPublicAlertServerOperator,
@@ -514,7 +504,6 @@ class UserPreferences {
         showWelcomeScreen: showWelcomeScreen ?? this.showWelcomeScreen,
         sortWarningsBy: sortWarningsBy ?? this.sortWarningsBy,
         isFirstStart: isFirstStart ?? this.isFirstStart,
-        areWarningsFromCache: areWarningsFromCache ?? this.areWarningsFromCache,
         maxSizeOfSubscriptionBoundingBox: maxSizeOfSubscriptionBoundingBox ??
             this.maxSizeOfSubscriptionBoundingBox,
         fossPublicAlertServerUrl:

@@ -27,7 +27,7 @@ class ConnectionError extends ConsumerWidget {
 
     var userPreferences = ref.watch(userPreferencesProvider);
 
-    if (userPreferences.areWarningsFromCache) {
+    if (appState.areWarningsFromCache) {
       return Container(
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
         color: Colors.orange,
