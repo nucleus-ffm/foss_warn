@@ -44,12 +44,12 @@ final processedAlertsProvider =
 /// the UI can watch its [AsyncValue] for the loading and error state.
 final alertsFutureProvider = FutureProvider<void>((ref) async {
   var alertApi = ref.read(alertApiProvider);
-  List<Place> places = [];
-  places = ref.read(myPlacesProvider);
-  if (places.isEmpty) {
+  List<Place> places = ref.read(myPlacesProvider);
+  if (places.isEmpty && !ref.read(cachedPlacesProvider).hasValue) {
     // make sure that we can wait until we get some places back
     // as fallback and for the background process
-    places = await ref.read(cachedPlacesProvider.future);
+    await ref.read(cachedPlacesProvider.future);
+    places = ref.read(myPlacesProvider);
   }
 
   if (places.isEmpty) {
@@ -78,9 +78,13 @@ final alertsFutureProvider = FutureProvider<void>((ref) async {
       );
     } on InvalidSubscriptionError {
       // set expired to true
-      ref
-          .read(myPlacesProvider.notifier)
-          .set(places.updateEntry(place.copyWith(isExpired: true)));
+      // reload places list to check if the user deleted the place
+      // in the meantime
+      var currentPlaces = ref.read(myPlacesProvider);
+      if (!currentPlaces.contains(place)) return [];
+      await ref.read(myPlacesProvider.notifier).set(
+            currentPlaces.updateEntry(place.copyWith(isExpired: true)),
+          );
       return [];
     }
   }
