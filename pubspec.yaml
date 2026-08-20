@@ -51,6 +51,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  # used to swap in an in-memory preferences store in tests
+  shared_preferences_platform_interface: ^2.4.1
 
 icons_launcher:
   image_path: "assets/app_icon/app_icon.png"
