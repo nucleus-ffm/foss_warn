@@ -19,27 +19,37 @@ class AppStateService extends StateNotifier<AppState> {
     super.state,
   );
 
+  // StateNotifier notifies whenever a new state object is assigned, even when
+  // it carries the same values. The flags below are written on every polling
+  // cycle, so only assign a new state when the value actually changed.
+
   void setError(bool value) {
+    if (state.error == value) return;
     state = state.copyWith(error: value);
   }
 
   void setAreWarningsFromCache(bool value) {
+    if (state.areWarningsFromCache == value) return;
     state = state.copyWith(areWarningsFromCache: value);
   }
 
   void setIsFirstFetch(bool value) {
+    if (state.isFirstFetch == value) return;
     state = state.copyWith(isFirstFetch: value);
   }
 
   void setPushNotificationSetupError(bool value) {
+    if (state.pushNotificationSetupError == value) return;
     state = state.copyWith(pushNotificationSetupError: value);
   }
 
   void setReSubscriptionInProgress(bool value) {
+    if (state.reSubscriptionInProgress == value) return;
     state = state.copyWith(reSubscriptionInProgress: value);
   }
 
   void setUnifiedPushRegistered(bool value) {
+    if (state.unifiedPushRegistered == value) return;
     state = state.copyWith(unifiedPushRegistered: value);
   }
 }
