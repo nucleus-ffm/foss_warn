@@ -117,7 +117,7 @@ class UnifiedPushHandler {
   Future<void> initialize(WidgetRef ref, BuildContext context) async {
     // init unified push
     // In a dev environment with multiple hot restarts, this registers multiple callbacks
-    UnifiedPush.initialize(
+    await UnifiedPush.initialize(
       onNewEndpoint: (PushEndpoint endpoint, String instance) => onNewEndpoint(
         endpoint: endpoint,
         instance: instance,
@@ -172,7 +172,7 @@ class UnifiedPushHandler {
   /// unregisters the current distributor and sets the unifiedPush
   /// registered flag in the setting to false
   Future<void> unregisterDistributor() async {
-    UnifiedPush.unregister(constants.unifiedPushInstance);
+    await UnifiedPush.unregister(constants.unifiedPushInstance);
     await _preferencesService.setUnifiedPushRegistered(false);
   }
 
@@ -263,10 +263,7 @@ class UnifiedPushHandler {
     String selectedDistributor,
     WidgetRef ref,
   ) async {
-    await unregisterDistributor();
-    await saveDistributor(selectedDistributor, ref);
-    // wait until the registration is finished and we have a new endpoint
-
+    // register listener to wait until the registration is finished and we have a new endpoint
     final completer = Completer<void>();
     final sub = ref.listenManual(userPreferencesProvider, (_, next) {
       if (next.unifiedPushRegistered && !completer.isCompleted) {
@@ -274,6 +271,13 @@ class UnifiedPushHandler {
       }
     });
     try {
+      await unregisterDistributor();
+      await saveDistributor(selectedDistributor, ref);
+      // check if already done before we started listening
+      if (ref.read(userPreferencesProvider).unifiedPushRegistered &&
+          !completer.isCompleted) {
+        completer.complete();
+      }
       await completer.future.timeout(
         const Duration(seconds: 20),
         onTimeout: () {

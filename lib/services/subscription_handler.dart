@@ -40,6 +40,15 @@ Future<String> _subscribeForAreaWithPushNotifications({
   bool? currentLocation,
 }) async {
   var localizations = context.localizations;
+
+  // register listener
+  final completer = Completer<void>();
+  final sub = ref.listenManual(userPreferencesProvider, (_, next) {
+    if (next.unifiedPushRegistered && !completer.isCompleted) {
+      completer.complete();
+    }
+  });
+
   //@TODO(Nucleus): We need to handle the case of the push registration failing. We should abort the subscription process at this point
   try {
     await ref.watch(unifiedPushHandlerProvider).setupUnifiedPush(context, ref);
@@ -52,9 +61,6 @@ Future<String> _subscribeForAreaWithPushNotifications({
     );
     rethrow;
   }
-
-  var alertApi = ref.read(alertApiProvider);
-  var uuid = const Uuid();
 
   // subscribe for new area and create new place
   // with the returned subscription id
@@ -69,28 +75,29 @@ Future<String> _subscribeForAreaWithPushNotifications({
   debugPrint(
     "wait for registration state=${userPreferences.unifiedPushRegistered}",
   );
+
   // wait for the registration to finish.
-  if (!userPreferences.unifiedPushRegistered) {
-    final completer = Completer<void>();
-    final sub = ref.listenManual(userPreferencesProvider, (_, next) {
-      if (next.unifiedPushRegistered && !completer.isCompleted) {
-        completer.complete();
-      }
-    });
-    try {
-      await completer.future.timeout(
-        const Duration(seconds: 20),
-        onTimeout: () {
-          debugPrint(
-            "Timeout waiting for unifiedPushRegistered to be set to true.",
-          );
-          throw UnifiedPushRegistrationTimeoutError();
-        },
-      );
-    } finally {
-      sub.close();
+  try {
+    // check if already done before we started listening
+    if (ref.read(userPreferencesProvider).unifiedPushRegistered &&
+        !completer.isCompleted) {
+      completer.complete();
     }
+    await completer.future.timeout(
+      const Duration(seconds: 20),
+      onTimeout: () {
+        debugPrint(
+          "Timeout waiting for unifiedPushRegistered to be set to true.",
+        );
+        throw UnifiedPushRegistrationTimeoutError();
+      },
+    );
+  } finally {
+    sub.close();
   }
+
+  var alertApi = ref.read(alertApiProvider);
+  var uuid = const Uuid();
 
   // subscribe for new area and create new place
   // with the returned subscription id
