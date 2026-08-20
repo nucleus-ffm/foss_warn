@@ -65,16 +65,16 @@ class ErrorLogger {
   ) async {
     final file = await _localFile;
     final raf = await file.open(mode: FileMode.append);
-    // use blockingExclusive to be able to wait for the file to be free
-    await raf.lock(FileLock.blockingExclusive);
     try {
+      // use blockingExclusive to be able to wait for the file to be free
+      await raf.lock(FileLock.blockingExclusive);
       await raf.writeString(
         _generateLogContent(fileContext, logContext, logMessage.toString()),
       );
-      await raf.unlock();
     } catch (e) {
       debugPrint("Error while writing log ${e.toString()}");
     } finally {
+      await raf.unlock();
       await raf.close();
     }
   }
