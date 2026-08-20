@@ -72,7 +72,7 @@ enum Category {
     var localizations = context.localizations;
 
     return switch (this) {
-      geo => localizations.explanation_environment,
+      geo => localizations.explanation_geophysical,
       met => localizations.explanation_weather,
       safety => localizations.explanation_safety,
       rescue => localizations.explanation_rescue,
@@ -89,7 +89,7 @@ enum Category {
   String getLocalizedExplanation(BuildContext context) {
     var localizations = context.localizations;
     return switch (this) {
-      geo => localizations.explanation_environment_text,
+      geo => localizations.explanation_geophysical_text,
       met => localizations.explanation_weather_text,
       safety => localizations.explanation_safety_text,
       rescue => localizations.explanation_rescue_text,
