@@ -34,7 +34,6 @@ void main() {
       showWelcomeScreen: false,
       sortWarningsBy: SortingCategories.severity,
       isFirstStart: false,
-      areWarningsFromCache: false,
       maxSizeOfSubscriptionBoundingBox: 12,
       fossPublicAlertServerUrl: "example.com",
       fossPublicAlertServerOperator: "Example",

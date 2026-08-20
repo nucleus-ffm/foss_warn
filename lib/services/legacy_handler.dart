@@ -36,6 +36,10 @@ Future<void> legacyHandler() async {
             serverUrl = serverUrl.replaceAll("https://", "");
             preferences.setString("fossPublicAlertServerUrl", serverUrl);
           }
+          // remove legacy parameter from storage
+          if (preferences.getBool("areWarningsFromCache") != null) {
+            preferences.remove("areWarningsFromCache");
+          }
         }
       }
     }

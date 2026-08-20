@@ -88,8 +88,7 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
         alertsForPlaces.reduce((value, element) => value + element);
   } catch (e) {
     debugPrint("[warnings] Tried to get alerts forPlaces and failed with $e");
-    var userPreferencesNotifier = ref.read(userPreferencesProvider.notifier);
-    userPreferencesNotifier.setAreWarningsFromCache(true);
+    ref.read(appStateProvider.notifier).setAreWarningsFromCache(true);
     throw AlertRetrievalError();
   }
 
@@ -159,6 +158,8 @@ final alertsFutureProvider = FutureProvider<List<WarnMessage>>((ref) async {
   // we have once fetched alerts, we do not need to display the loading scree again.
   var appStateService = ref.read(appStateProvider.notifier);
   appStateService.setIsFirstFetch(false);
+  // reset no internet flag
+  ref.read(appStateProvider.notifier).setAreWarningsFromCache(false);
 
   return result;
 });
