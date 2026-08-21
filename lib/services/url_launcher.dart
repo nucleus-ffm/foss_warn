@@ -5,7 +5,10 @@ import "../class/class_error_logger.dart";
 Uri? extractWebAddress(String text) {
   if (text.startsWith("<a")) {
     // extract address from HTML-formatted tag
-    int beginIndex = text.indexOf("href=\"") + 6;
+    int beginIndex = text.indexOf("href=\"");
+    if (beginIndex != -1) {
+      beginIndex += 6;
+    }
     int endIndex = text.indexOf("\"", beginIndex);
     if (beginIndex != -1 && endIndex != -1) {
       text = text.substring(beginIndex, endIndex);

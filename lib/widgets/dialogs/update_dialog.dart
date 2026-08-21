@@ -52,6 +52,12 @@ class _UpdateDialogState extends ConsumerState<UpdateDialog> {
   }
 
   @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var navigator = Navigator.of(context);
     var localizations = context.localizations;
