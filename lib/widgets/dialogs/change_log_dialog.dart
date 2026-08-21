@@ -17,7 +17,9 @@ class ChangeLogDialog extends StatelessWidget {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Text("* add notification filter based on alert categories\n"
-                "* bugfix \n"),
+                "* add feature to get alerts for the current location\n"
+                "* general improvements \n"
+                "* bugfixes \n"),
             Text(
               "1.0.1",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),

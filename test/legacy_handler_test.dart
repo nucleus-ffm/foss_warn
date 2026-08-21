@@ -6,7 +6,7 @@ import 'package:shared_preferences_platform_interface/in_memory_shared_preferenc
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 /// The build number the "installed" app reports during these tests.
-const String currentBuildNumber = "45";
+const String currentBuildNumber = "44";
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ void main() {
     await legacyHandler();
 
     final preferences = SharedPreferencesState.instance;
-    expect(preferences.getInt("previousInstalledVersionCode"), 45);
+    expect(preferences.getInt("previousInstalledVersionCode"), 44);
     expect(preferences.getBool("showUpdateDialog"), isNull);
   });
 
@@ -54,12 +54,12 @@ void main() {
       preferences.getString("fossPublicAlertServerUrl"),
       "alerts.example.org",
     );
-    expect(preferences.getInt("previousInstalledVersionCode"), 45);
+    expect(preferences.getInt("previousInstalledVersionCode"), 44);
   });
 
   test('the url migration also strips a plain http scheme', () async {
     final preferences = SharedPreferencesState.instance;
-    await preferences.setInt("previousInstalledVersionCode", 44);
+    await preferences.setInt("previousInstalledVersionCode", 43);
     await preferences.setString(
       "fossPublicAlertServerUrl",
       "http://alerts.example.org",
@@ -75,7 +75,7 @@ void main() {
 
   test('a url without a scheme is left alone', () async {
     final preferences = SharedPreferencesState.instance;
-    await preferences.setInt("previousInstalledVersionCode", 44);
+    await preferences.setInt("previousInstalledVersionCode", 43);
     await preferences.setString("fossPublicAlertServerUrl", "alerts.kde.org");
 
     await legacyHandler();
@@ -85,7 +85,7 @@ void main() {
 
   test('the retired areWarningsFromCache flag is removed', () async {
     final preferences = SharedPreferencesState.instance;
-    await preferences.setInt("previousInstalledVersionCode", 44);
+    await preferences.setInt("previousInstalledVersionCode", 43);
     await preferences.setBool("areWarningsFromCache", true);
 
     await legacyHandler();
@@ -103,12 +103,12 @@ void main() {
 
     expect(preferences.getString("MyPlacesListAsJson"), isNull);
     expect(preferences.getBool("showWelcomeScreen"), isNull);
-    expect(preferences.getInt("previousInstalledVersionCode"), 45);
+    expect(preferences.getInt("previousInstalledVersionCode"), 44);
   });
 
   test('reopening the same version migrates nothing', () async {
     final preferences = SharedPreferencesState.instance;
-    await preferences.setInt("previousInstalledVersionCode", 45);
+    await preferences.setInt("previousInstalledVersionCode", 44);
     await preferences.setString(
       "fossPublicAlertServerUrl",
       "https://alerts.example.org",
