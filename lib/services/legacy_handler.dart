@@ -31,7 +31,7 @@ Future<void> legacyHandler() async {
           preferences.setBool("showUpdateDialog", true);
         }
 
-        if (previousVersionCode < 45) {
+        if (previousVersionCode < 44) {
           // we let the software handle https now so the user don't has to deal with that anymore
           // but we need to adapt the stored address to remove the http scheme
           String? serverUrl = preferences.getString("fossPublicAlertServerUrl");
