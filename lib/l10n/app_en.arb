@@ -66,6 +66,10 @@
     "warning_type_title": "Type",
     "warning_severity_title": "Severity",
     "warning_description_title": "Description",
+    "warning_open_image": "Open image",
+    "@warning_open_image": {
+        "description": "Button shown instead of an image that is embedded in an alert text. The image is not loaded automatically to not leak the users IP address."
+    },
     "warning_recommended_action_title": "Recommended action",
     "warning_source_title": "Source",
     "warning_from": "Message from: {datetime}",

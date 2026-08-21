@@ -14,6 +14,7 @@ import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/enums/sorting_categories.dart';
 import 'package:foss_warn/extensions/list.dart';
 import 'package:foss_warn/services/alert_api/fpas.dart';
+import 'package:foss_warn/services/alert_text_parser.dart';
 import 'package:foss_warn/services/api_handler.dart';
 import 'package:foss_warn/services/list_handler.dart';
 import 'package:foss_warn/constants.dart' as constants;
@@ -343,12 +344,13 @@ Future<void> showNotification(
         !warning.read &&
         !warning.notified) {
       if (!warning.isUpdateOfAlreadyNotifiedWarning) {
+        var description = alertTextToPlainText(warning.info[0].description);
+
         // show notification with sound
         await NotificationService.showNotification(
           id: warning.fpasId.hashCode,
           title: "$placeName: ${warning.info[0].headline}",
-          body: warning.info[0].description
-              .substring(0, min(150, warning.info[0].description.length)),
+          body: description.substring(0, min(150, description.length)),
           payload: placeName,
           channel:
               NotificationChannel.fromSeverity(warning.info.first.severity),
