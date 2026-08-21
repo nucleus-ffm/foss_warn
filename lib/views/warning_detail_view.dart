@@ -482,7 +482,7 @@ class _Tags extends ConsumerWidget {
                       var scaffoldMessenger = ScaffoldMessenger.of(context);
                       final snackBar = SnackBar(
                         content: Text(
-                          localizations.dev_settings_success,
+                          localizations.system_information_copy_confirmation,
                           style: const TextStyle(color: Colors.black),
                         ),
                         backgroundColor: Colors.green[100],
@@ -801,6 +801,7 @@ class _Contact extends ConsumerWidget {
         TextSpan(
           text: phoneNumber,
           style: TextStyle(color: theme.colorScheme.tertiary),
+          // @TODO(Nucleus): Dispose rapGestureRecognizer?
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               // print("phone number tapped");

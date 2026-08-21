@@ -94,6 +94,12 @@ class _MapViewState extends ConsumerState<MapView> {
   }
 
   @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var alerts = ref.watch(processedAlertsProvider);
 

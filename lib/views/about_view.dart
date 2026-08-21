@@ -27,6 +27,7 @@ class _AboutViewState extends State<AboutView> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     versioncode = packageInfo.version;
     buildNumber = packageInfo.buildNumber;
+    if (!mounted) return;
     setState(() {});
   }
 

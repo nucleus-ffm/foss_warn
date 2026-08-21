@@ -16,6 +16,14 @@ class _ErrorDialogState extends ConsumerState<ErrorDialog> {
   // used to scroll horizontal and vertical at the same time
   final ScrollController _horizontal = ScrollController(),
       _vertical = ScrollController();
+
+  @override
+  void dispose() {
+    _horizontal.dispose();
+    _vertical.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var localization = context.localizations;

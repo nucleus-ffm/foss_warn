@@ -38,7 +38,10 @@ class _AlertUpdateThreadViewState extends ConsumerState<AlertUpdateThreadView> {
   Widget build(BuildContext context) {
     var localization = context.localizations;
     var alertUpdateThreadViewModel =
-        ref.read(alertUpdateThreadViewModelProvider)!;
+        ref.read(alertUpdateThreadViewModelProvider);
+    if (alertUpdateThreadViewModel == null) {
+      return const Text("Error - no alert update thread found");
+    }
     var latestAlert = alertUpdateThreadViewModel.latestAlert;
     var previousNowUpdatedAlerts =
         alertUpdateThreadViewModel.previousNowUpdatedAlerts;

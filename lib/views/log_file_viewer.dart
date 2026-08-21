@@ -31,6 +31,12 @@ class _LogFileViewerState extends State<LogFileViewer> {
   }
 
   @override
+  void dispose() {
+    _vertical.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var localization = context.localizations;
     return Scaffold(
