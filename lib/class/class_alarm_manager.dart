@@ -14,6 +14,7 @@ import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../enums/notification_channel.dart';
+import '../services/alert_text_parser.dart';
 import '../services/warnings.dart';
 import 'package:foss_warn/constants.dart' as constants;
 
@@ -56,11 +57,12 @@ Future<void> backgroundPollingCallback() async {
           alert.info.first.category,
           container.read(userPreferencesProvider),
         )) {
+          var description = alertTextToPlainText(alert.info.first.description);
+
           await NotificationService.showNotification(
             id: alert.fpasId.hashCode,
             title: "New alert: ${alert.info.first.headline}",
-            body: alert.info.first.description
-                .substring(0, min(alert.info.first.description.length, 150)),
+            body: description.substring(0, min(description.length, 150)),
             channel: alert.isUpdateOfAlreadyNotifiedWarning
                 ? NotificationChannel.update
                 : NotificationChannel.fromSeverity(alert.info.first.severity),

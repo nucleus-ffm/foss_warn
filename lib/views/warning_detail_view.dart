@@ -10,10 +10,12 @@ import 'package:foss_warn/class/class_warn_message.dart';
 import 'package:foss_warn/enums/severity.dart';
 import 'package:foss_warn/extensions/context.dart';
 import 'package:foss_warn/extensions/list.dart';
+import 'package:foss_warn/services/alert_text_parser.dart';
 import 'package:foss_warn/services/translate_and_colorize_warning.dart';
 import 'package:foss_warn/services/url_launcher.dart';
 import 'package:foss_warn/services/warnings.dart';
 import 'package:foss_warn/widgets/dialogs/warning_severity_explanation.dart';
+import 'package:foss_warn/widgets/formatted_alert_text.dart';
 import 'package:foss_warn/widgets/map_widget.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -144,6 +146,8 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
     );
 
     Future<void> onSharePressed() async {
+      var instructionText = alertTextToPlainText(warning.info[0].instruction);
+
       var shareText = warning.info[0].headline;
       shareText +=
           "\n\n${localizations.warning_from(formatSentDate(warning.sent, context))}";
@@ -155,9 +159,9 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
       shareText +=
           "\n\n${localizations.warning_region(areaDescriptionList.toString().substring(1, areaDescriptionList.toString().length - 1))}";
       shareText +=
-          "\n\n${localizations.warning_description(_replaceHTMLTags(warning.info[0].description))}";
+          "\n\n${localizations.warning_description(alertTextToPlainText(warning.info[0].description))}";
       shareText +=
-          "\n\n${localizations.warning_recommended_action(_replaceHTMLTags(warning.info[0].instruction ?? "n.a."))}";
+          "\n\n${localizations.warning_recommended_action(instructionText.isNotEmpty ? instructionText : "n.a.")}";
       shareText += "\n\n${localizations.warning_source(warning.sender)}";
       shareText += "\n\n-- ${localizations.warning_shared_by_foss_warn} --";
       String shareSubject = warning.info[0].headline;
@@ -664,12 +668,7 @@ class _Description extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 2),
-        SelectableText.rich(
-          TextSpan(
-            text: alert.info[0].description,
-            style: TextStyle(fontSize: userPreferences.warningFontSize),
-          ),
-        ),
+        FormattedAlertText(text: alert.info[0].description),
       ],
     );
   }
@@ -708,14 +707,7 @@ class _Instruction extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 2),
-        SelectableText.rich(
-          TextSpan(
-            text: instruction,
-            style: TextStyle(
-              fontSize: userPreferences.warningFontSize,
-            ),
-          ),
-        ),
+        FormattedAlertText(text: instruction),
       ],
     );
   }
