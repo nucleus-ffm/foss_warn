@@ -227,13 +227,13 @@ class _NotificationSelfCheckState
 
     // @TODO (Nucleus): An useful addition would be to check if the notification arrived and let the user click on the notification
 
-    ref.read(appStateProvider.notifier).setReSubscriptionInProgress(true);
     // remove subscription
     var places = ref.read(myPlacesProvider.notifier);
     Place? place = places.places.firstWhereOrNull(
       (p) => p.name == testAlertPlaceName,
     );
     if (place != null) {
+      ref.read(appStateProvider.notifier).setReSubscriptionInProgress(true);
       try {
         await api.unregisterArea(
           subscriptionId: place.subscriptionId!,
