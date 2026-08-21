@@ -31,7 +31,7 @@ class Info {
   String? language;
   final List<Category> category;
   final String event;
-  ResponseType? responseType;
+  final List<ResponseType>? responseType;
   final Urgency urgency;
   final Severity severity;
   final Certainty certainty;
@@ -72,7 +72,7 @@ class Info {
   factory Info.fromJson(Map<String, dynamic> json) {
     return Info(
       language: json['language'],
-      responseType: ResponseType.fromJson(json['responseType']),
+      responseType: ResponseType.fromJsonList(json['responseType']),
       audience: json['audience'],
       //eventCode: json['eventCode'], // @TODO check that again
       category: Category.categoryListFromJson(
@@ -120,7 +120,7 @@ class Info {
 
     return Info(
       language: json['language'],
-      responseType: ResponseType.fromJson(json['responseType']),
+      responseType: ResponseType.fromJsonList(json['responseType']),
       audience: json['audience'],
       //eventCode: json['eventCode'], //@TODO check that again
       category: categories,
@@ -145,7 +145,7 @@ class Info {
         'language': language,
         'event': event,
         'category': category,
-        'responseType': responseType?.toJson(),
+        'responseType': responseType,
         'urgency': urgency,
         'severity': severity,
         'certainty': certainty,

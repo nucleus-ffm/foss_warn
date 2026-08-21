@@ -19,7 +19,7 @@ WarnMessage buildAlert({
   bool read = false,
   bool isUpdateOfAlreadyNotifiedWarning = false,
   bool hideWarningBecauseThereIsANewerVersion = false,
-  ResponseType? responseType = ResponseType.monitor,
+  List<ResponseType>? responseType = const [ResponseType.monitor],
   String? web = "https://example.org",
   String? contact = "+49 69 8062 0",
 }) {
@@ -160,7 +160,7 @@ void main() {
       // assign the resulting string straight back to a ResponseType? field.
       final restored = roundTrip(buildAlert());
 
-      expect(restored.info.single.responseType, ResponseType.monitor);
+      expect(restored.info.single.responseType, [ResponseType.monitor]);
     });
 
     test('keeps the polygon of the area', () {
@@ -179,8 +179,8 @@ void main() {
 
       expect(restored.info.single.web, isNull);
       expect(restored.info.single.contact, isNull);
-      // An absent responseType parses to the explicit unknown fallback.
-      expect(restored.info.single.responseType, ResponseType.unknown);
+      // An absent responseType parses to an empty list
+      expect(restored.info.single.responseType, []);
     });
   });
 

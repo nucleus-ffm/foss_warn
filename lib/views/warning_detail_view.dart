@@ -22,6 +22,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../routes.dart';
+import '../widgets/dialogs/warning_response_type_explanation.dart';
 
 List<String> _generateAreaDescriptionList({
   required WarnMessage alert,
@@ -413,6 +414,19 @@ class _Tags extends ConsumerWidget {
               info: alert.info[0].severity.getLocalizedName(context),
               dialogAction: () => const WarningSeverityExplanation(),
             ),
+            if (alert.info[0].responseType != null &&
+                alert.info[0].responseType!.isNotEmpty) ...[
+              _TagButton(
+                color: Colors.lightGreen,
+                eventType: localizations.warning_response_type_title,
+                info: alert.info[0].responseType!
+                    .map((element) => element.getLocalizedName(context))
+                    .toString(),
+                dialogAction: () => WarningResponseTypeExplanation(
+                  responseTypes: alert.info.first.responseType!,
+                ),
+              ),
+            ],
             // display more metadata button if enabled in the settings
             if (userPreferences.showExtendedMetadata) ...[
               Wrap(

@@ -227,7 +227,7 @@ void main() {
 
       expect(alert.info, hasLength(1));
       final info = alert.info.first;
-      expect(info.responseType, ResponseType.monitor);
+      expect(info.responseType, [ResponseType.monitor]);
       expect(info.severity, Severity.severe);
       expect(info.urgency, Urgency.immediate);
       expect(info.headline, "Amtliche WARNUNG vor GEWITTER");
@@ -248,7 +248,7 @@ void main() {
             http.Response.bytes(utf8.encode(capAllClearAlertXml), 200),
       );
 
-      expect(alert.info.first.responseType, ResponseType.allclear);
+      expect(alert.info.first.responseType, [ResponseType.allclear]);
       expect(alert.messageType, MessageType.cancel);
     });
 
@@ -261,7 +261,7 @@ void main() {
 
       final info = alert.info.first;
       expect(alert.references, isNull);
-      expect(info.responseType, ResponseType.unknown);
+      expect(info.responseType, []);
       // A missing element must stay null so the detail view can hide the
       // section instead of rendering an empty one.
       expect(info.web, isNull);
