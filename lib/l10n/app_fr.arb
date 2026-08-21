@@ -7,7 +7,7 @@
     "main_nav_bar_all_warnings": "Toute les alertes",
     "main_nav_bar_my_places": "Mes endroits",
     "main_dot_menu_settings": "Paramètres",
-    "main_dot_menu_about": "A propos",
+    "main_dot_menu_about": "À propos",
     "main_app_bar_tooltip_mark_all_warnings_as_read": "Marquer les alertes comme lues",
     "main_app_bar_tooltip_show_menu": "Afficher menu",
     "main_dialog_understand": "Compris",
@@ -205,5 +205,13 @@
     "source_other_title": "Autres",
     "warning_severity_explanation_dialog_extreme_description": "Menace extraordinaire pour la vie ou les biens. Peut avoir un impact significatif à court terme sur votre santé, vos biens et/ou les infrastructures publiques.",
     "warning_severity_explanation_dialog_severe_description": "Menace importante pour la vie ou les biens. Peut affecter votre santé, vos biens et/ou les infrastructures publiques.",
-    "warning_severity_explanation_dialog_headline": "Gravité"
+    "warning_severity_explanation_dialog_headline": "Gravité",
+    "warning_region_title": "Région",
+    "warning_type_title": "Type",
+    "warning_response_type_title": "Type de réponse",
+    "warning_description_title": "Description",
+    "warning_source_title": "Source",
+    "warning_context_information": "Informations contextuelles :",
+    "warning_reference": "Référence",
+    "warning_code": "Code"
 }
