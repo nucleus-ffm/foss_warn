@@ -596,7 +596,7 @@
     "select_unified_push_distributor_title": "Push-Verteiler auswählen",
     "select_unified_push_distributor_subtitle": "Bitte wähle den UnifiedPush-Verteiler aus, den FOSSWarn verwenden soll.",
     "warning_response_type_unknown": "Unbekannt",
-    "main_dialog_ok": "OK",
+    "main_dialog_ok": "Ok",
     "main_dialog_abort": "Abbrechen",
     "warning_open_image": "Bild öffnen",
     "@warning_open_image": {
@@ -637,5 +637,15 @@
     "collect_system_information_battery_optimization": "Akkuoptimierung",
     "alert_update_thread_latest_version": "aktuelle Version der Warnmeldung",
     "alert_update_thread_previous_updates": "frühere Aktualisierungen dieser Warnmeldung",
-    "warning_response_type_title": "Antworttyp"
+    "warning_response_type_title": "Antworttyp",
+    "warning_response_type_evacuate_explanation": "Gemäß den Anweisungen in der Gebrauchsanweisung verschieben",
+    "alert_update_thread_title": "Thread für {alert} aktualisieren",
+    "@alert_update_thread_title": {
+        "description": "The alert of the thread",
+        "placeholder": {
+            "alert": {
+                "type": "String"
+            }
+        }
+    }
 }
