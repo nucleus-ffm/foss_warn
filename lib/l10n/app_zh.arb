@@ -338,7 +338,7 @@
     "warning_status_test": "测试",
     "warning_status_draft": "草拟",
     "warning_urgency_immediate": "迫近",
-    "warning_urgency_expected": "预期",
+    "warning_urgency_expected": "预计",
     "warning_urgency_future": "将来",
     "warning_urgency_past": "已过",
     "warning_urgency_unknown": "未知",
@@ -644,5 +644,58 @@
     "about_docs": "文档",
     "help_tooltip": "在文档中了解更多信息",
     "select_unified_push_distributor_title": "选择推送分发程序",
-    "select_unified_push_distributor_subtitle": "请选择 FOSSWarn 应使用的 UnifiedPush 分发程序。"
+    "select_unified_push_distributor_subtitle": "请选择 FOSSWarn 应使用的 UnifiedPush 分发程序。",
+    "main_dialog_ok": "好",
+    "main_dialog_abort": "终止",
+    "warning_response_type_title": "响应类型",
+    "warning_open_image": "打开图片",
+    "@warning_open_image": {
+        "description": "Button shown instead of an image that is embedded in an alert text. The image is not loaded automatically to not leak the users IP address."
+    },
+    "explanation_geophysical": "地球物理学",
+    "explanation_geophysical_text": "地球物理事件（包括泥石流）期间的信息",
+    "warning_status_unknown": "未知",
+    "warning_response_type_shelter": "庇护所",
+    "warning_response_type_shelter_explanation": "就地或根据手册寻找庇护所",
+    "warning_response_type_evacuate": "疏散",
+    "warning_response_type_evacuate_explanation": "按照手册指示移动到新地点",
+    "warning_response_type_prepare": "准备",
+    "warning_response_type_prepare_explanation": "按照手册做准备",
+    "warning_response_type_execute": "执行",
+    "warning_response_type_execute_explanation": "执行手册中规定的预先计划的活动",
+    "warning_response_type_avoid": "避免",
+    "warning_response_type_avoid_explanation": "按照手册避免主题事件",
+    "warning_response_type_monitor": "关注",
+    "warning_response_type_monitor_explanation": "按照手册描述关注消息源",
+    "warning_response_type_allclear": "警报解除",
+    "warning_response_type_allclear_explanation": "主题事件不再构成威胁或担忧，手册中描述了任何后续动作",
+    "warning_response_type_none": "无",
+    "warning_response_type_none_explanation": "没有建议的动作",
+    "warning_response_type_unknown": "未知",
+    "warning_response_type_unknown_explanation": "警报中的值无效时的备用值",
+    "notification_channel_debug_name": "调试通知",
+    "notification_channel_debug_description": "用于调试目的的通知",
+    "notification_channel_summary_name": "通知概况",
+    "notification_channel_summary_description": "用于低于 7.0 以下的安卓系统来展示活跃通知的概况",
+    "notification_channel_group_alerts_name": "警报通知",
+    "notification_channel_group_alerts_description": "包含所有发布警报的通知通道",
+    "notification_channel_group_other_name": "其他通知",
+    "notification_channel_group_other_description": "包含所有其他通知通道",
+    "alert_service_change_removes_places_warning": "真要更改警报服务吗？这会删除你订阅的地点。",
+    "system_information_dialog_title": "系统信息",
+    "system_information_copy_action": "复制",
+    "system_information_copy_confirmation": "已复制",
+    "collect_system_information_system_information": "系统信息",
+    "collect_system_information_battery_optimization": "电池优化",
+    "alert_update_thread_title": "更新 {alert} 信息",
+    "@alert_update_thread_title": {
+        "description": "The alert of the thread",
+        "placeholder": {
+            "alert": {
+                "type": "String"
+            }
+        }
+    },
+    "alert_update_thread_latest_version": "最新版警报",
+    "alert_update_thread_previous_updates": "这个警报之前的更新"
 }
