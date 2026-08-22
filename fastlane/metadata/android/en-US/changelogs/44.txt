@@ -1,0 +1,6 @@
+- Over 150 commits just with bug fixes.
+- A new feature to get alerts for the current location
+- Implement an alert filtering based on the alert categories
+- Implement an alternative to push notifications
+- Some small UI improvements
+- A brand-new documentation hosted on docs.fosswarn.org

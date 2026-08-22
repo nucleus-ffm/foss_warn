@@ -52,6 +52,11 @@ nav:
       - Location Tracking: features/location_tracking.md
       - Notification Setting: features/notification_settings.md
       - Notification Self Check: features/notification_self_check.md
+  - Release Notes:
+      - 0.8.0: release_notes/32.md
+      - 1.0.0: release_notes/38.md
+      - 1.0.1: release_notes/41.md
+      - 1.1.0: release_notes/44.md
   - FAQ: faq.md
   - Contribute: contribute.md
 

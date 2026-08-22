@@ -182,6 +182,8 @@
     "about_sourcecode_subtitle": "Soon on floppy, meanwhile on github",
     "about_faq": "FAQ",
     "about_docs": "Documentation",
+    "about_release_notes": "Release notes",
+    "about_release_notes_subtitle": "Learn what has changed in this version.",
     "privacy_headline": "Privacy",
     "privacy_main_text": "FOSS Warn does not send any information about its usage and only connects to the following services:\n - the FPAS server: this server handles the subscriptions, sends push notifications and can be selected in the settings. \n - opensteetmap.org: Used to display the map and to search for places. \nFOSS Warn transmits only the technically necessary data.",
     "privacy_link_to_privacy": "To the privacy policy of",
