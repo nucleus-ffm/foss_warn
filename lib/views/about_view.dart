@@ -4,7 +4,6 @@ import 'package:foss_warn/widgets/dialogs/disclaimer_dialog.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../services/url_launcher.dart';
 import '../widgets/dialogs/privacy_dialog.dart';
-import '../widgets/dialogs/change_log_dialog.dart';
 
 class AboutView extends StatefulWidget {
   const AboutView({
@@ -209,12 +208,20 @@ class _AboutViewState extends State<AboutView> {
               "$versioncode ($buildNumber)",
               style: theme.textTheme.bodyLarge,
             ),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => const ChangeLogDialog(),
-              );
-            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.new_releases_outlined),
+            title: Text(
+              localizations.about_release_notes,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              localizations.about_release_notes_subtitle,
+              style: theme.textTheme.bodyLarge,
+            ),
+            onTap: () => launchUrlInBrowser(
+              'https://docs.fosswarn.org/release_notes/$buildNumber/',
+            ),
           ),
           ListTile(
             leading: const Icon(Icons.info_outline),
