@@ -77,7 +77,7 @@ plugins:
           # Navigation (EN) – Übersetzungen
           nav_translations:
             Getting Started: Einführung
-            Installtion: Installation
+            Installation: Installation
             Android: Android
             iOS: iOS
             Features: Funktionen
