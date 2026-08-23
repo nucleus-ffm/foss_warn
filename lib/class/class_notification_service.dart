@@ -95,7 +95,7 @@ class NotificationService {
     await showNotificationSummary();
   }
 
-  /// Show a notification summary. This is used on Android < 7.0 instead of the collabsed
+  /// Show a notification summary. This is used on Android < 7.0 instead of the collapsed
   /// notification. On Android 7.0+ the text of this notification is not shown
   static Future<void> showNotificationSummary() async {
     List<ActiveNotification>? activeNotifications = [];
@@ -111,6 +111,8 @@ class NotificationService {
     String notificationBody = "";
     if (activeNotifications != null && activeNotifications.isNotEmpty) {
       for (ActiveNotification notification in activeNotifications) {
+        // skip the summary notification
+        if (notification.id == 0) continue;
         notificationBody += notification.title ?? "";
         notificationBody += " ";
         if (notification.body != null) {

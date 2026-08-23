@@ -319,12 +319,18 @@ Future<void> showNotification(
 ) async {
   for (WarnMessage warning in alerts) {
     String placeName = "";
+    String title = "";
     Place? place = places.firstWhereOrNull(
       (place) => place.id == warning.placeId,
     );
 
     if (place != null) {
       placeName = place.name;
+      title = "$placeName: ${warning.info[0].headline}";
+    } else {
+      // currently the path of push notifications
+      // as we do not yet have the place id for a push notifications
+      title = warning.info[0].headline;
     }
 
     if (warning.info.isEmpty) {
@@ -349,7 +355,7 @@ Future<void> showNotification(
         // show notification with sound
         await NotificationService.showNotification(
           id: warning.fpasId.hashCode,
-          title: "$placeName: ${warning.info[0].headline}",
+          title: title,
           body: description.substring(0, min(150, description.length)),
           payload: placeName,
           channel:
@@ -359,7 +365,7 @@ Future<void> showNotification(
         await NotificationService.showNotification(
           // show notification as update only -> less distributive
           id: warning.fpasId.hashCode,
-          title: "$placeName: ${warning.info[0].headline}",
+          title: title,
           body: warning.info[0].headline,
           payload: placeName,
           channel: NotificationChannel.update,

@@ -243,7 +243,7 @@ class UnifiedPushHandler {
       await UnifiedPush.saveDistributor(picked ?? distributors.first);
       // register the app to the selected distributor
       try {
-        await registerDistributor();
+        await registerDistributor(vapidKey: tempVapidKey);
       } on MissingPluginException catch (e) {
         debugPrint("Error while registering UnifiedPush: $e");
         throw UnifiedPushRegistrationError();

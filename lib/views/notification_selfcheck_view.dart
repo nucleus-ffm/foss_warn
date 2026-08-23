@@ -273,19 +273,10 @@ class _NotificationSelfCheckState
     selectedDistributorState = await checkCurrentDistributor();
     if (!mounted) return;
     setState(() {});
-    distributorState = await checkUnifiedPushDistributor();
-    if (!mounted) return;
-    setState(() {});
     endpointState = await checkSelectedEndpoint();
     if (!mounted) return;
     setState(() {});
     isServerOkState = checkIfServerIsOk();
-    if (!mounted) return;
-    setState(() {});
-    distributorState = await checkUnifiedPushDistributor();
-    if (!mounted) return;
-    setState(() {});
-    selectedDistributorState = await checkCurrentDistributor();
     if (!mounted) return;
     setState(() {});
     var subscriptionTestResult = await testSubscriptionAndNotification();
@@ -294,6 +285,7 @@ class _NotificationSelfCheckState
     if (!mounted) return;
     setState(() {});
     exactAlarmPermissionState = await checkAlarmPermission();
+    if (!mounted) return;
     setState(() {});
   }
 

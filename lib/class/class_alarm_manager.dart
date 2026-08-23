@@ -11,6 +11,8 @@ import 'package:foss_warn/class/class_notification_preferences.dart';
 import 'package:foss_warn/class/class_notification_service.dart';
 import 'package:foss_warn/class/class_user_preferences.dart';
 import 'package:foss_warn/class/class_warn_message.dart';
+import 'package:foss_warn/extensions/list.dart';
+import 'package:foss_warn/services/list_handler.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../enums/notification_channel.dart';
@@ -51,21 +53,34 @@ Future<void> backgroundPollingCallback() async {
         );
         continue;
       }
-      if (!alert.notified && !alert.hideWarningBecauseThereIsANewerVersion) {
+      if (!alert.notified &&
+          !alert.read &&
+          !alert.hideWarningBecauseThereIsANewerVersion) {
         if (NotificationPreferences.checkIfEventShouldBeNotified(
           alert.info.first.severity,
           alert.info.first.category,
           container.read(userPreferencesProvider),
         )) {
           var description = alertTextToPlainText(alert.info.first.description);
+          var place = container
+              .read(myPlacesProvider)
+              .firstWhereOrNull((p) => p.id == alert.placeId);
+
+          String title = "";
+          if (place != null) {
+            title = "${place.name}: ${alert.info.first.headline}";
+          } else {
+            title = alert.info.first.headline;
+          }
 
           await NotificationService.showNotification(
             id: alert.fpasId.hashCode,
-            title: "New alert: ${alert.info.first.headline}",
+            title: title,
             body: description.substring(0, min(description.length, 150)),
             channel: alert.isUpdateOfAlreadyNotifiedWarning
                 ? NotificationChannel.update
                 : NotificationChannel.fromSeverity(alert.info.first.severity),
+            payload: place?.name,
           );
           container
               .read(processedAlertsProvider.notifier)
@@ -83,11 +98,14 @@ Future<void> backgroundPollingCallback() async {
   } finally {
     container.dispose();
     final DateTime endTime = DateTime.now();
-    await ErrorLogger.writeLog(
-      "alarm_manager.dart",
-      "Background update info",
-      "Background update has finished at $endTime after ${endTime.difference(startTime)} in isolate $isolateId.",
-    );
+    //@TODO(Nucleus): Introduce a new debug flag for that
+    if (container.read(userPreferencesProvider).showDebugNotification) {
+      await ErrorLogger.writeLog(
+        "alarm_manager.dart",
+        "Background update info",
+        "Background update has finished at $endTime after ${endTime.difference(startTime)} in isolate $isolateId.",
+      );
+    }
   }
 }
 
