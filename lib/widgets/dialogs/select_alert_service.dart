@@ -33,7 +33,13 @@ class _FontSizeDialogState extends ConsumerState<SelectAlertServiceDialog> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(localizations.alert_service_dialog_title),
+          Expanded(
+            child: Text(
+              localizations.alert_service_dialog_title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           IconButton(
             onPressed: () => launchUrlInBrowser(
               'https://docs.fosswarn.org/features/alert_services/',
