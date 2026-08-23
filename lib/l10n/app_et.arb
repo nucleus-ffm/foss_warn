@@ -330,7 +330,7 @@
     "error_dialog_description": "FOSS Warn tuvastas vea. Palun teata sellest veast ja lisa teatesse järgnev logi.",
     "error_dialog_privacy": "Kui just välja arvata sinu seadistatud asukohad, siis selles logis pole privaatsuse mõttes delikaatseid andmeid. FOSS Warn ei edasta logisid serverisse.",
     "error_dialog_instruction_headline": "Mida ma peaksin nüüd tegema?",
-    "notification_alert_new_title": "Uus häireteade asukohale: {place}",
+    "notification_alert_new_title": "Uus ohu- ja häireteade asukohale: {place}",
     "@notification_alert_new_title": {
         "description": "Title of the notification shown for a new alert",
         "placeholders": {
@@ -339,7 +339,7 @@
             }
         }
     },
-    "notification_alert_update_title": "Uuendatud häireteade asukohale: {place}",
+    "notification_alert_update_title": "Uuendatud ohu- ja häireteade asukohale: {place}",
     "troubleshoot_notification_title": "Teavituste toimimise veaotsing",
     "troubleshoot_notification_register_state": "Kas teavituste tõuketeenus on registreeritud? {state}",
     "@troubleshoot_notification_register_state": {
@@ -579,7 +579,7 @@
     "update_dialog_body_v42": "Palun kuluta hetk aega, et kontrollida oma tellimuse piirkondi. Versiooni 1.0.0 vea tõttu võib sinu tellimuse piirkond olla vale. Palun veendu, et allpool loetletud tellimuse piirkonnad vastavad õigele geograafilisele asukohale. Kui piirjoon ei vasta oodatud piirkonnale, palun eemalda tellimus ja lisa see uuesti. Kui kõik on korras, pole midagi vaja teha.",
     "update_dialog_subscription_v42": "Sinu tellimused",
     "update_dialog_confirmation_v42": "Olen neid piirkondi kontrollinud",
-    "map_alert_sheet_title": "Häireteated selle ala kohta",
+    "map_alert_sheet_title": "Ohu- ja häireteated selle piirkonna kohta",
     "settings_location_settings": "Asukoht",
     "settings_location_tracking_title": "Teavita reaalajas asukoha alusel",
     "settings_location_tracking_subtitle": "Katseline. Eeldab, et kasutusel on asukohatuvastus.",
@@ -605,7 +605,7 @@
     "settings_alert_archive_subtitle": "Salvesta iga ohu- ja häireteade kohalikus staatilises arhiivis.",
     "settings_alert_archive_open": "Ava ohu- ja häireteadete arhiiv",
     "confirm_no_push_subscription_body_push": "FOSSWarn ei suutnud registreeruda tõuketeavituste kasutajaks ning sa pole alternatiivset valikut määranud. Seega häireteadete teavitused hetkel ei saabu. Kui soovid tõuketeavitusi kasutada, siis kontrolli seadistusi ning vaata valikuid ja veaotsingu võimalusi meie vikist.",
-    "alert_service_dialog_title": "Vali häireteadete teenus",
+    "alert_service_dialog_title": "Vali ohu- ja häireteadete teenus",
     "alert_service_dialog_help_text": "Pole kindel, mida peaksid valima? Lisateavet leiad juhendist.",
     "alert_service_push": "Tõuketeavitused (soovitatud)",
     "alert_service_push_description": "Saad tõuketeavitusi peaaegu reaalajas ja server algatab nende edastamise. See eeldab, et UnifiedPush on seadistatud.",
@@ -618,9 +618,9 @@
     "alert_service_push_and_poll_description": "See eeldab, et UnifiedPush on seadistatud ja rakendusel on õigus seadistada täpseid äratusi.",
     "alert_service_nothing": "Ma ei taha üldse kasutada taustal toimivaid teavitusi",
     "alert_service_nothing_description": "Sel puhul ei pea sa midagi täiendavat seadistama, aga FOSSWarnist suurt kasu ka pole.",
-    "alert_archive_view_title": "Häireteadete arhiiv",
-    "alert_archive_view_subtitle": "Sellega näed kõiki varasemaid häireteateid, mida FOSSWarn on vastu võtnud.",
-    "alert_archive_no_alert": "Hetkel pole siin veel midagi. Ootan, kuni esimene häireteade on arhiveeritud…",
+    "alert_archive_view_title": "Ohu- ja häireteadete arhiiv",
+    "alert_archive_view_subtitle": "Sellega näed kõiki varasemaid ohu- ja häireteateid, mida FOSSWarn on vastu võtnud.",
+    "alert_archive_no_alert": "Hetkel pole siin veel midagi. Ootan, kuni esimene ohu- ja häireteade on arhiveeritud…",
     "notification_self_check_exact_alarm_permission_check_title": "Luba täpse äratuse ajastamine",
     "notification_self_check_exact_alarm_permission_check_subtitle_unknown": "Ootan kontrollimise tulemusi",
     "confirmation_dialog_confirm": "Ma saan aru ja soovin jätkata",
@@ -691,12 +691,14 @@
         }
     },
     "system_information_dialog_title": "Süteemiteave",
-    "alert_service_change_removes_places_warning": "Kas sa kindlasti soovid häireteadete teenust vahetada? Samaga kaovad ka kõik sinu senised tellimused.",
+    "alert_service_change_removes_places_warning": "Kas sa kindlasti soovid ohu- ja häireteadete teenust vahetada? Samaga kaovad ka kõik sinu senised tellimused.",
     "notification_channel_debug_description": "Veaotsingu ja silumise jaoks mõeldud teavitused",
     "notification_channel_summary_name": "Teavituste kokkuvõte",
     "notification_channel_summary_description": "Kasutusel Android < 7.0 puhul kuvamaks aktiivsete teavituste kokkuvõtet",
     "notification_channel_group_alerts_name": "Häire- ja ohuteavitused",
     "notification_channel_group_alerts_description": "Sisaldab kõiki teavituskanaleid, kes häire- ja ohuteateid avaldavad",
     "notification_channel_group_other_name": "Muud teavitused",
-    "notification_channel_group_other_description": "Sisaldab kõiki muid teavituskanaleid"
+    "notification_channel_group_other_description": "Sisaldab kõiki muid teavituskanaleid",
+    "about_release_notes": "Muudatuste logi",
+    "about_release_notes_subtitle": "Uuri, mis on selle versiooniga muutunud."
 }
