@@ -1,5 +1,5 @@
 !!! Version note
-    Diese Funktion wurde in Version 1.1.0 hinzugefügt und ist noch experimentell. 
+    Diese Funktion ist noch nicht komplett fertig und wird später hinzugefügt.
 
 
 FOSSWarn kann alte Warnmeldungen in einem lokalen Archiv speichern. Um diese Funktion zu aktivieren, gehe zu `settings` -> `enable alert archive`. 

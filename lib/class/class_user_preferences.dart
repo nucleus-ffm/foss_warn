@@ -66,18 +66,30 @@ final userPreferencesProvider =
   }
 
   var selectedLightTheme = preferences.getInt("selectedLightTheme") ?? 0;
-  if (selectedLightTheme > availableLightThemes.length - 1) {
+  if (selectedLightTheme > availableLightThemes.length - 1 ||
+      selectedLightTheme < 0) {
     selectedLightTheme = 0;
   }
 
   var selectedDarkTheme = preferences.getInt("selectedDarkTheme") ?? 0;
-  if (selectedDarkTheme > availableDarkThemes.length - 1) {
+  if (selectedDarkTheme > availableDarkThemes.length - 1 ||
+      selectedDarkTheme < 0) {
     selectedDarkTheme = 0;
   }
 
-  var selectedSorting = preferences.getInt("sortWarningsBy") ?? 0;
+  var selectedSorting = preferences.getInt("sortWarningsBy");
+  if (selectedSorting == null ||
+      selectedSorting >= SortingCategories.values.length ||
+      selectedSorting < 0) {
+    selectedSorting = 0;
+  }
 
-  var alertService = preferences.getInt("alertService") ?? 0;
+  var alertService = preferences.getInt("alertService");
+  if (alertService == null ||
+      alertService >= AlertService.values.length ||
+      alertService < 0) {
+    alertService = 0;
+  }
 
   String? fossPublicAlertServerUrl =
       preferences.getString("fossPublicAlertServerUrl");

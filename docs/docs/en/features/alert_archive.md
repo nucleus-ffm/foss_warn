@@ -1,5 +1,5 @@
 !!! Version note
-    This feature has been added in version 1.1.0 and is still experimental. 
+    This feature is not yet ready and will be added later.
 
 
 FOSSWarn can store old alerts in a local archive. To enable this feature, go to `settings` -> `enable alert archive`. 

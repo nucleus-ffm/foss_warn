@@ -63,7 +63,7 @@ class Info {
     this.expires,
     required this.headline,
     required this.description,
-    required this.instruction,
+    this.instruction,
     this.contact,
     this.web,
     required this.area,
@@ -108,14 +108,16 @@ class Info {
     }
 
     var areas = <Area>[];
-    if (json['area'] is List) {
-      areas = Area.areaListFromJsonWithCAPData(
-        (json['area'] as List)
-            .map((area) => area as Map<String, dynamic>)
-            .toList(),
-      );
-    } else {
-      areas = [Area.areaFromJsonWithCAPData(json['area'])];
+    if (json['area'] != null) {
+      if (json['area'] is List) {
+        areas = Area.areaListFromJsonWithCAPData(
+          (json['area'] as List)
+              .map((area) => area as Map<String, dynamic>)
+              .toList(),
+        );
+      } else {
+        areas = [Area.areaFromJsonWithCAPData(json['area'])];
+      }
     }
 
     return Info(
@@ -124,7 +126,7 @@ class Info {
       audience: json['audience'],
       //eventCode: json['eventCode'], //@TODO check that again
       category: categories,
-      event: json['event'],
+      event: json['event'] ?? "",
       urgency: Urgency.fromJson(json['urgency']),
       severity: Severity.fromJson(json['severity']),
       certainty: Certainty.fromJson(json['certainty'] ?? "other"),

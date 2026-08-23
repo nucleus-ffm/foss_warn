@@ -40,6 +40,10 @@ Future<String> _subscribeForAreaWithPushNotifications({
   bool? currentLocation,
 }) async {
   var localizations = context.localizations;
+  LoadingScreen.instance().show(
+    context: context,
+    text: localizations.loading_screen_wait_for_push_to_complete,
+  );
 
   // register listener
   final completer = Completer<void>();
@@ -256,10 +260,6 @@ Future<String> _subscribeForAreaWithPushNotificationsBackground({
       3,
     );
   }
-  await Future.delayed(
-    const Duration(seconds: 1),
-  );
-  LoadingScreen.instance().hide();
   return confirmationId;
 }
 
@@ -298,7 +298,7 @@ Future<Null> _subscribeForAreaNoPushBackground({
     isForCurrentLocation: isForCurrentLocation,
   );
 
-  var places = ref.watch(myPlacesProvider.notifier);
+  var places = ref.read(myPlacesProvider.notifier);
 
   await places.add(newPlace);
 }
@@ -395,7 +395,7 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
         newSubscriptionId = result.subscriptionId;
 
         // replace the old subscription id with the new one
-        ref.read(myPlacesProvider.notifier).set(
+        await ref.read(myPlacesProvider.notifier).set(
               ref.read(myPlacesProvider).updateEntry(
                     place.copyWith(
                       subscriptionId: newSubscriptionId,
@@ -405,9 +405,23 @@ Future<void> resubscribeForAllArea(BuildContext context, WidgetRef ref) async {
       } on RegisterAreaError catch (e) {
         if (!context.mounted) return;
         failure = "Failed to register for area. The server responded with $e";
+        await ref.read(myPlacesProvider.notifier).set(
+              ref.read(myPlacesProvider).updateEntry(
+                    place.copyWith(
+                      isExpired: true,
+                    ),
+                  ),
+            );
       } on UnregisterAreaError catch (e) {
         if (!context.mounted) return;
         failure = "Failed to unregister for area. The server responded with $e";
+        await ref.read(myPlacesProvider.notifier).set(
+              ref.read(myPlacesProvider).updateEntry(
+                    place.copyWith(
+                      isExpired: true,
+                    ),
+                  ),
+            );
       }
     }
   } finally {
@@ -524,6 +538,13 @@ Future<void> updateAllSubscriptions(WidgetRef ref) async {
         "updateAllSubscriptions",
         e.toString(),
       );
+    } on PlaceSubscriptionError catch (e) {
+      debugPrint("Failed to update all subscriptions due to $e");
+      ErrorLogger.writeLog(
+        "subscription_handler.dart",
+        "updateAllSubscriptions",
+        e.toString(),
+      );
     }
   }
 }
@@ -599,11 +620,11 @@ Future<void> removeSubscription(
     await ref.read(myPlacesProvider.notifier).remove(place);
   } else {
     var appSate = ref.read(appStateProvider.notifier);
-    appSate.setReSubscriptionInProgress(true);
 
     // only unsubscribe from server if the subscriptions isn't a local subscription
     if (place.subscriptionId != null) {
       try {
+        appSate.setReSubscriptionInProgress(true);
         await alertApi.unregisterArea(
           subscriptionId: place.subscriptionId!,
         );
@@ -619,11 +640,12 @@ Future<void> removeSubscription(
           backgroundColor: theme.colorScheme.errorContainer,
         );
         scaffoldMessenger.showSnackBar(snackBar);
+      } finally {
+        appSate.setReSubscriptionInProgress(false);
       }
     } else {
       await ref.read(myPlacesProvider.notifier).remove(place);
     }
-    appSate.setReSubscriptionInProgress(false);
   }
 }
 

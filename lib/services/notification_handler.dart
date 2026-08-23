@@ -39,7 +39,7 @@ void handleIncomingNotification(var rawPayload, WidgetRef ref) {
       case NotificationMessageType.unsubscribe:
         break; //@TODO (Nucleus): implement
       case NotificationMessageType.update:
-        break; //@TODO (Nucleus): implement
+        newAlertNotification(payload, ref);
       case NotificationMessageType.unknown:
         break; //@TODO (Nucleus): implement
     }
@@ -77,7 +77,8 @@ Future<void> newAlertNotification(
     if (addedAlertId != null) {
       WarnMessage alert = await ref.read(alertApiProvider).getAlertDetail(
             alertId: addedAlertId,
-            placeId: "Not used",
+            placeId:
+                "Not used", // @TODO(Nucleus): using a placeholder here mean notifying pushAndPoll users twice
           );
       var places = ref.read(myPlacesProvider);
       var alertsService = ref.read(processedAlertsProvider.notifier);

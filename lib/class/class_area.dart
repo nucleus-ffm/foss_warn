@@ -23,7 +23,7 @@ class Area {
   }) : description = areaDesc;
 
   Area.fromJson(Map<String, dynamic> json)
-      : description = json['areaDesc'],
+      : description = json['areaDesc'] ?? "",
         geoJson = json['geoJson'] ??
             ""; //@TODO(Nucleus) geoJson should never be "" as this produces an error if we try to use the geoJson for the map
 
