@@ -488,7 +488,7 @@
     "legacy_warning_dialog_title": "Uuendatud versiooniks",
     "source_other_title": "Muu",
     "notification_settings_open_severity_explanation": "Ohutasemete olulisuse selgitus",
-    "notification_settings_description": "Järgnevas saad iga ohu- ja häireteate kategooria jaoks määrata ohutasemed, mille kohta soovid teavitusi saada. Üldine seadistus alati sürjutab kategooriakohased seadistused.",
+    "notification_settings_description": "Järgnevas saad iga ohu- ja häireteate kategooria jaoks määrata ohutasemed, mille kohta soovid teavitusi saada. Üldine seadistus asendab alati kategooriakohaseid seadistusi.",
     "warning_severity_explanation_dialog_severe_description": "Oluline oht elule ja varale. Võib mõjutada sinu tervist, sinu vara ja/või avalikku taristut.",
     "warning_severity_explanation_dialog_moderate_description": "Võimalik oht elule ja varale. Võib märgatavalt mõjutada tavalist igapäevast elu.",
     "warning_severity_explanation_dialog_minor_description": "Väike või olematu oht elule ja varale. Võib osaliselt mõjutada tavalist igapäevast elu.",
