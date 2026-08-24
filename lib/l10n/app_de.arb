@@ -647,5 +647,6 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "about_release_notes": "Versionshinweise"
 }
