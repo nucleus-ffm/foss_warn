@@ -697,5 +697,7 @@
         }
     },
     "alert_update_thread_latest_version": "最新版警报",
-    "alert_update_thread_previous_updates": "这个警报之前的更新"
+    "alert_update_thread_previous_updates": "这个警报之前的更新",
+    "about_release_notes": "发行记录",
+    "about_release_notes_subtitle": "了解此版本的更改内容。"
 }
