@@ -648,5 +648,6 @@
             }
         }
     },
-    "about_release_notes": "Versionshinweise"
+    "about_release_notes": "Versionshinweise",
+    "about_release_notes_subtitle": "Was hat sich in dieser Version geändert?"
 }
