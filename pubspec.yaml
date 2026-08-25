@@ -45,7 +45,22 @@ dependencies:
   permission_handler: ^12.0.1
   permission_handler_android: ^13.0.1
   permission_handler_platform_interface: ^4.3.0
-  geolocator: ^14.0.2
+  geolocator: ^14.0.3
+
+# geolocator_android depends on com.google.android.gms:play-services-location,
+# which is non-free and makes F-Droid refuse to build the app. Excluding the
+# artifact via Gradle does not work — the classes still end up in the APK, see
+# https://github.com/Baseflow/flutter-geolocator/issues/1481
+#
+# The fork below removes the fused location provider so the plugin always uses
+# the AOSP LocationManager. It is pinned by commit and kept
+# in sync with upstream by a workflow in that repository.
+dependency_overrides:
+  geolocator_android:
+    git:
+      url: https://github.com/nucleus-ffm/flutter-geolocator.git
+      path: geolocator_android
+      ref: 969e51c0ff1fea1053e590b34c6f0930652d321f
 
 dev_dependencies:
   flutter_test:
