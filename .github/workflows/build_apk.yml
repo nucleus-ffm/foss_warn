@@ -15,6 +15,7 @@ env:
   FLUTTER_CHANNEL: 'stable'
   PROPERTIES_PATH: "./android/key.properties"
   STOREFILE_PATH: "key.jks"
+  _JAVA_OPTIONS: "-Xmx4096m" # increase java heap space
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
