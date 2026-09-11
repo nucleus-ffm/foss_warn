@@ -16,7 +16,7 @@ FOSS Public Alert Server -> *sending notification* -> Push Server (e.g. a ntfy s
 All you have to do is choose a distributor. The distributor handles all the push notification connections for every app that is using UnifiedPush. 
 
 
-## Why not use Google's push infrastructure
+## Why not use Google's push infrastructure?
 The whole project is about implementing a free and opensource infrastructure without the need for proprietary components. But you can select a Distributor which uses goggle if you really want.  
 
 ## Install a distributor
