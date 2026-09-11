@@ -41,14 +41,14 @@ Here is an incomplete list of push ntfy servers you could choose:
 | [push.tchncs.de](https://push.tchncs.de/) | 🇩🇪 Germany |
 
 
-##### Alternative & unreliable servers
+##### Alternative and unreliable servers
 | Server | Country | Status / notes |
 | --- | --- | --- |
 | [ntfy.tedomum.fr](https://ntfy.tedomum.fr) | 🇫🇷 France | Might get rate-limited very fast (use only if you know what you are doing) |
 | [ntfy.fossman.de](https://ntfy.fossman.de/) | 🇩🇪 Germany | Might get rate-limited very fast (use only if you know what you are doing) |
 | [unifiedpush.kde.org](https://unifiedpush.kde.org/) | — | Quite unreliable in the past; not recommended |
 
-##### Community & privacy
+##### Community and privacy
 If you know more reliable push servers, please give us a hint, and we will extend this list. Or open a merge request and help to improve this page.
 
 Please be aware that server operators can log your messages. We are using encrypted push messages, so this should not be an issue.
