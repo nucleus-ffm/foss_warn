@@ -22,5 +22,8 @@
     "all_warnings_reload": "Znovu načíst",
     "my_place_warning_found": "Máte varování pro vás",
     "my_place_no_place_added": "Není vybráno žádné místo",
-    "my_place_no_place_added_text": "Nejprve vyberte místo"
+    "my_place_no_place_added_text": "Nejprve vyberte místo",
+    "main_dialog_ok": "OK",
+    "main_dialog_abort": "Přerušit",
+    "settings": "Nastavení"
 }
