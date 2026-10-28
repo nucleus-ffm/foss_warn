@@ -53,6 +53,7 @@ class _AlertUpdateThreadViewState extends ConsumerState<AlertUpdateThreadView> {
         ),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
         child: Column(
           children: [
             Text(localization.alert_update_thread_latest_version),

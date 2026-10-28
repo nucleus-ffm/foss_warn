@@ -53,6 +53,7 @@ class AlertArchiveView extends ConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

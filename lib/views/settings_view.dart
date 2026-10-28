@@ -126,7 +126,10 @@ class _SettingsState extends ConsumerState<Settings> {
         title: Text(localizations.settings),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 10, bottom: 20),
+        padding: EdgeInsets.only(
+          top: 10,
+          bottom: MediaQuery.paddingOf(context).bottom,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

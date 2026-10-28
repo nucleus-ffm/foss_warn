@@ -373,6 +373,7 @@ class _NotificationSelfCheckState
         ],
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
         child: Column(
           children: [
             Padding(
