@@ -60,7 +60,7 @@ dependency_overrides:
     git:
       url: https://github.com/nucleus-ffm/flutter-geolocator.git
       path: geolocator_android
-      ref: 969e51c0ff1fea1053e590b34c6f0930652d321f
+      ref: aeda0c922350bc38e67ea06303cb8670782d43d5
 
 dev_dependencies:
   flutter_test:
