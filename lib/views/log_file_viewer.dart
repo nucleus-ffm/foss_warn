@@ -44,6 +44,7 @@ class _LogFileViewerState extends State<LogFileViewer> {
         title: Text(localization.error_log_viewer_title),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [

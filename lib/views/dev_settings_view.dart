@@ -71,6 +71,7 @@ class _DevSettingsState extends ConsumerState<DevSettings> {
         title: Text(localizations.dev_settings_headline),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
         child: Padding(
           padding: const EdgeInsets.only(top: 0, bottom: 20),
           child: Column(

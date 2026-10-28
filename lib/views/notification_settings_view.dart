@@ -40,6 +40,7 @@ class _NotificationSettingsViewState
         ],
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
         child: Padding(
           padding: const EdgeInsets.only(top: 0, bottom: 20),
           child: Column(

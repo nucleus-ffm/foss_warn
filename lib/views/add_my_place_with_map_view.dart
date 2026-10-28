@@ -479,113 +479,115 @@ class _AddMyPlaceWithMapViewState extends ConsumerState<AddMyPlaceWithMapView> {
               visible: _showRadiusSlider,
               child: SizedBox(
                 width: mediaQuery.size.width,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(12),
+                          bottomRight: Radius.circular(12),
+                        ),
+                        color: theme.colorScheme.secondaryContainer,
                       ),
-                      color: theme.colorScheme.secondaryContainer,
-                    ),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            localizations
-                                .add_my_place_with_map_select_area_size,
-                            style: theme.textTheme.labelLarge,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(
+                              localizations
+                                  .add_my_place_with_map_select_area_size,
+                              style: theme.textTheme.labelLarge,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Slider(
-                                  min: radiusSliderMinValue,
-                                  max: radiusSliderMaxValue,
-                                  value: placeRadius,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      placeRadius = value;
-                                      // calculate the a polygon around the current place
-                                      createPolygon();
-                                    });
-                                  },
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Slider(
+                                    min: radiusSliderMinValue,
+                                    max: radiusSliderMaxValue,
+                                    value: placeRadius,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        placeRadius = value;
+                                        // calculate the a polygon around the current place
+                                        createPolygon();
+                                      });
+                                    },
+                                  ),
                                 ),
-                              ),
-                              Text("${placeRadius.toInt()} km"),
-                            ],
+                                Text("${placeRadius.toInt()} km"),
+                              ],
+                            ),
                           ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            if (_selectedPlaceName != "" &&
-                                selectedPlacePolygon != null) {
-                              if (!ref
-                                  .read(userPreferencesProvider)
-                                  .unifiedPushRegistered) {
-                                // ask if the user really wants to subscribe without push notifications
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (_selectedPlaceName != "" &&
+                                  selectedPlacePolygon != null) {
+                                if (!ref
+                                    .read(userPreferencesProvider)
+                                    .unifiedPushRegistered) {
+                                  // ask if the user really wants to subscribe without push notifications
 
-                                bool result = await showDialog<bool>(
+                                  bool result = await showDialog<bool>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return const ConfirmNoPushDialog();
+                                        },
+                                      ) ??
+                                      false;
+                                  if (!context.mounted) return;
+                                  if (result) {
+                                    await subscribeForArea(
+                                      boundingBox: boundingBox,
+                                      selectedPlaceName: _selectedPlaceName,
                                       context: context,
-                                      builder: (BuildContext context) {
-                                        return const ConfirmNoPushDialog();
-                                      },
-                                    ) ??
-                                    false;
-                                if (!context.mounted) return;
-                                if (result) {
-                                  await subscribeForArea(
-                                    boundingBox: boundingBox,
-                                    selectedPlaceName: _selectedPlaceName,
-                                    context: context,
-                                    ref: ref,
-                                    noPushNotification: true,
-                                  );
-                                  widget.onPlaceAdded();
+                                      ref: ref,
+                                      noPushNotification: true,
+                                    );
+                                    widget.onPlaceAdded();
+                                  }
+                                } else {
+                                  // subscribe normally with push notifications
+                                  try {
+                                    await subscribeForArea(
+                                      boundingBox: boundingBox,
+                                      selectedPlaceName: _selectedPlaceName,
+                                      context: context,
+                                      ref: ref,
+                                    );
+                                    widget.onPlaceAdded();
+                                  } on RegisterAreaError {
+                                    // subscription failed
+                                  } on UnifiedPushRegistrationTimeoutError {
+                                    // subscription failed
+                                  } on SocketException {
+                                    // subscription failed
+                                  } on UnifiedPushRegistrationError {
+                                    // something went wrong with UnifiedPush
+                                  }
                                 }
                               } else {
-                                // subscribe normally with push notifications
-                                try {
-                                  await subscribeForArea(
-                                    boundingBox: boundingBox,
-                                    selectedPlaceName: _selectedPlaceName,
-                                    context: context,
-                                    ref: ref,
-                                  );
-                                  widget.onPlaceAdded();
-                                } on RegisterAreaError {
-                                  // subscription failed
-                                } on UnifiedPushRegistrationTimeoutError {
-                                  // subscription failed
-                                } on SocketException {
-                                  // subscription failed
-                                } on UnifiedPushRegistrationError {
-                                  // something went wrong with UnifiedPush
-                                }
+                                debugPrint(
+                                  "Error_selectedPlaceName or selectedPlacePolygon is null",
+                                );
                               }
-                            } else {
-                              debugPrint(
-                                "Error_selectedPlaceName or selectedPlacePolygon is null",
-                              );
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            foregroundColor: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
+                            },
+                            style: TextButton.styleFrom(
+                              foregroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                            ),
+                            child: Text(
+                              localizations
+                                  .add_my_place_with_map_add_place_button,
+                            ),
                           ),
-                          child: Text(
-                            localizations
-                                .add_my_place_with_map_add_place_button,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                          const SizedBox(height: 10),
+                        ],
+                      ),
                     ),
                   ),
                 ),

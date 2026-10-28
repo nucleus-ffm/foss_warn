@@ -189,6 +189,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
         ],
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
