@@ -62,7 +62,7 @@ FOSS Warn is developed by a very small team. So if you want to help make FOSS Wa
 
 ### How to get started with the project?
 - Make sure you have installed the Flutter SDK and plugins for AndroidStudio.
-- Clone the FOSSWarn repository
+- Clone the FOSS Warn repository
 - Inside the project, run `flutter gen-l10n` to build the translation strings.
 - You are now ready to run the application.
 
