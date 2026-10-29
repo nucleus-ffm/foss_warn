@@ -1,7 +1,7 @@
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/nucleus-ffm/foss_warn/main/assets/app_icon/app_icon.png" height=200 width=200/>
-  <h1>FOSS Warn</h1>
+  <h1>Foss Warn</h1>
 
 </div>
 
@@ -58,16 +58,16 @@ Edit the `Exec=` line where necessary.
 Can be found here: https://docs.fosswarn.org
 
 ## Contribute
-FOSS Warn is developed by a very small team. So if you want to help make FOSS Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon. Checkout the [onboarding document](https://github.com/nucleus-ffm/foss_warn/wiki/Onboarding-document) to learn more about our work.
+Foss Warn is developed by a very small team. So if you want to help make Foss Warn even better, I'd love to hear from you. If you are familiar with Flutter and Dart and would like to fix or implement one or more issues, please get in touch with me, either by email or via Mastodon. Checkout the [onboarding document](https://github.com/nucleus-ffm/foss_warn/wiki/Onboarding-document) to learn more about our work.
 
 ### How to get started with the project?
 - Make sure you have installed the Flutter SDK and plugins for AndroidStudio.
-- Clone the FOSS Warn repository
+- Clone the Foss Warn repository
 - Inside the project, run `flutter gen-l10n` to build the translation strings.
 - You are now ready to run the application.
 
 ### Translation
-We are using Weblate to translate FOSS Warn. Feel free to help translate the application at [weblate](https://hosted.weblate.org/projects/foss-warn/foss-warn-app/).
+We are using Weblate to translate Foss Warn. Feel free to help translate the application at [weblate](https://hosted.weblate.org/projects/foss-warn/foss-warn-app/).
 
 ### Contributors
 special thanks to:
@@ -85,7 +85,7 @@ special thanks to:
 * [**MINA (Matrix)**](https://github.com/djmaze/nina-matrix-bot) MINA is a matrix bot that can be used to subscribe to alerts from the NINA API.
 * [**Apocalypse (Sailfish OS)**](https://github.com/black-sheep-dev/harbour-apocalypse) Apocalypse is an application for showing of messages from NINA API.
 * [**NINA XMPP bot**](https://github.com/jplitza/nina_xmpp) XMPP bot that sends messages from the German NINA official warning app.
-* [**Nina-FOSS**](https://github.com/SailReal/nina-foss) Similar to FOSS Warn, but written with Java
+* [**Nina-FOSS**](https://github.com/SailReal/nina-foss) Similar to Foss Warn, but written with Java
 
 ## Screenshots
 [<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/shot_1.png" width=160>](fastlane/metadata/android/en-US/images/phoneScreenshots/shot_1.png)
@@ -103,3 +103,4 @@ This app was created in the hope that it will be useful, but it comes WITHOUT AN
 
 ## Haftungsausschluss 
 Diese App wurde in der Hoffnung erstellt, dass sie nützlich ist, kommt aber OHNE JEGLICHE GEWÄHRLEISTUNG. Der Entwickler kann zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert und alle Warnungen jederzeit anzeigt, und übernimmt daher keine Haftung (außer im Falle von grober Fahrlässigkeit oder von Vorsatz). Verlassen Sie sich zu KEINEM ZEITPUNKT auf diese App. Beachten Sie immer andere Warnungsquellen und folgen Sie den Hinweisen der örtlichen Behörden.
+v
