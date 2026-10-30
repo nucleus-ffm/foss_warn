@@ -62,7 +62,7 @@ FOSS Warn is developed by a very small team. So if you want to help make FOSS Wa
 
 ### How to get started with the project?
 - Make sure you have installed the Flutter SDK and plugins for AndroidStudio.
-- Clone the FOSSWarn repository
+- Clone the FOSS Warn repository
 - Inside the project, run `flutter gen-l10n` to build the translation strings.
 - You are now ready to run the application.
 
@@ -103,3 +103,4 @@ This app was created in the hope that it will be useful, but it comes WITHOUT AN
 
 ## Haftungsausschluss 
 Diese App wurde in der Hoffnung erstellt, dass sie nützlich ist, kommt aber OHNE JEGLICHE GEWÄHRLEISTUNG. Der Entwickler kann zu keinem Zeitpunkt garantieren, dass die App fehlerfrei funktioniert und alle Warnungen jederzeit anzeigt, und übernimmt daher keine Haftung (außer im Falle von grober Fahrlässigkeit oder von Vorsatz). Verlassen Sie sich zu KEINEM ZEITPUNKT auf diese App. Beachten Sie immer andere Warnungsquellen und folgen Sie den Hinweisen der örtlichen Behörden.
+v
