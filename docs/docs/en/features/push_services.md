@@ -1,7 +1,7 @@
-In previous version of Foss Warn, the app has used a polling service to check if there are alerts for the user. This has some downsides and drains you battery and produces a delay until you receive a notifications. Since version 1.0 Foss Warn uses the FOSS Public Alert Server to receive alerts and notifications. In order to receive these near real time notifications the server uses UnifiedPush and the client to.
+In previous version of FOSS Warn, the app has used a polling service to check if there are alerts for the user. This has some downsides and drains you battery and produces a delay until you receive a notifications. Since version 1.0 FOSS Warn uses the FOSS Public Alert Server to receive alerts and notifications. In order to receive these near real time notifications the server uses UnifiedPush and the client to.
 
 ## What is UnifiedPush?
-[UnifiedPush](https://unifiedpush.org/) is a set of tool for push-notifications. Instead of polling, the client receive a push-notification and wakes up to perform an action. Foss Warn uses unifiedPush to inform the client that an alert for the subscription occurred and the client can inform the user about that.
+[UnifiedPush](https://unifiedpush.org/) is a set of tool for push-notifications. Instead of polling, the client receive a push-notification and wakes up to perform an action. FOSS Warn uses unifiedPush to inform the client that an alert for the subscription occurred and the client can inform the user about that.
 
 ## What is the difference between Push and Polling?
 For push notifications, the system (in this case, the distributor app) holds an energy-efficient constant connection to the push server. This allows an application server to send a notification instantly without a lot of delay. 
@@ -11,7 +11,7 @@ For polling, the app has to be woken up constantly. Every time the app wakes up,
 ## What is a Distributor?
 Using UnifiedPush, there are multiple components involved in sending a push notification from our server to our phone. In short, it works like this: 
 
-FOSS Public Alert Server -> *sending notification* -> Push Server (e.g. a ntfy server) -> *sends message to phone* -> Distributor app -> *wakes* -> Foss Warn
+FOSS Public Alert Server -> *sending notification* -> Push Server (e.g. a ntfy server) -> *sends message to phone* -> Distributor app -> *wakes* -> FOSS Warn
 
 All you have to do is choose a distributor. The distributor handles all the push notification connections for every app that is using UnifiedPush. 
 
@@ -27,7 +27,7 @@ If you already have a distributor installed choose this distributor in the selec
 !!! Warning
     **Do not use the default (ntfy.sh) server.** This server has a rate limit of 250 notifications per day for each publisher. We can therefore not accept subscriptions with this push server. Please change the default server in the settings of the ntfy app and select a different one.
 
-If you don't change the server, the default FOSS Public Alert Server instance will not accept any subscriptions with this server. So if you get the error message `Your UnifiedPush Server ntfy.sh is blocked`, please check the ntfy app and change the default server. You can reset the push configuration in Foss Warn if you go to the 'settings' -> 'Push Services' and re-select your Push service.
+If you don't change the server, the default FOSS Public Alert Server instance will not accept any subscriptions with this server. So if you get the error message `Your UnifiedPush Server ntfy.sh is blocked`, please check the ntfy app and change the default server. You can reset the push configuration in FOSS Warn if you go to the 'settings' -> 'Push Services' and re-select your Push service.
 
 ##### Recommended public servers
 Here is an incomplete list of push ntfy servers you could choose: 
