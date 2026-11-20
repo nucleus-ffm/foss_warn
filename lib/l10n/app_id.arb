@@ -1,0 +1,15 @@
+{
+    "main_nav_bar_all_warnings": "Semua Peringatan",
+    "main_nav_bar_my_places": "Tempat Ku",
+    "main_nav_bar_map": "Peta",
+    "main_dot_menu_settings": "Pengaturan",
+    "main_app_bar_tooltip_show_menu": "Tunjukkan menu",
+    "main_dialog_understand": "Mengerti",
+    "main_dialog_save": "Simpan",
+    "main_dialog_close": "Tutup",
+    "main_dialog_ok": "Ok",
+    "main_dialog_abort": "Batal",
+    "all_warnings_no_places_chosen": "Gak ada tempat yang dipilih",
+    "all_warnings_no_places_chosen_text": "Tekan tombol plus buat menambahkan tempat",
+    "all_warnings_nothing_to_show": "Gak ada yang menarik disini"
+}
