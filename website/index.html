@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOSS Warn — Emergency alerts, worldwide & open source</title>
+  <meta name="description" content="FOSS Warn is a free, open-source app for Android and Linux that delivers emergency alerts from over 100 countries via the FOSS Public Alert Server." />
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="#top">
+        <img src="assets/icon.png" alt="FOSS Warn logo" width="34" height="34" />
+        <span>FOSS&nbsp;Warn</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#about">About</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#involved">Get involved</a></li>
+        <li><a href="#download" class="nav-cta">Download</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Open source · Free · Private</span>
+          <h1>Emergency alerts,<br /><span class="grad">worldwide.</span></h1>
+          <p class="lede">
+            FOSS Warn keeps you informed about floods, storms, tsunamis and other
+            emergencies — aggregating official alert feeds from over
+            <strong>100 countries</strong> into one clean, privacy-respecting app.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#download">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 14.5h-2V11H9l3-3.5L15 11h-2v5.5Z"/></svg>
+              Get the app
+            </a>
+            <a class="btn btn-ghost" href="https://docs.fosswarn.org" target="_blank" rel="noopener">
+              Read the docs
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 5h5v5h-2V8.4l-5 5-1.4-1.4 5-5H14V5Z"/></svg>
+            </a>
+          </div>
+          <ul class="hero-meta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Zm0 15h-1.5l-3-3 1-1 2.5 2.5 4.5-4.5 1 1L12 17Z"/></svg> Privacy-preserving by design</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2Zm-1 5h2v5l3.5 2-.8 1.5L11 13V7Z"/></svg> Near real-time push alerts</li>
+          </ul>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <img src="assets/screenshots/shot_1.png" alt="" class="phone phone-back" />
+          <img src="assets/screenshots/shot_2.png" alt="" class="phone phone-front" />
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKER / TRUST BAR -->
+    <section class="trust container">
+      <div class="trust-item">
+        <span class="trust-num">100+</span>
+        <span class="trust-label">Countries covered</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">GPL-3.0</span>
+        <span class="trust-label">Fully open source</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">0</span>
+        <span class="trust-label">Ads & trackers</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-num">CAP 1.2</span>
+        <span class="trust-label">Standard alert format</span>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container split">
+        <div class="split-copy">
+          <span class="eyebrow">About</span>
+          <h2>One app for all the alerts that matter</h2>
+          <p>
+            FOSS Warn is built on the
+            <a href="https://invent.kde.org/webapps/foss-public-alert-server" target="_blank" rel="noopener">FOSS Public Alert Server</a>,
+            a joint project of KDE and the FOSS Warn team that aggregates over
+            100 official CAP alert sources worldwide.
+          </p>
+          <p>
+            Subscribe to the places you care about — your home, work, a holiday
+            destination — and FOSS Warn will notify you the moment an emergency
+            alert is issued there. No account, no tracking, no proprietary cloud.
+          </p>
+          <ul class="check-list">
+            <li>Android and Linux support</li>
+            <li>UnifiedPush powered notifications</li>
+            <li>Material 3 design, light & dark mode</li>
+            <li>Community translations via Weblate</li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <img src="assets/screenshots/shot_5.png" alt="FOSS Warn showing the subscribed places list" />
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section section-alt" id="features">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Features</span>
+          <h2>Everything you need to stay informed</h2>
+          <p>FOSS Warn packs a lot into a small, fast app.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="card">
+            <div class="card-icon" style="--i:#4f7cff"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2Zm-1 5h2v5l3.5 2-.8 1.5L11 13V7Z"/></svg></div>
+            <h3>Push notifications</h3>
+            <p>Near real-time alerts delivered with <a href="https://unifiedpush.org" target="_blank" rel="noopener">UnifiedPush</a> — an open, battery-friendly alternative to proprietary push.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#ff7a59"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 3 3 9l9 12 9-12-6-6H9Zm1.2 2h3.6l4.4 4.4-6.2 8.3-6.2-8.3L10.2 5Z"/></svg></div>
+            <h3>Map display</h3>
+            <p>Alerts are shown on a map, so you always know exactly where a warning applies.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#22c55e"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Zm-1 13-3-3 1.4-1.4L11 12.2l4.6-4.6L17 9l-6 6Z"/></svg></div>
+            <h3>Fine-grained filtering</h3>
+            <p>Choose the severity and alert categories you want to hear about — globally or per category.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#a78bfa"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a8 8 0 0 0-4 14.9V20a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-3.1A8 8 0 0 0 12 2Zm0 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg></div>
+            <h3>Location tracking</h3>
+            <p>Optionally receive alerts for your current location — it automatically subscribes as you move.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#f59e0b"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2 6h10V7H7v2Zm0 4h10v-2H7v2Zm0 4h6v-2H7v2Z"/></svg></div>
+            <h3>Alert archive</h3>
+            <p>Store past alerts locally on your device so you can review warnings even after they expire.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#06b6d4"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm-1 15h-2v-6h2v6Zm0-8h-2V7h2v2Zm4 8h-2v-6h2v6Zm0-8h-2V7h2v2Z"/></svg></div>
+            <h3>Notification self-check</h3>
+            <p>A built-in diagnostic walks through your whole notification chain so you know it actually works.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2>From official source to your pocket</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Pick your places</h3>
+            <p>Choose the geographic areas you care about or enable location tracking.</p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Server listens</h3>
+            <p>The FOSS Public Alert Server watches official feeds for those areas.</p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>You get alerted</h3>
+            <p>An alert fires and FOSS Warn wakes up to notify you instantly.</p>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <h3>Stay in control</h3>
+            <p>Filter by severity, archive warnings, and follow official instructions.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SCREENSHOTS -->
+    <section class="section section-alt" id="screenshots">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Screenshots</span>
+          <h2>Clean, modern, Material 3</h2>
+          <p>A quick look at FOSS Warn in action.</p>
+        </div>
+        <div class="gallery">
+          <img src="assets/screenshots/shot_1.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+          <img src="assets/screenshots/shot_2.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+          <img src="assets/screenshots/shot_3.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+          <img src="assets/screenshots/shot_4.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+          <img src="assets/screenshots/shot_5.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+          <img src="assets/screenshots/shot_6.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+          <img src="assets/screenshots/shot_7.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+          <img src="assets/screenshots/shot_8.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORMS -->
+    <section class="section" id="platforms">
+      <div class="container split">
+        <div class="split-copy">
+          <span class="eyebrow">Platforms</span>
+          <h2>On your phone and your desktop</h2>
+          <p>
+            FOSS Warn runs on <strong>Android</strong> as a fully-featured mobile
+            app, and offers an experimental <strong>Linux</strong> desktop build
+            for ARM and x86 devices.
+          </p>
+          <ul class="check-list">
+            <li>Install from F-Droid for automatic updates</li>
+            <li>Or grab the latest APK from GitHub releases</li>
+            <li>Linux build available for both ARM and x86</li>
+          </ul>
+        </div>
+        <div class="platform-visual">
+          <div class="platform-tile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 3h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 3v8h12V6H6Z"/></svg>
+            <div><strong>Android</strong><span>7.0 and up</span></div>
+          </div>
+          <div class="platform-tile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8v8H3V3Zm10 0h8v8h-8V3ZM3 13h8v8H3v-8Zm10 0h8v8h-8v-8Z"/></svg>
+            <div><strong>Linux</strong><span>ARM & x86 (experimental)</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section class="section section-alt" id="privacy">
+      <div class="container split">
+        <div class="split-copy">
+          <span class="eyebrow">Privacy</span>
+          <h2>Privacy-preserving by design</h2>
+          <p>
+            FOSS Warn is built around free, open infrastructure. Notifications use
+            <strong>UnifiedPush</strong> rather than Google's proprietary push
+            service, and your alert subscriptions go to an open server you can
+            even <strong>self-host</strong>.
+          </p>
+          <ul class="check-list">
+            <li>No ads, no analytics, no trackers</li>
+            <li>Encrypted push messages</li>
+            <li>Open, self-hostable server backend</li>
+            <li>Location only used to subscribe to your area</li>
+          </ul>
+        </div>
+        <div class="split-copy">
+          <div class="notice-card">
+            <h3>Important disclaimer</h3>
+            <p>
+              FOSS Warn is provided without warranty. It can never guarantee that
+              all warnings are displayed at all times. <strong>Do not rely on this
+              app alone</strong> — always follow the instructions of local authorities
+              and use other warning sources.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GET INVOLVED -->
+    <section class="section" id="involved">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Get involved</span>
+          <h2>Help make FOSS Warn even better</h2>
+          <p>FOSS Warn is developed by a very small team — and every contribution counts. Pick the way that fits you.</p>
+        </div>
+        <div class="involve-grid">
+          <article class="card">
+            <div class="card-icon" style="--i:#4f7cff"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 0 0-9 9c0 2.4 1 4.6 2.5 6.1L5 20.5A9 9 0 1 0 12 3Zm-4 8h3V8h2v3h3v2h-3v3h-2v-3H8v-2Z"/></svg></div>
+            <h3>Write code</h3>
+            <p>FOSS Warn is built with Flutter and Dart. Fix issues, add features, or help with our project board.</p>
+            <a class="card-link" href="https://github.com/users/nucleus-ffm/projects/4" target="_blank" rel="noopener">View the project board →</a>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#22c55e"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21a9 9 0 1 1 9-9c0 1.7-.5 3.2-1.3 4.5-.3.5-.9.8-1.4.6-.3-.1-.5-.4-.6-.8V9a9 9 0 1 0-5.7 12Z"/></svg></div>
+            <h3>Translate the app</h3>
+            <p>Help bring FOSS Warn to more people around the world by contributing translations on Weblate.</p>
+            <a class="card-link" href="https://hosted.weblate.org/projects/foss-warn/" target="_blank" rel="noopener">Start translating →</a>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#f59e0b"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 3c-5 0-9 3.6-9 8 0 1.6.5 3.1 1.4 4.4L5 21l3.2-1.4c.7.3 1.5.4 2.8.4 5 0 9-3.6 9-8s-4-9-9-9ZM7.5 13a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm5.5 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm5.5 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg></div>
+            <h3>Give feedback</h3>
+            <p>Report bugs, suggest ideas, and share your experience so we know what to improve next.</p>
+            <a class="card-link" href="https://github.com/nucleus-ffm/foss_warn/issues" target="_blank" rel="noopener">Open an issue →</a>
+          </article>
+          <article class="card">
+            <div class="card-icon" style="--i:#a78bfa"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21 3.5 13.5A6.5 6.5 0 0 1 12 6.8a6.5 6.5 0 0 1 8.5 6.7L12 21Z"/></svg></div>
+            <h3>Spread the word</h3>
+            <p>Follow and share FOSS Warn on Mastodon, join our Matrix space, or tell your local community.</p>
+            <a class="card-link" href="https://social.tchncs.de/@foss_warn" target="_blank" rel="noopener">Follow us →</a>
+          </article>
+        </div>
+        <div class="involve-note">
+          <p>Developed by a small, friendly team. If you're familiar with Flutter and Dart and would like to fix or implement issues, we'd love to hear from you — by email or via Mastodon.</p>
+          <div class="involve-contacts">
+            <a class="btn btn-ghost" href="mailto:foss-warn@posteo.de">Email us</a>
+            <a class="btn btn-ghost" href="https://matrix.to/#/#foss_warn:tchncs.de" target="_blank" rel="noopener">Join Matrix</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section class="section download" id="download">
+      <div class="container download-card">
+        <div class="download-copy">
+          <span class="eyebrow">Get started</span>
+          <h2>Get FOSS Warn today</h2>
+          <p>Free forever. Open source. Available now for Android and Linux.</p>
+        </div>
+        <div class="download-actions">
+          <a href="https://f-droid.org/packages/de.nucleus.foss_warn/" target="_blank" rel="noopener">
+            <img src="assets/badge-fdroid.png" alt="Get it on F-Droid" class="store-badge" />
+          </a>
+          <a href="https://github.com/nucleus-ffm/foss_warn/releases" target="_blank" rel="noopener">
+            <img src="assets/badge-github.png" alt="Get it on GitHub" class="store-badge" />
+          </a>
+        </div>
+        <div class="funding">
+          <p>This project was funded through the NGI0 Core Fund, a fund established by NLnet with financial support from the European Commission's Next Generation Internet programme.</p>
+          <div class="funding-logos">
+            <span>NLnet</span>
+            <span>NGI0 Core</span>
+            <span>European Commission</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/icon.png" alt="FOSS Warn logo" width="28" height="28" />
+        <span>FOSS Warn</span>
+        <p>Open-source emergency alerts for a free internet.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="https://docs.fosswarn.org" target="_blank" rel="noopener">Documentation</a></li>
+          <li><a href="https://github.com/nucleus-ffm/foss_warn" target="_blank" rel="noopener">Source code</a></li>
+          <li><a href="https://alerts.kde.org/sources/status" target="_blank" rel="noopener">Supported countries</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://social.tchncs.de/@foss_warn" target="_blank" rel="noopener">Mastodon</a></li>
+          <li><a href="https://matrix.to/#/#foss_warn:tchncs.de" target="_blank" rel="noopener">Matrix</a></li>
+          <li><a href="https://hosted.weblate.org/projects/foss-warn/" target="_blank" rel="noopener">Translate with Weblate</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="https://docs.fosswarn.org/legal/privacy_policy" target="_blank" rel="noopener">Privacy policy</a></li>
+          <li><a href="https://docs.fosswarn.org/legal/imprint" target="_blank" rel="noopener">Imprint</a></li>
+          <li><a href="https://github.com/nucleus-ffm/foss_warn/blob/main/LICENSE" target="_blank" rel="noopener">GPL-3.0 License</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© 2026 FOSS Warn. Licensed under the GNU General Public License v3.0. Not affiliated with any official authority.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
