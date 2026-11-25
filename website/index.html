@@ -7,11 +7,16 @@
   <meta name="description" content="FOSS Warn is a free, open-source app for Android and Linux that delivers emergency alerts from over 100 countries via the FOSS Public Alert Server." />
   <link rel="icon" type="image/png" href="assets/icon.png" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <!--
+    Material Design Icons (Apache-2.0) — used for the "Get involved" section's
+    three icons (code, translate, campaign). Source:
+    https://github.com/google/material-design-icons
+    Licensed under the Apache License, Version 2.0.
+    Icon paths may have been modified to fit the page's icon grid.
+    All other inline SVG icons on this page are original artwork.
+  -->
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header" id="site-header">
@@ -63,8 +68,8 @@
           </ul>
         </div>
         <div class="hero-visual" aria-hidden="true">
-          <img src="assets/screenshots/shot_1.png" alt="" class="phone phone-back" />
-          <img src="assets/screenshots/shot_2.png" alt="" class="phone phone-front" />
+          <img src="assets/screenshots/shot_1.webp" alt="" class="phone phone-back" />
+          <img src="assets/screenshots/shot_2.webp" alt="" class="phone phone-front" />
         </div>
       </div>
     </section>
@@ -114,7 +119,7 @@
           </ul>
         </div>
         <div class="split-visual">
-          <img src="assets/screenshots/shot_5.png" alt="FOSS Warn showing the subscribed places list" />
+          <img src="assets/screenshots/shot_5.webp" alt="FOSS Warn showing the subscribed places list" />
         </div>
       </div>
     </section>
@@ -202,16 +207,74 @@
           <h2>Clean, modern, Material 3</h2>
           <p>A quick look at FOSS Warn in action.</p>
         </div>
-        <div class="gallery">
-          <img src="assets/screenshots/shot_1.png" alt="Screenshot of FOSS Warn" loading="lazy" />
-          <img src="assets/screenshots/shot_2.png" alt="Screenshot of FOSS Warn" loading="lazy" />
-          <img src="assets/screenshots/shot_3.png" alt="Screenshot of FOSS Warn" loading="lazy" />
-          <img src="assets/screenshots/shot_4.png" alt="Screenshot of FOSS Warn" loading="lazy" />
-          <img src="assets/screenshots/shot_5.png" alt="Screenshot of FOSS Warn" loading="lazy" />
-          <img src="assets/screenshots/shot_6.png" alt="Screenshot of FOSS Warn" loading="lazy" />
-          <img src="assets/screenshots/shot_7.png" alt="Screenshot of FOSS Warn" loading="lazy" />
-          <img src="assets/screenshots/shot_8.png" alt="Screenshot of FOSS Warn" loading="lazy" />
+        <div class="gallery" id="gallery">
+          <button class="gallery-arrow gallery-arrow-prev" type="button" aria-label="Previous screenshot" aria-controls="gallery-track">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15 5 8 12l7 7 1.4-1.4L10.8 12l5.6-5.6L15 5Z"/></svg>
+          </button>
+          <ul class="gallery-track" id="gallery-track" tabindex="0" aria-label="FOSS Warn screenshots — swipe through or use the arrow keys">
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 1: detailed emergency alert info">
+                <img src="assets/screenshots/shot_1.webp" alt="FOSS Warn alert detail in light mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">Detailed emergency alert info</p>
+            </li>
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 2: list of subscribed places">
+                <img src="assets/screenshots/shot_2.webp" alt="FOSS Warn list of subscribed places in light mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">Manage your subscribed locations</p>
+            </li>
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 3: warnings on an interactive map">
+                <img src="assets/screenshots/shot_3.webp" alt="FOSS Warn map with warning areas in light mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">Warnings on an interactive map</p>
+            </li>
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 4: adding a new place">
+                <img src="assets/screenshots/shot_4.webp" alt="FOSS Warn adding a new place with the map in light mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">Easily add new places to monitor</p>
+            </li>
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 5: subscribed places in dark mode">
+                <img src="assets/screenshots/shot_5.webp" alt="FOSS Warn list of subscribed places in dark mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">Sleek dark mode, ready anywhere</p>
+            </li>
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 6: the map in dark mode">
+                <img src="assets/screenshots/shot_6.webp" alt="FOSS Warn map with warning areas in dark mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">High-contrast map in dark mode</p>
+            </li>
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 7: alert detail in dark mode">
+                <img src="assets/screenshots/shot_7.webp" alt="FOSS Warn alert detail in dark mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">Clear alerts, even in the dark</p>
+            </li>
+            <li class="gallery-slide">
+              <button class="gallery-btn" type="button" aria-label="View screenshot 8: adding a place in dark mode">
+                <img src="assets/screenshots/shot_8.webp" alt="FOSS Warn adding a new place with the map in dark mode" loading="lazy" decoding="async" />
+                <span class="expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg></span>
+              </button>
+              <p class="gallery-caption">Precise area selection in dark mode</p>
+            </li>
+          </ul>
+          <button class="gallery-arrow gallery-arrow-next" type="button" aria-label="Next screenshot" aria-controls="gallery-track">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 5l7 7-7 7-1.4-1.4 5.6-5.6-5.6-5.6L9 5Z"/></svg>
+          </button>
+          <div class="gallery-dots" id="gallery-dots" role="group" aria-label="Choose a screenshot"></div>
         </div>
+        <p class="gallery-hint">Swipe to browse on mobile — <strong>tap an image</strong> to view it full size.</p>
       </div>
     </section>
 
@@ -288,13 +351,13 @@
         </div>
         <div class="involve-grid">
           <article class="card">
-            <div class="card-icon" style="--i:#4f7cff"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3a9 9 0 0 0-9 9c0 2.4 1 4.6 2.5 6.1L5 20.5A9 9 0 1 0 12 3Zm-4 8h3V8h2v3h3v2h-3v3h-2v-3H8v-2Z"/></svg></div>
+            <div class="card-icon" style="--i:#4f7cff"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></div>
             <h3>Write code</h3>
             <p>FOSS Warn is built with Flutter and Dart. Fix issues, add features, or help with our project board.</p>
             <a class="card-link" href="https://github.com/users/nucleus-ffm/projects/4" target="_blank" rel="noopener">View the project board →</a>
           </article>
           <article class="card">
-            <div class="card-icon" style="--i:#22c55e"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21a9 9 0 1 1 9-9c0 1.7-.5 3.2-1.3 4.5-.3.5-.9.8-1.4.6-.3-.1-.5-.4-.6-.8V9a9 9 0 1 0-5.7 12Z"/></svg></div>
+            <div class="card-icon" style="--i:#22c55e"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7 1.62-4.33L19.12 17h-3.24z"/></svg></div>
             <h3>Translate the app</h3>
             <p>Help bring FOSS Warn to more people around the world by contributing translations on Weblate.</p>
             <a class="card-link" href="https://hosted.weblate.org/projects/foss-warn/" target="_blank" rel="noopener">Start translating →</a>
@@ -306,7 +369,7 @@
             <a class="card-link" href="https://github.com/nucleus-ffm/foss_warn/issues" target="_blank" rel="noopener">Open an issue →</a>
           </article>
           <article class="card">
-            <div class="card-icon" style="--i:#a78bfa"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21 3.5 13.5A6.5 6.5 0 0 1 12 6.8a6.5 6.5 0 0 1 8.5 6.7L12 21Z"/></svg></div>
+            <div class="card-icon" style="--i:#a78bfa"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 11v2h4v-2h-4zm-2 6.61c.96.71 2.21 1.65 3.2 2.39.4-.53.8-1.07 1.2-1.6-.99-.74-2.24-1.68-3.2-2.4-.4.54-.8 1.08-1.2 1.61zM20.4 5.6c-.4-.53-.8-1.07-1.2-1.6-.99.74-2.24 1.68-3.2 2.4.4.53.8 1.07 1.2 1.6.96-.72 2.21-1.65 3.2-2.4zM4 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v4h2v-4h1l5 3V6L8 9H4zm11.5 3c0-1.33-.58-2.53-1.5-3.35v6.69c.92-.81 1.5-2.01 1.5-3.34z"/></svg></div>
             <h3>Spread the word</h3>
             <p>Follow and share FOSS Warn on Mastodon, join our Matrix space, or tell your local community.</p>
             <a class="card-link" href="https://social.tchncs.de/@foss_warn" target="_blank" rel="noopener">Follow us →</a>
@@ -386,6 +449,40 @@
       <p>© 2026 FOSS Warn. Licensed under the GNU General Public License v3.0. Not affiliated with any official authority.</p>
     </div>
   </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot viewer" hidden>
+    <div class="lightbox-stage" id="lightbox-stage">
+      <img class="lightbox-img" id="lightbox-img" alt="" />
+    </div>
+    <button class="lightbox-btn lightbox-close" id="lb-close" type="button" aria-label="Close viewer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4 6.4 5Z"/></svg>
+    </button>
+    <button class="lightbox-btn lightbox-nav lightbox-prev" id="lb-prev" type="button" aria-label="Previous screenshot">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15 5 8 12l7 7 1.4-1.4L10.8 12l5.6-5.6L15 5Z"/></svg>
+    </button>
+    <button class="lightbox-btn lightbox-nav lightbox-next" id="lb-next" type="button" aria-label="Next screenshot">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 5l7 7-7 7-1.4-1.4 5.6-5.6-5.6-5.6L9 5Z"/></svg>
+    </button>
+    <div class="lightbox-zoombar" role="group" aria-label="Zoom controls">
+      <button class="lightbox-btn" id="lb-zoom-out" type="button" aria-label="Zoom out">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 11h14v2H5z"/></svg>
+      </button>
+      <span class="lightbox-zoom-label" id="lb-zoom-label">Fit</span>
+      <button class="lightbox-btn" id="lb-zoom-in" type="button" aria-label="Zoom in">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z"/></svg>
+      </button>
+      <button class="lightbox-btn lightbox-fit" id="lb-zoom-reset" type="button">Fit</button>
+      <button class="lightbox-btn lightbox-max" id="lb-fullscreen" type="button" aria-label="Maximize viewer (fullscreen)" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 5h5v2H7v3H5V5Zm9 0h5v5h-2V7h-3V5ZM5 14v5h5v-2H7v-3H5Zm12 0v3h-3v2h5v-5h-2Z"/></svg>
+      </button>
+    </div>
+    <div class="lightbox-meta">
+      <span class="lightbox-counter" id="lb-counter" aria-live="polite">1 / 8</span>
+      <div class="lightbox-dots" id="lb-dots" role="group" aria-label="Choose a screenshot"></div>
+      <span class="lightbox-caption" id="lb-caption"></span>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
